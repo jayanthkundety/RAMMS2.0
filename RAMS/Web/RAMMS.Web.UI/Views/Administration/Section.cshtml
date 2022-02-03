@@ -1,0 +1,132 @@
+﻿@model RAMMS.Web.UI.Models.CDataTable
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDivisionService _service;
+@{
+    ViewData["Title"] = "Section - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Section - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strPageName = ViewBag.PageName;
+    string strPageId = ViewBag.PageID;
+    var division = (IEnumerable<SelectListItem>)_service.GetList();
+}
+}
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/Administrator.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        jsAdmin.PageName = "@strPageId";
+    </script>
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">Section</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Section
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-lg-8 col-lg-6 col-xl-6 search-content" searchSection>
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "SectionSmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" placeholder="Search..." class="form-control" param="KeySearch" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button onclick="@(Model.Name + ".Search")(this,'');" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right" style="line-height: 18px;"><span class="search-icon"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" class="btn btn-sm btn-themebtn" data-target="#AddSection" data-toggle="modal" data-backdrop="static"><span class="add-icon"></span> Add Section</button>
+            </div>
+
+            @*Section Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_CDataTable", Model);
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<div class="modal fade addmodal" id="AddSection" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="AddSectionCenterTitle">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Add Section
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="divUpdate">
+                    <input type="hidden" name="Id" value="0" id="txtId" />
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Division", "Division")
+                            <select id="selDivision" class="form-control validate {required, Division}" onchange="jsAdmin.DivChange(this);">
+                                <option>Select Division</option>
+                                @foreach (var v in division)
+                                {
+                                    <option value="@v.Value">@v.Text</option>
+                                }
+                            </select>
+
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Division Code", "Division Code")
+                            <input id="txtDivisionCode" name="DivCode" type="text" class="form-control" disabled="disabled" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("RMU Name", "RMU Name")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)new List<CSelectListItem>(), "drpRMUName", "Select RMU", new { @Id = "selRMU", @class = "form-control validate {req,RMU Name}", @onchange = "jsAdmin.RMUChange(this);" })
+                            <input type="hidden" id="txtRMUName" name="RMUName" value="" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("RMU Code", "RMU Code")
+                            <input id="txtRMUCode" name="RMUCode" type="text" class="form-control" disabled="disabled" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Section Name", "Section Name")
+                            <input id="txtSectionName" name="SectionName" type="text" class="form-control validate {req,Section Name}" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Section Code", "Section Code")
+                            <input id="txtSectionCode" name="SectionCode" type="text" class="form-control validate {req,Section Code}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" onclick="jsAdmin.Cancel()">Cancel</button>
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="jsAdmin.Update('#divUpdate')">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

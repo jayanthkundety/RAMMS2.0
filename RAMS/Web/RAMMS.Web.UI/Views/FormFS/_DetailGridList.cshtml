@@ -1,0 +1,1066 @@
+
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div hidden id="content">
+        <table id="FormF2DetailGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+    <div id="content">
+        <table id="FormV2DetailGridView" class="table-bordered w-100 nowrap">
+            <thead style="text-align:center; background-color: #c8e1ff">
+                <tr>
+                    <th colspan="2" rowspan="2">Feature</th>
+                    <th rowspan="2">Type</th>
+                    <th rowspan="2">Code</th>
+                    <th rowspan="2">Average Width(m)</th>
+                    <th rowspan="2">TotalLength</th>
+                    <th colspan="3">Condition Rating</th>
+                    <th rowspan="2">Needed</th>
+                    <th rowspan="2">Unit</th>
+                    <th rowspan="2">Remarks</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+                <tr CWAId>
+                    <td colspan="2" rowspan="6">CARRIAGEWAY</td>
+                    <td><b>A</b>sphaltic</td>
+                    <td>A</td>
+                    <td CWAwidth></td>
+                    <td CWATotallength></td>
+                    <td CWAc1></td>
+                    <td CWAc2></td>
+                    <td CWAc3></td>
+                    <td CWANeeded></td>
+                    <td CWAUnit>km</td>
+                    <td CWARemark></td>
+                </tr>
+                <tr CWDId>
+                    <td>Surface <b>D</b>ressed</td>
+                    <td>D</td>
+                    <td CWDwidth></td>
+                    <td CWDTotallength></td>
+                    <td CWDc1></td>
+                    <td CWDc2></td>
+                    <td CWDc3></td>
+                    <td CWDNeeded></td>
+                    <td CWDUnit>km</td>
+                    <td CWDRemark></td>
+                </tr>
+                <tr CWCId>
+                    <td><b>C</b>oncrete</td>
+                    <td>C</td>
+                    <td CWCwidth></td>
+                    <td CWCTotallength></td>
+                    <td CWCc1></td>
+                    <td CWCc2></td>
+                    <td CWCc3></td>
+                    <td CWCNeeded></td>
+                    <td CWCUnit>km</td>
+                    <td CWCRemark></td>
+                </tr>
+                <tr CWGId>
+                    <td><b>G</b>ravel</td>
+                    <td>G</td>
+                    <td CWGwidth></td>
+                    <td CWGTotallength></td>
+                    <td CWGc1></td>
+                    <td CWGc2></td>
+                    <td CWGc3></td>
+                    <td CWGNeeded></td>
+                    <td CWGUnit>km</td>
+                    <td CWGRemark></td>
+                </tr>
+                <tr CWEId>
+                    <td><b>E</b>arth</td>
+                    <td>E</td>
+                    <td CWEwidth></td>
+                    <td CWETotallength></td>
+                    <td CWEc1></td>
+                    <td CWEc2></td>
+                    <td CWEc3></td>
+                    <td CWENeeded></td>
+                    <td CWEUnit>km</td>
+                    <td CWERemark></td>
+                </tr>
+                <tr CWSId>
+                    <td><b>S</b>and</td>
+                    <td>S</td>
+                    <td CWSwidth></td>
+                    <td CWSTotallength></td>
+                    <td CWSc1></td>
+                    <td CWSc2></td>
+                    <td CWSc3></td>
+                    <td CWSNeeded></td>
+                    <td CWSUnit>km</td>
+                    <td CWSRemark></td>
+                </tr>
+                <tr ELMPId>
+                    <td colspan="2" rowspan="2">CENTERLINE MARKING</td>
+                    <td><b>P</b>aint</td>
+                    <td>P</td>
+                    <td ELMPwidth></td>
+                    <td ELMPTotallength></td>
+                    <td ELMPc1></td>
+                    <td ELMPc2></td>
+                    <td ELMPc3></td>
+                    <td ELMPNeeded></td>
+                    <td ELMPUnit>km</td>
+                    <td ELMPRemark></td>
+                </tr>
+                <tr ELMTPId>
+                    <td><b>T</b>hermoplastic</td>
+                    <td>T</td>
+                    <td ELMTPwidth></td>
+                    <td ELMTPTotallength></td>
+                    <td ELMTPc1></td>
+                    <td ELMTPc2></td>
+                    <td ELMTPc3></td>
+                    <td ELMTPNeeded></td>
+                    <td ELMTPUnit>km</td>
+                    <td ELMTPRemark></td>
+                </tr>
+                <tr ELM_LPId>
+                    <td rowspan="11">LEFT</td>
+                    <td rowspan="2">Edge line</td>
+                    <td><b>P</b>aint</td>
+                    <td>P</td>
+                    <td ELM_LPwidth></td>
+                    <td ELM_LPTotallength></td>
+                    <td ELM_LPc1></td>
+                    <td ELM_LPc2></td>
+                    <td ELM_LPc3></td>
+                    <td ELM_LPNeeded></td>
+                    <td ELM_LPUnit>km</td>
+                    <td ELM_LPRemark></td>
+                </tr>
+                <tr ELM_LTPId>
+                    <td><b>T</b>hermoplastic</td>
+                    <td>T</td>
+                    <td ELM_LTPwidth></td>
+                    <td ELM_LTPTotallength></td>
+                    <td ELM_LTPc1></td>
+                    <td ELM_LTPc2></td>
+                    <td ELM_LTPc3></td>
+                    <td ELM_LTPNeeded></td>
+                    <td ELM_LTPUnit>km</td>
+                    <td ELM_LTPRemark></td>
+                </tr>
+                <tr DI_LGId>
+                    <td>Ditch</td>
+                    <td><b>G</b>ravel</td>
+                    <td>G</td>
+                    <td DI_LGwidth></td>
+                    <td DI_LGTotallength></td>
+                    <td DI_LGc1></td>
+                    <td DI_LGc2></td>
+                    <td DI_LGc3></td>
+                    <td DI_LGNeeded></td>
+                    <td DI_LGUnit>km</td>
+                    <td DI_LGRemark></td>
+                </tr>
+                <tr DR_LEId>
+                    <td rowspan="3">Drain</td>
+                    <td><b>E</b>arth</td>
+                    <td>E</td>
+                    <td DR_LEwidth></td>
+                    <td DR_LETotallength></td>
+                    <td DR_LEc1></td>
+                    <td DR_LEc2></td>
+                    <td DR_LEc3></td>
+                    <td DR_LENeeded></td>
+                    <td DR_LEUnit>km</td>
+                    <td DR_LERemark></td>
+                </tr>
+                <tr DR_LBId>
+                    <td><b>B</b>lockStone</td>
+                    <td>B</td>
+                    <td DR_LBwidth></td>
+                    <td DR_LBTotallength></td>
+                    <td DR_LBc1></td>
+                    <td DR_LBc2></td>
+                    <td DR_LBc3></td>
+                    <td DR_LBNeeded></td>
+                    <td DR_LBUnit>km</td>
+                    <td DR_LBRemark></td>
+                </tr>
+                <tr DR_LCId>
+                    <td><b>C</b>oncrete</td>
+                    <td>C</td>
+                    <td DR_LCwidth></td>
+                    <td DR_LCTotallength></td>
+                    <td DR_LCc1></td>
+                    <td DR_LCc2></td>
+                    <td DR_LCc3></td>
+                    <td DR_LCNeeded></td>
+                    <td DR_LCUnit>km</td>
+                    <td DR_LCRemark></td>
+                </tr>
+                <tr SH_LAId>
+                    <td rowspan="5">Shoulder</td>
+                    <td><b>A</b>sphalt</td>
+                    <td>A</td>
+                    <td SH_LAwidth></td>
+                    <td SH_LATotallength></td>
+                    <td SH_LAc1></td>
+                    <td SH_LAc2></td>
+                    <td SH_LAc3></td>
+                    <td SH_LANeeded></td>
+                    <td SH_LAUnit>km</td>
+                    <td SH_LARemark></td>
+                </tr>
+                <tr SH_LCId>
+                    <td><b>C</b>oncrete</td>
+                    <td>C</td>
+                    <td SH_LCwidth></td>
+                    <td SH_LCTotallength></td>
+                    <td SH_LCc1></td>
+                    <td SH_LCc2></td>
+                    <td SH_LCc3></td>
+                    <td SH_LCNeeded></td>
+                    <td SH_LCUnit>km</td>
+                    <td SH_LCRemark></td>
+                </tr>
+                <tr SH_LEId>
+                    <td><b>E</b>arth</td>
+                    <td>E</td>
+                    <td SH_LEwidth></td>
+                    <td SH_LETotallength></td>
+                    <td SH_LEc1></td>
+                    <td SH_LEc2></td>
+                    <td SH_LEc3></td>
+                    <td SH_LENeeded></td>
+                    <td SH_LEUnit>km</td>
+                    <td SH_LERemark></td>
+                </tr>
+                <tr SH_LGId>
+                    <td><b>G</b>ravel</td>
+                    <td>G</td>
+                    <td SH_LGwidth></td>
+                    <td SH_LGTotallength></td>
+                    <td SH_LGc1></td>
+                    <td SH_LGc2></td>
+                    <td SH_LGc3></td>
+                    <td SH_LGNeeded></td>
+                    <td SH_LGUnit>km</td>
+                    <td SH_LGRemark></td>
+                </tr>
+                <tr SH_LFId>
+                    <td><b>F</b>ootpath/Kerb</td>
+                    <td>F</td>
+                    <td SH_LFwidth></td>
+                    <td SH_LFTotallength></td>
+                    <td SH_LFc1></td>
+                    <td SH_LFc2></td>
+                    <td SH_LFc3></td>
+                    <td SH_LFNeeded></td>
+                    <td SH_LFUnit>km</td>
+                    <td SH_LFRemark></td>
+                </tr>
+                <tr ELM_RPId>
+                    <td rowspan="11">RIGHT</td>
+                    <td rowspan="2">Edge line</td>
+                    <td><b>P</b>aint</td>
+                    <td>P</td>
+                    <td ELM_RPwidth></td>
+                    <td ELM_RPTotallength></td>
+                    <td ELM_RPc1></td>
+                    <td ELM_RPc2></td>
+                    <td ELM_RPc3></td>
+                    <td ELM_RPNeeded></td>
+                    <td ELM_RPUnit>km</td>
+                    <td ELM_RPRemark></td>
+                </tr>
+                <tr ELM_RTPId>
+                    <td><b>T</b>hermoplastic</td>
+                    <td>T</td>
+                    <td ELM_RTPwidth></td>
+                    <td ELM_RTPTotallength></td>
+                    <td ELM_RTPc1></td>
+                    <td ELM_RTPc2></td>
+                    <td ELM_RTPc3></td>
+                    <td ELM_RTPNeeded></td>
+                    <td ELM_RTPUnit>km</td>
+                    <td ELM_RTPRemark></td>
+                </tr>
+                <tr DI_RGId>
+                    <td>Ditch</td>
+                    <td><b>G</b>ravel</td>
+                    <td>G</td>
+                    <td DI_RGAwidth></td>
+                    <td DI_RGTotallength></td>
+                    <td DI_RGc1></td>
+                    <td DI_RGc2></td>
+                    <td DI_RGc3></td>
+                    <td DI_RGNeeded></td>
+                    <td DI_RGUnit>km</td>
+                    <td DI_RGRemark></td>
+                </tr>
+                <tr DR_REId>
+                    <td rowspan="3">Drain</td>
+                    <td><b>E</b>arth</td>
+                    <td>E</td>
+                    <td DR_REwidth></td>
+                    <td DR_RETotallength></td>
+                    <td DR_REc1></td>
+                    <td DR_REc2></td>
+                    <td DR_REc3></td>
+                    <td DR_RENeeded></td>
+                    <td DR_REUnit>km</td>
+                    <td DR_RERemark></td>
+                </tr>
+                <tr DR_RBId>
+                    <td><b>B</b>lockStone</td>
+                    <td>B</td>
+                    <td DR_RBwidth></td>
+                    <td DR_RBTotallength></td>
+                    <td DR_RBc1></td>
+                    <td DR_RBc2></td>
+                    <td DR_RBc3></td>
+                    <td DR_RBNeeded></td>
+                    <td DR_RBUnit>km</td>
+                    <td DR_RBRemark></td>
+                </tr>
+                <tr DR_RCId>
+                    <td><b>C</b>oncrete</td>
+                    <td>C</td>
+                    <td DR_RCwidth></td>
+                    <td DR_RCTotallength></td>
+                    <td DR_RCc1></td>
+                    <td DR_RCc2></td>
+                    <td DR_RCc3></td>
+                    <td DR_RCNeeded></td>
+                    <td DR_RCUnit>km</td>
+                    <td DR_RCRemark></td>
+                </tr>
+                <tr SH_RAId>
+                    <td rowspan="5">Shoulder</td>
+                    <td><b>A</b>sphalt</td>
+                    <td>A</td>
+                    <td SH_RAwidth></td>
+                    <td SH_RATotallength></td>
+                    <td SH_RAc1></td>
+                    <td SH_RAc2></td>
+                    <td SH_RAc3></td>
+                    <td SH_RANeeded></td>
+                    <td SH_RAUnit>km</td>
+                    <td SH_RARemark></td>
+                </tr>
+                <tr SH_RCId>
+                    <td><b>C</b>oncrete</td>
+                    <td>C</td>
+                    <td SH_RCwidth></td>
+                    <td SH_RCTotallength></td>
+                    <td SH_RCc1></td>
+                    <td SH_RCc2></td>
+                    <td SH_RCc3></td>
+                    <td SH_RCNeeded></td>
+                    <td SH_RCUnit>km</td>
+                    <td SH_RCRemark></td>
+                </tr>
+                <tr SH_RGId>
+                    <td><b>E</b>arth</td>
+                    <td>E</td>
+                    <td SH_REwidth></td>
+                    <td SH_RETotallength></td>
+                    <td SH_REc1></td>
+                    <td SH_REc2></td>
+                    <td SH_REc3></td>
+                    <td SH_RENeeded></td>
+                    <td SH_REUnit>km</td>
+                    <td SH_RERemark></td>
+                </tr>
+                <tr SH_RGId>
+                    <td><b>G</b>ravel</td>
+                    <td>G</td>
+                    <td SH_RGwidth></td>
+                    <td SH_RGTotallength></td>
+                    <td SH_RGc1></td>
+                    <td SH_RGc2></td>
+                    <td SH_RGc3></td>
+                    <td SH_RGNeeded></td>
+                    <td SH_RGUnit>km</td>
+                    <td SH_RGRemark></td>
+                </tr>
+                <tr SH_RFId>
+                    <td><b>F</b>ootpath/Kerb</td>
+                    <td>F</td>
+                    <td SH_RFwidth></td>
+                    <td SH_RFTotallength></td>
+                    <td SH_RFc1></td>
+                    <td SH_RFc2></td>
+                    <td SH_RFc3></td>
+                    <td SH_RFNeeded></td>
+                    <td SH_RFUnit>km</td>
+                    <td SH_RFRemark></td>
+                </tr>
+                <tr R_LRSId>
+                    <td rowspan="3" colspan="2">Road Studs</td>
+                    <td>Left</td>
+                    <td>R</td>
+                    <td R_LRSwidth></td>
+                    <td R_LRSTotallength></td>
+                    <td R_LRSc1></td>
+                    <td R_LRSc2></td>
+                    <td R_LRSc3></td>
+                    <td R_LRSNeeded></td>
+                    <td R_LRSUnit>km</td>
+                    <td R_LRSRemark></td>
+                </tr>
+                <tr>
+                    <td>Centre</td>
+                    <td>R</td>
+                    <td R_CRSwidth></td>
+                    <td R_CRSTotallength></td>
+                    <td R_CRSc1></td>
+                    <td R_CRSc2></td>
+                    <td R_CRSc3></td>
+                    <td R_CRSNeeded></td>
+                    <td R_CRSUnit>km</td>
+                    <td R_CRSRemark></td>
+                </tr>
+                <tr R_RRSId>
+                    <td>Right</td>
+                    <td>R</td>
+                    <td R_RRSwidth></td>
+                    <td R_RRSTotallength></td>
+                    <td R_RRSc1></td>
+                    <td R_RRSc2></td>
+                    <td R_RRSc3></td>
+                    <td R_RRSNeeded></td>
+                    <td R_RRSUnit>km</td>
+                    <td R_RRSRemark></td>
+                </tr>
+
+                <tr sgDId>
+                    <td rowspan="4" colspan="2">SIGNS</td>
+                    <td><b>D</b>elineator</td>
+                    <td>D</td>
+                    <td sgDwidth></td>
+                    <td sgDTotallength></td>
+                    <td sgDc1></td>
+                    <td sgDc2></td>
+                    <td sgDc3></td>
+                    <td sgDNeeded></td>
+                    <td sgDUnit>nr</td>
+                    <td sgDRemark></td>
+                </tr>
+                <tr sgWId>
+                    <td><b>W</b>arning</td>
+                    <td>W</td>
+                    <td sgWwidth></td>
+                    <td sgWTotallength></td>
+                    <td sgWc1></td>
+                    <td sgWc2></td>
+                    <td sgWc3></td>
+                    <td sgWNeeded></td>
+                    <td sgWUnit>nr</td>
+                    <td sgWRemark></td>
+                </tr>
+                <tr sqYId>
+                    <td>Gantr<b>y</b>  Sign</td>
+                    <td>Y</td>
+                    <td sgYwidth></td>
+                    <td sgYTotallength></td>
+                    <td sgYc1></td>
+                    <td sgYc2></td>
+                    <td sgYc3></td>
+                    <td sgYNeeded></td>
+                    <td sgYUnit>nr</td>
+                    <td sgYRemark></td>
+                </tr>
+                <tr sgGId>
+                    <td><b>G</b>uide Sign</td>
+                    <td>G</td>
+                    <td sgGwidth></td>
+                    <td sgGTotallength></td>
+                    <td sgGc1></td>
+                    <td sgGc2></td>
+                    <td sgGc3></td>
+                    <td sgGNeeded></td>
+                    <td sgGUnit>nr</td>
+                    <td sgGRemark></td>
+                </tr>
+                <tr CPCPId>
+                    <td rowspan="5" colspan="2">CULVERTS</td>
+                    <td>Concrete <b>P</b>ipe</td>
+                    <td>P</td>
+                    <td CPCPwidth></td>
+                    <td CPCPTotallength></td>
+                    <td CPCPc1></td>
+                    <td CPCPc2></td>
+                    <td CPCPc3></td>
+                    <td CPCPNeeded></td>
+                    <td CPCPUnit>nr</td>
+                    <td CPCPRemark></td>
+                </tr>
+                <tr CBCBId>
+                    <td>Concrete <b>B</b>ox</td>
+                    <td>B</td>
+                    <td CBCBwidth></td>
+                    <td CBCBTotallength></td>
+                    <td CBCBc1></td>
+                    <td CBCBc2></td>
+                    <td CBCBc3></td>
+                    <td CBCBNeeded></td>
+                    <td CBCBUnit>nr</td>
+                    <td CBCBRemark></td>
+                </tr>
+                <tr CMCMId>
+                    <td><b>M</b>etal</td>
+                    <td>M</td>
+                    <td CMCMwidth></td>
+                    <td CMCMTotallength></td>
+                    <td CMCMc1></td>
+                    <td CMCMc2></td>
+                    <td CMCMc3></td>
+                    <td CMCMNeeded></td>
+                    <td CMCMUnit>nr</td>
+                    <td CMCMRemark></td>
+                </tr>
+                <tr CHCHId>
+                    <td><b>H</b>DPE</td>
+                    <td>H</td>
+                    <td CHCHwidth></td>
+                    <td CHCHTotallength></td>
+                    <td CHCHc1></td>
+                    <td CHCHc2></td>
+                    <td CHCHc3></td>
+                    <td CHCHNeeded></td>
+                    <td CHCHUnit>nr</td>
+                    <td CHCHRemark></td>
+                </tr>
+                <tr COCOId>
+                    <td><b>O</b>thers</td>
+                    <td>O</td>
+                    <td COCOwidth></td>
+                    <td COCOTotallength></td>
+                    <td COCOc1></td>
+                    <td COCOc2></td>
+                    <td COCOc3></td>
+                    <td COCONeeded></td>
+                    <td COCOUnit>nr</td>
+                    <td COCORemark></td>
+                </tr>
+                <tr CCCCId>
+                    <td rowspan="9" colspan="2">BRIDGES</td>
+                    <td><b>C</b>onc - <b>C</b>onc</td>
+                    <td>CC</td>
+                    <td CCCCwidth></td>
+                    <td CCCCTotallength></td>
+                    <td CCCCc1></td>
+                    <td CCCCc2></td>
+                    <td CCCCc3></td>
+                    <td CCCCNeeded></td>
+                    <td CCCCUnit>nr</td>
+                    <td CCCCRemark></td>
+                </tr>
+                <tr CSCSId>
+                    <td><b>C</b>onc - <b>S</b>teel</td>
+                    <td>CS</td>
+                    <td CSCSwidth></td>
+                    <td CSCSTotallength></td>
+                    <td CSCSc1></td>
+                    <td CSCSc2></td>
+                    <td CSCSc3></td>
+                    <td CSCSNeeded></td>
+                    <td CSCSUnit>nr</td>
+                    <td CSCSRemark></td>
+                </tr>
+                <tr>
+                    <td><b>S</b>teel - <b>T</b>imber</td>
+                    <td>ST</td>
+                    <td STSTwidth></td>
+                    <td STSTTotallength></td>
+                    <td STSTc1></td>
+                    <td STSTc2></td>
+                    <td STSTc3></td>
+                    <td STSTNeeded></td>
+                    <td STSTUnit>nr</td>
+                    <td STSTRemark></td>
+                </tr>
+                <tr SSSSId>
+                    <td><b>S</b>teel - <b>S</b>teel</td>
+                    <td>SS</td>
+                    <td SSSSwidth></td>
+                    <td SSSSTotallength></td>
+                    <td SSSSc1></td>
+                    <td SSSSc2></td>
+                    <td SSSSc3></td>
+                    <td SSSSNeeded></td>
+                    <td SSSSUnit>nr</td>
+                    <td SSSSRemark></td>
+                </tr>
+                <tr TTTTId>
+                    <td><b>T</b>imber - <b>T</b>imber</td>
+                    <td>TT</td>
+                    <td TTTTwidth></td>
+                    <td TTTTTotallength></td>
+                    <td TTTTc1></td>
+                    <td TTTTc2></td>
+                    <td TTTTc3></td>
+                    <td TTTTNeeded></td>
+                    <td TTTTUnit>nr</td>
+                    <td TTTTRemark></td>
+                </tr>
+                <tr TSTSId>
+                    <td><b>T</b>imber - <b>S</b>teel</td>
+                    <td>TS</td>
+                    <td TSTSwidth></td>
+                    <td TSTSTotallength></td>
+                    <td TSTSc1></td>
+                    <td TSTSc2></td>
+                    <td TSTSc3></td>
+                    <td TSTSNeeded></td>
+                    <td TSTSUnit>nr</td>
+                    <td TSTSRemark></td>
+                </tr>
+                <tr MMId>
+                    <td><b>M</b>asonry</td>
+                    <td>M</td>
+                    <td MMwidth></td>
+                    <td MMTotallength></td>
+                    <td MMc1></td>
+                    <td MMc2></td>
+                    <td MMc3></td>
+                    <td MMNeeded></td>
+                    <td MMUnit>nr</td>
+                    <td MMRemark></td>
+                </tr>
+                <tr EVEVId>
+                    <td><b>E</b>levated <b>V</b>iaduct</td>
+                    <td>EV</td>
+                    <td EVEVwidth></td>
+                    <td EVEVTotallength></td>
+                    <td EVEVc1></td>
+                    <td EVEVc2></td>
+                    <td EVEVc3></td>
+                    <td EVEVNeeded></td>
+                    <td EVEVUnit>nr</td>
+                    <td EVEVRemark></td>
+                </tr>
+                <tr LBLBId>
+                    <td><b>L</b>ong <b>B</b>ridge (>100m)</td>
+                    <td>LB</td>
+                    <td LBLBwidth></td>
+                    <td LBLBTotallength></td>
+                    <td LBLBc1></td>
+                    <td LBLBc2></td>
+                    <td LBLBc3></td>
+                    <td LBLBNeeded></td>
+                    <td LBLBUnit>nr</td>
+                    <td LBLBRemark></td>
+                </tr>
+                <tr SSId>
+                    <td rowspan="5" colspan="2">GUARD RAIL</td>
+                    <td><b>S</b>teel</td>
+                    <td>S</td>
+                    <td SSwidth></td>
+                    <td SSTotallength></td>
+                    <td SSc1></td>
+                    <td SSc2></td>
+                    <td SSc3></td>
+                    <td SSNeeded></td>
+                    <td SSUnit>m</td>
+                    <td SSRemark></td>
+                </tr>
+                <tr WWId>
+                    <td><b>W</b>ire</td>
+                    <td>W</td>
+                    <td WWwidth></td>
+                    <td WWTotallength></td>
+                    <td WWc1></td>
+                    <td WWc2></td>
+                    <td WWc3></td>
+                    <td WWNeeded></td>
+                    <td WWUnit>m</td>
+                    <td WWRemark></td>
+                </tr>
+                <tr RRId>
+                    <td>Pedestrial <b>R</b>ailing</td>
+                    <td>R</td>
+                    <td RRwidth></td>
+                    <td RRTotallength></td>
+                    <td RRc1></td>
+                    <td RRc2></td>
+                    <td RRc3></td>
+                    <td RRNeeded></td>
+                    <td RRUnit>m</td>
+                    <td RRRemark></td>
+                </tr>
+                <tr PWId>
+                    <td><b>P</b>arapet Wall</td>
+                    <td>P</td>
+                    <td PWwidth></td>
+                    <td PWTotallength></td>
+                    <td PWc1></td>
+                    <td PWc2></td>
+                    <td PWc3></td>
+                    <td PWNeeded></td>
+                    <td PWUnit>m</td>
+                    <td PWRemark></td>
+                </tr>
+                <tr OOId>
+                    <td><b>O</b>thers</td>
+                    <td>O</td>
+                    <td OOwidth></td>
+                    <td OOTotallength></td>
+                    <td OOc1></td>
+                    <td OOc2></td>
+                    <td OOc3></td>
+                    <td OONeeded></td>
+                    <td OOUnit>m</td>
+                    <td OORemark></td>
+                </tr>
+                <tr rwRId>
+                    <td rowspan="7" colspan="2">RETAINING WALL</td>
+                    <td><b>R</b>einforce Conc</td>
+                    <td>R</td>
+                    <td rwRwidth></td>
+                    <td rwRTotallength></td>
+                    <td rwRc1></td>
+                    <td rwRc2></td>
+                    <td rwRc3></td>
+                    <td rwRNeeded></td>
+                    <td rwRUnit>m</td>
+                    <td rwRRemark></td>
+                </tr>
+                <tr rwMId>
+                    <td>Steel/<b>M</b>etal</td>
+                    <td>M</td>
+                    <td rwMwidth></td>
+                    <td rwMTotallength></td>
+                    <td rwMc1></td>
+                    <td rwMc2></td>
+                    <td rwMc3></td>
+                    <td rwMNeeded></td>
+                    <td rwMUnit>m</td>
+                    <td rwMRemark></td>
+                </tr>
+                <tr rwGId>
+                    <td>Masonry/<b>G</b>abion</td>
+                    <td>G</td>
+                    <td rwGwidth></td>
+                    <td rwGTotallength></td>
+                    <td rwGc1></td>
+                    <td rwGc2></td>
+                    <td rwGc3></td>
+                    <td rwGNeeded></td>
+                    <td rwGUnit>m</td>
+                    <td rwGRemark></td>
+                </tr>
+                <tr rwPId>
+                    <td>Precast <b>P</b>anel</td>
+                    <td>P</td>
+                    <td rwPwidth></td>
+                    <td rwPTotallength></td>
+                    <td rwPc1></td>
+                    <td rwPc2></td>
+                    <td rwPc3></td>
+                    <td rwPNeeded></td>
+                    <td rwPUnit>m</td>
+                    <td rwPRemark></td>
+                </tr>
+                <t rwTId>
+            <td><b>T</b>imber</td>
+            <td>T</td>
+            <td rwTwidth></td>
+            <td rwTTotallength></td>
+            <td rwTc1></td>
+            <td rwTc2></td>
+            <td rwTc3></td>
+            <td rwTNeeded></td>
+            <td rwTUnit>m</td>
+            <td rwTRemark></td>
+            </tr>
+            <tr rwNId>
+                <td>Soil <b>N</b>ail</td>
+                <td>N</td>
+                <td rwNwidth></td>
+                <td rwNTotallength></td>
+                <td rwNc1></td>
+                <td rwNc2></td>
+                <td rwNc3></td>
+                <td rwNNeeded></td>
+                <td rwNUnit>m</td>
+                <td rwNRemark></td>
+            </tr>
+            <tr rwOId>
+                <td><b>O</b>thers</td>
+                <td>O</td>
+                <td rwOwidth></td>
+                <td rwOTotallength></td>
+                <td rwOc1></td>
+                <td rwOc2></td>
+                <td rwOc3></td>
+                <td rwONeeded></td>
+                <td rwOUnit>m</td>
+                <td rwORemark></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm = "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var isViewMode = $("#hdnHIsViewMode").val();
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol",  autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.pkRefNo != "" && data.pkRefNo != null) {
+                title = data.pkRefNo;
+            }
+            if (isViewMode=="1") {
+                var actionSection = "";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<button style='display:none;' class='btn btn-sm btn-themebtn' onclick='saveSubDetail(" + data.pkRefNo + ");' id='btnSaveSubDetail" + data.pkRefNo + "' type='button'>Save</button><button onclick='cancelSubDetail(" + data.pkRefNo + ");' class='btn btn-sm btn-themebtn' style='display:none;' id='btnCancelSubDetail" + data.pkRefNo + "' type='button'>Cancel</button><div class='btn-group dropright' id='actiondropdown" + data.pkRefNo + "'> </div>";
+                return actionSection;
+            }
+        }
+    };
+    var pkRefNo = { data: "pkRefNo", name: "pkRefNo", title: "PkRefNo", autoWidth: true, sortable: false, visible: false };
+    if (isViewMode != "1") {
+        table_columns.push(actionCol);
+    }
+    var grp = {
+        data: null, name: "featugrpre", title: "Bound", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.groupCode.indexOf("_L") > -1) {
+                return "LEFT";
+            }
+            else if (data.groupCode.indexOf("_R") > -1) {
+                return "RIGHT";
+            }
+            else if (data.groupCode.indexOf("_C") > -1) {
+                return "CENTER";
+            }
+            else {
+                return "";
+            }
+        }
+    }; table_columns.push(grp);
+    var code = {
+        data: null, name: "groupCode", title: "Code", autoWidth: true, sortable: false, visible: true, render: function (data) {
+
+            return data.groupCode.replace("_L", "").replace("_R", "").replace("_C", "");
+        }
+    };
+    var feature = {
+        data: null, name: "feature", title: "Feature", autoWidth: true, sortable: false, visible: true, render: function (data) {
+
+            return data.feature;
+        }
+    }; table_columns.push(feature);
+    table_columns.push(code);
+    var grpType = { data: "grpType", name: "grpType", title: "Type", autoWidth: true, sortable: false, visible: true }; table_columns.push(grpType);
+    var strucCode = { data: "strucCode", name: "strucCode", title: "Structure Code", autoWidth: true, sortable: false, visible: true }; table_columns.push(strucCode);
+    var width = {
+        data: null, name: "width", title: "Average Width", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.width != null) {
+                return data.width.toFixed(3);
+            }
+            else {
+                return "0.000";
+            }
+        }
+    }; table_columns.push(width);
+    var length = {
+        data: null, name: "length", title: "Total Length", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.length != null && (data.unit == "km" || data.unit == "m")) {
+                return (data.length/10).toFixed(1);
+            }
+            else if (data.length != null && (data.unit == "m" || data.unit=="nr")) {
+                return data.length;
+            }
+            else {
+                return "";
+            }
+        }
+    };
+    var condition1 = {
+        data: null, name: "condition1", title: "Condition1", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            var value = data.condition1 != null ? (data.condition1 / 10).toFixed(1): "";
+            var d = "<input id='txtCondition1_" + data.pkRefNo + "' style='display:none;' type='text' value='" + value + "' />";
+           d +="<span id='lblCondition1_" + data.pkRefNo + "'>" + value + "</span>";
+            return d;
+        }
+    };
+    table_columns.push(condition1);
+    var condition2 = {
+        data: null, name: "condition2", title: "Condition2", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            var value = data.condition2 != null ? (data.condition2/10).toFixed(1): "";
+            var d = "<input id='txtCondition2_" + data.pkRefNo + "' style='display:none;'  type='text' value='" + value + "' />";
+            d += "<span id='lblCondition2_" + data.pkRefNo + "'>" + value + "</span>";
+            return d;
+        }
+    };
+    table_columns.push(condition2);
+    var condition3 = {
+        data: null, name: "condition3", title: "Condition3", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            var value = data.condition3 != null ? (data.condition3/10).toFixed(1): "";
+            var d = "<input id='txtCondition3_" + data.pkRefNo + "' style='display:none;'  type='text' value='" + value + "' />";
+            d += "<span id='lblCondition3_" + data.pkRefNo + "'>" + value + "</span>";
+            return d;
+        }
+    }; table_columns.push(condition3);
+    table_columns.push(length);
+    var needed = {
+        data: null, name: "needed", title: "Needed", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            var value = data.needed != null ? data.needed : "";
+            var d = "<input id='txtNeeded_" + data.pkRefNo + "' class=' val" + data.pkRefNo +" svalidate {required, Needed}' style='display:none;' type='text' value='" + value + "' />";
+            d += "<span id='lblNeeded_" + data.pkRefNo + "'>" + value + "</span>";
+            return d;
+        }
+    };
+    table_columns.push(needed);
+    var unit = { data: "unit", name: "unit", title: "Unit", autoWidth: true, sortable: false, visible: true }; table_columns.push(unit);
+    var remarks = {
+        data: null, name: "remarks", title: "Remarks", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            var value = data.remarks != null ? data.remarks : "";
+            var d = "<input id='txtRemarks_" + data.pkRefNo + "' class='val" + data.pkRefNo +" svalidate {required, Remarks}' style='display:none;' type='text' value='" + value + "' />";
+            d += "<span id='lblRemarks_" + data.pkRefNo + "'>" + value + "</span>";
+            return d;
+        }
+    }; table_columns.push(remarks);
+    var oDTable = null;
+
+
+
+    function editDetail(id) {
+        $("#hdnDetailPkNo").val(id);
+        $("#FormFSAdddetailsModal").modal("show");
+        $("#txtDNeeded").val($("#lblNeeded_" + id).text());
+        $("#txtDRemarks").val($("#lblRemarks_" + id).text());
+    }
+
+    function cancelSubDetail(id) {
+        $("#FormFSAdddetailsModal").modal("hide");
+
+    }
+
+    function saveSubDetail() {
+
+        var req = {};
+        req.PkRefNo = $("#hdnDetailPkNo").val();
+        @*req.Condition1 = $("#txtCondition1_" + id).val();
+        req.Condition2 = $("#txtCondition2_" + id).val();
+        req.Condition3 = $("#txtCondition3_" + id).val();*@
+        req.Remarks = $("#txtDRemarks").val();
+        req.Needed = $("#txtDNeeded").val();
+
+        if (req.PkRefNo == "") {
+            $("#FormFSAdddetailsModal").modal("hide");
+        }
+
+        if (ValidatePage("#FormFSAdddetailsModal", "", "validate")) {
+            $.ajax({
+                url: '/FormFS/SaveDetail',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    if (data > 0) {
+                        app.ShowSuccessMessage("Record Updated Successfully");
+                        $("#FormFSAdddetailsModal").modal("hide");
+                        bindDetails($("#hdnHeaderId").val());
+                    }
+                    else {
+                        app.ShowErrorMessage("Not updated, Please try again.");
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        }
+    }
+
+    function deleteDetail(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: '/FormFS/RemoveDetail',
+                    dataType: 'JSON',
+                    data: req,
+                    type: 'Post',
+                    success: function (data) {
+                        if (data) {
+                            oDTable.draw();
+                            app.ShowSuccessMessage("Record deleted successfully");
+                        }
+                        else {
+                            app.ShowErrorMessage("Not deleted, Please try again.");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeDetailsGrid() {
+
+        bindDetails($("#hdnHeaderId").val());
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+
+        filterData.FshPkRefNo = $("#hdnHeaderId").val();
+        if (oDTable != null) {
+            oDTable.destroy();
+        }
+
+        oDTable = $('#FormF2DetailGridView').DataTable({
+                ajax: {
+                    url: "/FormFS/GetDetailList",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                        filterData
+                    }
+                },
+                columns: table_columns
+            });
+        oDTable.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        InitializeDetailsGrid();
+        $("#btnDSaveAndExit").on("click", function () {
+            saveSubDetail();
+        });
+        $("#btnDCancel").on("click", function () {
+            cancelSubDetail();
+        });
+        @*$("#FormF2DetailGridView tbody").on("click", "tr", function () {
+            var data = oDTable.row(this).data();
+            if ($("#txtCondition1_" + data.pkRefNo).is(":visible")) {
+                $("#txtCondition1_" + data.pkRefNo).show();
+                $("#btnCondition1_" + data.pkRefNo).show();
+                $("#lblCondition1_" + data.pkRefNo).hide();
+            }
+        });*@
+    });
+</script>

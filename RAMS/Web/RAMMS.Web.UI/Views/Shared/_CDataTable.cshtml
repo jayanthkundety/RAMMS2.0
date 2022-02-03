@@ -1,0 +1,53 @@
+﻿@using RAMMS.Web.UI.Models;
+
+@model CDataTable;
+@{
+    string strName = Model.Name;
+    bool IsColGroup = Model.Columns.Where(x => !string.IsNullOrEmpty(x.ColumnGroup)).Count() > 0 ? true : false;
+    string strColName = "";
+    int iColSpan = 0; bool IsFirstCol = true;
+}
+
+<table id="@Model.Name" class="table w-100 nowrap">
+    @if (IsColGroup)
+    {
+        <thead>
+            <tr>
+                @for (int i = 0; i < Model.Columns.Count; i++)
+                {
+                    if (i == 0) { strColName = Model.Columns[i].ColumnGroup; }
+
+                    if (strColName != Model.Columns[i].ColumnGroup)
+                    {
+                        <th @Html.Raw(strColName == "Action" ? "rowspan='2'" : "") class="complexheader" @Html.Raw(iColSpan > 0 ? " colspan='" + iColSpan.ToString() + "'" : "")>@RAMMS.Common.Utility.ToString(strColName)</th>
+                        strColName = Model.Columns[i].ColumnGroup;
+                        iColSpan = 1;
+                        IsFirstCol = false;
+                    }
+                    else
+                    {
+                        iColSpan++;
+                    }
+
+                }
+                <th class="complexheader" @Html.Raw(iColSpan > 0 ? " colspan='" + iColSpan.ToString() + "'" : "")>@RAMMS.Common.Utility.ToString(strColName)</th>
+            </tr>
+            <tr>
+                @foreach (CDataColumns col in Model.Columns.Where(x => x.ColumnGroup != "Action"))
+                {
+                    <th>@col.title</th>
+                }
+            </tr>
+        </thead>
+    }
+</table>
+<script type="text/javascript">
+    var @strName = new CDataTable(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model)));
+</script>
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+        /*background-color: #fff;*/
+    }
+</style>

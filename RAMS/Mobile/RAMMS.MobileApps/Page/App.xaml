@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ProximaNovaBlackFont">
+                <On Platform="Android" Value="ProximaNova-Black.ttf#ProximaNova" />
+                <On Platform="iOS" Value="ProximaNova-Black" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ProximaNovaBoldFont">
+                <On Platform="Android" Value="ProximaNova-Bold.ttf#ProximaNova" />
+                <On Platform="iOS" Value="ProximaNova-Bold" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ProximaNovaExtrabldFont">
+                <On Platform="Android" Value="ProximaNova-Extrabld.ttf#ProximaNova" />
+                <On Platform="iOS" Value="ProximaNova-Extrabld" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ProximaNovaLightFont">
+                <On Platform="Android" Value="ProximaNova-Light.ttf#ProximaNova" />
+                <On Platform="iOS" Value="ProximaNova-Light" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ProximaNovaRegularFont">
+                <On Platform="Android" Value="ProximaNova-Regular.ttf#ProximaNova" />
+                <On Platform="iOS" Value="ProximaNova-Regular" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ProximaNovaSemiboldFont">
+                <On Platform="Android" Value="ProximaNova-Semibold.ttf#ProximaNova" />
+                <On Platform="iOS" Value="ProximaNova-Semibold" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="ProximaNovaTThinFont">
+                <On Platform="Android" Value="ProximaNovaT-Thin.ttf#ProximaNova" />
+                <On Platform="iOS" Value="ProximaNovaT-Thin" />
+            </OnPlatform>
+
+            <!--OnPlatform Global Style-->
+
+            <Color x:Key="BaseColor">#232F3E</Color>
+            <Color x:Key="UnderlineBoxviewColor">#DEDEDE</Color>
+            <Color x:Key="ProfileBoxviewColor">#D3D3D3</Color>
+            <Color x:Key="LeaveTitleColor">#B1B1B1</Color>
+            <Color x:Key="EntryBackColor">#F8F8F8</Color>
+            <Color x:Key="BoxviewColor">#D3D3D3</Color>
+            <Color x:Key="LightGrey">#fff</Color>
+            <Color x:Key="DashboardbgColor">#e8e8e8</Color>
+            <!--<OnPlatform x:Key="OrangeTextColor" UWP="#FFA500" Android="#FFA500" iOS="#FFA500"  x:TypeArguments="Color" />
+            <OnPlatform x:Key="LayoutBackgroundColor" UWP="Black" Android="#efeff4" iOS="#efeff4"  x:TypeArguments="Color" />-->
+
+            <!--Double Global Style-->
+
+            <x:Double x:Key="ButtonFontSize">20</x:Double>
+            <x:Double x:Key="ButtonSize">18</x:Double>
+
+            <Style TargetType="Label" x:Key="LabelStyle">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="18"/>
+           <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+
+            </Style>
+              <Style TargetType="Entry" x:Key="EntryStyle">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="18"/>
+           <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+
+            </Style>
+            <Style TargetType="Button" x:Key="ButtonStyle">
+              
+                <Setter Property="FontSize" Value="17"/>
+                <Setter Property="FontFamily" Value="{x:StaticResource ButtonSize}"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="#11213C"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            </Style>
+            <Style TargetType="Button" x:Key="TransparentButtonStyle">
+              
+                <Setter Property="FontSize" Value="17"/>
+                <Setter Property="FontFamily" Value="{x:StaticResource ButtonSize}"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextColor" Value="#11213C"/>
+                <Setter Property="BorderColor" Value="#11213C"/>
+                <Setter Property="BorderWidth" Value="2"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                
+            </Style>
+            <Style TargetType="Frame" x:Key="FrameStyle">
+               
+            </Style>
+            <!--Set of Global Style-->
+            <!--
+            <Style x:Key="SildHeaderStyle" TargetType="Label">
+                <Setter Property="LineBreakMode" Value="CharacterWrap"></Setter>
+                <Setter Property="HorizontalOptions" Value="Center"></Setter>
+                <Setter Property="FontFamily" Value="{StaticResource RobotoBlackFont}"></Setter>
+                <Setter Property="FontSize" Value="30"></Setter>
+                <Setter Property="TextColor" Value="#27519b"></Setter>
+            </Style>-->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                                       xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+
+             x:Class="RAMMS.MobileApps.Page.BatuniahRoadConditionMappingPage">
+    <ContentPage.Content>
+        <StackLayout  >
+            <Frame Margin="0,0,0,0" HasShadow="True" BorderColor="#e6e6e6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+
+
+
+            <Frame  >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="0"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                     <Button Text="Batu Niah" CornerRadius="5"   Grid.Row="1" BackgroundColor="#1D2D50" TextColor="White" BorderWidth="2" BorderColor="#1D2D50" Grid.Column="5"/>
+                   
+
+                     <Image Source="roundyellow.png" Grid.Row="3" Grid.Column="5" Grid.RowSpan="2" Margin="0,-11,0,-11" />
+                             </Grid>
+            </Frame>
+            <ScrollView Orientation="Both">
+                <StackLayout Orientation="Horizontal"  Margin="-10,0,0,0">
+                    <StackLayout Margin="0,-40,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <!--0-->
+                                <RowDefinition Height="55"/>
+                                <!--1-->
+                                <RowDefinition Height="55"/>
+                                <!--2-->
+                                <RowDefinition Height="55"/>
+                                <!--3-->
+                                <RowDefinition Height="55"/>
+                                <!--4-->
+                                <RowDefinition Height="55"/>
+                                <!--5-->
+                                <RowDefinition Height="55"/>
+                                <!--6-->
+                                <RowDefinition Height="55"/>
+                                <!--7-->
+                                <RowDefinition Height="55"/>
+                                <!--8-->
+                                <RowDefinition Height="55"/>
+                                <!--9-->
+                                <RowDefinition Height="55"/>
+                                <!--10-->
+                                <RowDefinition Height="55"/>
+                                <!--11-->
+                                <RowDefinition Height="55"/>
+                                <!--12-->
+                                <RowDefinition Height="55"/>
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <!--0-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--1-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--2-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--3-->
+                                <ColumnDefinition Width="52"/>
+                                <!--4-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--5-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--6-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--7-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--8-->
+                                <ColumnDefinition Width="90"/>
+                                <!--9-->
+                                <ColumnDefinition Width="50"/>
+                                <!--10-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--11-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--12-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--13-->
+                                <ColumnDefinition Width="52"/>
+                                <!--14-->
+                                <ColumnDefinition Width="Auto"/>
+                                <!--15-->
+                                <ColumnDefinition Width="67"/>
+                                <!--16-->
+                                <ColumnDefinition Width="90"/>
+                            </Grid.ColumnDefinitions>
+
+
+                           
+                            <BoxView Grid.RowSpan="13" Margin="45,-14,45,-7" WidthRequest="1" BackgroundColor="Gray" Grid.Row="3" Grid.Column="6"></BoxView>
+
+
+
+                            <Button BorderColor="#cccc00" Margin="0,5,0,5" Clicked="Button_Clicked" CornerRadius="50" BackgroundColor="#e6e600" BorderWidth="2" Text="S5" Grid.Row="5" Grid.Column="4"></Button>
+
+
+
+
+
+
+
+
+                            <Button Text="Q2007 2B" AutomationId="Q20072B" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF" Grid.Row="9" Grid.Column="6"></Button>
+
+
+
+
+
+
+
+
+
+                            <Button Text="Q1084" AutomationId="Q1084" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="4" Grid.Column="8"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-50,26.5,-5,26.5"  Grid.Row="4" Grid.Column="7"></BoxView>
+
+                            <Button Text="Q291" AutomationId="Q291" Clicked="Button_Clicked_1"  BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"   Grid.Row="6" Grid.Column="8"></Button>
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-50,26.5,-5,26.5"  Grid.Row="6" Grid.Column="7"></BoxView>
+
+                            <Button Text="Q282" AutomationId="Q282" Clicked="Button_Clicked_1"  BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"   Grid.Row="10" Grid.Column="8"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff"  Margin="-50,26.5,-5,26.5" Grid.Row="10" Grid.Column="7"></BoxView>
+
+                            <Button Text="Q648" AutomationId="Q648" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"   Grid.Row="4" Grid.Column="10"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-5,26.5,-5,26.5" Grid.Row="4" Grid.Column="9"></BoxView>
+
+
+
+                            <Button Text="Q1055" AutomationId="Q1055" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"   Grid.Row="3" Grid.Column="14"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="10,26.5,-16,26.5"  Grid.Row="3" Grid.Column="14"></BoxView>
+
+
+
+                            <BoxView  BackgroundColor="Gray" Margin="10,11,55,-20"  Grid.Row="2" Grid.RowSpan="17" Grid.Column="15"></BoxView>
+
+
+                            <Button Text="Q1052" AutomationId="Q1052" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"   Grid.Row="4" Grid.Column="16"></Button>
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="33,40,55,13"  Grid.Row="3" Grid.RowSpan="3" Grid.Column="16"></BoxView>
+
+
+
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="10,40,-40,13.5" Grid.ColumnSpan="1"  Grid.Row="3" Grid.Column="15"></BoxView>
+
+
+
+
+
+
+                            <Button Text="Q1054" AutomationId="Q1054" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"   Grid.Row="4" Grid.Column="14"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="10,26.5,-16,26.5"  Grid.Row="4" Grid.Column="14"></BoxView>
+
+
+
+
+                            <Button Text="Q1053" AutomationId="Q1053" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"   Grid.Row="5" Grid.Column="14"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="10,26.5,-16,26.5"  Grid.Row="5" Grid.Column="14"></BoxView>
+
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="10,40,-40,13.5" Grid.ColumnSpan="1"  Grid.Row="5" Grid.Column="15"></BoxView>
+
+
+
+                            <Button Text="Q1056" AutomationId="Q1056" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="5" Grid.Column="10"></Button>
+
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="24,28,24,26" Grid.Row="4"  Grid.RowSpan="2" Grid.Column="9"></BoxView>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="25,26.5,-5,26.5"  Grid.Row="5" Grid.Column="9"></BoxView>
+
+
+
+
+                            <Button Text="Q284" AutomationId="Q284" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="6" Grid.Column="10"></Button>
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-5,26.5,-5,26.5"  Grid.Row="6" Grid.Column="9"></BoxView>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="24,28,24,26" Grid.Row="6"  Grid.RowSpan="3" Grid.Column="9"></BoxView>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="25,26.5,-5,26.5"  Grid.Row="7" Grid.Column="9"></BoxView>
+
+
+
+
+                            <Button Text="Q647" AutomationId="Q647" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="7" Grid.Column="10"></Button>
+
+
+                            <Button Text="Q644" AutomationId="Q644" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="6" Grid.Column="12"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-5,26.5,-5,26.5"  Grid.Row="6" Grid.Column="13"></BoxView>
+
+
+
+
+
+
+
+
+
+
+
+
+                            
+                            <!--<BoxView  BackgroundColor="Red" Margin="-15,25,-20,25" Grid.Row="8" Grid.Column="13"></BoxView>-->
+
+
+
+                            <Button Text="Q283" AutomationId="Q283" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="8" Grid.Column="12"></Button>
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-5,26.5,25,26.5" Grid.Row="8" Grid.Column="13"></BoxView>
+
+
+                            <Button Text="Q646" AutomationId="Q646" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="6" Grid.Column="14"></Button>
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-7,26.5,55,26.5" Grid.Row="6" Grid.Column="15"></BoxView>
+
+
+
+                            <Button Text="Q281" AutomationId="Q281" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="7" Grid.Column="16"></Button>
+                            <BoxView  BackgroundColor="#80b9ff" Margin="10,26.5,-5,26.5"  Grid.Row="7" Grid.Column="15"></BoxView>
+
+
+
+
+
+
+
+
+                            <BoxView  BackgroundColor="#80b9ff"  Margin="25,26.5,-17,26.5"  Grid.Column="9" Grid.Row="8" Grid.ColumnSpan="6"></BoxView>
+
+                            <Button Text="Q1085" AutomationId="Q1085" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="10" Grid.Column="10"></Button>
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-5,26.5,-5,26.5" Grid.Row="10" Grid.Column="9"></BoxView>
+
+
+
+
+
+                            <Button Text="Q279" AutomationId="Q279" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="11" Grid.Column="14"></Button>
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-7,26.5,55,26.5" Grid.Row="11" Grid.Column="15"></BoxView>
+
+
+
+                            <Button Text="Q1048" AutomationId="Q1048" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="11" Grid.Column="16"></Button>
+                            <BoxView  BackgroundColor="#80b9ff" Margin="10,26.5,-5,26.5"  Grid.Row="11" Grid.Column="15"></BoxView>
+
+
+
+
+
+
+
+                            <Button Text="Q278-1" AutomationId="Q278_1" Clicked="Button_Clicked_1" BorderWidth="2" Margin="0,8,0,8" CornerRadius="10" BorderColor="#b3d5ff" BackgroundColor="#C8E1FF"  Grid.Row="12" Grid.Column="14"></Button>
+
+
+                            <BoxView  BackgroundColor="#80b9ff" Margin="-7,26.5,55,26.5" Grid.Row="12" Grid.Column="15"></BoxView>
+
+
+
+
+                        </Grid>
+                    </StackLayout>
+
+                    <StackLayout >
+                        <StackLayout >
+                            <StackLayout Margin="0,20,-5,0">
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                    <Button  BackgroundColor="#1D2D50" Text="Search" TextColor="White" Margin="0,0,-80,0" HeightRequest="50" WidthRequest="150">
+
+                                    </Button>
+                                    <locals:FrameRenders  Margin="60,0,-50,0" HorizontalOptions="End" BackgroundColor="White" FrameCornerRadius="7" BorderColor="Gray"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    >
+
+                                        <SearchBar   x:Name="BatuMainSearchBar" Placeholder="Road Code / Name" TextChanged="BatuMainSearchBar_TextChanged" />
+                                    </locals:FrameRenders>
+                                </StackLayout>
+                                <!--SearchButtonPressed="SearchBar_SearchButtonPressed"-->
+                                <Frame BorderColor="#C8E1FF"  >
+                                    <StackLayout>
+                                        <Frame BackgroundColor="#C8E1FF" >
+                                            <StackLayout BackgroundColor="#C8E1FF" Orientation="Horizontal" Spacing="600">
+                                                <Label Text="Name" FontSize="18" TextColor="Black" FontAttributes="Bold"/>
+                                                <Label Text="Code" FontSize="18" TextColor="Black" FontAttributes="Bold"/>
+                                            </StackLayout>
+                                        </Frame>
+                                        <ListView x:Name="BatuNamesListView" HasUnevenRows="True" HeightRequest="765" >
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ViewCell>
+                                                        <Frame>
+                                                            <Label Text="{Binding .}"
+                                                       TextColor="Black"
+                                                       FontSize="Small"/>
+                                                        </Frame>
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+
+                        </StackLayout>
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

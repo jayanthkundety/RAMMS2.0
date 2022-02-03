@@ -1,0 +1,1352 @@
+﻿@model IDictionary<string, object>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Road Condition Mapping - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Road Condition Mapping - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strRMU = ViewBag.rmu.ToUpper();
+}
+@section header{
+    <script src="~/assets/js/Views/Section.js?v=1"></script>
+}
+@*BreadCrumbs*@
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20"><a href="@Url.Action("Index", "Home")" title="Back" class="page-head-link"><span class="backarrow-icon mr-2"></span> Road Condition Mapping</a></span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Road Condition Mapping</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Content -->
+<div class="content">
+    @if (strRMU == "MIRI")
+    {
+        <div id="miri-content">
+            <div class="row">
+                <div class="bg-white w-100 p-3 d-flex position-relative border-bottom">
+                    @*<span class="rd-section-head py-2 text-dark">Section</span>*@
+                    <div class="col-md-12 bs-wizard justify-content-center">
+                        <div class="bs-wizard-step complete">
+                            <div class="text-center bs-wizard-stepnum"><button type="button" class="active" onclick="SectionClick('MIRI')">Miri</button></div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <div class="bs-wizard-dot"></div>
+                        </div>
+
+                        <div class="bs-wizard-step complete">
+                            <div class="text-center bs-wizard-stepnum"><button type="button" onclick="SectionClick('Bario')">Bario Mulu</button></div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <div class="bs-wizard-dot"></div>
+                        </div>
+
+                        <div class="bs-wizard-step complete">
+                            <div class="text-center bs-wizard-stepnum"><button type="button" onclick="SectionClick('Bakong')">Bakong</button></div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <div class="bs-wizard-dot"></div>
+                        </div>
+
+                        <div class="bs-wizard-step complete">
+                            <div class="text-center bs-wizard-stepnum"><button type="button" onclick="SectionClick('MARUDI')">Marudi</button></div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <div class="bs-wizard-dot"></div>
+                        </div>
+
+                        <div class="bs-wizard-step complete">
+                            <div class="text-center bs-wizard-stepnum"><button type="button" onclick="SectionClick('BEKENU')">Bekenu</button></div>
+                            <div class="progress"><div class="progress-bar"></div></div>
+                            <div class="bs-wizard-dot"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 mh-198">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="d-flex justify-content-center py-5 rd-flow" id="road-map-container">
+                                <div id="MIRI-roads" class="roads-active" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="781" viewBox="0 0 700 781">
+                                        <g id="RCondition-MIRI" data-name="RCondition-MIRI">
+                                            <path id="Line" d="M18.5,0H0" transform="translate(413.5 442)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-2" data-name="Line" d="M18.5,0H0" transform="translate(413.5 477)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <line id="Line_30" data-name="Line 30" y2="36" transform="translate(338.5 441.5)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                            <path id="Line-3" data-name="Line" d="M0,0H18.5" transform="translate(339 442)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-4" data-name="Line" d="M0,0H18.5" transform="translate(339 477)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <g id="Miri-Component" transform="translate(81.667 50.667)">
+                                                <line id="Line_16" data-name="Line 16" x2="244" transform="translate(350.833 407.833)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <path id="Path_1" data-name="Path 1" d="M0-86.338V318.5" transform="translate(136.833 86.338)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <line id="Line_14" data-name="Line 14" y2="103" transform="translate(136.833 404.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_15" data-name="Line 15" y2="175" transform="translate(136.833 507.833)" fill="none" stroke="#152e4d" stroke-width="1" />
+                                                <path id="Line-5" data-name="Line" d="M.5,1.5H41" transform="translate(137.333 24.833) rotate(180)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-6" data-name="Line" d="M0,0H40.333" transform="translate(138 83.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-7" data-name="Line" d="M0,0H20" transform="translate(239.333 83.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-8" data-name="Line" d="M.5,1.5H41" transform="translate(137.333 108.833) rotate(180)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-9" data-name="Line" d="M40.5,0H0" transform="translate(96.333 191.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-10" data-name="Line" d="M35.333,0H0" transform="translate(0.667 191.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-11" data-name="Line" d="M0,0H40.333" transform="translate(138 209.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-12" data-name="Line" d="M0,0H35.5" transform="translate(239.333 209.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-13" data-name="Line" d="M0,0H41.333" transform="translate(138 253.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-14" data-name="Line" d="M0,0H35" transform="translate(239.333 253.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-15" data-name="Line" d="M0,0H40.333" transform="translate(138 329.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-16" data-name="Line" d="M0,0H35.5" transform="translate(239.333 329.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-17" data-name="Line" d="M0,0H30.75" transform="translate(257.083 329.583) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-18" data-name="Line" d="M0,0H18.75" transform="translate(257.083 360.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-19" data-name="Line" d="M40.25,0H0" transform="translate(96.583 347.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-20" data-name="Line" d="M36,0H0" transform="translate(0 347.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-21" data-name="Line" d="M0,0H40" transform="translate(137.333 407.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-22" data-name="Line" d="M0,0H18.5" transform="translate(238.333 407.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <line id="Line_17" data-name="Line 17" x2="458" transform="translate(136.833 586.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_18" data-name="Line 18" y2="242" transform="translate(594.833 407.833)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <line id="Line_19" data-name="Line 19" x2="24" transform="translate(570.833 470.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_20" data-name="Line 20" x1="357" transform="translate(237.833 507.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_21" data-name="Line 21" x2="14" transform="translate(237.833 470.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_22" data-name="Line 22" x2="14" transform="translate(237.833 543.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_23" data-name="Line 23" y2="73" transform="translate(251.833 470.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_24" data-name="Line 24" y2="36" transform="translate(498.833 507.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_25" data-name="Line 25" x2="15" transform="translate(408.833 543.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <line id="Line_26" data-name="Line 26" x2="16" transform="translate(482.833 543.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <path id="Line-23" data-name="Line" d="M.5,1.5H41" transform="translate(137.333 610.833) rotate(180)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-24" data-name="Line" d="M.5,1.5H41" transform="translate(137.333 650.833) rotate(180)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-25" data-name="Line" d="M.5,1.5H41" transform="translate(137.333 63.833) rotate(180)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-26" data-name="Line" d="M0,0H40.333" transform="translate(138 128.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-27" data-name="Line" d="M.5,1.5H41" transform="translate(137.333 150.833) rotate(180)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-28" data-name="Line" d="M0,0H31" transform="translate(257.083 298.333) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-29" data-name="Line" d="M0,0H18.75" transform="translate(257.083 298.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-30" data-name="Line" d="M.5,1.5H41" transform="translate(137.333 240.833) rotate(180)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <line id="Line_27" data-name="Line 27" x2="44" transform="translate(333.833 369.833)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <line id="Line_28" data-name="Line 28" y2="39" transform="translate(377.833 369.833)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <path id="Line-31" data-name="Line" d="M0,0H41" transform="translate(259.333 56.833) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-32" data-name="Line" d="M0,0H15" transform="translate(259.333 56.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-33" data-name="Line" d="M0,0H15" transform="translate(259.333 98.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-34" data-name="Line" d="M0,0H35.5" transform="translate(163.333 47.333) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-35" data-name="Line" d="M0,0H15" transform="translate(163.333 47.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-36" data-name="Line" d="M0,0H15" transform="translate(230.333 47.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-37" data-name="Line" d="M0,0H35.5" transform="translate(245.333 47.333) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-38" data-name="Line" d="M0,0H98.333" transform="translate(39 407.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <line id="Line_29" data-name="Line 29" y2="101" transform="translate(38.833 406.833)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <path id="Line-39" data-name="Line" d="M0,0H97.5" transform="translate(38.833 507.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            </g>
+                                            <g id="S1" transform="translate(175 23)">
+                                                <rect id="Rectangle_15" data-name="Rectangle 15" width="47" height="27" rx="13.5" transform="translate(21)" fill="#fff212" />
+                                                <text id="Start_End" data-name="Start/End" transform="translate(37 18)" fill="#152e4d" font-size="12" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">S1</tspan></text>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q320')">
+                                                <g id="Q320" transform="translate(119.167 62.059)">
+                                                    <rect id="Rectangle_16" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process" transform="translate(12.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q320</tspan></text>
+                                                </g>
+                                            </a>
+                                            <g id="Q1231AB-3188-1231" transform="translate(0 38)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3188')">
+                                                    <g id="color2" transform="translate(357.167 84.059)">
+                                                        <rect id="Rectangle_16-2" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 9.941)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-2" data-name="Process" transform="translate(10.833 25.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3188</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1231')">
+                                                    <g id="color2-2" data-name="color2">
+                                                        <rect id="Rectangle_16-3" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(357 56)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-3" data-name="Process" transform="translate(368 72)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1231</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1231 B')">
+                                                    <g id="color2-3" data-name="color2" transform="translate(261.167 84.059)">
+                                                        <rect id="Rectangle_16-4" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-4" data-name="Process" transform="translate(4.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1231 B</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1231 A')">
+                                                    <g id="color2-4" data-name="color2" transform="translate(261.167 47.059)">
+                                                        <rect id="Rectangle_16-5" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-5" data-name="Process" transform="translate(4.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1231 A</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q675')">
+                                                <g id="Q675" transform="translate(119.167 101.059)">
+                                                    <rect id="Rectangle_16-6" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-6" data-name="Process" transform="translate(12.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q675</tspan></text>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q661')">
+                                                <g id="Q661" transform="translate(119.167 146.059)">
+                                                    <rect id="Rectangle_16-7" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-7" data-name="Process" transform="translate(12.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q661</tspan></text>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q681')">
+                                                <g id="Q681" transform="translate(261.167 166.059)">
+                                                    <rect id="Rectangle_16-8" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-8" data-name="Process" transform="translate(12.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q681</tspan></text>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q667')">
+                                                <g id="Q667" transform="translate(119.167 187.059)">
+                                                    <rect id="Rectangle_16-9" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-9" data-name="Process" transform="translate(12.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q667</tspan></text>
+                                                </g>
+                                            </a>
+                                            <g id="Q650-664" transform="translate(0 78)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q650')">
+                                                    <g id="color2-5" data-name="color2" transform="translate(118.667 152)">
+                                                        <rect id="Rectangle_16-10" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(0)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-10" data-name="Process" transform="translate(14 16)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q650</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q664')">
+                                                    <g id="color2-6" data-name="color2" transform="translate(22.667 152)">
+                                                        <rect id="Rectangle_16-11" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(0)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-11" data-name="Process" transform="translate(14 16)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q664</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q645-1902" transform="translate(0 78)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q645')">
+                                                    <g id="color2-7" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-12" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-12" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q645</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1902')">
+                                                    <g id="color2-8" data-name="color2" transform="translate(357.167 170.059)">
+                                                        <rect id="Rectangle_16-13" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-13" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1902</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q651')">
+                                                <g id="Q651" transform="translate(119.167 277.059)">
+                                                    <rect id="Rectangle_16-14" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-14" data-name="Process" transform="translate(12.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q651</tspan></text>
+                                                </g>
+                                            </a>
+                                            <g id="Q353-658" transform="translate(0 82)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q658')">
+                                                    <g id="color2-9" data-name="color2" transform="translate(357.167 210.059)">
+                                                        <rect id="Rectangle_16-15" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-15" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q658</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q353')">
+                                                    <g id="color2-10" data-name="color2" transform="translate(261.167 210.059)">
+                                                        <rect id="Rectangle_16-16" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-16" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q353</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q3073-1903-1901-290" transform="translate(0 118)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3073')">
+                                                    <g id="color2-11" data-name="color2" transform="translate(261.167 250.059)">
+                                                        <rect id="Rectangle_16-17" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-17" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3073</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1901')">
+                                                    <g id="color2-12" data-name="color2" transform="translate(357.167 250.059)">
+                                                        <rect id="Rectangle_16-18" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-18" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1901</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q290')">
+                                                    <g id="color2-13" data-name="color2" transform="translate(356.667 281.059)">
+                                                        <rect id="Rectangle_16-19" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(0.333 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-19" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q290</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1903')">
+                                                    <g id="color2-14" data-name="color2" transform="translate(356.667 219.059)">
+                                                        <rect id="Rectangle_16-20" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(0.333 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-20" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1903</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q683-292" transform="translate(0 112)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q683')">
+                                                    <g id="color2-15" data-name="color2" transform="translate(22.667 274)">
+                                                        <rect id="Rectangle_16-21" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(0)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-21" data-name="Process" transform="translate(14 16)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q683</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q292')">
+                                                    <g id="color2-16" data-name="color2" transform="translate(118.667 274)">
+                                                        <rect id="Rectangle_16-22" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(0)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-22" data-name="Process" transform="translate(14 16)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q292</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q652-653" transform="translate(0 108)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q652')">
+                                                    <g id="color2-17" data-name="color2" transform="translate(260.167 338.059)">
+                                                        <rect id="Rectangle_16-23" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-23" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q652</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <g id="color2-18" data-name="color2" transform="translate(356.167 321.059)">
+                                                    <rect id="Rectangle_16-24" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-24" data-name="Process" transform="translate(7.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q653-1</tspan></text>
+                                                </g>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q653')">
+                                                    <g id="color2-19" data-name="color2" transform="translate(356.167 356.059)">
+                                                        <rect id="Rectangle_16-25" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-25" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q653</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q655')">
+                                                <g id="Q655" transform="translate(594.167 509.059)">
+                                                    <rect id="Rectangle_16-26" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-26" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q655</tspan></text>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q656')">
+                                                <g id="Q656" transform="translate(595.167 547.059)">
+                                                    <rect id="Rectangle_16-27" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-27" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q656</tspan></text>
+                                                </g>
+                                            </a>
+                                            <g id="Q3079-3080" transform="translate(0 118)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3080')">
+                                                    <g id="color2-20" data-name="color2" transform="translate(431.167 464.059)">
+                                                        <rect id="Rectangle_16-28" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-28" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3080</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3079')">
+                                                    <g id="color2-21" data-name="color2" transform="translate(506.167 464.059)">
+                                                        <rect id="Rectangle_16-29" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-29" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3079</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q657-3078-3074" transform="translate(0 118)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3074')">
+                                                    <g id="color2-22" data-name="color2" transform="translate(357.167 429.059)">
+                                                        <rect id="Rectangle_16-30" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-30" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3074</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3078')">
+                                                    <g id="color2-23" data-name="color2" transform="translate(432.167 429.059)">
+                                                        <rect id="Rectangle_16-31" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-31" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3078</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q657')">
+                                                    <g id="color2-24" data-name="color2" transform="translate(507.167 429.059)">
+                                                        <rect id="Rectangle_16-32" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-32" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q657</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q3075-3076-3077" transform="translate(0 118)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3075')">
+                                                    <g id="color2-25" data-name="color2" transform="translate(261.167 392.059)">
+                                                        <rect id="Rectangle_16-33" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-33" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3075</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3076')">
+                                                    <g id="color2-26" data-name="color2" transform="translate(261.167 429.059)">
+                                                        <rect id="Rectangle_16-34" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-34" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3076</tspan></text>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3077')">
+                                                    <g id="color2-27" data-name="color2" transform="translate(261.167 465.059)">
+                                                        <rect id="Rectangle_16-35" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-35" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3077</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q20072D')">
+                                                <g id="Q2007" transform="translate(185.167 481.059)">
+                                                    <rect id="Rectangle_16-36" data-name="Rectangle 16" width="83" height="24" rx="3" transform="translate(-8.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-36" data-name="Process" transform="translate(-4.167 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q2007 2D (A)</tspan></text>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q288')">
+                                                <g id="Q288" transform="translate(432.167 625.059)">
+                                                    <rect id="Rectangle_16-37" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-37" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q288</tspan></text>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3008')">
+                                                <g id="Q3008" transform="translate(119.167 648.059)">
+                                                    <rect id="Rectangle_16-38" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-38" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3008</tspan></text>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3009')">
+                                                <g id="Q3009" transform="translate(119.167 688.059)">
+                                                    <rect id="Rectangle_16-39" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-39" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3009</tspan></text>
+                                                </g>
+                                            </a>
+                                            <g id="To_Bekenu_Q2007" data-name="To Bekenu Q2007" transform="translate(0 114)">
+                                                <g id="color2-28" data-name="color2" transform="translate(176.833 619.059)">
+                                                    <rect id="Rectangle_16-40" data-name="Rectangle 16" width="134" height="24" rx="3" transform="translate(-23.833 0.941)" fill="#152e4d" stroke="#152e4d" stroke-width="1" />
+                                                </g>
+                                                <text id="Process-40" data-name="Process" transform="translate(163 636)" fill="#fff" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">To Bekenu Q2007 2C</tspan></text>
+                                            </g>
+                                            <g id="Q2007-2" data-name="Q2007" transform="translate(85.167 481.059)">
+                                                <rect id="Rectangle_16-41" data-name="Rectangle 16" width="85" height="24" rx="3" transform="translate(-9.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                <text id="Process-41" data-name="Process" transform="translate(-5.167 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q2007 2D (B)</tspan></text>
+                                            </g>
+                                            <line id="Line_31" data-name="Line 31" y2="36" transform="translate(432.5 441.5)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div id="Bakong-roads" class="roads-img pt-4" style="display:none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="550" height="330" viewBox="0 0 550 330">
+                                        <g id="RCondition-Bakong" clip-path="url(#clip-Bakong)">
+                                            <g id="Component_Bakong" data-name="Component-Bakong" transform="translate(51.5 31.5)">
+                                                <path id="Path_1" data-name="Path 1" d="M0-26V241.5" transform="translate(0 26)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <path id="Line" d="M0,0H40.333" transform="translate(1.167 81.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-2" data-name="Line" d="M0,0H19" transform="translate(123 81.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-3" data-name="Line" d="M0,0H40.333" transform="translate(1.167 137.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-4" data-name="Line" d="M0,0H19" transform="translate(123 218.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-5" data-name="Line" d="M0,0H19" transform="translate(123 178.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-6" data-name="Line" d="M0,0H29.875" transform="translate(202 218.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-7" data-name="Line" d="M0,0H19.5" transform="translate(290.75 218.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-8" data-name="Line" d="M0,0H19.5" transform="translate(367.75 218.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-9" data-name="Line" d="M0,0H16.625" transform="translate(215.625 178.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-10" data-name="Line" d="M0,0H40" transform="translate(214.938 218.5) rotate(-90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <line id="Line_2" data-name="Line 2" y2="137" transform="translate(123 82)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <path id="Line-11" data-name="Line" d="M0,0H39.625" transform="translate(102.375 137.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            </g>
+                                            <g id="S3" transform="translate(79 63)">
+                                                <rect id="Rectangle_15" data-name="Rectangle 15" width="47" height="27" rx="13.5" transform="translate(21)" fill="#fff212" />
+                                                <text id="Start_End" data-name="Start/End" transform="translate(37 18)" fill="#152e4d" font-size="12" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">S3</tspan></text>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q286')">
+                                                <g id="Q286" transform="translate(-167 17)">
+                                                    <g id="color2" transform="translate(261.167 84.059)">
+                                                        <rect id="Rectangle_16" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q286</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q285')">
+                                                <g id="Q285" transform="translate(-167 -13)">
+                                                    <g id="color2-2" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-2" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-2" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q285</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <g id="Q21-1-4-Q3186" transform="translate(-17 -13)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q21_1')">
+                                                    <g id="Q353-658" transform="translate(-50 41)">
+                                                        <g id="color2-3" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-3" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-3" data-name="Process" transform="translate(11.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q21-1</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q21_2')">
+                                                    <g id="Q353-658-2" data-name="Q353-658" transform="translate(40 41)">
+                                                        <g id="color2-4" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-4" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-4" data-name="Process" transform="translate(11.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q21-2</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q21_3')">
+                                                    <g id="Q353-658-3" data-name="Q353-658" transform="translate(117 41)">
+                                                        <g id="color2-5" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-5" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-5" data-name="Process" transform="translate(11.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q21-3</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q21_4')">
+                                                    <g id="Q353-658-4" data-name="Q353-658" transform="translate(192 41)">
+                                                        <g id="color2-6" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-6" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-6" data-name="Process" transform="translate(11.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q21-4</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3186')">
+                                                    <g id="Q353-658-5" data-name="Q353-658" transform="translate(40 1)">
+                                                        <g id="color2-7" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-7" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-7" data-name="Process" transform="translate(11.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3186</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q693-732-682" transform="translate(-17 -13)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q682')">
+                                                    <g id="Q353-658-6" data-name="Q353-658" transform="translate(-50 1)">
+                                                        <g id="color2-8" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-8" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-8" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q682</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q693')">
+                                                    <g id="Q353-658-7" data-name="Q353-658" transform="translate(-50 -96)">
+                                                        <g id="color2-9" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-9" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-9" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q693</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q732')">
+                                                    <g id="Q353-658-8" data-name="Q353-658" transform="translate(-50 -40)">
+                                                        <g id="color2-10" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-10" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-10" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q732</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div id="BEKENU-roads" class="roads-img" style="display:none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" height="450" viewBox="0 0 700 450">
+                                        <g id="RCondition-Bekenu" clip-path="url(#clip-Bekenu)">
+                                            <g id="Component_Bekenu" data-name="Component-Bekenu" transform="translate(78.5 29.5)">
+                                                <path id="Line" d="M0,0H25.583" transform="translate(191.167 147.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-2" data-name="Line" d="M0,0H49" transform="translate(325 78.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-3" data-name="Line" d="M0,0H53.133" transform="translate(191.167 103.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-4" data-name="Line" d="M0,0H19" transform="translate(325 129.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <line id="Line_2" data-name="Line 2" y2="52" transform="translate(325 78)" fill="none" stroke="#89a9d2" stroke-width="1" />
+                                                <path id="Line-5" data-name="Line" d="M0,0H20.375" transform="translate(304.375 103.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Path_2" data-name="Path 2" d="M0-26V365.167" transform="translate(524 32)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <path id="Line-6" data-name="Line" d="M0,0H89" transform="translate(434 78.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-7" data-name="Line" d="M0,0H24.25" transform="translate(166.25 127.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-8" data-name="Line" d="M0,0H24.25" transform="translate(166.25 177.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-9" data-name="Line" d="M0,0H16.5" transform="translate(76 154.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-10" data-name="Line" d="M0,0H16.438" transform="translate(76 202.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-11" data-name="Line" d="M0,0H12.75" transform="translate(93.5 177.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-12" data-name="Line" d="M0,0H48" transform="translate(92.5 154.5) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Path_3" data-name="Path 3" d="M0-26V371.167" transform="translate(191 26)" fill="none" stroke="#152e4d" stroke-width="1" />
+                                                <path id="Line-13" data-name="Line" d="M0,0H23.75" transform="translate(166.25 242.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-14" data-name="Line" d="M0,0H30.5" transform="translate(76 242.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-15" data-name="Line" d="M0,0H16.438" transform="translate(0 202.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-16" data-name="Line" d="M0,0H108.5" transform="translate(192 303.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Path_4" data-name="Path 4" d="M0-26V15.167" transform="translate(539.167 6.25) rotate(90)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <path id="Line-17" data-name="Line" d="M0,0H16.667" transform="translate(525.167 25.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-18" data-name="Line" d="M0,0H16.667" transform="translate(525.167 59.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-19" data-name="Line" d="M.833,0h24.75" transform="translate(191.167 344.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-20" data-name="Line" d="M0,0H25.583" transform="translate(276.167 344.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-21" data-name="Line" d="M.125-.016,14.25,0" transform="translate(287.5 379.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-22" data-name="Line" d="M0,0H34.125" transform="translate(287.625 344.5) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-23" data-name="Line" d="M0,0H79.25" transform="translate(357 303.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-24" data-name="Line" d="M0,0H118.25" transform="translate(436.25 303.5) rotate(-90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-25" data-name="Line" d="M.833,0h24.75" transform="translate(422.167 184.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-26" data-name="Line" d="M.833,0h13.25" transform="translate(422.167 224.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-27" data-name="Line" d="M.833,0h13.25" transform="translate(422.167 264.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-28" data-name="Line" d="M.833,0H16.958" transform="translate(347.292 225.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-29" data-name="Line" d="M.833,0H16.75" transform="translate(506.25 184.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-30" data-name="Line" d="M0,0H34.125" transform="translate(246.625 269.5) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-31" data-name="Line" d="M0,0H23.75" transform="translate(166.25 367.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-32" data-name="Line" d="M.833,0H16.75" transform="translate(506.25 229.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-33" data-name="Line" d="M.833,0H16.75" transform="translate(506.25 268.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            </g>
+                                            <g id="S6" transform="translate(162 22)">
+                                                <rect id="Rectangle_15" data-name="Rectangle 15" width="47" height="27" rx="13.5" transform="translate(21)" fill="#fff212" />
+                                                <text id="Start_End" data-name="Start/End" transform="translate(37 18)" fill="#152e4d" font-size="12" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">S6</tspan></text>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q20072C')">
+                                                <g id="Q2007-2C" data-name="Q2007-2C" transform="translate(-28 -27)">
+                                                    <g id="color2" transform="translate(261 84)">
+                                                        <rect id="Rectangle_16" data-name="Rectangle 16" width="73" height="24" rx="3" transform="translate(0)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process" transform="translate(8 16)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q2007 2C</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q354')">
+                                                <g id="Q354" transform="translate(62 -49)">
+                                                    <g id="color2-2" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-2" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-2" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q354</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <g id="Q684-756" transform="translate(212 -19)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q756')">
+                                                    <g id="Q756" data-name="Q756" transform="translate(-20 -96)">
+                                                        <g id="color2-3" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-3" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-3" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q756</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q684')">
+                                                    <g id="Q684" data-name="Q684" transform="translate(-50 -44)">
+                                                        <g id="color2-4" data-name="color2" transform="translate(261.167 210.059)">
+                                                            <rect id="Rectangle_16-4" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-4" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q684</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q638')">
+                                                <g id="Q638" transform="translate(-93 61)">
+                                                    <g id="color2-5" data-name="color2" transform="translate(278.167 84.059)">
+                                                        <rect id="Rectangle_16-5" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-5" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q638</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1115')">
+                                                <g id="Q1115" transform="translate(35 81)">
+                                                    <g id="color2-6" data-name="color2" transform="translate(261.167 84.059)">
+                                                        <rect id="Rectangle_16-6" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-6" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1115</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q637')">
+                                                <g id="Q637" transform="translate(-76 111)">
+                                                    <g id="color2-7" data-name="color2" transform="translate(261.167 84.059)">
+                                                        <rect id="Rectangle_16-7" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-7" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q637</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <g id="Q1116-697-696" transform="translate(16 4)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1116')">
+                                                    <g id="Q1116" data-name="Q1116" transform="translate(-182 84)">
+                                                        <g id="color2-8" data-name="color2" transform="translate(261.167 84.059)">
+                                                            <rect id="Rectangle_16-8" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-8" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1116</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q697')">
+                                                    <g id="Q697" data-name="Q697" transform="translate(-182 132)">
+                                                        <g id="color2-9" data-name="color2" transform="translate(261.167 84.059)">
+                                                            <rect id="Rectangle_16-9" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-9" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q697</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q696')">
+                                                    <g id="Q696" data-name="Q696" transform="translate(-257 132)">
+                                                        <g id="color2-10" data-name="color2" transform="translate(261.167 84.059)">
+                                                            <rect id="Rectangle_16-10" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-10" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q696</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+
+                                            <g id="Q1953-636" transform="translate(16 -4)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q636')">
+                                                    <g id="Q636" data-name="Q636" transform="translate(-182 180)">
+                                                        <g id="color2-11" data-name="color2" transform="translate(261.167 84.059)">
+                                                            <rect id="Rectangle_16-11" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-11" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q636</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1953')">
+                                                    <g id="Q1953" data-name="Q1953" transform="translate(-92 180)">
+                                                        <g id="color2-12" data-name="color2" transform="translate(261.167 84.059)">
+                                                            <rect id="Rectangle_16-12" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-12" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1953</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q640" transform="translate(35 112)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q640')">
+                                                    <g id="color2-13" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-13" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-13" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q640</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q637')">
+                                                <g id="Q637-2" data-name="Q637-2" transform="translate(119 152)">
+                                                    <g id="color2-14" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-14" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-14" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q637</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1114')">
+                                                <g id="Q1114" transform="translate(182 112)">
+                                                    <g id="color2-15" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-15" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-15" data-name="Process" transform="translate(9.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1114</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <g id="Q685-1117" transform="translate(16 4)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q685')">
+                                                    <g id="Q685" data-name="Q685" transform="translate(166 68)">
+                                                        <g id="color2-16" data-name="color2" transform="translate(261.167 170.059)">
+                                                            <rect id="Rectangle_16-16" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-16" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q685</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1117')">
+                                                    <g id="Q1117" data-name="Q1117" transform="translate(90 68)">
+                                                        <g id="color2-17" data-name="color2" transform="translate(261.167 170.059)">
+                                                            <rect id="Rectangle_16-17" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-17" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1117</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q692')">
+                                                <g id="Q692" transform="translate(182 32)">
+                                                    <g id="color2-18" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-18" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-18" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q692</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q287')">
+                                                <g id="Q287" transform="translate(265 32)">
+                                                    <g id="color2-19" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-19" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-19" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q287</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <g id="Q694" transform="translate(265 77)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q694')">
+                                                    <g id="color2-20" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-20" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-20" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q694</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q757" transform="translate(265 116)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q757')">
+                                                    <g id="color2-21" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-21" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-21" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q757</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1297')">
+                                                <g id="Q1297" transform="translate(35 192)">
+                                                    <g id="color2-22" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-22" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-22" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1297</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <g id="Q1294-1296" transform="translate(16 4)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1294')">
+                                                    <g id="Q1294" data-name="Q1294" transform="translate(103 188)">
+                                                        <g id="color2-23" data-name="color2" transform="translate(261.167 170.059)">
+                                                            <rect id="Rectangle_16-23" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-23" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1294</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1296')">
+                                                    <g id="Q1296" data-name="Q1296" transform="translate(103 223)">
+                                                        <g id="color2-24" data-name="color2" transform="translate(261.167 170.059)">
+                                                            <rect id="Rectangle_16-24" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-24" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1296</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q1295" transform="translate(-93 301)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1295')">
+                                                    <g id="color2-25" data-name="color2" transform="translate(278.167 84.059)">
+                                                        <rect id="Rectangle_16-25" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-25" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1295</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q641-695" transform="translate(16 4)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q695')">
+                                                    <g id="Q695" data-name="Q695" transform="translate(344 -45)">
+                                                        <g id="color2-26" data-name="color2" transform="translate(261.167 84.059)">
+                                                            <rect id="Rectangle_16-26" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-26" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q695</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q641')">
+                                                    <g id="Q641" data-name="Q641" transform="translate(344 -11)">
+                                                        <g id="color2-27" data-name="color2" transform="translate(261.167 84.059)">
+                                                            <rect id="Rectangle_16-27" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-27" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q641</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div id="MARUDI-roads" class="roads-img" style="display:none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="425" height="320" viewBox="0 0 425 320">
+                                        <g id="RCondition-Marudi" clip-path="url(#clip-Marudi)">
+                                            <g id="Component_Marudi" data-name="Component-Marudi" transform="translate(26.5 24.5)">
+                                                <path id="Line" d="M0,0H22.25" transform="translate(184 146.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-2" data-name="Line" d="M0,0H79.25" transform="translate(104.25 186.5) rotate(-90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-3" data-name="Line" d="M.833,0h23" transform="translate(103.417 106.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-4" data-name="Line" d="M.833,0h126.25" transform="translate(0.167 146.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-5" data-name="Line" d="M.833,0h23" transform="translate(103.417 186.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Path_5" data-name="Path 5" d="M0-26V231.5" transform="translate(0 26)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                <path id="Line-6" data-name="Line" d="M0,0H129" transform="translate(206.25 227.5) rotate(-90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-7" data-name="Line" d="M0,0H22.25" transform="translate(207 98.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-8" data-name="Line" d="M0,0H22.25" transform="translate(207 130.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-9" data-name="Line" d="M0,0H22.25" transform="translate(207 162.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-10" data-name="Line" d="M0,0H22.25" transform="translate(207 194.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-11" data-name="Line" d="M0,0H22.25" transform="translate(207 227.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-12" data-name="Line" d="M0,0H23.333" transform="translate(285 227.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-13" data-name="Line" d="M0,0H32.167" transform="translate(296.667 227.833) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                <path id="Line-14" data-name="Line" d="M0,0H11.667" transform="translate(296.667 260.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            </g>
+                                            <g id="S4" transform="translate(32 83)">
+                                                <rect id="Rectangle_15" data-name="Rectangle 15" width="47" height="27" rx="13.5" transform="translate(21)" fill="#fff212" />
+                                                <text id="Start_End" data-name="Start/End" transform="translate(37 18)" fill="#152e4d" font-size="12" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">S4</tspan></text>
+                                            </g>
+                                            <g id="Q3187" transform="translate(-376 -79)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q3187')">
+                                                    <g id="color2" transform="translate(427.167 238.059)">
+                                                        <rect id="Rectangle_16" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q3187</tspan></text>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q649-289-669" transform="translate(30)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q649')">
+                                                    <g id="Q649" transform="translate(-137 29)">
+                                                        <g id="color2-2" data-name="color2" transform="translate(261.167 170.059)">
+                                                            <rect id="Rectangle_16-2" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-2" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q649</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q289')">
+                                                    <g id="Q289" transform="translate(-303 -79)">
+                                                        <g id="color2-3" data-name="color2" transform="translate(427.167 238.059)">
+                                                            <rect id="Rectangle_16-3" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-3" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q289</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q669')">
+                                                    <g id="Q669" transform="translate(-137 -51)">
+                                                        <g id="color2-4" data-name="color2" transform="translate(261.167 170.059)">
+                                                            <rect id="Rectangle_16-4" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-4" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q669</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q643-1904-672-676-670" transform="translate(50)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q670')">
+                                                    <g id="Q670" transform="translate(-9 -55)">
+                                                        <g id="color2-5" data-name="color2" transform="translate(211.167 166.059)">
+                                                            <rect id="Rectangle_16-5" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-5" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q670</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q676')">
+                                                    <g id="Q676" transform="translate(-9 -23)">
+                                                        <g id="color2-6" data-name="color2" transform="translate(211.167 166.059)">
+                                                            <rect id="Rectangle_16-6" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-6" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q676</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q672')">
+                                                    <g id="Q672" transform="translate(-9 9)">
+                                                        <g id="color2-7" data-name="color2" transform="translate(211.167 166.059)">
+                                                            <rect id="Rectangle_16-7" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-7" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q672</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1904')">
+                                                    <g id="Q1904" transform="translate(-9 41)">
+                                                        <g id="color2-8" data-name="color2" transform="translate(211.167 166.059)">
+                                                            <rect id="Rectangle_16-8" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-8" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1904</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q643')">
+                                                    <g id="Q643" transform="translate(-9 73)">
+                                                        <g id="color2-9" data-name="color2" transform="translate(211.167 166.059)">
+                                                            <rect id="Rectangle_16-9" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-9" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q643</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                            <g id="Q674-691" transform="translate(50)">
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q691')">
+                                                    <g id="Q691" transform="translate(74 73)">
+                                                        <g id="color2-10" data-name="color2" transform="translate(211.167 166.059)">
+                                                            <rect id="Rectangle_16-10" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-10" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q691</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q674')">
+                                                    <g id="Q674" transform="translate(74 107)">
+                                                        <g id="color2-11" data-name="color2" transform="translate(211.167 166.059)">
+                                                            <rect id="Rectangle_16-11" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-11" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q674</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div id="Bario-roads" class="roads-img" style="display:none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="590" height="400" viewBox="0 0 590 400">
+                                        <g id="RCondition-Bario-Mulu" clip-path="url(#clip-Bario-Mulu)">
+                                            <g id="Mulu-Group" transform="translate(0 -2)">
+                                                <g id="Mulu-head" transform="translate(-190 -134)">
+                                                    <g id="color2" transform="translate(230.167 170.059)">
+                                                        <rect id="Rectangle_16" data-name="Rectangle 16" width="106" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#152e4d" stroke="#152e4d" stroke-width="1" />
+                                                        <text id="Process" transform="translate(37.833 15.941)" fill="#fff" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Mulu</tspan></text>
+                                                    </g>
+                                                </g>
+                                                <g id="Mulu-Component" transform="translate(86.5 137.5)">
+                                                    <path id="Path_6" data-name="Path 6" d="M0-26V43" transform="translate(0 26)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                    <path id="Path_7" data-name="Path 7" d="M0-26V76" transform="translate(0 96)" fill="none" stroke="#152e4d" stroke-width="1" />
+                                                    <path id="Line" d="M.833,0h23.25" transform="translate(0.167 0.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                </g>
+                                                <g id="S2-Mulu" transform="translate(72 84)">
+                                                    <rect id="Rectangle_15" data-name="Rectangle 15" width="47" height="27" rx="13.5" transform="translate(21)" fill="#fff212" />
+                                                    <text id="Start_End" data-name="Start/End" transform="translate(37 18)" fill="#152e4d" font-size="12" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">S2</tspan></text>
+                                                </g>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q773')">
+                                                    <g id="Q773" transform="translate(-150 -44)">
+                                                        <g id="color2-2" data-name="color2" transform="translate(261.167 170.059)">
+                                                            <rect id="Rectangle_16-2" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-2" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q773</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <g id="To_Marudi" data-name="To Marudi" transform="translate(-205 56)">
+                                                    <g id="color2-3" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-3" data-name="Rectangle 16" width="81" height="24" rx="3" transform="translate(-10.167 -0.059)" fill="#c8e1ff" stroke="#152e4d" stroke-width="1" />
+                                                        <text id="Process-3" data-name="Process" transform="translate(1.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">To Marudi</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                            <g id="Bario-Group" transform="translate(0 -2)">
+                                                <g id="Bario-head" transform="translate(122 -134)">
+                                                    <g id="color2-4" data-name="color2" transform="translate(230.167 170.059)">
+                                                        <rect id="Rectangle_16-4" data-name="Rectangle 16" width="106" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#152e4d" stroke="#152e4d" stroke-width="1" />
+                                                        <text id="Process-4" data-name="Process" transform="translate(37.833 15.941)" fill="#fff" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Bario</tspan></text>
+                                                    </g>
+                                                </g>
+                                                <g id="Bario-Border-group" transform="translate(263 69)" fill="none" stroke="#c9c9c9" stroke-width="1" stroke-dasharray="2 2">
+                                                    <rect width="286" height="297" rx="5" stroke="none" />
+                                                    <rect x="0.5" y="0.5" width="285" height="296" rx="4.5" fill="none" />
+                                                </g>
+                                                <g id="Bario-S2" transform="translate(358 84)">
+                                                    <rect id="Rectangle_15-2" data-name="Rectangle 15" width="47" height="27" rx="13.5" transform="translate(21)" fill="#fff212" />
+                                                    <text id="Start_End-2" data-name="Start/End" transform="translate(37 18)" fill="#152e4d" font-size="12" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">S2</tspan></text>
+                                                </g>
+                                                <g id="Bario-Component" transform="translate(348.922 125.55)">
+                                                    <g id="Bario-Component-2" data-name="Bario-Component" transform="translate(30.578 21.95)">
+                                                        <path id="Line-2" data-name="Line" d="M0,0H22.25" transform="translate(0 32.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                        <path id="Line-3" data-name="Line" d="M.833,0h24.25" transform="translate(22.167 63.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                        <path id="Line-4" data-name="Line" d="M.833,0h23" transform="translate(23.417 146.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                        <path id="Path_5" data-name="Path 5" d="M0-26V161.5" transform="translate(23 26)" fill="none" stroke="#707070" stroke-width="1" />
+                                                        <path id="Line-5" data-name="Line" d="M.833,0h23.25" transform="translate(23.167 0.5)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                                    </g>
+                                                    <path id="Path_8" data-name="Path 8" d="M0-26V-5.1" transform="translate(53.578 26.05)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                    <path id="Path_9" data-name="Path 9" d="M0-26V15.9" transform="translate(0.578 26.05)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                    <path id="Path_10" data-name="Path 10" d="M0-26V27.528" transform="translate(27.528) rotate(90)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                                </g>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1279')">
+                                                    <g id="Q1279" transform="translate(-107 -70)">
+                                                        <g id="color2-5" data-name="color2" transform="translate(427.167 238.059)">
+                                                            <rect id="Rectangle_16-5" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-5" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1279</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1277')">
+                                                    <g id="Q1277" transform="translate(166 -64)">
+                                                        <g id="color2-6" data-name="color2" transform="translate(261.167 200.059)">
+                                                            <rect id="Rectangle_16-6" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-6" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1277</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1276')">
+                                                    <g id="Q1276" transform="translate(40 34)">
+                                                        <g id="color2-7" data-name="color2" transform="translate(387.167 165.059)">
+                                                            <rect id="Rectangle_16-7" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-7" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1276</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1086')">
+                                                    <g id="Q1086" transform="translate(269 43)">
+                                                        <g id="color2-8" data-name="color2" transform="translate(104.167 199.059)">
+                                                            <rect id="Rectangle_16-8" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-8" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1086</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1275')">
+                                                    <g id="Q1275" transform="translate(323 124)">
+                                                        <g id="color2-9" data-name="color2" transform="translate(104.167 159.059)">
+                                                            <rect id="Rectangle_16-9" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-9" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1275</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                                <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1278')">
+                                                    <g id="Q1278" transform="translate(269 124)">
+                                                        <g id="color2-10" data-name="color2" transform="translate(104.167 199.059)">
+                                                            <rect id="Rectangle_16-10" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                            <text id="Process-10" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1278</tspan></text>
+                                                        </g>
+                                                    </g>
+                                                </a>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="cusgrid minw-90" id="roadmapcode">
+
+                                <div class="search-section mt-4">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-12 search-content pb-0">
+                                            <div class="input-group">
+                                                <label class="bg-theme-color rounded-left font-14 px-2 mb-0" style="padding-top: 4px;"><span class="search-icon" style="background-size: 16px;margin-top: 6px;"></span> Search</label>
+                                                <input type="text" class="form-control clear" style="height: calc(1.5em + .75rem + 5px);" placeholder="Road Code / Name" roadSearch />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table w-100 dataTable no-footer dataTables_scroll">
+                                    <thead>
+                                        <tr class="dataTables_scrollHead">
+                                            <th>Name</th>
+                                            <th>Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (strRMU == "BATUNIAH")
+    {
+        <div id="batuniah-content">
+            <div class="row">
+                <div class="bg-white w-100 p-3 d-flex position-relative border-bottom">
+                    @*<span class="rd-section-head py-2 text-dark">Section</span>*@
+                    <div class="col-md-12 bs-wizard justify-content-center">
+                        <div class="bs-wizard-step complete">
+                            <div class="text-center bs-wizard-stepnum"><button type="button" class="active">Batu Niah</button></div>
+                            @*<div class="progress"><div class="progress-bar"></div></div>*@
+                            <div class="bs-wizard-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 mh-198">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="d-flex justify-content-center py-5 rd-flow" id="">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="580" height="550" viewBox="0 0 580 550">
+                                    <g id="RCondition-BatuNiah" clip-path="url(#clip-BatuNiah)">
+                                        <g id="Component_BatuNiah" transform="translate(88.5 20.667)">
+                                            <path id="Path_7" data-name="Path 7" d="M0-26V258" transform="translate(0 113.333)" fill="none" stroke="#152e4d" stroke-width="1" />
+                                            <path id="Line" d="M.833,0h23.25" transform="translate(0.167 121.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-2" data-name="Line" d="M.833,0h23.25" transform="translate(83.167 121.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-3" data-name="Line" d="M.833,0h23.25" transform="translate(0.167 196.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-4" data-name="Line" d="M.833,0h23.25" transform="translate(83.167 196.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-5" data-name="Line" d="M.833,0H12.458" transform="translate(94.792 160.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-6" data-name="Line" d="M.833,0H39.458" transform="translate(95.625 120.875) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-7" data-name="Line" d="M.833,0H12.458" transform="translate(94.792 236.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-8" data-name="Line" d="M.833,0H70.458" transform="translate(95.625 195.875) rotate(90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-9" data-name="Line" d="M.833,0H92.208" transform="translate(94.792 266.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-10" data-name="Line" d="M.833,0h105" transform="translate(244.167 266.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-11" data-name="Line" d="M.833,0h25" transform="translate(244.167 176.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-12" data-name="Line" d="M.833,0h25" transform="translate(324.167 176.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-13" data-name="Line" d="M.833,0h23.25" transform="translate(0.167 326.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-14" data-name="Line" d="M.833,0h23.25" transform="translate(83.167 326.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-15" data-name="Line" d="M.833,0h25" transform="translate(324.167 394.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-16" data-name="Line" d="M.833,0h25" transform="translate(324.167 442.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-17" data-name="Line" d="M.833,0h44" transform="translate(350.167 394.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Path_8" data-name="Path 8" d="M0-26V465.333" transform="translate(351 26)" fill="none" stroke="#707070" stroke-width="1" stroke-dasharray="5 3" />
+                                            <path id="Line-18" data-name="Line" d="M.833,0h43" transform="translate(351.167 218.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-19" data-name="Line" d="M.833,0h43" transform="translate(351.167 132.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-20" data-name="Line" d="M.833,0h43" transform="translate(351.167 44.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-21" data-name="Line" d="M.833,0h31.5" transform="translate(395.5 133.167) rotate(-90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-22" data-name="Line" d="M.833,0h31" transform="translate(395.5 76.167) rotate(-90)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-23" data-name="Line" d="M.833,0h43" transform="translate(306.167 108.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-24" data-name="Line" d="M.833,0h43" transform="translate(306.167 72.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                            <path id="Line-25" data-name="Line" d="M.833,0h43" transform="translate(306.167 35.333)" fill="none" stroke="#89a9d2" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1" />
+                                        </g>
+                                        <g id="S5" transform="translate(6 181)">
+                                            <rect id="Rectangle_15" data-name="Rectangle 15" width="47" height="27" rx="13.5" transform="translate(21)" fill="#fff212" />
+                                            <text id="Start_End" data-name="Start/End" transform="translate(37 18)" fill="#152e4d" font-size="12" font-family="Nunito-Bold, Nunito" font-weight="700"><tspan x="0" y="0">S5</tspan></text>
+                                        </g>
+                                        <g id="Q1084-648-1056" transform="translate(0 100)">
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1056')">
+                                                <g id="Q1056" transform="translate(-65 -104)">
+                                                    <g id="color2" transform="translate(261.167 172.059)">
+                                                        <rect id="Rectangle_16" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1056</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q648')">
+                                                <g id="Q648" transform="translate(-65 -140)">
+                                                    <g id="color2-2" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-2" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-2" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q648</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1084')">
+                                                <g id="Q1084" transform="translate(-148 -140)">
+                                                    <g id="color2-3" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-3" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-3" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1084</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                        </g>
+                                        <g id="Q291-284-647" transform="translate(0 100)">
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q647')">
+                                                <g id="Q647" transform="translate(-65 -25)">
+                                                    <g id="color2-4" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-4" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-4" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q647</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q284')">
+                                                <g id="Q284" transform="translate(-65 -64)">
+                                                    <g id="color2-5" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-5" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-5" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q284</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q291')">
+                                                <g id="Q291" transform="translate(-148 -65)">
+                                                    <g id="color2-6" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-6" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-6" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q291</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                        </g>
+                                        <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q283')">
+                                            <g id="Q283" transform="translate(15 105)">
+                                                <g id="color2-7" data-name="color2" transform="translate(261.167 170.059)">
+                                                    <rect id="Rectangle_16-7" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-7" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q283</tspan></text>
+                                                </g>
+                                            </g>
+                                        </a>
+                                        <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q281')">
+                                            <g id="Q281" transform="translate(203 57)">
+                                                <g id="color2-8" data-name="color2" transform="translate(281.167 170.059)">
+                                                    <rect id="Rectangle_16-8" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-8" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q281</tspan></text>
+                                                </g>
+                                            </g>
+                                        </a>
+                                        <g id="Q644-646" transform="translate(0 100)">
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q646')">
+                                                <g id="Q646" transform="translate(95 -85)">
+                                                    <g id="color2-9" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-9" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-9" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q646</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q644')">
+                                                <g id="Q644" transform="translate(15 -85)">
+                                                    <g id="color2-10" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-10" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-10" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q644</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                        </g>
+                                        <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q279')">
+                                            <g id="Q279" transform="translate(95 233)">
+                                                <g id="color2-11" data-name="color2" transform="translate(261.167 170.059)">
+                                                    <rect id="Rectangle_16-11" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-11" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q279</tspan></text>
+                                                </g>
+                                            </g>
+                                        </a>
+                                        <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1048')">
+                                            <g id="Q1048" transform="translate(223 233)">
+                                                <g id="color2-12" data-name="color2" transform="translate(261.167 170.059)">
+                                                    <rect id="Rectangle_16-12" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-12" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1048</tspan></text>
+                                                </g>
+                                            </g>
+                                        </a>
+                                        <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q278_1')">
+                                            <g id="Q278-1" transform="translate(95 281)">
+                                                <g id="color2-13" data-name="color2" transform="translate(261.167 170.059)">
+                                                    <rect id="Rectangle_16-13" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-13" data-name="Process" transform="translate(7.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q278-1</tspan></text>
+                                                </g>
+                                            </g>
+                                        </a>
+                                        <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q20072B')">
+                                            <g id="Q2007-2B" transform="translate(-199 99)">
+                                                <g id="color2-14" data-name="color2" transform="translate(257.167 170.059)">
+                                                    <rect id="Rectangle_16-14" data-name="Rectangle 16" width="75" height="24" rx="3" transform="translate(-7.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-14" data-name="Process" transform="translate(0.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q2007 2B</tspan></text>
+                                                </g>
+                                            </g>
+                                        </a>
+                                        <g id="Q282-1085" transform="translate(0 100)">
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1085')">
+                                                <g id="Q1085" transform="translate(-65 66)">
+                                                    <g id="color2-15" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-15" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-15" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1085</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q282')">
+                                                <g id="Q282" transform="translate(-148 65)">
+                                                    <g id="color2-16" data-name="color2" transform="translate(261.167 170.059)">
+                                                        <rect id="Rectangle_16-16" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-16" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q282</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                        </g>
+                                        <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1052')">
+                                            <g id="Q1052" transform="translate(176 -73)">
+                                                <g id="color2-17" data-name="color2" transform="translate(281.167 170.059)">
+                                                    <rect id="Rectangle_16-17" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                    <text id="Process-17" data-name="Process" transform="translate(13.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1052</tspan></text>
+                                                </g>
+                                            </g>
+                                        </a>
+                                        <g id="Q1053-1054-1055">
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1055')">
+                                                <g id="Q1055" transform="translate(55 -125)">
+                                                    <g id="color2-18" data-name="color2" transform="translate(281.167 170.059)">
+                                                        <rect id="Rectangle_16-18" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-18" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1055</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1054')">
+                                                <g id="Q1054" transform="translate(55 -89)">
+                                                    <g id="color2-19" data-name="color2" transform="translate(281.167 170.059)">
+                                                        <rect id="Rectangle_16-19" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-19" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1054</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                            <a href="javascript:void(0)" class="rd-link" onclick="roadsClick('Q1053')">
+                                                <g id="Q1053" transform="translate(55 -53)">
+                                                    <g id="color2-20" data-name="color2" transform="translate(281.167 170.059)">
+                                                        <rect id="Rectangle_16-20" data-name="Rectangle 16" width="59" height="24" rx="3" transform="translate(-0.167 -0.059)" fill="#c8e1ff" stroke="#a7c6ea" stroke-width="1" />
+                                                        <text id="Process-20" data-name="Process" transform="translate(10.833 15.941)" fill="#152e4d" font-size="12" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="0" y="0">Q1053</tspan></text>
+                                                    </g>
+                                                </g>
+                                            </a>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="cusgrid minw-90" id="roadmapcode">
+                                <div class="search-section mt-4">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-12 search-content pb-0">
+                                            <div class="input-group">
+                                                <label class="bg-theme-color rounded-left font-14 px-2 mb-0" style="padding-top: 4px;"><span class="search-icon" style="background-size: 16px;margin-top: 6px;"></span> Search</label>
+                                                <input type="text" class="form-control clear" style="height: calc(1.5em + .75rem + 5px);" placeholder="Road Code / Name" roadSearch />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table w-100 dataTable no-footer dataTables_scroll">
+                                    <thead>
+                                        <tr class="dataTables_scrollHead">
+                                            <th>Name</th>
+                                            <th>Code</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    jsSection.Master = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model));
+    var activeSection = '@strRMU';
+    function SectionClick(section) {
+        $(".clear").val(null);
+        //document.getElementsByName('Section-Search').value=""
+        activeSection = section;
+        $('.roads-active').removeClass('roads-active');
+        $('#' + activeSection + '-roads')?.addClass('roads-active');
+        jsSection.Init(activeSection);
+    }
+    function roadsClick(code) {
+        location.href = '@Url.Action("RoadMap", "Map")?roadCode='+code+'&section='+activeSection;
+    }
+    jsSection.Init(activeSection, true);
+
+    $(document).ready(function () {
+        @*var selectedRmu = '@ViewBag.rmu';
+        if (selectedRmu == 'batuniah') {
+            $('#batuniah-content').show();
+            $('#miri-content').hide();
+        } else {
+            $('#miri-content').show();
+            $('#batuniah-content').hide();
+        }*@
+        $('.bs-wizard-step button').on('click', function () {
+            $('.bs-wizard-step button.active').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+</script>

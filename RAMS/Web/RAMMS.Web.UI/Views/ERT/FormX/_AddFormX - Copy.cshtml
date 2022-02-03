@@ -1,0 +1,541 @@
+﻿@model RAMMS.Web.UI.Models.FormXModel;
+@*@model Model.RmFormXHdr*@
+@{
+    ViewData["Title"] = "Form X";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/js/ERTFormX.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $("#FormXSVerby").on("change", function () {
+            //alert(event.keyCode)
+
+            $.ajax({
+                url: '/ERT/GetUserByCode',
+                dataType: 'JSON',
+                data: { userCode: $(this).find(":selected").text() },
+                type: 'Post',
+                success: function (data) {
+                    console.log(data);
+                    //alert(data[0].userName);
+                    if (data != null) {
+                        $("#FormXSVerUsername").val(data[0].userName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+        });
+
+        $("#FormXSVetby").on("change", function () {
+            //alert(event.keyCode)
+            // if (event.keyCode == 13) {
+            $.ajax({
+                url: '/ERT/GetUserByCode',
+                dataType: 'JSON',
+                data: { userCode: $(this).find(":selected").text() },
+                type: 'Post',
+                success: function (data) {
+                    console.log(data);
+                    //alert(data[0].userName);
+                    if (data != null) {
+                        $("#FormXSVetUsername").val(data[0].userName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+            // }
+        });
+
+
+
+
+        $("#FormXAssgnto").on("change", function () {
+            //alert(event.keyCode)
+            // if (event.keyCode == 13) {
+            $.ajax({
+                url: '/ERT/GetUserByCode',
+                dataType: 'JSON',
+                data: { userCode: $(this).find(":selected").text() },
+                type: 'Post',
+                success: function (data) {
+                    console.log(data);
+                    //alert(data[0].userName);
+                    if (data != null) {
+                        $("#FormXAssgnUsername").val(data[0].userName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+            // }
+        });
+
+        $("#FormXVeriBy").on("change", function () {
+            //alert(event.keyCode)
+            // if (event.keyCode == 13) {
+            $.ajax({
+                url: '/ERT/GetUserByCode',
+                dataType: 'JSON',
+                data: { userCode: $(this).find(":selected").text() },
+                type: 'Post',
+                success: function (data) {
+                    console.log(data);
+                    //alert(data[0].userName);
+                    if (data != null) {
+                        $("#FormXVerUsername").val(data[0].userName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+            // }
+        });
+
+        $("#FormXAttnto").on("change", function () {
+            //alert(event.keyCode)
+            // if (event.keyCode == 13) {
+            $.ajax({
+                url: '/ERT/GetUserByCode',
+                dataType: 'JSON',
+                data: { userCode: $(this).find(":selected").text() },
+                type: 'Post',
+                success: function (data) {
+                    console.log(data);
+                    //alert(data[0].userName);
+                    if (data != null) {
+                        $("#FormXAttnUsername").val(data[0].userName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+            // }
+        });
+
+        $("#formXmainCode").on("change", function () {
+            $("#FormXActMainName").val($(this).val())
+
+        })
+
+        $("#formXsubCode").on("change", function () {
+            $("#FormXActSubName").val($(this).val())
+
+        })
+
+        $("#FormXRoadCode").on("change", function () {
+
+            $.ajax({
+                url: '/NODFormA/GetAssetDataByRoadCode',
+                dataType: 'JSON',
+                data: { roadCode: $("#FormXRoadCode").find(":selected").text() },
+                type: 'Post',
+                success: function (data) {
+                    console.log(data);
+                    if (data != null) {
+                        $("#FormXDetsection").val(data.secName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+            return false;
+        })
+
+        $(document).on("click", "#btnUpload", function () {
+            var files = $("#importFile").get(0).files;
+
+            //alert(files);
+            var formData = new FormData();
+            formData.append('importFile', files[0]);
+
+            $.ajax({
+                url: '/Bridge/AssetImportFile',
+                data: formData,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.Status === 1) {
+                        // alert(data.Message);
+                    } else {
+                        // alert("Failed to Import");
+                    }
+                }
+            });
+        });
+
+        
+    });
+</script>
+@*<link hreflinkhref ="~/Content/chosen.min.css" rel="stylesheet" />
+    <script srcscriptsrc ="~/Scripts/chosen.jquery.min.js"></script>*@
+@*@using (Html.BeginForm("_AddFormX", "ERTFormX", FormMethod.Post)*@
+<div class="modal-body">
+    <div class="row">
+        <div class="form-group col-lg-6 col-md-6 in-lbl">
+            @Html.Label("ID    ", " ID  ", new { style = "float: left" })
+            @Html.TextBoxFor(m => m.SaveFormXModel.ContNo, new { @Id = "formXContNo", @class = "form-control" })
+        </div>
+    </div>
+    <div class="block block-rounded">
+        <div class="block-content tab-content">
+            <div class="modal-content">
+                <div class="modal-body mh-260 bg-white">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Mode of Communication", "Mode of Communication", new { style = "float: left" })
+
+                            @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.ModComType, (IEnumerable
+                                <SelectListItem>)ViewData["communicationmode"], "Select Mode", new { @Id = "formXmod", @class = "form-control" })
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label></label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.ModComDesc, new { @Id = "formXcomDesc", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label></label>
+                            <input type="file" class="form-control py-0 px-1" id="comUpload" style="padding-top: 3px !important;" />
+                            @*<button class="btn btn-sm btn-themebtn mb-3" id="btnUpload" type="submit">Import</button>*@
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Reported by", "Reported by", new { style = "float: left" })
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.Location, (IEnumerable
+                            <SelectListItem>)ViewData["Reportedby"], "Select", new { @Id = "formXRepBy", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Name", "Name")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.Name, new { @Id = "formXName", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Date & Time</label>
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DateReported, new { @Id = "formXrepDate", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+
+                    @*<div class="form-group col-lg-4 mb-0">
+            <div class="col-lg-12 p-0">
+                <label>Reported</label>
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 in-lbl">
+                        <label>Date<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></label>
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DateReported, new { style = "margin-left:30px; width:140px", @Id = "formXrepDate", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 in-lbl">
+                        <label>Time<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></label>
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DateReported, new { style = "margin-left:30px; width:140px", @Id = "formXrepTime", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                </div>
+            </div>
+        </div>*@
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Work Phone", "Work Phone")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkPhone, new { @Id = "formXWorkPh", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Hand Phone", "Hand Phone")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.HandPhone, new { @Id = "formXhandPh", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-4">
+                        @Html.Label("E-mail", "E-Mail")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.EmailId, new { @Id = "formXemail", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-4">
+                        @Html.Label("RMU to Handle", "RMU to Handle", new { style = "float: left" })
+
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.Rmu, (IEnumerable
+                            <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formXRMU", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Road Code", "Road Code")
+                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.RoadCode, (IEnumerable
+                             <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "FormXRoadCode", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <div>
+                            @Html.Label("Section", "Section", new { style = "float: left" })
+                            @Html.TextBoxFor(m => m.SectionName, new { @Id = "FormXDetsection", @readonly = "readonly", @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 txtarea-107">
+                        @Html.Label("Description", "Description", new { style = "float: left" })
+                        @Html.TextAreaFor(m => m.SaveFormXModel.Description, new { @Id = "FormXDescription", @class = "form-control " })
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Attention to", "Attention to")
+                            @Html.DropDownListFor(m => m.SaveFormXModel.AttentionTo, (IEnumerable
+                                <SelectListItem>)ViewData["USERVER"], "Select User Code", new { @Id = "FormXAttnto", @class = "form-control" })
+                            @*@Html.TextBoxFor(m => m.SaveFormXModel.AttentionTo, new { @Id = "FormXAttnto", @class = "form-control " })*@
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label></label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.AttentionTo, new { @Id = "FormXAttnUsername", @class = "form-control " })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Verified by", "Verified by")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.UsernameVer, (IEnumerable
+                                <SelectListItem>)ViewData["USERVER"], "Select User Code", new { @Id = "FormXVeriBy", @class = "form-control" })
+                            @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXVeriBy", @class = "form-control " })*@
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label></label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.UsernameVer, new { @Id = "FormXVerUsername", @class = "form-control " })
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <label>Verified</label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DtVer, new { @Id = "formXverDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+
+                        @*<div class="form-group col-lg-4 mb-0">
+            <div class="col-lg-12 p-0">
+                <label>Verified</label>
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 in-lbl">
+                        <label>Date<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></label>
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DtVer, new { style = "margin-left:30px; width:140px", @Id = "formXverDate", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 in-lbl">
+                        <label>Time<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></label>
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DtVer, new { style = "margin-left:30px; width:140px", @Id = "formXverTime", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                </div>
+            </div>*@
+                    </div>
+
+                    <div class="form-group col-lg-12 txtarea-107">
+                        @Html.Label("Assigning Work Reference", "Assigning Work Reference")
+                        @Html.TextAreaFor(m => m.SaveFormXModel.AssignWork, new { @Id = "FormXAssgWorkRef", @class = "form-control " })
+
+                    </div>
+                    <div class="form-group col-lg-12 txtarea-107">
+                        @Html.Label("Comment", "Comment")
+                        @Html.TextAreaFor(m => m.SaveFormXModel.Comments, new { @Id = "FormXcomment", @class = "form-control " })
+                    </div>
+
+                    @*Add Scheduling Information Modal*@
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label>Activity Code: <span class="font-weight-bold">Main Task</span></label>
+                            @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.ActMainName, (IEnumerable
+                                <SelectListItem>)ViewData["ACTMainTask"], "Select Main Task", new { @Id = "formXmainCode", @class = "form-control" })
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Activity Name", "Activity Name")
+                            @Html.TextBoxFor(m => m.SaveFormXModel.ActMainName, new { @Id = "FormXActMainName", @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label>Activity Code: <span class="font-weight-bold">Sub Task</span></label>
+                            @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.ActSubName, (IEnumerable
+                               <SelectListItem>)ViewData["ACTSubTask"], "Select Sub Task", new { @Id = "formXsubCode", @class = "form-control" })
+                        </div>
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Activity Name", "Activity Name")
+                            @Html.TextBoxFor(m => m.SaveFormXModel.ActSubName, new { @Id = "FormXActSubName", @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Estimated Crew Days", "Estimated Crew Days")
+                            @Html.TextBoxFor(m => m.SaveFormXModel.EstDays, new { @Id = "FormXEstDays", @class = "form-control " })
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label>Date & Time @*<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>*@</label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.EstDate, new { @Id = "FormXEstDate", @class = "form-control " })
+                        </div>
+                        @*<div class="form-group col-lg-4 mb-0">
+                <div class="col-lg-12 p-0">
+                    <label>Estimated</label>
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>Date<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.EstDate, new { style = "margin-left:30px; width:140px", @Id = "FormXEstDate", @class = "form-control " })
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>Time<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.EstDate, new { style = "margin-left:30px; width:140px", @Id = "FormXEstTime", @class = "form-control " })
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Assigned to", "Assigned to")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.UsernameVer, (IEnumerable
+                               <SelectListItem>)ViewData["USERVER"], "Select User Code", new { @Id = "FormXAssgnto", @class = "form-control" })
+                            @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXAssgnto", @class = "form-control " })*@
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label></label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.UsernameVer, new { @Id = "FormXAssgnUsername", @class = "form-control " })
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Assigned", "Assigned")
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DtAssgn, new { @Id = "formXassgnToDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                        @*<div class="form-group col-lg-4 mb-0">
+                <div class="col-lg-12 p-0">
+                    @Html.Label("Assigned", "Assigned")
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>
+                                Date
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            </label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.UseridAssgn, new { style = "margin-left:30px; width:140px", @Id = "formXassgnToDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>Time<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.UsernameAssgn, new { style = "margin-left:30px; width:140px", @Id = "formXassgnToTime", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Work Schedule", "Work Schedule")
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkSc, new { @Id = "formXWrkSchDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+
+                        @*<div class="form-group col-lg-4 mb-0">
+                <div class="col-lg-12 p-0">
+                    @Html.Label("Work Schedule", "Work Schedule")
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>Date<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkSc, new { style = "margin-left:30px; width:140px", @Id = "formXWrkSchDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>Time<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkSc, new { style = "margin-left:30px; width:140px", @Id = "formXWrkSchTime", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Work Completed", "Work Completed")
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkCompleted, new { @Id = "formXWrkCmpDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                        @*<div class="form-group col-lg-4 mb-0">
+                <div class="col-lg-12 p-0">
+                    @Html.Label("Work Completed", "Work Completed")
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>Date<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkCompleted, new { style = "margin-left:30px; width:140px", @Id = "formXWrkCmpDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                        <div class="form-group col-lg-6 col-md-6 in-lbl">
+                            <label>Time<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></label>
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkCompleted, new { style = "margin-left:30px; width:140px", @Id = "formXWrkCmpTime", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Verified by", "Verified by")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.UsernameVer, (IEnumerable
+                             <SelectListItem>)ViewData["USERVER"], "Select User Code", new { @Id = "FormXSVerby", @class = "form-control" })
+                            @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXSVerby", @class = "form-control " })*@
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label></label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.UsernameVer, new { @Id = "FormXSVerUsername", @class = "form-control " })
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Verified", "Verified")
+                            @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DtVer, new { @Id = "formXSchverDate", @type = "text", @class = "form-control", @rows = 1 })
+                        </div>
+
+                        @*<div class="form-group col-lg-4 mb-0">
+            <div class="col-lg-12 p-0">
+                @Html.Label("Verified", "Verified")
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 in-lbl">
+                        <label>Date<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></label>
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DtVer, new { style = "margin-left:30px; width:140px", @Id = "formXSchverDate", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 in-lbl">
+                        <label>Time<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></label>
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.DtVer, new { style = "margin-left:30px; width:140px", @Id = "formXSchverTime", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                </div>
+            </div>*@
+                    </div>
+
+
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Clase Closed", "Case Closed")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.CaseClosedOn, new { @Id = "formXCaseCloseDate", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+
+
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Vetted by", "Vetted by")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.UsernameVet, (IEnumerable
+                               <SelectListItem>)ViewData["USERVER"], "Select User Code", new { @Id = "FormXSVetby", @class = "form-control" })
+                            @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXSVetby", @class = "form-control " })*@
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label>&nbsp;</label>
+                            @Html.TextBoxFor(m => m.SaveFormXModel.UsernameVet, new { @Id = "FormXSVetUsername", @class = "form-control " })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-12 txtarea-107">
+                        @Html.Label("Comment", "Comment")
+                        @Html.TextAreaFor(m => m.SaveFormXModel.Remarks, new { @Id = "FormXRemark", @class = "form-control " })
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="modal-footer">
+        <div style="float:left">
+            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">U See U</button>
+            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">WAR</button>
+            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Form D</button>
+        </div>
+        <div style="clear:both"></div>
+        <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Cancel</button>
+        <button id="saveFormXBtn" onclick="location.href='@Url.Action("FormX", "ERT")'" type="submit" class="btn btn-sm btn-themebtn">Submit</button>
+    </div>
+
+
+
+
+
+
+

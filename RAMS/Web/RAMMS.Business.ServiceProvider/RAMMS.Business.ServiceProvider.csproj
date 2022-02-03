@@ -1,0 +1,20 @@
+﻿  <Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.95.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAMMS.Common\RAMMS.Common.csproj" />
+    <ProjectReference Include="..\RAMMS.DTO\RAMMS.DTO.csproj" />
+    <ProjectReference Include="..\RAMMS.Repository\RAMMS.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,239 @@
+﻿
+@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormF2Service formS2
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormN1Service n1Service
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewData["Title"] = "User Account - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "User Account - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    var userGroups = usr.GetUserGroups();
+}
+<script type="text/javascript"></script>
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">User Account Management</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Administration</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            User Account
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormB1B2SmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" id="txtSmartSearch" placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                        <button id="btnClearSearch" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formF2AdvSearch" style="display:none">
+            <div id="formF2DetailsearchForm" name="formF2DetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-md-12 px-4">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                @Html.Label("Asset Group", "Asset Group")
+                                <input class="form-control" value="Guardrail" disabled />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Asset Type", "Asset Type")
+                                <select id="ddlAssetType" class="form-control">
+                                    <option value="">Select Asset Type</option>
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("RMU", "RMU")
+                                <select id="ddlRMU" class="form-control">
+                                    <option value="">Select RMU</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Code", "Section Code")
+                                <select id="ddlSection" class="form-control">
+                                    <option value="">Select Section Code</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Name", "Section Name")
+                                <input id="txtSectionName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Code", "Road Code")
+                                <select id="ddlRoadCode" class="form-control">
+                                    <option value="">Select Road Code</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Name", "Road Name")
+                                <input id="txtRoadName" disabled="disabled" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
+                                <div class="row">
+                                    <div class="col-6 float-left">
+                                        <select id="ddlFrom" class="form-control">
+                                            <option value="">From</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 float-left">
+                                        <select id="ddlTo" class="form-control">
+                                            <option value="">To</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Bound", "Bound")
+                                <select id="ddlBound" class="form-control">
+                                    <option value="">Select Bound </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                @Html.Label("Location Chainage From", "Location Chainage From")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,maxcl,5,Chainage From Km" param="chFromKM" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,maxcl,3,Chainage From M" param="chFromM" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Location Chainage To", "Location Chainage To")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input id="txtChToKm" type="text" class="form-control" onkeypressvalidate="num,maxcl,5,Chainage To Km" param="chToKm" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input id="txtChToM" type="text" class="form-control" onkeypressvalidate="num,maxcl,3,Chainage To M" param="chToM" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="javascript:fnEditForm(0,0);"><span class="add-icon"></span> Add User</button>
+            </div>
+
+            @*Form F2 Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+<input type="hidden" value="" id="pkId" />
+<div class="modal fade" id="pwdModal" tabindex="-1" role="dialog" aria-labelledby="pwdModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="FormAAddModalid">Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="div-data-container" class="w-100 float-left">
+                <div class="form-group col-md-3">
+                    @Html.Label("User Id", "User Id")
+                    <input id="txtUserId" type="text" disabled class="form-control" />
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.Label("New Password", "New Password")
+                    <input id="txtNewPassword" type="password" class="form-control validate {pwd, New Password}" />
+                </div>
+            </div>
+            <div class="col-md-12 float-right text-right custom-footer">
+                <button id="btnPwdCancel" data-dismiss="modal" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
+                <button id="btnPwdSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="usergroupModal" tabindex="-1" role="dialog" aria-labelledby="pwdModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="FormAAddModalid">Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="div-data-container" class="w-100 float-left">
+                <div class="form-group col-md-3">
+                    @Html.Label("User Id", "User Id")
+                    <input id="txtGUserId" type="text" disabled class="form-control" />
+                </div>
+                <div class="form-group col-md-3">
+                    @Html.Label("Groups", "Groups")
+                    <select id="ddlGroup" multiple class="form-control validate {required, Groups}">
+                        <option></option>
+                    </select>
+                </div>
+                @*<div class="form-group col-md-3">
+                        @Html.Label("User Groups", "User Groups")
+                        <select id="ddlUserGroup" multiple class="form-control validate {required, User Groups}">
+                            <option></option>
+                        </select>
+                    </div>*@
+            </div>
+            <div class="col-md-12 float-right text-right custom-footer">
+                <button id="btnGCancel" data-dismiss="modal" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
+                <button id="btnGSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtSmartSearch").keyup(function () {
+            if (event.keyCode === 13) {
+                $("#btnSearch").click();
+            }
+        });
+    });
+    function fnEditForm(pid, view) {
+        window.location = '@Url.Action("Add", "Account")' + "?id=" + pid + "&view=" + view;
+    }
+</script>
+<script type="text/javascript" src="~/js/Account.js" asp-append-version="true"></script>

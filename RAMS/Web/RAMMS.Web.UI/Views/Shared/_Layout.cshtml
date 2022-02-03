@@ -1,0 +1,793 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+
+    <meta name="description" content="RAMS">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Open Graph Meta -->
+    <meta property="og:title" content="RAMS">
+    <meta property="og:site_name" content="RAMS">
+    <meta property="og:description" content="RAMS">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="~/assets/js/oneui.app.min.js"></script>
+    <script src="~/assets/js/oneui.core.min.js"></script>
+    <script src="~/Scripts/chosen.jquery.js"></script>
+
+    <!-- Jquery DataTable JS library -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+    @* Below script is commented by Arun *@
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>*@
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.7/js/min/perfect-scrollbar.jquery.min.js"></script>
+
+    <!-- Jquery DataTable CSS library -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+
+    <link href="~/assets/css/oneui.css" rel="stylesheet" />
+    <link href="~/assets/css/GlobalStyleSheet.css" rel="stylesheet" />
+
+    <link href="~/Content/pagination.css" rel="stylesheet" />
+    <link href="~/Content/datatables.css" rel="stylesheet" />
+    <link href="~/Content/dt-global_style.css" rel="stylesheet" />
+    <link href="~/Content/custom_dt_html5.css" rel="stylesheet" />
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+    <link href="~/Content/chosen.min.css" rel="stylesheet" />
+    <link href="~/Content/PagedList.css" rel="stylesheet" />    
+</head>
+<body>
+    @*<div>*@
+    <div class="app-loader"></div>
+    <div id="page-container"
+         class="sidebar-o sidebar-dark sidebar-mini enable-page-overlay side-scroll page-header-fixed main-content-narrow">
+        <nav id="sidebar" aria-label="Main Navigation" class="theme-clr">
+            <div class="content-header bg-white-5">
+            </div>
+            <div class="js-sidebar-scroll">
+                <!-- Side Navigation -->
+                <div class="content-side">
+                    <ul class="nav-main">
+                        <li class="nav-main-item">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                               aria-expanded="false" href="#">
+                                <i class="nav-main-link-icon si si-grid"></i>
+                                <span class="nav-main-link-name">Road Furniture</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link" href="@Url.Action("List", "Assets", new { id = "CV" })">
+                                        <i class="nav-main-link-icon si si-cloud-download"></i>
+                                        <span class="nav-main-link-name">Culvert</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link" href="@Url.Action("List", "Assets", new { id = "BR" })">
+                                        <i class="nav-main-link-icon si si-handbag"></i>
+                                        <span class="nav-main-link-name">Bridge</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    @*<a class="nav-main-link" href="@Url.Action("List", "Assets", new { id = "DR" })">*@
+                                    <a class="nav-main-link" href="#">
+                                        <i class="nav-main-link-icon si si-arrow-left"></i>
+                                        <span class="nav-main-link-name">Drain</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    @*<a class="nav-main-link" href="@Url.Action("List", "Assets", new { id = "DI" })">*@
+                                    <a class="nav-main-link" href="#">
+                                        <i class="nav-main-link-icon si si-support"></i>
+                                        <span class="nav-main-link-name">Ditch</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "RS" })">*@
+                                        <i class="nav-main-link-icon "></i>
+                                        <span class="nav-main-link-name">Road Stud</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "ELM" })">*@
+                                        <i class="nav-main-link-icon "></i>
+                                        <span class="nav-main-link-name">Edge line Marking</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "CLM" })">*@
+                                        <i class="nav-main-link-icon "></i>
+                                        <span class="nav-main-link-name">Centre Line marking</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "SH" })">*@
+                                        <i class="nav-main-link-icon "></i>
+                                        <span class="nav-main-link-name">Shoulder</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "CW" })">*@
+                                        <i class="nav-main-link-icon si si-handbag"></i>
+                                        <span class="nav-main-link-name">Carriageway</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "GR" })">*@
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        <i class="nav-main-link-icon "></i>
+                                        <span class="nav-main-link-name">Guardrail</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "SG" })">*@
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        <i class="nav-main-link-icon si si-directions"></i>
+                                        <span class="nav-main-link-name">Signs</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        @*<a class="nav-main-link-dropdown" href="@Url.Action("List", "Assets", new { id = "RW" })">*@
+                                        <i class="nav-main-link-icon si si-refresh"></i>
+                                        <span class="nav-main-link-name">Retaining Wall</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                               aria-expanded="false" href="#">
+                                <i class="nav-main-link-icon si si-star"></i>
+                                <span class="nav-main-link-name">NOD</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link" href="@Url.Action("Index", "NOD")">
+                                        <i class="nav-main-link-icon si si-cloud-download"></i>
+                                        <span class="nav-main-link-name">Form A</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link" href="#">
+                                        <i class="nav-main-link-icon si si-handbag"></i>
+                                        <span class="nav-main-link-name">Form J</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-link">
+                                    <a class="nav-main-link-dropdown" href="#">
+                                        <i class="nav-main-link-icon si si-handbag"></i>
+                                        <span class="nav-main-link-name">Form H</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-main-item">
+                            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true"
+                               aria-expanded="false" href="#">
+                                <i class="nav-main-link-icon si si-star"></i>
+                                <span class="nav-main-link-name">ERT</span>
+                            </a>
+                            <ul class="nav-main-submenu">
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link" href="#">
+                                        <i class="nav-main-link-icon si si-cloud-download"></i>
+                                        <span class="nav-main-link-name">Form X</span>
+                                    </a>
+                                </li>
+                                <li class="nav-main-item">
+                                    <a class="nav-main-link" href="#">
+                                        <i class="nav-main-link-icon si si-handbag"></i>
+                                        <span class="nav-main-link-name">Form D</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <header id="page-header" class="theme-clr">
+            <!-- Header Content -->
+            <div class="content-header">
+
+                <!-- Left Section -->
+                <div class="d-flex align-items-center">
+                    <!-- Toggle Sidebar -->
+                    <!-- Layout API, functionality initialized in Template._uiApiLayout()-->
+                    <!-- <button type="button" class="smini-hide font-size-h5 tracking-wider d-lg-none" data-toggle="layout"
+                        data-action="sidebar_toggle">
+                        <i class="fa fa-fw fa-bars"></i>
+                    </button> -->
+                    <!-- END Toggle Sidebar -->
+                    <!-- Toggle Mini Sidebar -->
+                    <!-- Layout API, functionality initialized in Template._uiApiLayout()-->
+                    <!-- <button type="button" class="btn btn-sm btn-dual mr-2 d-none d-lg-inline-block" data-toggle="layout"
+                        data-action="sidebar_mini_toggle">
+                        <i class="fa fa-fw fa-ellipsis-v"></i>
+                    </button> -->
+                    <!-- END Toggle Mini Sidebar -->
+                    <!-- Open Search Section (visible on smaller screens) -->
+                    <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+                    <button type="button" class="btn btn-sm btn-dual d-md-none" data-toggle="layout"
+                            data-action="header_search_on">
+                        <i class="fa fa-fw fa-search"></i>
+                    </button>
+                    <!-- END Open Search Section -->
+                    <!-- Search Form (visible on larger screens) -->
+                    <!-- <form class="d-none d-md-inline-block" action="be_pages_generic_search.html" method="POST">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control form-control-alt" placeholder="Search.."
+                                id="page-header-search-input2" name="page-header-search-input2">
+                            <div class="input-group-append">
+                                <span class="input-group-text bg-body border-0">
+                                    <i class="fa fa-fw fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </form> -->
+                    <!-- END Search Form -->
+                </div>
+                <!-- END Left Section -->
+
+                <div class="text-center ml-3">
+                    <a class="font-w600 text-dual" href="#">
+                        <span class="smini-hide title-font tracking-wider text-center">
+                            Road Asset Management and Maintenance System
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Right Section -->
+                <div class="d-flex align-items-center">
+                    <!-- User Dropdown -->
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn btn-sm btn-dual align-items-center"
+                                id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                            <img class="rounded-circle" src="~/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
+                                 style="width: 21px;">
+                            <span class="d-none d-sm-inline-block ml-2">@User.Identity.Name</span>
+                            <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block ml-1 mt-1"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 border-0"
+                             aria-labelledby="page-header-user-dropdown">
+                            <div class="p-3 text-center bg-primary-dark rounded-top">
+                                <img class="img-avatar img-avatar48 img-avatar-thumb"
+                                     src="~/assets/media/avatars/avatar10.jpg" alt="user Avatar">
+                                <p class="mt-2 mb-0 text-white font-w500">AVOWS</p>
+                                <!--  <p class="mb-0 text-white-50 font-size-sm">Web Developer</p> -->
+                            </div>
+                            <div class="p-2">
+
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                                    <span class="font-size-sm font-w500">Profile</span>
+                                    <span class="badge badge-pill badge-primary ml-2">1</span>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                   href="javascript:void(0)">
+                                    <span class="font-size-sm font-w500">Settings</span>
+                                </a>
+                                <div role="separator" class="dropdown-divider"></div>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                                    <span class="font-size-sm font-w500">Change Password</span>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between"
+                                   href="index.html">
+                                    <span class="font-size-sm font-w500">Log Out</span>
+                                </a>
+                            </div>
+                            <!-- END User Dropdown -->
+                        </div>
+                        <div class="dropdown d-inline-block text-left">
+                            <button type="button" class="btn btn-sm btn-dual" id="page-header-notifications-dropdown"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-fw fa-bell"></i>
+                                <span class="text-primary">•</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0 border-0 font-size-sm"
+                                 aria-labelledby="page-header-notifications-dropdown">
+                                <div class="p-2 bg-primary-dark text-center rounded-top">
+                                    <h5 class="dropdown-header text-uppercase text-white">Notifications</h5>
+                                </div>
+                                <ul class="nav-items mb-0">
+                                    <li>
+                                        <a class="text-dark media py-2" href="javascript:void(0)">
+                                            <div class="mr-2 ml-3">
+                                                <i class="fa fa-fw fa-check-circle text-success"></i>
+                                            </div>
+                                            <div class="media-body pr-2">
+                                                <div class="font-w600">You have 1 Bridge visual inspection record to review</div>
+                                                <span class="font-w500 text-muted">15 min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-dark media py-2" href="javascript:void(0)">
+                                            <div class="mr-2 ml-3">
+                                                <i class="fa fa-fw fa-plus-circle text-primary"></i>
+                                            </div>
+                                            <div class="media-body pr-2">
+                                                <div class="font-w600">You have 1 Nod to review</div>
+                                                <span class="font-w500 text-muted">22 min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-dark media py-2" href="javascript:void(0)">
+                                            <div class="mr-2 ml-3">
+                                                <i class="fa fa-fw fa-times-circle text-danger"></i>
+                                            </div>
+                                            <div class="media-body pr-2">
+                                                <div class="font-w600">You have 1 daily work report to review</div>
+                                                <span class="font-w500 text-muted">26 min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-dark media py-2" href="javascript:void(0)">
+                                            <div class="mr-2 ml-3">
+                                                <i class="fa fa-fw fa-plus-circle text-primary"></i>
+                                            </div>
+                                            <div class="media-body pr-2">
+                                                <div class="font-w600">You have 1 routine inspection to review</div>
+                                                <span class="font-w500 text-muted">33 min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-dark media py-2" href="javascript:void(0)">
+                                            <div class="mr-2 ml-3">
+                                                <i class="fa fa-fw fa-user-plus text-success"></i>
+                                            </div>
+                                            <div class="media-body pr-2">
+                                                <div class="font-w600">Your periodic schedule starts today</div>
+                                                <span class="font-w500 text-muted">41 min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="text-dark media py-2" href="javascript:void(0)">
+                                            <div class="mr-2 ml-3">
+                                                <i class="fa fa-fw fa-check-circle text-success"></i>
+                                            </div>
+                                            <div class="media-body pr-2">
+                                                <div class="font-w600">You have 1 Bridge visual inspection record to review</div>
+                                                <span class="font-w500 text-muted">42 min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="p-2 border-top">
+                                    <a class="btn btn-sm btn-light btn-block text-center" href="javascript:void(0)">
+                                        <i class="fa fa-fw fa-arrow-down mr-1"></i> Load More..
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Right Section -->
+                    </div>
+                    <!-- END Header Content -->
+                    <!-- Header Search -->
+                    <div id="page-header-search" class="overlay-header bg-white">
+                        <div class="content-header">
+                            <form class="w-100" action="be_pages_generic_search.html" method="POST">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+                                        <button type="button" class="btn btn-alt-danger" data-toggle="layout"
+                                                data-action="header_search_off">
+                                            <i class="fa fa-fw fa-times-circle"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Search or hit ESC.."
+                                           id="page-header-search-input" name="page-header-search-input">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- END Header Search -->
+                    <!-- Header Loader -->
+                    <!-- Please check out the Loaders page under Components category to see examples of showing/hiding it -->
+                    <div id="page-header-loader" class="overlay-header bg-white">
+                        <div class="content-header">
+                            <div class="w-100 text-center">
+                                <i class="fa fa-fw fa-circle-notch fa-spin"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Header Loader -->
+                </div>
+            </div>
+        </header>
+        <main id="main-container">
+            <!-- Page Content -->
+            @RenderBody()
+            <!-- END Page Content -->
+        </main>
+        <!-- Footer -->
+        <footer id="page-footer" class="bg-body-light">
+            <div class="content py-3">
+                <div class="row font-size-sm">
+                    <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-right">
+                        <div class="container">
+                            &copy; 2021 - RAMS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-left">
+                        <a class="font-w600" href="" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- END Footer -->
+    </div>
+    @*</div>*@
+
+
+    <style>
+        /* header {
+            height: 100px;
+            width: 0%;
+            background-color: red;
+        }
+
+        nav {
+            float: left;
+            width: 150px;
+            height: 150px;
+            background-color: darkgoldenrod;
+        }
+
+        .content {
+            background-color: aliceblue;
+            padding: 20px;
+        }*/
+
+        footer {
+            background-color: navy;
+            width: 100%;
+            height: 50px;
+            float: right;
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript">
+        //insert this in your jquery
+        //control the resizing of menu and go down the content in the correct position
+        $(document).ready(function () {
+
+            if ($('#liInspection ul li').length == 0) {
+                $('#liInspection').remove();
+            }
+            if ($('#liEvent ul li').length == 0) {
+                $('#liEvent').remove();
+            }
+            if ($('#liWorksManagement ul li').length == 0) {
+                $('#liWorksManagement').remove();
+            }
+            if ($('#liWorkPrograms ul li').length == 0) {
+                $('#liWorkPrograms').remove();
+            }
+            if ($('#liRoutineWork ul li').length == 0) {
+                $('#liRoutineWork').remove();
+            }
+
+            if ($('#liUserManagement ul li').length == 0) {
+                $('#liUserManagement').remove();
+            }
+
+            if ($('#liAdministration ul li').length == 0) {
+                $('#liAdministration').remove();
+            }
+
+            if ($('#liBuilding ul li').length == 0) {
+                $('#liBuilding').remove();
+            }
+            if ($('#liLandscaping ul li').length == 0) {
+                $('#liLandscaping').remove();
+            }
+            if ($('#liCarriageway ul li').length == 0) {
+                $('#liCarriageway').remove();
+            }
+            if ($('#liDelineation ul li').length == 0) {
+                $('#liDelineation').remove();
+            }
+            if ($('#liDrainage ul li').length == 0) {
+                $('#liDrainage').remove();
+            }
+            if ($('#liMEE ul li').length == 0) {
+                $('#liMEE').remove();
+            }
+            if ($('#liPavement ul li').length == 0) {
+                $('#liPavement').remove();
+            }
+            if ($('#liRoadFurniture ul li').length == 0) {
+                $('#liRoadFurniture').remove();
+            }
+            if ($('#liSlopes ul li').length == 0) {
+                $('#liSlopes').remove();
+            }
+            if ($('#liTunnel ul li').length == 0) {
+                $('#liTunnel').remove();
+            }
+
+            if ($('#liAsset ul li').length == 0) {
+                $('#liAsset').remove();
+            }
+            if ($('#liMCSCivil ul li').length == 0) {
+                $('#liMCSCivil').remove();
+            }
+            if ($('#liMCSMEE ul li').length == 0) {
+                $('#liMCSMEE').remove();
+            }
+            if ($('#liMCSCivilBacklog ul li').length == 0) {
+                $('#liMCSCivilBacklog').remove();
+            }
+            if ($('#liMCS ul li').length == 0) {
+                $('#liMCS').remove();
+            }
+            if ($('#liPIT ul li').length == 0) {
+                $('#liPIT').remove();
+            }
+            //Report
+
+            if ($('#liAssetReport ul li').length == 0) {
+                $('#liAssetReport').remove();
+            }
+            if ($('#liBreakdownAndDefects ul li').length == 0) {
+                $('#liBreakdownAndDefects').remove();
+            }
+            if ($('#liMeeMonthly ul li').length == 0) {
+                $('#liMeeMonthly').remove();
+            }
+            if ($('#liWorksReport ul li').length == 0) {
+                $('#liWorksReport').remove();
+            }
+            if ($('#liPavementReport ul li').length == 0) {
+                $('#liPavementReport').remove();
+            }
+            if ($('#liMcsCivilReport ul li').length == 0) {
+                $('#liMcsCivilReport').remove();
+            }
+            if ($('#liMcsMeeReport ul li').length == 0) {
+                $('#liMcsMeeReport').remove();
+            }
+            if ($('#liMcsCivilBacklogReport ul li').length == 0) {
+                $('#liMcsCivilBacklogReport').remove();
+            }
+            if ($('#liPitFormReport ul li').length == 0) {
+                $('#liPitFormReport').remove();
+            }
+
+            if ($('#liReport ul li').length == 0) {
+                $('#liReport').remove();
+            }
+
+            // Handler for .ready() called.
+            $(window).resize(function () {
+                $('#godown').height($("#navMenu").height() + 10);
+            });
+
+            if ($("#navMenu").height() > $('#godown').height()) {
+                $('#godown').height($("#navMenu").height() + 10);
+            }
+
+            $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                $(this).parent().siblings().removeClass('open');
+                $(this).parent().toggleClass('open');
+            });
+
+            /* Anything that gets to the document
+will hide the dropdown */
+            $(document).click(function () {
+                $('#navMenu').css('position', 'fixed');
+                $('#navMenu').css('margin-bottom', '20px');
+                $('#godown').show();
+                // window.scrollTo(0,0);
+            });
+
+            /* Clicks within the dropdown won't make
+               it past the dropdown itself */
+            $("#dropdown").click(function (e) {
+                // e.stopPropagation();
+
+            });
+
+            $('li.dropdown [data-toggle=dropdown]').on('click', function (event) {
+                $('#navMenu').css('position', 'relative');
+                $('#navMenu').css('margin-bottom', '9px');
+                $('#godown').hide();
+                window.scrollTo(0, 0);
+            });
+
+        });
+
+    </script>
+    <style>
+        .marginBottom-0 {
+            margin-bottom: 0;
+        }
+
+        .dropdown-submenu {
+            position: absolute;
+        }
+
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+            .dropdown-submenu > a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #cccccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+
+            .dropdown-submenu:hover > a:after {
+                border-left-color: #555;
+            }
+
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+
+                .dropdown-submenu.pull-left > .dropdown-menu {
+                    left: -100%;
+                    margin-left: 10px;
+                    -webkit-border-radius: 6px 0 6px 6px;
+                    -moz-border-radius: 6px 0 6px 6px;
+                    border-radius: 6px 0 6px 6px;
+                }
+    </style>
+    <style>
+        .modal-header,
+        h4,
+        .close {
+            background-color: hsl(228, 58%, 86%);
+            color: white !important;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .sticky-col {
+            position: sticky;
+            position: -webkit-sticky;
+            background-color: white;
+        }
+
+        .first-col {
+            width: 125px;
+            min-width: 125px;
+            max-width: 150px;
+            left: 0px;
+        }
+
+        .bd-callout-info {
+            border-left-color: rgb(13, 176, 240);
+        }
+
+        .bd-callout {
+            padding: 1.25rem;
+            margin-top: 1.25rem;
+            margin-bottom: 1.25rem;
+            border: 1pxsolid#eee;
+            border-left-width: .25rem;
+            border-radius: .25rem;
+        }
+
+
+
+        /*****************************************
+          upload button styles
+        ******************************************/
+        .file-upload {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-upload__label {
+            display: block;
+            padding: 1em 2em;
+            color: #fff;
+            background: rgb(14, 127, 192);
+            border-radius: 0.4em;
+            transition: background 0.3s;
+        }
+
+        .file-upload__input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 1;
+            width: 0;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .tabspace {
+            margin-left: 8px;
+        }
+
+        /* APP LOADING SECTION STARTS */
+        .loading {
+            opacity: 0.5;
+            pointer-events: none !important;
+        }
+
+            .loading > .app-loader {
+                display: block;
+            }
+
+        .app-loader {
+            display: none;
+            border: 10px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 10px solid #1d2d50;
+            width: 70px;
+            height: 70px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 1;
+        }
+
+        /* Safari */
+        @@-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* APP LOADING SECTION ENDS */
+    </style>
+
+    @RenderSection("Scripts", required: false)
+    <div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-labelledby="simpleModalLabel" aria-hidden="true" data-backdrop="static"></div>
+</body>
+</html>

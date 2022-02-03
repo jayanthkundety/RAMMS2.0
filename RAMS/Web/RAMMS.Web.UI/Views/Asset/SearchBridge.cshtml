@@ -1,0 +1,187 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+
+<div class="form-group">
+    @Html.Label("Asset Group", "Asset Group")
+    @Html.TextBoxFor(m => m.AssetListRequest.GroupCode, new { @Id = "AssetGroup", @readonly = "readonly", @class = "form-control " })
+    @*@Html.DropDownListFor(m => m.AssetListRequest.GroupCode, (IEnumerable<SelectListItem>)ViewBag.AssetGroupList, "Select Asset Group", new { @Id = "AssetGroup", @class = "form-control" })*@
+</div>
+<div class="form-group">
+    @Html.Label("Asset Type ", "Asset Type")
+    @Html.DropDownListFor(m => m.AssetListRequest.GroupType, (IEnumerable<SelectListItem>)ViewBag.AssetTypeList, "Select Asset Type", new { @Id = "AssetType", @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("RMU", "RMU")
+    @Html.DropDownListFor(m => m.AssetListRequest.RMUCode, (IEnumerable<SelectListItem>)ViewBag.RMUList, "Select RMU", new { @Id = "RMU", @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Section Code", "Section Code")
+    @*@Html.TextBoxFor(m => m.AssetListRequest.SectionCode, new { @Id = "SectionCode", @class = "form-control" })*@
+    @Html.DropDownListFor(m => m.AssetListRequest.SectionCode, (IEnumerable<SelectListItem>)ViewBag.SectionCodeList, "Select Section Code", new { @Id = "SectionCode", @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Section Name", "Section Name")
+    @Html.TextBoxFor(m => m.AssetListRequest.SectionName, new { @Id = "SectionName", @readonly = "readonly", @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Road Code", "Road Code")
+    @Html.DropDownListFor(m => m.AssetListRequest.RoadCode, (IEnumerable<SelectListItem>)ViewBag.RoadCodeList, "Select Road Code", new { @id = "RoadCode", @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Road Name", "Road Name")
+    @Html.TextBoxFor(m => m.AssetListRequest.RoadName, new { @Id = "RoadName", @readonly = "readonly", @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Bound ", "Bound")
+    @Html.DropDownListFor(m => m.AssetListRequest.Bound, (IEnumerable<SelectListItem>)ViewBag.BoundList, "Select Bound", new { @Id = "Bound", @class = "form-control" })
+</div>
+<div class="form-group">
+    @Html.Label("Location Chainage From", "Location Chainage From")
+    <div class="row">
+        <div class="col-6 float-left pr-0">
+            @*@Html.Label("Km", "Km")*@
+            @Html.TextBoxFor(m => m.AssetListRequest.FromCh, new { @Id = "FromCh", @class = "form-control", @maxlength = "5", @onkeypressvalidate = "number, Location Chainage From Km" })
+        </div>
+        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+        <div class="col-5 float-left pl-0">
+            @*@Html.Label("m", "m")*@
+            @Html.TextBoxFor(m => m.AssetListRequest.FromChDesi, new { @Id = "FromChDesi", @class = "form-control", @maxlength = "3", @onkeypressvalidate = "number, Location Chainage From m" })
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.Label("Location Chainage To", "Location Chainage To")
+    <div class="row">
+        <div class="col-6 float-left pr-0">
+            @*@Html.Label("Km", "Km")*@
+            @Html.TextBoxFor(m => m.AssetListRequest.ToCh, new { @Id = "ToCh", @class = "form-control", @maxlength = "5", @onkeypressvalidate = "number,Location Chainage To Km" })
+        </div>
+        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+        <div class="col-5 float-left pl-0">
+            @*@Html.Label("m", "m")*@
+            @Html.TextBoxFor(m => m.AssetListRequest.ToChDeci, new { @Id = "ToChDeci", @class = "form-control", @maxlength = "3", @onkeypressvalidate = "number, Location Chainage To m" })
+        </div>
+    </div>
+</div>
+@*<div class="col-12">
+            <div class="float-right">
+                <button type="button" class="btn btn-outline-info theme-clr" onclick="javascript:LoadAssetList();">
+                    <i class="fa fa-fw fa-search"></i>&nbsp;Search
+                </button>
+            </div>
+    </div>*@
+
+<script>
+    $(document).ready(function () {
+        $("#RMU").chosen();
+        $("#SectionCode").chosen();
+        $("#RoadCode").chosen();
+        $("#Bound").chosen();
+        $("#AssetType").chosen();
+    })
+    $("#RMU").on("change", function () {
+        var obj = new Object();
+        detailSearchDdList(obj);
+    })
+    $("#RoadCode").trigger("change");
+
+    $("#SectionCode").on('change', function () {
+        var listLoadObj = new Object();
+        listLoadObj.SectionCode = $("#SectionCode").val();
+        detailSearchDdList(listLoadObj);
+
+        var obj = new Object();
+        var arrsec = $("#SectionCode").find(":selected").text().split('-');
+        if (arrsec.length > 0) {
+            obj.TypeCode = arrsec[0];
+        }
+        else {
+            obj.TypeCode = 0;
+        }
+        obj.Type = "Section Code"
+        getNameByCode(obj)
+    })
+    $("#SectionCode").trigger("change");
+
+    $("#RoadCode").on('change', function () {
+        var listLoadObj = new Object();
+        listLoadObj.SectionCode = $("#SectionCode").val();
+        listLoadObj.RdCode = $("#RoadCode").val();
+        detailSearchDdList(listLoadObj);
+
+        var obj = new Object();
+        obj.TypeCode = $("#RoadCode").val();
+        obj.Type = "RD_Code";
+        getNameByCode(obj)
+    })
+    $("#RoadCode").trigger("change");
+
+    function detailSearchDdList(obj) {
+        $("#formADetSrchRMU").val("").trigger("chosen:updated");
+        obj.RMU = $("#RMU").val();
+        searchList(obj);
+    }
+
+    function searchList(obj, clear) {
+        $.ajax({
+            url: '/Assets/detailSearchDdList',
+            data: obj,
+            type: 'Post',
+            success: function (data) {
+                if (obj.RdCode == "" || obj.RdCode == null || obj.RdCode == 0) {
+
+                    $("#RoadCode option").remove();
+                    $("#RoadCode").append($('<option>').val(null).text("Select Road Code"));
+
+                    $.each(data.rdCode, function (index, value) {
+                        $("#RoadCode").append($('<option>').val(value.value).html(value.text));
+                        $("#RoadCode").trigger("chosen:updated");
+
+                    })
+                    $("#RoadName").val(null);
+                }
+
+
+                if (obj.SectionCode == "" || obj.SectionCode == null || obj.SectionCode == 0) {
+
+                    $('#SectionCode option').remove();
+                    $('#SectionCode').append($('<option>').val(null).text('Select Section Code'))
+
+                    $.each(data.section, function (index, value) {
+                        $('#SectionCode').append($('<option>').val(value.value).text(value.text))
+                        $('#SectionCode').trigger("chosen:updated");
+                    })
+                    $("#SectionName").val(null)
+                }
+                if (obj.RMU == "" || obj.RMU == null || obj.RMU == 0) {
+
+                    $('#RMU option').remove();
+                    $('#RMU').append($('<option>').val(null).text('Select RMU'))
+
+                    $.each(data.rmu, function (index, value) {
+                        $('#RMU').append($('<option>').val(value.value).text(value.text))
+                        $('#RMU').trigger("chosen:updated");
+                    })
+
+                }
+                if (clear == "clear") {
+                    GridReload();
+                }
+            }
+        })
+    }
+    function getNameByCode(obj) {
+        $.ajax({
+            url: '/Assets/GetNameByCode',
+            data: obj,
+            type: 'Post',
+            success: function (data) {
+                if (obj.Type == "Section Code") {
+                    $("#SectionName").val(data);
+                }
+                else if (obj.Type == "RD_Code") {
+                    $("#RoadName").val(data);
+                }
+            }
+        })
+    }
+</script>

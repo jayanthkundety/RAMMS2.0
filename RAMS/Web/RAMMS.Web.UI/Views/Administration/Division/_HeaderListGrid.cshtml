@@ -1,0 +1,146 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormDivisionGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+   var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.refNo != "" && data.refNo != null) {
+                title = data.pkRefNo;
+            }
+            var actionSection = "<button type='button' class='btn btn-sm btn-themebtn'  data-backdrop='static' id='formAHeaderEdit' onclick='javascript:edit(" + data.refNo + ");'>Edit</button>";
+            return actionSection;
+        }
+    };
+    table_columns.push(actionCol);
+    var divCode = { data: "divCode", name: "divCode", title: "Division Code", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(divCode);
+    var division = { data: "division", name: "division", title: "Division", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(division); var rmuCode = { data: "rmuCode", name: "rmuCode", title: "RMU Code", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(rmuCode); var rmuName = { data: "rmuName", name: "rmuName", title: "RMU Name", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(rmuName); var sectionCode = { data: "sectionCode", name: "sectionCode", title: "Section Code", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(sectionCode); var sectionName = { data: "sectionName", name: "sectionName", title: "Section Name", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(sectionName); var modBy = { data: "modBy", name: "modBy", title: "ModBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(modBy); var modDt = { data: "modDt", name: "modDt", title: "ModDt", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(modDt); var crBy = { data: "crBy", name: "crBy", title: "CrBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(crBy); var crDt = { data: "crDt", name: "crDt", title: "CrDt", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(crDt);
+    var activeYn = { data: "activeYn", name: "activeYn", title: "ActiveYn", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(activeYn);
+
+
+    function deleteHeader(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes, click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: "/Administration/RemoveSection", dataType: "JSON", data: req, type: "Post", success: function (data) {
+                        if (data) {
+                            app.ShowSuccessMessage("Record deleted successfully");
+                            $('#btnSearch').click();
+                        }
+                        else { app.ShowErrorMessage("Please try again."); }
+                    }, error: function (data) { console.error(data); }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        //debugger;
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.DivCode = $("#txtSmartSearch").val();
+        $('#FormDivisionGridView').DataTable({
+            ajax: {
+                url: "/Administration/GetSectionList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormDivisionGridView').DataTable();
+        $('#btnSearch').click(function () {
+            oTable.columns(0).search($("#txtSmartSearch").val());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+   /* function deleteHeader(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: "/Administration/RemoveDivision", dataType: "JSON", data: req, type: "Post", success: function (data) {
+                        if (data) {
+                            app.ShowSuccessMessage("Record deleted successfully");
+                            $('#btnSearch').click();
+                        }
+                        else { app.ShowErrorMessage("Please try again."); }
+                    }, error: function (data) { console.error(data); }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.Code = $("#txtSmartSearch").val();
+        $('#FormDivisionGridView').DataTable({
+            ajax: {
+                url: "/Administration/GetDivisionList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        //debugger;
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormDivisionGridView').DataTable();
+        $('#btnSearch').click(function () {
+            oTable.columns(0).search($("#txtSmartSearch").val());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });*/
+</script>

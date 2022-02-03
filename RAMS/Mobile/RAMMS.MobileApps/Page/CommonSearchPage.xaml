@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             
+    xmlns:behaviors="clr-namespace:RAMMS.MobileApps"
+            
+             xmlns:render="clr-namespace:RAMMS.MobileApps.Controls"
+             xmlns:local="clr-namespace:school"  
+
+             x:Class="RAMMS.MobileApps.Page.CommonSearchPage">
+    <ContentPage.Content>
+             <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                
+                <RowDefinition Height="*"/>
+               
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                   <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+          <render:FrameRenders   TwoSideCorner="True" Padding="18,1,18,1" Grid.Row="0" Grid.Column="0" Margin="35,0,35,0" IsClippedToBounds="True"  ColorName="LightGray" HasShadow="False"   BackgroundColor="Transparent">
+                        <render:FrameRenders.FrameBordrWidth>
+                            <OnPlatform  x:TypeArguments="x:Double">
+                                <On Platform="iOS" Value="2"/>
+                                <On Platform="Android" Value="8"/>
+                            </OnPlatform>
+                        </render:FrameRenders.FrameBordrWidth>
+                        <StackLayout Padding="0,0,0,0" BackgroundColor="White" Orientation="Horizontal" >
+                            <Image  VerticalOptions="Center"  Source="search" Aspect="AspectFit"/>
+                            <local:customEntryEffect Text="{Binding SearchText}" HasNoPadding="True" Style="{StaticResource SearchEntryStyle}" ReturnCommand="{Binding SearchCommand}"  HorizontalOptions="FillAndExpand" Placeholder="">
+
+                            </local:customEntryEffect>
+                        </StackLayout>
+                    </render:FrameRenders>
+
+                     
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

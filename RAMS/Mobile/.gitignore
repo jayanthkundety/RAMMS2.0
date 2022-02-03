@@ -1,0 +1,10 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+.vs
+/RAMMS.MobileApps/obj
+/RAMMS.MobileApps/bin
+/RAMMS.MobileApps.Android/obj
+/RAMMS.MobileApps.Android/bin
+/RAMMS.MobileApps/RAMMS.MobileApps.csproj.user
+/RAMMS.MobileApps.Android/RAMMS.MobileApps.Android.csproj.user
+/RAMMS.MobileApps.Android/Resources/Resource.designer.cs

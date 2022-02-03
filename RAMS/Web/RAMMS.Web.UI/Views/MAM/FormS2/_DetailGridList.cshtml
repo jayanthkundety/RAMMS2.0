@@ -1,0 +1,147 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormS2DetailGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var isViewMode = $("#IsHView").val();
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol",  autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.id != "" && data.id != null) {
+                title = data.id;
+            }
+            if (isViewMode=="1") {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' data-backdrop='static' onclick='javascript:viewDetail(" + data.id + ");'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' data-target='#FormS2AdddetailsModal'  data-backdrop='static' id='formAHeaderEdit'" + isModifyPerm + " onclick='javascript:openDetail(" + data.id + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' data-backdrop='static' onclick='javascript:viewDetail(" + data.id + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteDetail(" + data.id + ");'><span class='del-icon'></span> Delete</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var noCol = { data: "id", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
+    var refNoCol = { data: "referenceNo", name: "Id", title: "Reference No", autoWidth: true, sortable: false };
+    var roadCode = { data: "roadCode", name: "Road Code", title: "Road Code", autoWidth: true, sortable: false };
+    var roadName = { data: "roadName", name: "Road Name", title: "Road Name", autoWidth: true, sortable: false };
+    var pavedLength = { data: "pavedLength", name: "pavedLength", title: "Paved Length", autoWidth: true, sortable: false };
+
+    var unpavedLength = { data: "unPavedLength", name: "unPavedLength", title: "Unpaved Length", autoWidth: true, sortable: false };
+
+    var roadLocseq = { data: "roadLocationSequence", name: "roadLocationSequence", title: "Road Locaion Seq.", autoWidth: true, sortable: false };
+
+    var priority = { data: "priority", name: "priority", title: "Priority", autoWidth: true, sortable: false };
+    var workQty = { data: "workQty", name: "Work Qty", title: "Work Qty", autoWidth: true, sortable: false };
+
+
+    var adp = { data: "adp", name: "adp", title: "Adp", autoWidth: true, sortable: false };
+
+    var crewDayRequired = { data: "crewDayRequired", name: "crewDayRequired", title: "Crew Required(Per day)", autoWidth: true, sortable: false };
+
+
+    var target = { data: "target", name: "Target", title: "Target", autoWidth: true, sortable: false };
+    var weeks = {
+        data: null, name: "Quarter", title: "Weeks", autoWidth: true, sortable: false, render: function (data) {
+
+            var subbody = '';
+            $.each(data.weeks, function (sIndex, sValue) {
+                if (subbody.length > 1) {
+                    subbody += ", ";
+                }
+                subbody += "W";
+                subbody += sValue;
+            });
+            return subbody;
+
+        }
+    };
+
+    var remarks = { data: "remarks", name: "Remarks", title: "Remarks", autoWidth: true, sortable: false };
+    table_columns.push(noCol);
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(roadCode);
+    table_columns.push(roadName);
+    table_columns.push(pavedLength);
+    table_columns.push(unpavedLength);
+    table_columns.push(roadLocseq);
+    table_columns.push(priority);
+    table_columns.push(workQty);
+    table_columns.push(adp);
+    table_columns.push(crewDayRequired);
+    table_columns.push(target);
+    table_columns.push(weeks);
+    table_columns.push(remarks);
+    var oDTable = null;
+    function deleteDetail(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: '/FormS2/RemoveS2Detail',
+                    dataType: 'JSON',
+                    data: req,
+                    type: 'Post',
+                    success: function (data) {
+                        if (data) {
+                            oDTable.draw();
+                            app.ShowSuccessMessage("Record deleted successfully");
+                        }
+                        else {
+                            app.ShowErrorMessage("Not deleted, Please try again.");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+
+    function InitializeDetailsGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+        filterData.HeaderId = _hd.HdnHeaderPkId.val();
+        if (oDTable != null) {
+            oDTable.destroy();
+        }
+        
+            oDTable = $('#FormS2DetailGridView').DataTable({
+                ajax: {
+                    url: "/FormS2/GetFilteredS2Details",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                        
+                        filterData
+                    }
+                },
+                columns: table_columns
+            });
+        oDTable.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        InitializeDetailsGrid();
+    });
+</script>

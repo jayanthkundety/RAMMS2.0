@@ -1,0 +1,397 @@
+﻿@{
+    ViewBag.TabTitle = "ERT - Form X - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+
+@model RAMMS.Web.UI.Models.FormXModel;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormAService service;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script>
+
+    var modalOptions = {
+        backdrop: 'static', keyboard: false
+    };
+
+
+
+
+    $(document).ready(function () {
+        $("#formAAdvSearch").hide();
+        $("#formXSrchRMU").chosen();
+        $("#formXSrchRdCode").chosen();
+        $("#formXSrchMainTask").chosen();
+        $("#formXSrchSubTask").chosen();
+
+        element = document.querySelector("#detailSearch");
+        element.addEventListener("keyup", () => {
+            if (event.keyCode === 13) {
+                $('#assetsSearchBtn').trigger('click');
+            }
+        });
+
+
+        $("#FormXSmartSearch").keyup(function () {
+            if (event.keyCode === 13) {
+                //$('#formXSearchBtn').trigger('click');
+                FormXGridRefresh()
+            }
+         })
+
+        $("#formXSrchRMU").on("change", function () {
+            var obj = new Object();
+            //var val = $("#formXSrchRMU option:selected").text().split('-');
+            obj.RMU = $("#formXSrchRMU").val();
+        $.ajax({
+            url: '/Assets/detailSearchDdList',
+            data: obj,
+            type: 'Post',
+            success: function (data) {
+
+                    $("#formXSrchRdCode option").remove();
+                    $("#formXSrchRdCode").append($('<option>').val(null).text("Select Road Code"));
+
+                    $.each(data.rdCode, function (index, value) {
+                        $("#formXSrchRdCode").append($('<option>').val(value.value).html(value.text));
+                        $("#formXSrchRdCode").trigger("chosen:updated");
+
+                    })
+
+            }
+        })
+        });
+         $("#formXSrchRMU").trigger("change");
+      //  searchHeaderList();
+    });
+    function AddModalCloseFormX() {
+         disableAttrExist = $("#WarPhotoModal").attr("disabled")
+        if (!disableAttrExist) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $('#FormXAddModal').modal('hide');
+                    FormXGridRefresh()
+                }
+            }));
+        }
+         else {
+            $('#FormXAddModal').modal('hide');
+              FormXGridRefresh()
+        }
+
+    }
+
+    function FormXGridRefresh() {
+         oTable = $('#FormXGridView').DataTable();
+        //var val = $("#formXSrchRMU option:selected").text().split("-");
+            oTable.columns(0).search($("#FormXSmartSearch").val().trim());
+            oTable.columns(1).search($("#formXSrchRMU").val().trim());
+            oTable.columns(2).search($("#formXSrchMainTask").val().trim());
+            oTable.columns(3).search($("#formXSrchSubTask").val().trim());
+            oTable.columns(4).search($("#formXSrchWrkSchdDate").val().trim());
+            oTable.columns(5).search($("#formXSrchWrkCmpDate").val().trim());
+            oTable.columns(6).search($("#formXSrchCaseDt").val().trim());
+            oTable.columns(7).search($("#formXSrchRdCode").val().trim());
+            oTable.data = filterData;
+        oTable.draw();
+
+
+    }
+    function detailSearch() {
+        $("#formAAdvSearch").slideToggle(500);
+    }
+
+    function EditFormX(pid,view) {
+
+        //$('#FormXAddModal').modal(modalOptions);
+         InitAjaxLoading();
+            $.ajax({
+                url: '/ERT/EditFormX',
+                data: { headerId: pid },
+                type: 'POST',
+                success: function (data) {
+                    $("#FormXAddModal").modal('show')
+                    $("#div-data-container").html(data);
+                     HideAjaxLoading();
+                    $("#imagePreviewAdd").css("display", "none");
+                    if (pid != 0) {
+                        $("#FormXAddModalid").html("Edit FORM X");
+                        $("#saveFormXBtn").prop("disabled", false);
+                         $("#imagePreviewAdd").css("display","block")
+                    }
+                    else {
+                        $("#FormXAddModalid").html("Add FORM X");
+                    }
+                        $(".editdisabled").prop("disabled", pid!=0);
+
+                    if (view == 1) {
+                        $("#FormXAddModalid").html("View FORM X");
+                        $("#div-data-container *").attr("disabled", "disabled").off('click');
+                        $("#btnFormDOpenModal").css("display", "none");
+                        $("#cancelAddModelBtn").prop("disabled", false);
+                        $("#saveFormXBtn").css("display", "none");
+                        $("#div-WarPhoto").addClass("disableView");
+                        $("#div-USeeUModal").addClass("disableView");
+                        $("#close_War").prop("disabled", false);
+                        $("#close_UCU").prop("disabled", false);
+                        $("#imagePreviewAdd").css("display", "block");
+                        $("#formXRMU").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormXRoadCode").prop("disabled", true).trigger("chosen:updated");
+                        $("#formXmod").prop("disabled", true).trigger("chosen:updated");
+                        $("#formXRepBy").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormXAttnto").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormXVeriBy").prop("disabled", true).trigger("chosen:updated");
+                        $("#formXSts").prop("disabled", true).trigger("chosen:updated");
+                        $("#formXmainCode").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormXsubCode").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormXAssgnto").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormXSVerby").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormXSVetby").prop("disabled", true).trigger("chosen:updated");
+                    }
+
+                }
+            });
+    }
+
+    function searchHeaderList() {
+        var filterData = new Object();
+        filterData.SmartInputValue = $("#FormASmartSearch").val();
+        filterData.Rmu = $("#formADetSrchRMU").val();
+        //filterData.section = $("#formADetSrchSec").val();
+        filterData.RoadCode = $("#formADetSrchRoadCode").val();
+        filterData.AssetGroupCode = $("#formADetSrchAsstGrp").val();
+        //filterData.Month = $("#formADetSrchMonth").val();
+        //filterData.FromCh = $("#DetSrchChFrom").val();
+        //filterData.ToCh = $("#DetSrchChTo").val();
+        $("body").addClass("loading");
+        $.ajax({
+            url: '/ERT/SearchHeaderList',
+            data: filterData,
+            type: 'POST',
+            success: function (data) {
+
+                $("#headerListGrid").html(data);
+                $("body").removeClass("loading");
+            }
+        });
+    }
+
+    function DeleteHeaderRecord(id) {
+        var headerId = id;
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+
+               InitAjaxLoading();
+                $.ajax({
+                    url: '/ERT/HeaderListDelete',
+                    data: { headerId },
+                    type: 'POST',
+                    success: function (data) {
+                         HideAjaxLoading();
+                        if (data > 0) {
+                            $("body").removeClass("loading");
+                            app.ShowSuccessMessage("Deleted Successfully", false);
+                            FormXGridRefresh();
+                            //searchHeaderList();
+                        }
+                        else {
+                            app.ShowWarningMessage("Please try again later.", false);
+                            $("body").removeClass("loading");
+                        }
+                    }
+                });
+            }
+        }));
+    }
+
+    function EditHeaderRecord(id){
+        var headerId = id;
+        localStorage.setItem("headeridvalue", headerId);
+
+        window.location = "@Url.Action("HeaderListEdit", "ERT")" +
+                "?headerId=" + headerId;
+
+
+        ////$("body").addClass("loading");
+        //$.ajax({
+        //    url: '/NOD/HeaderListEdit',
+        //    data: { headerId },
+        //    type: 'POST',
+        //    success: function (data) {
+        //  //   $("#DetailListGrid").html(data);
+
+        //        //$("body").removeClass("loading");
+        //}
+        //});
+    }
+
+</script>
+<style>
+    .datepicker {
+        border-color: #d2ddec;
+        font-size: 14px;
+        font-weight: 600;
+        height: calc(1.5em + .75rem + 1px);
+        padding: .375rem .35rem !important;
+        width: 100%;
+        margin: 0px;
+        border: 1px solid #ced4da;
+        background-clip: padding-box;
+        border-radius: .25rem;
+        line-height: 1.5;
+        color: #495057;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+</style>
+
+@{
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
+}
+
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">ERT - Form X</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">ERT</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Form X
+                            @*<a class="link-fx" href="">Form X</a>*@
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div id="FormXsearch">
+    <div class="search-section">
+        <div class="row justify-content-center mb-1">
+            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.FormXSearchObj.SmartInputValue, new { @Id = "FormXSmartSearch", placeholder = "Search...", @class = "form-control" })
+                    <div class="input-group-append">
+                        <div class="btn-group">
+                            <button id="formXSearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                            <button id="formASearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                            <button type="button" ClearSearch="#FormXsearch" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*Detail Search Screen*@
+        <div id="detailSearch">
+            <div class="row" id="formAAdvSearch" style="display:block">
+                <form id="formADetailsearchForm" name="formADetailsearchForm">
+                    <div class="col-lg-10 offset-lg-1">
+                        <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                            <div class="row">
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("RMU", "RMU")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormXSearchObj.Rmu, (IEnumerable
+                                   <SelectListItem>)ViewBag.RMUList, "Select RMU", new { @Id = "formXSrchRMU", @class = "form-control widget-content-area" })
+
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    @{
+                                        var roadcode = service.GetDropdown(new RAMMS.DTO.ResponseBO.RequestDropdownFormA
+                                        {
+                                            RMU = ""
+                                        });
+
+                                        var RoadCode = roadcode.RoadCode.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+                                    }
+                                    @Html.Label("Road Code", "Road Code")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormXSearchObj.RoadCode, (IEnumerable
+                                  <SelectListItem>)RoadCode, "Select Type Code", new { @Id = "formXSrchRdCode", @class = "form-control widget-content-area", @clear = "rebind" })
+
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Main Task", "Main Task")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormXSearchObj.ActMainName, (IEnumerable
+                                    <SelectListItem>)ViewData["ACTMainTaskList"], "Select Main Task", new { @Id = "formXSrchMainTask", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Sub Task Level 1", "Sub Task")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormXSearchObj.ActSubCode, (IEnumerable
+                                    <SelectListItem>)ViewData["ACTSubTask"], "Select Sub Task", new { @Id = "formXSrchSubTask", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Work Scheduled Date (DD-MM-YYYY)", "Work Scheduled Date (DD-MM-YYYY)")
+                                    @*@Html.TextBoxFor(Ahdr => Ahdr.SearchObj.Verified_By, new { @Id = "formAFromKm", @class = "form-control date-picker" })*@
+                                    <input type="date" class="datepicker" id="formXSrchWrkSchdDate" name="formXSrchWrkSchdDate" pattern="\d{2}/\d{2}/\d{4}">
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Work Completed Date (DD-MM-YYYY)", "Work Completed Date (DD-MM-YYYY)")
+                                    @*@Html.TextBoxFor(Ahdr => Ahdr.SearchObj.Verified_By, new { @Id = "formAFromKm", @class = "form-control date-picker" })*@
+                                    <input type="date" class="datepicker" id="formXSrchWrkCmpDate" name="formXSrchWrkCmpDate" pattern="\d{2}/\d{2}/\d{4}">
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Case Closed Date (DD-MM-YYYY)", "Case Closed Date (DD-MM-YYYY)")
+                                    @*@Html.TextBoxFor(Ahdr => Ahdr.SearchObj.Verified_By, new { @Id = "formAFromKm", @class = "form-control date-picker" })*@
+                                    <input type="date" class="datepicker" id="formXSrchCaseDt" name="formXSrchCaseDt" pattern="\d{2}/\d{2}/\d{4}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+            @if (security.IsPCModify(ModuleNameList.Emergency_Response_Team))
+            {
+                <div class="grid-btns">
+                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditFormX(0);"><span class="add-icon"></span> Add</button>
+                </div>
+            }
+            <div class="modal fade" id="FormXAddModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+                 aria-labelledby="FormXAddModalid" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="FormXAddModalid">Add Form X</h5>
+                            <button type="button" class="close" onclick="AddModalCloseFormX()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        @* Patial View for add Class to bind data in partial view *@
+                        <div id="div-data-container">
+                            @{
+                                //Html.RenderPartial("_BridgeGrid.cshtml");
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Form X Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+
+        </div>
+    </div>
+</main>
+@if (ViewBag.ViewId != null && ViewBag.ViewId != "")
+{
+    <script type="text/javascript">
+        $(function () {
+            setTimeout(function () {
+                $("#FormXAddModal").modal();
+                EditFormX(@ViewBag.ViewId, 1);
+            }, 1000);
+        });
+    </script>
+}

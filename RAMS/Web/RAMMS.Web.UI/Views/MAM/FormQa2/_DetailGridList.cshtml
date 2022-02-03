@@ -1,0 +1,141 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+<style type="text/css">
+    .dataTables_scroll {
+        overflow: auto;
+    }
+</style>
+<div class="main-container" id="container">
+
+    <div id="content">
+        <table id="FormQa2GridDetail" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+<script src="~/js/CDTGrid.js"></script>
+
+<script type="text/javascript">
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()?"":'hidden';
+    var isDeletePerm=@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()?"":'hidden';
+    var IsView = 0;
+    var IsCulvertOrBridge = 0;
+    var table = null;
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.refId != "" && data.refId != null) {
+                title = data.refId;
+            }
+            if (IsView != "1" && (!data.submitSts)) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' "+ isModifyPerm +"    id='formAHeaderEdit' onclick='javascript:AddDetail(" + data.no + ",&#39;" + title + "&#39;);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteDetail(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:ViewDetail(" + data.no + ",&#39;" + title + "&#39;);' data-target='#FormAAdddetailsModal'  data-toggle='modal'  href='#'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:ViewDetail(" + data.no + ",&#39;" + title + "&#39;);' data-target='#FormAAdddetailsModal'  data-toggle='modal'  href='#'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var chainageFrom = {
+        data: null, name: "Chainage From", title: "Chainage From", autoWidth: true, sortable: false, render: function (data) {
+            if (data.frmCh != null && data.frmChDeci != null) {
+                return data.frmCh + '.' + data.frmChDeci;
+            }
+            else if (data.frmCh != null && data.frmChDeci == null) {
+                return data.frmCh + '.' + '0';
+            }
+            else if (data.frmCh == null && data.frmChDeci != null) {
+                return '0.' + data.frmChDeci;
+            }
+            else {
+                return '0.0';
+            }
+        }
+    };
+    var chainageTo = {
+        data: null, name: "Chainage To", title: "Chainage To", autoWidth: true, sortable: false, render: function (data) {
+            if (data.toCh != null && data.toChDeci != null) {
+                return data.toCh + '.' + data.toChDeci;
+            }
+            else if (data.toCh != null && data.toChDeci == null) {
+                return data.toCh + '.' + '0';
+            }
+            else if (data.toCh == null && data.toChDeci != null) {
+                return '0.' + data.toChDeci;
+            }
+            else {
+                return '0.0';
+            }
+        }
+    };
+    var noCol = { data: "no", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
+    var refNoCol = { data: "refId", name: "RefId", title: "Reference No", autoWidth: true, sortable: false };
+   // var dt = { data: "dt", name: "Date", title: "Date", autoWidth: true, sortable: false };
+    //var monthCol = { data: "monthYear", name: "Office Ref.", title: "Office Ref.", autoWidth: true, sortable: false };
+    var siteRef = { data: "siteRef", name: "Site Ref.", title: "Site Ref.", autoWidth: true, sortable: false };
+    var defCode = { data: "defCode", name: "Defect", title: "Defect", autoWidth: true, sortable: false };
+    var dim = {
+        data: null, name: "Dimension", title: "Dimension (L x W x H)", autoWidth: true, sortable: false, render: function (data) {
+            var len = 0;
+            var wid = 0;
+            var height = 0;
+            if (data.dimLength != null) { len = data.dimLength;}
+            if (data.dimHeight != null) { height = data.dimHeight; }
+            if (data.dimWidth != null) { wid = data.dimWidth; }
+            if (len == 0 && wid == 0 && height == 0) { return null;}
+            return len + " x " + wid + " x " + height;
+        }
+    };
+    var wws13aFol = { data: "wws13aFol", name: "wws13aFol", title: "WWS/13A Fol.", autoWidth: true, sortable: false };
+    var remarks = { data: "remarks", name: "Remarks", title: "Remarks", autoWidth: true, sortable: false };
+
+    table_columns.push(noCol);
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(siteRef);
+    table_columns.push(chainageFrom);
+    table_columns.push(chainageTo);
+    table_columns.push(defCode);
+    table_columns.push(dim);
+    table_columns.push(wws13aFol);
+    table_columns.push(remarks);
+
+    var filterData = new Object();
+    function InitializeGrid(id) {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+        filterData.HeaderNo = + $("#HDNHeaderNo").val();
+        if (id != undefined) {
+            filterData.HeaderNo = id;
+        }
+        if (table != null) {
+            table.destroy();
+            $('#FormQa2GridDetail').empty();
+        }
+
+        table = $('#FormQa2GridDetail').DataTable({
+            ajax: {
+                url: "/MAM/GetFilteredQa2Details",
+                type: "POST",
+                datatype: "json",
+                data: { filterData }
+            },
+            columns: table_columns
+        });
+        table.columns.adjust().draw();
+
+    }
+
+    $(document).ready(function () {
+        IsView = $("#IsViewDetail").val();
+        IsCulvertOrBridge = $("#IsCulvertOrBridge").val();
+        InitializeGrid();
+    });
+</script>
+<script>
+    function changeevent(id) {
+        //alert(id);
+         window.location = "@Url.Action("DetailEditOrUpdate", "NOD")" +
+             "?headerid=" + id;
+    }
+</script>

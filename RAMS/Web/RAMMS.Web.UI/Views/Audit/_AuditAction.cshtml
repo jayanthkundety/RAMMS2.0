@@ -1,0 +1,203 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+
+    .green {
+        background-color: green;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="float-left col-lg-6 dt-tbl-section">
+            <table id="AuditAction" class="table w-100 nowrap">
+            </table>
+        </div>
+        <div class="float-left col-lg-6 dt-tbl-section">
+            <table id="AuditTransaction" class="table w-100 nowrap">
+            </table>
+        </div>
+        <div class="modal fade" id="usergroupModal" tabindex="-1" role="dialog" aria-labelledby="pwdModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+                <div class="modal-content bg-body">
+                    <div class="modal-header bg-white">
+                        <h5 class="modal-title" id="FormAAddModalid">Changed Column Detail</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div> <div class="float-left col-lg-12 dt-tbl-section">
+                        <div class="dataTables_scroll">
+                            <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                                <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 100%; padding-right: 0px;">
+                                    <table class="table w-100 nowrap dataTable no-footer" role="grid" style="margin-left: 0px;">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 33%;" aria-label="Transaction Name">Column Name</th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 33%;" aria-label="Table Name">Old Value</th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 33%;" aria-label="Table Name">New Value</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 100%; height: 100%;">
+                                <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 100%; padding-right: 0px;">
+                                    <table class="table w-100 nowrap dataTable no-footer" role="grid" aria-describedby="AuditTransaction_info">
+                                        <thead>
+                                            <tr role="row" style="height: 0px;">
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 33%; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Transaction Name"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Transaction Name</div></th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 33%; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Table Name"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Table Name</div></th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 33%; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;" aria-label="Table Name"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Table Name</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="abody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+    <script src="~/js/CDTGrid.js"></script>
+    <script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+
+    var pkRefNo = { data: "pkRefNo", name: "pkRefNo", title: "PkRefNo", autoWidth: true, sortable: false, visible: false };
+    var requestip = { data: "requestip", name: "requestip", title: "IP Address", autoWidth: true, sortable: false, visible: true };
+    var requester = { data: "requester", name: "requester", title: "Requester", autoWidth: true, sortable: false, visible: true };
+    var actionname = { data: "actionname", name: "actionname", title: "Action", autoWidth: true, sortable: false, visible: true };
+    var crDt = {
+        data: null, name: "crDt", title: "Created On", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.crDt) {
+                var d = new Date(data.crDt);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else
+                return "";
+        }
+    };
+    table_columns.push(pkRefNo);
+    table_columns.push(requestip);
+    table_columns.push(requester);
+    table_columns.push(actionname);
+    table_columns.push(crDt);
+
+    var filterData = new Object();
+    function InitializeActionGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        $('#AuditAction').DataTable({
+            ajax: {
+                url: "/Audit/GetAuditActionList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    var Ttable_columns = [];
+    var TpkRefNo = { data: "pkRefNo", name: "pkRefNo", title: "PkRefNo", autoWidth: true, sortable: false, visible: false };
+    Ttable_columns.push(TpkRefNo);
+    var TalaPkRefNo = { data: "alaPkRefNo", name: "alaPkRefNo", title: "AlaPkRefNo", autoWidth: true, sortable: false, visible: false };
+    Ttable_columns.push(TalaPkRefNo);
+    var Ttransactionname = { data: "transactionname", name: "transactionname", title: "Transaction Name", autoWidth: true, sortable: false, visible: true };
+    Ttable_columns.push(Ttransactionname);
+    var Ttablename = { data: "tablename", name: "tablename", title: "Table Name", autoWidth: true, sortable: false, visible: true };
+    Ttable_columns.push(Ttablename);
+    var Ttransactindetails = { data: "transactindetails", name: "transactindetails", title: "Transactin Details", autoWidth: true, sortable: false, visible: false };
+    Ttable_columns.push(Ttransactindetails);
+    var filterTData = new Object();
+    var oTransactionTable = null;
+    function InitializeTransactionGrid(id) {
+        try {
+        var _currentGridSettings = new CustomGridSettings();
+            $.extend($.fn.dataTable.defaults, _currentGridSettings);
+        if (oTransactionTable == null) {
+
+                oTransactionTable = $('#AuditTransaction').DataTable({
+                    ajax: {
+                        url: "/Audit/GetAuditTransactionList",
+                        type: "POST",
+                        datatype: "json",
+                        data: {
+                            filterTData
+                        }
+                    },
+                    columns: Ttable_columns
+                });
+
+        }
+        else {
+
+            oTransactionTable.columns(0).search(id);
+            oTransactionTable.data = filterTData;
+            oTransactionTable.draw();
+            }
+        }
+            catch (e) {
+
+        }
+    }
+    var oTransactionHisotryTable;
+
+    var th = [];
+    var col = { data: "Col", name: "Col", title: "Column", autoWidth: true, sortable: false, visible: true };
+    var ov = { data: "OV", name: "Col", title: "Old Value", autoWidth: true, sortable: false, visible: true };
+    var nv = { data: "NV", name: "Col", title: "New Value", autoWidth: true, sortable: false, visible: true };
+    th.push(col);
+    th.push(ov);
+    th.push(nv);
+    var d;
+    function InitializeColumnChange(_data) {
+
+        var jsonString = JSON.parse(_data);
+        $("#abody").html('');
+        $.each(jsonString, function (i, va) {
+            $("#abody").append(`<tr><td>${va.Col}</td><td>${va.OV}</td><td>${va.NV}</td></tr>`);
+        });
+        $("#usergroupModal").modal("show");
+    }
+
+    $(document).ready(function () {
+        InitializeActionGrid();
+
+        @*grp.trigger("chosen:updated");
+        usgrp.trigger("chosen:updated");*@
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#AuditAction').DataTable();
+        InitializeTransactionGrid(0);
+        oTransactionTable = $('#AuditTransaction').DataTable();
+        $('#AuditAction tbody').on('click', 'tr', function () {
+            var data = oTable.row(this).data();
+            InitializeTransactionGrid(data.pkRefNo);
+        });
+
+        $('#AuditTransaction tbody').on('click', 'tr', function () {
+            var data = oTransactionTable.row(this).data();
+            InitializeColumnChange(data.transactindetails);
+
+        });
+    });
+    </script>

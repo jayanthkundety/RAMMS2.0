@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EFCore.BulkExtensions" Version="3.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="OpenXmlPowerTools" Version="4.5.3.2" />
+    <PackageReference Include="Z.EntityFramework.Extensions.EFCore" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAMMS.Common\RAMMS.Common.csproj" />
+    <ProjectReference Include="..\RAMMS.Domain\RAMMS.Domain.csproj" />
+    <ProjectReference Include="..\RAMMS.DTO\RAMMS.DTO.csproj" />
+  </ItemGroup>
+
+</Project>

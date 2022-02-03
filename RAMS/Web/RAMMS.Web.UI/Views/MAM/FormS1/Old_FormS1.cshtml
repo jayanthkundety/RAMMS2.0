@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "MAM - Form S1 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">MAM - Form S1</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Management and Maintanence</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            <a class="link-fx" href="">Form S1</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <form action="" method="POST">
+        <div class="row justify-content-center mb-1">
+            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+                <div class="input-group">
+                    <input class="form-control" id="" name="" placeholder="Search..." type="text" value="">
+                    @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormS1SmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                    <div class="input-group-append">
+                        <div class="btn-group">
+                            <button id="" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                            <button id="" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                            <button id="" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formS1AdvSearch" style="display:block">
+            <form id="formS1DetailsearchForm" name="formS1DetailsearchForm">
+                <div class="col-lg-6 offset-lg-3">
+                    <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                @Html.Label("RMU", "RMU")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                <input type="date" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.Label("Week No.", "Week No.")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="javascript:EditFormS1(0,0);"><span class="add-icon"></span> Add Form S1</button>
+            </div>
+
+            @*Form S1 Grid*@
+            @*<div id="headerListGrid" class="w-100 dt-tbl-section">
+                    @{
+                        Html.RenderPartial("_HeaderListGrid.cshtml");
+                    }
+                </div>*@
+
+        </div>
+    </div>
+</main>
+

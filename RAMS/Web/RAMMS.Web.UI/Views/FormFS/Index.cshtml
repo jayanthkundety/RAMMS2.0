@@ -1,0 +1,348 @@
+﻿
+@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormF2Service formS2
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormFSService n1Service
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity _security
+@{
+    ViewData["Title"] = "Form FS - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Form FS - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+
+    IEnumerable<SelectListItem> year = (await ddlService
+.GetLookups(new DDLookUpDTO { Type = "Year" }))
+.Select(s => new SelectListItem
+{
+    Text = s.DdlTypeValue,
+    Value = s.DdlTypeValue
+}).ToArray();
+    IEnumerable<SelectListItem> section = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
+
+    IEnumerable<SelectListItem> roadcode = (IEnumerable<SelectListItem>)ViewData["RD_Code"];
+
+
+    IEnumerable<SelectListItem> rmu = (await ddlService
+.GetLookups(new DDLookUpDTO { Type = "RMU" }))
+.Select(s => new SelectListItem
+{
+    Text = s.DdlTypeDesc,
+    Value = s.DdlTypeCode
+}).ToArray();
+    IEnumerable<SelectListItem>
+    user = await usr.GetUserList();
+
+}
+<script type="text/javascript">
+    const _hd = {
+        ddlFormType: $("#ddlFormType"),
+        ddlYear: $("#ddlYear"),
+        ddlRmuCode: $("#ddlRMU"),
+        ddlSection: $("#ddlSection"),
+        txtSectionName: $("#txtSectionName"),
+        ddlRoadCode: $("#ddlRoadCode"),
+        txtRoadName: $("#txtRoadName")
+    };
+
+    function fnEditForm(pid, view) {
+        window.location = '@Url.Action("Add", "FormFS")' + "?id=" + pid + "&view=" + view;
+    }
+
+    function bindRMU(callback) {
+        var req = {};
+        req.RMU = ''
+        req.Section = '';
+        req.RdCode = '';
+        $("#txtSectionName").val("");
+        $("#txtRoadName").val("");
+        $.ajax({
+            url: '/NOD/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+
+                //if (req.Section == "") {
+                $("#ddlRmuCode").empty();
+                $("#ddlRmuCode").append($("<option></option>").val("").html("Select Section Code"));
+                $.each(data.rmu, function (index, v) {
+                    $("#ddlRmuCode").append($("<option></option>").val(v.value).html(v.value+"-"+v.text));
+                });
+
+                $("#ddlRmuCode").trigger("chosen:updated");
+
+                if (callback)
+                    callback();
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+    }
+
+    function bindSection(callback) {
+
+        var req = {};
+        var _rmu = $("#ddlRmuCode");
+        var _sec = $("#ddlSection");
+        var _road = $("#ddlRoadCode");
+        req.RMU = $("#ddlRmuCode").val();
+        req.SectionCode = '';
+        req.RdCode = '';
+        $("#txtRoadName").val("");
+        $("#txtSectionName").val("");
+        $.ajax({
+            url: '/NOD/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+
+                $("#ddlSection").empty();
+                $("#ddlSection").append($("<option></option>").val("").html("Select Section Code"));
+                $.each(data.section, function (index, v) {
+                    $("#ddlSection").append($("<option></option>").val(v.value).html(v.text));
+                });
+                $("#ddlSection").trigger("chosen:updated");
+                if (callback)
+                    callback();
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+    }
+
+
+    function bindRoadCode(callback) {
+
+        var req = {};
+        var _rmu = $("#ddlRmuCode")
+        var _sec = $("#ddlSection");
+        var _road = $("#ddlRoadCode");
+        req.RMU = $("#ddlRmuCode").val();
+        req.SectionCode = $("#ddlSection").val();
+        req.RdCode = '';
+        $("#txtRoadName").val("");
+        $.ajax({
+            url: '/NOD/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+
+                _road.empty();
+                _road.append($("<option></option>").val("").html("Select Road Code"));
+                $.each(data.rdCode, function (index, v) {
+                    _road.append($("<option></option>").val(v.value).html(v.text));
+                });
+                _road.trigger("chosen:updated");
+                if (callback)
+                    callback();
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+
+        $("#ddlRmuCode").chosen();
+        $("#ddlRoadCode").chosen();
+        $("#ddlSection").chosen();
+        $("#ddlFrom").chosen();
+        $("#ddlTo").chosen();
+        $("#btnAdvSearch").on("click", function () {
+            $("#formF2AdvSearch").toggle();
+        });
+
+        $("#ddlRmuCode").on("change", function () {
+            if (this.value == "") {
+                $("#ddlSection").val("");
+
+            }
+            else {
+                bindSection();
+                bindRoadCode();
+            }
+        });
+
+        $("#ddlSection").on("change", function () {
+            bindRoadCode();
+            if (this.value == "") {
+                $("#txtSectionName").val('');
+            }
+            else {
+                $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
+            }
+
+        });
+
+        $("#ddlRoadCode").on("change", function () {
+            if (this.value == "") {
+                $("#txtRoadName").val("");
+            }
+            else {
+                $("#txtRoadName").val($("#ddlRoadCode").find("option:selected").text().split('-')[1]);
+            }
+        });
+        $("#txtSmartSearch").keyup(function () {
+            if (event.keyCode === 13) {
+                $("#btnSearch").click();
+            }
+        })
+    });
+
+</script>
+@{
+    var isModifyPerm = _security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">Condition Inspection - Form FS</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Condition Inspection</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Form FS
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Search Section -->
+<div class="search-section" id="B1B2Search">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormB1B2SmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" id="txtSmartSearch" autofocus placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                        <button id="btnAdvSearch" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                        <button id="btnClearSearch" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formF2AdvSearch" style="display:none">
+            <div id="formF2DetailsearchForm" name="formF2DetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-md-12 px-4">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                @Html.Label("Form Type", "Form Type")
+                                <select disabled id="ddlFormType" class="form-control">
+                                    <option value="">Select Form Type</option>
+                                    <option selected value="Form F5">BRIDGE INVENTORY & CONDITION ASSESSMENT FORM (FORM F5)</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("RMU", "RMU")
+                                <select id="ddlRmuCode" class="form-control">
+                                    <option value="">Select RMU</option>
+                                    @foreach (var div in rmu)
+                                    {
+                                        <option value="@div.Value">@div.Value - @div.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Code", "Section Code")
+                                <select id="ddlSection" class="form-control validate {required, Section Code }">
+                                    <option value="">Select Section Code</option>
+                                    @foreach (var div in section)
+                                    {
+                                        <option value="@div.Value">@div.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Name", "Section Name")
+                                <input id="txtSectionName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Code", "Road Code")
+                                <select id="ddlRoadCode" class="form-control">
+                                    <option value="">Select Road Code</option>
+                                    @foreach (var road in roadcode)
+                                    {
+                                        <option value="@road.Value">@road.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Name", "Road Name")
+                                <input id="txtRoadName" disabled="disabled" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Year of Inspection From", "Year of Inspection From")
+                                <select id="ddlFrom" class="form-control">
+                                    <option value="">Select Year</option>
+                                    @foreach (var road in year)
+                                    {
+                                        <option value="@road.Value">@road.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Year of Inspection To", "Year of Inspection To")
+                                <select id="ddlTo" class="form-control">
+                                    <option value="">Select Year</option>
+                                    @foreach (var road in year)
+                                    {
+                                        <option value="@road.Value">@road.Text</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                @*<button class="btn btn-sm btn-themebtn"><span class="download-icon"></span> Download</button>*@
+                <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript: fnEditForm(0, false);"><span class="add-icon"></span> Add Form FS</button>
+            </div>
+
+            @*Form B1/B2 Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+</main>

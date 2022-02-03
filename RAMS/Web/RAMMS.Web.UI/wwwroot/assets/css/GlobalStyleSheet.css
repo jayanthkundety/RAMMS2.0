@@ -1,0 +1,208 @@
+﻿body {
+    background: #f0f0f0!important;
+}
+
+/*Pagination
+
+.PagedList-skipToPrevious {
+    padding-right: 3%;
+}
+.PagedList-skipToPrevious > a {
+    visibility: hidden !important;
+    position: relative;
+}
+
+    .PagedList-skipToPrevious > a:after {
+        visibility: visible !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        content: "\f30a" "\00a0 \0020 \0020 Prev" !important;
+        white-space: nowrap;
+        color: #4557bb !important;
+    }
+.pagination-container > ul > li > a {
+    color: #4557bb !important;
+}
+.pagination-container > ul > li  {
+    color: #4557bb !important;
+    text-align:center;
+    width:40px;
+    margin-right:20px
+}
+.pagination-container >ul> li > span {
+    color: #4557bb !important;
+}
+.PagedList-skipToNext > a {
+    visibility: hidden !important;
+    position: relative;
+}
+    .PagedList-skipToNext > a:after {
+        visibility: visible !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        content: "Next\00a0 \0020 \0020""\f30b" !important;
+        white-space: nowrap;
+        color: #4557bb !important;
+    }
+.pagination-container > ul > .active {
+   
+    background: #4557bb;
+}
+
+.pagination-container > ul > li > span {
+    color: #000 !important;
+}*/
+
+/*Breadcrumb */
+
+.breadcrumb {
+    background: transparent !important;
+}
+
+
+
+
+.modal-header,
+h4,
+.close {
+    background-color: #344261 !important;
+    color: white !important;
+    text-align: center;
+    font-size: 15px;
+}
+
+.sticky-col {
+    position: sticky;
+    position: -webkit-sticky;
+    background-color: white;
+}
+
+.first-col {
+    width: 125px;
+    min-width: 125px;
+    max-width: 150px;
+    left: 0px;
+}
+
+.bd-callout-info {
+    border-left-color: rgb(13, 176, 240);
+}
+
+.bd-callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid#eee;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+}
+
+#fileUpload {
+    display: none;
+    float: left;
+    margin-top: 5%;
+    margin-left: 0%
+}
+
+
+/*****************************************
+          upload button styles
+        ******************************************/
+.file-upload {
+    position: relative;
+    display: inline-block;
+}
+
+.file-upload__label {
+    display: block;
+    padding: 1em 2em;
+    color: #fff;
+    background: rgb(14, 127, 192);
+    border-radius: 0.4em;
+    transition: background 0.3s;
+}
+
+.file-upload__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1;
+    width: 0;
+    height: 100%;
+    opacity: 0;
+}
+
+.tabspace {
+    margin-left: 8px;
+}
+
+.chosen-container {
+    width: 100% !important;
+}
+
+.addScroll {
+    overflow-y: auto;
+    height: 500px;
+    /*width: 900px;*/
+}
+
+div.LS1cm {
+    line-height: 1cm;
+}
+
+.card-header {
+    cursor: pointer;
+}
+
+.collapsed > .card-expand-arrow {
+    transform: rotate(-90deg);
+}
+
+.card-expand-arrow {
+    color: #5179d6;
+}
+
+.asset-location {
+    background: #eedfff;
+}
+
+.modal-title {
+    color: white !important;
+}
+
+.box-sdw-0020 {
+    box-shadow: 0px 0px 2px 0px;
+}
+
+.br-rds-25 {
+    border-radius: 25px;
+}
+
+.pagination {
+    margin: 0px !important;
+}
+
+.required {
+    content: "*";
+    font-weight: bold;
+    color: red;
+}
+
+#btabs-alt-static-page1 .form-control {
+    margin-bottom: 4px;
+}
+
+@media (min-width: 1200px) {
+    .app-col-xl-pt-2 {
+        padding-top: 30px !important
+    }
+}
+

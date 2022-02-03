@@ -1,0 +1,96 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="w-100 position-relative in-tbl-btns custom-tbl">
+            @if (security.IsPCModify(ModuleNameList.Emergency_Response_Team))
+            {
+                <div class="grid-btns">
+                    <button type="button" id="btnEquipAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormDEquipModal" onclick="javascript:EditFormDEquip(0);"><span class="intbl-add-icon"></span></button>
+                </div>
+            }
+
+            <table id="FormDEquipGridView" class="table w-100 nowrap">
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : "hidden";
+    var Eqtable_columns = [];
+    var Etable = null;
+    var EqactionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 20, sortable: false, render: function (data) {
+            if (IsView != "1" && (!data.submitStatus)) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button  type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormDEquipModal' id='formDEquipmentEdit' onclick='javascript:EditFormDEquip(" + data.no + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteFormDEquipmentRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns'  data-toggle='modal' data-target='#FormDEquipModal' href='#' onclick='EditFormDEquip(" + data.no + ",1)'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-toggle='modal' data-target='#FormDEquipModal' href='#' onclick='EditFormDEquip(" + data.no + ",1)'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var EqrefNoCol = { data: "serialNo", name: "EqsNo", title: "S No", autoWidth: true, width: 20, sortable: false };
+    var EqCodeCol = { data: "equipmentCode", name: "EqCode", title: "Code", autoWidth: true, width: 60, sortable: false };
+    var EqDescCol = { data: "codeDesc", name: "EqDescription", title: "Description", autoWidth: true, sortable: false };
+    var EqQtyCol = { data: "quantity", name: "EqQuantity", title: "Qty", autoWidth: true, sortable: false };
+    var EqUnitCol = { data: "unit", name: "EqUnit", title: "Unit", autoWidth: true, sortable: false };
+
+    Eqtable_columns.push(EqactionCol);
+    Eqtable_columns.push(EqrefNoCol);
+    Eqtable_columns.push(EqCodeCol);
+    Eqtable_columns.push(EqDescCol);
+    Eqtable_columns.push(EqQtyCol);
+    Eqtable_columns.push(EqUnitCol);
+
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
+    }
+
+    var EqfilterData = new Object();
+
+    function EqInitializeGrid() {
+        var _ecurrentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _ecurrentGridSettings);
+        //if (id == undefined) {
+        //    id = "0";
+        //}
+        if (Etable != null) {
+            Etable.destroy();
+            $('#FormDEquipGridView').empty();
+        }
+        Etable = $('#FormDEquipGridView').DataTable({
+            ajax: {
+                url: "/ERT/LoadFormDEquipmentList?id=" + $("#FDHRef_No").val(),
+               // url: "/ERT/LoadFormDEquipmentList?id=" + id,
+                type: "POST",
+                datatype: "json",
+                data: {
+                    EqfilterData
+                }
+            },
+            columns: Eqtable_columns
+        });
+        Etable.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        EqInitializeGrid();
+        IsView = $("#hdnView").val();
+        //    //Apply Custom search on jQuery DataTables here
+        eoTable = $('#FormDEquipGridView').DataTable();
+        //    $('#formDSearchBtn').click(function () {
+        //        eoTable.columns(0).search($("#FormDSmartSearch").val().trim());
+        //        eoTable.columns(1).search($("#formDDetSrchRMU").val().trim());
+        //        eoTable.columns(2).search($("#formDDetSrchSec").val().trim());
+        //        eoTable.columns(3).search($("#formDDetSrchRoadCode").val().trim());
+        //        eoTable.data = EqfilterData;
+        //        eoTable.draw();
+        //    });
+    });
+</script>

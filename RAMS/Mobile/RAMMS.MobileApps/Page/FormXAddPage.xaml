@@ -1,0 +1,556 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.FormXAddPage"
+             xmlns:custom="clr-namespace:RAMMS.MobileApps.Controls"
+             xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials" xmlns:local="clr-namespace:RAMMS.MobileApps"
+             xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+             Title="View FORM X">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Margin="0,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" HorizontalOptions="CenterAndExpand" LineBreakMode="TailTruncation" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+
+            <Frame>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Form X No.  " FontSize="Medium" Margin="0,5,0,0" HorizontalOptions="EndAndExpand" />
+                    <fe:AdvancedFrame CornerRadius="5" WidthRequest="450" HorizontalOptions="StartAndExpand" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                        <!--<local:EntryControl  HeightRequest="40" WidthRequest="250" Text="{Binding }" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium"   IsEnabled="True" />-->
+                        <Label Text="{Binding ReferenceId}" x:Name="lblrefno" FontSize="Medium" HorizontalOptions="StartAndExpand" Padding="10,0" />
+                    </fe:AdvancedFrame>
+                </StackLayout>
+            </Frame>
+
+            <ScrollView HeightRequest="1100">
+                <StackLayout >
+                    <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="minusicon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                            Tapped="TapGestureRecognizer_Tapped"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Label Text="Identification Data" Margin="10,0,0,0" FontSize="Large" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="FormDTapGestureRecognizer_Tapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </Frame>
+
+                    <Frame x:Name="Toggle" Margin="20,10,20,0"   BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2"  IsVisible="true" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                        <StackLayout>
+                            <Grid RowSpacing="15"  ColumnSpacing="15" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="44" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="RMU to Handle" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <custom:FrameRenders  Grid.Row="1"  Grid.Column="1"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" >
+                                    <local:ExtendedPicker SelectedItem="{Binding SelectedRMU,Mode=TwoWay}" ItemsSource="{Binding DDRMUListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                </custom:FrameRenders>
+
+                                   
+                                <Label Text="Road Code" Grid.Row="0" Grid.Column="2"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <custom:FrameRenders Grid.Row="1"  Grid.Column="2"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" >
+                                    <local:ExtendedPicker SelectedItem="{Binding SelectedRoadCode,Mode=TwoWay}" ItemsSource="{Binding DDRodeCodeListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                </custom:FrameRenders>
+
+                                   
+
+
+                                <Label Text="Road Name" Grid.Row="0" Grid.Column="3"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <custom:FrameRenders Grid.Row="1"  Grid.Column="3"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" >
+
+                                    <local:EntryControl Text="{Binding SelectedRoadName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"   />
+                                </custom:FrameRenders>
+
+
+                                <Label Text="Section" Grid.Row="0" Grid.Column="4"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <custom:FrameRenders Grid.Row="1"  Grid.Column="4"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" >
+
+                                    <local:EntryControl Text="{Binding SelectedSection}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"   />
+                                </custom:FrameRenders>
+
+
+                                <Label Text="Mode of Communication" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <custom:FrameRenders  Grid.Row="3"  Grid.Column="1"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                    <local:ExtendedPicker SelectedItem="{Binding SelectedComMode,Mode=TwoWay}" ItemsSource="{Binding ComModeListItems}" ItemDisplayBinding="{Binding Text}"  InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                </custom:FrameRenders>
+
+
+                                <Button Grid.Row="3" FontSize="Medium" InputTransparent="{Binding IsView}" Clicked="Button_Clicked" Grid.Column="2" Text="Choose File" BorderColor="#bfbfbf" BorderWidth="2" BackgroundColor="{StaticResource DashboardbgColor}" TextColor="#1D2D50"></Button>
+
+                                <fe:AdvancedFrame Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2"  OutlineColor="White">
+                                    <!--<local:EntryControl   TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" Keyboard="Default"   />-->
+                                    <StackLayout Margin="10,0,0,0">
+                                        <!--<Image x:Name="image" HeightRequest="50" WidthRequest="50"/>-->
+                                    <!--<Label Text="File Is :" x:Name="lbl"/>-->
+                                        <Label VerticalOptions="CenterAndExpand">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding ChoosenFileName}" TextColor="Blue" TextDecorations="Underline" FontSize="Medium">
+                                                        <Span.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding ChoosenFileDownloadCommand}"/>
+                                                        </Span.GestureRecognizers>
+                                                    </Span>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </StackLayout>
+                                </fe:AdvancedFrame>
+
+
+
+                                <Label Text="Reported by" Grid.Row="4" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <custom:FrameRenders  Grid.Row="5"  Grid.Column="1"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                    <local:ExtendedPicker SelectedItem="{Binding SelectedReportedBy,Mode=TwoWay}" ItemsSource="{Binding ReportedByListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}" x:Name="weekpicker" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                </custom:FrameRenders>
+
+
+                                <Label Text="Reported by Name" Grid.Row="4" Grid.Column="2" IsVisible="{Binding EnableLoc}"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <custom:FrameRenders  Grid.Row="5"  Grid.Column="2"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2" IsVisible="{Binding EnableLoc}"  IsClippedToBounds="True" Padding="0,0,0,0"   ColorName="LightGray">
+
+                                    <local:EntryControl Text="{Binding LocRepDesc}"  InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" IsVisible="{Binding EnableLoc}" />
+                                </custom:FrameRenders>
+
+
+                                <Label Text="Name" Grid.Row="4" Grid.Column="3"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <custom:FrameRenders  Grid.Row="5"  Grid.Column="3"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+
+                                    <local:EntryControl Text="{Binding ReportedByName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="True" />
+                                </custom:FrameRenders>
+
+                                <Label Text="Reported Date and Time (DD-MM-YYYY HH:MM XM)" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <custom:FrameRenders  Grid.Row="5"  Grid.Column="4" Grid.ColumnSpan="2" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                    <local:CustomDatePicker NullableDate="{Binding ReportedDate}" FontSize="16" Format="dd-MM-yyyy hh:mm tt" InputTransparent="{Binding IsView}" x:Name="weekdaypicker"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                </custom:FrameRenders>
+
+
+                                <Label Text="Work Phone" Grid.Row="6" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <locals:FrameRenders Grid.Row="7" HeightRequest="40" Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+
+                                    <local:EntryControl Text="{Binding WorkPhone}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  IsEnabled="True" />
+                                </locals:FrameRenders>
+
+                                <Label Text="Hand Phone" Grid.Row="6" Grid.Column="2"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <locals:FrameRenders Grid.Row="7" HeightRequest="40" Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                    <local:EntryControl Text="{Binding HandPhone}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" IsEnabled="True" />
+                                </locals:FrameRenders>
+
+
+                                <Label Text="E - Mail" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <locals:FrameRenders Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="2" HeightRequest="40"  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                    <local:EntryControl Text="{Binding EMail}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="True" />
+                                </locals:FrameRenders>
+
+
+                                <Label Text="Description" Grid.Row="8" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <locals:FrameRenders Grid.RowSpan="3"   Grid.Row="9" Grid.Column="1" HeightRequest="40"  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                    <local:CustomEditor  Text="{Binding Description}" InputTransparent="{Binding IsView}" Grid.RowSpan="3"   Grid.Row="9" Grid.Column="1"  BackgroundColor="#f2f2f2" TextColor="Black"  Opacity="0.5" ></local:CustomEditor>
+                                </locals:FrameRenders>
+
+                                <Label Text="Attention to" Grid.Row="8" Grid.Column="2"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <fe:AdvancedFrame Grid.Row="9" Grid.Column="4" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                    <local:EntryControl Text="{Binding AttentionToName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="True" />
+                                </fe:AdvancedFrame>
+
+                                <custom:FrameRenders  Grid.Row="9"  Grid.Column="2" Grid.ColumnSpan="2"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                    <local:ExtendedPicker SelectedItem="{Binding SelectedAttentionTo,Mode=TwoWay}" ItemsSource="{Binding UserListItems}" ItemDisplayBinding="{Binding Text}"  InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                </custom:FrameRenders>
+
+                                <Label Text="Verified by" Grid.Row="10" Grid.Column="2"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <custom:FrameRenders   Grid.Row="11"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                    <local:ExtendedPicker SelectedItem="{Binding SelectedVerfiedBy,Mode=TwoWay}" ItemsSource="{Binding UserListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                </custom:FrameRenders>
+
+                                <fe:AdvancedFrame Grid.Row="11" Grid.Column="3" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                    <local:EntryControl Text="{Binding VerifiedByName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"   />
+                                </fe:AdvancedFrame>
+
+
+
+                                <Label Text="Verified Date (DD-MM-YYYY)" Grid.Row="10" Grid.Column="4"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                <locals:FrameRenders Grid.Row="11" Grid.Column="4" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                    <local:CustomDatePicker FontSize="16" NullableDate="{Binding VerifiedDate}" InputTransparent="{Binding IsView}" Format="dd-MM-yyyy hh:mm tt"   BackgroundColor="White"    VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"  />
+                                </locals:FrameRenders>
+
+
+
+                                <Label Text="Assigning Work Reference" Grid.Row="12" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <locals:FrameRenders  HeightRequest="100" Grid.RowSpan="4"   Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                    <local:CustomEditor FontSize="16" Text="{Binding AssWrkRef}" InputTransparent="{Binding IsView}" BackgroundColor="#f2f2f2" TextColor="Black"  Opacity="0.5" ></local:CustomEditor>
+                                </locals:FrameRenders>
+
+
+                                <Label Text="Comment" Grid.Row="12" Grid.Column="3"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <locals:FrameRenders  HeightRequest="100"  Grid.RowSpan="4"   Grid.Row="13" Grid.Column="3" Grid.ColumnSpan="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                    <local:CustomEditor FontSize="16" Text="{Binding Comment}" InputTransparent="{Binding IsView}" BackgroundColor="#f2f2f2" TextColor="Black"  Opacity="0.5" ></local:CustomEditor>
+
+                                </locals:FrameRenders>
+
+                                <Label Text="JKRS Sent Date (DD-MM-YYYY)" Grid.Row="17" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <locals:FrameRenders  Grid.Row="18" Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                    <local:CustomDatePicker Format="dd-MM-yyyy"  NullText="Select date" NullableDate="{Binding JKRSSentDate}" InputTransparent="{Binding IsView}" BackgroundColor="White"    VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                </locals:FrameRenders>
+
+                              
+                                <Label Text="JKRS Received Date (DD-MM-YYYY)" Grid.Row="17" Grid.Column="2"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <locals:FrameRenders  Grid.Row="18" Grid.Column="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                    <local:CustomDatePicker Format="dd-MM-yyyy"  NullText="Select date" NullableDate="{Binding JKRSRecDate}" InputTransparent="{Binding IsView}" BackgroundColor="White" FontSize="16"   VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                </locals:FrameRenders>
+
+
+                                <Label Text="Status" Grid.Row="17" Grid.Column="3"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                            
+                                <custom:FrameRenders   Grid.Row="18"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                    <local:ExtendedPicker SelectedItem="{Binding Status,Mode=TwoWay}" InputTransparent="{Binding IsView}" Grid.ColumnSpan="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray">
+                                        <local:ExtendedPicker.Items>
+                                            <x:String>Received</x:String>
+                                            <x:String>Reviewed and Closed</x:String>
+                                        </local:ExtendedPicker.Items>
+                                    </local:ExtendedPicker>
+                                </custom:FrameRenders>
+
+                            <Label Text="Remarks" Grid.Row="19" Grid.Column="1"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                <local:CustomEditor Text="{Binding Remarks}" InputTransparent="{Binding IsView}" HeightRequest="100" FontSize="16"  Grid.Row="20" Grid.RowSpan="4" Grid.ColumnSpan="4" Grid.Column="1" BackgroundColor="#f2f2f2" TextColor="Black"  Opacity="0.5" ></local:CustomEditor>
+
+                            </Grid>
+
+                        </StackLayout>
+                    </Frame>
+
+                    <StackLayout>
+                        <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                            <StackLayout Orientation="Horizontal">
+
+                                <Image Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start" Margin="0,0,0,0" >
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Tapped="TapGestureRecognizer_Tapped1"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <Label Text="Scheduling Information" FontSize="Large" Margin="10,0,0,0" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="LabourTapGestureRecognizer_Tapped1" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+
+
+
+                    <StackLayout>
+                        <Frame x:Name="Toggle1" BackgroundColor="White" BorderColor="#f2f2f2" CornerRadius="5" Grid.Row="1" Margin="10,0,10,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <StackLayout>
+                                <StackLayout>
+                                    <Grid RowSpacing="15"  ColumnSpacing="15">
+                                    
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Activity Code: Main Task" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                    <custom:FrameRenders   Grid.Row="1"  Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                        <local:ExtendedPicker SelectedItem="{Binding SelectedMainTask}" ItemsSource="{Binding MainTaskListItems}" ItemDisplayBinding="{Binding Text}"  InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                    </custom:FrameRenders>
+
+                                    <Label Text="Activity Name" Grid.Row="0" Grid.Column="2"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                    <fe:AdvancedFrame Grid.Row="1" Grid.Column="2" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                        <local:EntryControl Text="{Binding MainTaskName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"   />
+                                    </fe:AdvancedFrame>
+
+
+                                    <Label Text="Activity Code: Sub Task" Grid.Row="2" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                    <custom:FrameRenders   Grid.Row="3"  Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                        <local:ExtendedPicker SelectedItem="{Binding SelectedSubTask}" ItemsSource="{Binding SubTaskListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                    </custom:FrameRenders>
+
+                                    <Label Text="Activity Name" Grid.Row="2" Grid.Column="2"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                    <fe:AdvancedFrame Grid.Row="3" Grid.Column="2" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                        <local:EntryControl Text="{Binding SubTaskName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"   />
+                                    </fe:AdvancedFrame>
+
+
+                                    <Label Text="Estimated Crew Days"  Grid.Row="4" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                                    <fe:AdvancedFrame    Grid.Row="5" HeightRequest="41" Grid.Column="1" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                        <local:EntryControl Text="{Binding EstCrewDays}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"   />
+                                    </fe:AdvancedFrame>
+
+                                    <Label Text="Estimated Date and Time (DD-MM-YYYY HH:MM XM)" Grid.Row="4" Grid.Column="2"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                       
+                                    <custom:FrameRenders  Grid.Row="5" Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:CustomDatePicker Format="dd-MM-yyyy hh:mm tt"  NullText="Select date" NullableDate="{Binding EstimatedDate}" InputTransparent="{Binding IsView}" BackgroundColor="White"    VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                    </custom:FrameRenders>
+                                </Grid>
+                                </StackLayout>
+
+                                <StackLayout>
+                                    <Grid RowSpacing="15"  ColumnSpacing="15">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            
+
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="Assigned to" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders    Grid.Row="1"  Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:ExtendedPicker SelectedItem="{Binding SelectedAssignedTo}" ItemsSource="{Binding UserListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                        </custom:FrameRenders>
+
+                                        <fe:AdvancedFrame Grid.Row="1" Grid.Column="2" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                            <local:EntryControl Text="{Binding AssignedToName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"   />
+                                        </fe:AdvancedFrame>
+
+
+                                        <Label Text="Assigned Date and Time (DD-MM-YYYY HH:MM XM)" Grid.Row="0" Grid.Column="3" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders   Grid.Row="1"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:CustomDatePicker Format="dd-MM-yyyy hh:mm tt" NullText="Select date" NullableDate="{Binding AssignedDate}" InputTransparent="{Binding IsView}" BackgroundColor="White"    VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                        </custom:FrameRenders>
+
+                                    </Grid>
+                                </StackLayout>
+
+                                <StackLayout>
+                                    <Grid RowSpacing="15"  ColumnSpacing="15">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            
+
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="Work Scheduled Date and Time (DD-MM-YYYY HH:MM XM)" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders   Grid.Row="1"  Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:CustomDatePicker Format="dd-MM-yyyy hh:mm tt" NullText="Select date" NullableDate="{Binding WorkScheduledDate}" InputTransparent="{Binding IsView}" BackgroundColor="White"    VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                        </custom:FrameRenders>
+                                       
+                                        <Label Text="Work Completed Date and Time (DD-MM-YYYY HH:MM XM)" Grid.Row="0" Grid.Column="2"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders   Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:CustomDatePicker Format="dd-MM-yyyy hh:mm tt" NullText="Select date" NullableDate="{Binding WorkCompletedDate}" InputTransparent="{Binding IsView}" BackgroundColor="White"    VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                        </custom:FrameRenders>
+                                        
+                                    </Grid>
+                                </StackLayout>
+
+                                <StackLayout>
+                                    <Grid RowSpacing="15"  ColumnSpacing="15">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+
+
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="Verified by" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders   Grid.Row="1"  Grid.Column="1"  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:ExtendedPicker SelectedItem="{Binding SelectedSchVerfiedBy}" ItemsSource="{Binding UserListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                        </custom:FrameRenders>
+
+                                        <fe:AdvancedFrame Grid.Row="1" Grid.Column="2" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                            <local:EntryControl Text="{Binding SchVerifiedByName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"   />
+                                        </fe:AdvancedFrame>
+
+
+                                        <Label Text="Verified Date and Time (DD-MM-YYYY HH:MM XM)" Grid.Row="0" Grid.Column="3" FontSize="17"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders  Grid.Row="1" Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:CustomDatePicker NullableDate="{Binding SchVerifiedDate}" Format="dd-MM-yyyy hh:mm tt" NullText="Select date" InputTransparent="{Binding IsView}" BackgroundColor="White"    VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                        </custom:FrameRenders>
+                                        
+                                   
+                                    </Grid>
+                                </StackLayout>
+
+                                <StackLayout>
+                                    <Grid RowSpacing="15"  ColumnSpacing="15">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Label Text="Case Closed Date and Time (DD-MM-YYYY HH:MM XM)" Grid.Row="0"  Grid.Column="1" LineBreakMode="TailTruncation" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders  Grid.Row="1" Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:CustomDatePicker NullableDate="{Binding CaseClosedDate}" Format="dd-MM-yyyy hh:mm tt" NullText="Select date" InputTransparent="{Binding IsView}" BackgroundColor="White"    VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                        </custom:FrameRenders>
+                                        
+                                        <Label Text="Vetted by" Grid.Row="0" Grid.Column="2"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <custom:FrameRenders   Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray">
+                                            <local:ExtendedPicker SelectedItem="{Binding SelectedVettedBy}" ItemsSource="{Binding UserListItems}" ItemDisplayBinding="{Binding Text}" InputTransparent="{Binding IsView}"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                        </custom:FrameRenders>
+
+                                       
+                                        <fe:AdvancedFrame Grid.Row="1" Grid.Column="3" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                            <local:EntryControl Text="{Binding VettedByName}" InputTransparent="{Binding IsView}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"   />
+                                        </fe:AdvancedFrame>
+
+                                        <Label Text="Comment" Grid.Row="2" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+                                        <local:CustomEditor Text="{Binding Comment2}" InputTransparent="{Binding IsView}" Grid.RowSpan="6"  Grid.ColumnSpan="3"  Grid.Row="3" Grid.Column="1"  BackgroundColor="#f2f2f2" TextColor="Black"  Opacity="0.5" ></local:CustomEditor>
+
+                                    </Grid>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
+            <Frame BorderColor="#d9d9d9">
+                <StackLayout HorizontalOptions="FillAndExpand"  HeightRequest="140" VerticalOptions="FillAndExpand"  >
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.1*" />
+                            <ColumnDefinition Width="0.95*" />
+                            <ColumnDefinition Width="0.45*" />
+                            <ColumnDefinition Width="0.42*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="0.9*" />
+                            <ColumnDefinition Width="0.75*" />
+
+
+                        </Grid.ColumnDefinitions>
+                        <Button Text="U SEE U ACT AND ACCIDENT" Margin="-10,-3,0,-3" CornerRadius="5" Command="{Binding UseeuCommand}" BorderColor="#1D2D50" BorderWidth="2"  BackgroundColor="White" TextColor="#1D2D50" Grid.Row="1"  Grid.Column="1"></Button>
+                        <Button Text="WAR" Grid.Row="1" Command="{Binding WarCommand}"  CornerRadius="5"  Grid.Column="2" BorderColor="#1D2D50" BorderWidth="2" BackgroundColor="White" TextColor="#1D2D50"></Button>
+                        <Button x:Name="formD" IsVisible="false" Text="Form D" Grid.Row="1" Grid.Column="3"  BackgroundColor="#1D2D50"  TextColor="White" CornerRadius="10" HorizontalOptions="Start"   />
+                        <Button x:Name="btnCancel" Command="{Binding CancelCommand}" Text="Cancel" Grid.Row="1" Grid.Column="6"  BorderColor="#1D2D50" BorderWidth="2" BackgroundColor="White" CornerRadius="10" TextColor="#1D2D50" HorizontalOptions="End" />
+                        <Button x:Name="btnSaveandExit" IsVisible="false" Text="Submit" Grid.Row="1" Grid.Column="5" FontSize="Medium" BackgroundColor="#1D2D50" TextColor="White"  CornerRadius="10" HorizontalOptions="Start" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

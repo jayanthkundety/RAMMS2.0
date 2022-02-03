@@ -1,0 +1,186 @@
+﻿<style type="text/css">
+    .dataTables_scroll {
+        overflow: auto;
+    }
+</style>
+<div class="main-container" id="container">
+
+    <div id="content">
+        <table id="FormADetailGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+<script src="~/js/CDTGrid.js"></script>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script type="text/javascript">
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var IsView = 0;
+    var IsCulvertOrBridge = 0;
+    var table = null;
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.fadRefNO != "" && data.fadRefNO != null) {
+                title = data.fadRefNO;
+            }
+            if (IsView != "1" && data.formhApp != "Yes" && (!data.submitSts)) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' data-target='#FormJAdddetailsModal' " + isModifyPerm + "  data-toggle='modal' id='formAHeaderEdit' onclick='javascript:AddNewForm(" + data.no + ",&#39; " + title + " &#39;);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteDetailRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " id='btnAssetView' onclick='javascript:ViewDetail(" + data.no + ",&#39;" + title + "&#39;);' data-target='#FormJAdddetailsModal'  data-toggle='modal'  href='#'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:ViewDetail(" + data.no + ",&#39;" + title + "&#39;);' data-target='#FormJAdddetailsModal' " + isViewPerm + "  data-toggle='modal'  href='#'><span class='view-icon'></span> View</button></div></div>";
+                //var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:ViewDetail(" + data.no + ",&#39;" + title + "&#39;);' data-target='#FormAAdddetailsModal'  data-toggle='modal'  href='#'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+
+    var noCol = { data: "no", name: "No", title: "Reference No", autoWidth: true, sortable: false, visible: false };
+    var refNoCol = { data: "fadRefNO", name: "fadRefNO", title: "Reference No", autoWidth: true, sortable: false };
+    var dt = { data: "dt", name: "Date", title: "Date", autoWidth: true, sortable: false };
+    //var monthCol = { data: "monthYear", name: "Office Ref.", title: "Office Ref.", autoWidth: true, sortable: false };
+    var siteRef = { data: "siteRef", name: "Site Ref.", title: "Site Ref.", autoWidth: true, sortable: false };
+    var defCode = { data: "defCode", name: "SA Code", title: "SA Code", autoWidth: true, sortable: false };
+    var length = { data: "length", name: "Length", title: "Length", autoWidth: true, sortable: false };
+    var width = { data: "width", name: "Width", title: "Width", autoWidth: true, sortable: false };
+    var height = { data: "height", name: "Height", title: "Height", autoWidth: true, sortable: false };
+
+    var priority = { data: "priority", name: "Priority", title: "Priority", autoWidth: true, sortable: false };
+    var wi = { data: "wi", name: "WI", title: "WI", autoWidth: true, sortable: false };
+    var ws = { data: "ws", name: "WS", title: "WS", autoWidth: true, sortable: false };
+    var wtc = { data: "wtc", name: "WTC", title: "WTC", autoWidth: true, sortable: false };
+    var wc = { data: "wc", name: "WC", title: "WC", autoWidth: true, sortable: false };
+    var rt = { data: "rt", name: "RT", title: "RT", autoWidth: true, sortable: false };
+    //var ownernCol = { data: "usernamePrp", name: "Form H", title: "Form H", autoWidth: true, sortable: false };
+    var remarks = { data: "remarks", name: "Remarks", title: "Remarks", autoWidth: true, sortable: false };
+    var chainageFrom = {
+        data: null, name: "Chainage From", title: "Chainage From", autoWidth: true, sortable: false, render: function (data) {
+            if (data.fromCh != null && data.fromChDeci != null) {
+                return data.fromCh + '+' + data.fromChDeci;
+            }
+            else if (data.fromCh != null && data.fromChDeci == null) {
+                return data.fromCh + '+' + '0';
+            }
+            else if (data.fromCh == null && data.fromChDeci != null) {
+                return '0+' + data.fromChDeci;
+            }
+            else {
+                return '0+0';
+            }
+        }
+    };
+    var chainageTo = {
+        data: null, name: "Chainage To", title: "Chainage To", autoWidth: true, sortable: false, render: function (data) {
+            if (data.toCh != null && data.toChDeci != null) {
+                return data.toCh + '+' + data.toChDeci;
+            }
+            else if (data.toCh != null && data.toChDeci == null) {
+                return data.toCh + '+' + '0';
+            }
+            else if (data.toCh == null && data.toChDeci != null) {
+                return '0+' + data.toChDeci;
+            }
+            else {
+                return '0+0';
+            }
+        }
+    };
+    var formH = {
+        data: null, name: "Form H?", title: "Form H?", autoWidth: true, sortable: false, render: function (data) {
+            return data.formhApp;
+        }
+    };
+
+    table_columns.push(noCol);
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(dt);
+    if (IsCulvertOrBridge != "1") {
+        table_columns.push(siteRef);
+    }
+    table_columns.push(chainageFrom);
+    table_columns.push(chainageTo);
+    table_columns.push(defCode);
+    table_columns.push(length);
+    table_columns.push(width);
+    table_columns.push(height);
+    table_columns.push(priority);
+    table_columns.push(wi);
+    table_columns.push(ws);
+    table_columns.push(wtc);
+    table_columns.push(wc);
+    table_columns.push(rt);
+    table_columns.push(remarks);
+    table_columns.push(formH);
+
+    var filterData = new Object();
+    function InitializeGrid(id) {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        //filterData.HeaderNo = 1038;
+        //filterData.Rmu = $("#formADetSrchRMU").val();
+        //filterData.Section = $("#formADetSrchSec").val();
+        //filterData.RoadCode = $("#formADetSrchRoadCode").val();
+        //filterData.AssetGroupCode = $("#formADetSrchAsstGrp").val();
+        //filterData.Month = $("#formADetSrchMonth").val();
+        //filterData.Year = $("#formADetSrchYear").val();
+        //filterData.ChinageFromKm = $("#formAFromKm").val();
+        //filterData.ChinageFromM = $("#formAFromM").val();
+        //filterData.ChinageToKm = $("#formAToKm").val();
+        //filterData.ChinageToM = $("#formAToM").val();
+        filterData.HeaderNo = + $("#FormADetPKId").val();
+        if (id != undefined) {
+            filterData.HeaderNo = id;
+        }
+        if (table != null) {
+            table.destroy();
+            $('#FormADetailGridView').empty();
+        }
+
+        table = $('#FormADetailGridView').DataTable({
+            ajax: {
+                url: "/NOD/JDetailedListEdit",
+                type: "POST",
+                datatype: "json",
+                data: { filterData }
+            },
+            columns: table_columns
+        });
+        table.columns.adjust().draw();
+
+    }
+
+    $(document).ready(function () {
+        IsView = $("#IsViewDetail").val();
+        InitializeGrid();
+    });
+    //    //Apply Custom search on jQuery DataTables here
+    //    oTable = $('#FormAGridView').DataTable();
+    //    $('#formASearchBtn').click(function () {
+    //        oTable.columns(0).search($("#FormASmartSearch").val().trim());
+    //        oTable.columns(1).search($("#formADetSrchRMU").val().trim());
+    //        oTable.columns(2).search($("#formADetSrchSec").val().trim());
+    //        oTable.columns(3).search($("#formADetSrchRoadCode").val().trim());
+    //        oTable.columns(4).search($("#formADetSrchAsstGrp").val().trim());
+    //        oTable.columns(5).search($("#formADetSrchMonth").val().trim());
+    //        oTable.columns(6).search($("#formADetSrchYear").val().trim());
+    //        oTable.columns(7).search($("#formAFromKm").val().trim());
+    //        oTable.columns(8).search($("#formAFromM").val().trim());
+    //        oTable.columns(9).search($("#formAToKm").val().trim());
+    //        oTable.columns(10).search($("#formAToM").val().trim());
+    //        oTable.data = filterData;
+    //        oTable.draw();
+    //    });
+    //});
+</script>
+<script>
+    function changeevent(id) {
+        //alert(id);
+         window.location = "@Url.Action("DetailEditOrUpdate", "NOD")" +
+             "?headerid=" + id;
+    }
+</script>

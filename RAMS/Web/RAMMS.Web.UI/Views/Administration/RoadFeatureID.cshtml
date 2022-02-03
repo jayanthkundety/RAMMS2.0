@@ -1,0 +1,144 @@
+﻿@model RAMMS.Web.UI.Models.CDataTable
+@{
+    ViewData["Title"] = "Road Feature ID - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Road Feature ID - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strPageName = ViewBag.PageName;
+    string strPageId = ViewBag.PageID;
+}
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/Administrator.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        jsAdmin.PageName = @strPageId;
+    </script>
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">Road Feature ID</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Road Feature ID
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-lg-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "RoadFeatureIDSmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                        <button id="" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                        <button id="" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="RoadFeatureIDAdvSearch" style="display:block">
+            <form id="RoadFeatureIDDetailsearchForm" name="RoadFeatureIDDetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-lg-12 px-4">
+                        <div class="row">
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Road Feature ID", "Road Feature ID")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Division", "Division")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("RMU", "RMU")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Section", "Section")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Road Code", "Road Code")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Chainage From", "Chainage From")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input class="form-control" type="text" value="" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input class="form-control" type="text" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Chainage To", "Chainage To")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input class="form-control" type="text" value="" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input class="form-control" type="text" value="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Road Category", "Road Category")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                @Html.Label("Owner", "Owner")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+            @*RoadFeatureID Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_CDataTable", Model);
+                }
+            </div>
+        </div>
+    </div>
+</main>

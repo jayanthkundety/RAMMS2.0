@@ -1,0 +1,91 @@
+﻿
+
+@model CDataTable;
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@{
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form QA2 - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ASSET MAINTANENCE - Form QA2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/MAMQA2.js" asp-append-version="true"></script>
+}
+@{
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
+}
+<!--BreadCrumbs-->
+@{
+    Html.RenderPartial("_breadcrumb", new BreadCrumb()
+    {
+        Title = "Form QA2",
+        SimpleNavigation = "Home,Asset Maintenance,Form QA2"
+    });
+}
+
+<!-- Search Section -->
+<div class="search-section">
+    @*@{
+            Html.RenderPartial("_SearchSection", new Tuple<string, string, string>(Model.Name, "#formQA2Search", "KeySearch"));
+        }*@
+    <div class="row justify-content-center mb-1">
+        @{
+            Html.RenderPartial("_SearchSection", new Tuple<string, string, string>(Model.Name, "#formQA2Search", "KeySearch"));
+        }
+    </div>
+    @*Detail Search Screen*@
+    <div id="formQA2Search" style="display:none;">
+        <div class="row" id="formQA2AdvSearch" style="display:block">
+            <form id="formQA2DetailsearchForm" name="formQA2DetailsearchForm">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="bg-white rounded float-left pt-3 pb-1 px-lg-3 px-md-2 advance-search-group w-100">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-3 form-group">
+                                    @Html.Label("RMU", "RMU")
+                                    @Html.DropDownList("RMU", (IEnumerable<SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "FormQa2SrchRMU", @class = "form-control", @param = "RMUCode" })
+
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    @Html.Label("Road Code", "Road Code")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "Road_Code", "Select Road Code", new { @Id = "formQa2SrchRoadCode", @class = "form-control searchdropdown widget-content-area", @param = "RoadCode", @clear = "rebind" })
+
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    @Html.Label("Road Name", "Road Name")
+                                    @Html.TextBox("Road Name", null, new { @Id = "formQa2SrchRoadName", @readonly = "readonly", @class = "form-control" })
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    @Html.Label("Crew Supervisor", "Crew Supervisor")
+
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Crew Supervisor", "Select Crew Supervisor", new { @Id = "formQa2SrchActCode", @class = "form-control searchdropdown widget-conent-area", @param = "crewSupervisor" })
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Main Container *@
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" @isModifyPerm class="btn btn-sm btn-themebtn" onclick="return EditForm(0,0)"><span class="add-icon"></span> Add Form QA2</button>
+            </div>
+
+        </div>
+        <div class="w-100 float-left position-relative">
+            @{
+                Html.RenderPartial("_CDataTable", Model);
+            }
+        </div>
+    </div>
+</main>

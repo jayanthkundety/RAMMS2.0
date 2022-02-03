@@ -1,0 +1,237 @@
+﻿
+<div class="w-100 bg-body">
+    <div class="mh-182">
+        <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="col-lg-2 form-group">
+                        @Html.Label("RMU", "RMU")
+                        <select class="form-control">
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 form-group">
+                        @Html.Label("Road Code", "Road Code")
+                        <select class="form-control">
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        @Html.Label("Road Name", "Road Name")
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        @Html.Label("Ref No.", "Ref No.")
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                    <button id="" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                </div>
+            </div>
+        </div>
+        <div class="clear-b"></div>
+        <div class="w-100 position-relative in-tbl-btns">
+            <div class="grid-btns">
+                <button type="button" id="" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormQA2AdddetailsModal" onclick=""><span class="intbl-add-icon"></span></button>
+            </div>
+            <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                @*@{
+                    Html.RenderPartial("_DetailGridList.cshtml");
+                }*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 float-right text-right custom-footer">
+        <button type="button" class="btn btn-sm btn-outline-theme" onclick="">Cancel</button>
+        <button id="" type="button" class="btn btn-sm btn-themebtn">Save &amp; Continue</button>
+        <button id="" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+    </div>
+</div>
+
+
+
+
+<!--Add QA2 Detail Form Modal-->
+<div class="modal fade" id="FormQA2AdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormQA2AdddetailsModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="">Add Form QA2 Details</h5>
+                <button type="button" onclick="" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="" class="w-100 float-left">
+                <div class="modal-body p-0">
+                    <div class="mh-182 bg-white py-4">
+                        <div class="col-lg-12 float-left">
+                            <div class="col-lg-2 form-group">
+                                @Html.Label("Road Code", "Road Code")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Road Name", "Road Name")
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="col-lg-2 form-group">
+                                @Html.Label("Activity Code", "Activity Code")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="clear-b"></div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Form S1 Ref No.", "Form S1 Ref No.")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Crew Supervisor", "Crew Supervisor")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Site Ref", "Site Ref")
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Defect", "Defect")
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("Location Chainage From", "Location Chainage From")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input class="form-control" type="text" value="">
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input class="form-control" type="text" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("Location Chainage To", "Location Chainage To")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input class="form-control" type="text" value="">
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input class="form-control" type="text" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clear-b"></div>
+                            <div class="col-lg-12 float-left mt-2 mb-4">
+                                <div class="w-100 border">
+                                    <div class="col-lg-12 sub-heading py-3 mb-0">
+                                        QA Inspection Cycle
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-2 pl-lg-0">@Html.Label("Audit Date", "Audit Date")</div>
+                                            <div class="col-lg-2">@Html.Label("Cycle Type", "Cycle Type")</div>
+                                            <div class="col-lg-2">@Html.Label("Rating", "Rating")</div>
+                                            <div class="col-lg-2">@Html.Label("Audited by", "Audited by")</div>
+                                            <div class="col-lg-3">@Html.Label("Designation", "Designation")</div>
+                                        </div>
+                                        <div class="w-100">
+                                            <!--Inspection Repeated DIV-->
+                                            <div class="row">
+                                                <div class="col-lg-1 d-flex justify-content-center py-2">
+                                                    <a href=""><span class="intbl-add-icon"></span></a>
+                                                </div>
+                                                <div class="col-lg-2 form-group pl-lg-0">
+                                                    <input type="date" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-2 form-group">
+                                                    <select class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-2 form-group">
+                                                    <select class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-2 form-group">
+                                                    <select class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3 form-group">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <!--Inspection Repeated DIV-->
+                                            <div class="row">
+                                                <div class="col-lg-1 d-flex justify-content-center py-2">
+                                                    <a href=""><span class="intbl-add-icon"></span></a>
+                                                </div>
+                                                <div class="col-lg-2 form-group pl-lg-0">
+                                                    <input type="date" class="form-control" />
+                                                </div>
+                                                <div class="col-lg-2 form-group">
+                                                    <select class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-2 form-group">
+                                                    <select class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-2 form-group">
+                                                    <select class="form-control">
+                                                        <option></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3 form-group">
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Defect Description", "Defect Description")
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="col-lg-2 form-group">
+                                @Html.Label("WWS/13A Fol.", "WWS/13A Fol.")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 form-group">
+                                @Html.Label("Rework Dimension (m)", "Rework Dimension (m)")
+                                <input type="text" class="form-control" />
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Issue NCN", "Issue NCN")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-8 form-group txtarea-80">
+                                @Html.Label("Remarks", "Remarks")
+                                <textarea class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="" type="button" onclick="javascript: close();" ondblclick="javascript:void(0);" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
+                    <button id="" onclick="" ondblclick="javascript:void(0)" type="button" class="btn btn-sm btn-themebtn disablebtn">Save &amp; Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

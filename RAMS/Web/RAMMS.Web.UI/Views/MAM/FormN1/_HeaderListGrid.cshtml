@@ -1,0 +1,131 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormN1GridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm=@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", class: "headcol", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data, type, full) {
+
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isModifyPerm + "  id='formNHeaderEdit' onclick='javascript:EditForm(" + data.no + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditForm(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditForm(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            return full["submitStatus"] == true ? viewaction : actionSection;
+        }
+    };
+    var refNoCol = { data: "ncNo", name: "No", title: "NCN No.", autoWidth: false, width: 250, sortable: true };
+    var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
+    var roadCodeCol = { data: "roadCode", name: "Road Code", title: "Road Code", autoWidth: true, sortable: true };
+    var roadNameCol = { data: "roadName", name: "Road Name", title: "Road Name", autoWidth: true, sortable: true };
+    var chFromCol = {
+        data: "fromChainage",
+        render: function (data, type, full, meta) {
+            return full["fromChainage"] + "." + full["fromChainageDeci"];
+        },
+        title: "Location Chainage", autoWidth: true, sortable: true
+    };
+
+    //var chToCol = {
+    //    data: "toCh",
+    //    render: function (data, type, full, meta) {
+    //        return full["toChainage"] + "+" + full["toChainageDeci"];
+    //    }, title: "Chainage To", autoWidth: true, sortable: false
+    //};
+
+    var correctTknCol = {
+        className: 'text-center',
+        data: "isCorrectionTaken", render: function (data, type, full, meta) {
+            return full["isCorrectionTaken"] == true ? "Yes" : "No";
+        }, name: "Correction Taken", title: "Correction Taken", autoWidth: true, sortable: true
+    };
+
+    var verByCol = { data: "verifiedByUsername", name: "Verified By", title: "Verified By", autoWidth: true, sortable: true };
+    var ncrCol = {
+        className: 'text-center',
+        data: "isNcrIssued", render: function (data, type, full, meta) {
+            return full["isNcrIssued"] == true ? "Yes" : "No";
+        }, name: "NCR", title: "NCR?", autoWidth: true, sortable: true
+    };
+
+   /* var submitStsCol = {
+        data: "submitStatus",
+        render: function (data, type, full, meta) {
+            return full["submitStatus"] == true ? "Submitted" : "Saved";
+        }, title: "Status", autoWidth: true, sortable: true
+    };*/
+    var submitStsCol = { data: "status", name: "status", title: "Status", autoWidth: true, sortable: true };
+
+
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(rmuRmuCol);
+    table_columns.push(roadCodeCol);
+    table_columns.push(roadNameCol);
+    table_columns.push(chFromCol);
+    //table_columns.push(chToCol);
+    table_columns.push(correctTknCol);
+    table_columns.push(ncrCol);
+    table_columns.push(verByCol);
+    table_columns.push(submitStsCol);
+
+    function PrintForm(id) {
+        window.location.href = '/mam/N1Download?id=' + id;
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.SmartInputValue = $("#FormN1SmartSearch").val();
+        filterData.RMU = $("#formN1DetSrchRMU").val();
+        filterData.Road_Code = $("#formN1DetSrchRoadCode").val();
+        filterData.IssueMonth = $("#formN1DetSrchMonth").val();
+        filterData.IssueFrom = $("#formN1DetSrchIssueFrom").val();
+        filterData.IssueTo = $("#formN1DetSrchIssueTo").val();
+
+        $('#FormN1GridView').DataTable({
+            ajax: {
+                url: "/MAM/LoadFormN1List",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormN1GridView').DataTable();
+        $('#formN1SearchBtn').click(function () {
+            oTable.columns(0).search($("#FormN1SmartSearch").val().trim());
+            oTable.columns(1).search($("#formN1DetSrchRMU").val().trim());
+            oTable.columns(2).search($("#formN1DetSrchRoadCode").val().trim());
+            oTable.columns(3).search($("#formN1DetSrchMonth").val().trim());
+            oTable.columns(4).search($("#formN1DetSrchIssueFrom").val().trim());
+            oTable.columns(5).search($("#formN1DetSrchIssueTo").val().trim());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>

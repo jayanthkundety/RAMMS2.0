@@ -1,0 +1,1963 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.FormDAddPage"
+             xmlns:forms="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+             x:Name="FormDGridRowSelectedRecords"
+             Title="Form D"
+             xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+             xmlns:custom="clr-namespace:RAMMS.MobileApps.Controls"
+             xmlns:local="clr-namespace:RAMMS.MobileApps">
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Margin="0,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+
+
+
+            <Frame>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Form D No.  " FontSize="Medium" Margin="0,0,0,0" HorizontalOptions="EndAndExpand" TextColor="Black" />
+
+
+                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" HorizontalOptions="StartAndExpand" BackgroundColor="#f2f2f2" FrameCornerRadius="5"  WidthRequest="450"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                        <!--<fe:AdvancedFrame CornerRadius="5"  HorizontalOptions="StartAndExpand" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                        <!--<local:EntryControl  HeightRequest="40" WidthRequest="250" Text="{Binding }" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium"   IsEnabled="True" />-->
+                        <Label Text="{Binding StrRefcode}" x:Name="lblrefno" TextColor="Black" FontSize="Medium" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand"  InputTransparent="True"/>
+                        <!--</fe:AdvancedFrame>-->
+                    </locals:FrameRenders>
+                </StackLayout>
+            </Frame>
+
+
+            <ScrollView HeightRequest="1100" BackgroundColor="#f2f2f2">
+                <StackLayout >
+                    <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                    <StackLayout Orientation="Horizontal">
+                        <Image x:Name="formToggleImage" Source="minusicon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                        </Image>
+                        <Label Text="Form D" Margin="10,0,0,0" FontSize="Large" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand">
+                           
+                        </Label>
+                    </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference FormDLayout}"/>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference formToggleImage}"/>
+                        </Frame.GestureRecognizers>
+                </Frame>
+
+                    <Frame x:Name="FormDLayout"  Margin="30,10,30,0" BackgroundColor="White"   HasShadow="True" BorderColor="#bfbfbf"  IsVisible="True" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Grid RowSpacing="15"  ColumnSpacing="15" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="40" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="Auto" />
+
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                            <Label Text="RMU" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            <locals:FrameRenders Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <local:ExtendedPicker Title="Select RMU" x:Name="RMUCodePicker"    ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black"/>
+                            </locals:FrameRenders>
+
+
+                            <Label Text="RMU Name" Grid.Row="0" Grid.Column="2"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+
+                            <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <!--<fe:AdvancedFrame Grid.Row="1" Grid.Column="2" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                                <local:EntryControl x:Name="ectrlRMUName" Text="{Binding strRMUCode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                            </locals:FrameRenders>
+
+                            <!--</fe:AdvancedFrame>-->
+
+
+
+                            <Label Text="Section Code" Grid.Row="0" Grid.Column="3"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <local:ExtendedPicker Title="Select Section" x:Name="sectionCodePicker"    ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black"/>
+                            </locals:FrameRenders>
+
+                            <Label Text="Section Name" Grid.Row="0" Grid.Column="4"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            <locals:FrameRenders Grid.Row="1"  Grid.Column="4" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <!--<fe:AdvancedFrame Grid.Row="1" Grid.Column="4" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                                <local:EntryControl  Text="{Binding strsectionname}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  IsEnabled="False" />
+                            </locals:FrameRenders>
+                            <!--</fe:AdvancedFrame>-->
+
+                            <Label Text="Name of Crew Supervisor:" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            <locals:FrameRenders Grid.Row="3"  Grid.Column="1" Grid.ColumnSpan="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <local:ExtendedPicker Title="Select Users" x:Name="crewpicker"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black"/>
+                            </locals:FrameRenders>
+
+
+                            <locals:FrameRenders Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <!--<fe:AdvancedFrame  InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                                <local:EntryControl  x:Name="entrlsupervisor"  Text="{Binding strSupervisor}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                <!--</fe:AdvancedFrame>-->
+                            </locals:FrameRenders>
+
+
+                            <Label Text="Division Code"  Grid.Row="4" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            
+                            <locals:FrameRenders Grid.Row="5" Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <!--<fe:AdvancedFrame  InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                                <local:EntryControl  x:Name="enctrlDivision"  Text="{Binding strDivision}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                <!--</fe:AdvancedFrame>-->
+                            </locals:FrameRenders>
+
+                            <Label Text="Week No" Grid.Row="4" Grid.Column="2"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            <locals:FrameRenders Grid.Row="5"  Grid.Column="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                            <local:ExtendedPicker x:Name="weekpicker"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black"/>
+                            </locals:FrameRenders>
+
+                            <Label Text="Day of the Week" Grid.Row="4" Grid.Column="3"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            <locals:FrameRenders Grid.Row="5"  Grid.Column="3" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                            <local:ExtendedPicker x:Name="weekdaypicker"    ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black"/>
+                            </locals:FrameRenders>
+
+                            <Label Text="Year (YYYY)" Grid.Row="4" Grid.Column="4"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="Black" />
+
+                            <locals:FrameRenders Grid.Row="5"  Grid.Column="4" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                <local:ExtendedPicker x:Name="yearPicker"    ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black"/>
+                            </locals:FrameRenders>
+
+                                <Button x:Name="btnFind" Text="Find Details"   Grid.Row="6" Grid.Column="4" FontSize="Medium" BackgroundColor="#1D2D50" TextColor="White"  Command="{Binding FormDFindDetailCommand}" CornerRadius="10"  />
+                           
+                        </Grid>
+                    </Frame>
+
+                <StackLayout>
+                    <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                        <StackLayout Orientation="Horizontal">
+
+                                <Image x:Name="labourToggleImage" Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start" Margin="0,0,0,0" >
+                                    
+                                </Image>
+
+                                <Label Text="Labour Details" FontSize="Large" Margin="10,0,0,0" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" >
+                                
+                            </Label>
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference Toggle1}"/>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference labourToggleImage}"/>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </StackLayout>
+                    
+                <StackLayout>
+
+                        <Frame x:Name="Toggle1" BackgroundColor="White" BorderColor="#d9d9d9" HasShadow="True" CornerRadius="5" Grid.Row="1" Margin="10,0,10,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                             <StackLayout>
+                                <StackLayout  Grid.Row="2"  HeightRequest="40"  Margin="0,25,30,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.139*"/>
+                                            <ColumnDefinition Width="0.305*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!--<Button  BackgroundColor="#1D2D50" Grid.Column="0" CornerRadius="10" Text="Download" TextColor="White" FontSize="Default"  />-->
+                                        <Label Text="Show" Grid.Column="0" Margin="0,8,0,0" FontAttributes="Bold" FontSize="Medium" TextColor="Black" />
+
+
+                                        <StackLayout Grid.Column="1">
+                                            <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" Margin="-18,0,38,0"   BorderColor="Black" >
+                                            <custom:CustomMyPicker x:Name="scustompicker" Title="Select Rows" FontSize="19" TitleColor="Black"   HorizontalOptions="Fill">
+                                                <custom:CustomMyPicker.Items>
+                                                    <x:String>10 rows</x:String>
+                                                    <x:String>25 rows</x:String>
+                                                    <x:String>50 rows</x:String>
+                                                    <x:String>100 rows</x:String>
+                                                    <x:String>500 rows</x:String>
+                                                    <x:String>All</x:String>
+                                                </custom:CustomMyPicker.Items>
+                                            </custom:CustomMyPicker>
+                                            </locals:FrameRenders>
+                                        </StackLayout>
+                                        <!--<Image Source="down.png" Grid.Column="2" HorizontalOptions="Start" HeightRequest="18" WidthRequest="18" Margin="-35,7,0,0" />-->
+                                        <Label Text="entries" Grid.Column="2" FontAttributes="Bold" FontSize="Medium" TextColor="Black" Margin="-38,7,30,0"  />
+                                        <!--<Button  Command="{Binding AddCommand}" Grid.Column="3" HorizontalOptions="End" VerticalOptions="End" ImageSource="Add.png" TextColor="White" CornerRadius="10" FontSize="17" BackgroundColor="#1D2D50" Text="Add"></Button>-->
+                                    </Grid>
+                                </StackLayout>
+
+
+
+                                <Frame BackgroundColor="#f2f2f2" BorderColor="#bfbfbf">
+                                    <StackLayout BackgroundColor="#C8E1FF" Grid.Row="3"  HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+                                            <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand"  VerticalOptions="FillAndExpand">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="1" />
+                                                    <RowDefinition Height="60" />
+                                                    <RowDefinition Height="1" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.2*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <Button  Grid.Row="1" BackgroundColor="Transparent" x:Name="btnLabourCommand" IsVisible="False"  Command="{Binding AddLabourCommand}" HeightRequest="45"  WidthRequest="45" Margin="-17,10,0,0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start"/>
+                                                <Image Source="AddsImage.png" x:Name="btnLabourCommandX"  IsVisible="False" Grid.Row="1" HeightRequest="45"  WidthRequest="40" Margin="-17,10,0,0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start" />
+
+
+                                                <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="13" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <BoxView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" />
+                                                <Label Grid.Row="1" Grid.Column="1" Text="Action" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="3" Text="S.No" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="5" Text="Code"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="7" Text="Description"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="9" Text="Qty"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="11" Text="Unit"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}"/>
+                                                <BoxView Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="13" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}"/>
+                                            </Grid>
+                                        </StackLayout>
+
+                                        <StackLayout BackgroundColor="White"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0">
+
+                                            <ListView x:Name="GridlistLabour" ItemsSource="{Binding MyLabourBaseFormDList}" SelectedItem="{Binding FormDGridRowSelectedRecords}" SeparatorColor="#b8b8b8" SeparatorVisibility="Default" HasUnevenRows="True">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            <ViewCell.View>
+                                                                <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="55" />
+                                                                        <RowDefinition Height="1" />
+                                                                    </Grid.RowDefinitions>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.2*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <BoxView Grid.Row="0"  Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <StackLayout Grid.Row="0" Grid.Column="1" Padding="0" Margin="0" Orientation="Horizontal"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                                     <Button  BackgroundColor="#1D2D50" Padding="0" CornerRadius="10" Text="Click Me" HeightRequest="35" TextColor="White" Command="{Binding BindingContext.ClickMeActionCommand, Source={x:Reference FormDGridRowSelectedRecords}}" CommandParameter="{Binding .}" />
+                                                                    </StackLayout>
+                                                                    <BoxView Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="3" Text="{Binding SerialNo}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0"  Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="5" Text="{Binding LabourCode}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="7" Text="{Binding CodeDesc}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="9" Text="{Binding Quantity}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="11" Text="{Binding Unit}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="{StaticResource ProfileBoxviewColor}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                                </Grid>                                                        
+                                                            </ViewCell.View>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+
+                                <!--<StackLayout Grid.Row="3" IsVisible="{Binding IsEmpty}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                                    <Label Text="No List" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                </StackLayout>-->
+
+                                <Frame BackgroundColor="#f2f2f2"  BorderColor="#bfbfbf" HeightRequest="40"  >
+                                    
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1"/>
+                                                <RowDefinition Height="70"/>
+                                                <RowDefinition Height="1"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <!--0-->
+                                                <ColumnDefinition Width="1"/>
+
+                                                <!--1-->
+                                                <ColumnDefinition Width="1"/>
+                                                <!--2-->
+                                                <ColumnDefinition Width="3*"/>
+                                                <!--3-->
+                                                <ColumnDefinition Width="1"/>
+
+                                                <!--4-->
+                                                <ColumnDefinition Width="1"/>
+
+                                                <!--5-->
+                                                <ColumnDefinition Width="1"/>
+
+                                                <!--6-->
+                                                <ColumnDefinition Width="1"/>
+
+                                                <!--7-->
+                                                <ColumnDefinition Width="0.2*"/>
+
+                                                <!--8-->
+                                                <ColumnDefinition Width="0.8*"/>
+
+                                                <!--9-->
+                                                <ColumnDefinition Width="0.1*"/>
+
+                                                <!--10-->
+                                                <ColumnDefinition Width="0.8*"/>
+
+                                                <!--11-->
+                                                <ColumnDefinition Width="0.2*"/>
+
+                                                <!--12-->
+                                                <ColumnDefinition Width="1"/>
+
+
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <StackLayout  Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="0,0,0,0">
+                                                <Label Text="Showing" TextColor="Black" FontSize="Large" />
+                                            <Label  Text="{Binding LbrStartPage}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                                <Label  Text="to" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding LbrPageSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                                <Label Text="of" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding LbrTotalSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                                <Label  Text="entries" TextColor="Black" FontSize="Large"/>
+                                            </StackLayout>
+
+
+                                            <Label Text="Page Size:" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                            <local:ExtendedPicker  Grid.Row="1" Grid.Column="0"  ClassId ="ClassPickGrey"   FontSize="Medium"  TextColor="Gray" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+
+                                            </local:ExtendedPicker>
+
+
+
+
+                                            <Label Text="" TextColor="Black"  FontSize="Large" Grid.Row="1" Grid.Column="3" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                                            <Label Text="" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                            <Label Text=""  TextColor="Black" FontSize="Large"  Grid.Row="1" Grid.Column="5" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                        <Image Source="L_Arrow.png"  Grid.Row="1" Grid.Column="7" Margin="0,-35,0,0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                                        <Button Text="Prev" Command="{Binding LbrPrevCommand}" CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50"  FontSize="Medium"  Grid.Row="1" Grid.Column="8"/>
+                                            <!--<ScrollView Grid.Column="9" Grid.Row="1" Orientation="Horizontal"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                                    <local:StepProgressBarControl Margin="-60,0,0,0" StepColor="#1D2D50" Steps="10" StepSelected="1" x:Name="stepBar"  />
+                                </ScrollView>-->
+                                        <Button Text="Next" Command="{Binding LbrNextCommand}"  CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50"  FontSize="Medium"  Grid.Row="1" Grid.Column="10" />
+                                        <Image Source="R_Arrow.jpg" Margin="0,-35,0,0" Grid.Row="1" Grid.Column="11" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+
+                                        </Grid>
+                                </Frame>
+                            </StackLayout>
+                    </Frame>
+                </StackLayout>
+
+
+                    <StackLayout>
+                        <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                            <StackLayout Orientation="Horizontal">
+                                <Image x:Name="equipToggleImage" Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                                    
+                                </Image>
+
+
+
+                                <Label Text="Equipment" FontSize="Large" Margin="10,0,0,0" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" >
+                                    
+                                </Label>
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference Toggle2}"/>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference equipToggleImage}"/>
+                        </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+
+                    <StackLayout>
+
+                        <Frame x:Name="Toggle2" HasShadow="True" BackgroundColor="White" BorderColor="#d9d9d9" CornerRadius="5" Grid.Row="1" Margin="10,0,10,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <StackLayout>
+                                <StackLayout  Grid.Row="2"  HeightRequest="40"  Margin="0,25,30,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.138*"/>
+                                            <ColumnDefinition Width="0.305*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!--<Button  BackgroundColor="#1D2D50" Grid.Column="0" CornerRadius="10" Text="Download" TextColor="White" FontSize="Default"  />-->
+                                        <Label Text="Show" Grid.Column="0" Margin="0,8,0,0" FontAttributes="Bold" FontSize="Medium" TextColor="Black" />
+
+
+                                        <StackLayout Grid.Column="1">
+                                            <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" Margin="-18,0,38,0"   BorderColor="Black" >
+
+                                                <custom:CustomMyPicker x:Name="equimentcustompicker" Title="Select Rows" FontSize="19" TitleColor="Black"   HorizontalOptions="Fill">
+                                                <custom:CustomMyPicker.Items>
+                                                    <x:String>10 rows</x:String>
+                                                    <x:String>25 rows</x:String>
+                                                    <x:String>50 rows</x:String>
+                                                    <x:String>100 rows</x:String>
+                                                    <x:String>500 rows</x:String>
+                                                    <x:String>All</x:String>
+                                                </custom:CustomMyPicker.Items>
+                                            </custom:CustomMyPicker>
+                                            </locals:FrameRenders>
+                                        </StackLayout>
+                                        <!--<Image Source="down.png" Grid.Column="2" HorizontalOptions="Start" HeightRequest="18" WidthRequest="18" Margin="-35,7,0,0" />-->
+                                        <Label Text="entries" Grid.Column="2" FontAttributes="Bold" FontSize="Medium" TextColor="Black" Margin="-38,7,30,0"  />
+                                        <!--<Button  Command="{Binding AddCommand}" Grid.Column="3" HorizontalOptions="End" VerticalOptions="End" ImageSource="Add.png" TextColor="White" CornerRadius="10" FontSize="17" BackgroundColor="#1D2D50" Text="Add"></Button>-->
+                                    </Grid>
+                                </StackLayout>
+
+                                <Frame BorderColor="#bfbfbf" BackgroundColor="#f2f2f2">
+                                    <StackLayout BackgroundColor="#C8E1FF" Grid.Row="3"  HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="1" />
+                                                    <RowDefinition Height="60" />
+                                                    <RowDefinition Height="1" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.2*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button  Grid.Row="1" BackgroundColor="Transparent" IsVisible="False" x:Name="btnEquipment" Command="{Binding AddEquipCommand}" HeightRequest="45"  WidthRequest="45" Margin="-17,10,0,0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start"/>
+                                                <Image Source="AddsImage.png" IsVisible="false" x:Name="btnEquipmentX"  Grid.Row="1" HeightRequest="40"  WidthRequest="40" Margin="-17,10,0,0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start" />
+
+                                                <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="13" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <BoxView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent"/>
+                                                <Label Grid.Row="1" Grid.Column="1" Text="Action" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="3" Text="S.No" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="5" Text="Code"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="7" Text="Description"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="9" Text="Qty"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="11" Text="Unit"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}"/>
+                                                <BoxView Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="13" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}"/>
+                                            </Grid>
+                                        </StackLayout>
+
+                                        <StackLayout BackgroundColor="White"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0">
+                                            <ListView x:Name="GridlistEquip" ItemsSource="{Binding MyEquimentBaseFormDList}" SelectedItem="{Binding FormDGridRowSelectedRecords}" SeparatorColor="#b8b8b8" SeparatorVisibility="Default" HasUnevenRows="True">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            <ViewCell.View>
+
+                                                                <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="55" />
+                                                    <RowDefinition Height="1" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.2*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <BoxView Grid.Row="0"  Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <StackLayout Grid.Row="0" Grid.Column="1" Padding="0" Margin="0" Orientation="Horizontal"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                <Button  BackgroundColor="#1D2D50" Padding="0" CornerRadius="10" Text="Click Me" HeightRequest="35" TextColor="White"  Command="{Binding BindingContext.ClickMeEquimentActionCommand, Source={x:Reference FormDGridRowSelectedRecords}}" CommandParameter="{Binding .}"/>
+                                                </StackLayout>
+                                                <BoxView Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0"  Grid.Column="3" Text="{Binding SerialNo}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0"  Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                <Label Grid.Row="0" Grid.Column="5" Text="{Binding EquipmentCode}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                <Label Grid.Row="0" Grid.Column="7" Text="{Binding EquipmentDesc}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                <Label Grid.Row="0" Grid.Column="9" Text="{Binding Quantity}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                <Label Grid.Row="0" Grid.Column="11" Text="{Binding Unit}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="{StaticResource ProfileBoxviewColor}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                            </Grid>
+                                                            </ViewCell.View>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+
+                                <!--<StackLayout Grid.Row="3" IsVisible="{Binding IsEmpty}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                                    <Label Text="No List" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                </StackLayout>-->
+
+                                <Frame   BackgroundColor="#f2f2f2"   BorderColor="#bfbfbf" HeightRequest="40"  >
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0"/>
+                                            <RowDefinition Height="70"/>
+                                            <RowDefinition Height="0"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <!--0-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--1-->
+                                            <ColumnDefinition Width="1"/>
+                                            <!--2-->
+                                            <ColumnDefinition Width="3*"/>
+                                            <!--3-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--4-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--5-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--6-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--7-->
+                                            <ColumnDefinition Width="0.2*"/>
+
+                                            <!--8-->
+                                            <ColumnDefinition Width="0.8*"/>
+
+                                            <!--9-->
+                                            <ColumnDefinition Width="0.1*"/>
+
+                                            <!--10-->
+                                            <ColumnDefinition Width="0.8*"/>
+
+                                            <!--11-->
+                                            <ColumnDefinition Width="0.2*"/>
+
+                                            <!--12-->
+                                            <ColumnDefinition Width="1"/>
+
+
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <StackLayout  Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="0,0,0,0">
+                                            <Label Text="Showing" TextColor="Black" FontSize="Large" />
+                                            <Label  Text="{Binding StartPage}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label  Text="to" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding PageSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label Text="of" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding TotalSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label  Text="entries" TextColor="Black" FontSize="Large"/>
+                                        </StackLayout>
+
+
+                                        <Label Text="Page Size:" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                        <local:ExtendedPicker  Grid.Row="1" Grid.Column="0"  ClassId ="ClassPickGrey"   FontSize="Medium"  TextColor="Gray" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+
+                                        </local:ExtendedPicker>
+
+
+
+
+                                        <Label Text="" TextColor="Black"  FontSize="Large" Grid.Row="1" Grid.Column="3" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                                        <Label Text="" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                        <Label Text=""  TextColor="Black" FontSize="Large"  Grid.Row="1" Grid.Column="5" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                        <Image Source="L_Arrow.png"  Grid.Row="1" Grid.Column="7" Margin="0,-37,0,0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                                        <Button Text="Prev" Command="{Binding EqmtPrevCommand}" CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50"  FontSize="Medium"  Grid.Row="1" Grid.Column="8"/>
+                                        <!--<ScrollView Grid.Column="9" Grid.Row="1" Orientation="Horizontal"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                                    <local:StepProgressBarControl Margin="-60,0,0,0" StepColor="#1D2D50" Steps="10" StepSelected="1" x:Name="stepBar"  />
+                                </ScrollView>-->
+                                        <Button Text="Next" Command="{Binding EqmtNextCommand}" CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50"  FontSize="Medium"  Grid.Row="1" Grid.Column="10" />
+                                        <Image Source="R_Arrow.jpg"  Grid.Row="1" Grid.Column="11" Margin="0,-37,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+
+                                    </Grid>
+                                </Frame>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+
+
+
+                    <StackLayout>
+                        <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                            <StackLayout Orientation="Horizontal">
+                                <Image x:Name="matToggleImage" Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                                   
+                                </Image>
+                                <Label Text="Material" FontSize="Large" Margin="10,0,0,0" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" >
+                                   
+                                </Label>
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference Toggle3}"/>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference matToggleImage}"/>
+                        </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+
+                    <StackLayout>
+
+                        <Frame x:Name="Toggle3" BackgroundColor="White" BorderColor="#d9d9d9" HasShadow="True" CornerRadius="5" Grid.Row="1" Margin="10,0,10,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <StackLayout>
+                                <StackLayout  Grid.Row="2"  HeightRequest="40"  Margin="0,25,30,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.138*"/>
+                                            <ColumnDefinition Width="0.305*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!--<Button  BackgroundColor="#1D2D50" Grid.Column="0" CornerRadius="10" Text="Download" TextColor="White" FontSize="Default"  />-->
+                                        <Label Text="Show" Grid.Column="0" Margin="0,3,0,0" FontAttributes="Bold" FontSize="Medium" TextColor="Black" />
+
+
+                                        <StackLayout Grid.Column="1">
+                                            <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" Margin="-18,0,38,0"   BorderColor="Black" >
+
+                                                <custom:CustomMyPicker x:Name="materialcustompicker" FontSize="17"  Title="Select Rows"  TitleColor="Black"   HorizontalOptions="Fill">
+                                                <custom:CustomMyPicker.Items>
+                                                    <x:String>10 rows</x:String>
+                                                    <x:String>25 rows</x:String>
+                                                    <x:String>50 rows</x:String>
+                                                    <x:String>100 rows</x:String>
+                                                    <x:String>500 rows</x:String>
+                                                    <x:String>All</x:String>
+                                                </custom:CustomMyPicker.Items>
+                                            </custom:CustomMyPicker>
+                                            </locals:FrameRenders>
+                                        </StackLayout>
+                                        <!--<Image Source="down.png" Grid.Column="2" HorizontalOptions="Start" HeightRequest="18" WidthRequest="18" Margin="-35,7,0,0" />-->
+                                        <Label Text="entries" Grid.Column="2" FontAttributes="Bold" FontSize="Medium" TextColor="Black" Margin="-38,7,30,0"  />
+                                        <!--<Button  Command="{Binding AddCommand}" Grid.Column="3" HorizontalOptions="End" VerticalOptions="End" ImageSource="Add.png" TextColor="White" CornerRadius="10" FontSize="17" BackgroundColor="#1D2D50" Text="Add"></Button>-->
+                                    </Grid>
+                                </StackLayout>
+
+                                <Frame BorderColor="#bfbfbf" BackgroundColor="#f2f2f2">
+                                    <StackLayout BackgroundColor="#C8E1FF" Grid.Row="3"  HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="1" />
+                                                    <RowDefinition Height="60" />
+                                                    <RowDefinition Height="1" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.2*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                </Grid.ColumnDefinitions>
+                                                <Button  Grid.Row="1" BackgroundColor="Transparent" IsVisible="False" x:Name="btnMaterial" Command="{Binding AddMaterialCommand}" HeightRequest="45"  WidthRequest="45" Margin="-17,10,0,0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start"/>
+                                                <Image x:Name="btnMaterialX"  IsVisible="false" Source="AddsImage.png"  Grid.Row="1" HeightRequest="40"  WidthRequest="40" Margin="-17,10,0,0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start" />
+
+                                                <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="13" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <BoxView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" />
+                                                <Label Grid.Row="1" Grid.Column="1" Text="Action" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="3" Text="S.No" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="5" Text="Code"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="7" Text="Description"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="9" Text="Qty"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <Label Grid.Row="1" Grid.Column="11" Text="Unit"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="1" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}"/>
+                                                <BoxView Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="13" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}"/>
+                                            </Grid>
+                                        </StackLayout>
+
+                                        <StackLayout BackgroundColor="White"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0">
+                                            <ListView x:Name="GridlistMaterial" ItemsSource="{Binding MyMaterialBaseFormDList}" SelectedItem="{Binding FormDGridRowSelectedRecords}" SeparatorColor="#b8b8b8" SeparatorVisibility="Default" HasUnevenRows="True">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            <ViewCell.View>
+
+
+                                                                <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="55" />
+                                                    <RowDefinition Height="1" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.2*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="1" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <BoxView Grid.Row="0"  Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                <StackLayout Grid.Row="0" Grid.Column="1" Padding="0" Margin="0" Orientation="Horizontal"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                                    <Button  BackgroundColor="#1D2D50" Padding="0" CornerRadius="10" Text="Click Me" HeightRequest="35" TextColor="White" Command="{Binding BindingContext.ClickMeMaterialActionCommand, Source={x:Reference FormDGridRowSelectedRecords}}" CommandParameter="{Binding .}"/>
+                                                </StackLayout>
+                                                <BoxView Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="3" Text="{Binding SerialNo}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0"  Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                <Label Grid.Row="0" Grid.Column="5" Text="{Binding MaterialCode}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                 <Label Grid.Row="0" Grid.Column="7" Text="{Binding MaterialDesc}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                 <Label Grid.Row="0" Grid.Column="9" Text="{Binding Quantity}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                 <Label Grid.Row="0" Grid.Column="11" Text="{Binding Unit}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                <BoxView Grid.Row="0" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="13" BackgroundColor="{StaticResource ProfileBoxviewColor}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                            </Grid>
+                                                            </ViewCell.View>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+
+                                <!--<StackLayout Grid.Row="3" IsVisible="{Binding IsEmpty}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                                    <Label Text="No List" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                </StackLayout>-->
+
+                                <Frame   BackgroundColor="#f2f2f2"   BorderColor="#bfbfbf" HeightRequest="40"   >
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="1"/>
+                                            <RowDefinition Height="70"/>
+                                            <RowDefinition Height="1"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <!--0-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--1-->
+                                            <ColumnDefinition Width="1"/>
+                                            <!--2-->
+                                            <ColumnDefinition Width="3*"/>
+                                            <!--3-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--4-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--5-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--6-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--7-->
+                                            <ColumnDefinition Width="0.2*"/>
+
+                                            <!--8-->
+                                            <ColumnDefinition Width="0.8*"/>
+
+                                            <!--9-->
+                                            <ColumnDefinition Width="0.1*"/>
+
+                                            <!--10-->
+                                            <ColumnDefinition Width="0.8*"/>
+
+                                            <!--11-->
+                                            <ColumnDefinition Width="0.2*"/>
+
+                                            <!--12-->
+                                            <ColumnDefinition Width="1"/>
+
+
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <StackLayout  Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="0,0,0,0">
+                                            <Label Text="Showing" TextColor="Black" FontSize="Large" />
+                                            <Label  Text="{Binding MtrlStartPage}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label  Text="to" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding MtrlPageSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label Text="of" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding MtrlTotalSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label  Text="entries" TextColor="Black" FontSize="Large"/>
+                                        </StackLayout>
+
+
+                                        <Label Text="Page Size:" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                        <local:ExtendedPicker  Grid.Row="1" Grid.Column="0"  ClassId ="ClassPickGrey"   FontSize="Medium"  TextColor="Gray" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+
+                                        </local:ExtendedPicker>
+
+
+
+
+                                        <Label Text="" TextColor="Black"  FontSize="Large" Grid.Row="1" Grid.Column="3" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                                        <Label Text="" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                        <Label Text=""  TextColor="Black" FontSize="Large"  Grid.Row="1" Grid.Column="5" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                        <Image Source="L_Arrow.png"  Grid.Row="1" Grid.Column="7" Margin="0,-37,0,0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                                        <Button Text="Prev" Command="{Binding MtrlPrevCommand}" CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50" FontSize="Medium"  Grid.Row="1" Grid.Column="8"/>
+                                        <!--<ScrollView Grid.Column="9" Grid.Row="1" Orientation="Horizontal"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                                    <local:StepProgressBarControl Margin="-60,0,0,0" StepColor="#1D2D50" Steps="10" StepSelected="1" x:Name="stepBar"  />
+                                </ScrollView>-->
+                                        <Button Text="Next" Command="{Binding MtrlNextCommand}" CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50" FontSize="Medium"  Grid.Row="1" Grid.Column="10" />
+                                        <Image Source="R_Arrow.jpg"  Grid.Row="1" Grid.Column="11" Margin="0,-37,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+
+                                    </Grid>
+                                </Frame>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+
+
+                    <StackLayout>
+                        <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                            <StackLayout Orientation="Horizontal">
+                                <Image x:Name="dtlToggleImage" Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                                   
+                                </Image>
+                                <Label Text="Details" FontSize="Large" Margin="10,0,0,0" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" >
+                                  
+                                </Label>
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference Toggle4}"/>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference dtlToggleImage}"/>
+                        </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Frame x:Name="Toggle4" HasShadow="True" BackgroundColor="White" BorderColor="#d9d9d9" CornerRadius="5" Grid.Row="1" Margin="10,0,10,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <StackLayout>
+
+                                <StackLayout  Grid.Row="2"  HeightRequest="40"  Margin="0,25,30,10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.138*"/>
+                                            <ColumnDefinition Width="0.305*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <!--<Button  BackgroundColor="#1D2D50" Grid.Column="0" CornerRadius="10" Text="Download" TextColor="White" FontSize="Default"  />-->
+                                        <Label Text="Show" Grid.Column="0" Margin="0,8,0,0" FontAttributes="Bold" FontSize="Medium" TextColor="Black" />
+
+
+                                        <StackLayout Grid.Column="1">
+                                            <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" Margin="-15,3,38,0"   BorderColor="Black" >
+
+                                                <custom:CustomMyPicker x:Name="detailcustompicker"  Title="Select Rows" FontSize="17" TitleColor="Black"   HorizontalOptions="Fill">
+                                                <custom:CustomMyPicker.Items>
+                                                    <x:String>10 rows</x:String>
+                                                    <x:String>25 rows</x:String>
+                                                    <x:String>50 rows</x:String>
+                                                    <x:String>100 rows</x:String>
+                                                    <x:String>500 rows</x:String>
+                                                    <x:String>All</x:String>
+                                                </custom:CustomMyPicker.Items>
+                                            </custom:CustomMyPicker>
+                                            </locals:FrameRenders>
+                                        </StackLayout>
+                                        <!--<Image Source="down.png" Grid.Column="2" HorizontalOptions="Start" HeightRequest="18" WidthRequest="18" Margin="-35,7,0,0" />-->
+                                        <Label Text="entries" Grid.Column="2" FontAttributes="Bold" FontSize="Medium" TextColor="Black" Margin="-38,7,30,0"  />
+                                        <!--<Button  Command="{Binding AddCommand}" Grid.Column="3" HorizontalOptions="End" VerticalOptions="End" ImageSource="Add.png" TextColor="White" CornerRadius="10" FontSize="17" BackgroundColor="#1D2D50" Text="Add"></Button>-->
+                                    </Grid>
+                                </StackLayout>
+
+
+                                <Frame  HasShadow="True" BackgroundColor="#f2f2f2" BorderColor="#bfbfbf"  Margin="10,0,10,0"  >
+                                    <StackLayout>
+
+                                        <!--<Button x:Name="btnAddCtl"  Margin="-15,0,0,-40" HorizontalOptions="Start" VerticalOptions="Start" HeightRequest="40" WidthRequest="40" ImageSource="Adds.png"  CornerRadius="100" FontSize="17" BackgroundColor="Transparent"  ></Button>-->
+
+                                        <Button x:Name="btnAddCtlX" IsVisible="false"  Command="{Binding AddDetailCommand}" ImageSource="Plussymbol.png" Margin="-15,0,0,-46" HorizontalOptions="Start" VerticalOptions="Start"  TextColor="White" HeightRequest="50" WidthRequest="50"  CornerRadius="100" FontSize="17" BackgroundColor="#1D2D50"  ></Button>
+
+
+                                        <ScrollView Orientation="Horizontal" Margin="0,-15,0,0"   BackgroundColor="#C8E1FF" >
+                                            <StackLayout  HeightRequest="385"   VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                    <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                        
+                                                        <Grid.RowDefinitions>
+                                                            
+                                                            <RowDefinition Height="1" />
+                                                            
+                                                            <RowDefinition Height="60" />
+                                                            
+                                                            <RowDefinition Height="1" />
+                                                            
+                                                        </Grid.RowDefinitions>
+                                                        
+                                                        <Grid.ColumnDefinitions>
+                                                            <!--0-->
+                                                            <ColumnDefinition Width="1"/>
+                                                            <!--1-->
+                                                            <ColumnDefinition Width="1*"/>
+                                                            <!--2-->
+                                                            <ColumnDefinition Width="1"/>
+                                                            <!--3-->
+                                                            <ColumnDefinition Width="1*"/>
+                                                            <!--4-->
+                                                            <ColumnDefinition Width="1"/>
+                                                            <!--5-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--6-->
+                                                            <ColumnDefinition Width="1" />
+                                                            <!--7-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--8-->
+                                                            <ColumnDefinition Width="1"/>
+                                                            <!--9-->
+                                                            <ColumnDefinition Width="1*"/>
+                                                            <!--10-->
+                                                            <ColumnDefinition Width="1"/>
+                                                            <!--11-->
+                                                            <ColumnDefinition Width="1*"/>
+                                                            <!--12-->
+                                                            <ColumnDefinition Width="1"/>
+                                                            <!--13-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--14-->
+                                                            <ColumnDefinition Width="1" />
+                                                            <!--15-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--16-->
+                                                            <ColumnDefinition Width="1" />
+                                                            <!--17-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--18-->
+                                                            <ColumnDefinition Width="1" />
+                                                            <!--19-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--20-->
+                                                            <ColumnDefinition Width="1" />
+                                                            <!--21-->
+                                                            <ColumnDefinition Width="1*"/>
+                                                            <!--22-->
+                                                            <ColumnDefinition Width="1" />
+                                                            <!--23-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--24-->
+                                                            <ColumnDefinition Width="1" />
+                                                            <!--25-->
+                                                            <ColumnDefinition Width="1*" />
+                                                            <!--26-->
+                                                            <ColumnDefinition Width="1"/>
+                                                            <!--27-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--28-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                          
+                                                        </Grid.ColumnDefinitions>
+                                                        <!--<Image Source="AddsImage.png"  Grid.Row="1" HeightRequest="40"  WidthRequest="40" Margin="-2,10,0,0" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="Start" />-->
+
+                                                        <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="29" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray"  />
+                                                        
+                                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                                                        
+                                                        <Label Grid.Row="1" Grid.Column="1" Text="Action" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="3" Text="S No" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="5" Text="Chainage From"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="7" Text="Chainage To"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="9" Text="Site Ref."  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="11" Text="Activity Code"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="13" Text="Road Code"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="14" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="15" Text="Arrival Time"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="16" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+
+                                                        <Label Grid.Row="1" Grid.Column="17" Text="Departure Time"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="18" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+
+                                                        <Label Grid.Row="1" Grid.Column="19" Text="Dimension (L x W x H)"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="20" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+
+
+                                                        <Label Grid.Row="1" Grid.Column="21" Text="Qty"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="22" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+
+
+
+
+                                                        <Label Grid.Row="1" Grid.Column="23" Text="Unit"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="24" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="25" Text="Work Status"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="26" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                        <Label Grid.Row="1" Grid.Column="27" Text="Remarks"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="1" Grid.Column="28" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray" />
+                                                       
+
+                                                        <BoxView Grid.Row="1"  Grid.Column="28" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray"  />
+                                                        <BoxView Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="29" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Gray"/>
+                                                    </Grid>
+                                                </StackLayout>
+                                                <StackLayout BackgroundColor="White"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,-5,0,0">
+                                                    <ListView x:Name="list"   ItemsSource="{Binding MyDetailBaseFormDList}" SelectedItem="{Binding FormAGridRowSelectedRecords}" SeparatorColor="White" SeparatorVisibility="Default" HasUnevenRows="True" CachingStrategy="RecycleElement" >
+                                                        <ListView.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <ViewCell>
+                                                                    <ViewCell.View>
+                                                    <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="55" />
+                                                            <RowDefinition Height="1" />
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+
+                                                            <!--0-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--1-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--2-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--3-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--4-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--5-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--6-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--7-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--8-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--9-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--10-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--11-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--12-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--13-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--14-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--15-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--16-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--17-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--18-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--19-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--20-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--21-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--22-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--23-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--24-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--25-->
+                                                            <ColumnDefinition Width="1*" />
+
+                                                            <!--27-->
+                                                            <ColumnDefinition Width="1" />
+
+                                                            <!--28-->
+                                                           
+                                                       
+
+
+
+                                                        </Grid.ColumnDefinitions>
+
+                                                                            <BoxView Grid.Row="0"  Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                        <StackLayout Grid.Row="0" Grid.Column="1" Padding="0"   Orientation="Horizontal"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+
+                                                       <Button BorderColor="#1D2D50"  BackgroundColor="#1D2D50"  TextColor="White" BorderWidth="2" Padding="0" CornerRadius="10" Text="Click Me" HeightRequest="35" Command="{Binding BindingContext.ClickMeDetailActionCommand, Source={x:Reference FormDGridRowSelectedRecords}}" CommandParameter="{Binding .}"/>
+                                                        </StackLayout>
+
+                                                                   <BoxView Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+
+                                                                   <Label Grid.Row="0" Grid.Column="3"   Text="{Binding Width}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+
+
+                                                                            <BoxView Grid.Row="0"  Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                        <Label  Grid.Row="0"   Grid.Column="5" Text="{Binding FrmCh}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" >
+                                                                            <Label.FormattedText>
+                                                                                <FormattedString>
+                                                                                        <Span Text="{Binding FrmCh}"/>
+                                                                                    <Span Text="."/>
+                                                                                        <Span Text="{Binding FrmChDeci}"/>
+                                                                                   
+                                                                                </FormattedString>
+                                                                            </Label.FormattedText>
+                                                                        </Label>
+
+
+
+                                                                 
+
+                                                                      <BoxView Grid.Row="0"  Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+
+                                                                          <Label Grid.Row="0" Margin="10,0,0,0" Grid.Column="7" Text="{Binding ToCh}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" >
+                                                                            <Label.FormattedText>
+                                                                                <FormattedString>
+                                                                                        <Span Text="{Binding ToCh}"/>
+                                                                                    <Span Text="."/>
+                                                                                        <Span Text="{Binding ToChDeci}"/>
+
+                                                                                </FormattedString>
+                                                                            </Label.FormattedText>
+                                                                          </Label>
+
+
+
+                                                                          
+
+                                                        <BoxView Grid.Row="0" Grid.Column="8" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="9"  Text="{Binding SiteRef}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="10" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="11"  Text="{Binding ActCode}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="12" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="13"  Text="{Binding RoadCode}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="14" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="15"  Text="{Binding TimeArr}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="16" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="17"  Text="{Binding TimeDep}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="18" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+
+                                                        
+                                                                          
+                                                        <Label Grid.Row="0" Grid.Column="19"   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" >
+                                                            <Label.FormattedText>
+                                                                   <FormattedString>
+                                                                           <Span Text="{Binding Length}"/>
+                                                                           <Span Text="x"/>
+                                                                                  <Span Text="{Binding Width}"/>
+                                                                           <Span Text="x"/>
+                                                                           <Span Text="{Binding Height}"/>
+                                                                                    </FormattedString>
+                                                            </Label.FormattedText>
+                                                        </Label>
+
+
+
+
+                                                                          
+                                                        <BoxView Grid.Row="0"  Grid.Column="20" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+
+
+
+                                                                            <Label Grid.Row="0" Grid.Column="21" Text="{Binding ProdQty}"   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="22" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="23"  Text="{Binding ProdUnit}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="24" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="25"  Text="{Binding WorkSts}"   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <BoxView Grid.Row="0" Grid.Column="26" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                            <Label Grid.Row="0" Grid.Column="27"  Text="{Binding Remarks}"   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                                                        <!--<BoxView Grid.Row="0" Grid.Column="28" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />-->
+
+
+                                                        <!--<BoxView Grid.Row="0" Grid.Column="2" BackgroundColor="Gray" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />-->
+                                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="28" BackgroundColor="Gray"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                                    </Grid>
+                                                    </ViewCell.View>
+                                                                </ViewCell>
+                                                            </DataTemplate>
+                                                        </ListView.ItemTemplate>
+                                                    </ListView>
+                                                </StackLayout>
+
+                                            </StackLayout>
+                                        </ScrollView>
+                                    </StackLayout>
+                                </Frame>
+
+                                <Frame   BackgroundColor="#f2f2f2"   BorderColor="#bfbfbf" HeightRequest="40"  Margin="10,0,10,0"   >
+
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0"/>
+                                            <RowDefinition Height="70"/>
+                                            <RowDefinition Height="0"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <!--0-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--1-->
+                                            <ColumnDefinition Width="1"/>
+                                            <!--2-->
+                                            <ColumnDefinition Width="3*"/>
+                                            <!--3-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--4-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--5-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--6-->
+                                            <ColumnDefinition Width="1"/>
+
+                                            <!--7-->
+                                            <ColumnDefinition Width="0.2*"/>
+
+                                            <!--8-->
+                                            <ColumnDefinition Width="0.8*"/>
+
+                                            <!--9-->
+                                            <ColumnDefinition Width="0.1*"/>
+
+                                            <!--10-->
+                                            <ColumnDefinition Width="0.8*"/>
+
+                                            <!--11-->
+                                            <ColumnDefinition Width="0.2*"/>
+
+                                            <!--12-->
+                                            <ColumnDefinition Width="1"/>
+
+
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <StackLayout  Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="0,0,0,0">
+                                            <Label Text="Showing" TextColor="Black" FontSize="Large" />
+                                            <Label  Text="{Binding DtlStartPage}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label  Text="to" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding DtlPageSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label Text="of" TextColor="Black" FontSize="Large"/>
+                                            <Label  Text="{Binding DtlTotalSize}" TextColor="Black" FontSize="Large" FontAttributes="Bold"/>
+                                            <Label  Text="entries" TextColor="Black" FontSize="Large"/>
+                                        </StackLayout>
+
+
+                                        <Label Text="Page Size:" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                        <local:ExtendedPicker  Grid.Row="1" Grid.Column="0"  ClassId ="ClassPickGrey"   FontSize="Medium"  TextColor="Gray" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+
+                                        </local:ExtendedPicker>
+
+
+
+
+                                        <Label Text="" TextColor="Black"  FontSize="Large" Grid.Row="1" Grid.Column="3" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                                        <Label Text="" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                        <Label Text=""  TextColor="Black" FontSize="Large"  Grid.Row="1" Grid.Column="5" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                        <Image Source="L_Arrow.png"  Grid.Row="1" Grid.Column="7" Margin="0,-37,0,0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                                        <Button Text="Prev" Command="{Binding DtlPrevCommand}" CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50" FontSize="17"  Grid.Row="1" Grid.Column="8"/>
+                                        <!--<ScrollView Grid.Column="9" Grid.Row="1" Orientation="Horizontal"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                                    <local:StepProgressBarControl Margin="-60,0,0,0" StepColor="#1D2D50" Steps="10" StepSelected="1" x:Name="stepBar"  />
+                                </ScrollView>-->
+                                        <Button Text="Next" Command="{Binding DtlNextCommand}" CornerRadius="5" Margin="0,-10,0,35" TextColor="White" BackgroundColor="#1D2D50"  FontSize="17"  Grid.Row="1" Grid.Column="10" />
+                                        <Image Source="R_Arrow.jpg"  Grid.Row="1" Grid.Column="11" Margin="0,-37,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+
+                                    </Grid>
+                                </Frame>
+
+
+                            </StackLayout>
+                           
+                        </Frame>
+           
+                     </StackLayout>
+
+
+
+
+
+                    <StackLayout>
+                        <Frame BackgroundColor="White" HasShadow="True" BorderColor="#f2f2f2">
+                            <StackLayout Orientation="Horizontal">
+                                <Image x:Name="userToggleImage" Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                                    
+                                </Image>
+                                <Label Text="User Details" FontSize="Large" Margin="10,0,0,0" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" >
+                                    
+                                </Label>
+                            </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference Toggle5}"/>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" CommandParameter="{x:Reference userToggleImage}"/>
+                        </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+
+                    
+                    <StackLayout>
+                        <Frame x:Name="Toggle5" HasShadow="True" BackgroundColor="White" BorderColor="#f2f2f2" CornerRadius="5" Grid.Row="1" Margin="10,0,10,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                            <StackLayout  Margin="5,0,5,0" BackgroundColor="White">
+                                <Frame  BackgroundColor="White" BorderColor="#f2f2f2" CornerRadius="5"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <StackLayout>
+                                        <Frame Margin="0,0,0,40" HasShadow="True" BorderColor="#bfbfbf">
+                                            <StackLayout>
+                                                <Label Text="Recorded By:" Opacity="0.8" TextColor="Black" FontSize="Large" FontAttributes="Bold" Margin="15,0,0,0"/>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="           Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+
+                                                </StackLayout>
+
+                                                <Button Text="Redo" IsVisible="false"  Command="{Binding recredosign}" BackgroundColor="White"  CornerRadius="10"  Margin="0,-25,55,0" BorderWidth="2" BorderColor="#1D2D50" TextColor="#1D2D50" HorizontalOptions="End" VerticalOptions="End"></Button>
+
+                                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                                    <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <forms:SignaturePadView  x:Name="recsignview" HeightRequest="200" WidthRequest="50" Margin="0,0,0,-28" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2"  />
+                                                    </locals:FrameRenders>
+                                                    <!--<acr:SignaturePadView x:Name="padView" HeightRequest="320"  WidthRequest="240" BackgroundColor="White" CaptionText="Caption This" ClearText="Clear Me!"  PromptText="Prompt Here" StrokeWidth="2" />-->
+
+                                                </Frame>
+
+
+
+                                                <Grid RowSpacing="15"  ColumnSpacing="15" >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="40" />
+                                                        
+
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="1*" />
+
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+
+                                                    <locals:FrameRenders  Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:ExtendedPicker x:Name="recnamepicker" Title="Select Users"   Grid.Row="1"  Grid.Column="1" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray" />
+                                                    </locals:FrameRenders>
+
+                                                    <!--<Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="2" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />-->
+                                                    <!--<local:ExtendedPicker  Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:EntryControl x:Name="enctrlreccode"  Text="{Binding reccode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+
+                                                    <Label Text="Designation" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="3"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="etrlrecdesg"  Text="{Binding recdesg}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+                                                    <!--<local:ExtendedPicker   Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <Label Text="Date" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="4"    FontFamily="{StaticResource ProximaNovaRegularFont}" />
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="3" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="4" Grid.ColumnSpan="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:CustomDatePicker  x:Name="recdate"  Date="{Binding selectedrecdate}" Format="dd/MM/yyyy"    VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+
+                                                </Grid>
+                                            </StackLayout>
+                                        </Frame>
+
+                                        <!--<BoxView WidthRequest="100" Margin="0,-30,0,0" HeightRequest="1" BackgroundColor="Black"></BoxView>-->
+
+
+                                        <Frame Margin="0,-10,0,40" HasShadow="True" BorderColor="#bfbfbf">
+                                            <StackLayout>
+                                                <Label Text="Vetted By:" Opacity="0.8" FontSize="Large" TextColor="Black" FontAttributes="Bold" Margin="15,0,0,10"/>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="          Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+
+                                                </StackLayout>
+                                                <Button Text="Redo" IsVisible="false"  BackgroundColor="White"  Command="{Binding vetpredosign}" CornerRadius="10"  Margin="0,-25,55,0" BorderWidth="2" BorderColor="#1D2D50" TextColor="#1D2D50" HorizontalOptions="End" VerticalOptions="End"></Button>
+
+                                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                                    <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <forms:SignaturePadView x:Name="vetsignview"  HeightRequest="200" WidthRequest="50" Margin="0,0,0,0" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2"  />
+                                                    </locals:FrameRenders>
+
+                                                    <!--<acr:SignaturePadView x:Name="vpadView" HeightRequest="320"  WidthRequest="240" BackgroundColor="White" CaptionText="Caption This" CaptionTextColor="Black" ClearText="Clear Me!"  ClearTextColor="Red"></acr:SignaturePadView>-->
+
+                                                </Frame>
+
+
+                                                <Grid RowSpacing="15"  ColumnSpacing="15" >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        
+
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders  Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:ExtendedPicker Title="Select Users" x:Name="vetnamepicker"  InputTransparent="{Binding NotToEdit}"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray" />
+                                                    </locals:FrameRenders>
+
+
+                                                    <!--<Label Text="Name" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="2"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />-->
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="ectrlvetcode"  Text="{Binding vetcode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+                                                    <Label Text="Designation" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="3"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="ectrlvetdeg"  Text="{Binding vetdesg}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+
+                                                    <!--<local:ExtendedPicker   Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <Label Text="Date" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="4"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="4" Grid.ColumnSpan="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:CustomDatePicker  x:Name="vetdate"  Date="{Binding selectedvetdate}" Format="dd/MM/yyyy"    VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="3" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+
+                                                </Grid>
+
+                                            </StackLayout>
+                                        </Frame>
+
+
+
+
+
+                                        <Frame Margin="0,-10,0,40" HasShadow="True" BorderColor="#bfbfbf">
+                                            <StackLayout>
+                                                <Label Text="Verified By:" Opacity="0.8" FontSize="Large" TextColor="Black" FontAttributes="Bold" Margin="15,0,0,10"/>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="          Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+
+                                                </StackLayout>
+                                                <Button Text="Redo"  IsVisible="false" BackgroundColor="White"  Command="{Binding verpredosign}" CornerRadius="10"  Margin="0,-25,55,0" BorderWidth="2" BorderColor="#1D2D50" TextColor="#1D2D50" HorizontalOptions="End" VerticalOptions="End"></Button>
+
+                                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                                    <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <forms:SignaturePadView x:Name="versignview"   HeightRequest="200" WidthRequest="50" Margin="0,0,0,0" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2"  />
+                                                    </locals:FrameRenders>
+
+                                                    <!--<acr:SignaturePadView x:Name="vpadView" HeightRequest="320"  WidthRequest="240" BackgroundColor="White" CaptionText="Caption This" CaptionTextColor="Black" ClearText="Clear Me!"  ClearTextColor="Red"></acr:SignaturePadView>-->
+
+                                                </Frame>
+
+
+                                                <Grid RowSpacing="15"  ColumnSpacing="15" >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        
+
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders  Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:ExtendedPicker Title="Select Users" x:Name="vernamepicker"  Grid.Row="1"  Grid.Column="1" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+
+
+                                                    <!--<Label Text="Name" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="2"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />-->
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl  x:Name="entrlvercode"  Text="{Binding vercode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+                                                    <Label Text="Designation" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="3"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="entrlverdesg"  Text="{Binding verdesg}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+
+                                                    <!--<local:ExtendedPicker   Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <Label Text="Date" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="4"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="4" Grid.ColumnSpan="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:CustomDatePicker  x:Name="verdate"  Date="{Binding selectedverdate}" Format="dd/MM/yyyy"    VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="3" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+
+                                                </Grid>
+
+                                            </StackLayout>
+                                        </Frame>
+
+
+                                        <Label Text="S.O/Engineering Consultant" FontSize="Large" TextColor="Black" FontAttributes="Bold"  Margin="14,-35,0,20" />
+
+
+                                        <Frame Margin="0,-10,0,40" HasShadow="True" BorderColor="#bfbfbf">
+                                            <StackLayout>
+                                                <Label Text="Verified By:" Opacity="0.8" FontSize="Large" TextColor="Black" FontAttributes="Bold" Margin="15,0,0,10"/>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+
+                                                </StackLayout>
+                                                <Button Text="Redo" IsVisible="false"  BackgroundColor="White"  Command="{Binding soverpredosign}" CornerRadius="10"  Margin="0,-25,55,0" BorderWidth="2" BorderColor="#1D2D50" TextColor="#1D2D50" HorizontalOptions="End" VerticalOptions="End"></Button>
+
+                                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                                    <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <forms:SignaturePadView x:Name="soversignview" HeightRequest="200" WidthRequest="50" Margin="0,0,0,-28" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2" />
+                                                    </locals:FrameRenders>
+
+                                                    <!--<acr:SignaturePadView x:Name="vpadView" HeightRequest="320"  WidthRequest="240" BackgroundColor="White" CaptionText="Caption This" CaptionTextColor="Black" ClearText="Clear Me!"  ClearTextColor="Red"></acr:SignaturePadView>-->
+
+                                                </Frame>
+
+
+                                                <Grid RowSpacing="15"  ColumnSpacing="15" >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        
+
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders  Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:ExtendedPicker Title="Select Users" x:Name="sovernamepicker"   Grid.Row="1"  Grid.Column="1" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+
+
+                                                    <!--<Label Text="Name" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="2"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />-->
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="entrlsovercode"   Text="{Binding sovercode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+                                                    <Label Text="Designation" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="3"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="entrlsoverdesg"  Text="{Binding soverdesg}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+
+                                                    <!--<local:ExtendedPicker   Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <Label Text="Date" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="4"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="4" Grid.ColumnSpan="2"  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:CustomDatePicker  x:Name="soverdate"  Date="{Binding selectedsoverdate}" Format="dd/MM/yyyy"    VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="3" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+
+                                                </Grid>
+
+                                            </StackLayout>
+                                        </Frame>
+
+
+
+                                        <Frame Margin="0,-10,0,40" HasShadow="True" BorderColor="#bfbfbf">
+                                            <StackLayout>
+                                                <Label Text="Processed By:" Opacity="0.8" FontSize="Large" TextColor="Black" FontAttributes="Bold" Margin="15,0,0,10"/>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="          Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+
+                                                </StackLayout>
+                                                <Button Text="Redo" IsVisible="false"  BackgroundColor="White"  Command="{Binding soproredosign}" CornerRadius="10"  Margin="0,-25,55,0" BorderWidth="2" BorderColor="#1D2D50" TextColor="#1D2D50" HorizontalOptions="End" VerticalOptions="End"></Button>
+
+                                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                                    <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <forms:SignaturePadView x:Name="soprosignview" HeightRequest="200" WidthRequest="50" Margin="0,0,0,-28" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2" />
+                                                    </locals:FrameRenders>
+
+                                                    <!--<acr:SignaturePadView x:Name="vpadView" HeightRequest="320"  WidthRequest="240" BackgroundColor="White" CaptionText="Caption This" CaptionTextColor="Black" ClearText="Clear Me!"  ClearTextColor="Red"></acr:SignaturePadView>-->
+
+                                                </Frame>
+
+
+                                                <Grid RowSpacing="15"  ColumnSpacing="15" >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                       
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders  Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:ExtendedPicker Title="Select Users" x:Name="sopronamepicker"    Grid.Row="1"  Grid.Column="1" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+
+
+                                                    <!--<Label Text="Name" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="2"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <local:ExtendedPicker    Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl  x:Name="entrlsoprocode"  Text="{Binding soprocode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+                                                    <Label Text="Designation" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="3"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="entrlsoprodesg" Text="{Binding soprodesg}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+
+                                                    <!--<local:ExtendedPicker   Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <Label Text="Date" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="4"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="4" Grid.ColumnSpan="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:CustomDatePicker  x:Name="soprodate"  Date="{Binding selectedsoprodate }" Format="dd/MM/yyyy"    VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="3" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+
+                                                </Grid>
+
+                                            </StackLayout>
+                                        </Frame>
+
+
+                                        <Frame Margin="0,-10,0,40" HasShadow="True" BorderColor="#bfbfbf">
+                                            <StackLayout>
+                                                <Label Text="Agreed By:" Opacity="0.8" FontSize="Large" TextColor="Black" FontAttributes="Bold" Margin="15,0,0,10"/>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label Text="          Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+
+                                                </StackLayout>
+                                                <Button Text="Redo" IsVisible="false" BackgroundColor="White" Command="{Binding soagreeredosign}" CornerRadius="10"  Margin="0,-25,55,0" BorderWidth="2" BorderColor="#1D2D50" TextColor="#1D2D50" HorizontalOptions="End" VerticalOptions="End"></Button>
+
+                                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                                    <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <forms:SignaturePadView x:Name="soagreesignview"  HeightRequest="200" WidthRequest="50" Margin="0,0,0,-28" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2" />
+                                                    </locals:FrameRenders>
+
+                                                    <!--<acr:SignaturePadView x:Name="vpadView" HeightRequest="320"  WidthRequest="240" BackgroundColor="White" CaptionText="Caption This" CaptionTextColor="Black" ClearText="Clear Me!"  ClearTextColor="Red"></acr:SignaturePadView>-->
+
+                                                </Frame>
+
+
+                                                <Grid RowSpacing="15"  ColumnSpacing="15" >
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders  Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                                        <local:ExtendedPicker Title="Select Users" x:Name="soagreenamepicker"   Grid.Row="1"  Grid.Column="1" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </locals:FrameRenders>
+
+
+                                                    <!--<Label Text="Name" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="2"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <local:ExtendedPicker    Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="entrlsoagreecode"  Text="{Binding soagreecode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+                                                    <Label Text="Designation" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="3"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                                        <local:EntryControl x:Name="soagrees"  Text="{Binding soagreedesg}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  IsEnabled="False" />
+                                                    </locals:FrameRenders>
+
+
+
+                                                    <!--<local:ExtendedPicker   Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                                    <Label Text="Date" FontSize="Medium" TextColor="Black" Opacity="0.8" Grid.Row="0" Grid.Column="4"    FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="4" Grid.ColumnSpan="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+
+                                                        <local:CustomDatePicker NullText="Select date" x:Name="soagreedate"  NullableDate="{Binding SelectedDate}" Format="dd/MM/yyyy"  MinimumDate="{Binding MinimumDate}" MaximumDate="{Binding MaximumDate}" InputTransparent="{Binding NotToEdit}"  BackgroundColor="White"   VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+
+                                                        <!--<local:CustomDatePicker Format="dd/MM/yyyy" x:Name="inspdatepicker" NullText="Select date" NullableDate="{Binding dtDateinsp}" InputTransparent="{Binding NotToEdit}" BackgroundColor="White"    VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray"   />-->
+
+                                                        <!--<local:CustomDatePicker  x:Name="soagreedate"  Date="{Binding selectedsoagreedate}" Format="dd/MM/yyyy"    VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>-->
+                                                    </locals:FrameRenders>
+                                                    <!--<local:ExtendedPicker    Grid.Row="1"  Grid.Column="3" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Medium"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+
+                                                </Grid>
+
+                                            </StackLayout>
+                                        </Frame>
+                                        <StackLayout >
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+
+                                                <Button Text="Save"  TextColor="White" x:Name="btnDetailSave" Command="{Binding SaveandUpdateCommand}" FontSize="18" Grid.Row="0" Grid.Column="3" BackgroundColor="#1D2D50" CornerRadius="5"></Button>
+                                            </Grid>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+
+                        </Frame>
+                    </StackLayout>
+
+                 
+                  
+                </StackLayout>
+            </ScrollView>
+            <Frame BorderColor="#d9d9d9">
+            <StackLayout HorizontalOptions="FillAndExpand"  HeightRequest="140" VerticalOptions="FillAndExpand"  >
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.35*" />
+                        <ColumnDefinition Width="0.35*" />
+                        <ColumnDefinition Width="0.35*" />
+                        <ColumnDefinition Width="0.35*" />
+                        <ColumnDefinition Width="2" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnCancel" Text="Cancel" Grid.Row="1" Grid.Column="5" FontSize="Medium" Margin="0,-3,0,-3" BackgroundColor="#1D2D50" Command="{Binding FormDCancelCommand}" TextColor="White" CornerRadius="10"  />
+                        <Button x:Name="btnSave" Text="Save"   Grid.Row="1" Grid.Column="3" FontSize="Medium" Margin="0,-3,0,-3" BackgroundColor="#1D2D50" TextColor="White"  Command="{Binding FormDSaveCommand}" CornerRadius="10"  />
+                        <Button x:Name="btnSubmit" Text="Submit" Grid.Row="1" Grid.Column="4" FontSize="Medium" Margin="0,-3,0,-3" BackgroundColor="#1D2D50" TextColor="White" Command="{Binding FormDSubmitedCommand}" CornerRadius="10"  />
+                </Grid>
+            </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+    </ContentPage>

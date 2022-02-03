@@ -1,0 +1,612 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.FormC1C2Page"
+             xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials"
+            xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+             xmlns:local="clr-namespace:RAMMS.MobileApps;assembly=RAMMS.MobileApps"
+             xmlns:custom="clr-namespace:RAMMS.MobileApps.Controls"
+             Title="Condition Inspection - Form C1/C2">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NegateBoolConverter x:Key="NegatebooleanConverter" />
+            <local:BoolToImageConverter x:Key="BoolToImageConverter" />
+            <local:NumberToColorConverter x:Key="NumberToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame Margin="0,0,0,0" HasShadow="True" BorderColor="#e6e6e6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+
+            <ScrollView Margin="0,0,0,-80">
+                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="10">
+                    <Grid RowSpacing="10" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="210" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                            <Grid ColumnSpacing="0" RowSpacing="0" Margin="0" Padding="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                </Grid.ColumnDefinitions>
+
+                                <fe:AdvancedFrame Grid.Column="0"  CornerRadius="6" Padding="-7,0,0,0" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                                    <SearchBar  Text="{Binding SmartSearch,Mode=TwoWay}"  Placeholder="Search" FontSize="Default"  HorizontalTextAlignment="Center"></SearchBar>
+                                </fe:AdvancedFrame>
+                                <fe:AdvancedFrame Grid.Column="1" CornerRadius="6" Margin="-4,0,0,0" BackgroundColor="#1D2D50">
+                                    <Image Source="search.png" x:Name="search" VerticalOptions="FillAndExpand" HeightRequest="32" WidthRequest="32" HorizontalOptions="CenterAndExpand">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SearchCommand}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </fe:AdvancedFrame>
+                                <fe:AdvancedFrame Grid.Column="2" CornerRadius="6" Margin="-4,0,0,0" BackgroundColor="#1D2D50">
+                                    <Image Source="filter.png" x:Name="image" VerticalOptions="FillAndExpand" HorizontalOptions="CenterAndExpand">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding SearchExpandCommand}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </fe:AdvancedFrame>
+                                <Button Text="Clear" Command="{Binding ClearCommand}" TextColor="White"  BackgroundColor="#1D2D50" Grid.Column="3" CornerRadius="6" Margin="-3,0,0,0"/>
+                            </Grid>
+                        </StackLayout>
+
+                        <Frame IsVisible="{Binding DetailSearchVisible}"  BackgroundColor="White" BorderColor="#bfbfbf" CornerRadius="5" Grid.Row="1" Margin="5,0,5,0"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <StackLayout>
+                                <Grid RowSpacing="15" ColumnSpacing="9"  >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="40" />
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <Label Text="Asset Group" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl  Text="Culvert" FontAttributes="Bold" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  InputTransparent="True" />
+                                    </locals:FrameRenders>
+
+
+                                    <Label Text="Asset Type" Grid.Row="0" Grid.Column="2"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:ExtendedPicker ItemsSource="{Binding DDAssetTypeListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedAssetType, Mode=TwoWay}" Title="Select Asset Type"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </locals:FrameRenders>
+
+
+                                    <Label Text="RMU"  Grid.Row="0" Grid.Column="3"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="3" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:ExtendedPicker ItemsSource="{Binding DDRMUListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedRMU, Mode=TwoWay}" Title="Select RMU"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </locals:FrameRenders>
+
+
+                                    <Label Text="Section Code" Grid.Row="0" Grid.Column="4"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="4" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:ExtendedPicker ItemsSource="{Binding DDSectionListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedSectionCode, Mode=TwoWay}" CharacterSpacing="20"  Title="Select Section Code"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </locals:FrameRenders>
+                                </Grid>
+
+                                <Grid RowSpacing="15" ColumnSpacing="9"  >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="40" />
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+
+
+                                    </Grid.ColumnDefinitions>
+
+
+
+
+
+
+                                    <Label Text="Section Name" Grid.Row="0" Grid.Column="0"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="0" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl   Text="{Binding SelectedSectionName}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default"  InputTransparent="True" />
+                                    </locals:FrameRenders>
+
+
+
+
+
+                                    <Label Text="Road Code" Grid.Row="0" Grid.Column="1"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:ExtendedPicker WidthRequest="20" ItemsSource="{Binding DDRodeCodeListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedRoadCode, Mode=TwoWay}"  CharacterSpacing="20"  Title="Select Road Code"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </locals:FrameRenders>
+
+
+                                    <Label Text="Road Name" Grid.Row="0" Grid.Column="2"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl   Text="{Binding SelectedRoadName}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  InputTransparent="True" />
+                                    </locals:FrameRenders>
+                                   
+    
+
+
+                                    <Label Grid.Row="0" Grid.Column="3"  Text="Bound" Margin="0,0,0,0" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000"  />
+                                    <locals:FrameRenders Grid.Row="1" Grid.Column="3"   BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:ExtendedPicker  ItemsSource="{Binding DDBoundListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedBound, Mode=TwoWay}"  Title="Select Bound"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  IsVisible="true"  HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </locals:FrameRenders>
+
+                         
+                                </Grid>
+
+
+                                <Grid RowSpacing="15" ColumnSpacing="15"  >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="40" />
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="0.5*" />
+                                        <ColumnDefinition Width="1*" />
+
+
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Year of Inspection From" Grid.Row="0" Grid.Column="0"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="0" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:ExtendedPicker ItemsSource="{Binding DDFromYearListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedFromYear, Mode=TwoWay}"  Title="Select Year"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </locals:FrameRenders>
+
+
+                                    <Label Text="Year of Inspection To"  Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="1"  Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:ExtendedPicker ItemsSource="{Binding DDToYearListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedToYear, Mode=TwoWay}"  Title="Select Year"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </locals:FrameRenders>
+
+
+                                    <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Text="Location Chainage From" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000"  />
+
+                                    <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Grid.Row="1"  Grid.Column="2" Grid.ColumnSpan="2">
+
+                                        <locals:FrameRenders HorizontalOptions="FillAndExpand" Margin="0,0,3,0" HeightRequest="37" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                            <custom:CustomEntryNumeric  Margin="0,0,0,-7" HorizontalOptions="FillAndExpand" MaxLength="5" Text="{Binding FromChKM}" FontAttributes="Bold" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Numeric"  />
+                                        </locals:FrameRenders>
+                                        <Label  Text="+"  FontSize="Large" FontAttributes="Bold"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" VerticalTextAlignment="Center" />
+
+                                        <locals:FrameRenders HorizontalOptions="FillAndExpand" Margin="3,0,0,0" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                            <custom:CustomEntryNumeric Margin="0,0,0,-7" HorizontalOptions="FillAndExpand" MaxLength="3"  Text="{Binding FromChM}" FontAttributes="Bold" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Numeric"  />
+                                        </locals:FrameRenders>
+
+                                    </StackLayout>
+                                </Grid>
+
+
+                                <Grid RowSpacing="15"  ColumnSpacing="9"  >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="40" />
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1.5*" />
+                                    </Grid.ColumnDefinitions>
+
+                                   
+                                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Location Chainage To"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000"  />
+                                    <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="2">
+
+                                        <locals:FrameRenders HorizontalOptions="FillAndExpand" Margin="0,0,3,0" HeightRequest="37" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                            <custom:CustomEntryNumeric Margin="0,0,0,-7" HorizontalOptions="FillAndExpand"  MaxLength="5"  Text="{Binding ToChKM}" FontAttributes="Bold" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Numeric"  />
+                                        </locals:FrameRenders>
+                                        <Label  Text="+"  FontSize="Large" FontAttributes="Bold"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" VerticalTextAlignment="Center" />
+
+                                        <locals:FrameRenders HorizontalOptions="FillAndExpand" Margin="3,0,0,0" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                            <custom:CustomEntryNumeric Margin="0,0,0,-7" HorizontalOptions="FillAndExpand" MaxLength="3"  Text="{Binding ToChM}" FontAttributes="Bold" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Telephone"  />
+                                        </locals:FrameRenders>
+
+                                    </StackLayout>
+
+                                </Grid>
+
+                                
+                            </StackLayout>
+                        </Frame>
+
+                        <StackLayout  Grid.Row="2"  HeightRequest="40"  Margin="0,25,30,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.125*"/>
+                                    <ColumnDefinition Width="0.33*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<Button  BackgroundColor="#1D2D50" Grid.Column="0" CornerRadius="10" Text="Download" TextColor="White" FontSize="Default"  />-->
+                                <Label Text="Show" Grid.Column="0" FontAttributes="Bold" Margin="6,8,-7,0" FontSize="Medium" TextColor="Black" />
+
+
+                                <StackLayout Grid.Column="1">
+                                    <locals:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="8" FrameBordrWidth="2"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray" Margin="3,0,8,0"   BorderColor="Black" >
+
+                                        <custom:CustomMyPicker x:Name="scustompicker" SelectedIndex="{Binding SelectedPageSize}" Title="Select Rows"  FontSize="17" TitleColor="Black" HorizontalOptions="Fill">
+
+                                            <custom:CustomMyPicker.Items>
+                                                <x:String>10 rows</x:String>
+                                                <x:String>25 rows</x:String>
+                                                <x:String>50 rows</x:String>
+                                                <x:String>100 rows</x:String>
+                                                <x:String>500 rows</x:String>
+                                                <x:String>All</x:String>
+                                            </custom:CustomMyPicker.Items>
+
+                                        </custom:CustomMyPicker>
+                                    </locals:FrameRenders>
+                                </StackLayout>
+                                <!--<Image Source="down.png" Grid.Column="2" HorizontalOptions="Start" HeightRequest="18" WidthRequest="18" Margin="-35,7,0,0" />-->
+                                <Label Text="entries" Grid.Column="2" FontAttributes="Bold" FontSize="Medium" TextColor="Black" Margin="-11,7,0,0"  />
+
+
+
+
+                                <!--<Button  BackgroundColor="#1D2D50" Grid.Column="3" CornerRadius="10" Text="Add New Notification of Defect" Command="{Binding AddCommand}" FontSize="Default" TextColor="White"   />-->
+                                <Button Grid.Column="4" HorizontalOptions="End" VerticalOptions="End" ImageSource="Add.png" TextColor="White" Command="{Binding AddCommand}" CornerRadius="10" FontSize="17" IsVisible="{Binding IsAdd}" BackgroundColor="#1D2D50" Text="Add Form C1/C2"></Button>
+
+
+                            </Grid>
+                        </StackLayout>
+
+
+
+
+
+
+                        <Frame Grid.Row="3" HasShadow="True" BorderColor="#f2f2f2" Margin="10,0,10,0" Padding="0">
+
+                            <StackLayout Orientation="Horizontal" Padding="0" Margin="0" Spacing="0">
+
+                                <StackLayout Orientation="Vertical" Margin="0" Spacing="0" Padding="0" WidthRequest="200" HorizontalOptions="Start">
+
+                                    <!--Action here-->
+
+                                    <!--<StackLayout BackgroundColor="#C8E1FF" HeightRequest="60" WidthRequest="250" Spacing="0" Padding="0" Margin="0" Orientation="Horizontal" VerticalOptions="Center">
+                                        <Label  Text="Action"  HorizontalTextAlignment="Center" VerticalOptions="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+                                    </StackLayout>-->
+                                    <Label  Text="Action" BackgroundColor="#C8E1FF" HeightRequest="60" WidthRequest="250" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" />
+
+                                    <!--List Loading here-->
+                                    <StackLayout Margin="0,0,0,0" Padding="0">
+                                        <StackLayout x:Name="lists" Margin="0,0,0,0"  Padding="0" Spacing="0" BindableLayout.ItemsSource="{Binding MyBaseFormC1C2ListViewItems}">
+                                            <BindableLayout.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackLayout HeightRequest="52" Margin="0" Padding="0" Spacing="0" BackgroundColor="{Binding SNo, Converter={StaticResource NumberToColorConverter}}">
+                                                        <Button  BorderColor="#1D2D50" BackgroundColor="#1D2D50" TextColor="White" BorderWidth="2" Padding="0" Margin="50,10" CornerRadius="10" Text="Click Me" HeightRequest="34" Command="{Binding BindingContext.ClickMeAction, Source={x:Reference lists}}"   CommandParameter="{Binding .}"/>
+                                                        <!--<BoxView BackgroundColor="#a6a6a6" HeightRequest="1" ></BoxView>-->
+                                                    </StackLayout>
+
+                                                </DataTemplate>
+                                            </BindableLayout.ItemTemplate>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+
+                                <ScrollView Orientation="Horizontal" Margin="0" Padding="0">
+                                    <StackLayout Spacing="0" Margin="0" Padding="0">
+                                        <StackLayout HeightRequest="60" BackgroundColor="#C8E1FF" Orientation="Horizontal" Padding="0" Margin="0" Spacing="0">
+                                            <StackLayout WidthRequest="350" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Reference No" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsRefNoAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="1"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="250" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Year Of Inspection" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsYearOfInspectionAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="2"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="250" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Date Of Inspection" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsDateOfInspectAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="3"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="360" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Asset ID" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsAssetIDAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="4"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="180" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="RMU" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsRMUAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="5"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="250" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="RMU Name" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsRMUNameAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="6"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="200" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Section Code" WidthRequest="150" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsSectionCodeAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="7"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="200" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Section Name" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsSectionNameAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="8"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="200" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Road Code" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsRoadCodeAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="9"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="400" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Road Name" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsRoadNameAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="10"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="200" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Location CH" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsLocationChAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="11"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="200" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Culvert Diameter" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsCulvertDiameterAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="12"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="150" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Culvert Width" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsCulvertWidthAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="13"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="200" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Inspected By" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsInspectedByAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="14"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                            <StackLayout WidthRequest="200" Orientation="Horizontal" Spacing="0" Margin="0" Padding="0">
+                                                <Label Text="Audited By" FontFamily="{StaticResource ProximaNovaSemiboldFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand"/>
+                                                <Image Source="{Binding IsAuditedByAssending, Converter={StaticResource BoolToImageConverter}}" HeightRequest="20" WidthRequest="20" Margin="0,0,10,0" HorizontalOptions="End"/>
+                                                <StackLayout.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SortingCommand}" CommandParameter="15"/>
+                                                </StackLayout.GestureRecognizers>
+                                            </StackLayout>
+                                        </StackLayout>
+
+                                        <StackLayout Margin="0" Padding="0" Spacing="0">
+                                            <StackLayout Margin="0"  Padding="0" Spacing="0" BindableLayout.ItemsSource="{Binding MyBaseFormC1C2ListViewItems}">
+                                                <!--BindableLayout.ItemsSource="{Binding DetailGridListViewItems}"-->
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackLayout BackgroundColor="{Binding SNo, Converter={StaticResource NumberToColorConverter}}" HeightRequest="52" Orientation="Horizontal" Margin="0" Padding="0" Spacing="0" HorizontalOptions="StartAndExpand">
+                                                            <StackLayout WidthRequest="350">
+                                                                <Label Text="{Binding RefID}"  FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="250">
+                                                                <Label Text="{Binding Year}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="250">
+                                                                <Label Text="{Binding InsDate,StringFormat='{0:dd/MM/yyyy}'}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="360">
+                                                                <Label Text="{Binding AssetRefId}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="180">
+                                                                <Label Text="{Binding RMUCode}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="250">
+                                                                <Label Text="{Binding RMUDesc}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="200">
+                                                                <Label Text="{Binding SecCode}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="200">
+                                                                <Label Text="{Binding SecName}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="200">
+                                                                <Label Text="{Binding RoadCode}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="400">
+                                                                <Label Text="{Binding RoadName}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="200">
+                                                                <Label Text="{Binding LocationCH}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="200">
+                                                                <Label Text="{Binding CDia}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="150">
+                                                                <Label Text="{Binding CULWidth}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="200">
+                                                                <Label Text="{Binding InspectedBy}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                            <StackLayout WidthRequest="200">
+                                                                <Label Text="{Binding AuditedBy}" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" Margin="10,0,0,0" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                            </StackLayout>
+                                                        </StackLayout>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ScrollView>
+
+                            </StackLayout>
+                        </Frame>
+
+
+                        <!--<StackLayout Grid.Row="3" IsVisible="{Binding IsEmpty}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                            <Label Text="No List" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium" TextColor="#000" />
+                        </StackLayout>-->
+
+                        <Frame BackgroundColor="#F9FBFD" Grid.Row="5"  BorderColor="#e6e6e6" Margin="0,0,0,110" >
+                            <StackLayout  Margin="0,-50,0,-50">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="1"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <!--0-->
+                                        <ColumnDefinition Width="1"/>
+
+                                        <!--1-->
+                                        <ColumnDefinition Width="1"/>
+                                        <!--2-->
+                                        <ColumnDefinition Width="3*"/>
+                                        <!--3-->
+                                        <ColumnDefinition Width="1"/>
+
+                                        <!--4-->
+                                        <ColumnDefinition Width="1"/>
+
+                                        <!--5-->
+                                        <ColumnDefinition Width="1"/>
+
+                                        <!--6-->
+                                        <ColumnDefinition Width="1"/>
+
+                                        <!--7-->
+                                        <ColumnDefinition Width="0.2*"/>
+
+                                        <!--8-->
+                                        <ColumnDefinition Width="0.8*"/>
+
+                                        <!--9-->
+                                        <ColumnDefinition Width="1.5"/>
+
+                                        <!--10-->
+                                        <ColumnDefinition Width="0.8*"/>
+
+                                        <!--11-->
+                                        <ColumnDefinition Width="0.2*"/>
+
+                                        <!--12-->
+                                        <ColumnDefinition Width="1"/>
+
+
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <StackLayout  Orientation="Horizontal" Grid.Row="1" Grid.Column="2" Margin="0,55,0,0">
+                                        <Label x:Name="show" Text="Showing" TextColor="Black" FontSize="Large" />
+                                        <Label x:Name="startsize" Text="{Binding PageStart}" TextColor="Black" FontSize="Large"/>
+                                        <Label x:Name="txtto" Text="to" TextColor="Black" FontSize="Large"/>
+                                        <Label x:Name="lblpagesize" Text="{Binding PageEnd}" TextColor="Black" FontSize="Large"/>
+                                        <Label x:Name="lblof" Text="of" TextColor="Black" FontSize="Large"/>
+                                        <Label x:Name="lblTotalSize" Text="{Binding TotalRecords}" TextColor="Black" FontSize="Large"/>
+                                        <Label x:Name="lblentries" Text="entries" TextColor="Black" FontSize="Large"/>
+                                    </StackLayout>
+
+
+                                    <Label Text="Page Size:" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                    <local:ExtendedPicker  Grid.Row="1" Grid.Column="0"  ClassId ="ClassPickGrey"   FontSize="Medium"  TextColor="Gray" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" >
+
+                                    </local:ExtendedPicker>
+
+
+
+
+                                    <Label Text="" TextColor="Black"  FontSize="Large" Grid.Row="1" Grid.Column="3" VerticalTextAlignment="Center" HorizontalTextAlignment="End"/>
+                                    <Label Text="" TextColor="Black" FontSize="Large" Grid.Row="1" Grid.Column="4" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"/>
+                                    <Label Text=""  TextColor="Black" FontSize="Large"  Grid.Row="1" Grid.Column="5" VerticalTextAlignment="Center" HorizontalTextAlignment="Start"/>
+                                    <Image Source="L_Arrow.png"  Grid.Row="1" Grid.Column="7" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                                    <Button x:Name="btnPrevious"  Command="{Binding btnPreviousCommand}" Text="Prev" CornerRadius="5" Margin="0,50,0,50" TextColor="White" BackgroundColor="#1D2D50" FontAttributes="Bold" FontSize="Medium"  Grid.Row="1" Grid.Column="8"/>
+                                    <!--<ScrollView Grid.Column="9" Grid.Row="1" Orientation="Horizontal"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                                    <local:StepProgressBarControl Margin="-60,0,0,0" StepColor="#1D2D50" Steps="10" StepSelected="1" x:Name="stepBar"  />
+                                </ScrollView>-->
+                                    <Button x:Name="btnNext" Command="{Binding btnNextCommand}" Text="Next" Margin="0,50,0,50" CornerRadius="5" TextColor="White" BackgroundColor="#1D2D50" FontAttributes="Bold" FontSize="Medium"  Grid.Row="1" Grid.Column="10" />
+                                    <Image Source="R_Arrow.jpg"   Grid.Row="1" Grid.Column="11" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+
+                                </Grid>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

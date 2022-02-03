@@ -1,0 +1,23 @@
+﻿@model Tuple<string, string, string>
+@*Item1 CDataTable name, Item2 Search Control section selector, Item3 Param Name*@
+<div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content" searchSection>
+    <div class="input-group">
+        <input type="text" id="smartSearch" autocomplete="off" class="form-control" placeholder="Search..." param="@Model.Item3" onkeypress="jsMaster.CommonSearchKeypress(this, event)" />
+        <div class="input-group-append">
+            <div class="btn-group">
+                <button SearchSectionBtn="" onclick="@(Model.Item1 + ".Search")(this,'@Model.Item2');" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                <button type="button" ShowSearch="@Model.Item2" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                <button type="button" ClearSearch="@Model.Item2" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#smartSearch").on("keypress", function (e) {
+            if (e.which == 13) {
+                $('[searchsectionbtn]').click();
+            }
+        });
+    });
+</script>

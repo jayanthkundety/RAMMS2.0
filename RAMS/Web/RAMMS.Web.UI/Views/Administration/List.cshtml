@@ -1,0 +1,66 @@
+﻿@model RAMMS.Web.UI.Models.CDataTable
+@{
+    ViewData["Title"] = Model + " - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = Model + " - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strPageName = ViewBag.PageName;
+    string strPageId = ViewBag.PageID;
+}
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/Administrator.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        jsAdmin.PageName = @strPageId;
+    </script>
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">Code Reference - @strPageName</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Code Reference</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            @strPageName
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-lg-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                <input type="text" placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right" style="line-height: 18px;"><span class="search-icon"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+            @if (strPageId != "division")
+            {
+                <div class="grid-btns">
+                    <button onclick="jsAdmin.ShowAdd('@strPageId')" type="button" class="btn btn-sm btn-themebtn"><span class="add-icon"></span> Add @strPageName</button>
+                </div>
+            }
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_CDataTable", Model);
+                }
+            </div>
+        </div>
+    </div>
+</main>

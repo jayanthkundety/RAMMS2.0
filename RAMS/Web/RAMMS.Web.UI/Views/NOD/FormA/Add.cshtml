@@ -1,0 +1,518 @@
+﻿@model RAMMS.Web.UI.Models.FormAModel;
+@*@model Model.RmFormAHdr*@
+@{
+    ViewData["Title"] = "Form A";
+    ViewBag.TabTitle = "Form A";
+}
+@*@using (Html.BeginForm("Add", "NOD", FormMethod.Post)*@
+
+@*<script type="text/javascript" src="scripts/jquery-1.10.2.js"></script>*@
+@*<script type="text/javascript" src="~/js/jquery-1.10.2.js"></script>*@
+
+<style>
+    /*Copied from bootstrap to handle input file multiple*/
+    .fileinput-button {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .fileinput-button input {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            opacity: 0;
+            -ms-filter: 'alpha(opacity=0)';
+            font-size: 200px;
+            direction: ltr;
+            cursor: pointer;
+        }
+
+    .thumb {
+        height: 80px;
+        width: 100px;
+        border: 1px solid #000;
+    }
+
+    ul.thumb-Images li {
+        list-style-type: none;
+        /* width: 120px;
+        float: left;
+        display: inline-block;
+        vertical-align: top;
+        height: 120px;*/
+    }
+
+    .img-wrap {
+        position: relative;
+        display: inline-block;
+        font-size: 0;
+    }
+
+        .img-wrap .close {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            z-index: 100;
+            background-color: #D0E5F5;
+            padding: 5px 2px 2px;
+            color: #000;
+            font-weight: bolder;
+            cursor: pointer;
+            opacity: .5;
+            font-size: 23px;
+            line-height: 10px;
+            border-radius: 50%;
+        }
+
+        .img-wrap:hover .close {
+            opacity: 1;
+            background-color: #ff0000;
+        }
+
+    .FileNameCaptionStyle {
+        font-size: 12px;
+    }
+
+    .disableFADinput {
+    }
+
+    .disablebtn {
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#formAWI").chosen();
+        $("#formAWS").chosen();
+        $("#formAWTC").chosen();
+        $("#formAWC").chosen();
+        $("#formASftPs").chosen();
+        $("#formASftWis").chosen();
+        $("#formART").chosen();
+    });
+    ////vasanth ok
+    //updateList = function () {
+    //    var input = document.getElementById('file');
+    //    var output = document.getElementById('fileList');
+    //    var children = "";
+    //    var x = 1;
+    //    children += '<table  border="1">'
+    //    children += '<tr><td> Sl.no</td><td>File name</td></tr>';
+    //    for (var i = 0; i < input.files.length; ++i) {
+    //        children += '<tr><td>' + x + '</td><td>' + input.files.item(i).name + '</td></tr>';
+    //        x = x + 1;
+    //    }
+    //    children += '</table>'
+    //    output.innerHTML =  children ;
+    //}
+    ////vasanth
+
+
+    document.addEventListener("DOMContentLoaded", init, false);
+    var AttachmentArray = [];
+    var arrCounter = 0;
+    var filesCounterAlertStatus = false;
+    function init() {
+        document.querySelector('#files').addEventListener('change', handleFileSelect, false);
+    }
+
+    function handleFileSelect(e) {
+        if (!e.target.files) return;
+        var files = e.target.files;
+        for (var i = 0, f; f = files[i]; i++) {
+            var fileReader = new FileReader();
+            fileReader.onload = (function (readerEvt) {
+                return function (e) {
+                    ApplyFileValidationRules(readerEvt)
+                    RenderThumbnail(e, readerEvt);
+                    FillAttachmentArray(e, readerEvt)
+                };
+                output.innerHTML = children;
+            })(f);
+            fileReader.readAsDataURL(f);
+        }
+
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    }
+
+    //To remove attachment once user click on x button
+    jQuery(function ($) {
+        $('#divImg').on('click', '.img-wrap .close', function () {
+            var id = $(this).closest('.img-wrap').find('img').data('id');
+            var elementPos = AttachmentArray.map(function (x) { return x.FileName; }).indexOf(id);
+            if (elementPos !== -1) {
+                AttachmentArray.splice(elementPos, 1);
+            }
+            //to remove image tag
+            $(this).parent().find('img').not().remove();
+            //to remove div tag that contain the image
+            $(this).parent().find('div').not().remove();
+            //to remove div tag that contain caption name
+            $(this).parent().parent().find('div').not().remove();
+            //to remove li tag
+            var lis = document.querySelectorAll('#imgList li');
+            for (var i = 0; li = lis[i]; i++) {
+                if (li.innerHTML == "") {
+                    li.parentNode.removeChild(li);
+                }
+            }
+
+        });
+    }
+    )
+
+    function ApplyFileValidationRules(readerEvt) {
+        if (CheckFileType(readerEvt.type) == false) {
+            alert("The file (" + readerEvt.name + ") does not match the upload conditions, You can only upload jpg/png/gif files");
+            e.preventDefault();
+            return;
+        }
+        if (CheckFileSize(readerEvt.size) == false) {
+            //alert("The file (" + readerEvt.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 300 KB");
+            alert("The file (" + readerEvt.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 5 MB");
+            e.preventDefault();
+            return;
+        }
+        if (CheckFilesCount(AttachmentArray) == false) {
+            if (!filesCounterAlertStatus) {
+                filesCounterAlertStatus = true;
+                alert("You have added more than 10 files. According to upload conditions you can upload 10 files maximum");
+            }
+            e.preventDefault();
+            return;
+        }
+    }
+
+    function CheckFileType(fileType) {
+        if (fileType == "image/jpeg") {
+            return true;
+        }
+        else if (fileType == "image/png") {
+            return true;
+        }
+        else if (fileType == "image/gif") {
+            return true;
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+
+    function CheckFileSize(fileSize) {
+        //image size bit to kb
+        if (fileSize < 40000000) {//300000) {
+            return true;
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
+
+    function CheckFilesCount(AttachmentArray) {
+        //Since AttachmentArray.length return the next available index in the array,
+        //I have used the loop to get the real length
+        var len = 0;
+        for (var i = 0; i < AttachmentArray.length; i++) {
+            if (AttachmentArray[i] !== undefined) {
+                len++;
+            }
+        }
+        //To check the length does not exceed 10 files maximum
+        if (len > 9) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function RenderThumbnail(e, readerEvt) {
+
+        var ul = document.createElement('ul');
+        ul.className = ("thumb-Images");
+        ul.id = "imgList";
+        var li = document.createElement('li');
+        ul.appendChild(li);
+        // li.innerHTML = ['<div class="img-wrap"> <span class="close">&times;</span>' +'</div>'].join('');
+        // li.innerHTML = ['<div class="img-wrap"> <table><tr><td><span class="close">FormA </span></td></<tr> </table> ' + '</div>'].join('');
+        var div = document.createElement('div');
+        div.className = "FileNameCaptionStyle";
+        li.appendChild(div);
+        div.innerHTML = ['<table><tr><td>' + readerEvt.name + '</td></<tr></table>'].join('');
+        document.getElementById('Filelist').insertBefore(ul, null);
+
+        //if(!e.target.files) return;
+        //selDiv.innerHTML = "";
+        //var files = e.target.files;
+        //for(var i=0; i<files.length; i++) {
+        //	var f = files[i];
+
+        //	selDiv.innerHTML += f.name + "<br/>";
+
+        //}
+
+    }
+
+    //Fill the array of attachment
+    function FillAttachmentArray(e, readerEvt) {
+        AttachmentArray[arrCounter] =
+        {
+            AttachmentType: 1,
+            ObjectType: 1,
+            FileName: readerEvt.name,
+            FileDescription: "Attachment",
+            NoteText: "",
+            MimeType: readerEvt.type,
+            Content: e.target.result.split("base64,")[1],
+            FileSizeInBytes: readerEvt.size,
+        };
+        arrCounter = arrCounter + 1;
+    }
+    $(document).ready(function () {
+
+        $("#formADefCode").on("change", function () {
+            //$("#formADesc").val($("#formADefCode option:selected").text());
+            // Priya told to remove description populate
+        })
+
+        $("#formADefCode").chosen();
+        $("#formAActCode").chosen();
+        $("#formASiteRefmultiSelect").chosen();
+        $("#formAPriority").chosen();
+        $("#formAUnit").chosen();
+        var id = $("#formAFadPKRefNO").val();
+    })
+    $('.Cancel', "#FormAAdddetailsModal").click(function () {
+        $('#FormAAdddetailsModal').modal('hide');
+        DetailGridReload()
+    });
+    function DetailGridReload() {
+        oTable = $('#FormADetailGridView').DataTable();
+        var filterData = new Object();
+        var id = 0;
+        filterData.HeaderNo = + $("#FormADetPKId").val();
+        if (id != undefined) {
+            filterData.HeaderNo = id;
+        }
+        oTable.data = filterData;
+        oTable.draw();
+    }
+    function GetImageList() {
+        var id = $("#formAFadPKRefNO").val();
+        var group = $("#FormADetAssetGrpCode option:selected").val();
+        InitAjaxLoading();
+        $.ajax({
+            url: '/NOD/GetImageList',
+            data: { assetPk: id, assetgroup: group },
+            type: 'POST',
+            success: function (data) {
+                HideAjaxLoading();
+                $("#ViewPhoto").html(data);
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
+    }
+
+</script>
+
+
+@*@using (Html.BeginForm("Add", "NOD", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {*@
+<form id="AddFormADetForm">
+  
+    <div class="modal-body bg-body p-0">
+        <div class="d-flex mt-2">
+            <ul class="nav nav-tabs tabbed round">
+                <li class="nav-item">
+                    <a id="page1A" href="#FormATabPage1" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                        <span class="">Page 1</span>
+                    </a>
+                </li>
+                <li id="photoLi" class="nav-item">
+                    <a href="#FormATabPage2" onclick="GetImageList()" data-toggle="tab" aria-expanded="true" class="nav-link">
+                        <span>Photo</span>
+                    </a>
+                </li>
+            </ul>
+            @*<div class="d-flex justify-content-center position-relative" style="margin:0 auto;top:-4px;">
+                    <div class="form-group mb-0">
+                        @Html.Label("ID ", @AssetIdTitle + " ID:", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.AssetId, new { @Id = "AssetId", @class = "form-control ", @readonly = "readonly", style = "width:350px;margin-right:20px" })
+                    </div>
+                </div>*@
+        </div>
+        <div class="mh-240 bg-white py-4">
+            <div class="col-lg-12">
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="FormATabPage1">
+                        <div class="col-3">
+                            @Html.HiddenFor(Adtl => Adtl.SaveFormADetails.HeaderNo, new { @Id = "formAHeaderNo", @class = "form-control " })
+                            @Html.HiddenFor(Adtl => Adtl.SaveFormADetails.Srno, new { @Id = "formASrno", @class = "form-control" })
+                            @Html.HiddenFor(Adtl => Adtl.SaveFormADetails.FadRefNO, new { @Id = "formAFadRefNO", @class = "form-control" })
+                            @Html.HiddenFor(Adtl => Adtl.SaveFormADetails.No, new { @Id = "formAFadPKRefNO", @class = "form-control" })
+                        </div>
+                        <div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Reference No.", "Reference No.")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.FadRefNO, new { @Id = "formADetRefno", @class = "form-control disableFADinput  validate {required, Reference No}", @rows = 1, @readonly = "readonly" })
+                            </div>
+                            <div class="form-group col-lg-2 pr-lg-0">
+                                @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Dt, new { @Id = "formADt", @type = "date", @class = "form-control disableFADinput  validate {required, Date of Inspection}", @min = Model.SaveFormADetails.MinDate.ToString("yyyy-MM-dd"), @max = Model.SaveFormADetails.MaxDate.ToString("yyyy-MM-dd"), @rows = 1 })
+                            </div>
+                            <div class="form-group col-lg-2">
+                                @Html.Label("Distress Code", "Distress Code")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.DefCode, (IEnumerable
+                                                <SelectListItem>)ViewData["DistressCode"], "Select Distress Code", new { @Id = "formADefCode", @class = "form-control disableFADinput validate {required, Distress Code}" })
+                            </div>
+                            @if (Model.SaveFormAModel.AssetGroupCode != "Culvert" && Model.SaveFormAModel.AssetGroupCode != "Bridge")
+                            {
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Location", "Location Site Ref")
+                                    <input type="hidden" id="multiSiteHidden" value="@Model.SaveFormADetails?.SiteRef" />
+                                    @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.SiteRef_multiSelect, (IEnumerable
+                                                         <SelectListItem>)ViewData["lookupSiteReg"], new { @Id = "formASiteRefmultiSelect", @class = "form-control disableFADinput validate {required, Location Site Ref}", @multiple = "multiple" })
+                                </div>
+                            }
+                            <div class="form-group col-lg-2 p-0 mb-0" style="clear:both;">
+                                <div class="form-group col-lg-12 float-left">
+                                    @Html.Label("Location Chainage From", "Location Chainage From")
+                                    <div class="row">
+                                        <div class="col-6 float-left pr-0">
+                                            @*@Html.Label("Km", "Km")*@
+                                            @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.FromCh, new { @Id = "formAFromCh", @class = "form-control disableFADinput  validate {required,number, Location Chainage From Km}", @maxlength = "5", @rows = 1, @onkeypressvalidate = "number, Location Chainage From Km" })
+                                        </div>
+                                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                        <div class="col-5 float-left pl-0">
+                                            @*@Html.Label("m", "m")*@
+                                            @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.FromChDeci, new { @Id = "formAFromChDeci", @class = "form-control disableFADinput validate {required,number, Location Chainage From m}", @maxlength = "3", @rows = 1, @onkeypressvalidate = "number, Location Chainage From m" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-12 float-left">
+                                    @Html.Label("Location Chainage To", "Location Chainage To")
+                                    <div class="row">
+                                        <div class="col-6 float-left pr-0">
+                                            @*@Html.Label("Km", "Km")*@
+                                            @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.ToCh, new { @Id = "formAToCh", @class = "form-control disableFADinput  validate {required,number, Location Chainage To Km}", @maxlength = "5", @rows = 1, @onkeypressvalidate = "number, Location Chainage To Km" })
+                                        </div>
+                                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                        <div class="col-5 float-left pl-0">
+                                            @*@Html.Label("m", "m")*@
+                                            @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.ToChDeci, new { @Id = "formAToChDeci", @class = "form-control disableFADinput validate {required, number, Location Chainage To m}", @maxlength = "3", @rows = 1, @onkeypressvalidate = "number, Location Chainage To m" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6 txtarea-107">
+                                @Html.Label("Description", "Description")
+                                @Html.TextAreaFor(Adtl => Adtl.SaveFormADetails.Desc, new { @Id = "formADesc", @class = "form-control disableFADinput", @rows = 1 })
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Activity Code", "Activity Code")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.ActCode, (IEnumerable
+                                <SelectListItem>)ViewData["lookupActivityCode"], "Select Activity Code", new { @Id = "formAActCode", @class = "form-control disableFADinput" })
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Unit", "Unit")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Unit, (IEnumerable
+                                <SelectListItem>)ViewData["lookupUnit"], "Select Unit", new { @Id = "formAUnit", @class = "form-control disableFADinput " })
+                            </div>
+                            <div class="form-group col-lg-4 mb-0" style="clear:both;">
+                                @Html.Label("Dimension (m)", "Dimension (m)")
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-md-4 in-lbl">
+                                        @Html.Label("L", "L")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Length, new { @Id = "formALength", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, Dimention L}", @rows = 1, @onkeypressvalidate = "decimal,5,Dimention L" })
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-4 in-lbl">
+                                        @Html.Label("W", "W")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Width, new { @Id = "formAWidth", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, Dimention W}", @rows = 1, @onkeypressvalidate = "decimal,5,Dimention W" })
+                                    </div>
+                                    <div class="form-group col-lg-4 col-md-4 in-lbl">
+                                        @Html.Label("D", "D")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Height, new { @Id = "formAHeight", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, Dimention D}", @rows = 1, @onkeypressvalidate = "decimal,5,Dimention D" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-2">
+                                @Html.Label("ADP", "ADP")
+                                @*@Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Adp, new { @Id = "formAAdp", @class = "form-control disableFADinput validate {number, ADP}", @onkeypressvalidate = "number,ADP", @rows = 1 })*@
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Adp, new { @Id = "formAAdp", @class = "form-control disableFADinput validate {decimal, ADP}", @maxlength = "11", @onkeypressvalidate = "decimal,5,ADP", @rows = 1 })
+                            </div>
+                            <div class="form-group col-lg-2">
+                                @Html.Label("CDR", "CDR")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Cdr, new { @Id = "formACdr", @class = "form-control disableFADinput validate {decimal, CDR}", @maxlength = "11", @onkeypressvalidate = "decimal,5,CDR", @rows = 1 })
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Priority", "Priority")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Priority, (IEnumerable
+                                                    <SelectListItem>)ViewData["lookupPriority"], "Select Priority", new { @Id = "formAPriority", @class = "form-control disableFADinput" })
+                            </div>
+                            <div class="form-group col-lg-1">
+                                @Html.Label("WI", "WI")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Wi, (IEnumerable
+                                                    <SelectListItem>)ViewBag.WI, "WI", new { @Id = "formAWI", @class = "form-control disableFADinput " })
+                            </div>
+                            <div class="form-group col-lg-1">
+                                @Html.Label("WS", "WS")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Ws, (IEnumerable
+                                                    <SelectListItem>)ViewBag.WS, "WS", new { @Id = "formAWS", @class = "form-control disableFADinput " })
+                            </div>
+                            <div class="form-group col-lg-1">
+                                @Html.Label("WTC", "WTC")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Wtc, (IEnumerable
+                                                    <SelectListItem>)ViewBag.WTC, "WTC", new { @Id = "formAWTC", @class = "form-control disableFADinput  " })
+                            </div>
+                            <div class="form-group col-lg-1">
+                                @Html.Label("WC", "WC")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Wc, (IEnumerable
+                                                    <SelectListItem>)ViewBag.WC, "WC", new { @Id = "formAWC", @class = "form-control disableFADinput" })
+                            </div>
+                            <div class="form-group col-lg-2">
+                                @Html.Label("Shift PS", "Shift PS")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.SftPs, (IEnumerable
+                                <SelectListItem>)ViewData["lookupPriority"], "Shift PS", new { @Id = "formASftPs", @class = "form-control disableFADinput " })
+                            </div>
+                            <div class="form-group col-lg-2">
+                                @Html.Label("Shift WIS", "Shift WIS")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.SftWis, (IEnumerable
+                                <SelectListItem>)ViewBag.ShiftWIS, "Shift WIS", new { @Id = "formASftWis", @class = "form-control disableFADinput  " })
+                            </div>
+                            <div class="form-group col-lg-1">
+                                @Html.Label("RT", "RT")
+                                @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Rt, (IEnumerable
+                                <SelectListItem>)ViewBag.RT, "RT", new { @Id = "formART", @class = "form-control disableFADinput" })
+                            </div>
+                            <div class="form-group col-lg-12 txtarea-107">
+                                @Html.Label("Remarks", "Remarks")
+                                @Html.TextAreaFor(Adtl => Adtl.SaveFormADetails.Remarks, new { @Id = "formARemarks", @class = "form-control disableFADinput", @rows = 1 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="FormATabPage2">
+
+                        <div id="ViewPhoto">
+
+                        </div>
+                        <!--Add Photo ends-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="cancelFADBtn" type="button" onclick="javascript: close();" ondblclick="javascript:void(0);" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
+        <button id="saveContFormADetailsBtn" onclick="javascript: detailSave('Save&Continue');" ondblclick="javascript:void(0)" type="button" class="btn btn-sm btn-themebtn disablebtn">Save &amp; Continue</button>
+        <button id="saveExitFormADetailsBtn" onclick="javascript: detailSave('Save&Exit');" ondblclick="javascript:void(0)" type="button" class="btn btn-sm btn-themebtn disablebtn">Save &amp; Exit</button>
+        <button id="clearFormASubDetailBtn" type="button" ondblclick="javascript:void(0)" class="btn btn-sm btn-outline-theme Clear disablebtn" onclick="javascript: clearForm();">Clear</button>
+    </div>
+</form>
+
+@*  }*@

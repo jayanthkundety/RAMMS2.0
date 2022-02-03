@@ -1,0 +1,115 @@
+﻿.customImage {
+    float: left;
+    height: 90px;
+    width: 90px;
+    margin-top: 4%;
+}
+
+.customImage1 {
+    float: right;
+    height: 90px;
+    width: 90px;
+    margin-top: 4%;
+}
+
+.container {
+    height: 100%;
+    align-content: center;
+}
+
+.card {
+    height: 540px;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    width: 500px;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    /* box-shadow: 5px 5px; */
+    overflow: hidden;
+}
+
+.card-header h3 {
+    color: white;
+}
+
+a {
+    color: white;
+}
+
+.sub-title-1 {
+    font-size: 1.75rem;
+    font-family: myFirstFont;
+    color: #AD9D9D !important;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.sub-title-2 {
+    font-size: 1.5rem;
+    font-family: myFirstFont;
+    color: #AD9D9D !important;
+    font-style: normal;
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: myFirstFont;
+    src: url(../BebasNeue-Regular.ttf);
+}
+
+
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+    .sidebar a {
+        display: block;
+        color: black;
+        padding: 16px;
+        text-decoration: none;
+    }
+
+        .sidebar a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 1000px;
+}
+
+@media screen and (max-width: 700px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+        .sidebar a {
+            float: left;
+        }
+
+    div.content {
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .sidebar a {
+        text-align: center;
+        float: none;
+    }
+}
+/*test comment */

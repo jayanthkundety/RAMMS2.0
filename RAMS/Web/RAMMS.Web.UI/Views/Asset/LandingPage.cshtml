@@ -1,0 +1,1073 @@
+﻿@*@model IEnumerable<RAMMS.Domain.Models.RmAllassetInventory>;*@
+
+@*@model RAMMS.Business.ServiceProvider.BridgeBO;*@
+
+@model RAMMS.Business.ServiceProvider.MltyModelBO
+@*@model RAMMS.Domain.Models.RmAllassetInventory*@
+
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using RAMMS.Domain.Models;
+
+
+
+<style>
+
+
+    .modal-header,
+    h4,
+    .close {
+        background-color: #344261 !important;
+        color: white !important;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .sticky-col {
+        position: sticky;
+        position: -webkit-sticky;
+        background-color: white;
+    }
+
+    .first-col {
+        width: 125px;
+        min-width: 125px;
+        max-width: 150px;
+        left: 0px;
+    }
+
+    .bd-callout-info {
+        border-left-color: rgb(13, 176, 240);
+    }
+
+    .bd-callout {
+        padding: 1.25rem;
+        margin-top: 1.25rem;
+        margin-bottom: 1.25rem;
+        border: 1px solid#eee;
+        border-left-width: .25rem;
+        border-radius: .25rem;
+    }
+
+    #fileUpload {
+        display: none;
+        float: left;
+        margin-top: 5%;
+        margin-left: 0%
+    }
+
+
+    /*****************************************
+          upload button styles
+        ******************************************/
+    .file-upload {
+        position: relative;
+        display: inline-block;
+    }
+
+    .file-upload__label {
+        display: block;
+        padding: 1em 2em;
+        color: #fff;
+        background: rgb(14, 127, 192);
+        border-radius: 0.4em;
+        transition: background 0.3s;
+    }
+
+    .file-upload__input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        font-size: 1;
+        width: 0;
+        height: 100%;
+        opacity: 0;
+    }
+
+    .tabspace {
+        margin-left: 8px;
+    }
+
+    .chosen-container {
+        width: 100% !important;
+    }
+
+    .addScroll {
+        overflow-y: auto;
+        height: 500px;
+        /*width: 900px;*/
+    }
+
+    div.LS1cm {
+        line-height: 1cm;
+    }
+
+    .card-header {
+        cursor: pointer;
+    }
+
+    .collapsed > .card-expand-arrow {
+        transform: rotate(-90deg);
+    }
+
+    .card-expand-arrow {
+        color: #5179d6;
+    }
+
+    .asset-location {
+        background: #eedfff;
+    }
+
+    .modal-title {
+        color: white !important;
+    }
+
+    .box-sdw-0020 {
+        box-shadow: 0px 0px 2px 0px;
+    }
+
+    .br-rds-25 {
+        border-radius: 25px;
+    }
+
+    .pagination {
+        margin: 0px !important;
+    }
+
+    .required {
+        content: "*";
+        font-weight: bold;
+        color: red;
+    }
+
+    #btabs-alt-static-page1 .form-control {
+        margin-bottom: 4px;
+    }
+
+    @@media (min-width: 1200px) {
+        .app-col-xl-pt-2 {
+            padding-top: 30px !important
+        }
+    }
+</style>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+<script>
+    function myFunction() {
+        var x = document.getElementById("advSearch");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function SearchBridge() {
+        var Inputvalue = {Inputvalue: $("#search").val()};
+       @*$.ajax({
+                    type: 'POST',
+                    //contentType: "application/json;charset=utf-8",
+                    url: '@Url.Action("SearchBridge","Download")',
+                    data: {Inputvalue: $("#search").val() },
+                    success: function (data) {
+                        //debugger;
+                       Model.searchObj=
+
+                    },
+                    error: function (ex) {
+                        alert('Failed.' + ex);
+                    }
+                });*@
+
+
+        //debugger;
+          var url = '@Url.Action("SearchBridge", "Download", new {Inputvalue = "Input_val"})';
+        url = url.replace("Input_val", $("#search").val());
+  window.location.href = url;
+    }
+
+    $(document).on("click", "#btnUpload", function () {
+        var files = $("#importFile").get(0).files;
+
+        //alert(files);
+        var formData = new FormData();
+        formData.append('importFile', files[0]);
+
+        $.ajax({
+            url: '/Download/AssetImportFile',
+            data: formData,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.Status === 1) {
+                   // alert(data.Message);
+                } else {
+                   // alert("Failed to Import");
+                }
+            }
+        });
+    });
+
+    function SubmitClick(pid) {
+        //  debugger
+        //pid = 1027;
+        $.ajax({
+            url: '/Download/BridgeEdit',
+            data: { EditID: pid },
+            type: 'POST',
+            //contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                console.log(data);
+                $("#divAddEditView").html(data);
+            }
+        });
+        //debugger
+    };
+
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        // When onchange event occurs on <select id="pagesize">,
+        // simply submit the form, which will submit the new pagesize value as querystring.
+        $('#pageSize').on('change', function () {
+            alert("abc");
+            $('#form1').submit();
+        });
+    });
+</script>
+
+@using (Html.BeginForm("Index", "Download", FormMethod.Get, new { id = "form1" }))
+{
+
+    //BreadCrumbs
+    <div class="bg-body-light box-sdw-0020 br-rds-25 m-2">
+        <div class="content content-full p-3">
+            <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+                <h1 class="flex-sm-fill h3 my-2">
+                    Bridge
+                </h1>
+                <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Road Furniture</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            <a class="link-fx" href="">Bridge</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <form action="be_pages_generic_search.html" method="POST">
+            <div class="row justify-content-center">
+                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                    <div class="widget-content widget-content-area br-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search.." id="search" name="search">
+                            @*@Html.TextBox("Drain ID", null, new { @class = "form-control" } )*@
+                            <div class="input-group-append">
+                                @*<span class="input-group-text">*@
+                                <div class="btn-group">
+                                    <button type="button" @*onclick="bridgeSearch(bridgeDetailForm)"*@
+                                            class="btn btn-sm btn-alt-primary theme-clr js-tooltip-enabled"
+                                            onclick="SearchBridge()"
+                                            data-original-title="Edit">
+                                        <i class="fa fa-fw fa-search"></i>
+                                    </button>
+                                    <button type="button" onclick="myFunction()"
+                                            class="btn btn-sm btn-alt-primary theme-clr js-tooltip-enabled">
+                                        <i class="fa fa-align-left"></i>
+                                    </button>
+                                    @*<button type="button" data-toggle="modal"
+                                                data-target="#helpBridgeModal"
+                                                class="btn btn-sm btn-alt-primary js-tooltip-enabled">
+                                            <i class="fas fa-question-circle"></i>
+                                        </button>*@
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        @*Detail Search Screen*@
+
+        <div id="detailSearch">
+            <div class="row mt-5" id="advSearch" style="display:none">
+                <form id="bridgeDetailForm" name="bridgeDetailForm">
+                    <div class="row">
+                        <!-- <div class="col-md-12 col-lg-12 col-xl-12 col-sm-12"> -->
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @*<label for="chlocationfrom" class="form-label">CH From</label>
+                                    <input type="number" class="form-control" id="chlocationfrom">*@
+                                @Html.Label("CH From", "CH From", new { style = "float: left" })
+                                @Html.TextBox("CH From", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("CH To", "CH To", new { style = "float: left" })
+                                @Html.TextBox("CH To", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Asset Group", "Asset Group", new { style = "float: left" })
+                                @Html.TextBox("RMU1", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Asset Type ", "Asset Type", new { style = "float: left" })
+                                @Html.TextBox("Section Code", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("RMU2", "RMU2", new { style = "float: left" })
+                                @Html.TextBox("RMU2", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Section Name ", "Section Name", new { style = "float: left" })
+                                @Html.TextBox("Section Name", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Section Code ", "Section Code", new { style = "float: left" })
+                                @Html.TextBox("Section Code", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Road Name  ", "Road Name", new { style = "float: left" })
+                                @Html.TextBox("Road  Name", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Road Code ", "Road Code", new { style = "float: left" })
+                                @Html.TextBox("Road Code", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                @Html.Label("Bound ", "Bound", new { style = "float: left" })
+                                @Html.TextBox("Bound", null, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <!-- </div> -->
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-center">
+            @*<button type="button" class="btn btn-primary theme-clr">
+                    <i class="fa fa-fw fa-search"></i>Search
+                </button>*@
+            <span class="ml-2"></span>
+            @*<button type="button" onclick="myFunction()"
+                        class="btn btn-outline-info theme-clr">
+                    <i class="fa fa-align-left"></i>Detailed Search
+                </button>*@
+        </div>
+    </div>
+    @*<div class="row mt-3" id="advSearch" style="display:none">
+        </div>*@
+    <!-- END Sidebar -->
+    <!-- Header -->
+    <header id="page-header" class="theme-clr">
+        <!-- Header Content -->
+        <!-- END Header Content -->
+        <!-- Header Search -->
+        <!-- END Header Search -->
+        <!-- Header Loader -->
+        <!-- Please check out the Loaders page under Components category to see examples of showing/hiding it -->
+        <div id="page-header-loader" class="overlay-header bg-white">
+            <div class="content-header">
+                <div class="w-100 text-center">
+                    <i class="fa fa-fw fa-circle-notch fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        <!-- END Header Loader -->
+    </header>
+    <!-- END Header -->
+
+    <!-- Main Container -->
+
+    <main id="main-container" style="padding-top:2px">
+        <!-- Page Content -->
+        <div class="p-2">
+            <!--Help Bridge Modal begins-->
+            <div class="modal fade" id="helpBridgeModal" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalHelpTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalHelpTitle">
+                                How to
+                                Search?
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="block block-rounded">
+                                <div class="row" style="padding: 20px;margin-left: 2px;">
+                                    <p>
+                                        The asset features wildcard Search specifically on
+                                        the Asset ID field. User can perform multiple search
+                                        criteria by specifying each criteria separated by an
+                                        empty space.
+                                    </p>
+
+                                    <div class="bd-callout" style="border-left-color:rgb(13, 176, 240) ;">
+                                        <h5 style="color: rgb(13, 176, 240);">
+                                            Info: Wildcard
+                                            Search
+                                        </h5>
+
+                                        <p>
+                                            You may enter a block of characters from anywhere
+                                            within the ID such as BPS/S3/TP and the system
+                                            will look for all Asset that contains the block
+                                            of characters .
+                                        </p>
+                                    </div>
+                                    <div class="bd-callout"
+                                         style="width: 100%; border-left-color:rgb(24, 163, 19) ;">
+                                        <h5 style="color: rgb(24, 163, 19);">
+                                            <img src="~/assets/media/various/green-tick.jpg"
+                                                 width="15" height="16" style="border-radius: 50%;"> Tips
+                                        </h5>
+
+                                        <p>
+                                            You can list all records from a specific section
+                                            by simply entering the word 'SI'.
+                                        </p>
+                                    </div>
+                                    <div class="bd-callout" style="border-left-color:rgb(13, 176, 240) ;">
+                                        <h5 style="color: rgb(13, 176, 240);">
+                                            Info: Multiple
+                                            Criteria Wildcard Search
+                                        </h5>
+
+                                        <p>
+                                            To perform a more specific search to narrow down
+                                            the result, you may specify more criterias such
+                                            as MRI/3/Q28 and the system will list all
+                                            records that consists of MRI/3/Q28 .
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--Help Bridge Modal ends-->
+            <!--Add Bridge and Download begins-->
+            <div class="bg-body-light box-sdw-0020 col-12" style="border-radius: 30px;">
+                <div class="row d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center table-detail-container pt-2">
+                    @*Pagination*@
+
+                    <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 pb-1">
+                        @Html.PagedListPager((IPagedList)Model.searchObj, Page_No => Url.Action("GridView",
+                      new { Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                        @*Page @(Model.bO.ToPagedList().PageCount < Model.bO.ToPagedList().PageNumber ? 0 : Model.bO.ToPagedList().PageNumber) of @Model.bO.ToPagedList().PageCount*@
+
+                        @*@Html.PagedListPager((IPagedList)Model.bridgeObj, Page_No => Url.Action("GridView",
+                            new { Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 pb-1">
+                        Rows per page: @Html.DropDownList("pageSize")
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+                        Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+                    </div>
+
+                    <div class="col-xl-3 col-lg-5 col-md-6 col-sm-12 pb-1">
+                        <button class=" btn btn-outline-info theme-clr" data-target="#AssetDataUPLOAD" data-toggle="modal">Asset Import</button>
+
+                        <button class=" btn btn-outline-info theme-clr" onclick="location.href='@Url.Action("Downloadgridresults", "Download")'">Download</button>
+                        <button type="button" class="btn btn-outline-info theme-clr" data-toggle="modal" data-target="#bridgeAddModal" onclick="javascript:SubmitClick(0);">
+                            Add Bridge
+                        </button>
+
+                        @* <button type="submit" onclick="location.href='@Url.Action("Add", "Download")'" class="btn btn-outline-info theme-clr" data-toggle="modal">
+            Add Bridge
+        </button>*@
+                    </div>
+                </div>
+            </div>
+            <!--Add Bridge and Download ends-->
+            <!--Asset Upload Start-->
+            <div class="modal fade" id="AssetDataUPLOAD" aria-hidden="true" role="dialog" aria-labelledby="AssetDataUPLOADCenterTitle">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bridgeAddModalCenterTitle">
+                                Import Asset
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div class="block block-rounded" style="background-color:#f0f0f0">
+                            <div class="block block-rounded widget-content widget-content-area br-6">
+                                <div class="block-content text-center">
+                                    <!-- Block Tabs Alternative Style -->
+                                    <div class="block block-rounded">
+                                        <ul class="nav nav-tabs nav-tabs-alt" data-toggle="tabs" role="tablist">
+                                            @*<ul class="nav nav-tabs">*@
+                                            <li class="active">
+                                                <a class="nav-link" data-toggle="tab" href="#btabs-alt-static-home" style="color: #1d2d50;font-weight: bolder;font-size: large;">
+                                                    Step 1 - Download
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="nav-link" data-toggle="tab" href="#btabs-alt-static-profile" style="color: #1d2d50;font-weight: bolder;font-size: large;">
+                                                    Step 2 - Populate
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="nav-link" data-toggle="tab" href="#btabs-alt-static-settings" style="color: #1d2d50;font-weight: bolder;font-size: large;">
+                                                    Step 3 - Upload
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                        <div class="block-content tab-content">
+                                            <div class="tab-pane  active" id="btabs-alt-static-home" role="tabpanel">
+                                                <h5 class="font-w400" style="color: black;"> Sample Excel Format</h5>
+                                                <a style="background-color: #1d2d50; color: white;" onclick="location.href='@Url.Action("DownloadgridHeader", "Download")'" class="btn btn">Download</a>
+                                                <br /> <br />
+                                                <p style="color: black;">
+                                                    <span class="badge badge-warning">Note:</span>
+                                                    Columns arrangement in each sheet cannot be changed but sheet order may
+                                                    differ
+                                                </p>
+                                            </div>
+                                            <div class="tab-pane" id="btabs-alt-static-profile" role="tabpanel">
+                                                <h5 class="font-w400" style="color: black;">
+                                                    Fill in all routine works
+                                                    records according and label the sheet accordingly
+                                                </h5>
+                                                <p style="color: black;">
+                                                    <span class="badge badge-warning">Note:</span> It
+                                                    is advised utilize the @Html.ActionLink("sample format", "DownloadgridHeader", "Download", null, new { @style = "color:#1d2d50 ;font-weight: bolder;" }) as
+                                                    @Html.ActionLink("downloaded.", "DownloadgridHeader", "Download", null, new { @style = "color:#1d2d50 ;font-weight: bolder;" })
+                                                    Remove any unused sheet for better upload process performance
+                                                </p>
+                                            </div>
+                                            <div class="tab-pane " id="btabs-alt-static-settings" role="tabpanel">
+                                                <h5 class="font-w400" style="color: black;">
+                                                    @*Click on the upload file button
+                                                        or drag and drop your complete Excel file in the space below.*@
+                                                    Click on the Choose file button to select the Excel file for import process.
+                                                </h5>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-12 col-cl-12 col-sm-12 ">
+                                                        <div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="padding-bottom:20px">
+                                                                    <table border="0">
+                                                                        <tr>
+                                                                            <td width="30%">
+                                                                                @*<div class="col-4">*@
+                                                                                @*<span>Select File :</span>*@
+                                                                                @*<label style="width:30%" for="SelectFile">Select File :</label>*@
+                                                                                Select File :
+                                                                                @*</div>*@
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="col-sm-6">
+                                                                                    <input @*class="form-control"*@ type="file" name="importFile" id="importFile" />
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="col-sm-3">
+                                                                                    <input class="btn btn-primary" id="btnUpload" type="button" value="Import" />
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <p style="color: black;">
+                                                    Click on the import button to begin the import
+                                                    process. @*<a href="#" style=" background: #1d2d50;color: white;"
+                                                        class="btn ">Import</a>*@
+                                                </p>
+
+                                                <p style="color: black;">
+                                                    <span class="badge badge-warning">Note:</span> All
+                                                    records will be committed to the system when there are no errors present
+                                                    thoughout the entire file
+                                                </p>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END Block Tabs Alternative Style -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--Asset Upload End-->
+            <!--Add Bridge screen start-->
+            <div class="modal fade" id="bridgeAddModal" tabindex="-1" role="dialog"
+                 aria-labelledby="bridgeAddModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bridgeAddModalCenterTitle">
+                                Bridge
+                                Property
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
+                        </div>
+                        <div id="divAddEditView">
+
+                        </div>
+                        @*<div class="modal-footer">
+            <button type="submit" onclick="location.href='@Url.Action("Add", "Download")'" class="btn btn-success theme-clr">Confirm</button>
+
+            <button type="button" class="btn btn-outline-info theme-clr" data-dismiss="modal">
+                Cancel
+            </button>
+        </div>*@
+                    </div>
+                </div>
+            </div>
+            <!--Add Bridge screen end-->
+            <!--Add Bridge table begins-->
+            <div class="main-container" id="container">
+
+                <div class="overlay"></div>
+                <div class="cs-overlay"></div>
+                <div class="search-overlay"></div>
+
+
+                <!--  BEGIN CONTENT AREA  GridView -->
+                <div id="content" class="main-content">
+                    <div class="layout-px-spacing">
+                        <div class="row layout-top-spacing" id="cancel-row">
+
+                            <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                                <div class="widget-content widget-content-area br-6">
+                                    <div class="table-responsive mb-4 mt-4">
+                                        <!--Add Bridge table ends-->
+                                        <!--Bridge Main Table begins-->
+
+                                        <table id="bridgeGridView" class="table table-hover non-hover" style="width:100%">
+                                            <thead class="sticky-col first-col">
+                                                <tr>
+                                                    <th style="background:#fff" class="text-center sticky-col first-col">Action</th>
+                                                    <th>No</th>
+                                                    <th>Bridge ID</th>
+                                                    <th>RMU Name</th>
+                                                    <th>Section Name</th>
+                                                    <th>Section Code</th>
+                                                    <th>Road Name</th>
+                                                    <th>Road Code</th>
+                                                    <th>Location CH</th>
+                                                    <th>Bound</th>
+                                                    <th>Bridge Name</th>
+                                                    <th>Bridge Length</th>
+                                                    <th>Type Of Bridge</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @*@for (int i = 0; i < Model._BridgeInvGrid.ToList().Count ; i++)*@
+
+                                                @foreach (var item in Model.searchObj)
+                                                {
+                                                    <tr>
+                                                        <td style="background:none" class="sticky-col first-col">
+                                                            <div class="btn-group dropright " id="actiondropdown">
+                                                                <button id="actionclick" type="button" class="btn btn-outline-info theme-clr dropdown-toggle" data-toggle="dropdown">
+                                                                    Click ME
+                                                                </button>
+                                                                <div class="dropdown-menu">
+                                                                    @*<a class="dropdown-item" href="#"><i class="fas fa-pen"></i> Edit</a>*@
+                                                                    <button type="button" class="dropdown-item" data-toggle="modal" id="btnbridgeEdit" onclick="javascript:SubmitClick(@item.AI_PK_Ref_No);"
+                                                                            data-target="#bridgeAddModal">
+                                                                        <i class="fas fa-pen"></i>Edit
+                                                                    </button>
+                                                                    <a class="dropdown-item" href="#"><i class="fas fa-times"></i> Delete</a>
+                                                                    <a class="dropdown-item" href="#"><i class="fas fa-calendar-week"></i> View Photo</a>
+                                                                    <a class="dropdown-item" href="#"><i class="fas fa-map-marker-alt"></i> View Map</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Asset_ID)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Bridge_Name)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_RMU_Code)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Sec_name)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Sec_Code)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Rd_name)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Rd_Code)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Loc_CH_KM)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Bound)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Bridge_Name)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Length)</td>
+                                                        <td> @Html.DisplayFor(modelItem => item.AI_Grp_Type)</td>
+                                                        @* <td> @Html.HiddenFor(modelItem => item.AI_PK_Ref_No, new { @id = "idForEdit" }) </td>*@
+
+                                                        @*<td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiAssetId)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiBridgeName)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiRmuCode)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiSecName)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiSecCode)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiRdName)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiRdCode)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiLocChKm)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiBound)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiBridgeName)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiLength)</td>
+                                                            <td> @Html.DisplayFor(modelItem => Model._BridgeInvGrid.ToList()[i].AiGrpType)</td>*@
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  END CONTENT AREA GridView -->
+            </div>
+            @*Pagination*@
+            <div class="bg-body-light box-sdw-0020 col-12" style="border-radius: 30px;">
+                <div class="row d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center table-detail-container pt-2">
+                    <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 pb-1">
+                        @Html.PagedListPager((IPagedList)Model.searchObj, Page_No => Url.Action("GridView",
+                      new { Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 pb-1">
+                        @* Rows per page: @Html.DropDownList("pageSize1")*@
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+                        Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+                    </div>
+                    @* Demo purpose added forms in download in screen  *@
+                    @*<div class="col-xl-3 col-lg-5 col-md-6 col-sm-12 pb-1"></div>*@
+                    <div class="col-xl-3 col-lg-5 col-md-6 col-sm-12 pb-1">
+                        <button class=" btn btn-outline-info theme-clr" onclick="location.href='@Url.Action("DownloadFormA", "Download")'">FormA</button>
+                        <button class=" btn btn-outline-info theme-clr" onclick="location.href='@Url.Action("DownloadFormJ", "Download")'">FormJ</button>
+                        <button class=" btn btn-outline-info theme-clr" onclick="location.href='@Url.Action("DownloadFormH", "Download")'">FormH</button>
+                    </div>
+                </div>
+            </div>
+            @*Pagination*@
+
+            @*Pagination*@
+            @*Page @(Model.bO.ToPagedList().PageCount < Model.bO.ToPagedList().PageNumber ? 0 : Model.bO.ToPagedList().PageNumber) of @Model.bO.ToPagedList().PageCount*@
+            @*COMMENTING THE BELOW LINE FOR - ARUN*@
+            @*<div class="widget-content widget-content-area br-6" style="border-radius: 8px;">
+                    <div class="page">
+                        <table>
+                            <tr>
+                                <td>Page Size: @Html.DropDownList("pageSize")</td>
+                                <td></td>
+                                <td> Displaying @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords</td>
+                            </tr>
+                            <tr>
+                                <td>Page @ViewBag.CurrentPage of @ViewBag.TotalPage</td>
+                                <td></td>
+                                <td>
+                                    @Html.PagedListPager((IPagedList)Model._BridgeInvGrid, Page_No => Url.Action("GridView",
+                           new { Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>*@
+            @*Pagination*@
+        </div>
+    </main>
+    <!-- END Main Container
+    <!-- Footer -->
+    <!-- END Footer -->
+
+    @*<script src="~/js/oneui.core.min.js"></script>
+        <script src="~/js/oneui.app.min.js"></script>
+        <script type="text/javascript" src="~/js/jquery-1.10.2.js"></script>*@
+    <style>
+        /*Copied from bootstrap to handle input file multiple*/
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: normal;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 10px;
+        }
+        /*Also */
+        .btn-success {
+            border: 1px solid #c5dbec;
+            background: #D0E5F5;
+            font-weight: bold;
+            color: #2e6e9e;
+        }
+
+        .fileinput-button {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .fileinput-button input {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                opacity: 0;
+                -ms-filter: 'alpha(opacity=0)';
+                font-size: 200px;
+                direction: ltr;
+                cursor: pointer;
+            }
+
+        .thumb {
+            height: 80px;
+            width: 100px;
+            border: 1px solid #000;
+        }
+
+        ul.thumb-Images li {
+            list-style-type: none;
+            /* width: 120px;
+                        float: left;
+                        display: inline-block;
+                        vertical-align: top;
+                        height: 120px;*/
+        }
+
+        .img-wrap {
+            position: relative;
+            display: inline-block;
+            font-size: 0;
+        }
+
+            .img-wrap .close {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                z-index: 100;
+                background-color: #D0E5F5;
+                padding: 5px 2px 2px;
+                color: #000;
+                font-weight: bolder;
+                cursor: pointer;
+                opacity: .5;
+                font-size: 23px;
+                line-height: 10px;
+                border-radius: 50%;
+            }
+
+            .img-wrap:hover .close {
+                opacity: 1;
+                background-color: #ff0000;
+            }
+
+        .FileNameCaptionStyle {
+            font-size: 12px;
+        }
+    </style>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", init, false);
+        var AttachmentArray = [];
+        var arrCounter = 0;
+        var filesCounterAlertStatus = false;
+        function init() {
+            document.querySelector('#files')?.addEventListener('change', handleFileSelect, false);
+        }
+        function handleFileSelect(e) {
+            if (!e.target.files) return;
+            var files = e.target.files;
+            for (var i = 0, f; f = files[i]; i++) {
+                var fileReader = new FileReader();
+                fileReader.onload = (function (readerEvt) {
+                    return function (e) {
+                        ApplyFileValidationRules(readerEvt)
+                        RenderThumbnail(e, readerEvt);
+                        FillAttachmentArray(e, readerEvt)
+                    };
+                    output.innerHTML = children;
+                })(f);
+                fileReader.readAsDataURL(f);
+            }
+
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+        }
+
+        //To remove attachment once user click on x button
+        jQuery(function ($) {
+            $('#divImg').on('click', '.img-wrap .close', function () {
+                var id = $(this).closest('.img-wrap').find('img').data('id');
+                var elementPos = AttachmentArray.map(function (x) { return x.FileName; }).indexOf(id);
+                if (elementPos !== -1) {
+                    AttachmentArray.splice(elementPos, 1);
+                }
+                //to remove image tag
+                $(this).parent().find('img').not().remove();
+                //to remove div tag that contain the image
+                $(this).parent().find('div').not().remove();
+                //to remove div tag that contain caption name
+                $(this).parent().parent().find('div').not().remove();
+                //to remove li tag
+                var lis = document.querySelectorAll('#imgList li');
+                for (var i = 0; li = lis[i]; i++) {
+                    if (li.innerHTML == "") {
+                        li.parentNode.removeChild(li);
+                    }
+                }
+
+            });
+        }
+        )
+        function ApplyFileValidationRules(readerEvt) {
+            if (CheckFileType(readerEvt.type) == false) {
+                alert("The file (" + readerEvt.name + ") does not match the upload conditions, You can only upload jpg/png/gif files");
+                e.preventDefault();
+                return;
+            }
+            if (CheckFileSize(readerEvt.size) == false) {
+                alert("The file (" + readerEvt.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 300 KB");
+                e.preventDefault();
+                return;
+            }
+            if (CheckFilesCount(AttachmentArray) == false) {
+                if (!filesCounterAlertStatus) {
+                    filesCounterAlertStatus = true;
+                    alert("You have added more than 10 files. According to upload conditions you can upload 10 files maximum");
+                }
+                e.preventDefault();
+                return;
+            }
+        }
+        function CheckFileType(fileType) {
+            if (fileType == "image/jpeg") {
+                return true;
+            }
+            else if (fileType == "image/png") {
+                return true;
+            }
+            else if (fileType == "image/gif") {
+                return true;
+            }
+            else {
+                return false;
+            }
+            return true;
+        }
+        function CheckFileSize(fileSize) {
+            if (fileSize < 300000) {
+                return true;
+            }
+            else {
+                return false;
+            }
+            return true;
+        }
+        function CheckFilesCount(AttachmentArray) {
+            //Since AttachmentArray.length return the next available index in the array,
+            //I have used the loop to get the real length
+            var len = 0;
+            for (var i = 0; i < AttachmentArray.length; i++) {
+                if (AttachmentArray[i] !== undefined) {
+                    len++;
+                }
+            }
+            //To check the length does not exceed 10 files maximum
+            if (len > 9) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        function RenderThumbnail(e, readerEvt) {
+
+            var ul = document.createElement('ul');
+            ul.className = ("thumb-Images");
+            ul.id = "imgList";
+            var li = document.createElement('li');
+            ul.appendChild(li);
+            li.innerHTML = ['<div class="img-wrap"> <span class="close">&times;</span>' +
+                '</div>'].join('');
+            var div = document.createElement('div');
+            div.className = "FileNameCaptionStyle";
+            li.appendChild(div);
+            div.innerHTML = [readerEvt.name].join('');
+            document.getElementById('Filelist').insertBefore(ul, null);
+        }
+
+        //Fill the array of attachment
+        function FillAttachmentArray(e, readerEvt) {
+            AttachmentArray[arrCounter] =
+            {
+                AttachmentType: 1,
+                ObjectType: 1,
+                FileName: readerEvt.name,
+                FileDescription: "Attachment",
+                NoteText: "",
+                MimeType: readerEvt.type,
+                Content: e.target.result.split("base64,")[1],
+                FileSizeInBytes: readerEvt.size,
+            };
+            arrCounter = arrCounter + 1;
+        }
+
+    </script>
+    @*<div>
+            @RenderBody()
+        </div>*@
+
+}
+

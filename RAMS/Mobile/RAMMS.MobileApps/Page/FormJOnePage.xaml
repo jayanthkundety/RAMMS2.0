@@ -1,0 +1,844 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Name="currentPage"
+            xmlns:local="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+             xmlns:local1="clr-namespace:RAMMS.MobileApps;assembly=RAMMS.MobileApps"
+             Title="Form J Add Page"
+             x:Class="RAMMS.MobileApps.Page.FormJOnePage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local1:NegateBoolConverter x:Key="NegatebooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Frame Margin="0,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                        <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                        <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                    </Grid>
+                </Frame>
+
+
+                <StackLayout>
+                    <Frame>
+                        <StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="1"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="2"/>
+                                </Grid.ColumnDefinitions>
+                                <!--Text="Reference No"-->
+                                <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalOptions="Center">
+                                    <Label   Text="Reference No" FontSize="Large"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+
+                                    <local:FrameRenders BackgroundColor="#f2f2f2"  Margin="10,2,10,2" IsClippedToBounds="True" FrameCornerRadius="10" Padding="10,0,10,0"  ColorName="LightGray"     Grid.Row="1" Grid.Column="0">
+                                        <Label Text="{Binding RefrenceNumber}"  x:Name="rmupicker"    VerticalOptions="CenterAndExpand" FontSize="Large"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                    </local:FrameRenders>
+
+                                </StackLayout>
+                            </Grid>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+
+                <StackLayout>
+                    <Frame  >
+                        <StackLayout Margin="0,-15,0,0">
+                            <Frame CornerRadius="30">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+
+                                        <RowDefinition Height="45"/>
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="7*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="7*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button ImageSource="download.png" BackgroundColor="#1D2D50" Text="Add Form" Command="{Binding AddButtonCommand}"  TextColor="White"  Grid.Row="0" HeightRequest="160" CornerRadius="30" FontSize="Medium"  Grid.Column="0" />
+                                    <Button ImageSource="Takepic.png"  BackgroundColor="#1D2D50" Text="Photo" Command="{Binding PhotoButtonCommand}" TextColor="White"  Grid.Row="0" HeightRequest="160" CornerRadius="30" FontSize="Medium" Grid.Column="2" />
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+                <StackLayout x:Name="stack1" Margin="0,-30,0,0" IsVisible="{Binding IsPhotoTabVisible, Converter={StaticResource NegatebooleanConverter}}">
+                    <StackLayout>
+                        <Frame BorderColor="Gray" CornerRadius="12" BackgroundColor="White" HasShadow="True" Margin="10">
+                            <StackLayout>
+                                <ScrollView>
+                                    <StackLayout>
+
+                                        <StackLayout >
+
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30"/>
+                                                    <RowDefinition Height="55"/>
+
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1"/>
+                                                    <ColumnDefinition Width="1.1*"/>
+                                                    <ColumnDefinition Width="1"/>
+                                                    <ColumnDefinition Width="1.1*"/>
+                                                </Grid.ColumnDefinitions>
+
+
+                                                <Label  Grid.Row="0" Grid.Column="0" Text="Date of Inspection (DD-MM-YYYY)" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                                                <local:FrameRenders Margin="10,5,10,5" FrameCornerRadius="10" BackgroundColor="White" IsClippedToBounds="True" Padding="10,0,10,0"  ColorName="LightGray"    BorderColor="Black" Grid.Column="0" Grid.Row="1">
+                                                    <local1:CustomDatePicker x:Name="datePicker" NullText="Select date" BackgroundColor="White" NullableDate="{Binding SelectedDate}"  Format="dd/MM/yyyy"  MinimumDate="{Binding MinimumDate}" MaximumDate="{Binding MaximumDate}"  VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+                                                <Label Grid.Row="0" Grid.Column="2" Text="Location Site Ref"  Margin="0,10,0,0" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+
+                        <!--<CollectionView Grid.Row="1" Grid.Column="2" HeightRequest="50"  BackgroundColor="Transparent"
+                                       HorizontalScrollBarVisibility="Never" FlowDirection="LeftToRight"
+                                      ItemsSource="{Binding CategorieItem}">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout SnapPointsType="MandatorySingle" ItemSpacing="5"  Orientation="Horizontal" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+
+                                    <Frame
+                                   
+                                    CornerRadius="15" Padding="0,0,0,0" IsClippedToBounds="True" HasShadow="False"  BackgroundColor="Transparent" Grid.Row="0" Grid.Column="0">
+                                        <StackLayout BackgroundColor="{Binding SelectedBackGroundColor}" IsClippedToBounds="True"  Orientation="Horizontal" Spacing="10">
+                                            <ff:CachedImage HeightRequest="18" WidthRequest="18" Aspect="AspectFit" Source="{Binding Category_icon}" />
+                                            <Label TextColor="{Binding LabelColor}" Style="{StaticResource Fontnewextrabold13}" Text="{Binding Category_name}" VerticalOptions="Center" HorizontalOptions="Center"></Label>
+                                        </StackLayout>
+                                        <Frame.GestureRecognizers>
+   <TapGestureRecognizer Command="{Binding Source={x:Reference currentPage},Path=BindingContext.CategoryCommand}" CommandParameter="{Binding .}"/>
+   </Frame.GestureRecognizers>
+                                    </Frame>
+
+
+
+
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                        </CollectionView>-->
+
+
+
+                                                <local:FrameRenders Grid.Row="1" Grid.Column="2" Opacity="0.9" BackGroundFrameColor="White" FrameBoderColor="Gray"   Margin="0,3,0,3" ColorName="LightGray"  BorderColor="Gray" FrameBordrWidth="1"  HeightRequest="25"   IsClippedToBounds="False"  HasShadow="False" Padding="0">
+                                                     <local:FrameRenders.FrameBordrWidth >
+                                                         <OnPlatform  x:TypeArguments="x:Double">
+                                                         <On Platform="iOS" Value="2" />
+                                                         <On Platform="Android" Value="2" />
+                                                         </OnPlatform>
+                                                     </local:FrameRenders.FrameBordrWidth>
+                                                    <StackLayout x:Name="LocationButtonDrop" Padding="10,6,5,6" BackgroundColor="White"  Orientation="Horizontal" >
+                                                        <Label HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Text="{Binding SelectedLocation}"/>
+                                                        <!--<ImageButton x:Name="LocationButtonDrop" Command="{Binding LocationDropClicked}" Margin="0,0,10,0" WidthRequest="22" HeightRequest="22" Source="down" Aspect="AspectFit"/>-->
+                                                        <StackLayout.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding LocationDropClicked}" />
+                                                        </StackLayout.GestureRecognizers>
+                                                    </StackLayout>
+                                                </local:FrameRenders>
+
+
+                                                <!--<local:FrameRenders HeightRequest="50" Grid.Row="1" Grid.Column="2" FrameCornerRadius="10" Margin="10,2,10,2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="#f8f8f8" ColorName="LightGray"    BorderColor="Black" >
+                                                   <local1:ExtendedPicker  x:Name="locationPicker"   ClassId ="ClassPickGreyJ"  VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    <CollectionView ItemSizingStrategy="MeasureAllItems" ItemsSource="{Binding LocationItem}">
+                                                        <CollectionView.ItemsLayout>
+                                <LinearItemsLayout SnapPointsType="MandatorySingle" ItemSpacing="5"  Orientation="Horizontal" />
+                            </CollectionView.ItemsLayout>
+                                                        <CollectionView.ItemTemplate>
+                                                        <DataTemplate>
+                                                           <StackLayout BackgroundColor="Red" Orientation="Horizontal" >
+                                                               <Label Text="{Binding Text}"/>
+                                                           </StackLayout>
+                                                        </DataTemplate>
+                                                        </CollectionView.ItemTemplate>
+                                                    </CollectionView>
+                                                              <local:FrameRenders.GestureRecognizers>
+                                                   <TapGestureRecognizer Command="{Binding Source={x:Reference currentPage},Path=BindingContext.CategoryCommand}" CommandParameter="{Binding .}"/>
+                                                   </local:FrameRenders.GestureRecognizers>
+                                 
+                                                </local:FrameRenders>-->
+
+
+
+                                                <Label Grid.Row="0" Grid.Column="4" Text="SA Code" FontSize="Medium"  Margin="0,10,0,0"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                                <local:FrameRenders Margin="10,2,10,2" FrameCornerRadius="10" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"    BorderColor="Black" Grid.Row="1" Grid.Column="4">
+                                                    <local1:ExtendedPicker  x:Name="sacodepicker"  Title="Select SA Code"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+                                            </Grid>
+                                        </StackLayout>
+
+                                        <StackLayout >
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="40"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="40"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="3*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Margin="0,17,0,0"  Grid.Row="0" Grid.Column="0" Text="Location Chainage From" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                                                <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="0" >
+
+                                                    <local:FrameRenders WidthRequest="100"   IsClippedToBounds="True" FrameCornerRadius="10" BackgroundColor="Transparent" ColorName="LightGray"   BorderColor="Black" Grid.Row="1" Grid.Column="1">
+                                                        <local1:EntryControl x:Name="EntryFromKm"  Text="{ Binding FromKm}" MaxLength="5"  Keyboard="Numeric"    VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </local:FrameRenders>
+                                                    <Label Text="+" FontSize="Large" Margin="-5,0,0,0"/>
+                                                    <local:FrameRenders WidthRequest="100" FrameCornerRadius="10" IsClippedToBounds="True"  BackgroundColor="Transparent" ColorName="LightGray"    BorderColor="Black" Grid.Row="1" Grid.Column="1">
+                                                        <local1:EntryControl x:Name="EntryFromM"  Text="{ Binding FromM}" MaxLength="3" Keyboard="Numeric"    VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </local:FrameRenders>
+
+                                                </StackLayout>
+                                                <Label Margin="0,17,0,0" Grid.Row="2" Grid.Column="0" Text="Location Chainage To" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                                <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="0">
+
+                                                    <local:FrameRenders WidthRequest="100" FrameCornerRadius="10" IsClippedToBounds="True"  BackgroundColor="Transparent" ColorName="LightGray"   BorderColor="Black" Grid.Row="1" Grid.Column="1">
+                                                        <local1:EntryControl x:Name="EntryTokm"  Text="{ Binding ToKm}"  MaxLength="5" Keyboard="Numeric"  VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </local:FrameRenders>
+                                                    <Label Text="+" FontSize="Large" Margin="-5,0,0,0"/>
+                                                    <local:FrameRenders WidthRequest="100" FrameCornerRadius="10" IsClippedToBounds="True"  BackgroundColor="Transparent" ColorName="LightGray"  BorderColor="Black" Grid.Row="1" Grid.Column="1">
+                                                        <local1:EntryControl x:Name="EntryToM"   Text="{Binding ToM}" MaxLength="3" Keyboard="Numeric" VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </local:FrameRenders>
+
+                                                </StackLayout>
+                                                <Label Text="Deficiencies/Problems Details" Margin="0,17,0,0" Grid.Row="0" Grid.Column="1"  Grid.ColumnSpan="2" FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                                                <StackLayout Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="0,0,10,0" Grid.Column="1" BackgroundColor="Transparent" >
+                                                    <local:FrameRenders  BackgroundColor="Transparent" HeightRequest="75" VerticalOptions="FillAndExpand"  FrameCornerRadius="5" ColorName="Black"   HorizontalOptions="Fill" >
+                                                        <Editor x:Name="EditorProblemDetail" Text="{Binding ProblemDetail}" Margin="0,0,0,-20"/>
+                                                    </local:FrameRenders>
+                                                </StackLayout>
+
+
+
+
+
+
+
+                                                <Label Grid.Row="0" Margin="0,17,0,0" Grid.Column="3" Text="Work/Installation Needed" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+
+                                                <StackLayout Grid.Row="1" BackgroundColor="Transparent" Margin="0,0,10,0" Grid.RowSpan="3" Grid.ColumnSpan="2" Grid.Column="3">
+                                                    <local:FrameRenders Padding="0" Margin="0,0,0,0" BackgroundColor="Transparent" HeightRequest="75" VerticalOptions="FillAndExpand"  FrameCornerRadius="5" ColorName="Black"   HorizontalOptions="Fill" >
+                                                        <Editor x:Name="EditorNeeded" Text="{Binding Needed}"/>
+                                                    </local:FrameRenders>
+                                                </StackLayout>
+
+
+
+
+
+                                            </Grid>
+                                        </StackLayout>
+                                        <StackLayout >
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="40"/>
+
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="4*"/>
+                                                    <ColumnDefinition Width="4*"/>
+
+
+                                                </Grid.ColumnDefinitions>
+                                                <Label  Grid.Row="0" Grid.Column="0" Margin="0,17,0,0" Text="Dimension (m)" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+                                                <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Spacing="0">
+                                                    <Image Source="L.png"  Margin="10,-8,0,0" />
+
+
+
+                                                    <local:FrameRenders Grid.Row="1" Grid.Column="0" FrameCornerRadius="5" WidthRequest="100" Margin="0,-5,0,5" Padding="5,0,5,0" HeightRequest="1" IsClippedToBounds="True"  BackgroundColor="Transparent" ColorName="LightGray"    BorderColor="Black" >
+                                                        <local1:EntryControl x:Name="EntryLength" Text="{Binding Length}"  Keyboard="Numeric" MaxLength="10"  Placeholder="L" HorizontalTextAlignment="Center"  HorizontalOptions="FillAndExpand"   TextColor="Gray"/>
+                                                    </local:FrameRenders>
+
+
+                                                    <!--<fe:AdvancedFrame WidthRequest="100" Margin="0,-5,0,5" HeightRequest="1" InnerBackground="#f2f2f2"  OutlineColor="#e6f7ff">
+                                                    <local:EntryControl x:Name="enctrlCDRLText" Text="{Binding CDRLText}" Keyboard="Numeric" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium"  Placeholder="" IsEnabled="True" />
+                                                </fe:AdvancedFrame>-->
+                                                    <Image Source="w.png" Margin="10,-8,0,0"/>
+
+
+                                                    <local:FrameRenders Grid.Row="1" Grid.Column="1" WidthRequest="100" Margin="0,-5,0,5" Padding="5,0,5,0" HeightRequest="10" IsClippedToBounds="True"  BackgroundColor="Transparent" ColorName="LightGray"    BorderColor="Black" >
+                                                        <local1:EntryControl x:Name="EntryWidth"  Text="{Binding Width}" Keyboard="Numeric" MaxLength="10" Placeholder="W" HorizontalTextAlignment="Center"   VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </local:FrameRenders>
+
+                                                    <!--<fe:AdvancedFrame WidthRequest="100" HeightRequest="1" Margin="0,-5,0,5" InnerBackground="#f2f2f2"  OutlineColor="#e6f7ff">
+                                                    <local:EntryControl x:Name="enctrlCDRWText"  Text="{Binding CDRWText}" Keyboard="Numeric" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium"  Placeholder="" IsEnabled="True" />
+                                                </fe:AdvancedFrame>-->
+                                                    <Image Source="h.png" Margin="10,-8,0,0"  />
+
+
+                                                    <local:FrameRenders Grid.Row="1" Grid.Column="2" FrameCornerRadius="5" WidthRequest="100" Margin="0,-5,0,5" Padding="5,0,5,0" HeightRequest="1" IsClippedToBounds="True"  BackgroundColor="Transparent" ColorName="LightGray"    BorderColor="Black" >
+                                                        <local1:EntryControl  x:Name="EntryHeight" Text="{Binding Height}" Keyboard="Numeric" MaxLength="10" Placeholder="H" HorizontalTextAlignment="Center"   VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                    </local:FrameRenders>
+
+                                                    <!--<fe:AdvancedFrame WidthRequest="100" HeightRequest="1" Margin="0,-5,0,5" InnerBackground="#f2f2f2"  OutlineColor="#e6f7ff">
+                                                    <local:EntryControl x:Name="enctrlCDRHText" Text="{Binding CDRHText}" Keyboard="Numeric" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium"  Placeholder="" IsEnabled="True" />
+                                                </fe:AdvancedFrame>-->
+                                                </StackLayout>
+
+                                                <Label  Grid.Row="0" Grid.Column="1" Margin="0,17,0,0" Text="Priority" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                                <local:FrameRenders Grid.Row="1" Grid.Column="1" Margin="10,0,10,0" FrameCornerRadius="10" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   BorderColor="Black" >
+                                                    <local1:ExtendedPicker Title="Select Priority" x:Name="priorityPicker"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+
+
+
+
+
+                                            </Grid>
+                                        </StackLayout>
+
+
+                                        <StackLayout >
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="40"/>
+
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="1*"/>
+
+                                                </Grid.ColumnDefinitions>
+                                                <Label  Grid.Row="0" Grid.Column="0" Margin="0,17,0,0" Text="WI" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+
+                                                <local:FrameRenders Grid.Row="1" Grid.Column="0" FrameCornerRadius="10"  WidthRequest="50" Margin="10,2,10,2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"    BorderColor="Black" >
+                                                    <local:ExtendedEntry Placeholder="WI" x:Name="EntryWI" Text="{Binding WIInt}" Keyboard="Numeric" FontSize="16"   ClassId ="ClassPickGreyJ"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+
+
+
+
+                                                <Label  Grid.Row="0" Grid.Column="1"  Margin="0,17,0,0" Text="WS" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                                                <local:FrameRenders Grid.Row="1" Grid.Column="1"  FrameCornerRadius="10"   WidthRequest="50" Margin="10,2,10,2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   BorderColor="Black" >
+                                                    <local:ExtendedEntry Placeholder="WS" HeightRequest="44"  Text="{Binding WSInt}" Keyboard="Numeric"   x:Name="EntryWS"   ClassId ="ClassPickGreyJ"  VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+
+
+
+
+
+
+
+                                                <Label Grid.Row="0" Grid.Column="2" Text="WTC" Margin="0,17,0,0" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                                <local:FrameRenders Grid.Row="1" Grid.Column="2" FrameCornerRadius="10"  WidthRequest="50" Margin="10,2,10,2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"    BorderColor="Black" >
+                                                    <local:ExtendedEntry Placeholder="WTC" x:Name="EntryWTC"  Text="{Binding WTCInt}" Keyboard="Numeric"  ClassId ="ClassPickGreyJ"  VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+
+
+
+
+                                                <Label Grid.Row="0" Grid.Column="3" Text="WC" Margin="0,17,0,0" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                                                <local:FrameRenders Grid.Row="1" Grid.Column="3" FrameCornerRadius="10" WidthRequest="50" Margin="10,2,10,2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   BorderColor="Black" >
+                                                    <local:ExtendedEntry Placeholder="WC" Text="{Binding WCInt}"  Keyboard="Numeric" x:Name="EntryWC"   ClassId ="ClassPickGreyJ"  VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+
+                                                <Label Grid.Row="0" Grid.Column="4" Text="RT" Margin="0,17,0,0" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                                                <local:FrameRenders Grid.Row="1" Grid.Column="4" FrameCornerRadius="10" WidthRequest="50" Margin="10,2,10,2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"    BorderColor="Black" >
+                                                    <local:ExtendedEntry Placeholder="RT" x:Name="EntryRT"  Text="{Binding RTInt}"  Keyboard="Numeric"  ClassId ="ClassPickGreyJ"  VerticalOptions="CenterAndExpand" FontSize="16"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                                </local:FrameRenders>
+
+
+
+
+                                            </Grid>
+                                        </StackLayout>
+
+                                        <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="5*" />
+
+                                                </Grid.RowDefinitions>
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="*" />
+
+                                                    <ColumnDefinition Width="10" />
+
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Text="Remarks" Grid.Row="0" Grid.Column="1"   FontSize="Medium" FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" Margin="-10,0,0,0" />
+
+
+
+                                                <StackLayout Padding="0,0,0,0" Grid.Row="1" Grid.Column="1"  BackgroundColor="Transparent">
+                                                    <local:FrameRenders Padding="0" Margin="0" Opacity="0.9"  HeightRequest="80" ColorName="Gray" BorderWidth="2" FrameCornerRadius="10">
+                                                        <Editor x:Name="EditorRemark" Text="{Binding Remark}"/>
+                                                    </local:FrameRenders>
+                                                </StackLayout>
+
+
+                                            </Grid>
+                                        </StackLayout>
+
+                                    </StackLayout>
+                                </ScrollView>
+
+                                <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="150">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2" />
+                                            <RowDefinition Height="*" />
+
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="0.75*" />
+                                            <ColumnDefinition Width="0.55*" />
+                                            <ColumnDefinition Width="0.35*" />
+                                            <ColumnDefinition Width="0.35*" />
+                                            <ColumnDefinition Width="2" />
+                                        </Grid.ColumnDefinitions>
+                                        <!--<Button x:Name="btnSaveAndContinue" Text="Save and Continue" Grid.Row="1" Grid.Column="2" BackgroundColor="#1D2D50" TextColor="White"  Command="{Binding FormASaveCommand}" CornerRadius="10"  />-->
+                                        <!--<Button x:Name="btnSaveAndExit" Text="Save and Exit" Grid.Row="1" Grid.Column="3" BackgroundColor="#1D2D50" Command="{Binding FormASaveExitCommand}" TextColor="White" CornerRadius="10"  />-->
+
+                                        <!--<Button x:Name="btnClear" Text="Clear" Grid.Row="1" Grid.Column="4" BackgroundColor="#1D2D50" TextColor="White"  Command="{Binding ClearFormADetailsCommand}" CornerRadius="10"  />-->
+                                        <!--<Button x:Name="btnCancel" Text="Cancel" Grid.Row="1" Grid.Column="5" BackgroundColor="#1D2D50" TextColor="White" Command="{Binding CancelFormADetailsCommand}" CornerRadius="10"  />-->
+                                        <Button IsVisible="{Binding ClearEnabled}" Command="{Binding Clear}" FontSize="Small" Grid.Row="1" Grid.Column="4" Style="{x:StaticResource TransparentButtonStyle}" Text="Clear"/>
+                                        <Button IsVisible="{Binding ExitEnabled}" Command="{Binding Exit}" FontSize="Small" Grid.Row="1" Grid.Column="3" Style="{x:StaticResource ButtonStyle}" Text="Save And Exit"/>
+                                        <Button IsVisible="{Binding SaveEnabled}" Command="{Binding Save}" FontSize="Small" Grid.Row="1" Grid.Column="2" Style="{x:StaticResource ButtonStyle}" Text="Save And Continue"/>
+                                        <Button IsVisible="{Binding CancelEnabled}" Command="{Binding CancelAction}"  FontSize="Small" Grid.Row="1" Grid.Column="5" Style="{x:StaticResource TransparentButtonStyle}" Text="Cancel"/>
+                                    </Grid>
+
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+
+                    </StackLayout>
+                </StackLayout>
+
+
+
+
+
+
+
+                <StackLayout BackgroundColor="White" x:Name="stack2" IsVisible="{Binding IsPhotoTabVisible}" >
+                    <ScrollView>
+                        <StackLayout>
+                            <Frame>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                            Tapped="TapGestureRecognizer_Tapped"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Label Text="Image List" Margin="10,0,0,0" FontSize="Large" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+                                    <Button Command="{Binding AddImageCommand}" x:Name="btnAddImage" ImageSource="Add.png" TextColor="White" CornerRadius="10" BackgroundColor="#1D2D50" Text="Add Image" IsVisible="{Binding SaveEnabled}"></Button>
+                                    <!--Command="{Binding AddImageCommand}"-->
+
+                                </StackLayout>
+                            </Frame>
+                            <Frame x:Name="Toggle" BackgroundColor="White" BorderColor="#f2f2f2" CornerRadius="5" Grid.Row="1" Margin="5,0,5,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                <StackLayout BackgroundColor="#C8E1FF" Grid.Row="3"     VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <StackLayout IsVisible="{Binding FromView, Converter={StaticResource NegatebooleanConverter}}"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                        <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1" />
+                                                <RowDefinition Height="60" />
+                                                <RowDefinition Height="1" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="1.5*" />
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="1.5*" />
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="1.5*" />
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="1.5*" />
+
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="1" />
+                                            </Grid.ColumnDefinitions>
+                                            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" Color="{StaticResource ProfileBoxviewColor}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <BoxView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Color="{StaticResource ProfileBoxviewColor}"   VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <Label Grid.Row="1" Grid.Column="1" Text="S.No" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="#000" />
+                                            <BoxView Grid.Row="1" Color="{StaticResource ProfileBoxviewColor}" Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <Label Grid.Row="1" Grid.Column="3" Text="Image Type" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="#000" />
+                                            <BoxView Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <Label Grid.Row="1" Grid.Column="5" Text="FileName"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                            <BoxView Grid.Row="1" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <Label Grid.Row="1" Grid.Column="7" Text="Delete"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                            <BoxView Grid.Row="1"  Grid.Column="9" Color="{StaticResource ProfileBoxviewColor}"  Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <BoxView Grid.Row="2"  Grid.Column="0" Color="{StaticResource ProfileBoxviewColor}" Grid.ColumnSpan="9" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                        </Grid>
+                                    </StackLayout>
+
+                                    <StackLayout IsVisible="{Binding FromView}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                        <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="1" />
+                                                <RowDefinition Height="60" />
+                                                <RowDefinition Height="1" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="3.5*" />
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="3.5*" />
+                                                <ColumnDefinition Width="1" />
+                                                <ColumnDefinition Width="0.5*" />
+                                            </Grid.ColumnDefinitions>
+                                            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="9" Color="{StaticResource ProfileBoxviewColor}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <BoxView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Color="{StaticResource ProfileBoxviewColor}"   VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                            <Label Grid.Row="1" Grid.Column="1" Text="S.No" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="#000" />
+                                            <BoxView Grid.Row="1"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                            <Label Grid.Row="1" Grid.Column="3" Text="Image Type" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Medium" TextColor="#000" />
+                                            <BoxView Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="{StaticResource ProfileBoxviewColor}" />
+                                            <Label Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" Text="FileName" Margin="0,0,-60,0" HorizontalTextAlignment="End" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                        </Grid>
+                                    </StackLayout>
+
+                                    <ScrollView>
+                                        <StackLayout  BackgroundColor="White" HeightRequest="300" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,0">
+
+                                            <ListView x:Name="Imagelist" IsVisible="{Binding FromView, Converter={StaticResource NegatebooleanConverter}}"   ItemsSource="{Binding DetailImageList}" SelectedItem="{Binding FormAGridRowSelectedRecords}" SeparatorColor="White" SeparatorVisibility="Default" HasUnevenRows="True" CachingStrategy="RecycleElement" >
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            <ViewCell.View>
+                                                                <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" BackgroundColor="White">
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="55" />
+                                                                        <RowDefinition Height="1" />
+                                                                    </Grid.RowDefinitions>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+
+
+
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                    </Grid.ColumnDefinitions>
+
+
+
+                                                                    <BoxView Grid.Row="0"  Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding SNO}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0"  Grid.Column="3" Text="{Binding ImageTypeCode}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0"  Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="5" Text="{Binding ImageFilenameSys}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+
+
+                                                                    <!--<Label Grid.Row="0" Grid.Column="7" Text="OK"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />-->
+                                                                    <Image Source="Deleteicon" Grid.Row="0" Grid.Column="7" HeightRequest="25" WidthRequest="25" HorizontalOptions="Center" VerticalOptions="Center">
+                                                                        <Image.GestureRecognizers>
+                                                                            <TapGestureRecognizer Command="{Binding BindingContext.DeleteImageCommand, Source={x:Reference Imagelist}}" CommandParameter="{Binding .}"/>
+                                                                        </Image.GestureRecognizers>
+                                                                    </Image>
+
+
+                                                                    <BoxView Grid.Row="0" Grid.Column="8" BackgroundColor="Gray" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" BackgroundColor="gray"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                                                                </Grid>
+
+                                                            </ViewCell.View>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+
+                                            <ListView x:Name="Imagelist1" IsVisible="{Binding FromView}"  ItemsSource="{Binding DetailImageList}" SelectedItem="{Binding FormAGridRowSelectedRecords}" SeparatorColor="#D3D3D3" SeparatorVisibility="Default" HasUnevenRows="True" CachingStrategy="RecycleElement" >
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            <ViewCell.View>
+                                                                <Grid Padding="0" RowSpacing="0" ColumnSpacing="0" BackgroundColor="White">
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="78" />
+                                                                        <RowDefinition Height="1" />
+                                                                    </Grid.RowDefinitions>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                        <ColumnDefinition Width="1.5*" />
+                                                                        <ColumnDefinition Width="1" />
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <BoxView Grid.Row="0"  Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3"/>
+                                                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding SNO}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0"  Grid.Column="3" Text="{Binding ImageTypeCode}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0"  Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                                    <Label Grid.Row="0" Grid.Column="5" Text="{Binding ImageFilenameSys}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                                    <BoxView Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+
+                                                                </Grid>
+
+                                                            </ViewCell.View>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                            
+                                        </StackLayout>
+                                    </ScrollView>
+                                </StackLayout>
+                            </Frame>
+                            <StackLayout>
+                                <Frame>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="RoundedAddIcon.png" HeightRequest="35" WidthRequest="35" VerticalOptions="Start" HorizontalOptions="Start">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                            Tapped="TapGestureRecognizer_Tapped1"/>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+
+
+
+                                        <Label Text="Image View" FontSize="Large" Margin="10,0,0,0" TextColor="Black" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" >
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped1" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+
+                            <StackLayout>
+                                <Frame x:Name="Toggle1" BackgroundColor="White" BorderColor="#f2f2f2" CornerRadius="5" Grid.Row="1" Margin="100,0,100,0"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <StackLayout>
+                                        <!--<flv:FlowListView FlowColumnCount="3" x:Name="listItems"
+                        SeparatorVisibility="None"
+                        HasUnevenRows="false" RowHeight="100" >
+                                        <flv:FlowListView.FlowColumnTemplate>
+                                            <DataTemplate >
+                                                <Image HorizontalOptions="Start" x:Name="imagesrc" WidthRequest="150" HeightRequest="150"/>                                                
+                                            </DataTemplate>                                            
+                                        </flv:FlowListView.FlowColumnTemplate>
+                                    </flv:FlowListView>-->
+
+                                        <!--<ListView x:Name="listEntries">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                
+                                                <ImageCell x:Name="dtlImage1">
+                                                </ImageCell>
+                                                
+
+
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>-->
+
+
+
+
+                                        <ScrollView Padding="0">
+                                            <StackLayout>
+                                                <Grid x:Name="MainGrid" Padding="10" ColumnSpacing="10" RowSpacing="10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                </Grid>
+                                            </StackLayout>
+                                        </ScrollView>
+                                        <!--<Grid Padding="0" RowSpacing="0" ColumnSpacing="0" BackgroundColor="White">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="55" />
+                                                                <RowDefinition Height="1" />
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="1" />
+                                                                <ColumnDefinition Width="1.5*" />
+                                                                <ColumnDefinition Width="1" />
+                                                                <ColumnDefinition Width="1.5*" />
+                                                                <ColumnDefinition Width="1" />
+                                                                <ColumnDefinition Width="1.5*" />
+                                                                <ColumnDefinition Width="1" />
+                                                                <ColumnDefinition Width="1.5*" />
+
+
+
+                                                                <ColumnDefinition Width="1" />
+                                                                <ColumnDefinition Width="1" />
+                                                            </Grid.ColumnDefinitions>
+
+
+
+                                                            <BoxView Grid.Row="0"  Grid.Column="0" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                            <Label Grid.Row="0" Grid.Column="1" Text="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                            <BoxView Grid.Row="0"  Grid.Column="2" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                            <Label Grid.Row="0"  Grid.Column="3" Text="{Binding ImageFilenameSys}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                            <BoxView Grid.Row="0"  Grid.Column="4" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+                                                            <Label Grid.Row="0" Grid.Column="5" Text="{Binding ImageTypeCode}"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />
+                                                            <BoxView Grid.Row="0" Grid.Column="6" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Color="#D3D3D3" />
+
+
+                                                            -->
+                                        <!--<Label Grid.Row="0" Grid.Column="7" Text="OK"  HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  FontSize="Medium" TextColor="#000" />-->
+                                        <!--
+                                                            <Image Source="Deleteicon" Grid.Row="0" Grid.Column="7" HeightRequest="25" WidthRequest="25" HorizontalOptions="Center" VerticalOptions="Center" />
+
+
+
+
+                                                            <BoxView Grid.Row="0" Grid.Column="8" BackgroundColor="Green" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
+                                                            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" BackgroundColor="Red"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                                                        </Grid>-->
+
+
+
+
+
+                                        <!--<ScrollView Padding="0">
+                                        <Grid x:Name="MainGrid" ColumnSpacing="0" RowSpacing="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                        </Grid>
+                                    </ScrollView>-->
+
+
+
+                                        <!--<StackLayout>
+                                        <Image HorizontalOptions="Start" x:Name="imagesrc" WidthRequest="150" HeightRequest="150"/>
+                                    </StackLayout>-->
+
+                                    </StackLayout>
+
+
+
+                                </Frame>
+                            </StackLayout>
+
+
+
+                            <Frame  HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" VerticalOptions="FillAndExpand"  >
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2" />
+                                        <RowDefinition Height="*" />
+
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="0.7*" />
+                                        <ColumnDefinition Width="0.5*" />
+                                        <ColumnDefinition Width="0.45*" />
+                                        <ColumnDefinition Width="0.45*" />
+                                        <ColumnDefinition Width="2" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="btnSaveAndContinue1" IsVisible="{Binding SaveEnabled}" Text="Save and Continue" Grid.Row="1" Grid.Column="2" Margin="0,-1,0,-1"  BackgroundColor="#1D2D50" TextColor="White"  Command="{Binding Save}" CornerRadius="10"  />
+                                    <Button x:Name="btnSaveAndExit1" IsVisible="{Binding ExitEnabled}" Text="Save and Exit" Grid.Row="1" Grid.Column="3"  BackgroundColor="#1D2D50" Command="{Binding Exit}" TextColor="White" CornerRadius="10"  />
+                                    <Button x:Name="btnClear1" IsVisible="{Binding ClearEnabled}" Text="Clear" Grid.Row="1" Grid.Column="4" BackgroundColor="#1D2D50" TextColor="White"  Command="{Binding Clear}" CornerRadius="10"  />
+                                    <Button x:Name="btnCancel1" IsVisible="{Binding CancelEnabled}" Text="Cancel" Grid.Row="1" Grid.Column="5" BackgroundColor="#1D2D50" TextColor="White" Command="{Binding CancelAction}" CornerRadius="10"  />
+                                </Grid>
+
+                            </Frame>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+
+    </ContentPage.Content>
+</ContentPage>

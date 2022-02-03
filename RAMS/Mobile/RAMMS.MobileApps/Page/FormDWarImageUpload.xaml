@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:RAMMS.MobileApps;assembly=RAMMS.MobileApps"
+             xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             Title="Form D War Image Upload"
+               xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+             x:Class="RAMMS.MobileApps.Page.FormDWarImageUpload">
+    <ContentPage.Content>
+        <StackLayout Margin="0,0,0,20">
+            <Frame Margin="20,20,20,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+            <Frame Margin="20,0,20,0">
+                <StackLayout BackgroundColor="White">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="2"/>
+                            <RowDefinition Height="0.6*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+
+                        </Grid.ColumnDefinitions>
+
+
+                        <Label Text="WAR Image Upload" FontSize="Large" TextColor="Black" FontAttributes="Bold" Grid.Row="0" Grid.Column="1"/>
+                        <BoxView BackgroundColor="#cccccc" Grid.Row="1" Grid.Column="1" />
+                        <Label Text="Please Select WAR Type:" Margin="-238,0,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" TextColor="Black" FontSize="Medium" Grid.Row="2" Grid.Column="1" />
+
+                        <locals:FrameRenders Grid.Row="3" Grid.Column="1" BackgroundColor="White" FrameCornerRadius="7" HorizontalOptions="Center" VerticalOptions="Center"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                            <local:ExtendedPicker WidthRequest="500" x:Name="phototypepicker" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="50" Grid.Row="3" Grid.Column="1"  ClassId ="ClassPickGrey"   FontSize="Default"  />
+                        </locals:FrameRenders>
+
+                        <StackLayout Grid.Row="4" Grid.Column="1" >
+                            <Frame BackgroundColor="White" BorderColor="#1D2D50" HorizontalOptions="Center" VerticalOptions="Center">
+                                <StackLayout Orientation="Horizontal">
+
+                                    <Image Source="upload.png"  HeightRequest="28" WidthRequest="28" HorizontalOptions="EndAndExpand" VerticalOptions="Center"  >
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Label Text="Browse files here to upload" TextColor="#1D2D50" FontSize="Large" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="SelectImagesButton_Clicked" />
+                                        </Label.GestureRecognizers>
+                                    </Label>
+
+
+
+                                </StackLayout>
+                            </Frame>
+
+
+                            <Frame BackgroundColor="#f2f2f2" BorderColor="#f2f2f2" Margin="0,10,0,0"   >
+                                <StackLayout Orientation="Vertical" >
+                                    <ScrollView>
+                                        <StackLayout x:Name="CameraLayout">
+                                            <!--<Label x:Name="lbl1"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="Medium" FontAttributes="Bold"   />
+                                    <Image x:Name="image" HeightRequest="115" WidthRequest="115"/>-->
+
+                                            <flv:FlowListView FlowColumnCount="3" x:Name="listItemsCam" 
+                                            SeparatorVisibility="None"
+                                            HasUnevenRows="false" RowHeight="200">
+                                                <flv:FlowListView.FlowColumnTemplate>
+                                                    <DataTemplate >
+                                                        <Frame Margin="0,0,0,0">
+                                                                <StackLayout>
+                                                                <Image Source="wrong.png" HorizontalOptions="End" VerticalOptions="Center"  HeightRequest="20" WidthRequest="20">
+                                                                    <Image.GestureRecognizers>
+                                                                        <TapGestureRecognizer Command="{Binding BindingContext.DeleteImageCommand, Source={x:Reference listItemsCam}}" CommandParameter="{Binding .}" />
+                                                                    </Image.GestureRecognizers>
+                                                                </Image>
+                                                                <ActivityIndicator IsRunning="{Binding Path=IsLoading, Source={x:Reference Name = Image} }" IsVisible="{Binding Path=IsLoading, Source={x:Reference Name=Image}}"/>
+                                                                <ffimageloading:CachedImage x:Name="Image" AbsoluteLayout.LayoutFlags="All" Source="{Binding .}"/>
+                                                                </StackLayout>
+                                                        </Frame>
+                                                    </DataTemplate>
+                                                </flv:FlowListView.FlowColumnTemplate>
+                                            </flv:FlowListView>
+                                            <!--<Image x:Name="image" IsVisible="False"></Image>-->
+                                            <Image x:Name="image" HeightRequest="115" WidthRequest="115"/>
+
+
+
+                                        </StackLayout>
+
+
+
+                                    </ScrollView>
+                                </StackLayout>
+                            </Frame>
+
+                        </StackLayout>
+
+
+                        <Button Text="Upload" Clicked="Button_Clicked_1" HorizontalOptions="Center" Margin="0,20,0,0" CornerRadius="8" TextColor="White" BackgroundColor="#1D2D50" VerticalOptions="Center" Grid.Row="5" Grid.Column="1" />
+
+                        <BoxView BackgroundColor="#cccccc" Grid.Row="6" Grid.Column="1" />
+                        <Button Text="Cancel" Clicked="CanceButton_Clicked"  Margin="0,3,0,0" Grid.Row="7" CornerRadius="5" BorderWidth="1" BorderColor="Black"  TextColor="Black" BackgroundColor="White" HorizontalOptions="End" VerticalOptions="End" Grid.Column="1" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,44 @@
+﻿@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+<div class="modal fade" id="ApprovalModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Add / Update Group
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">                    
+                    <div class="form-group col-lg-12 float-left">
+                        @Html.Label("User", "User")
+                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData[ViewBag.GroupName], "UserID", "Select Users", new { @Id = "selAppUserID", @class = "form-control validate {req, User}", @onchange = "process.UserChange(this);" })
+                    </div>
+                    <div class="form-group col-lg-12">
+                        @Html.Label("Name", "Name")
+                        <input type="text" class="form-control {req,Name}" id="txtAppUserName" name="UserName" disabled />
+                    </div>
+                    <div class="form-group col-lg-12 float-left">
+                        @Html.Label("Designation", "Designation")
+                        <input type="text" class="form-control {req,Designation}" id="txtAppUserDesignation" name="UserDesignation" disabled />
+                    </div>
+                    <div class="form-group col-lg-12 float-left">
+                        @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                        <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control validate {req, Date}" id="txtApproveDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" name="ApproveDate" />
+                    </div>
+                    <div class="form-group col-lg-12">
+                        @Html.Label("Remarks", "Comments / Remarks")
+                        <textarea class="form-control validate {req,Comments / Remarks}" name="Remarks" id="txtAppRemarks" style="height:75px;"></textarea>
+                    </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+                <button onclick="process.Rejected()" type="button" class="btn btn-sm btn-themebtn">Reject</button>
+                <button onclick="process.Approved()" type="button" class="btn btn-sm btn-themebtn">Approved</button>
+            </div>
+        </div>
+    </div>
+</div>

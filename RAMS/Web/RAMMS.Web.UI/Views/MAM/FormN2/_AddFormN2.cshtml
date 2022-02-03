@@ -1,0 +1,1072 @@
+﻿@{
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form N2 - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ASSET MAINTANENCE - Form N2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@model RAMMS.Web.UI.Models.FormN2Model;
+@{
+    var vd = Model.SaveFormN2Model.IssuedDate;
+    string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    var _id = Model.SaveFormN2Model.CorrectiveDate;
+    string _CorrectiveDate = _id.HasValue ? _id.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormN2Model.AccptdByDate;
+    string _AcceptedByDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormN2Model.PreventiveDate;
+    string _CompletedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormN2Model.PreventiveAcceptedDate;
+    string _PRAcceptedByDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormN2Model.CloseOutDate;
+    string _ClosedOutDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+
+}
+<script src="~/js/MAMFormN2.js"></script>
+
+<script>
+    $(document).ready(function () {
+        process.Init("FormN2", "@Model.SaveFormN2Model.Status", @Model.SaveFormN2Model.No);
+        var val = $("#FN2HRef_No").val();
+
+        $("#formN2SourceType").on("change", function () {
+            var form = $("#formN2SourceType").find(":selected").val();
+            $("#formN2N1RefNo").attr("disabled", false);
+        });
+
+        $('#formN2N1RefNo').on("change", function () {
+            $.ajax({
+                url: '/MAM/GetFormData',
+                dataType: 'JSON',
+                data: {
+                    id: $(this).val(), form: 'Form N2'
+                },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+
+                        $("#formN2rmu").val(data.rmu).trigger("chosen:updated");
+                        $("#formN2rmu").trigger("change");
+
+                        //var val = $("#formN2rmu").find(":selected").text();
+                        //val = val.split("-").length > 0 ? val.split("-")[1] : val;
+                        //$("#formN2rmuDesc").val(val);
+                        $("#formN2RoadCode").val(data.roadCode).trigger("chosen:updated");
+                        $("#formN1RoadCode").trigger("change");
+                        $("#formN2ServiceProvider").val(data.serviceProvider);
+                        $("#hdnRoadcode").val(data.roadCode);
+                        //$("#formN2rmu").trigger("chosen:updated");
+
+                        //$("#formN2DivisionDesc").val(data.divisonName)
+                        $("#formN2RoadCode").attr("disabled", true);
+                        $("#formN1ChinageFrom").val(data.fromChainage);
+                        $("#formN1ChinageFromDeci").val(data.fromChainageDeci);
+                        //$("#formN1ChinageTo").val(data.toChainage);
+                        //$("#formN1ChinageToDeci").val(data.toChainageDeci);
+                        //$("#formN2Region").attr("disabled", false);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+
+        $("#formN2rmu").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#formN2rmuDesc").val(val);
+
+            $.ajax({
+                url: '/MAM/GetRoadCodeByRMU',
+                dataType: 'JSON',
+                data: { rmu: $(this).val() },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $('#formN2RoadCode').empty();
+                        $('#formN2RoadCode')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("Select Road Code"));
+                        $.each(data, function (key, value) {
+                            $('#formN2RoadCode')
+                                .append($("<option></option>")
+                                    .attr("value", value.value)
+                                    .text(value.text));
+                        });
+                        $("#formN2RoadCode").val($('#hdnRoadcode').val());
+                        $('#formN2RoadCode').trigger("chosen:updated")
+                        $("#formN2RoadCode").trigger("change");
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+
+        });
+
+        $("#formN2RoadCode").on("change", function () {
+            var d = new Date();
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+            var val = $(this).val();
+            var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
+                (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
+            //debugger;
+            RpDate = output;
+            $.ajax({
+                url: '/MAM/GetDivisionByRoadCode',
+                dataType: 'JSON',
+                data: { roadCode: $(this).val(), from: "N2" },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        if (data._RMAllData != undefined && data._RMAllData != null) {
+                            $("#formN2roadDesc").val(data._RMAllData.roadName);
+                            $("#formN2DivisionDesc").val(data._RMAllData.divisionCode);
+                        }
+
+                        $(this).val(val);
+
+                        /*if ($("#FN2HRef_No").val() == "0" || $("#FN2HRef_No").val() == "")
+                            $("#formN2ReferenceNo").val(data.id);*/
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+            return false;
+        });
+
+        $("#formN2AttnUserId").on("change", function () {
+            var id = $("#formN2AttnUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/MAM/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2AttentionName").val(data.userName);
+                        $("#formN2AttentionDesig").val(data.position);
+                        $("#formN2AttentionName").prop("disabled", true);
+                        $("#formN2AttentionDesig").prop("disabled", true);
+                        //$("#formN2AttentionName").removeClass("validate");
+                        //$("#formN2AttentionDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2AttentionName").prop("disabled", false);
+                $("#formN2AttentionDesig").prop("disabled", false);
+                $("#formN2AttentionName").val('');
+                $("#formN2AttentionDesig").val('');
+                //$("#formN2AttentionName").addClass("validate");
+                //$("#formN2AttentionDesig").addClass("validate");
+            }
+            else {
+                $("#formN2AttentionName").prop("disabled", true);
+                $("#formN2AttentionDesig").prop("disabled", true);
+                $("#formN2AttentionName").val('');
+                $("#formN2AttentionDesig").val('');
+                //$("#formN2AttentionName").removeClass("validate");
+                //$("#formN2AttentionDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2CC").on("change", function () {
+            var id = $("#formN2CC option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/MAM/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2CCName").val(data.userName);
+                        $("#formN2CCDesig").val(data.position);
+                        $("#formN2CCName").prop("disabled", true);
+                        $("#formN2CCDesig").prop("disabled", true);
+                        //$("#formN2CCName").removeClass("validate");
+                        //$("#formN2CCDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2CCName").prop("disabled", false);
+                $("#formN2CCDesig").prop("disabled", false);
+                $("#formN2CCName").val('');
+                $("#formN2CCDesig").val('');
+                //$("#formN2CCName").addClass("validate");
+                //$("#formN2CCDesig").addClass("validate");
+            }
+            else {
+                $("#formN2CCName").prop("disabled", true);
+                $("#formN2CCDesig").prop("disabled", true);
+                $("#formN2CCName").val('');
+                $("#formN2CCDesig").val('');
+                //$("#formN2CCName").removeClass("validate");
+                //$("#formN2CCDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2IssuedUserId").on("change", function () {
+            var id = $("#formN2IssuedUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2IssuedUsername").val(data.userName);
+                        $("#formN2IssuedUsername").prop("disabled", true);
+                        $("#formN2IssuedDesig").val(data.position);
+                        $("#formN2IssuedDesig").prop("disabled", true);
+                        $("#formN2IssuedUsername").removeClass("validate");
+                        $("#formN2IssuedDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2IssuedUsername").prop("disabled", false);
+                $("#formN2IssuedDesig").prop("disabled", false);
+                $("#formN2IssuedUsername").val('');
+                $("#formN2IssuedDesig").val('');
+                $("#formN2IssuedUsername").addClass("validate");
+                $("#formN2IssuedDesig").addClass("validate");
+            }
+            else {
+                $("#formN2IssuedUsername").prop("disabled", true);
+                $("#formN2IssuedDesig").prop("disabled", true);
+                $("#formN2IssuedUsername").val('');
+                $("#formN2IssuedDesig").val('');
+                $("#formN2IssuedUsername").removeClass("validate");
+                $("#formN2IssuedDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2ReceivedUserId").on("change", function () {
+            var id = $("#formN2ReceivedUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2ReceivedUsername").val(data.userName);
+                        $("#formN2ReceivedDesig").val(data.position);
+                        $("#formN2ReceivedUsername").prop("disabled", true);
+                        $("#formN2ReceivedDesig").prop("disabled", true);
+                        $("#formN2ReceivedUsername").removeClass("validate");
+                        $("#formN2ReceivedDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2ReceivedUsername").prop("disabled", false);
+                $("#formN2ReceivedUsername").val('');
+                $("#formN2ReceivedDesig").prop("disabled", false);
+                $("#formN2ReceivedDesig").val('');
+                $("#formN2ReceivedUsername").addClass("validate");
+                $("#formN2ReceivedDesig").addClass("validate");
+            }
+            else {
+                $("#formN2ReceivedUsername").prop("disabled", true);
+                $("#formN2ReceivedUsername").val('');
+                $("#formN2ReceivedDesig").prop("disabled", true);
+                $("#formN2ReceivedDesig").val('');
+                $("#formN2ReceivedUsername").removeClass("validate");
+                $("#formN2ReceivedDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2CompletedUserId").on("change", function () {
+            var id = $("#formN2CompletedUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2CompletedUsername").val(data.userName);
+                        $("#formN2CompletedDesig").val(data.position);
+                        $("#formN2CompletedUsername").prop("disabled", true);
+                        $("#formN2CompletedDesig").prop("disabled", true);
+                        $("#formN2CompletedUsername").removeClass("validate");
+                        $("#formN2CompletedDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2CompletedUsername").prop("disabled", false);
+                $("#formN2CompletedUsername").val('');
+                $("#formN2CompletedDesig").prop("disabled", false);
+                $("#formN2CompletedDesig").val('');
+                $("#formN2CompletedUsername").addClass("validate");
+                $("#formN2CompletedDesig").addClass("validate");
+            }
+            else {
+                $("#formN2CompletedUsername").prop("disabled", true);
+                $("#formN2CompletedUsername").val('');
+                $("#formN2CompletedDesig").prop("disabled", true);
+                $("#formN2CompletedDesig").val('');
+                $("#formN2CompletedUsername").removeClass("validate");
+                $("#formN2CompletedDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2AcceptedUserId").on("change", function () {
+            var id = $("#formN2AcceptedUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2AcceptedUsername").val(data.userName);
+                        $("#formN2AcceptedDesig").val(data.position);
+                        $("#formN2AcceptedUsername").prop("disabled", true);
+                        $("#formN2AcceptedDesig").prop("disabled", true);
+                        $("#formN2AcceptedUsername").removeClass("validate");
+                        $("#formN2AcceptedDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2AcceptedUsername").prop("disabled", false);
+                $("#formN2AcceptedUsername").val('');
+                $("#formN2AcceptedDesig").prop("disabled", false);
+                $("#formN2AcceptedDesig").val('');
+                $("#formN2AcceptedUsername").addClass("validate");
+                $("#formN2AcceptedDesig").addClass("validate");
+            }
+            else {
+                $("#formN2AcceptedUsername").prop("disabled", true);
+                $("#formN2AcceptedUsername").val('');
+                $("#formN2AcceptedDesig").prop("disabled", true);
+                $("#formN2AcceptedDesig").val('');
+                $("#formN2AcceptedUsername").removeClass("validate");
+                $("#formN2AcceptedDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2PRCompletedUserId").on("change", function () {
+            var id = $("#formN2PRCompletedUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2PRCompletedUsername").val(data.userName);
+                        $("#formN2PRCompletedDesig").val(data.position);
+                        $("#formN2PRCompletedUsername").prop("disabled", true);
+                        $("#formN2PRCompletedDesig").prop("disabled", true);
+                        $("#formN2PRCompletedUsername").removeClass("validate");
+                        $("#formN2PRCompletedDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2PRCompletedUsername").prop("disabled", false);
+                $("#formN2PRCompletedUsername").val('');
+                $("#formN2PRCompletedDesig").prop("disabled", false);
+                $("#formN2PRCompletedDesig").val('');
+                $("#formN2PRCompletedUsername").addClass("validate");
+                $("#formN2PRCompletedDesig").addClass("validate");
+
+            }
+            else {
+                $("#formN2PRCompletedUsername").prop("disabled", true);
+                $("#formN2PRCompletedUsername   ").val('');
+                $("#formN2PRCompletedDesig").prop("disabled", true);
+                $("#formN2PRCompletedDesig").val('');
+                $("#formN2PRCompletedUsername").removeClass("validate");
+                $("#formN2PRCompletedDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2PRAcceptedUserId").on("change", function () {
+            var id = $("#formN2PRAcceptedUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2PRAcceptedUsername").val(data.userName);
+                        $("#formN2PRAcceptedDesig").val(data.position);
+                        $("#formN2PRAcceptedUsername").prop("disabled", true);
+                        $("#formN2PRAcceptedDesig").prop("disabled", true);
+                        $("#formN2PRAcceptedUsername").removeClass("validate");
+                        $("#formN2PRAcceptedDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2PRAcceptedUsername").prop("disabled", false);
+                $("#formN2PRAcceptedUsername").val('');
+                $("#formN2PRAcceptedDesig").prop("disabled", false);
+                $("#formN2PRAcceptedDesig").val('');
+                $("#formN2PRAcceptedUsername").removeClass("validate");
+                $("#formN2PRAcceptedDesig").removeClass("validate");
+            }
+            else {
+                $("#formN2PRAcceptedUsername").prop("disabled", true);
+                $("#formN2PRAcceptedUsername   ").val('');
+                $("#formN2PRAcceptedDesig").prop("disabled", true);
+                $("#formN2PRAcceptedDesig").val('');
+                $("#formN2PRAcceptedUsername").removeClass("validate");
+                $("#formN2PRAcceptedDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $("#formN2VerifiedByUserId").on("change", function () {
+            var id = $("#formN2VerifiedByUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/MAM/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formN2VerifiedByUsername").val(data.userName);
+                        $("#formN2VerifiedByUsername").prop("disabled", true);
+                        $("#formN2VerifiedByDesig").val(data.position);
+                        $("#formN2VerifiedByDesig").prop("disabled", true);
+                        $("#formN2VerifiedByUsername").removeClass("validate");
+                        $("#formN2VerifiedByDesig").removeClass("validate");
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formN2VerifiedByUsername").prop("disabled", false);
+                $("#formN2VerifiedByUsername").val('');
+                $("#formN2VerifiedByDesig").val('');
+                $("#formN2VerifiedByDesig").prop("disabled", false);
+                $("#formN2VerifiedByUsername").addClass("validate");
+                $("#formN2VerifiedByDesig").addClass("validate");
+            }
+            else {
+                $("#formN2VerifiedByUsername").prop("disabled", true);
+                $("#formN2VerifiedByUsername").val('');
+                $("#formN2VerifiedByDesig").val('');
+                $("#formN2VerifiedByDesig").prop("disabled", false);
+                $("#formN2VerifiedByUsername").removeClass("validate");
+                $("#formN2VerifiedByDesig").removeClass("validate");
+            }
+
+            return false;
+        });
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+
+
+        if (val != undefined && val != "" && val != "0") {
+            $("#formN2ReferenceNo").attr("disabled", true);
+            $("#formN2SourceType").trigger("change");
+            $("#formN2rmu").trigger("change");
+
+            $('#formN2N1RefNo').trigger("change");
+            //$("#formN2AttnUserId").trigger("change");
+            //$("#formN2CC").trigger("change
+
+
+            if ($("#formN2AttnUserId").val() == "99999999") {
+                $("#formN2AttentionName").prop("disabled", false);
+                $("#formN2AttentionDesig").prop("disabled", false);
+            }
+
+            if ($("#formN2CC").val() == "99999999") {
+                $("#formN2CCName").prop("disabled", false);
+                $("#formN2CCDesig").prop("disabled", false);
+            }
+            $("#formN2AttentionName").attr("disabled", true);
+            $("#formN2AttentionDesig").attr("disabled", true);
+            $("#formN2Region").attr("disabled", true);
+            $("#formN2CCName").attr("disabled", true);
+            $("#formN2CCDesig").attr("disabled", true);
+            $("#formN2ServiceProvider").attr("disabled", true);
+
+            $("#formN2IssuedUsername").attr("disabled", true);
+            $("#formN2IssuedDesig").attr("disabled", true);
+
+            $("#formN2ReceivedUsername").attr("disabled", true);
+            $("#formN2ReceivedDesig").attr("disabled", true);
+
+            $("#formN2CompletedUsername").attr("disabled", true);
+            $("#formN2CompletedDesig").attr("disabled", true);
+
+            $("#formN2AcceptedUsername").attr("disabled", true);
+            $("#formN2AcceptedDesig").attr("disabled", true);
+
+            $("#formN2PRCompletedUsername").attr("disabled", true);
+            $("#formN2PRCompletedDesig").attr("disabled", true);
+
+            $("#formN2PRAcceptedUsername").attr("disabled", true);
+            $("#formN2PRAcceptedDesig").attr("disabled", true);
+
+            $("#formN2VerifiedByUsername").attr("disabled", true);
+            $("#formN2VerifiedByDesig").attr("disabled", true);
+
+            //$("#divCcDesig").css("display", "none");
+            //$("#divAttDesig").css("display", "none");
+
+            $("#formN2SourceType").attr("disabled", true);
+
+            $("#formN2DivisionDesc").attr("disabled", true);
+
+            $("#formN2IssueDate").attr("disabled", true);
+            $('#formN2rmu').prop('disabled', true).trigger("chosen:updated");
+            $('#formN2N1RefNo').prop('disabled', true).trigger("chosen:updated");
+        }
+
+        if ($("#hdnView").val() == "1") {
+            $("#saveFormN2Btn").hide();
+            $("#SubmitFormN2Btn").hide();
+            $("#AccordPage0 *").attr("disabled", "disabled").off('click');
+            $("#formN2SourceType").chosen('destroy');
+            $("#formN2Region").chosen('destroy');
+            $("#formN2N1RefNo").chosen('destroy');
+            $("#formN2rmu").chosen('destroy');
+            $("#formN2AttnUserId").chosen('destroy');
+            $("#formN2CC").chosen('destroy');
+            $("#formN2IssuedUserId").chosen('destroy');
+            $("#formN2ReceivedUserId").chosen('destroy');
+            $("#formN2Region").attr("disabled", "disabled").off('click');
+            $("#formN2CompletedUserId").chosen('destroy');
+            $("#formN2AcceptedUserId").chosen('destroy');
+
+            $("#formN2PRCompletedUserId").chosen('destroy');
+            $("#formN2PRAcceptedUserId").chosen('destroy');
+
+            $("#formN2OtherFollowUpAction").chosen('destroy');
+            $("#formN2VerifiedByUserId").chosen('destroy');
+            $("#formN2ServiceProvider").chosen('destroy');
+
+            $("#AccordPage1 *").attr("disabled", "disabled").off('click');
+        }
+    });
+
+    function GoBack() {
+        if ($("#hdnView").val() == "0") {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    location.href = "/MAM/FormN2";
+                }
+            }));
+        }
+        else
+            location.href = "/MAM/FormN2";
+    }
+
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+</script>
+
+<div class="row" id="div-addformn1">
+    <div class="w-100 float-left bg-body">
+        <form id="FormAddHdrDetails" action="/MAM/FormN2SaveHdr">
+            <div class="w-100">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div class="form-group mb-0">
+                        @Html.Label("Form N2 No.", "Form N2 No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        @Html.TextBoxFor(m => m.SaveFormN2Model.NcrNo, new { @Id = "formN2ReferenceNo", @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
+                    </div>
+                </div>
+
+                <div class="w-100 bg-white pt-3 mh-185" style="border-top:1px solid #dee2e6;">
+                    <div id="accordion" class="col-lg-12">
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingZero">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Form N2
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage0" class="collapse show formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                    <div class="card-body float-left">
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Source", "Source")
+                                            @{
+                                                Model.SaveFormN2Model.SourceType = string.IsNullOrEmpty(Model.SaveFormN2Model.SourceType) ? "Form N1" : Model.SaveFormN2Model.SourceType;
+                                            }
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormN2Model.SourceType, (IEnumerable
+                                            <SelectListItem>)ViewData["sourceType"], "Select Source", new { @Id = "formN2SourceType", @class = "form-control validate {required, Source Type}" })
+                                        </div>
+                                        <div class="form-group col-lg-5">
+                                            @Html.Label("Ref No.", "Ref No.")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormN2Model.FormN1RefNo, (IEnumerable
+                                            <SelectListItem>)ViewData["FormN1RefNos"], "Select Ref No.", new { @Id = "formN2N1RefNo", @class = "form-control  validate {required, Name of Form N1 Ref No.}" })
+                                        </div>
+                                        @*<div id="divncn" class="form-group col-lg-5">
+                            @Html.Label("Ref No.", "Ref No.")
+                            @Html.TextBoxFor(m => m.SaveFormN2Model.NcrNo, new { @Id = "formN2NCNo", @class = "form-control validate {required, Form Qa2  NCN Ref No.}" })
+                        </div>*@
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("RMU", "RMU")
+                                            @Html.DropDownListFor(m => m.SaveFormN2Model.RMU, (IEnumerable
+                                            <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formN2rmu", @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("RMU Name", "RMU Name")
+                                            @Html.TextBoxFor(m => m.RmuDescription, new { @Id = "formN2rmuDesc", @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2" id="divrdcode">
+                                            @Html.Label("Road Code", "Road Code")
+                                            @Html.DropDownList("formN2RoadCode", (IEnumerable
+                                            <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @readonly = "readonly", @class = "form-control" })
+                                            @Html.Hidden("hdnRoadcode", "")
+                                        </div>
+                                        <div class="form-group col-lg-2" id="divrdname">
+                                            @Html.Label("Road Name", "Road Name")
+                                            @Html.TextBox("formN2roadDesc", "", new { @Id = "formN2roadDesc", @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Division Code", "Division Code")
+                                            @Html.TextBoxFor(m => m.SaveFormN2Model.Division, new { @Id = "formN2DivisionDesc", @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Location Chainage", "Location Chainage")
+                                            <div class="row">
+                                                <div class="col-6 float-left pr-0">
+                                                    @Html.TextBox("formN1ChinageFrom", "", new { @Id = "formN1ChinageFrom", @maxlength = 5, @readonly = "readonly", @autocomplete = "off", @type = "text", @class = "form-control", @rows = 1 })
+                                                </div>
+                                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> @Html.Label("+", "+")</div>
+                                                <div class="col-5 float-left pl-0">
+                                                    @Html.TextBox("formN1ChinageFromDeci", "", new { @Id = "formN1ChinageFromDeci", @maxlength = 3, @readonly = "readonly", @autocomplete = "off", @type = "text", @class = "form-control", @rows = 1 })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="form-group col-lg-2">
+                            @Html.Label("Location Chainage To", "Location Chainage To")
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @Html.TextBox("formN1ChinageTo", "", new { @Id = "formN1ChinageTo", @maxlength = 5, @autocomplete = "off", @readonly = "readonly", @type = "text", @class = "form-control", @rows = 1 })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> @Html.Label("+", "+")</div>
+                                <div class="col-5 float-left pl-0">
+                                    @Html.TextBox("formN1ChinageToDeci", "", new { @Id = "formN1ChinageToDeci", @maxlength = 3, @autocomplete = "off", @readonly = "readonly", @type = "text", @class = "form-control", @rows = 1 })
+                                </div>
+                            </div>
+                        </div>*@
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Region", "Region")
+                                            @{
+                                                Model.SaveFormN2Model.Region = string.IsNullOrEmpty(Model.SaveFormN2Model.Region) ? "Sarawak" : Model.SaveFormN2Model.Region;
+                                            }
+                                            @Html.DropDownListFor(m => m.SaveFormN2Model.Region, (IEnumerable
+                                           <SelectListItem>)ViewData["Region"], "Select Region", new { @id = "formN2Region", @class = "form-control validate {required, Region}" })
+                                        </div>
+
+                                        <div class="form-group col-lg-5">
+                                            @Html.Label("Service Provider", "Service Provider")
+                                            @{
+                                                Model.SaveFormN2Model.ServiceProvider = string.IsNullOrEmpty(Model.SaveFormN2Model.ServiceProvider) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormN2Model.ServiceProvider;
+                                            }
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormN2Model.ServiceProvider, (IEnumerable
+                                            <SelectListItem>)ViewData["Service Provider"], "Select Service Provider", new { @Id = "formN2ServiceProvider", @class = "form-control  validate {required, Service Provider}" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Issue Date (DD-MM-YYYY)", "Issue Date (DD-MM-YYYY)")
+                                            <input type="date" class="datepicker form-control  validate {required, Issue date}" id="formN2IssueDate" name="formN2CorrectiveDate" value="@_IssuedDate" />
+                                        </div>
+                                        <div class="form-group col-lg-12 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Attention", "Attention")
+                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormN2Model.AttentionTo, (IEnumerable
+                                                     <SelectListItem>)ViewData["Users"], "Select Attention", new { @Id = "formN2AttnUserId", @class = "form-control validate {required, Attention To}" })
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.AttentionToUsername, new { @id = "formN2AttentionName", @class = "form-control validate {required, Attention To Name}" })
+                                                </div>
+                                                <div class="form-group col-lg-4" id="divAttDesig">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.AttentionToDesignation, new { @id = "formN2AttentionDesig", @class = "form-control validate {required, Attention To Designation}" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("CC", "CC")
+                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormN2Model.Cc, (IEnumerable
+                                                     <SelectListItem>)ViewData["Users"], "Select CC", new { @Id = "formN2CC", @class = "form-control  validate {required, CC}" })
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.CCUsername, new { @id = "formN2CCName", @class = "form-control validate  {required, Cc Name }" })
+                                                </div>
+                                                <div class="form-group col-lg-4" id="divCcDesig">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.CCDesignation, new { @id = "formN2CCDesig", @class = "form-control validate  {required, Cc Designation }" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-6 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-12">
+                                                    @Html.Label("Subject", "Subject")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.Subject, new { @Id = "formN2Subject", @autocomplete = "off", @class = "form-control validate {required, Subject}" })
+                                                </div>
+                                                <div class="form-group col-lg-12 txtarea-126">
+                                                    @Html.Label("Description Of NC", "Description Of NC")
+                                                    @Html.TextAreaFor(m => m.SaveFormN2Model.NonConfDetail, new { @Id = "formN2DesOfNC", @class = "form-control validate {required, Description Of NC}" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-6 txtarea-80">
+                                            @Html.Label("Proposed Rework", "Proposed Rework")
+                                            @Html.TextAreaFor(m => m.SaveFormN2Model.ProposedCrctAct, new { @Id = "formN2ProposedRework", @class = "form-control validate {required, Proposed Rework}" })
+                                        </div>
+
+                                        <div class="form-group col-lg-6 txtarea-80">
+                                            @Html.Label("Action To Be Taken To Prevent Recurrence", "Action To Be Taken To Prevent Recurrence")
+                                            @Html.TextAreaFor(m => m.SaveFormN2Model.PreventiveAction, new { @Id = "formN2PreventiveAction", @class = "form-control validate {required, PREVENT RECURRENCE}" })
+                                        </div>
+                                        @{
+                                            bool IsJKRS = security.IsJKRSSuperiorOfficer && (string.IsNullOrEmpty(Model.SaveFormN2Model.Status) || Model.SaveFormN2Model.Status == RAMMS.Common.StatusList.N2Init);
+                                        }
+                                        <div class="form-group col-lg-12 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Issued By", "Issued By")
+                                                    @Html.DropDownListFor(m => m.SaveFormN2Model.IssuedByUserId, (IEnumerable
+                                                                           <SelectListItem>)ViewData["users"], "Select Users", CHTMLControls.GetHtmlAttribute("formN2IssuedUserId", "form-control  svalidate {required, Issued By}", IsJKRS))
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.IssuedByUsername, new { @Id = "formN2IssuedUsername", @class = "form-control svalidate {required, Issued By Name}" })
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.IssuedByDesignation, new { @Id = "formN2IssuedDesig", @class = "form-control svalidate {required, Issued By Designation}" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Received By", "Received By")
+                                                    @Html.DropDownListFor(m => m.SaveFormN2Model.RcvdByUserid, (IEnumerable
+                                                                           <SelectListItem>)ViewData["users"], "Select Users", new { @Id = "formN2ReceivedUserId", @class = "form-control  validate {visreq, Received By}", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.RcvdByUsername, CHTMLControls.GetHtmlAttribute("formN2ReceivedUsername", "form-control", IsJKRS))
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.RcvdByDesignation, CHTMLControls.GetHtmlAttribute("formN2ReceivedDesig", "form-control", IsJKRS))
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Corrective Action to be Completed By", "Corrective Action to Completed By")
+                                                    @Html.DropDownListFor(m => m.SaveFormN2Model.CorrectiveUserId, (IEnumerable
+                                                                           <SelectListItem>)ViewData["users"], "Select Users", new { @Id = "formN2CompletedUserId", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.CorrectiveUsername, new { @Id = "formN2CompletedUsername", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.CorrectiveDesignation, new { @Id = "formN2CompletedDesig", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                                    <input type="date" class="datepicker form-control" id="formN2CorrectiveDate" name="formN2CorrectiveDate" value="@_CorrectiveDate" disabled="disabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Corrective Action to be Accepted By", "Corrective Action to be Accepted By")
+                                                    @Html.DropDownListFor(m => m.SaveFormN2Model.AccptdByUserId, (IEnumerable
+                                                                           <SelectListItem>)ViewData["users"], "Select Users", new { @Id = "formN2AcceptedUserId", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.AccptdByUsername, new { @Id = "formN2AcceptedUsername", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.AccptdByDesignation, new { @Id = "formN2AcceptedDesig", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    @Html.Label("Date (DD-MM-YYY)", "Date (DD-MM-YYYY)")
+                                                    <input type="date" class="datepicker form-control" id="formN2AcceptedDate" name="formN2AcceptedDate" value="@_AcceptedByDate" disabled="disabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Action to prevent recurrence to be completed by", "Action to prevent recurrence to be completed by")
+                                                    @Html.DropDownListFor(m => m.SaveFormN2Model.PreventiveUserId, (IEnumerable
+                                                                           <SelectListItem>)ViewData["users"], "Select Users", new { @Id = "formN2PRCompletedUserId", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.PreventiveUsername, new { @Id = "formN2PRCompletedUsername", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.PreventiveDesignation, new { @Id = "formN2PRCompletedDesig", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-2">
+                                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                                    <input type="date" class="datepicker form-control" id="formN2PRCompletedDate" name="formN2PreventiveDate" value="@_CompletedDate" disabled="disabled" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="form-group col-lg-12 mb-0">
+                            <div class="row">
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Accepted By", "Accepted By")
+                                    @Html.DropDownListFor(m => m.SaveFormN2Model.PreventiveAcceptedUserId, (IEnumerable
+                                                           <SelectListItem>)ViewData["users"], "Select Users", new { @Id = "formN2PRAcceptedUserId", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Name", "Name")
+                                    @Html.TextBoxFor(m => m.SaveFormN2Model.PreventiveAcceptedUsername, new { @Id = "formN2PRAcceptedUsername", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Designation", "Designation")
+                                    @Html.TextBoxFor(m => m.SaveFormN2Model.PreventiveAcceptedDessig, new { @Id = "formN2PRAcceptedDesig", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" class="datepicker form-control" id="formN2PRAcceptedDate" name="formN2AcceptedDate" value="@_PRAcceptedByDate" />
+                                </div>
+                            </div>
+                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Follow Up
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage1" class="collapse formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+                                    <div class="card-body float-left w-100">
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("Other Follow Up Action", "Other Follow Up Action")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormN2Model.OthrrFollowUpAction, (IEnumerable
+                                            <SelectListItem>)ViewData["Other Follow Up Action"], "Select Other Follow Up Action", new { @Id = "formN2OtherFollowUpAction", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                            <input type="date" class="datepicker form-control" id="formN2FollowUpDate" name="formN2ClosedOutDate" value="@_ClosedOutDate" />
+                                        </div>
+                                        <div class="form-group col-lg-9 mb-0">
+                                            <div class="row">
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Verified By", "Verified By")
+                                                    @Html.DropDownListFor(m => m.SaveFormN2Model.VerifiedByUserid, (IEnumerable
+                                                    <SelectListItem>)ViewData["users"], "Select Users", new { @Id = "formN2VerifiedByUserId", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Name", "Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormN2Model.VerifiedByUsername, new { @Id = "formN2VerifiedByUsername", @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    @Html.Label("Designation", "Designation")
+                                                    @Html.TextBox("formN2VerifiedByDesig", Model.SaveFormN2Model.VerifiedByDesignation, new { @class = "form-control", @disabled = "disabled" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12 txtarea-107">
+                                            @Html.Label("Remarks", "Remarks")
+                                            @Html.TextAreaFor(m => m.SaveFormN2Model.CloseOutRemarks, new { @Id = "formN2Remarks", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Workflow Audit History [Status : Initialize]</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="w-100 form-group mb-0">
+                                    <div class="cusgrid col-md-12">
+                                        <table id="tblProAuditList" class="table w-100 dataTable no-footer dataTables_scroll">
+                                            <thead>
+                                                <tr class="dataTables_scrollHead">
+                                                    <th>Title</th>
+                                                    <th>Status</th>
+                                                    <th>Approved / Rejected By</th>
+                                                    <th>Approved / Rejected On</th>
+                                                    <th>Submitted By</th>
+                                                    <th>Submitted On</th>
+                                                    <th>Comments</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="7">No Records!</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @Html.HiddenFor(m => m.SaveFormN2Model.No, new { @id = "FN2HRef_No", @class = "form-control" })
+            @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
+            <div class="col-md-12 float-right text-right custom-footer">
+                @*<div id="val-summary-displayer"></div>*@
+                <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
+                <button id="saveFormN2Btn" type="button" class="btn btn-sm btn-themebtn">Save</button>
+                @if (string.IsNullOrEmpty(Model.SaveFormN2Model.Status) || Model.SaveFormN2Model.Status == RAMMS.Common.StatusList.N2Init)
+                {
+                    <button id="SubmitFormN2Btn" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                }
+                else if (security.IsRegionManager && Model.SaveFormN2Model.Status == RAMMS.Common.StatusList.N2Issued)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Received By');">Received</button>
+                }
+                else if (security.IsRegionManager && Model.SaveFormN2Model.Status == RAMMS.Common.StatusList.N2Received)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Corrective Action Completed By');">Corrective Action Completed</button>
+                }
+                else if (security.IsJKRSSuperiorOfficer && Model.SaveFormN2Model.Status == RAMMS.Common.StatusList.N2CorrectiveCompleted)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Corrective Action Accepted By');">Corrective Action Accepted</button>
+
+                }
+                else if (security.IsJKRSSuperiorOfficer && Model.SaveFormN2Model.Status == RAMMS.Common.StatusList.N2CorrectiveAccepted)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Prevent Recurrence Accepted By');">Prevent Recurrence Accepted</button>
+                }
+                else if (security.IsJKRSSuperiorOfficer && Model.SaveFormN2Model.Status == RAMMS.Common.StatusList.N2PreventRecurrenceAccepted)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Verified By');">Approved / Verified</button>
+                }
+            </div>
+        </form>
+    </div>
+</div>

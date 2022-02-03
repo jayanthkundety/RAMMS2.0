@@ -1,0 +1,134 @@
+﻿@model RAMMS.Web.UI.Models.CDataTable
+
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@{
+    ViewData["Title"] = "Form C1/C2 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Form C1/C2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/FormC1C2.js" asp-append-version="true"></script>
+}
+@{
+    Html.RenderPartial("_breadcrumb", new BreadCrumb()
+    {
+        Title = "Condition Inspection - Form C1/C2",
+        SimpleNavigation = "Home,Condition Inspection,Form C1/C2"
+    });
+}
+
+<!-- Search Section -->
+<div class="search-section" id="FC1C2SrchSection">
+    <div class="row justify-content-center mb-1">
+        @{
+            Html.RenderPartial("_SearchSection", new Tuple<string, string, string>(Model.Name, "#formC1C2Search", "KeySearch"));
+        }
+    </div>
+    @*Detail Search Screen*@
+    <div id="formC1C2Search" style="display:none;">
+        <div class="row" id="formC1C2AdvSearch" style="display:block">
+            <form id="formC1C2DetailsearchForm" name="formC1C2DetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-md-12 px-4">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                @Html.Label("Asset Group ", "Asset Group")
+                                <input type="text" class="form-control" value="Culvert" disabled />
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("Asset Type", "Asset Type")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Asset_Type~CV^Value"], "selAssestType", "Select Assest Type", new { @Id = "selAssestType", @class = "form-control", @param = "AssetType" })
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("RMU", "RMU")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "selRMU", @class = "form-control", @param = "RMUCode", @onchange = "frmC1C2.Search.RmuChange(this);", @rmuCode = "rmuCode", @clear = "rebind" })
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("Section Code", "Section Code")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "selSectionCode", "Select Section Code", new { @Id = "selSectionCode", @class = "form-control", @onchange = "frmC1C2.Search.SecCodeChange(this,false);", @param = "SecName", @sectionCode = "sectionCode", @clear = "rebind" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Name", "Section Name")
+                                <input id="txtSectionName" type="text" class="form-control" disabled />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Code", "Road Code")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "selRoadCode", "Select Road Code", new { @Id = "selRoadCode", @class = "form-control", @onchange = "frmC1C2.Search.RoadCodeChange(this,false);", @param = "RoadCode", @roadCode = "roadCode", @clear = "rebind" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Name", "Road Name")
+                                <input id="txtRoadName" type="text" class="form-control" disabled />
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("Bound", "Bound")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Bound~CV"], "selBound", "Select Bound", new { @Id = "selBound", @class = "form-control", @param = "Bound" }, "CValue")
+                            </div>
+                            @*<div class="form-group col-md-2">
+                                    @Html.Label("Inspection Date From", "Inspection Date From")
+                                    <input name="fromInsDate" type="date" class="form-control" param="fromInsDate" />
+                                </div>
+                                <div class="form-group col-md-2">
+                                    @Html.Label("Inspection Date To", "Inspection Date To")
+                                    <input name="toInsDate" type="date" class="form-control" param="toInsDate" />
+                                </div>*@
+                            <div class="form-group col-md-2">
+                                @Html.Label("Year of Inspection From", "Year of Inspection From")
+                                @Html.DropDownList("FromYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formC1C2InsFromYear", @class = "form-control", @param = "FromYear" })
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("Year of Inspection To", "Year of Inspection To")
+                                @Html.DropDownList("ToYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formC1C2InsToYear", @class = "form-control", @param = "ToYear" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Location Chainage From", "Location Chainage From")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage From M" param="chFromM" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Location Chainage To", "Location Chainage To")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input id="txtChToKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage To Km" param="chToKm" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input id="txtChToM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage To M" param="chToM" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+            @if (security.IsPCModify(ModuleNameList.Condition_Inspection))
+            {
+                <div class="grid-btns">
+                    @*<button class="btn btn-sm btn-themebtn"><span class="download-icon"></span> Download</button>*@
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="window.location=_APPLocation + 'FormC1C2/Add'"><span class="add-icon"></span> Add Form C1/C2</button>
+                </div>
+            }
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_CDataTable", Model);
+                }
+            </div>
+        </div>
+    </div>
+</main>

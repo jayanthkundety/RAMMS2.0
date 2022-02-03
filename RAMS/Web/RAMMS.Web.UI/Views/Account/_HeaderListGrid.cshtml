@@ -1,0 +1,250 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormF2GridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.pkId != "" && data.pkId != null) {
+                title = data.pkId;
+            }
+            var actionSection = `<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' id='formAHeaderEdit' ${isModifyPerm} onclick='javascript:editDetail(${data.pkId});'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' ${isViewPerm}  data-backdrop='static' onclick='javascript:openChangepassword(${data.pkId},"${data.userid}");'><span class='view-icon'></span> Change Password</button>
+            <button type='button' class='dropdown-item editdel-btns' ${isViewPerm}  data-backdrop='static' onclick='javascript:openGroupModal(${data.pkId},"${data.userid}","${data.department}");'><span class='view-icon'></span> Group</button>
+            <button type='button' class='dropdown-item editdel-btns' ${isDeletePerm} onclick='javascript:deleteDetail(${data.pkId});'><span class='del-icon'></span> Delete</button></div></div>`;
+                return actionSection;
+        }
+    };
+    var userid = { data: "userid", name: "userid", title: "User Id", autoWidth: true, sortable: true, visible: true };
+    var username = { data: "username", name: "username", title: "Name", autoWidth: true, sortable: true, visible: true };
+    var position = { data: "position", name: "position", title: "Position", autoWidth: true, sortable: true, visible: true };
+    var department = { data: "department", name: "department", title: "Department", autoWidth: true, sortable: true, visible: true };
+    var companyname = { data: "companyname", name: "companyname", title: "Company Name", autoWidth: true, sortable: true, visible: true };
+    var email = { data: "email", name: "email", title: "Email", autoWidth: true, sortable: true, visible: true };
+    var contactno = { data: "contactno", name: "contactno", title: "Contact No.", autoWidth: true, sortable: true, visible: true };
+    var crDt = {
+        data: null, name: "crDt", title: "Created On", autoWidth: true, sortable: true, visible: true, render: function (data) {
+            if (data.crDt) {
+                var d = new Date(data.crDt);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else
+                return "";
+        }
+    };
+    var logindate = {
+        data: null, name: "logindate", title: "Last Loggedin Date", autoWidth: true, sortable: true, visible: true, render: function (data) {
+            if (data.logindate) {
+                var d = new Date(data.logindate);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else
+                return "";
+        }
+    };
+    var isdisabled = {
+        data: null, name: "isdisabled", title: "Is Disabled?", autoWidth: true, sortable: true, visible: true, render: function (data) {
+            if (data.isdisabled == true) {
+                return "Yes"
+            }
+            else
+                return "No";
+        }
+    };
+    var lockeduntil = {
+        data: null, name: "lockeduntil", title: "Disabled Until", autoWidth: true, sortable: true, visible: true, render: function (data) {
+            if (data.lockeduntil) {
+                var d = new Date(data.lockeduntil);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else
+                return "";
+        }
+    };
+    var retrycount = { data: "retrycount", name: "retrycount", title: "Retried Count", autoWidth: true, sortable: true, visible: true };
+    var passwordexpiry = {
+        data: null, name: "passwordexpiry", title: "Password Expiry", autoWidth: true, sortable: true, visible: true, render: function (data) {
+            if (data.passwordexpiry) {
+                var d = new Date(data.passwordexpiry);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else
+                return "";
+        }
+    };
+    table_columns.push(actionCol);
+    table_columns.push(userid);
+    table_columns.push(username);
+    table_columns.push(email);
+    table_columns.push(companyname);
+    table_columns.push(contactno);
+    table_columns.push(position);
+    table_columns.push(department);
+    table_columns.push(logindate);
+    table_columns.push(isdisabled);
+    table_columns.push(lockeduntil);
+    table_columns.push(retrycount);
+    table_columns.push(passwordexpiry);
+
+    table_columns.push(crDt);
+
+    function editDetail(id) {
+        window.location.href = '/Account/Add?id=' + id + '&isview=false';
+    }
+
+    function viewDetail(id) {
+        window.location.href = '/Account/Add?id=' + id + '&isview=true';
+    }
+
+    function openChangepassword(id, name) {
+        $("#pkId").val(id);
+        $("#txtUserId").val(name);
+        $("#pwdModal").modal("show");
+    }
+
+    function openGroupModal(id, name, dept) {
+        $("#pkId").val(id);
+        $("#txtGUserId").val(name);
+        Promise.all([
+            $.ajax({ url: "/Account/GetUserGroups", dataType: "JSON", data: { }, type: "Post" }),
+            $.ajax({ url: "/Account/GetGroups", dataType: "JSON", data: { department: dept }, type: "Post" })
+        ]).then(data => {
+            var grp = $("#ddlGroup");
+
+            grp.empty();
+            grp.append($("<option></option>").val("").html("Select Group"));
+            $.each(data[1], function (index, v) {
+                grp.append($("<option></option>").val(v.ugPkId).html(v.ugGroupName));
+            });
+            grp.trigger("chosen:updated");
+
+            @*var usgrp = $("#ddlUserGroup");
+            usgrp.empty();
+            usgrp.append($("<option></option>").val("").html("Select User Group"));
+            $.each(data[0], function (index, v) {
+                usgrp.append($("<option></option>").val(v.ugPkId).html(v.ugGroupName));
+            });
+            usgrp.trigger("chosen:updated");*@
+
+            $("#usergroupModal").modal("show");
+
+            $.ajax({
+                url: "/Account/GetGroupUsers", dataType: "JSON", data: { userid: id }, type: "Post"
+                , success: function (dt) {
+                    grp.val(dt.ug);
+                    grp.trigger("chosen:updated");
+                }
+            });
+        });
+    }
+
+    var oTable;
+    function deleteDetail(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {}; req.id = id;
+                $.ajax({
+                    url: "/Account/RemoveDetail", dataType: "JSON", data: req, type: "Post", success: function (data) {
+                        if (data) {
+                            app.ShowSuccessMessage("Record deleted successfully");
+                            oTable.draw();
+                        } else { app.ShowErrorMessage("Please try again.") }
+                    }, error: function (data) { console.error(data); }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        $('#FormF2GridView').DataTable({
+            ajax: {
+                url: "/Account/GetDetailList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+        @*grp.trigger("chosen:updated");
+        usgrp.trigger("chosen:updated");*@
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormF2GridView').DataTable();
+
+        $("#btnClearSearch").click(function () {
+            $("#txtSmartSearch").val('');
+            $("#btnSearch").click();
+
+        });
+        $('#btnSearch').click(function () {
+            oTable.columns(0).search($("#txtSmartSearch").val());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>

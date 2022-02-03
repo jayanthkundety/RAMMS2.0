@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:RAMMS.MobileApps"
+             xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials" xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls"
+             x:Class="RAMMS.MobileApps.Page.FormDAddMaterialPage">
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Frame Margin="0,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+
+            <ScrollView>
+                <Frame BackgroundColor="White" Margin="100,30,100,0">
+                    <StackLayout>
+                        <StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="0.5*"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="{Binding materiallabel}" Grid.Row="0" Grid.Column="0" TextColor="Black" FontSize="Large"/>
+                                <BoxView HeightRequest="1" BackgroundColor="Gray" Grid.Row="1" Grid.Column="0" Margin="0,0,0,28"/>
+                            </Grid>
+                        </StackLayout>
+                        <StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="40"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="Code" Grid.Row="0" Grid.Column="0" TextColor="Black" FontSize="Medium"/>
+                                <!--<local:ExtendedPicker  x:Name="labourpicker"  Grid.Row="1"  Grid.Column="0" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+                                <locals:FrameRenders Grid.Row="1"  Grid.Column="0" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                    <local:ExtendedPicker Title="Select Code"  x:Name="labourpicker"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray" />
+                                </locals:FrameRenders>
+
+                                <locals:FrameRenders Grid.Row="1" Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                    <!--<fe:AdvancedFrame  InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                                    <local:EntryControl x:Name="entrllabour" Text="{Binding strLabourValue}" Keyboard="Numeric" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  IsEnabled="False" />
+                                <!--</fe:AdvancedFrame>-->
+                                </locals:FrameRenders>
+                            </Grid>
+                        </StackLayout>
+
+
+                        <StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="40"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="Quantity" Grid.Row="0" Grid.Column="0" TextColor="Black" FontSize="Medium"/>
+
+
+                                <locals:FrameRenders Grid.Row="1" Grid.Column="0" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                    <!--<fe:AdvancedFrame  InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                                        <local:EntryControl   x:Name="enctrlQty" Text="{Binding strQty}" MaxLength="7" Keyboard="Numeric" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"    IsEnabled="True" />
+                                    <!--</fe:AdvancedFrame>-->
+                                </locals:FrameRenders>
+
+
+                                <Label Text="Unit" Grid.Row="0" Grid.Column="2" TextColor="Black" FontSize="Medium"/>
+
+                                <!--<local:ExtendedPicker  x:Name="unitpicker"   Grid.Row="1"  Grid.Column="2" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" FontSize="Default"  HorizontalOptions="FillAndExpand" TextColor="Gray" />-->
+
+                                <locals:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                    <local:ExtendedPicker Title="Select Unit" x:Name="unitpicker"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray" />
+                                </locals:FrameRenders>
+
+                            </Grid>
+                        </StackLayout>
+                        <StackLayout>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="5*"/>
+
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+
+                                </Grid.ColumnDefinitions>
+
+                                <Label Text="Description" Grid.Row="0" Grid.Column="0" TextColor="Black" FontSize="Medium"/>
+
+                                <local:CustomEditor x:Name="enctrlRemarks" FontSize="16" MaxLength="200" Grid.Row="1" Grid.Column="0" Text="{Binding strRemarksValue}" TextColor="Black"  Opacity="0.5" ></local:CustomEditor>
+
+                            </Grid>
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand"   VerticalOptions="FillAndExpand"  >
+                            <Button x:Name="btnCancel" Text="Cancel" Grid.Row="1" Grid.Column="3" BackgroundColor="#1D2D50" Command="{Binding CancelFormDDetailsCommand}" TextColor="White" CornerRadius="10"  />
+                            <Button x:Name="btnSave"  Text="Save and Continue" Grid.Row="1" Grid.Column="4" BackgroundColor="#1D2D50" TextColor="White"  Command="{Binding FormASaveCommand}" CornerRadius="10"  />
+                            <Button x:Name="btnSaveandExit" Text="Save and Exit" Grid.Row="1" Grid.Column="5"  BackgroundColor="#1D2D50" TextColor="White" Command="{Binding FormASaveExitCommand}" CornerRadius="10"  />
+                        </StackLayout>
+
+                    </StackLayout>
+                </Frame>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

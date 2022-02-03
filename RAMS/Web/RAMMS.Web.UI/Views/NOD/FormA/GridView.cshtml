@@ -1,0 +1,185 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using RAMMS.Domain.Models;
+@model RAMMS.Web.UI.Models.FormAModel;
+
+@{
+    ViewData["Title"] = "Grid View Page";
+    ViewBag.TabTitle = "Grid View Page";
+}
+<script src="~/js/NodFormA.js" asp-append-version="true"></script>
+
+<style>
+    .box-sdw-0020 {
+        box-shadow: 0px 0px 2px 0px;
+    }
+
+    .br-rds-25 {
+        border-radius: 25px;
+    }
+</style>
+
+<script>
+    //////function AddNODClick() {
+    //////    $("body").addClass("loading");
+    //////    $.ajax({
+    //////        url: '/NOD/AddNOD',
+    //////        type: 'POST',
+    //////        success: function (data) {
+
+    //////           // $("#div-data-container").html(data);
+    //////           // $("body").removeClass("loading");
+    //////        }
+    //////    })
+    //////}
+
+    $(document).ready(function () {
+        // detailedlistgrid();
+    });
+
+    ////function detailedlistgrid() {
+    ////    var headerid = localStorage.getItem("headeridvalue");
+    ////    $.ajax({
+    ////        url: '/NOD/DetailedListEdit',
+    ////        data: { headerid },
+    ////        type: 'POST',
+    ////        success: function (data) {
+    ////            $("#DetailListGrid").html(data);
+    ////        }
+    ////    });
+    ////}
+</script>
+
+@*@using (Html.BeginForm())
+    {*@
+<div class="modal-content">
+    <form id="AddFormAForm">
+        <div class="modal-body">
+            <div class="bg-body-light box-sdw-0020 br-rds-25">
+                <div class="row p-3">
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("Road Code", "Road Code", new { style = "float: left" })
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.RoadCode, (IEnumerable
+                                 <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "FormADetRoadCode", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("Road Name", "Road Name", new { style = "float: left" })
+                            @Html.TextBoxFor(m => m.SaveFormAModel.RoadName, new { @Id = "FormADetRoadName", @readonly = "readonly", @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("RMU", "RMU", new { style = "float: left" })
+                            @Html.TextBoxFor(m => m.SaveFormAModel.Rmu, new { @Id = "FormADetRmu", @readonly = "readonly", @class = "form-control " })
+
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("Month", "Month", new { style = "float: left" })
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.Month, (IEnumerable
+                                <SelectListItem>)ViewData["Months"], "Select Month", new { @Id = "FormADetMonth", @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("Asset Group", "Asset Group", new { style = "float: left" })
+                            @Html.DropDownListFor(m => m.SaveFormAModel.AssetGroupCode, (IEnumerable
+                                <SelectListItem>)ViewData["RD_Code"], new { @Id = "FormADetAssetGrpCode", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-outline-info theme-clr" data-toggle="modal" data-target="#AddNODModal" onclick="javascript:AddNODClick();" style="margin-top: 27px;">Create new</button>
+                    </div>
+                </div>
+            </div>
+            @*Add NOD Modal*@
+            <div class="modal fade" id="AddNODModal" tabindex="-1" role="dialog"
+                 aria-labelledby="AddNODModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="AddNODModalCenterTitle">Add Form A Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        @*Patial View for add Class to bind data in partial view*@
+                        <div id="div-data-container">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="DetailListGrid" class="p-2">
+                @*our view*@
+                @{
+                    Html.RenderPartial("_DetailGridList.cshtml");
+                }
+            </div>
+
+            <br />
+
+            @*Page @(Model.SaveFormAModel.FormADetails.ToPagedList().PageCount < Model.SaveFormAModel.FormADetails.ToPagedList().PageNumber ? 0 : Model.SaveFormAModel.FormADetails.ToPagedList().PageNumber) of @Model.SaveFormAModel.FormADetails.ToPagedList().PageCount
+
+                @Html.PagedListPager((IPagedList)Model.SaveFormAModel.FormADetails, Page_No => Url.Action("GridView",
+                    new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))*@
+
+            @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                 @Html.PagedListPager(Model, Page_No => Url.Action("Index",
+                new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))*@
+
+            <div id="FormAUserDetail" class="box-sdw-0020 col-5 p-2" style="margin:0 auto;">
+                <h5 class="pt-2 pl-3">Inspected By:</h5>
+                <div class="m-2">
+                    @Html.Label("Name", "Name", new { @class = "col-4", style = "float: left", })
+
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.UsernamePrp, (IEnumerable
+                                                    <SelectListItem>)ViewData["RD_Code"], "Select Name", new { @Id = "InspectedName", @class = "form-control svalidate {required, Inspected by Id}" })
+                </div>
+                <div class="m-2">
+                    @Html.Label("Designion", "Designion", new { @class = "col-4", style = "float: left", })
+
+                    @Html.TextBoxFor(m => m.SaveFormAModel.DesignationPrp, new { @Id = "InspectedDesignName", @class = "form-control svalidate {req,Inspected By User Designion}" })
+
+                </div>
+                <div class="m-2">
+                    @Html.Label("Date", "Date", new { @class = "col-4", style = "float: left", })
+
+                    @Html.TextBoxFor(m => m.SaveFormAModel.DtPrp, new { @Id = "InspectedDate", @class = "form-control svalidate {req,Date of Inspection}" })
+                </div>
+                <h5 class="pt-2 pl-3">Verified By:</h5>
+                <div class="m-2">
+                    @Html.Label("Name", "Name", new { @class = "col-4", style = "float: left", })
+
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.UsernameVer, (IEnumerable
+                                                    <SelectListItem>)ViewData["RD_Code"], "Select Name", new { @Id = "VerifiedName", @class = "form-control svalidate {required, Verified by Id}" })
+                </div>
+                <div class="m-2">
+                    @Html.Label("Designion", "Designion", new { @class = "col-4", style = "float: left", })
+
+                    @Html.TextBoxFor(m => m.SaveFormAModel.DesignationVer, new { @Id = "VerifiedDate", @class = "form-control svalidate {required, Verified by User Designion}" })
+                </div>
+                <div class="m-2">
+                    @Html.Label("Date", "Date", new { @class = "col-4", style = "float: left", })
+
+                    @Html.TextBoxFor(m => m.SaveFormAModel.VerifiedDt, new { @Id = "VerifiedDate", @class = "form-control svalidate {req,Date of Verified}" })
+                </div>
+            </div>
+
+            <div class="row float-right mt-2">
+                <button type="button" onclick="location.href='@Url.Action("Index", "NOD")'" class="btn btn-success theme-clr m-2" id="saveFormABtn" data-toggle="modal">Save</button>
+
+                <button type="button" onclick="location.href='@Url.Action("Index", "NOD")'" class="btn btn-success theme-clr m-2" id="SubmitFormABtn">Submit</button>
+                <button type="button" class="btn btn-danger theme-clr m-2" onclick="location.href='@Url.Action("Index", "NOD")'">
+                    Cancel
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
+@*}*@

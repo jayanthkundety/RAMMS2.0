@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" xmlns:local="clr-namespace:RAMMS.MobileApps" xmlns:local1="clr-namespace:RAMMS.MobileApps.Helpers"
+                       xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+
+             x:Class="RAMMS.MobileApps.LoginPage"
+             BackgroundColor="Gray"
+             >
+
+    <ContentPage.Content>
+        <StackLayout>
+
+            <Grid>
+
+                <local1:VideoPlayer Source="Ramms.mp4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="1200" WidthRequest="1200"  />
+                <BoxView Opacity="0.4" BackgroundColor="#055194" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"   HeightRequest="1200" WidthRequest="1200" ></BoxView>
+
+                <ScrollView BackgroundColor="Transparent" Margin="0,0,0,0">
+                    <StackLayout BackgroundColor="Transparent">
+                        <!--<BoxView CornerRadius="50"  Opacity="0.7" HeightRequest="500" BackgroundColor="Black"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Row="2" Grid.Column="2" ></BoxView>-->
+                        
+                        <Frame Margin="30,30" BackgroundColor="#66000000" CornerRadius="15" HorizontalOptions="Start" WidthRequest="450">
+                            <Grid RowSpacing="15"> 
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="65"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                    <RowDefinition Height="35"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="JKKRlogo.png" Grid.Row="0" Grid.Column="1"  Margin="0,10,0,0" />
+
+
+                                <Image Source="Draft_logo.png" Grid.Row="0" Grid.Column="2" Margin="-20,-18,-20,-10"  HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+                                <!--<Label Text="RAMS" FontAttributes="Bold"   FontFamily="BebasNeue Bold.ttf#BebasNeue Bold" Grid.Row="0" Grid.Column="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="50" TextColor="#ad9d9d"/>-->
+                                <Image Source="Endayalogo.png" Grid.Row="0" Grid.Column="3" />
+
+                                <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE" FontAttributes="Bold"   FontFamily="BebasNeue Bold.ttf#BebasNeue Bold" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" FontSize="27" TextColor="#ad9d9d" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Text="SYSTEM" FontAttributes="Bold"   FontFamily="BebasNeue Bold.ttf#BebasNeue Bold" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" FontSize="27" TextColor="#ad9d9d" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label Text="WELCOME, PLEASE SIGN IN"  FontAttributes="Bold"   FontFamily="BebasNeue Bold.ttf#BebasNeue Bold" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" FontSize="28" TextColor="#ad9d9d" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+
+
+                                <local:CustomEntry Margin="0" BackgroundColor="White" HorizontalTextAlignment="Start" Placeholder="Username" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" FontSize="16" x:Name="userNameEntry"  Text="{Binding txtEmailAddress}"  PlaceholderColor="#666666" TextColor="#666666"     />
+
+                                <!--<Image Source="user.png" HeightRequest="60" WidthRequest="35" Grid.Row="4" Grid.Column="1"  HorizontalOptions="Start" VerticalOptions="Start" Margin="30,0" ></Image>-->
+
+                                <local:CustomEntry Margin="0" HorizontalTextAlignment="Start" IsPassword="True" BackgroundColor="White"  Placeholder="Password" Text="{Binding txtPassword}" x:Name="passwordEntry" PlaceholderColor="#666666" TextColor="#666666"  FontSize="16" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" />
+                                <!--<Image Source="lock.png" HeightRequest="60" WidthRequest="35" Margin="30,0"  Grid.Row="5" Grid.Column="1"   HorizontalOptions="Start" VerticalOptions="Start" ></Image>-->
+
+                                <!--<Image Source="passwordeye.png" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" HeightRequest="60" WidthRequest="35" HorizontalOptions="End" VerticalOptions="End" Margin="0,10,60,0" />-->
+                                <CheckBox Color="#2D51A3" HorizontalOptions="Start" Grid.Row="6" Grid.Column="1" Margin="-10,0" />
+                                <Label Text="Remember me" HorizontalOptions="Start" FontAttributes="None" Grid.Row="6" Margin="25,0" VerticalOptions="Center"  Grid.ColumnSpan="2" Grid.Column="1" FontSize="16" TextColor="White" />
+
+                                <Label Text="Forgot Password?" FontAttributes="None" HorizontalOptions="End" Grid.Row="6" Grid.Column="2" Margin="0" Grid.ColumnSpan="2" TextColor="White" FontSize="16" VerticalOptions="Center" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ForgotCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+
+                                <Button BackgroundColor="#0077F6" FontFamily="RobotoCondensed-Regular.ttf#RobotoCondensed-Regular" Command="{Binding LoginCommand}" Padding="2" HeightRequest="50" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3"  HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Text="Sign in" TextColor="White" FontAttributes="Bold" FontSize="Medium" CornerRadius="10" />
+
+                                <!--<Button BackgroundColor="#2D51A3" FontFamily="RobotoCondensed-Regular.ttf#RobotoCondensed-Regular" Clicked="Button_Clicked" HeightRequest="50"   Grid.Row="7" Grid.Column="1" Margin="46,-25,103,40" Grid.ColumnSpan="3"  HorizontalOptions="FillAndExpand" VerticalOptions="EndAndExpand" Text="Sign in" TextColor="White" FontAttributes="Bold" FontSize="Medium" CornerRadius="10" />-->
+
+                            </Grid>
+                        </Frame>
+
+                        
+
+                            <Frame Margin="30,0" BackgroundColor="#66000000" CornerRadius="15">
+
+                               <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="LATEST" TextColor="White" Margin="0,0,0,0" FontFamily="RobotoCondensed-Regular.ttf#RobotoCondensed-Regular" HorizontalOptions="End" VerticalOptions="End" FontSize="29" FontAttributes="Bold" Grid.Row="0" Grid.Column="1"/>
+                                    <Label Text="HIGHLIGHTS" TextColor="#ffcc66" Margin="0,0,0,0" FontFamily="RobotoCondensed-Regular.ttf#RobotoCondensed-Regular" HorizontalOptions="Start" VerticalOptions="Start" FontSize="29" FontAttributes="Bold" Grid.Row="0" Grid.Column="2"/>
+                            <StackLayout Grid.Row="1" BackgroundColor="Transparent" Grid.ColumnSpan="4" >
+                               <controls:CarouselViewControl  x:Name="MainCarouselView" HeightRequest="290" WidthRequest="50" Orientation="Horizontal" InterPageSpacing="10"   >
+                                    <controls:CarouselViewControl.ItemTemplate  >
+                                        <DataTemplate  >
+                                            <Image Source="{Binding images}" x:Name="image" Aspect="AspectFill"    FlowDirection="LeftToRight"  />
+                                        </DataTemplate>
+                                    </controls:CarouselViewControl.ItemTemplate>
+                               </controls:CarouselViewControl>
+
+                            </StackLayout>
+                                </Grid>
+
+                            </Frame>
+
+
+                    </StackLayout>
+                </ScrollView>
+            </Grid>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

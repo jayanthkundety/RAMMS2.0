@@ -1,0 +1,1073 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local2="clr-namespace:RAMMS.MobileApps"
+              xmlns:local="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+              xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials"
+             xmlns:local1="clr-namespace:RAMMS.MobileApps;assembly=RAMMS.MobileApps"
+             x:Class="RAMMS.MobileApps.Page.FormFCAddPage"
+              xmlns:custom="clr-namespace:RAMMS.MobileApps.Controls"
+             xmlns:localss="clr-namespace:RAMMS.MobileApps;assembly=RAMMS.MobileApps"
+           xmlns:forms="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+              
+             >
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <localss:NegateBoolConverter x:Key="NegatebooleanConverter" />
+            <localss:NumberToColorConverter x:Key="NumberToColorConverter" />
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout> 
+            <Frame Margin="0,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+                </Grid>
+            </Frame>
+
+
+            <Frame>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Form FC No.  " FontSize="Medium" Margin="0,0,0,0" HorizontalOptions="EndAndExpand" TextColor="Black" />
+
+
+                    <local:FrameRenders Grid.Row="1"  Grid.Column="3" HorizontalOptions="StartAndExpand" BackgroundColor="#f2f2f2" FrameCornerRadius="5"  WidthRequest="450"  IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                        <!--<fe:AdvancedFrame CornerRadius="5"  HorizontalOptions="StartAndExpand" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">-->
+                        <!--<local:EntryControl  HeightRequest="40" WidthRequest="250" Text="{Binding }" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" FontSize="Medium"   IsEnabled="True" />-->
+                        <Label Text="{Binding SelectedRefNo}" TextColor="Black" FontSize="Medium" LineBreakMode="TailTruncation" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand"  InputTransparent="True"/>
+                        <!--</fe:AdvancedFrame>-->
+                    </local:FrameRenders>
+                </StackLayout>
+            </Frame>
+
+
+
+
+
+            <Grid IsEnabled="{Binding GridEnbaled}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ScrollView Grid.Row="0" Grid.Column="0">
+                    <Grid Padding="10,20,10,10" RowSpacing="0" BackgroundColor="White" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <Frame BackgroundColor="White" BorderColor="#bfbfbf" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                            <StackLayout>
+                                <Grid IsVisible="{Binding FromAdd}" Padding="0"  RowSpacing="0" ColumnSpacing="5"   >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="44"/>
+                                        <RowDefinition Height="44"/>
+                                        <RowDefinition Height="44"/>
+                                        <RowDefinition Height="44"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label VerticalOptions="Center" HorizontalTextAlignment="Start"  Text="Division" Grid.Row="0" Grid.Column="0" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+                                    <Label VerticalOptions="Center" HorizontalTextAlignment="Start"  Text="RMU"  Grid.Row="0" Grid.Column="1" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+                                    <local:FrameRenders  BackgroundColor="White" IsClippedToBounds="True" Padding="10,0,10,0" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" Grid.Row="1" Grid.Column="0">
+                                        <local1:ExtendedPicker ItemsSource="{Binding DDDivisionListItems}" ItemDisplayBinding="{Binding Text}" SelectedIndex="{Binding SelectedDivision, Mode=TwoWay}"  IsEnabled="{Binding IsHeaderEnable}" CharacterSpacing="20"  Title="Select Division"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+                                    <local:FrameRenders  IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" Grid.Row="1" Grid.Column="1">
+                                        <local1:ExtendedPicker ItemsSource="{Binding DDRMUListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedRMU, Mode=TwoWay}" IsEnabled="{Binding IsHeaderEnable}" Title="Select RMU"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+
+                                    <Label  VerticalOptions="Center"  HorizontalTextAlignment="Start" Text="Section Code"  Grid.Row="0" Grid.Column="2" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+                                    <Label  VerticalOptions="Center" HorizontalTextAlignment="Start"  Text="Section Name" Grid.Row="0" Grid.Column="3" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000"/>
+                                    <local:FrameRenders Grid.Row="1" Grid.Column="2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:ExtendedPicker ItemsSource="{Binding DDSectionListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedSectionCode, Mode=TwoWay}" IsEnabled="{Binding IsHeaderEnable}" Title="Select Section Code"    ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+
+                                    <local:FrameRenders  IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="#f2f2f2" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black"  Grid.Row="1" Grid.Column="3">
+                                        <local1:EntryControl FontSize="15"  IsEnabled="False" Text="{Binding SelectedSectionName}" FontAttributes="Bold" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default" />
+                                    </local:FrameRenders>
+
+                                    <Label  VerticalOptions="Center" HorizontalTextAlignment="Start" Text="Road Code" Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000"/>
+                                    <Label  VerticalOptions="Center" HorizontalTextAlignment="Start" Text="Road Name" Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000"/>
+                                    <Label   VerticalOptions="Center" HorizontalTextAlignment="Start" Text="Year of Inspection (YYYY)"  Margin="10,0,0,0" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <local:FrameRenders Grid.Row="3" Grid.Column="0" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:ExtendedPicker ItemsSource="{Binding DDRodeCodeListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedRoadCode, Mode=TwoWay}" IsEnabled="{Binding IsHeaderEnable}" Title="Select Road Code"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+
+                                    <local:FrameRenders  IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="#f2f2f2" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black"  Grid.Row="3" Grid.Column="1">
+                                        <local1:EntryControl FontSize="15" IsEnabled="{Binding IsHeaderEnable}" Text="{Binding SelectedRoadName}" FontAttributes="Bold" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  InputTransparent="True" />
+                                    </local:FrameRenders>
+
+                                    <local:FrameRenders Grid.Row="3" Grid.Column="2" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:ExtendedPicker ItemsSource="{Binding DDYearListItems}" ItemDisplayBinding="{Binding Text}" SelectedIndex="{Binding SelectedYear, Mode=TwoWay}"  IsEnabled="{Binding IsHeaderEnable}" CharacterSpacing="20"  Title="Select Year"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+
+                                    <Button Command="{Binding OKCommand}" Style="{x:StaticResource ButtonStyle}" Margin="60,-5,0,0" Grid.Row="3" CornerRadius="11" FontSize="Small" Grid.Column="3" Text="Find Details"/>
+                                </Grid>
+
+                                <Grid  IsVisible="{Binding FromAdd1}" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="Road Code" VerticalOptions="Center" HorizontalTextAlignment="Start"  Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000"/>
+
+
+                                    <local:FrameRenders Grid.Row="1" Grid.Column="0" IsClippedToBounds="True" Padding="10,0,10,0" BackgroundColor="White" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:ExtendedPicker ItemsSource="{Binding DDRodeCodeListItems}" ItemDisplayBinding="{Binding Text}" SelectedItem="{Binding SelectedRoadCode, Mode=TwoWay}" IsEnabled="{Binding IsHeaderEnable}" Title="Select Road Code"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+                                    <Label Text="Road Name"  Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <local:FrameRenders Grid.Row="1"  Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <localss:EntryControl FontSize="15" HeightRequest="40" Text="{Binding RoadName}"  IsEnabled="{Binding IsHeaderEnable}"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+
+                                    <Label Text="Year of Inspection (YYYY)"   Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <local:FrameRenders Grid.Row="1"  Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"  BorderColor="Black" >
+                                        <localss:EntryControl FontSize="15" HeightRequest="40" Text="{Binding YearOfInsp}"  IsEnabled="{Binding IsHeaderEnable}"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  InputTransparent="{Binding NotToEdit}"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                    </local:FrameRenders>
+
+                                </Grid>
+
+
+
+
+
+
+                                <Grid  IsVisible="{Binding FromEdit}" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                   
+                                    <Label Text="Road Name"  Grid.Row="0" Grid.Column="0"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <local:FrameRenders Grid.Row="1"  Grid.Column="0" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <localss:EntryControl FontSize="15" HeightRequest="40" Text="{Binding RoadName}"  IsEnabled="{Binding IsHeaderEnable}"   ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Black" />
+                                    </local:FrameRenders>
+
+                                    <Label Text="Year of Inspection (YYYY)"   Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <local:FrameRenders Grid.Row="1"  Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"  BorderColor="Black" >
+                                        <localss:EntryControl FontSize="15" HeightRequest="40" Text="{Binding YearOfInsp}"  IsEnabled="{Binding IsHeaderEnable}"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  InputTransparent="{Binding NotToEdit}"  HorizontalOptions="FillAndExpand" TextColor="Gray"/>
+                                    </local:FrameRenders>
+
+                                </Grid>
+                            </StackLayout>
+                        </Frame>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <Frame Grid.Row="4" Grid.ColumnSpan="3" IsVisible="{Binding FDGridView}"  HasShadow="True" BackgroundColor="#f2f2f2" BorderColor="#bfbfbf">
+                            
+                            <StackLayout>
+                               
+                                <StackLayout Orientation="Horizontal" >
+                                    <StackLayout BackgroundColor="White">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <!--0--><RowDefinition Height="2"/>
+                                                <!--1--><RowDefinition Height="Auto"/>
+                                                <!--2--><RowDefinition Height="2"/>
+                                                <!--3--><RowDefinition Height="Auto"/>
+                                                <!--4--><RowDefinition Height="2"/>
+                                                <!--5--><RowDefinition Height="Auto"/>
+                                                <!--6--><RowDefinition Height="2"/>
+                                                <!--7--><RowDefinition Height="Auto"/>
+                                                <!--8--><RowDefinition Height="2"/>
+                                                <!--9--><RowDefinition Height="Auto"/>
+                                                <!--10--><RowDefinition Height="2"/>
+                                                <!--11--><RowDefinition Height="Auto"/>
+                                                <!--12--><RowDefinition Height="2"/>
+                                                <!--13--><RowDefinition Height="Auto"/>
+                                                <!--14--><RowDefinition Height="2"/>
+                                                <!--15--><RowDefinition Height="Auto"/>
+                                                <!--16--><RowDefinition Height="2"/>
+                                                <!--17--><RowDefinition Height="Auto"/>
+                                                <!--18--><RowDefinition Height="2"/>
+                                                <!--19--><RowDefinition Height="Auto"/>
+                                                <!--20--><RowDefinition Height="2"/>
+                                                <!--21--><RowDefinition Height="Auto"/>
+                                               <!--22--><RowDefinition Height="2"/>
+                                                <!--23--><RowDefinition Height="Auto"/>
+                                                <!--24--><RowDefinition Height="2"/>
+                                                <!--25--><RowDefinition Height="Auto"/>
+                                                <!--26--><RowDefinition Height="2"/>
+                                                <!--27--><RowDefinition Height="Auto"/>
+                                                <!--28--><RowDefinition Height="2"/>
+                                                <!--29--><RowDefinition Height="Auto"/>
+                                                <!--30--><RowDefinition Height="2"/>
+                                                <!--31--><RowDefinition Height="Auto"/>
+                                                <!--32--><RowDefinition Height="2"/>
+                                                <!--33--><RowDefinition Height="Auto"/>
+                                                <!--34--><RowDefinition Height="2"/>
+                                                
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <!--0--><ColumnDefinition Width="3"/>
+                                                <!--1--><ColumnDefinition Width="Auto"/>
+                                                <!--2--><ColumnDefinition Width="2"/>
+                                                <!--3--><ColumnDefinition Width="Auto"/>
+                                                <!--4--><ColumnDefinition Width="2"/>
+                                                <!--5--><ColumnDefinition Width="Auto"/>
+                                                <!--6--><ColumnDefinition Width="2"/>
+                                                <!--7--><ColumnDefinition Width="Auto"/>
+                                                <!--8--><ColumnDefinition Width="2"/>
+                                                <!--9--><ColumnDefinition Width="Auto"/>
+                                                <!--10--><ColumnDefinition Width="2"/>
+                                                <!--11--><ColumnDefinition Width="Auto"/>
+                                                <!--12--><ColumnDefinition Width="2"/>
+                                               
+                                            </Grid.ColumnDefinitions>
+
+                                            <BoxView BackgroundColor="#C8E1FF" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="13"/>
+                                            <BoxView BackgroundColor="#C8E1FF" Grid.Row="0"  Grid.Column="0"  Grid.RowSpan="35"/>
+                                            <StackLayout BackgroundColor="#C8E1FF" Margin="-7,-6,-320,-6" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
+                                                    <Label Text="mani" FontSize="Medium"  TextColor="#C8E1FF" />
+                                                </StackLayout>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="13"/>
+
+                                            <StackLayout BackgroundColor="#C8E1FF" Margin="-115,-6,-23,-6" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="3">
+                                                    <Label   />
+                                                </StackLayout>
+
+                                                <Label Text="Distance in Km" FontAttributes="Bold" Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="3" />
+
+                                                <StackLayout BackgroundColor="#C8E1FF" Margin="-16,-6,-10,-6" Grid.Row="3" Grid.Column="9" Grid.ColumnSpan="3">
+                                                    <Label Text="Avg Width" FontAttributes="Bold" Margin="-8,5,0,0" BackgroundColor="#C8E1FF" VerticalTextAlignment="End" HorizontalTextAlignment="Center"  Grid.Row="3" Grid.Column="9" Grid.ColumnSpan="3" />
+                                                </StackLayout>
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="13"/>
+                                            <StackLayout Grid.Row="5" Grid.Column="9">
+                                            <local:FrameRenders  Margin="0"    BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                    <local2:DecimalEntryControl x:Name="Avg1"  Text="{Binding AvgWidth_ELM_Left_Paint}" IsEnabled="{Binding AverageEnable}" MaxLength="9"  ClassId ="ClassPickGrey" FontSize="14"  WidthRequest="90" Margin="0" TextChanged="CustomeEntryNumberControl_TextChanged" Keyboard="Numeric" VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand"/>
+
+
+
+                                                </local:FrameRenders>
+                                            </StackLayout>
+
+                                            <BoxView BackgroundColor="#C8E1FF" Grid.Row="6" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="7" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg2" Text="{Binding AvgWidth_ELM_Left_Thermoplastic}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="8" Grid.Column="2"  Grid.ColumnSpan="11"/>
+                                               
+                                            <local:FrameRenders Grid.Row="9" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg3" Text="{Binding AvgWidth_ELM_Left_RoadStuds}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="10" Grid.Column="0"  Grid.ColumnSpan="13"/>
+                                               
+                                            <local:FrameRenders Grid.Row="11" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg4" Text="{Binding AvgWidth_CW_Asphalt}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="12" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="13" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg5" Text="{Binding AvgWidth_CW_Surface_Dressed}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="14" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="15" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg6" Text="{Binding AvgWidth_CW_Gravel}" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="16" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="17" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg7" Text="{Binding AvgWidth_CW_Earth}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="18" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="19" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg8" Text="{Binding AvgWidth_CW_Concrete}" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="20" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="21" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg9" Text="{Binding AvgWidth_CW_Sand}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="22" Grid.Column="2"  Grid.ColumnSpan="11"/>
+                                                <local:FrameRenders Grid.Row="23" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg10" Text="{Binding AvgWidth_Center_RoadStuds}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="24" Grid.Column="2"  Grid.ColumnSpan="11"/>
+                                                <local:FrameRenders Grid.Row="25" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg11" Text="{Binding AvgWidth_CLM_Left_Paint}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="26" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="27" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg12" Text="{Binding AvgWidth_CLM_Left_Thermoplastic}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="28" Grid.Column="0"  Grid.ColumnSpan="13"/>
+                                                <local:FrameRenders Grid.Row="29" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg13" Text="{Binding AvgWidth_ELM_Right_RoadStuds}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="30" Grid.Column="2"  Grid.ColumnSpan="11"/>
+                                                <local:FrameRenders Grid.Row="31" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg14" Text="{Binding AvgWidth_ELM_Right_Paint}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="32" Grid.Column="4"  Grid.ColumnSpan="9"/>
+                                                <local:FrameRenders Grid.Row="33" Grid.Column="9" Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                <local2:DecimalEntryControl x:Name="Avg15" Text="{Binding AvgWidth_ELM_Right_Thermoplastic}" MaxLength="9" IsEnabled="{Binding AverageEnable}" ClassId ="ClassPickGrey" TextChanged="CustomeEntryNumberControl_TextChanged" FontSize="14" Keyboard="Numeric"  />
+                                                </local:FrameRenders>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="34" Grid.Column="0"  Grid.ColumnSpan="13"/>
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="4" Grid.Column="10" Grid.RowSpan="31"/>
+
+
+                                                <Label Text="m" Grid.Row="5" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="7" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="9" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="11" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="13" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="15" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="17" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="19" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="21" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="23" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="25" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="27" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="29" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="31" Grid.Column="11" />
+                                                <Label Text="m" Grid.Row="33" Grid.Column="11" />
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="0" Grid.Column="8" Grid.RowSpan="35"/>
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="0" Grid.Column="12" Grid.RowSpan="35"/>
+
+
+                                            <Label Text="P"  Grid.Row="5" Grid.Column="7" />
+                                                <StackLayout Orientation="Horizontal" Grid.Row="7" Grid.Column="7">
+                                                    <Label Text="TP"   />
+                                                </StackLayout>
+                                            
+                                            <Label Text="R"  Grid.Row="9" Grid.Column="7" />
+                                            <Label Text="A"  Grid.Row="11" Grid.Column="7" />
+                                            <Label Text="D"  Grid.Row="13" Grid.Column="7" />
+                                            <Label Text="G"  Grid.Row="15" Grid.Column="7" />
+                                            <Label Text="E"  Grid.Row="17" Grid.Column="7" />
+                                            <Label Text="C"  Grid.Row="19" Grid.Column="7" />
+                                                <StackLayout Grid.Row="21" Grid.Column="7" Orientation="Horizontal">
+                                            <Label Text="SA"   />
+                                            </StackLayout>
+                                                <Label Text="R"  Grid.Row="23" Grid.Column="7" />
+                                            <Label Text="P"  Grid.Row="25" Grid.Column="7" />
+                                                <StackLayout Grid.Row="27" Grid.Column="7" Orientation="Horizontal">
+                                                    <Label Text="TP"   />
+                                                </StackLayout>
+                                            
+                                            <Label Text="R"  Grid.Row="29" Grid.Column="7" />
+                                            <Label Text="P"  Grid.Row="31" Grid.Column="7" />
+                                                <StackLayout Grid.Row="33" Grid.Column="7" Orientation="Horizontal">
+                                                    <Label Text="TP"   />
+                                                </StackLayout>
+                                           
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="4" Grid.Column="6" Grid.RowSpan="31"/>
+
+
+                                            <Label Text="Paint" FontSize="Small"  Grid.Row="5" Grid.Column="5" />
+                                            <Label Text="Thermoplastic" FontSize="Small"  Grid.Row="7" Grid.Column="5" />
+                                            <Label Text="Road Studs" FontSize="Small"  Grid.Row="9" Grid.Column="5" />
+                                            <Label Text="Asphalt" FontSize="Small"  Grid.Row="11" Grid.Column="5" />
+                                            <Label Text="Surface Dressed" FontSize="Small"  Grid.Row="13" Grid.Column="5" />
+                                            <Label Text="Gravel" FontSize="Small"  Grid.Row="15" Grid.Column="5" />
+                                            <Label Text="Earth" FontSize="Small"  Grid.Row="17" Grid.Column="5" />
+                                            <Label Text="Concrete" FontSize="Small"  Grid.Row="19" Grid.Column="5" />
+                                            <Label Text="Sand" FontSize="Small"  Grid.Row="21" Grid.Column="5" />
+                                            <Label Text="Centre Road Studs" FontSize="Small"  Grid.Row="23" Grid.Column="5" />
+                                            <Label Text="Paint" FontSize="Small"  Grid.Row="25" Grid.Column="5" />
+                                            <Label Text="Thermoplastic" FontSize="Small"  Grid.Row="27" Grid.Column="5" />
+                                            <Label Text="Road Studs" FontSize="Small"  Grid.Row="29" Grid.Column="5" />
+                                            <Label Text="Paint" FontSize="Small"  Grid.Row="31" Grid.Column="5" />
+                                            <Label Text="Thermoplastic" FontSize="Small"  Grid.Row="33" Grid.Column="5" />
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="4" Grid.Column="4" Grid.RowSpan="5"/>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="10" Grid.Column="4" Grid.RowSpan="13"/>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="24" Grid.Column="4" Grid.RowSpan="5"/>
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="30" Grid.Column="4" Grid.RowSpan="5"/>
+
+
+
+                                            <Label Text="Edge Line" FontSize="Small" VerticalTextAlignment="End"  Grid.Row="5" Grid.Column="3" Margin="0,0,0,-18" />
+                                            <Label Text="PAVEMENT" FontSize="Small" VerticalTextAlignment="End"  Grid.Row="15" Grid.Column="3" Margin="0,0,0,-18"/>
+                                            <Label Text="Centre Line" FontSize="Small" VerticalTextAlignment="End"  Grid.Row="25" Grid.Column="3" Margin="0,0,0,-18"/>
+                                            <Label Text="Edge Line" FontSize="Small" VerticalTextAlignment="End"  Grid.Row="31" Grid.Column="3" Margin="0,0,0,-18"/>
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="4" Grid.Column="2" Grid.RowSpan="31"/>
+
+
+                                            <Label Text="L" FontSize="Small" WidthRequest="5" Grid.Row="5" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="E"  FontSize="Small"  Grid.Row="6" Grid.Column="1" Margin="-2,-10,-2,-10" />
+                                            <Label Text="F"   Grid.Row="7" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="T"   Grid.Row="8" Grid.Column="1" Margin="-2,-10,-2,-10"  />
+
+                                            <Label Text="C"   Grid.Row="14" Grid.Column="1" Margin="-2,-10,-2,-10" />
+                                            <Label Text="A"  Grid.Row="15" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="R"   Grid.Row="16" Grid.Column="1" Margin="-2,-10,-2,-10" />
+                                            <Label Text="R"  Grid.Row="17" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="I"   Grid.Row="18" Grid.Column="1" Margin="-2,-10,-2,-10"/>
+                                            <Label Text="A"   Grid.Row="19" Grid.Column="1" Margin="-2,0,-2,0" />
+                                            <Label Text="G"   Grid.Row="20" Grid.Column="1" Margin="-2,-10,-2,-10"/>
+                                            <Label Text="E"   Grid.Row="21" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="W"   Grid.Row="22" Grid.Column="1" Margin="-2,-10,-2,-10"/>
+                                            <Label Text="A"   Grid.Row="23" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="Y"   Grid.Row="24" Grid.Column="1" Margin="-2,-10,-2,-10"/>
+
+                                            <Label Text="R"   Grid.Row="29" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="I"   Grid.Row="30" Grid.Column="1" Margin="-2,-10,-2,-10" />
+                                            <Label Text="G"   Grid.Row="31" Grid.Column="1" Margin="-2,0,-2,0"  />
+                                            <Label Text="H"   Grid.Row="32" Grid.Column="1" Margin="-2,-10,-2,-10"  />
+                                            <Label Text="T"   Grid.Row="33" Grid.Column="1" Margin="-2,-2,-2,-5"  />
+
+
+
+
+                                        </Grid>
+                                    </StackLayout>
+                                    
+                                    <ScrollView Orientation="Horizontal" Margin="-5,0,0,0">
+                                        <StackLayout BackgroundColor="White" Margin="0,0,0,0" Padding="0" Spacing="0">
+                                            <StackLayout BackgroundColor="#C8E1FF" HeightRequest="42"  Margin="-10,0,0,0">
+
+                                                <Label Text="CONDITION 1,2 or 3 ONLY" FontAttributes="Bold"  HorizontalOptions="CenterAndExpand"/>
+                                            </StackLayout>
+                                           
+                                            <StackLayout BackgroundColor="#C8E1FF" Margin="-40,0,0,0" HeightRequest="28" Spacing="0"  BindableLayout.ItemsSource="{Binding HeaderCollection}" Orientation="Horizontal">
+                                                <BindableLayout.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid HorizontalOptions="CenterAndExpand">
+                                                            <Label HorizontalTextAlignment="Center" WidthRequest="200">
+                                                                <Label.FormattedText>
+                                                                    <FormattedString>
+                                                                        <Span Text="{Binding FrmCH}" FontAttributes="Bold" />
+                                                                        <Span Text="  to  " FontAttributes="Bold"/>
+                                                                        <Span Text="{Binding ToCH}" FontAttributes="Bold"/>
+                                                                        
+                                                                    </FormattedString>
+                                                                </Label.FormattedText>
+                                                            </Label>
+
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </BindableLayout.ItemTemplate>
+                                                </StackLayout>
+
+                                          
+                                            <ScrollView Orientation="Horizontal" >
+                                                <StackLayout  >
+                                                    <StackLayout HeightRequest="34" x:Name="List"  BindableLayout.ItemsSource="{Binding ELM_Left_Paint}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}"    TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="ELM_Left_Paint" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="37" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding ELM_Left_Thermoplastic}"  Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="white" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="ELM_Left_Thermoplastic" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="37" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding ELM_Left_RoadStuds}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="ELM_Left_RoadStuds" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="35" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CW_Asphalt}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CW_Asphalt" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+
+                                                    <StackLayout HeightRequest="37" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CW_Surface}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CW_Surface" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="35" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CW_Gravel}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CW_Gravel" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="37" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CW_Earth}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CW_Earth" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="35" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CW_Concrete}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CW_Concrete" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="37" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CW_Sand}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CW_Sand" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="36" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CW_Center_RoadStuds}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CW_Center_RoadStuds" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="36" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CLM_Paint}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CLM_Paint" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="38" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding CLM_Thermoplastic}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="CLM_Thermoplastic" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="36" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding ELM_Right_RoadStuds}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="ELM_Right_RoadStuds" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="38" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding ELM_Right_Paint}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}" TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="ELM_Right_Paint" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                    <StackLayout HeightRequest="36" Margin="0,-7,0,0" BindableLayout.ItemsSource="{Binding ELM_Right_ThermoplasticList}" Orientation="Horizontal" Spacing="0">
+                                                        <BindableLayout.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid >
+                                                                    <local:FrameRenders Margin="0"  BackgroundColor="White" IsClippedToBounds="True" Padding="0" ColorName="LightGray"   FrameCornerRadius="0" BorderColor="Black" >
+                                                                        <localss:TextChangedEventToCommandEntryControl Text="{Binding Condition}"  TextChangedCommand="{Binding BindingContext.EntryTextChangedCommand, Source={x:Reference List}}" ReturnCommandParameter="ELM_Right_ThermoplasticList" WidthRequest="40" Keyboard="Numeric" IsEnabled="{Binding IsEnable}" BackgroundColor="{Binding Color}"/>
+                                                                    </local:FrameRenders>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </BindableLayout.ItemTemplate>
+                                                    </StackLayout>
+                                                </StackLayout>
+                                            </ScrollView>
+                                        </StackLayout>
+                                    </ScrollView>
+                                    <StackLayout  BackgroundColor="#E2EFD9" Margin="-6.5,1,0,0">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <!--0--><RowDefinition Height="2"/>
+                                                <!--1--><RowDefinition Height="17"/>
+                                                <!--2--><RowDefinition Height="2"/>
+                                                <!--3--><RowDefinition Height="Auto"/>
+                                                <!--4--><RowDefinition Height="2"/>
+                                                <!--5--><RowDefinition Height="Auto"/>
+                                                <!--6--><RowDefinition Height="2"/>
+                                                <!--7--><RowDefinition Height="Auto"/>
+                                                <!--8--><RowDefinition Height="2"/>
+                                                <!--9--><RowDefinition Height="Auto"/>
+                                                <!--10--><RowDefinition Height="2"/>
+                                                <!--11--><RowDefinition Height="Auto"/>
+                                                <!--12--><RowDefinition Height="2"/>
+                                                <!--13--><RowDefinition Height="Auto"/>
+                                                <!--14--><RowDefinition Height="2"/>
+                                                <!--15--><RowDefinition Height="Auto"/>
+                                                <!--16--><RowDefinition Height="2"/>
+                                                <!--17--><RowDefinition Height="Auto"/>
+                                                <!--18--><RowDefinition Height="2"/>
+                                                <!--19--><RowDefinition Height="Auto"/>
+                                                <!--20--><RowDefinition Height="2"/>
+                                                <!--21--><RowDefinition Height="Auto"/>
+                                                <!--22--><RowDefinition Height="2"/>
+                                                <!--23--><RowDefinition Height="Auto"/>
+                                                <!--24--><RowDefinition Height="2"/>
+                                                <!--25--><RowDefinition Height="Auto"/>
+                                                <!--26--><RowDefinition Height="2"/>
+                                                <!--27--><RowDefinition Height="Auto"/>
+                                                <!--28--><RowDefinition Height="2"/>
+                                                <!--29--><RowDefinition Height="Auto"/>
+                                                <!--30--><RowDefinition Height="2"/>
+                                                <!--31--><RowDefinition Height="Auto"/>
+                                                <!--32--><RowDefinition Height="2"/>
+                                                <!--33--><RowDefinition Height="Auto"/>
+                                                <!--34--><RowDefinition Height="2"/>
+
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <!--0--><ColumnDefinition Width="2"/>
+                                                <!--1--><ColumnDefinition Width="Auto"/>
+                                                <!--2--><ColumnDefinition Width="2"/>
+                                                <!--3--><ColumnDefinition Width="Auto"/>
+                                                <!--4--><ColumnDefinition Width="2"/>
+                                                <!--5--><ColumnDefinition Width="Auto"/>
+                                                <!--6--><ColumnDefinition Width="2"/>
+                                                <!--7--><ColumnDefinition Width="Auto"/>
+                                                <!--8--><ColumnDefinition Width="2"/>
+                                                <!--9--><ColumnDefinition Width="Auto"/>
+                                                <!--10--><ColumnDefinition Width="2"/>
+                                            </Grid.ColumnDefinitions>
+
+
+                                            <BoxView BackgroundColor="Transparent" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                            <BoxView BackgroundColor="#C8E1FF" Grid.Row="0"  Grid.Column="0"  Grid.RowSpan="34"/>
+                                            <Label Text="CONDITION" Grid.Row="1" HorizontalOptions="Center" Grid.Column="1" Grid.ColumnSpan="10" />
+                                            <BoxView BackgroundColor="#C8E1FF" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                            <Label Text="no" IsVisible="False" Grid.Row="3"  Grid.Column="1" Grid.ColumnSpan="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="2"  Grid.Column="2"  Grid.RowSpan="33"/>
+
+                                            <Label Text="1" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" Margin="-2,0,0,0" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="2"  Grid.Column="4"  Grid.RowSpan="33"/>
+
+                                            <Label Text="2" Grid.Row="3" Grid.Column="5" Grid.ColumnSpan="2" Margin="-2,0,0,0" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="2"  Grid.Column="6"  Grid.RowSpan="33"/>
+
+                                            <Label Text="3" Grid.Row="3" Grid.Column="7" Grid.ColumnSpan="2" Margin="-2,0,0,0" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="2"  Grid.Column="8"  Grid.RowSpan="33"/>
+
+                                            <Label Text="Total" Grid.Row="3" FontSize="Small" Grid.Column="9"  />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="0"  Grid.Column="10"  Grid.RowSpan="35"/>
+
+
+
+
+
+
+
+                                            <Label Text="Km" Grid.Row="5" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="7" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="9" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="11" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="13" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="15" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="17" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="19" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="21" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="23" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="25" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="27" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="29" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="31" Grid.Column="1" />
+                                            <Label Text="Km" Grid.Row="33" Grid.Column="1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="4" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding ELM_Left_Paint_1}" Grid.Row="5" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="6" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding ELM_Left_Thermoplastic_1}" Grid.Row="7" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="8" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding ELM_Left_RoadStuds_1}" Grid.Row="9" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="10" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CW_Asphalt_1}" Grid.Row="11" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="12" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CW_Surface_1}" Grid.Row="13" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="14" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CW_Gravel_1}" Grid.Row="15" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="16" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CW_Earth_1}" Grid.Row="17" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="18" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CW_Concrete_1}" Grid.Row="19" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="20" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CW_Sand_1}" Grid.Row="21" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="22" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CW_Center_RoadStuds_1}" Grid.Row="23" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="24" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CLM_Paint_1}" Grid.Row="25" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="26" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding CLM_Thermoplastic_1}" Grid.Row="27" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="28" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding ELM_Right_RoadStuds_1}" Grid.Row="29" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="30" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding ELM_Right_Paint_1}" Grid.Row="31" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="32" Grid.Column="0"  Grid.ColumnSpan="11"/>
+                                                <Label Text="{Binding ELM_Right_ThermoplasticList_1}" Grid.Row="33" Grid.Column="3" />
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="34" Grid.Column="0"  Grid.ColumnSpan="11"/>
+
+                                                <BoxView BackgroundColor="#C8E1FF" Grid.Row="4" Grid.Column="0" Grid.RowSpan="31"/>
+
+
+                                                <Label Text="{Binding ELM_Left_Paint_2}" Grid.Row="5" Grid.Column="5" />
+                                                <Label Text="{Binding ELM_Left_Thermoplastic_2}" Grid.Row="7" Grid.Column="5" />
+                                                <Label Text="{Binding ELM_Left_RoadStuds_2}" Grid.Row="9" Grid.Column="5" />
+                                                <Label Text="{Binding CW_Asphalt_2}" Grid.Row="11" Grid.Column="5" />
+                                                <Label Text="{Binding CW_Surface_2}" Grid.Row="13" Grid.Column="5" />
+                                                <Label Text="{Binding CW_Gravel_2}" Grid.Row="15" Grid.Column="5" />
+                                                <Label Text="{Binding CW_Earth_2}" Grid.Row="17" Grid.Column="5" />
+                                                <Label Text="{Binding CW_Concrete_2}" Grid.Row="19" Grid.Column="5" />
+                                                <Label Text="{Binding CW_Sand_2}" Grid.Row="21" Grid.Column="5" />
+                                                <Label Text="{Binding CW_Center_RoadStuds_2}" Grid.Row="23" Grid.Column="5" />
+                                                <Label Text="{Binding CLM_Paint_2}" Grid.Row="25" Grid.Column="5" />
+                                                <Label Text="{Binding CLM_Thermoplastic_2}" Grid.Row="27" Grid.Column="5" />
+                                                <Label Text="{Binding ELM_Right_RoadStuds_2}" Grid.Row="29" Grid.Column="5" />
+                                                <Label Text="{Binding ELM_Right_Paint_2}" Grid.Row="31" Grid.Column="5" />
+                                                <Label Text="{Binding ELM_Right_ThermoplasticList_2}" Grid.Row="33" Grid.Column="5" />
+
+
+
+
+                                                <Label Text="{Binding ELM_Left_Paint_3}" Grid.Row="5" Grid.Column="7" />
+                                                <Label Text="{Binding ELM_Left_Thermoplastic_3}" Grid.Row="7" Grid.Column="7" />
+                                                <Label Text="{Binding ELM_Left_RoadStuds_3}" Grid.Row="9" Grid.Column="7" />
+                                                <Label Text="{Binding CW_Asphalt_3}" Grid.Row="11" Grid.Column="7" />
+                                                <Label Text="{Binding CW_Surface_3}" Grid.Row="13" Grid.Column="7" />
+                                                <Label Text="{Binding CW_Gravel_3}" Grid.Row="15" Grid.Column="7" />
+                                                <Label Text="{Binding CW_Earth_3}" Grid.Row="17" Grid.Column="7" />
+                                                <Label Text="{Binding CW_Concrete_3}" Grid.Row="19" Grid.Column="7" />
+                                                <Label Text="{Binding CW_Sand_3}" Grid.Row="21" Grid.Column="7" />
+                                                <Label Text="{Binding CW_Center_RoadStuds_3}" Grid.Row="23" Grid.Column="7" />
+                                                <Label Text="{Binding CLM_Paint_3}" Grid.Row="25" Grid.Column="7" />
+                                                <Label Text="{Binding CLM_Thermoplastic_3}" Grid.Row="27" Grid.Column="7" />
+                                                <Label Text="{Binding ELM_Right_RoadStuds_3}" Grid.Row="29" Grid.Column="7" />
+                                                <Label Text="{Binding ELM_Right_Paint_3}" Grid.Row="31" Grid.Column="7" />
+                                                <Label Text="{Binding ELM_Right_ThermoplasticList_3}" Grid.Row="33" Grid.Column="7" />
+
+
+                                                <Label Text="{Binding ELM_Left_Paint_Total}" Grid.Row="5" Grid.Column="9" />
+                                                <Label Text="{Binding ELM_Left_Thermoplastic_Total}" Grid.Row="7" Grid.Column="9" />
+                                                <Label Text="{Binding ELM_Left_RoadStuds_Total}" Grid.Row="9" Grid.Column="9" />
+                                                <Label Text="{Binding CW_Asphalt_Total}" Grid.Row="11" Grid.Column="9" />
+                                                <Label Text="{Binding CW_Surface_Total}" Grid.Row="13" Grid.Column="9" />
+                                                <Label Text="{Binding CW_Gravel_Total}" Grid.Row="15" Grid.Column="9" />
+                                                <Label Text="{Binding CW_Earth_Total}" Grid.Row="17" Grid.Column="9" />
+                                                <Label Text="{Binding CW_Concrete_Total}" Grid.Row="19" Grid.Column="9" />
+                                                <Label Text="{Binding CW_Sand_Total}" Grid.Row="21" Grid.Column="9" />
+                                                <Label Text="{Binding CW_Center_RoadStuds_Total}" Grid.Row="23" Grid.Column="9" />
+                                                <Label Text="{Binding CLM_Paint_Total}" Grid.Row="25" Grid.Column="9" />
+                                                <Label Text="{Binding CLM_Thermoplastic_Total}" Grid.Row="27" Grid.Column="9" />
+                                                <Label Text="{Binding ELM_Right_RoadStuds_Total}" Grid.Row="29" Grid.Column="9" />
+                                                <Label Text="{Binding ELM_Right_Paint_Total}" Grid.Row="31" Grid.Column="9" />
+                                                <Label Text="{Binding ELM_Right_ThermoplasticList_Total}" Grid.Row="33" Grid.Column="9" />
+
+                                        </Grid>
+                                    </StackLayout>
+
+                                </StackLayout>
+                               
+                            </StackLayout>
+
+                        </Frame>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <Frame Margin="0,20,0,20" HasShadow="True" Grid.Row="5" Grid.ColumnSpan="3" BorderColor="#bfbfbf">
+                            <StackLayout>
+                                <Label Text="Crew Leader:" Opacity="0.8" TextColor="Black" FontSize="Large" FontAttributes="Bold" Margin="15,0,0,0"/>
+                                <!--<StackLayout Orientation="Horizontal">
+                                    <Label Text="           Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+
+                                </StackLayout>
+
+                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                    <local:FrameRenders HeightRequest="125" Grid.Row="5"  Grid.ColumnSpan="2" Grid.Column="1" BackgroundColor="White" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black">
+                                        <forms:SignaturePadView  IsEnabled="{Binding CanSave}" BackgroundImage="{Binding CrewSign}" InputTransparent="{Binding NotToEdit}" HeightRequest="200" WidthRequest="50" Margin="0,0,0,-28" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2"  />
+                                    </local:FrameRenders>
+                                </Frame>-->
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="User ID" FontSize="Medium" Grid.Row="0" Grid.Column="0" TextColor="Black" Opacity="0.8" Margin="20,0,0,0"  FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"  Margin="20,0,0,0" FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                 
+
+                                    <local:FrameRenders Grid.Row="1" Grid.Column="0"  Margin="20,2,0,2" BackgroundColor="White" IsClippedToBounds="True" Padding="10,0,10,0" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:ExtendedPicker IsEnabled="{Binding CanSave}" Title="Select Users ID" ItemsSource="{Binding DDCrewUserListListItems}" ItemDisplayBinding="{Binding Text}"  SelectedIndex="{Binding SelectedCrewIndex}"  InputTransparent="{Binding NotToEdit}"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray" />
+                                    </local:FrameRenders>
+                                    <local:FrameRenders Grid.Row="1" Grid.Column="1" Margin="20,2,0,2" BackgroundColor="#f2f2f2"   IsClippedToBounds="True" Padding="10,0,10,0" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:EntryControl  Text="{Binding CrewName}" IsEnabled="{Binding IsCrewNameEnabled}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default"  />
+                                    </local:FrameRenders>
+                                    
+
+
+                                </Grid>
+                               
+                            </StackLayout>
+                        </Frame>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <Frame Margin="0,20,0,20" HasShadow="True" Grid.Row="6" Grid.ColumnSpan="3" BorderColor="#bfbfbf">
+                            <StackLayout>
+                                <Label Text="Inspected By:" Opacity="0.8" TextColor="Black" FontSize="Large" FontAttributes="Bold" Margin="15,0,0,0"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="           Signature" Opacity="0.8" TextColor="Black" FontSize="Medium" FontAttributes="Bold" Margin="0,-5,0,0"/>
+                                </StackLayout>
+
+                                <Button Text="Redo"  IsVisible="false" Command="{Binding inspredosign}"  BackgroundColor="White"  CornerRadius="10"  Margin="0,-25,55,0" BorderWidth="2" BorderColor="#1D2D50" TextColor="#1D2D50" HorizontalOptions="End" VerticalOptions="End"></Button>
+                                <!--IsVisible="{Binding CanSave}"-->
+                                <Frame Margin="50,0,50,0" CornerRadius="15" HasShadow="True" BackgroundColor="White"  BorderColor="#bfbfbf">
+                                    <local:FrameRenders  BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <forms:SignaturePadView x:Name="InspPadView" IsEnabled="{Binding CanSave}" BackgroundImage="{Binding InspSign}" InputTransparent="{Binding NotToEdit}" HeightRequest="200" WidthRequest="50" Margin="0,0,0,-28" BackgroundColor="White" StrokeColor="Black"  StrokeWidth="2"  />
+                                    </local:FrameRenders>
+                                </Frame>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="User ID" FontSize="Medium" Grid.Row="0" Grid.Column="0" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                    <Label Text="Name" FontSize="Medium" Grid.Row="0" Grid.Column="1" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                    <Label Text="Designation" FontSize="Medium" Grid.Row="0" Grid.Column="2" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+                                    <Label Text="Date(DD-MM-YYYY)" FontSize="19" Grid.Row="0" Grid.Column="3" TextColor="Black" Opacity="0.8"   FontFamily="{StaticResource ProximaNovaRegularFont}"  />
+
+                                  
+
+                                    <local:FrameRenders Grid.Row="1" Grid.Column="0" Margin="0,2,0,2" BackgroundColor="White" IsClippedToBounds="True" Padding="10,0,10,0" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:ExtendedPicker Title="Select Users ID" IsEnabled="{Binding CanSave}" ItemsSource="{Binding DDInspUserListListItems}" ItemDisplayBinding="{Binding Text}"  SelectedIndex="{Binding SelectedInspIndex}"  InputTransparent="{Binding NotToEdit}"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" TextColor="Gray" />
+                                    </local:FrameRenders>
+                                    <local:FrameRenders Grid.Row="1" Grid.Column="1" Margin="0,2,0,2" BackgroundColor="#f2f2f2"   IsClippedToBounds="True" Padding="10,0,10,0" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:EntryControl Text="{Binding InspName}" IsEnabled="{Binding IsInspNameEnabled}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                                    </local:FrameRenders>
+                                    <local:FrameRenders Grid.Row="1" Grid.Column="2" Margin="0,2,0,2" BackgroundColor="#f2f2f2"   IsClippedToBounds="True" Padding="10,0,10,0" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                        <local1:EntryControl Text="{Binding InspDesignation}" IsEnabled="{Binding IsInspNameEnabled}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                                    </local:FrameRenders>
+
+                                    <StackLayout VerticalOptions="Center" Grid.Row="1" Grid.Column="3">
+                                        <local:FrameRenders   Margin="0,2,0,2" BackgroundColor="White" IsClippedToBounds="True" Padding="10,0,10,0" ColorName="LightGray"   FrameCornerRadius="10" BorderColor="Black" >
+                                            <local1:CustomDatePicker IsEnabled="{Binding CanSave}"  NullText="dd-mm-yyyy" NullableDate="{Binding InspDate}" MinimumDate="{Binding MinimumDate}" MaximumDate="{Binding MaximumDate}"  InputTransparent="{Binding NotToEdit}" Format="dd-MM-yyyy" BackgroundColor="White"    VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray"   />
+                                        </local:FrameRenders>
+                                    </StackLayout>
+
+                                </Grid>
+                                <Label Text="Remarks/Sketch (if any)" Grid.Row="2" Grid.Column="0"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                <local:FrameRenders Grid.Row="3" HeightRequest="150"  Grid.Column="0" Grid.ColumnSpan="5"   BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                    <local1:CustomEditor Text="{Binding Remarks}"  TextColor="Black" ClassId="ClassDetails" IsEnabled="{Binding AverageEnable}" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                                </local:FrameRenders>
+
+                            </StackLayout>
+                        </Frame>
+
+
+
+                        
+
+
+                    </Grid>
+
+                </ScrollView>
+
+
+                
+                <Grid Grid.Row="1" Grid.Column="0" Padding="10,5,10,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" BackgroundColor="Transparent"  Text=""/>
+
+
+
+                    <!--<Button Text="Cancel" TextColor="White" Command="{Binding FormACancelCommand}" Grid.Row="0" Grid.Column="1" FontSize="18" BackgroundColor="#1D2D50" CornerRadius="5" ></Button>-->
+
+
+
+
+                    <Button Command="{Binding CancelAction}" Grid.Row="0" Grid.Column="1" Style="{x:StaticResource TransparentButtonStyle}" Text="Cancel"/>
+                    <Button IsVisible="{Binding CanSave}" Command="{Binding SaveAction}"  Grid.Row="0" Grid.Column="2" Style="{x:StaticResource ButtonStyle}" Text="Save"/>
+                    <Button IsVisible="{Binding CanSave}" Command="{Binding SubmitAction}" Grid.Row="0" Grid.Column="3" Style="{x:StaticResource ButtonStyle}" Text="Submit"/>
+                </Grid>
+
+            </Grid>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

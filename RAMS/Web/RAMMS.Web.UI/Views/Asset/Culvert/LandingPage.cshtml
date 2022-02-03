@@ -1,0 +1,183 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using RAMMS.Domain.Models;
+
+<script>
+    function detailSearch() {
+        var x = document.getElementById("advSearch");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+
+
+@*BreadCrumbs*@
+<div class="bg-body-light box-sdw-0020 br-rds-25 m-2">
+    <div class="content content-full p-3">
+        <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
+            <h1 class="flex-sm-fill h3 my-2">
+                Culvert
+            </h1>
+            <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-alt" style="background:transparent">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item">Asset Listing</li>
+                    <li class="breadcrumb-item" aria-current="page">
+                        <a class="link-fx" href="">Culvert</a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+@* Culvert Smart & Detail Search *@
+<div class="content">
+    @using (Html.BeginForm("AssetsList", "Assets"))
+    {
+        <form id="culvertSearchForm" method="POST">
+            <div class="row justify-content-center mb-4">
+                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
+                    <div class="widget-content widget-content-area br-6">
+                        <div class="input-group">
+                            @Html.TextBoxFor(m => m.AssetListRequest.SmartInputValue, new { @Id = "CulvertSmartSearch", placeholder = "Search...", @class = "form-control  widget-content-area" })
+                            <div class="input-group-append">
+                                <div class="btn-group">
+                                    <button id="culvertSearchBtn" type="submit" class="btn btn-sm btn-alt-primary theme-clr js-tooltip-enabled"><i class="fa fa-fw fa-search"></i></button>
+                                    <button id="culvertSearchExpBtn" type="button" onclick="detailSearch()" class="btn btn-sm btn-alt-primary theme-clr js-tooltip-enabled"> <i class="fa fa-align-left"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Detail Search Screen*@
+
+            <div id="detailSearch">
+                <div class="row mt-5" id="advSearch" style="display:none">
+                    <partial name="~/Views/Asset/SearchBridge.cshtml" />
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
+<!-- Main Container -->
+
+<main id="main-container" style="padding-top:2px">
+    @*Pagination & Add*@
+    <div class="p-2">
+        <div class="bg-body-light box-sdw-0020 col-12" style="border-radius: 30px;">
+            <div class="row d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center table-detail-container pt-2">
+                <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 pb-1">
+                    @Html.PagedListPager((IPagedList)Model.assetList, Page_No => Url.Action("AssetsList", "Assets", new RAMMS.DTO.RequestBO.AssetListRequestDTO { Page_No = Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, GroupCode = "DI" }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 pb-1">
+                    Page Size: @Html.DropDownList("pageSize")
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+                    Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+                </div>
+                <div class="col-xl-3 col-lg-5 col-md-6 col-sm-12 pb-1 ">
+                    <button class=" btn btn-outline-info theme-clr" onclick="location.href='@Url.Action("Downloadgridresults", "Download")'">Download</button>
+                    <button type="button" class="btn btn-outline-info theme-clr" data-toggle="modal" data-target="#culvertAddModal">Add Culvert</button>
+                </div>
+            </div>
+        </div>
+        @* Add Culvert Modal *@
+        <div class="modal fade" id="culvertAddModal" tabindex="-1" role="dialog"
+             aria-labelledby="culvertAddModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="culvertAddModalCenterTitle"> Culvert Property</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <partial name="~/views/Asset/Ditches/AddDitches.cshtml" />
+                </div>
+            </div>
+        </div>
+        <div class="main-container" id="container">
+            <!--  BEGIN CONTENT AREA  GridView -->
+            <div id="content" class="main-content ">
+                <div class="layout-px-spacing">
+                    <div class="row layout-top-spacing" id="cancel-row">
+                        <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                            <div class="widget-content widget-content-area br-6">
+                                <div class="table-responsive mb-4 mt-4">
+                                    <table id="culvertGridView" class="table table-hover non-hover" style="width:100%">
+                                        <thead class="sticky-col first-col">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Culvert ID</th>
+                                                <th>RMU Name</th>
+                                                <th>Section Name</th>
+                                                <th>Section Code</th>
+                                                <th>Road Code</th>
+                                                <th>Location CH</th>
+                                                <th>Culvert Diameter</th>
+                                                <th>Culvert Width</th>
+                                                <th>Culvert Height</th>
+                                                <th>Length</th>
+                                                <th>Asset Type</th>
+                                                <th>Culvert Material</th>
+                                                <th>Barrel Number</th>
+                                                <th>Bound</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.assetList)
+                                            {
+                                                <tr>
+                                                    <td> @Html.DisplayFor(modelItem => item.No)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.AssetId)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.RMUCode)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.SecName)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.SecCode)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.RdCode)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.LocChKm)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.Diameter)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.Width)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.Height)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.Length)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.GrpType)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.Material)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.BarrelNo)</td>
+                                                    <td> @Html.DisplayFor(modelItem => item.Bound)</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  END CONTENT AREA GridView -->
+        </div>
+        @*Pagination*@
+        <div class="bg-body-light box-sdw-0020 col-12" style="border-radius: 30px;">
+            <div class="row d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center table-detail-container pt-2">
+                <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 pb-1">
+                    @Html.PagedListPager((IPagedList)Model.assetList, Page_No => Url.Action("AssetsList", "Assets",
+                 new RAMMS.DTO.RequestBO.AssetListRequestDTO { Page_No = Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, GroupCode = "DI" }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 pb-1">
+                    Page Size: @Html.DropDownList("pageSize")
+                </div>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+                    Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+                </div>
+                <div class="col-xl-3 col-lg-5 col-md-6 col-sm-12 pb-1"></div>
+            </div>
+        </div>
+        @*Pagination*@
+    </div>
+</main>
+
+

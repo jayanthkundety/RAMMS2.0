@@ -1,0 +1,284 @@
+﻿@{
+    ViewData["Title"] = "ASSET MAINTANENCE - Form QA2 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form QA2 - Road Asset Management and Maintenance System";
+}
+@model RAMMS.DTO.RequestBO.FormQa2DtlRequestDTO;
+@{
+    var dtinit = Model.DtInitialCond.HasValue ? Model.DtInitialCond.Value.ToString("yyyy-mm-dd") : "";
+    var dt1 = Model.DtQaI.HasValue ? Model.DtQaI.Value.ToString("yyyy-mm-dd") : "";
+    var dt2 = Model.DtQaIi.HasValue ? Model.DtQaIi.Value.ToString("yyyy-mm-dd") : "";
+    var dt3 = Model.DtQaIii.HasValue ? Model.DtQaIii.Value.ToString("yyyy-mm-dd") : "";
+    var dt4 = Model.DtQaIv.HasValue ? Model.DtQaIv.Value.ToString("yyyy-mm-dd") : "";
+
+    var wws = ViewData["WWS"] as IEnumerable<SelectListItem>;
+    var lstType = ViewData["CycleType"] as IEnumerable<SelectListItem>;
+    var lstRating = ViewData["Rating"] as IEnumerable<SelectListItem>;
+    var auditedby = ViewData["Users"] as IEnumerable<SelectListItem>;
+    var siteref = ViewData["lookupSiteReg"] as IEnumerable<SelectListItem>;
+    var s1referece = new List<SelectListItem>();
+    s1referece.Add(new SelectListItem { Text = "MM/Form S1/Ref/1", Value = "1" });
+
+}
+@*<script src="~/js/validate.js"></script>*@
+
+<input type="hidden" id="hdnQa2DetailPkId" value="@Model.No" />
+<input type="hidden" id="dtlRoadcode" />
+<div class="modal-body p-0">
+    <form id="AddDetailFormQA2">
+        <div class="mh-182 bg-white py-4">
+            <div class="col-lg-12 float-left">
+                <div class="form-group col-lg-4 mb-0">
+                    @Html.Label("Reference No.", "Reference No.")
+                    @Html.TextBoxFor(dtl => dtl.RefId, null, new { @Id = "QA2DtlRefNo", @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="form-group col-lg-8 mb-0">
+                    @Html.Label("Source", "Source")
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @Html.DropDownListFor(Ahdr => Ahdr.SourceType, (IEnumerable<SelectListItem>)ViewData["SourceType"], "Select Source", new { @Id = "dtlSourceType", @class = "form-control disableinput editdisable", @onchange = "bindST()" })
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="col-lg-4 form-group" id="dtlS1RefNoDiv">
+                    @Html.Label("Form S1 Ref No.", "Form S1 Ref No.")
+                    @Html.DropDownListFor(Ahdr => Ahdr.S1DtlRefNo, (IEnumerable
+       <SelectListItem>)ViewData["FormS1RefNos"], "Select S1 Ref No.", new { @Id = "dtlS1RefNo", @class = "form-control disableinput editdisable", @onchange = "bindS1Detil()" })
+
+                </div>
+                <div class="col-lg-4 form-group">
+                    @Html.Label("Activity Code", "Activity Code")
+                    @Html.DropDownListFor(Ahdr => Ahdr.WrkAct, (IEnumerable
+ <SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "dtlActCode", @class = "form-control disableinput editdisable  validate {required, Activity Code}", @onchange = "bindActDetail()" })
+
+                </div>
+                <div class="col-lg-4 form-group">
+                    @Html.Label("Activity Name", "Activity Name")
+                    @Html.TextBox("Activity Name", null, new { @Id = "dtlActName", @class = "form-control", @readonly = "readonly" })
+                </div>
+                <div class="col-lg-4 form-group">
+                    @Html.Label("Site Ref", "Site Ref")
+                    <input type="hidden" id="multiSiteHidden" value="@Model.SiteRef" />
+                    @Html.DropDownListFor(Adtl => Adtl.SiteRef, siteref, new { @Id = "dtlSiteRef", @class = "form-control disableinput editdisable validate {required, Site Ref.}", @multiple = "multiple" })
+
+                </div>
+                <div class="form-group col-lg-6 float-left mb-0">
+                    @Html.Label("Defect", "Defect")
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            @{
+
+                                var defCode = (IEnumerable<SelectListItem>)ViewData["DefectCode"];
+                            }
+                           @* @Html.DropDownListFor(Adtl => Adtl.DefCode, (IEnumerable<SelectListItem>)ViewData["DefectCode"], "Select Defect Code", new { @Id = "dtlDefect", @class = "form-control disableinput", @onchange = "bindDefCode()" })*@
+
+                            <select id="dtlDefect" class="form-control disableinput" onchange = "bindDefCode()" >
+                                <option value="">Select Defect Code</option>
+                                @foreach (var s in defCode)
+                                {
+                                    @if (Model.DefCode == s.Value)
+                                    {
+                                        <option selected="selected" value="@s.Value">@s.Text</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@s.Value">@s.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.TextBox("Defect", null, new { @Id = "dtlDefectDesc", @class = "form-control disableinput" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Location Chainage From", "Location Chainage From")
+                    <div class="row">
+                        <div class="col-6 float-left pr-0">
+                            <input id="dtlLocationchfrom" class="form-control disableinput editdisable validate {required,maxcl,5,number,Location Chainage From Km }" type="text" value="@Model.FrmCh" onkeypressvalidate="number,maxcl,5, Location Chainage From Km" maxlength="5">
+                        </div>
+                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                        <div class="col-5 float-left pl-0">
+                            <input id="dtlLocationchfromDec" class="form-control disableinput editdisable validate {required,maxcl,3,number, Location Chainage From M}" type="text" value="@Model.FrmChDeci" onkeypressvalidate="number,maxcl,3, Location Chainage From M" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Location Chainage To", "Location Chainage To")
+                    <div class="row">
+                        <div class="col-6 float-left pr-0">
+                            <input id="dtlLocationchto" class="form-control editdisable disableinput validate {required,maxcl,5,number, Location Chainage To Km}" type="text" value="@Model.ToCh" onkeypressvalidate="number,maxcl,5, Location Chainage To Km" maxlength="5">
+                        </div>
+                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                        <div class="col-5 float-left pl-0">
+                            <input id="dtlLocationchtoDec" class="form-control editdisable disableinput validate {required,maxcl,3,number, Location Chainage To M}" type="text" value="@Model.ToChDeci" onkeypressvalidate="number,maxcl,3, Location Chainage To M" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="col-lg-12 float-left mt-2 mb-4">
+                    <div class="w-100 border float-left">
+                        <div class="col-lg-12 sub-heading py-3 mb-0">
+                            QA Inspection Cycle
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row d-none d-lg-block">
+                                <div class="col-lg-3 float-left">@Html.Label("Audit Date (DD-MM-YYYY)", "Audit Date (DD-MM-YYYY)")</div>
+                                <div class="col-lg-3 float-left">@Html.Label("Cycle Type", "Cycle Type")</div>
+                                <div class="col-lg-4 float-left">@Html.Label("Rating", "Rating")</div>
+                            </div>
+                            @{
+                                var dt = Model.DtInitialCond;
+                                string initDt = dt.HasValue ? dt.Value.ToString("yyyy-MM-dd") : "";
+                                dt = Model.DtQaI;
+                                string qaIDt = dt.HasValue ? dt.Value.ToString("yyyy-MM-dd") : "";
+                                dt = Model.DtQaIi;
+                                string qaIiDt = dt.HasValue ? dt.Value.ToString("yyyy-MM-dd") : "";
+                                dt = Model.DtQaIii;
+                                string qaIiiDt = dt.HasValue ? dt.Value.ToString("yyyy-MM-dd") : "";
+                                dt = Model.DtQaIv;
+                                string qaIvDt = dt.HasValue ? dt.Value.ToString("yyyy-MM-dd") : "";
+
+                            }
+                            <div class="w-100 float-left lst-hr">
+                                <div class="row">
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Audit Date (DD-MM-YYYY)", "Audit Date (DD-MM-YYYY)", new { @class = "d-lg-none d-block" })
+                                        <input id="qaInitDate" type="date" value="@initDt" class="form-control disableinput editdisable validate {required, Initial Condition Audit Date}" />
+                                    </div>
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Cycle Type", "Cycle Type", new { @class = "d-lg-none d-block" })
+                                        @Html.TextBox("Initial Condition", "Initial Condition", new { @Id = "qaIniType", @readonly = "readonly", @class = "form-control editdisable " })
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        @Html.Label("Rating", "Rating", new { @class = "d-lg-none d-block" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.InitialCond, (IEnumerable
+                                        <SelectListItem>)lstRating, "Select", new { @Id = "qaIniRating", @class = "form-control disableinput editdisable validate {required, Initial Condition} validate {required, Initial Condition Rating}" })
+                                    </div>
+                                    <div class="d-lg-none d-block form-group w-100 hr"><hr /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Audit Date (DD-MM-YYYY)", "Audit Date (DD-MM-YYYY)", new { @class = "d-lg-none d-block" })
+                                        <input id="qa1Date" type="date" value="@qaIDt" class="form-control disableinput" />
+                                    </div>
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Cycle Type", "Cycle Type", new { @class = "d-lg-none d-block" })
+                                        @Html.TextBox("I", "I", new { @Id = "qa1Type", @readonly = "readonly", @class = "form-control " })
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        @Html.Label("Rating", "Rating", new { @class = "d-lg-none d-block" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.QaI, (IEnumerable
+                                        <SelectListItem>)lstRating, "Select", new { @Id = "qa1Rating", @class = "form-control disableinput " })
+                                    </div>
+                                    <div class="d-lg-none d-block form-group w-100 hr"><hr /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Audit Date (DD-MM-YYYY)", "Audit Date (DD-MM-YYYY)", new { @class = "d-lg-none d-block" })
+                                        <input id="qa2Date" type="date" value="@qaIiDt" class="form-control disableinput" />
+                                    </div>
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Cycle Type", "Cycle Type", new { @class = "d-lg-none d-block" })
+                                        @Html.TextBox("II", "II", new { @Id = "qa2Type", @readonly = "readonly", @class = "form-control " })
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        @Html.Label("Rating", "Rating", new { @class = "d-lg-none d-block" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.QaIi, (IEnumerable
+                                        <SelectListItem>)lstRating, "Select", new { @Id = "qa2Rating", @class = "form-control disableinput " })
+                                    </div>
+                                    <div class="d-lg-none d-block form-group w-100 hr"><hr /></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Audit Date (DD-MM-YYYY)", "Audit Date (DD-MM-YYYY)", new { @class = "d-lg-none d-block" })
+                                        <input id="qa3Date" type="date" value="@qaIiiDt" class="form-control disableinput" />
+                                    </div>
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Cycle Type", "Cycle Type", new { @class = "d-lg-none d-block" })
+                                        @Html.TextBox("III", "III", new { @Id = "qa3Type", @readonly = "readonly", @class = "form-control " })
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        @Html.Label("Rating", "Rating", new { @class = "d-lg-none d-block" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.QaIii, (IEnumerable
+                                        <SelectListItem>)lstRating, "Select", new { @Id = "qa3Rating", @class = "form-control disableinput " })
+                                    </div>
+                                    <div class="d-lg-none d-block form-group w-100 hr"><hr /></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Audit Date (DD-MM-YYYY)", "Audit Date (DD-MM-YYYY)", new { @class = "d-lg-none d-block" })
+                                        <input id="qa4Date" type="date" value="@qaIvDt" class="form-control disableinput" />
+                                    </div>
+                                    <div class="col-lg-3 form-group">
+                                        @Html.Label("Cycle Type", "Cycle Type", new { @class = "d-lg-none d-block" })
+                                        @Html.TextBox("IV", "IV", new { @Id = "qa4Type", @readonly = "readonly", @class = "form-control " })
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        @Html.Label("Rating", "Rating", new { @class = "d-lg-none d-block" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.QaIv, (IEnumerable
+                                        <SelectListItem>)lstRating, "Select", new { @Id = "qa4Rating", @class = "form-control disableinput " })
+                                    </div>
+                                    <div class="d-lg-none d-block form-group w-100 hr"><hr /></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 form-group">
+                    @Html.Label("Defect Description", "Defect Description")
+                    <input id="dtlDefectdescription" type="text" class="form-control disableinput validate {maxcl,4000,Defect Description }" value="@Model.DefDesc" onkeypressvalidate="maxcl,4000, Defect Description" maxlength="4000" />
+                </div>
+                <div class="col-lg-2 form-group">
+                    @Html.Label("WWS/13A Fol.", "WWS/13A Fol.")
+                    @Html.DropDownListFor(Ahdr => Ahdr.Wws13aFol, wws, "Select", new { @Id = "dtlWWS", @class = "form-control disableinput " })
+
+                </div>
+                @*<div class="col-lg-4 form-group">*@
+                @*@Html.Label("Rework Dimension (m)", "Rework Dimension (m)")
+                    <input id="dtlReworkdimention" type="text" class="form-control disableinput" value="@Model.RwrkDim" />*@
+                <div class="form-group col-lg-4">
+                    @Html.Label("Dimension (m)", "Dimension (m)")
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-md-6 in-lbl">
+                            <label for="L">L</label>
+                            @Html.TextBoxFor(m => m.DimLength, null, new { @Id = "DimLength", @class = "form-control disableinput validate {cdecimal,5,5, Length}", @onkeypressvalidate = "cdecimal,5,5,Length", @maxlength = "11" })
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 in-lbl">
+                            <label for="W">W</label>
+                            @Html.TextBoxFor(m => m.DimWidth, null, new { @Id = "DimWidth", @class = "form-control disableinput validate {cdecimal,5,5, Width}", @onkeypressvalidate = "cdecimal,5,5,Width", @maxlength = "11" })
+                        </div>
+                        <div class="form-group col-lg-4 col-md-6 in-lbl">
+                            <label for="W">H</label>
+                            @Html.TextBoxFor(m => m.DimHeight, null, new { @Id = "DimHeight", @class = "form-control disableinput validate {cdecimal,5,5, Height}", @onkeypressvalidate = "cdecimal,5,5,Height", @maxlength = "11" })
+                        </div>
+                    </div>
+                </div>
+                @*</div>*@
+                <div class="col-lg-2 form-group">
+                    @*TODO*@
+                    @{
+                        var hasIssued = Model.IssueNCN == true;
+                    }
+                    <div class="float-left text-white mb-0 mt-lg-4">
+                        <input type="checkbox" style="width:18px;height:18px;top:4px;" class="position-relative mr-1" checked="@hasIssued" id="dtlIssueNCN" disabled> @Html.Label("NCN Issued?", "NCN Issued?")
+                    </div>
+                </div>
+                <div class="col-lg-8 form-group txtarea-80">
+                    @Html.Label("Remarks", "Remarks")
+                    @Html.TextAreaFor(m => m.Remarks, new { @Id = "dtlRemarks", @class = "form-control disableinput validate {maxcl,4000,Remarks }", @onkeypressvalidate = "maxcl,4000, Remarks", @maxlength = "4000" })
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button id="" type="button" onclick="javascript:FormQA2AdddetailsModalClose();" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
+    <button id="" onclick="javascript:save(true)" ondblclick="javascript:void(0)" type="button" class="btn btn-sm btn-themebtn disablebtn">Save &amp; Continue</button>
+    <button id="" onclick="javascript:save(false)" ondblclick="javascript:void(0)" type="button" class="btn btn-sm btn-themebtn disablebtn">Save &amp; Exit</button>
+</div>

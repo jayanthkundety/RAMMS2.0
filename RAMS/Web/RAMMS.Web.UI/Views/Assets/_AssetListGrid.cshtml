@@ -1,0 +1,235 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using RAMMS.Domain.Models;
+
+@{
+    var AssetIdTitle = ViewBag.AssetTypeName;
+    var AssetTypeNamedata = ViewBag.AssetType;
+    bool isCulvert = ViewBag.AssetType == "CV";
+    bool isBridge = ViewBag.AssetType == "BR";
+    bool isDrain = ViewBag.AssetType == "DR";
+    bool isEdgeLine = ViewBag.AssetType == "ELM";
+    bool isDitch = ViewBag.AssetType == "DI";
+    bool isCenterLine = ViewBag.AssetType == "CLM";
+    bool isRoadStuds = ViewBag.AssetType == "RS";
+    bool isSign = ViewBag.AssetType == "SG";
+    bool isShoulder = ViewBag.AssetType == "SH";
+    bool isCarriageway = ViewBag.AssetType == "CW";
+    bool isGuardrail = ViewBag.AssetType == "GR";
+    bool isRetainingWall = ViewBag.AssetType == "RW";
+}
+@*
+    <div class="bg-body-light box-sdw-0020 col-12" style="border-radius: 30px;">
+        <div class="row d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center table-detail-container pt-2">
+            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 pb-1">
+                @Html.PagedListPager((IPagedList)Model.assetList, Page_No => Url.Action("AssetsList", "Assets", new RAMMS.DTO.RequestBO.AssetListRequestDTO { Page_No = Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, GroupCode = "DI" }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            </div>
+            <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 pb-1">
+                Page Size: @Html.DropDownList("pageSize")
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+                Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+            </div>
+            <div class="col-xl-3 col-lg-5 col-md-6 col-sm-12 pb-1 ">
+                <button class=" btn btn-outline-info theme-clr" data-target="#AssetDataUPLOAD" data-toggle="modal">Asset Import</button>
+                <button class=" btn btn-outline-info theme-clr" onclick="location.href='@Url.Action("Downloadgridresults", "Download")'">Download</button>
+                <button type="button" class="btn btn-outline-info theme-clr" data-toggle="modal" data-target="#AssetsAddModal" onclick="javascript:AddAssetClick(0);">Add @AssetIdTitle</button>
+            </div>
+        </div>
+    </div>
+*@
+<!--Asset Upload End-->
+<div class="main-container" id="container">
+    <!--  BEGIN CONTENT AREA  GridView -->
+    <div id="content" class="main-content ">
+        <div class="layout-px-spacing">
+            <div class="row layout-top-spacing" id="cancel-row">
+                <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                    <div class="widget-content widget-content-area br-6">
+                        <div class="table-responsive mb-3 mt-4" style="max-height: 42vh;">
+                            <table id="assetsGridView" class="table table-hover non-hover" style="width:100%;">
+                                <thead class="sticky-col first-col">
+                                    <tr>
+                                        <th class="sticky-col first-col">Action</th>
+                                        <th>@AssetIdTitle ID</th>
+                                        @* <th>RMU Abbreviation</th>*@
+                                        <th>RMU Name</th>
+                                        <th>Section Name</th>
+                                        <th>Section Code</th>
+                                        @if (isDitch || isDrain || isBridge)
+                                        {
+                                            <th>Road Name</th>
+                                        }
+                                        <th>Road Code</th>
+                                        @if (!isRoadStuds && !isCarriageway && !isShoulder)
+                                        {
+                                            <th>Location CH</th>
+                                        }
+                                        @if (isCarriageway || isShoulder)
+                                        {
+                                            <th>Asset CH Location</th>
+                                        }
+                                        @if (isRoadStuds || isSign || isShoulder || isCarriageway || isGuardrail || isRetainingWall)
+                                        {
+                                            <th>CH From</th>
+                                            <th>CH To</th>
+                                        }
+                                        @if (isCulvert)
+                                        {
+                                            <th>@AssetIdTitle Diameter</th>
+                                            <th>@AssetIdTitle Height</th>
+                                            <th>@AssetIdTitle Material</th>
+                                            <th>Barrel Number</th>
+                                            <th>@AssetIdTitle Width</th>
+                                        }
+                                        @if (isEdgeLine || isCenterLine)
+                                        {
+                                            <th>Width</th>
+                                        }
+                                        @if (isBridge)
+                                        {
+                                            <th>@AssetIdTitle Name</th>
+                                            <th>@AssetIdTitle Length</th>
+                                        }
+                                        @if (isCulvert || isEdgeLine || isCenterLine || isDitch || isDrain)
+                                        {
+                                            <th>Length</th>
+                                        }
+                                        @if (isRetainingWall)
+                                        {
+                                            <th>Total Length(m)</th>
+                                        }
+
+                                        @if (!isBridge && !isRoadStuds && !isShoulder)
+                                        {
+                                            <th>Asset Type</th>
+                                        }
+                                        @if (isBridge || isRoadStuds)
+                                        {
+                                            <th>Type of @AssetIdTitle</th>
+                                        }
+                                        @if (isShoulder)
+                                        {
+                                            <th>@AssetIdTitle Type</th>
+                                        }
+                                        <th>Bound</th>
+                                        @if (isCarriageway)
+                                        {
+                                            <th>Lane Number</th>
+                                        }
+                                        @if (isGuardrail)
+                                        {
+                                            <th>Guardrail Post Spacing (m)</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.assetList)
+                                    {
+                                        <tr>
+                                            <td style="background:none" class="sticky-col first-col">
+                                                <div class="btn-group dropright " id="actiondropdown">
+                                                    <button id="actionclick" type="button" class="btn btn-outline-info theme-clr dropdown-toggle" data-toggle="dropdown">
+                                                        Click ME
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        @*<a class="dropdown-item" href="#"><i class="fas fa-pen"></i> Edit</a>*@
+                                                        <button type="button" class="dropdown-item" data-toggle="modal" id="btnAssetEdit" onclick="javascript:AddAssetClick(@item.No);"
+                                                                data-target="#AssetsAddModal">
+                                                            <i class="fas fa-pen"></i> Edit
+                                                        </button>
+                                                        <a class="dropdown-item" onclick="javascript:DeleteAsset(@item.No);" href="#"><i class="fas fa-times"></i> Delete</a>
+                                                        @*<a class="dropdown-item" href="#"><i class="fas fa-calendar-week"></i> View Photo</a>
+                                                            <a class="dropdown-item" href="#"><i class="fas fa-map-marker-alt"></i> View Map</a>*@
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            @*<td> @Html.DisplayFor(modelItem => item.AssetId)</td>*@
+                                            <td> @Html.DisplayFor(modelItem => item.AssetId)</td>
+                                            @*<td>@Html.DisplayFor(modelItem => item.RMUAbbrev)</td>*@
+                                            <td> @Html.DisplayFor(modelItem => item.RMUCode)</td>
+                                            <td> @Html.DisplayFor(modelItem => item.SecName)</td>
+                                            <td> @Html.DisplayFor(modelItem => item.SecCode)</td>
+                                            @if (isDitch || isDrain || isBridge)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.RdName)</td>
+                                            }
+                                            <td> @Html.DisplayFor(modelItem => item.RdCode)</td>
+                                            @if (!isRoadStuds)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.LocChKm)</td>
+                                            }
+                                            @if (isRoadStuds || isSign || isShoulder || isCarriageway || isGuardrail || isRetainingWall)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.FromCh)</td>
+                                                <td> @Html.DisplayFor(modelItem => item.ToCh)</td>
+                                            }
+                                            @if (isCulvert)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.Diameter)</td>
+                                                <td> @Html.DisplayFor(modelItem => item.Height)</td>
+                                                <td> @Html.DisplayFor(modelItem => item.Material)</td>
+                                                <td> @Html.DisplayFor(modelItem => item.BarrelNo)</td>
+                                            }
+                                            @if (isCulvert || isEdgeLine || isCenterLine)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.Width)</td>
+                                            }
+                                            @if (isBridge)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.BridgeName)</td>
+                                            }
+                                            @if (isCulvert || isEdgeLine || isCenterLine || isDitch || isDrain || isBridge || isRetainingWall)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.Length)</td>
+                                            }
+                                            <td> @Html.DisplayFor(modelItem => item.GrpType)</td>
+                                            <td> @Html.DisplayFor(modelItem => item.Bound)</td>
+                                            @if (isCarriageway)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.LaneNo)</td>
+                                            }
+                                            @if (isGuardrail)
+                                            {
+                                                <td> @Html.DisplayFor(modelItem => item.PostSpacing)</td>
+                                            }
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        @*@{
+                                Html.RenderPartial("_AssetListGrid", Model);
+                            }*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  END CONTENT AREA GridView -->
+</div>
+@*Pagination*@
+
+<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+    Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+</div>
+@*
+    <div class="bg-body-light box-sdw-0020 col-12" style="border-radius: 30px;">
+        <div class="row d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center table-detail-container pt-2">
+            <div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 pb-1">
+                @Html.PagedListPager((IPagedList)Model.assetList, Page_No => Url.Action("AssetsList", "Assets",
+             new RAMMS.DTO.RequestBO.AssetListRequestDTO { Page_No = Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, GroupCode = "DI" }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            </div>
+            <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 pb-1">
+                Page Size: @Html.DropDownList("pageSize")
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+                Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+            </div>
+            <div class="col-xl-3 col-lg-5 col-md-6 col-sm-12 pb-1"></div>
+        </div>
+    </div>
+*@
+@*Pagination*@

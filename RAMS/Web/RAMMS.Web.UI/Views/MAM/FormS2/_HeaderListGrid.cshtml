@@ -1,0 +1,163 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormS2GridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.id != "" && data.id != null) {
+                title = data.id;
+            }
+            if (data.submitSts) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' "+ isViewPerm +" onclick='javascript:viewDetail(" + data.id + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteHeader(" + data.id + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.id + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' id='formAHeaderEdit'" + isModifyPerm + " onclick='javascript:editDetail(" + data.id + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' data-backdrop='static' onclick='javascript:viewDetail(" + data.id + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteHeader(" + data.id + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.id + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var noCol = { data: "id", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
+    var refNoCol = { data: "referenceNo", name: "Id", title: "Reference No", autoWidth: true, sortable: true };
+    var rmuCodeCol = { data: "rmu", name: "RMU Abbreviation", title: "RMU Abbreviation", autoWidth: true, sortable: true };
+    var rmuNameCol = { data: "rmuName", name: "RMU Name", title: "RMU Name", autoWidth: true, sortable: true };
+    var activityCode = { data: "activityCode", name: "Activity Code", title: "Activity Code", autoWidth: true, sortable: true };
+    var year = { data: "year", name: "Year", title: "Year", autoWidth: true, sortable: true };
+    var quarter = {
+        data: null, name: "Quarter", title: "Quarter", autoWidth: true, sortable: true, render: function (data) {
+            return data.quarter;
+        }
+    };
+    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true, sortable: true };
+    // var roadNameCol = { data: "roadName", name: "RoadName", title: "Road Name", autoWidth: true, sortable: false };
+    var assetgrpCol = { data: "assetGroupCode", name: "AssetGroupCode", title: "Asset Group", autoWidth: true, sortable: true };
+    /*var SubmitSts = {
+        data: null, name: "Status", title: "Status", autoWidth: true, sortable: true, render: function (data) {
+            if (data.submitSts) {
+                return "Submitted";
+            }
+            else {
+                return "Saved";
+            }
+        }
+    };*/
+    var SubmitSts = { data: "processStatus", name: "Status", title: "Status", autoWidth: true, sortable: true };
+
+    var PrioritizedBy = { data: "prioritizedBy", name: "PrioritizedBy", title: "Prioritized By", autoWidth: true, sortable: true };
+    var ScheduledBy = { data: "scheduledBy", name: "UsernameVer", title: "Scheduled By", autoWidth: true, sortable: true };
+    var SubmittedBy = { data: "submittedBy", name: "UsernameVer", title: "Submitted By", autoWidth: true, sortable: true };
+    var VettedBy = { data: "vettedBy", name: "UsernameVer", title: "Vetted By", autoWidth: true, sortable: true };
+    var AgreedBy = { data: "agreedBy", name: "AgreedBy", title: "Agreed By", autoWidth: true, sortable: true };
+
+    table_columns.push(noCol);
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(rmuCodeCol);
+    table_columns.push(rmuNameCol);
+    table_columns.push(quarter);
+    table_columns.push(year);
+    table_columns.push(activityCode);
+    table_columns.push(SubmitSts);
+    table_columns.push(PrioritizedBy);
+    table_columns.push(ScheduledBy);
+    table_columns.push(SubmittedBy);
+    table_columns.push(VettedBy);
+    table_columns.push(AgreedBy);
+    function PrintForm(id) {
+        window.location.href = '/FormS2/FormS2Download?id=' + id;
+    }
+
+    function editDetail(id) {
+        window.location.href = '/FormS2/AddS2?id=' + id + '&isview=false';
+    }
+
+    function viewDetail(id) {
+        window.location.href = '/FormS2/AddS2?id=' + id + '&isview=true';
+    }
+
+    function deleteHeader(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: '/FormS2/RemoveS2Header',
+                    dataType: 'JSON',
+                    data: req,
+                    type: 'Post',
+                    success: function (data) {
+                        if (data) {
+                            app.ShowSuccessMessage("Record deleted successfully");
+                            oTable.draw();
+                        }
+                        else {
+                            app.ShowErrorMessage("Please try again.")
+                        }
+
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.SmartInput = $("#txtAdvSearch").val();
+        filterData.Rmu = $("#ddlSearchRmu").val();
+        filterData.ActivityCode = $("#ddlSearchActivity").val();
+        filterData.Year = $("#ddlSearchYear").val();
+        filterData.Quarter = $("#formADetSrchMonth").val();
+
+        $('#FormS2GridView').DataTable({
+            ajax: {
+                url: "/FormS2/GetFilteredS2HeaderDetails",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormS2GridView').DataTable();
+        $('#btnS2Searchheader').click(function () {
+            oTable.columns(0).search($("#txtAdvSearch").val());
+            oTable.columns(1).search($("#ddlSearchRmu").val());
+            oTable.columns(2).search($("#ddlSearchActivity").val());
+            oTable.columns(3).search($("#ddlSearchYear").val());
+            oTable.columns(4).search($("#ddlSearchQuarter").val());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });</script>

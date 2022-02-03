@@ -1,0 +1,126 @@
+﻿@model RAMMS.Web.UI.Models.CDataTable
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@{
+    ViewData["Title"] = "Defect - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Defect - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strPageName = ViewBag.PageName;
+    string strPageId = ViewBag.PageID;
+}
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/Administrator.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        jsAdmin.PageName = "@strPageId";
+    </script>
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">Code Reference - Defect</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Code Reference</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Defect
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-lg-8 col-lg-6 col-xl-6 search-content" searchSection>
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "AssetTypeSmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" placeholder="Search..." class="form-control" param="KeySearch"/>
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button onclick="@(Model.Name + ".Search")(this,'');" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right" style="line-height: 18px;"><span class="search-icon"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" class="btn btn-sm btn-themebtn" data-target="#AddDefect" data-toggle="modal" data-backdrop="static"><span class="add-icon"></span> Add Defect</button>
+            </div>
+
+            @*Defect Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_CDataTable", Model);
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<div class="modal fade addmodal" id="AddDefect" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="AddDefectCenterTitle">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Add Defect
+                </h5>
+                <button type="button" class="close" onclick="jsAdmin.Cancel()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12" id="divUpdate">
+                    <input type="hidden" name="Id" value="0" id="txtId" />
+                    <div class="row">
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Asset Group", "Asset Group")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["AssestGroup"], "AssestGroupName", "Select Assest Group", new { @Id = "selAssestGroupName", @class = "form-control validate {req,Assest Group}", @onchange = "jsAdmin.AssestGroupChange(this);" })
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Asset Group Code", "Asset Group Code")
+                            <input name="AssestGroupCode" id="txtAssestGroupCode" type="text" class="form-control" disabled="disabled" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.Label("Form No", "Form No")
+                            <select id="selFormNo" name="FormNo" class="form-control validate {req,Form No}">
+                                <option value="">Select</option>
+                                <option value="Form A">Form A</option>
+                                <option value="Form J">Form J</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.Label("Defect Description", "Defect Description")
+                            <input name="AssestTypeDesc" id="txtAssestTypeDesc" type="text" class="form-control validate {req,Defect Description}" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Defect Code", "Defect Code")
+                            <input name="AssestTypeCode" id="txtAssestTypeCode" type="text" class="form-control validate {req,Defect Code}" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Contract Defect Code", "Contract Defect Code")
+                            <input name="AssestTypeContractCode" id="txtAssestTypeContractCode" type="text" class="form-control validate {req,Contract Defect Code}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" onclick="jsAdmin.Cancel()">Cancel</button>
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="jsAdmin.Update('#divUpdate')">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

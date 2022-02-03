@@ -1,0 +1,130 @@
+﻿@model CDataTable;
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@{
+    ViewBag.TabTitle = "NOD - Form J - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "NOD - Form J - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/FormJ.js" asp-append-version="true"></script>
+}
+@{
+    Html.RenderPartial("_breadcrumb", new BreadCrumb()
+    {
+        Title = "NOD - Form J",
+        SimpleNavigation = "Home,Notification of Defect,Form J"
+    });
+}
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        @{
+            Html.RenderPartial("_SearchSection", new Tuple<string, string, string>(Model.Name, "#formJSearch", "KeySearch"));
+        }
+    </div>
+    @*Detail Search Screen*@
+    <div id="formJSearch" style="display:none;">
+        <div class="row" id="formAAdvSearch" style="display:block">
+            <form id="formADetailsearchForm" name="formADetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 px-lg-3 px-md-2 advance-search-group w-100">
+                        <div class="form-group">
+                            @Html.Label("RMU ", "RMU ")
+                            @Html.DropDownList("RMU", (IEnumerable<SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formADetSrchRMU", @class = "form-control", @param = "RMUCode" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Section Code ", "Section Code")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "Section_Code", "Select Section", new { @Id = "formADetSrchSec", @class = "form-control searchdropdown", @param = "SecDesc" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Section Name ", "Section Name")
+                            @Html.TextBox("Section_Name", null, new { @Id = "formADetSrchSecName", @class = "form-control", @disabled = "disabled", @maxlength = "5" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Road Code ", "Road Code")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "Road_Code", "Select Road Code", new { @Id = "formADetSrchRoadCode", @class = "form-control searchdropdown widget-content-area", @param = "RoadCode" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Road Name ", "Road Name")
+                            @Html.TextBox("Road_Name", null, new { @Id = "formADetSrchRoadName", @class = "form-control", @disabled = "disabled", @maxlength = "5" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Asset Group ", "Asset Group")
+                            @Html.DropDownList("Asset_GroupCode", (IEnumerable<SelectListItem>)ViewData["AssetListing"], "Select Asset", new
+                       {
+                           @Id = "formADetSrchAsstGrp",
+                           @class = "form-control",
+                           @param = "AssetGroupCode"
+                       })
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @Html.Label("Month (MM)", "Month (MM)")
+                                    @Html.DropDownList("Month", (IEnumerable<SelectListItem>)ViewData["Months"], "Month", new { @Id = "formADetSrchMonth", @class = "form-control", @param = "Month" })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold pt30px">/</div>
+                                <div class="col-5 float-left pl-0">
+                                    @Html.Label("Year (YYYY)", "Year (YYYY)")
+                                    @Html.DropDownList("Year", (IEnumerable<SelectListItem>)ViewData["Year"], "Year", new { @Id = "formADetSrchYear", @class = "form-control", @param = "Year" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Location Chainage From", "Location Chainage From")
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @*@Html.Label("Km", "Km")*@
+                                    @Html.TextBox("ChinageFromKm", null, new { @Id = "formAFromKm", @class = "form-control", @maxlength = "5", @onkeypressvalidate = "num,Location Chainage From Km" })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                <div class="col-5 float-left pl-0">
+                                    @*@Html.Label("m", "m")*@
+                                    @Html.TextBox("ChinageFromM", null, new { @Id = "formAFromM", @class = "form-control", @maxlength = "3", @onkeypressvalidate = "num,Location Chainage From m" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Location Chainage To", "Location Chainage To")
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @*@Html.Label("Km", "Km")*@
+                                    @Html.TextBox("ChinageToKm", null, new { @Id = "formAToKm", @class = "form-control", @maxlength = "5", @onkeypressvalidate = "num,Location Chainage To Km" })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                <div class="col-5 float-left pl-0">
+                                    @*@Html.Label("m", "m")*@
+                                    @Html.TextBox("ChinageToM", null, new { @Id = "formAToM", @class = "form-control", @maxlength = "3", @onkeypressvalidate = "num,Location Chainage To m" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            @if (security.IsPCModify(ModuleNameList.NOD))
+            {
+                <div class="grid-btns">
+                    <button type="button" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormAAddModal" onclick="javascript:openFormAModel(0);"><span class="add-icon"></span> Add</button>
+                </div>
+            }
+
+        </div>
+        <div class="w-100 float-left position-relative">
+            @{
+                Html.RenderPartial("_CDataTable", Model);
+            }
+        </div>
+    </div>
+</main>

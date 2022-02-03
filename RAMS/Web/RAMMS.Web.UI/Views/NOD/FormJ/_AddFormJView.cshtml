@@ -1,0 +1,812 @@
+﻿@model RAMMS.Web.UI.Models.FormJModel;
+@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+<style>
+    .box-sdw-0020 {
+        box-shadow: 0px 0px 2px 0px;
+    }
+
+    .br-rds-25 {
+        border-radius: 25px;
+    }
+
+    .disableinput {
+    }
+
+    .disablebtn {
+    }
+
+    .editdisable {
+    }
+</style>
+<script type="text/javascript">
+
+    $('.close', "#FormJAdddetailsModal").click(function () {
+        $('#FormJAdddetailsModal').modal('hide');
+    });
+
+    function GridReload() {
+        oTable = $('#FormADetailGridView').DataTable();
+        //oTable.columns(0).search($("#assetTypeCode").val().trim());
+        //oTable.columns(1).search($("#AssetssSmartSearch").val().trim());
+        //oTable.columns(2).search($("#FromCh").val().trim());
+        //oTable.columns(3).search($("#ToCh").val().trim());
+        //oTable.columns(4).search($("#SectionName").val().trim());
+        //        oTable.columns(5).search($("#RoadName").val().trim());
+        //        oTable.columns(6).search($("#AssetGroup").val().trim());
+        //        oTable.columns(7).search($("#AssetType").val().trim());
+        //        oTable.columns(8).search($("#RoadCode").val().trim());
+        //        oTable.columns(9).search($("#RMU").val().trim());
+        //    oTable.columns(10).search($("#Bound").val().trim());
+        //   filterData.FromCh = 100;
+        oTable.data = filterData;
+        oTable.draw();
+    }
+
+    function NODHdrSaveClick() {
+        var saveObj = new Object;
+        saveObj.RoadCode = $("#FormADetRoadCode").val();
+        saveObj.RoadName = $("#FormADetRoadName").val();
+        saveObj.Rmu = $("#FormADetRmu").val();
+        saveObj.Month = $("#FormADetMonth").val();
+        saveObj.Year = $("#FormADetYear").val();
+        saveObj.AssetGroupCode = $("#FormADetAssetGrpCode").val();
+        saveObj.Id = $("#FormADetReferenceNO").val();
+        //console.log(saveObj);
+        if (saveObj.Id == "") {
+            app.ShowWarningMessage("Please fill mandatory fields");
+        }
+        else {
+            $.ajax({
+                url: '/NOD/JHeaderSave',
+                type: 'POST',
+                data: saveObj,
+                success: function (data) {
+                    //console.log(data);
+                    $("#FormADetPKId").val(data.no);
+                    $("#FormADetAssetGrpCode").val(data.assetGroupCode);
+                    $("#InspectedName").val(data.usernamePrp);
+                    $("#InspectedDesignName").val(data.designationPrp);
+                    var Format = "YYYY-MM-DD";
+                    var date = new Date();
+                    if (data.dtPrp != null) {
+                        date = new Date(data.dtPrp);
+                        $("#InspectedDate").val(date.ToString(Format));
+                    }
+                    else {
+                        $("#InspectedDate").val(data.dtPrp);
+                    }
+                    $("#VerifiedName").val(data.usernameVer);
+                    $("#VerifiedDesignation").val(data.designationVer);
+                    if (data.verifiedDt != null) {
+                        date = new Date(data.verifiedDt);
+                        $("#VerifiedDate").val(date.ToString(Format));
+                    }
+                    else {
+                        $("#VerifiedDate").val(data.verifiedDt);
+                    }
+                    if (data.verifiedVDt != null) {
+                        date = new Date(data.verifiedVDt);
+                        $("#AuditedDate").val(date.ToString(Format));
+                    }
+                    else {
+                        $("#AuditedDate").val(data.verifiedVDt);
+                    }
+                    $("#AuditedName").val(data.usernameVet);
+                    $("#AuditedDesignation").val(data.designationVet);
+
+                    $("#ddlInspectedby").val(data.useridPrp).trigger("chosen:updated");
+                    $("#ddlCheckedby").val(data.useridVer).trigger("chosen:updated");
+                    $("#ddlAuditedby").val(data.useridVet).trigger("chosen:updated");
+
+                    $("#addFADBtn").show();
+                    if (data.submitSts) {
+                        $("#saveFormABtn").hide();
+                        $("#SubmitFormABtn").hide();
+                        $("#UserDetails *").prop('disabled', true);
+                       // $("#UserDetails").children().prop('disabled', true);
+                        $("#ddlCheckedby").prop('disabled', true).trigger("chosen:updated");
+                        $("#ddlInspectedby").prop('disabled', true).trigger("chosen:updated");
+                    }
+                    else {
+                        $("#saveFormABtn").show();
+                        $("#SubmitFormABtn").show();
+                    }
+                    if (data.no != "" && data.no != null) {
+                        $("#searchHeaderBtn").hide();
+                        $("#FormADetAssetGrpCode").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormADetRoadCode").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormADetMonth").prop("disabled", true).trigger("chosen:updated");
+                        $("#FormADetYear").prop("disabled", true).trigger("chosen:updated");
+                    }
+                    InitializeGrid(data.no);
+                    // localStorage.setItem("headeridvalue", data.no);
+                    //detailedlistgrid(data.no);
+                    //$("#DetailListGrid").html(data);
+                    $('#divDetails').show();
+                },
+                error: function (data) {
+                    $("body").removeClass("loading");
+                }
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        process.Init("FormJ", "@Model.SaveFormAModel.Status", @Model.SaveFormAModel.No);
+        localStorage.setItem("headeridvalue", "");
+        $("#ddlInspectedby").chosen();
+        $("#ddlCheckedby").chosen();
+        $("#FormADetRoadCode").chosen();
+        $("#FormADetAssetGrpCode").chosen();
+        $("#FormADetMonth").chosen();
+        $("#FormADetYear").chosen();
+        $("#FormADetRoadCode").on("change", function () {
+            $("#FormADetRoadName").val("");
+            $("#FormADetRmu").val("");
+            $("#FormADetsection").val("");
+            $.ajax({
+                url: '/NOD/GetAssetDataByRoadCode',
+                dataType: 'JSON',
+                data: { roadCode: $("#FormADetRoadCode").val() },
+                type: 'Post',
+                success: function (data) {
+                    //console.log(data);
+                    if (data != null) {
+                        $("#FormADetRoadName").val(data.roadName);
+                        $("#FormADetRmu").val(data.rmuName);
+                        $("#FormADetsection").val(data.secName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            return false;
+        })
+
+        $("#FormADetAssetGrpCode").on("change", function () {
+            $.ajax({
+                url: '/NOD/JGetReferenceNOData',
+                dataType: 'JSON',
+                data: { roadCode: $("#FormADetRoadCode").val(), year: $("#FormADetYear").val(), month: $("#FormADetMonth").val(), assetGroup: $("#FormADetAssetGrpCode").val() },
+                type: 'Post',
+                success: function (data) {
+
+                    //console.log(data);
+                    if (data != null) {
+                        $("#FormADetReferenceNO").val(data);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            return false;
+        })
+
+        $("#FormADetRoadCode").on("change", function () {
+            $.ajax({
+                url: '/NOD/JGetReferenceNOData',
+                dataType: 'JSON',
+                data: { roadCode: $("#FormADetRoadCode").val(), year: $("#FormADetYear").val(), month: $("#FormADetMonth").val(), assetGroup: $("#FormADetAssetGrpCode").val() },
+                type: 'Post',
+                success: function (data) {
+
+                    //console.log(data);
+                    if (data != null) {
+                        $("#FormADetReferenceNO").val(data);
+                        // $("#FormADetRmu").val(data.rmuCode);
+                        // $("#FormADetsection").val(data.secName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            return false;
+        })
+
+        $("#FormADetMonth").on("change", function () {
+            $.ajax({
+                url: '/NOD/JGetReferenceNOData',
+                dataType: 'JSON',
+                data: { roadCode: $("#FormADetRoadCode").val(), year: $("#FormADetYear").val(), month: $("#FormADetMonth").val(), assetGroup: $("#FormADetAssetGrpCode").val() },
+                type: 'Post',
+                success: function (data) {
+
+                    //console.log(data);
+                    if (data != null) {
+                        $("#FormADetReferenceNO").val(data);
+                        // $("#FormADetRmu").val(data.rmuCode);
+                        // $("#FormADetsection").val(data.secName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            return false;
+        })
+
+        $("#FormADetYear").on("change", function () {
+            $.ajax({
+                url: '/NOD/JGetReferenceNOData',
+                dataType: 'JSON',
+                data: { roadCode: $("#FormADetRoadCode").val(), year: $("#FormADetYear").val(), month: $("#FormADetMonth").val(), assetGroup: $("#FormADetAssetGrpCode").val() },
+                type: 'Post',
+                success: function (data) {
+
+                    //console.log(data);
+                    if (data != null) {
+                        $("#FormADetReferenceNO").val(data);
+                        // $("#FormADetRmu").val(data.rmuCode);
+                        // $("#FormADetsection").val(data.secName);
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            return false;
+        });
+
+
+        $("#ddlCheckedby").on("change", function () {
+            var id = $("#ddlCheckedby option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/NOD/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#VerifiedName").val(data.userName);
+                        $("#VerifiedDesignation").val(data.position);
+                        $("#VerifiedName").prop("disabled", true);
+                        $("#VerifiedDesignation").prop("disabled", true);
+                        if (data.signIn != null && data.signIn != "") {
+                            $("#VerifiedSign").attr("src", data.signIn);
+                        }
+                        else {
+                            $("#VerifiedSign").attr("src", "");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#VerifiedName").prop("disabled", false);
+                $("#VerifiedDesignation").prop("disabled", false);
+                $("#VerifiedName").val('');
+                $("#VerifiedDesignation").val('');
+                $("#VerifiedSign").attr("src", "");
+            }
+            else {
+                $("#VerifiedName").val("");
+                $("#VerifiedDesignation").val("");
+                $("#VerifiedName").prop("disabled", true);
+                $("#VerifiedDesignation").prop("disabled", true);
+                $("#VerifiedSign").attr("src", "");
+            }
+            return false;
+        });
+
+        $("#ddlAuditedby").on("change", function () {
+            var id = $("#ddlAuditedby option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/NOD/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#AuditedName").val(data.userName);
+                        $("#AuditedDesignation").val(data.position);
+                        $("#AuditedName").prop("disabled", true);
+                        $("#AuditedDesignation").prop("disabled", true);
+                        if (data.signIn != null && data.signIn != "") {
+                            $("#AuditedSign").attr("src", data.signIn);
+                        }
+                        else {
+                            $("#AuditedSign").attr("src", "");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#AuditedName").prop("disabled", false);
+                $("#AuditedDesignation").prop("disabled", false);
+                $("#AuditedName").val('');
+                $("#AuditedDesignation").val('');
+                $("#AuditedSign").attr("src", "");
+            }
+            else {
+                $("#AuditedName").val("");
+                $("#AuditedDesignation").val("");
+                $("#AuditedName").prop("disabled", true);
+                $("#AuditedDesignation").prop("disabled", true);
+                $("#AuditedSign").attr("src", "");
+            }
+            return false;
+        });
+
+        $("#ddlInspectedby").on("change", function () {
+            var id = $("#ddlInspectedby option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/NOD/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#InspectedDesignName").val(data.position);
+                        $("#InspectedName").val(data.userName);
+                        $("#InspectedDesignName").prop("disabled", true);
+                        $("#InspectedName").prop("disabled", true);
+                        if (data.signIn != null && data.signIn != "") {
+                            $("#InspectedSign").attr("src", data.signIn);
+                        }
+                        else {
+                            $("#InspectedSign").attr("src", "");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#InspectedName").prop("disabled", false);
+                $("#InspectedDesignName").prop("disabled", false);
+                $("#InspectedName").val('');
+                $("#InspectedDesignName").val('');
+                $("#InspectedSign").attr("src", "");
+            }
+            else {
+                $("#InspectedDesignName").prop("disabled", true);
+                $("#InspectedName").prop("disabled", true);
+                $("#InspectedDesignName").val('');
+                $("#InspectedName").val('');
+                $("#InspectedSign").attr("src", "");
+            }
+
+            return false;
+        });
+
+        $.ajax({
+            url: '/NOD/JGetReferenceNOData',
+            dataType: 'JSON',
+            data: { roadCode: $("#FormADetRoadCode").val(), year: $("#FormADetYear").val(), month: $("#FormADetMonth").val(), assetGroup: $("#FormADetAssetGrpCode").val() },
+            type: 'Post',
+            success: function (data) {
+
+                //console.log(data);
+                if (data != null) {
+                    $("#FormADetReferenceNO").val(data);
+                    // $("#FormADetRmu").val(data.rmuCode);
+                    // $("#FormADetsection").val(data.secName);
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+
+    });
+
+
+    function AddNODClick() {
+        $("body").addClass("loading");
+
+        $.ajax({
+            url: '/NOD/JDetailedListEdit',
+            type: 'POST',
+            data: 0,
+            //{
+            //    assetName: $("#FormADetAssetGrpCode").val(), hdrId: $("#FormADetPKId").val(), hdrrefno: $("#FormADetReferenceNO").val()
+            //},
+            success: function (data) {
+                //console.log(data);
+                $("#DetailListGrid").html(data);
+                $("body").removeClass("loading");
+            }
+        });
+    }
+    function AddNewForm(detId, title) {
+        var Id = + $("#FormADetPKId").val();
+        $("body").addClass("loading");
+        $("#formDetailText").text("Add Form J Details");
+        $.ajax({
+            url: '/NOD/JAddNOD',
+            data: { assetName: $("#FormADetAssetGrpCode").val(), hdrId: Id, hdrrefno: $("#FormADetReferenceNO").val(), detId: detId },
+            type: 'POST',
+            success: function (data) {
+                $("#div-data-container1").html(data);
+                $("#IsViewDetail").val('0');
+                InitnumericValidation();
+                var d = $("#multiSiteHidden").val();
+                if (d != null && d != undefined && d != "") {
+                    var _multiSite = d.split(',');
+                    if (_multiSite != "") {
+                        $("#formASiteRefmultiSelect").val(_multiSite).trigger("chosen:updated");
+                    }
+                }
+                $("#AssetImageUploadBtn").show();
+                var id = $("#formAFadPKRefNO").val();
+                if (id != "0") {
+                    //$("#saveContFormADetailsBtn").hide();
+                    $("#clearFormASubDetailBtn").hide();
+                    $("#formDetailText").text("Edit Form J Details | Ref-" + title);
+
+                }
+
+                $("body").removeClass("loading");
+            }
+        });
+    }
+
+    function ViewDetail(detId, title) {
+        var Id = + $("#FormADetPKId").val();
+        $("body").addClass("loading");
+        $.ajax({
+            url: '/NOD/JAddNOD',
+            data: { assetName: $("#FormADetAssetGrpCode").val(), hdrId: Id, hdrrefno: $("#FormADetReferenceNO").val(), detId: detId },
+            type: 'POST',
+            success: function (data) {
+                $("#div-data-container1").html(data);
+                $("#IsViewDetail").val('1');
+                var id = $("#formAFadPKRefNO").val();
+                var _multiSite = $("#multiSiteHidden").val().split(',');
+                if (_multiSite != "") {
+                    $("#formASiteRefmultiSelect").val(_multiSite).trigger("chosen:updated");
+                }
+                $(".disableFADinput").prop("disabled", true);
+                $("#saveContFormADetailsBtn").hide();
+                $("#saveExitFormADetailsBtn").hide();
+                $("#AssetImageUploadBtn").hide();
+                $("#clearFormASubDetailBtn").hide();
+                if (id != "0") {
+
+                    $("#formDetailText").text("View Form A Details | Ref-" + title);
+                }
+
+                $("body").removeClass("loading");
+            }
+        });
+    }
+
+    function DeleteDetailRecord(detailId) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                $("body").addClass("loading");
+                $.ajax({
+                    url: '/NOD/JDetailListDelete',
+                    data: { detailId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            $("body").removeClass("loading");
+                            app.ShowSuccessMessage("Successfully Deleted", false);
+                            InitializeGrid();
+                        }
+                        else {
+                            alert("Error in Deleted. Kindly retry later.");
+                            $("body").removeClass("loading");
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function cancelFormA() {
+        disableAttrExist = $("#ddlCheckedby").attr("disabled")
+        if (!disableAttrExist) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    clearHeaderSearch()
+                    location.href = '@Url.Action("FormJ", "NOD")';
+
+                }
+            }));
+        }
+        else {
+             clearHeaderSearch()
+            location.href = '@Url.Action("FormJ", "NOD")';
+        }
+    }
+</script>
+
+<input type="hidden" value="@Model.SaveFormAModel.No" id="FormADetPKId" />
+<input type="hidden" value="0" id="IsViewDetail" />
+<div id="headerDiv" class="modal-body mh-182">
+    <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="form-group col-lg-4 col-md-4">
+                    @Html.Label("Road Code", "Road Code")
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.RoadCode, (IEnumerable
+                         <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "FormADetRoadCode", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-4 col-md-6">
+                    @Html.Label("Asset Group", "Asset Group")
+                    @Html.DropDownListFor(m => m.SaveFormAModel.AssetGroupCode, (IEnumerable
+                    <SelectListItem>)ViewData["AssetListing"], "Select Asset Group", new { @Id = "FormADetAssetGrpCode", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-2 col-md-4">
+                    @Html.Label("Month (MM)", "Month (MM)")
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.Month, (IEnumerable
+                        <SelectListItem>)ViewData["Months"], "Select Month", new { @Id = "FormADetMonth", @class = "form-control disableinput editdisable" })
+                </div>
+                @*<div class="form-group col-xl-1" style="max-width:1%;flex:0 0 1%">/</div>*@
+                <div class="form-group col-lg-2 col-md-4">
+
+                    @Html.Label("Year (YYYY)", "Year (YYYY)")
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.Year, (IEnumerable
+                    <SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "FormADetYear", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-4 col-md-4">
+                    @Html.Label("Road Name", "Road Name")
+                    @Html.TextBoxFor(m => m.SaveFormAModel.RoadName, new { @Id = "FormADetRoadName", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-2 col-md-4">
+                    @Html.Label("RMU", "RMU")
+                    @Html.TextBoxFor(m => m.SaveFormAModel.Rmu, new { @Id = "FormADetRmu", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-2 col-md-4">
+                    <div>
+                        @Html.Label("Section", "Section")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.section, new { @Id = "FormADetsection", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-4 col-md-6">
+                    @Html.Label("Reference no", "Reference no")
+                    @Html.TextBoxFor(m => m.SaveFormAModel.Id, new { @Id = "FormADetReferenceNO", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                </div>
+            </div>
+            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                <button id="searchHeaderBtn" data-toggle="modal" onclick="javascript:NODHdrSaveClick();" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right disablebtn">Find Details</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear-b"></div>
+    <div class="w-100 position-relative in-tbl-btns">
+        <div class="grid-btns">
+            <button type="button" id="addFADBtn" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#FormJAdddetailsModal" data-backdrop="static" onclick="javascript: AddNewForm(0);"><span class="intbl-add-icon"></span></button>
+        </div>
+        <div id="DetailListGrid" class="w-100 dt-tbl-section">
+            @{
+                Html.RenderPartial("_DetailGridList.cshtml");
+            }
+        </div>
+    </div>
+
+    <div class="clear-b"></div>
+    @{
+        bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.SaveFormAModel.Status) || Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormJInit);
+    }
+    <div class="row">
+        <div id="UserDetails" style="" class="col-lg-12 px-lg-5">
+            <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                <div class="col-lg-12 py-2 px-4">
+                    <span class="font-14 font-weight-bold">Inspected by</span>
+                </div>
+                <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                    <div class="form-group col-lg-2 float-left">
+                        <label>User Id</label>
+                        @{
+                            var usrLst = usr.GetUserSelectList(Model.SaveFormAModel.UseridPrp); //await usr.GetUserList();
+                            var vd = Model.SaveFormAModel.VerifiedDt;
+                            var _id = Model.SaveFormAModel.DtPrp;
+                            string _v = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                            string _dtprp = _id.HasValue ? _id.Value.ToString("yyyy-MM-dd") : "";
+                            string _dtVet = Model.SaveFormAModel.AuditedDt.HasValue ? Model.SaveFormAModel.AuditedDt.Value.ToString("yyyy-MM-dd") : "";
+                            bool AuditedByDisabled = Model.SaveFormAModel.UseridVet.GetValueOrDefault() != 99999999;
+                            bool InspectedBydisabled = Model.SaveFormAModel.UseridPrp.GetValueOrDefault() != 99999999;
+                            bool VerifiedBydisabled = Model.SaveFormAModel.UseridVer.GetValueOrDefault() != 99999999;
+                        }
+                        <select id="ddlInspectedby" class="form-control svalidate {required, Inspected by Id} disableinput" @(IsSupervisor ? "" : "disabled='disabled'")>
+                            <option value="">User Id</option>
+                            @foreach (var s in usrLst)
+                            {
+                                @if (Model.SaveFormAModel.UseridPrp.GetValueOrDefault().ToString() == s.Value)
+                                {
+                                    <option selected="selected" value="@s.Value">@s.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@s.Value">@s.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Name", "Name")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.UsernamePrp, new { @Id = "InspectedName", @disabled = InspectedBydisabled, @class = "form-control svalidate {visreq, Inspected by Name} disableinput" })
+
+                    </div>
+
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Designation", "Designation")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.DesignationPrp, new { @Id = "InspectedDesignName", @disabled = InspectedBydisabled, @class = "form-control svalidate {visreq, Inspected by Designation} disableinput" })
+
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                        <input type="date" id="InspectedDate" value="@_dtprp" class="form-control svalidate {visreq, Inspected by Date} disableinput" @(IsSupervisor ? "" : "disabled='disabled'") />
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        <label>Signature</label>
+                        <div class="clear-b">
+                            <img id="InspectedSign" src="" height="50" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                <div class="col-lg-12 py-2 px-4">
+                    <span class="font-14 font-weight-bold">Checked by</span>
+                </div>
+                <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                    <div class="form-group col-lg-2 float-left">
+                        <label>User Id</label>
+                        <select id="ddlCheckedby" class="form-control svalidate {visreq, Checked by Id} disableinput" disabled="disabled">
+                            <option value="">User Id</option>
+                            @foreach (var s in usrLst)
+                            {
+                                @if (Model.SaveFormAModel.UseridVer.GetValueOrDefault().ToString() == s.Value)
+                                {
+                                    <option selected="selected" value="@s.Value">@s.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@s.Value">@s.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Name", "Name")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.UsernameVer, new { @Id = "VerifiedName", @disabled = VerifiedBydisabled, @class = "form-control svalidate {visreq, Checked by Name} disableinput" })
+
+                    </div>
+
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Designation", "Designation")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.DesignationVer, new { @Id = "VerifiedDesignation", @disabled = VerifiedBydisabled, @class = "form-control svalidate {visreq, Checked by Designation} disableinput" })
+
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                        <input type="date" id="VerifiedDate" value="@_v" class="form-control svalidate {visreq, Checked by Date} disableinput" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        <label>Signature</label>
+                        <div class="clear-b">
+                            <img id="VerifiedSign" src="" height="50" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                <div class="col-lg-12 py-2 px-4">
+                    <span class="font-14 font-weight-bold">Audited by</span>
+                </div>
+                <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                    <div class="form-group col-lg-2 float-left">
+                        <label>User Id</label>
+                        <select id="ddlAuditedby" class="form-control svalidate {visreq, Audited by Id} disableinput" disabled="disabled">
+                            <option value="">User Id</option>
+                            @foreach (var s in usrLst)
+                            {
+                                @if (Model.SaveFormAModel.UseridVet.GetValueOrDefault().ToString() == s.Value)
+                                {
+                                    <option selected="selected" value="@s.Value">@s.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@s.Value">@s.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Name", "Name")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.UsernameVet, new { @Id = "AuditedName", @disabled = AuditedByDisabled, @class = "form-control svalidate {visreq, Audited by Name} disableinput" })
+
+                    </div>
+
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Designation", "Designation")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.DesignationVet, new { @Id = "AuditedDesignation", @disabled = AuditedByDisabled, @class = "form-control svalidate {visreq, Audited by Designation} disableinput" })
+
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                        <input type="date" id="AuditedDate" value="@_dtVet" class="form-control svalidate {visreq, Audited by Date} disableinput" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        <label>Signature</label>
+                        <div class="clear-b">
+                            <img id="AuditedSign" src="" height="50" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @{
+                Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                {
+                    Form = "FormJ",
+                    RefId = Model.SaveFormAModel.No,
+                    Stage = Model.SaveFormAModel.Status
+                });
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer float-left w-100">
+    <button type="button" class="btn btn-sm btn-outline-theme disablebtn" id="cancelFormABtn" onclick="javascript:cancelFormA()">Cancel</button>
+    @if (!Model.SaveFormAModel.SubmitSts)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn disablebtn" onclick="javascript:saveHeader(false);" id="saveFormABtn" data-toggle="modal">Save</button>
+        @if (IsSupervisor)
+        {
+            <button type="button" class="btn btn-sm btn-themebtn disablebtn" onclick="javascript:saveHeader(true);" id="SubmitFormABtn">Submit</button>
+        }
+    }
+    @if (security.IsExecutive && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormJInspected)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Checked By');">Approve / Checked</button>
+    }
+    else if (security.IsHeadMaintenance && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormJChecked)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved By');">Approve</button>
+    }
+    else if (security.IsRegionManager && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormJHeadMaintenanceApproved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved By');">Approve</button>
+    }
+    else if (security.IsJKRSSuperiorOfficer && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormJRegionManagerApproved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited  By');">Approve / Audited</button>
+    }
+
+</div>
+
+<div class="modal fade" id="FormJAdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormJAdddModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="formDetailText">Add Form J Details</h5>
+                <button type="button" class="close">&times;</button>
+            </div>
+            <div id="div-data-container1" class="w-100 float-left">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/NodFormJ.js" type="text/javascript" asp-append-version="true"></script>

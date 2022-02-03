@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.Maps.BekenuPage"
+             Title="Q1084"
+             xmlns:esriUI="clr-namespace:Esri.ArcGISRuntime.Xamarin.Forms;assembly=Esri.ArcGISRuntime.Xamarin.Forms" xmlns:local="clr-namespace:RAMMS.MobileApps.Controls"
+             BackgroundColor="Transparent"
+             
+            >
+
+    
+
+    <Grid>
+       
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="180" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+
+
+
+
+
+        <Frame Margin="0,0,0,0" Grid.Row="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" HorizontalOptions="CenterAndExpand" LineBreakMode="TailTruncation" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="18" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+            </Grid>
+        </Frame>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <Frame Grid.Row="1" BackgroundColor="#1D2D50" Margin="0,-20,0,0" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="iri.png"  Grid.Row="0" Grid.Column="0" IsVisible="true" x:Name="Stack1"/>
+                <Image Source="mpd.png"  Grid.Row="0" Grid.Column="0" IsVisible="false" x:Name="Stack2"/>
+                <Image Source="iri.png"  Grid.Row="0" Grid.Column="0" IsVisible="false" x:Name="Stack3"/>
+
+
+                <Button Text="Select Angle" x:Name="prem" FontAttributes="Bold" CornerRadius="50" Grid.Row="0" FontSize="10" Grid.Column="1" Clicked="Button_Clicked_3" Margin="0,6,0,5"/>
+                <Image Source="down_arrow_care.png" Grid.Row="0" x:Name="prems" Grid.Column="1" HorizontalOptions="End" Margin="0,0,10,0"/>
+                <Frame x:Name="Toggle1" BackgroundColor="Transparent"  HasShadow="True" CornerRadius="5" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="10,0,10,-40"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <StackLayout Margin="0,-15,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+
+                            <Button Text="Left"  Grid.Row="0" FontSize="9" Grid.Column="0" BackgroundColor="White" CornerRadius="1" BorderColor="Gray" BorderWidth="0.5" Margin="-8,-15,-8,24"  Clicked="Button_Clicked_5"/>
+                            <Button Text="Right"  Grid.Row="1" FontSize="9" Grid.Column="0" CornerRadius="1" BackgroundColor="White" BorderColor="Gray" BorderWidth="0.5"  Margin="-8,-32,-8,39" Clicked="Button_Clicked_6" />
+
+
+
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+
+
+
+                <Button Text="Select Section" x:Name="mani" FontAttributes="Bold" CornerRadius="50" FontSize="10" Grid.Row="0" Grid.Column="2" Clicked="Button_Clicked_4" Margin="0,6,0,6"/>
+
+                <Image Source="down_arrow_care.png" Grid.Row="0"  Grid.Column="2" HorizontalOptions="End" Margin="0,0,10,0"/>
+
+                <Frame x:Name="Toggle2" BackgroundColor="Transparent"   HasShadow="True" CornerRadius="5" Grid.Row="1" Grid.Column="2" Grid.RowSpan="4" Margin="0,-6,0,-20"  IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <StackLayout Margin="0,-10,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+
+                            </Grid.ColumnDefinitions>
+
+
+                            <Button Text="IRI" x:Name="stack1" Grid.Row="0" FontSize="9" Grid.Column="0" BackgroundColor="White" CornerRadius="1" BorderColor="Gray" BorderWidth="0.5" Margin="0,-14,0,24"  Clicked="Button_Clicked_1"/>
+                            <Button Text="MPD" x:Name="stack2" Grid.Row="1" FontSize="9" Grid.Column="0" CornerRadius="1" BackgroundColor="White" BorderColor="Gray" BorderWidth="0.5"  Margin="0,-32,0,40" Clicked="Button_Clicked_2" />
+                            <Button Text="Residual Life" x:Name="stack3" FontSize="9" Grid.Row="2" Grid.Column="0" BackgroundColor="White" CornerRadius="1" BorderColor="Gray" BorderWidth="0.5" Margin="0,-50,0,55" Clicked="stack3_Clicked" />
+
+
+
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+            </Grid>
+        </Frame>
+
+
+       
+        <Picker
+            x:Name="LayerPicker" IsVisible="false"
+            Grid.Row="1"
+            VerticalOptions="CenterAndExpand" />
+        <esriUI:SceneView x:Name="MySceneView" Grid.Row="3" SunLighting="NoLight"   Margin="0,-60,0,0" />
+    </Grid>
+
+</ContentPage>

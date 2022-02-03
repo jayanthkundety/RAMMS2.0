@@ -1,0 +1,185 @@
+﻿
+@using (Html.BeginForm("Add", "Ditche", FormMethod.Post, new { id = "FormId" }))
+{
+    <div class="modal-body">
+
+
+        <div class="row col-12">
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-8 mb-2">
+                <ul class="nav nav-tabs" style="border-bottom:none">
+                    <li class="pr-1"><a data-toggle="tab" class="btn btn-outline-info theme-clr" href="#ditchestab1">Page 1</a></li>
+                    <li><a data-toggle="tab" class="btn btn-outline-info theme-clr" href="#ditchestab2">Page 2</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class=" tab-content">
+            <div class="tab-pane active" id="ditchestab1">
+                <div class="card">
+                    <div class="card-body" style="line-height:2">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Road Feature ID ", " Road Feature ID", new { style = "float: left;color:red" })
+                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                @Html.DropDownList("Road Feature ID", new List<SelectListItem>{
+                           new SelectListItem{Text="Select One",Value="1"},
+                           new SelectListItem{Text="2",Value="2"}
+                           }, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Division", "Division", new { style = "float: left" })
+                                @*@Html.TextBoxFor(m => m._BridgeInvSave.AiDivCode, new { @class = "form-control" })*@
+                                @Html.TextBox("Division", null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("RMU", "RMU", new { style = "float: left" })
+                                @Html.TextBox("RMU", null, new { @class = "form-control" })
+                                @*@Html.TextBoxFor(m => m._BridgeInvSave.AiRmuCode, new { @class = "form-control " })*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Section Code", "Section Code", new { style = "float: left" })
+                                @Html.TextBox("Section Code", null, new { @class = "form-control" })
+                                @*@Html.TextBoxFor(model => model.AiSecCode, new { @class = "form-control" })*@
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Section Name", "Section Name", new { style = "float: left" })
+                                @Html.TextBox("Section Name", null, new { @class = "form-control " })
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Road Code", "Road Code", new { style = "float: left" })
+                                @Html.TextBox("Road Code", null, new { @class = "form-control " })
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Road Name", " Road Name ", new { style = "float: left" })
+                                @Html.TextBox("Road Name", null, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("ID", " ID ", new { style = "float: left;color:red" })
+                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                @Html.TextBox("ID", null, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("District", " District", new { style = "float: left" })
+                                @Html.TextBox("District", null, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Asset Group", "Asset Group", new { style = "float: left" })
+                                @Html.DropDownList("AssetGroup", new List<SelectListItem>{
+                           new SelectListItem{Text="Select One",Value="1"},
+                           new SelectListItem{Text="2",Value="2"}
+                           }, new { @class = "form-control " })
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Asset type", "Asset Type", new { style = "float: left" })
+                                @Html.DropDownList("AssetType", new List<SelectListItem>{
+                          new SelectListItem{Text="Select One",Value="1"},
+                          new SelectListItem{Text="2",Value="2"}
+                          }, new { @class = "form-control " })
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Location CH    ", " Location CH", new { style = "float: left" })
+                                @Html.TextBox("Location", null, new { @class = "form-control " })
+                            </div>
+
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Bound ", "Bound ", new { style = "float: left" })
+                                @Html.DropDownList("Bound", new List<SelectListItem>{
+                         new SelectListItem{Text="Select One",Value="1"},
+                         new SelectListItem{Text="2",Value="2"}
+                         }, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Structure Code", " Structure Code  ", new { style = "float: left" })
+                                @Html.TextBox("Structure Code", null, new { @class = "form-control " })
+                            </div>
+
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Reference No", " Reference No  ", new { style = "float: left" })
+                                @Html.TextBox("Reference No", null, new { @class = "form-control " })
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="ditchestab2">
+                <div class="card">
+                    <div class="card-body" style="line-height:2">
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Length", "Length", new { style = "float: left" })
+                                @*@Html.TextBoxFor(m => m._BridgeInvSave.AiDivCode, new { @class = "form-control" })*@
+                                @Html.TextBox("Length", null, new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Width", "Width", new { style = "float: left" })
+                                @Html.TextBox("Width", null, new { @class = "form-control" })
+                                @*@Html.TextBoxFor(m => m._BridgeInvSave.AiRmuCode, new { @class = "form-control " })*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("CH From", "CH From", new { style = "float: left" })
+                                @Html.TextBox("CH From", null, new { @class = "form-control" })
+                                @*@Html.TextBoxFor(model => model.AiSecCode, new { @class = "form-control" })*@
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("CH To", "CH To", new { style = "float: left" })
+                                @Html.TextBox("CH To", null, new { @class = "form-control " })
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Owner", " Owner ", new { style = "float: left" })
+                                @Html.TextBox("Owner", null, new { @class = "form-control " })
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("Maintained By", " Maintained By", new { style = "float: left" })
+                                @Html.TextBox("Maintained By", null, new { @class = "form-control " })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("GPS Easting", " GPS Easting", new { style = "float: left" })
+                                <div class="position-relative c-path float-left w-100">
+                                    <a href=""><span class="current-location"></span></a>
+                                    @Html.TextBox("GPS Easting", null, new { @class = "form-control " })
+                                </div>                                
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                                @Html.Label("GPS Northing", " GPS Northing", new { style = "float: left" })
+                                <div class="position-relative c-path float-left w-100">
+                                    <a href=""><span class="current-location"></span></a>
+                                    @Html.TextBox("GPS Northing", null, new { @class = "form-control " })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" onclick="location.href='@Url.Action("Add", "Assets")'"  class="btn btn-success theme-clr">Confirm</button>
+        <button type="button" class="btn btn-outline-info theme-clr" data-dismiss="modal">Cancel</button>
+    </div>
+
+
+
+}

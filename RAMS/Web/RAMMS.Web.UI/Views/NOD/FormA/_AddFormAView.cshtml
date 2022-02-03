@@ -1,0 +1,280 @@
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using RAMMS.Domain.Models;
+@model RAMMS.Web.UI.Models.FormAModel;
+@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewData["Title"] = "Grid View Page";
+    ViewBag.TabTitle = "Grid View Page";
+}
+<script src="~/js/NodFormAHeader.js?v=1.233" type="text/javascript"></script>
+<script src="~/js/NodFormA.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        process.Init("FormA", "@Model.SaveFormAModel.Status", @Model.SaveFormAModel.No);
+    });
+</script>
+<style>
+    .box-sdw-0020 {
+        box-shadow: 0px 0px 2px 0px;
+    }
+
+    .br-rds-25 {
+        border-radius: 25px;
+    }
+
+    .disableinput {
+    }
+
+    .disablebtn {
+    }
+
+    .editdisable {
+    }
+</style>
+
+@*@using (Html.BeginForm())
+    {*@
+<input type="hidden" value="@Model.SaveFormAModel.No" id="FormADetPKId" />
+<input type="hidden" value="0" id="IsViewDetail" />
+@{
+    var isculvert = Model.SaveFormAModel.AssetGroupCode == "Culvert" ||
+            Model.SaveFormAModel.AssetGroupCode == "Bridge" ? 1 : 0;
+}
+<input type="hidden" value="@isculvert" id="IsCulvertOrBridge" />
+<div id="headerDiv" class="modal-body mh-182">
+    <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="form-group col-lg-4 col-md-4">
+                    @Html.Label("Road Code", "Road Code")
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.RoadCode, (IEnumerable
+                         <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "FormADetRoadCode", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-4 col-md-6">
+                    @Html.Label("Asset Group", "Asset Group")
+                    @Html.DropDownListFor(m => m.SaveFormAModel.AssetGroupCode, (IEnumerable
+                    <SelectListItem>)ViewData["AssetListing"], "Select Asset Group", new { @Id = "FormADetAssetGrpCode", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-2 col-md-4">
+                    @Html.Label("Month (MM)", "Month (MM)")
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.Month, (IEnumerable
+                        <SelectListItem>)ViewData["Months"], "Select Month", new { @Id = "FormADetMonth", @class = "form-control disableinput editdisable" })
+                </div>
+                @*<div class="form-group col-xl-1" style="max-width:1%;flex:0 0 1%">/</div>*@
+                <div class="form-group col-lg-2 col-md-4">
+
+                    @Html.Label("Year (YYYY)", "Year (YYYY)")
+                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.Year, (IEnumerable
+                    <SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "FormADetYear", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-4 col-md-4">
+                    @Html.Label("Road Name", "Road Name")
+                    @Html.TextBoxFor(m => m.SaveFormAModel.RoadName, new { @Id = "FormADetRoadName", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-2 col-md-4">
+                    @Html.Label("RMU", "RMU")
+                    @Html.TextBoxFor(m => m.SaveFormAModel.Rmu, new { @Id = "FormADetRmu", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                </div>
+                <div class="form-group col-lg-2 col-md-4">
+                    <div>
+                        @Html.Label("Section", "Section")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.section, new { @Id = "FormADetsection", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-4 col-md-6">
+                    @Html.Label("Reference no", "Reference no")
+                    @Html.TextBoxFor(m => m.SaveFormAModel.Id, new { @Id = "FormADetReferenceNO", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                </div>
+            </div>
+            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                <button id="searchHeaderBtn" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right disablebtn">Find Details</button>
+            </div>
+        </div>
+    </div>
+    <div class="clear-b"></div>
+    <div class="w-100 position-relative in-tbl-btns">
+        <div class="grid-btns">
+            <button type="button" id="addFADBtn" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#FormAAdddetailsModal" data-backdrop="static" onclick="javascript: AddNewForm(0);"><span class="intbl-add-icon"></span></button>
+        </div>
+        <div id="DetailListGrid" class="w-100 dt-tbl-section">
+            @{
+                Html.RenderPartial("_DetailGridList.cshtml");
+            }
+        </div>
+    </div>
+    @*Page @(Model.SaveFormAModel.FormADetails.ToPagedList().PageCount < Model.SaveFormAModel.FormADetails.ToPagedList().PageNumber ? 0 : Model.SaveFormAModel.FormADetails.ToPagedList().PageNumber) of @Model.SaveFormAModel.FormADetails.ToPagedList().PageCount
+
+        @Html.PagedListPager((IPagedList)Model.SaveFormAModel.FormADetails, Page_No => Url.Action("GridView",
+            new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))*@
+
+    @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+         @Html.PagedListPager(Model, Page_No => Url.Action("Index",
+        new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))*@
+    @{
+        bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.SaveFormAModel.Status) || Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormAInit);
+    }
+    <div class="row">
+        <div id="divDetails" style="display:none;" class="col-lg-12 px-lg-5">
+            <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                <div class="col-lg-12 py-2 px-4">
+                    <span class="font-14 font-weight-bold">Inspected by</span>
+                </div>
+                <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                    <div class="form-group col-lg-2 float-left">
+                        <label>User Id</label>
+                        @{
+
+                            var usrLst = usr.GetUserSelectList(Model.SaveFormAModel.UseridPrp); //await usr.GetUserList();
+                            var vd = Model.SaveFormAModel.VerifiedDt;
+                            var _id = Model.SaveFormAModel.DtPrp;
+                            string _v = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                            string _dtprp = _id.HasValue ? _id.Value.ToString("yyyy-MM-dd") : "";
+                            bool InspectedBydisabled = Model.SaveFormAModel.UseridPrp.GetValueOrDefault() != 0 && Model.SaveFormAModel.UseridPrp.GetValueOrDefault() != 99999999;
+                            bool VerifiedBydisabled = Model.SaveFormAModel.UseridVer.GetValueOrDefault() != 0 && Model.SaveFormAModel.UseridVer.GetValueOrDefault() != 99999999;
+                        }
+                        <select id="ddlInspectedby" class="form-control svalidate {visrequired, Inspected by Id} disableinput" @(IsSupervisor ? "" : "disabled='disabled'")>
+                            <option value="">User Id</option>
+                            @foreach (var s in usrLst)
+                            {
+                                @if (Model.SaveFormAModel.UseridPrp.GetValueOrDefault().ToString() == s.Value)
+                                {
+                                    <option selected="selected" value="@s.Value">@s.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@s.Value">@s.Text</option>
+                                }
+                            }
+                        </select>
+
+                    </div>
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Name", "Name")
+                        @*@Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.UsernamePrp, (IEnumerable
+                            <SelectListItem>)ViewData["RD_Code"], "Select Name", new { @Id = "InspectedName", @class = "form-control" })*@
+                        @Html.TextBoxFor(m => m.SaveFormAModel.UsernamePrp, new { @Id = "InspectedName", @disabled = InspectedBydisabled, @class = "form-control svalidate {required, Inspected by Name} disableinput" })
+
+                    </div>
+
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Designation", "Designation")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.DesignationPrp, new { @Id = "InspectedDesignName", @disabled = InspectedBydisabled, @class = "form-control svalidate {required, Inspected by Designation} disableinput" })
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                        <input type="date" id="InspectedDate" value="@_dtprp" class="form-control svalidate {required, Inspected by Date} disableinput" />
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        <label>Signature</label>
+                        <div class="clear-b">
+                            <img id="inspectedSign" src="" height="50" />
+                        </div>
+                        @*<input type="text" class="form-control" />*@
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                <div class="col-lg-12 py-2 px-4">
+                    <span class="font-14 font-weight-bold">Verified by</span>
+                </div>
+                <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                    <div class="form-group col-lg-2 float-left">
+                        <label>User Id</label>
+                        <select id="ddlVerifiedby" class="form-control svalidate {visreq, Verified by Id} " disabled="disabled">
+                            <option value="">User Id</option>
+                            @foreach (var s in usrLst)
+                            {
+                                @if (Model.SaveFormAModel.UseridVer.GetValueOrDefault().ToString() == s.Value)
+                                {
+                                    <option selected="selected" value="@s.Value">@s.Text</option>
+                                }
+                                else
+                                {
+                                    <option value="@s.Value">@s.Text</option>
+                                }
+                            }
+                        </select>
+
+                    </div>
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Name", "Name")
+                        @*@Html.DropDownListFor(Ahdr => Ahdr.SaveFormAModel.UsernameVer, (IEnumerable
+                            <SelectListItem>)ViewData["RD_Code"], "Select Name", new { @Id = "VerifiedName", @class = "form-control" })*@
+                        @Html.TextBoxFor(m => m.SaveFormAModel.UsernameVer, new { @Id = "VerifiedName", @disabled = VerifiedBydisabled, @class = "form-control svalidate {visreq, Verified by Name} disableinput" })
+
+                    </div>
+
+                    <div class="form-group col-lg-3 float-left">
+                        @Html.Label("Designation", "Designation")
+                        @Html.TextBoxFor(m => m.SaveFormAModel.DesignationVer, new { @Id = "VerifiedDesignation", @disabled = VerifiedBydisabled, @class = "form-control svalidate {visreq, Verified by Designation} disableinput" })
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                        <input type="date" id="VerifiedDate" value="@_v" class="form-control svalidate {visreq, Verified by Date}" disabled="disabled" />
+                    </div>
+                    <div class="form-group col-lg-2 float-left">
+                        <label>Signature</label>
+                        <div class="clear-b">
+                            <img id="verifiedSign" src="" height="50" />
+                        </div>
+                        @*<input type="text" class="form-control" />*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        @{
+            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+            {
+                Form = "FormA",
+                RefId = Model.SaveFormAModel.No,
+                Stage = Model.SaveFormAModel.Status
+            });
+        }
+    </div>
+</div>
+<div class="modal-footer float-left w-100">
+    <button type="button" class="btn btn-sm btn-outline-theme disablebtn" onclick="javascript:cancel();">Cancel</button>
+    @if (!Model.SaveFormAModel.SubmitSts)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn disablebtn" onclick="javascript:saveHeader(false);" id="saveFormABtn">Save</button>
+        @if (IsSupervisor)
+        {
+            <button type="button" class="btn btn-sm btn-themebtn disablebtn" onclick="javascript:saveHeader(true);" id="SubmitFormABtn">Submit</button>
+        }
+    }
+    @if (security.IsExecutive && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormAInspected)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved By');">Approve</button>
+    }
+    else if (security.IsHeadMaintenance && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormAExecutiveApproved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved By');">Approve</button>
+    }
+    else if (security.IsRegionManager && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormAHeadMaintenanceApproved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved By');">Approve</button>
+    }
+    else if (security.IsJKRSSuperiorOfficer && Model.SaveFormAModel.Status == RAMMS.Common.StatusList.FormARegionManagerApproved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Verified By');">Approve / Verified</button>
+    }
+
+</div>
+<div class="modal fade" id="FormAAdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormAAdddModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="formDetailText">Add Form A Details</h5>
+                <button type="button" onclick="javascript:DetailGridReload()" class="close">&times;</button>
+            </div>
+            <div id="div-data-container1" class="w-100 float-left">
+
+            </div>
+        </div>
+    </div>
+</div>
+@*}*@
+

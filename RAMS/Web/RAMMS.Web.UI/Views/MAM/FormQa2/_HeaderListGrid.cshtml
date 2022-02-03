@@ -1,0 +1,134 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()?"":'hidden';
+    var isDeletePerm=@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()?"":'hidden';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: false, sortable: false, render: function (data, type, full) {
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><a href='/mam/MAM/EditFormQa2?headerId=" + data.no + "&view=0' class='dropdown-item editdel-btns'" + isModifyPerm + "  id='formNHeaderEdit' ><span class='edit-icon'></span> Edit</a> <a href='/mam/MAM/EditFormQa2?headerId=" + data.no +"&view=1' class='dropdown-item editdel-btns' ><span class='del-icon'></span> View</a><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#' " + isDeletePerm + " onclick='javascript:EditForm(" + data.no + ",1);'><span class='view-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><a href='/mam/MAM/EditFormQa2?headerId=" + data.no + "&view=1' class='dropdown-item editdel-btns' '><span class='view-icon'></span> View</a><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            return full["submitStatus"] == true ? viewaction : actionSection;
+        }
+    };
+    var refNoCol = {
+        data: null,
+        render: function (data, type, full) {
+            return full["qA2Header"] != null ? full["qA2Header"].roadCode : "";
+        }, name: "No", title: "Reference No.", autoWidth: false, width: 250, sortable: false
+    };
+
+    var distressCol = { data: "defCode", name: "Distress Code", title: "Distress Code", autoWidth: true, sortable: false };
+
+    var distressDescCol = { data: "defDesc", name: "Distress Name", title: "Distress Name", autoWidth: true, sortable: false };
+
+    var rmuCol = {
+        data: "",
+        render: function (data, type, full) {
+            return full["qA2Header"] ? full["qA2Header"].rmu : "";
+        }, name: "Rmu", title: "RMU", autoWidth: true, sortable: false
+    };
+
+    var roadCodeCol = {
+        data: "",
+        render: function (data, type, full) {
+            return full["qA2Header"] ? full["qA2Header"].roadCode : "";
+        },
+        name: "Road Code", title: "Road Code", autoWidth: true, sortable: false
+    };
+    var roadNameCol = {
+        data: "", render: function (data, type, full) {
+            return full["qA2Header"] ? full["n1HeaderDetails"].roadName : "";
+        }, name: "Road Name", title: "Road Name", autoWidth: true, sortable: false
+    };
+
+    var actCodeCol = { data: "isCorrectionTaken", name: "Correction Taken", title: "Activity Code", autoWidth: true, sortable: false };
+    var actCodeNameCol = { data: "isCorrectionTaken", name: "Correction Taken", title: "Activity Name", autoWidth: true, sortable: false };
+    var submitStsCol = {
+        data: "submitStatus",
+        render: function (data, type, full, meta) {
+            return full["submitStatus"] == true ? "Submitted" : "Saved";
+        }, title: "Status", autoWidth: true, sortable: false
+    };
+
+    var ownerCol = { data: "", name: "Owner", title: "Owner", autoWidth: true, sortable: false };
+    var ncnCol = { data: "", name: "NCR", title: "NCN?", autoWidth: true, sortable: false };
+    var ncrCol = { data: "", name: "NCR", title: "NCR?", autoWidth: true, sortable: false };
+    var verByCol = { data: "crBy", name: "Verified By", title: "Verified By", autoWidth: true, sortable: false };
+
+
+
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(distressCol);
+    table_columns.push(distressDescCol);
+    table_columns.push(rmuCol);
+    table_columns.push(roadCodeCol);
+    table_columns.push(roadNameCol);
+
+    table_columns.push(actCodeCol);
+    table_columns.push(actCodeNameCol);
+    table_columns.push(submitStsCol);
+    table_columns.push(ownerCol);
+    table_columns.push(ncnCol);
+    table_columns.push(ncrCol);
+    table_columns.push(verByCol);
+
+
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormN";
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.SmartInputValue = $("#FormSmartSearch").val();
+        filterData.RMU = $("#formQa2SrchRMU").val();
+        filterData.Road_Code = $("#formQa2SrchRoadCode").val();
+        filterData.ActivityCode = $("#formQa2SrchActCode").val();
+        filterData.WWS = $("#formQa2SrchWss").val();
+
+        $('#FormGridView').DataTable({
+            ajax: {
+                url: "/MAM/LoadQA2List",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormGridView').DataTable();
+        $('#formSearchBtn').click(function () {
+            oTable.columns(0).search($("#FormQa2SmartSearch").val().trim());
+            oTable.columns(1).search($("#formQa2SrchRMU").val().trim());
+            oTable.columns(2).search($("#formQa2SrchRoadCode").val().trim());
+            oTable.columns(3).search($("#formQa2SrchActCode").val().trim());
+            oTable.columns(4).search($("#formQa2SrchWss").val().trim());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>

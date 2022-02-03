@@ -1,0 +1,933 @@
+@model RAMMS.Web.UI.Models.FormXModel;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormAService formaservice
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService userservice
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+@*@model Model.RmFormXHdr*@
+@{
+    ViewBag.TabTitle = "Form X";
+
+    bool IsIdentificationDisabled = security.IsFieldDisabled(ModuleNameList.Emergency_Response_Team, "FormX-IdentificationData");
+    string strIdentiDisabled = IsIdentificationDisabled ? "ctldisabled" : "";
+}
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+<script src="~/js/ERTFormX.js?v=12.1"></script>
+@*<style>
+        .NavbarCollapse {
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+    </style>*@
+<script>
+    $(document).ready(function () {
+        $("#formXSts").chosen();
+        $("#FormXAttnUsername").prop("disabled", true);
+        Validation.OnKeyPressInit();
+        DateValidation();
+        $('.reference').on("change", function () {
+            var RdCode = $("#FormXRoadCode").val();
+            var rmu = $("#formXRMU").val();
+            var RpDate = $("#formXrepDate").val();
+            if (RdCode != '' && rmu != '' && RdCode != undefined && rmu != undefined) {
+                var obj = new Object();
+                obj.TypeCode = $("#FormXRoadCode").val();
+                obj.Type = "RD_Code";
+                getNameByCode(obj)
+            }
+            else {
+                $("#FormxRoadName").val("");
+                $("#FormXDetsection").val("");
+            }
+            if (RdCode != '' && RpDate != '') {
+                $.ajax({
+                    url: '/ERT/GetReferenceNo',
+                    dataType: 'JSON',
+                    data: { RdCode: RdCode, RpDate: RpDate },
+                    type: 'Post',
+                    success: function (data) {
+                        if (data.isExists) {
+                            //app.ShowWarningMessage(data.reference + 'is already exists', false);
+                            app.ShowWarningMessage('This Road Code was already exists for the date', false);
+                            $("#saveFormXBtn").prop("disabled", true);
+                            $("#formReference").val('');
+                        }
+                        else {
+                            $("#formReference").val(data.reference);
+                            $("#saveFormXBtn").prop("disabled", false);
+                        }
+
+                        $.ajax({
+                            url: '/ERT/GetSectionBYRMUAndRoadCode',
+                            dataType: 'JSON',
+                            data: {
+                                RdCode: RdCode, RMU: $("#formXRMU").val()
+                            },
+                            type: 'Post',
+                            success: function (data) {
+                                $("#FormXDetsection").val(data);
+                            },
+                            error: function (data) {
+
+                                console.error(data);
+                            }
+                        });
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            } else {
+                $("#formReference").val('');
+                $("#saveFormXBtn").prop("disabled", true);
+            }
+
+
+            if (RdCode != '' && RpDate != '') {
+
+            }
+
+
+        });
+
+        function getNameByCode(obj) {
+            $.ajax({
+                url: '/Assets/GetNameByCode',
+                data: obj,
+                type: 'Post',
+                success: function (data) {
+                    if (obj.Type == "RD_Code") {
+                        $("#FormxRoadName").val(data);
+                    }
+                }
+            })
+        }
+
+        $("#formXrepDate").on('change', function () {
+            DateValidation()
+        })
+
+        function DateValidation() {
+            val = $("#formXrepDate").val();
+            //https://ramms.atlassian.net/browse/RUD2-65
+            //$("#formXverDate").attr("min", val)
+            //$("#FormXEstDate").attr("min", val)
+            //$("#formXassgnToDate").attr("min", val)
+            //$("#formXWrkSchDate").attr("min", val)
+            //$("#formXWrkCmpDate").attr("min", val)
+            //$("#formXSchverDate").attr("min", val)
+            //$("#formXCaseCloseDate").attr("min", val)
+            var dt = new Date(val);
+            var validDate = dt.getFullYear() + "-" + dt.getMonth() + 1 + "-" + dt.getDate();
+            //$("#JkrsSentDt").attr("min", validDate)
+            //$("#DtJkrRcvdFrm").attr("min", validDate)
+        }
+
+
+        $('#formXverDate').on('changeDate', function (ev) {
+            $(this).datepicker('hide');
+        });
+        //$('#formXrepDate').on('changeDate', function (ev) {
+        //    $(this).datepicker('hide');
+        //});
+
+        $('#JkrsSentDt').on('changeDate', function (ev) {
+            $(this).datepicker('hide');
+        });
+        $('#DtJkrRcvdFrm').on('changeDate', function (ev) {
+            $(this).datepicker('hide');
+        });
+        //$('#FormXEstDate').on('changeDate', function (ev) {
+        //    $(this).datepicker('hide');
+        //});
+        //$('#formXassgnToDate').on('changeDate', function (ev) {
+        //    $(this).datepicker('hide');
+        //});
+        //$('#formXWrkSchDate').on('changeDate', function (ev) {
+        //    $(this).datepicker('hide');
+        //});
+        //$('#formXWrkCmpDate').on('changeDate', function (ev) {
+        //    $(this).datepicker('hide');
+        //});
+        //$('#formXSchverDate').on('changeDate', function (ev) {
+        //    $(this).datepicker('hide');
+        //});
+        //$('#formXCaseCloseDate').on('changeDate', function (ev) {
+        //    $(this).datepicker('hide');
+        //});
+        $("#FormXSVerby").on("change", function () {
+            disableAttrExist = $("#FormXSVerby").attr("disabled")
+            if (!disableAttrExist) {
+                val = $(this).find(":selected").text();
+                var code = val.split('-');
+                if (code[1] != "others") {
+                    $("#FormXSVerUsername").val(code[1]);
+                    document.getElementById("FormXSVerUsername").disabled = true;
+                }
+                else {
+                    document.getElementById("FormXSVerUsername").disabled = false;
+                    $("#FormXSVerUsername").val(null);
+                }
+            }
+
+        });
+
+        //$("#FormXSVerby").trigger("change");
+
+        $("#FormXSVetby").on("change", function () {
+            disableAttrExist = $("#FormXSVetby").attr("disabled")
+            if (!disableAttrExist) {
+                val = $(this).find(":selected").text();
+                var code = val.split('-');
+                if (code[1] != "others") {
+                    $("#FormXSVetUsername").val(code[1]);
+                    document.getElementById("FormXSVetUsername").disabled = true;
+                }
+                else {
+                    document.getElementById("FormXSVetUsername").disabled = false;
+                    $("#FormXSVetUsername").val(null);
+                }
+            }
+
+        });
+
+        //$("#FormXSVetby").trigger("change");
+
+        $("#FormXAssgnto").on("change", function () {
+            disableAttrExist = $("#FormXAssgnto").attr("disabled")
+            if (!disableAttrExist) {
+                val = $(this).find(":selected").text();
+                var code = val.split('-');
+                if (code[1] != "others") {
+                    $("#FormXAssgnUsername").val(code[1]);
+                    document.getElementById("FormXAssgnUsername").disabled = true;
+                }
+                else {
+                    document.getElementById("FormXAssgnUsername").disabled = false;
+                    $("#FormXAssgnUsername").val(null);
+                }
+            }
+        });
+
+        //$("#FormXAssgnto").trigger("change");
+
+        $("#FormXVeriBy").on("change", function () {
+            disableAttrExist = $("#FormXVeriBy").attr("disabled")
+            if (!disableAttrExist) {
+                val = $("#FormXVeriBy").val();
+                val = $(this).find(":selected").text();
+                var code = val.split('-');
+                if (code[1] != "others") {
+                    $("#FormXVerUsername").val(code[1]);
+                    document.getElementById("FormXVerUsername").disabled = true;
+                }
+                else {
+                    document.getElementById("FormXVerUsername").disabled = false;
+                    $("#FormXVerUsername").val(null);
+                }
+            }
+        });
+
+        // $("#FormXVeriBy").trigger("change");
+
+        $("#FormXAttnto").on("change", function () {
+            disableAttrExist = $("#FormXAttnto").attr("disabled")
+            if (!disableAttrExist) {
+                val = $(this).find(":selected").text();
+                var code = val.split('-');
+                if (code.length > 1) {
+                    if (code[1] != "others") {
+                        $("#FormXAttnUsername").val(code[1]);
+                        document.getElementById("FormXAttnUsername").disabled = true;
+                    }
+                    else {
+                        document.getElementById("FormXAttnUsername").disabled = false;
+                        $("#FormXAttnUsername").val(null);
+                    }
+                }
+            }
+
+        });
+
+        // $("#FormXAttnto").trigger("change");
+
+        $("#formXmainCode").on("change", function () {
+            disableAttrExist = $("#formXmainCode").attr("disabled")
+            if (!disableAttrExist) {
+                $("#FormXActMainName").val($(this).val())
+                document.getElementById("FormXActMainName").disabled = true;
+            }
+
+        })
+        $("#formXmainCode").trigger("change");
+
+
+        $("#FormXsubCode").on("change", function () {
+            disableAttrExist = $("#FormXsubCode").attr("disabled")
+            if (!disableAttrExist) {
+                val = $(this).find(":selected").text();
+                var code = val.split('-');
+                if (code[1] != "Others") {
+                    $("#FormXActSubName").val(code[1]);
+                    document.getElementById("FormXActSubName").disabled = true;
+                }
+                else {
+                    $("#FormXActSubName").val(null);
+                    document.getElementById("FormXActSubName").disabled = false;
+                }
+            }
+        });
+
+
+        // $("#FormXsubCode").trigger("change");
+
+
+        $(document).on("click", "#btnUpload", function () {
+            var files = $("#importFile").get(0).files;
+
+            //alert(files);
+            var formData = new FormData();
+            formData.append('importFile', files[0]);
+
+            $.ajax({
+                url: '/Download/AssetImportFile',
+                data: formData,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.Status === 1) {
+                        // alert(data.Message);
+                    } else {
+                        // alert("Failed to Import");
+                    }
+                }
+            });
+        });
+
+        var id = getParameterByName('headerId');
+        $("#formXHdnId").val(id == "" || typeof id == "undefined" || id == null ? "0" : id);
+        var modcom = $("#formXmod").on("change", function () {
+            if (this.value == "Others") {
+                $("#formXcomDesc").show();
+            }
+            else {
+                $("#formXcomDesc").val("").hide();
+            }
+        }).val();
+        if (modcom != "Others") { $("#formXcomDesc").val("").hide(); }
+    });
+    $("#comUpload").on("change", function () {
+        $("#imagePreviewAdd").css("display", "none")
+        var input = document.getElementById('comUpload');
+        if (input.files[0] != undefined) {
+            if (input.files[0].name != undefined) {
+                $("#formXcomUpload").val(input.files[0].name)
+                document.getElementById('formXcomUpload').innerHTML = input.files[0].name;
+                $("#imagePreviewAdd").css("display", "block")
+                $("#imagePreviewAdd").attr("href", URL.createObjectURL(input.files[0]))
+            }
+        }
+    })
+    $("#comUpload").trigger("change");
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    $("#formXRMU").on("change", function () {
+        var obj = new Object();
+        $("#FormxRoadName").val("");
+        $("#FormXRoadCode option").remove();
+        var val = $("#formXRMU option:selected").text().split('-');
+        //obj.RMU = val[1];
+        obj.RMU = $("#formXRMU").val();
+        $.ajax({
+            url: '/Assets/detailSearchDdList',
+            data: obj,
+            type: 'Post',
+            success: function (data) {
+
+                $("#FormXRoadCode option").remove();
+                $("#FormXRoadCode").append($('<option>').val(null).text("Select Road Code"));
+
+                $.each(data.rdCode, function (index, value) {
+                    $("#FormXRoadCode").append($('<option>').val(value.value).html(value.text));
+                    $("#FormXRoadCode").trigger("chosen:updated");
+
+                })
+
+
+            }
+        })
+    });
+</script>
+@*<link hreflinkhref ="~/Content/chosen.min.css" rel="stylesheet" />
+    <script srcscriptsrc ="~/Scripts/chosen.jquery.min.js"></script>*@
+@*@using (Html.BeginForm("_AddFormX", "ERTFormX", FormMethod.Post)*@
+
+<div class="modal-body p-0">
+    <div class="w-100 float-left bg-body">
+        <div class="w-100">
+            <div class="d-flex justify-content-center pt-3 pb-3">
+                <div class="form-group mb-0">
+                    @Html.Label("Form X No.", "Form X No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                    @Html.TextBoxFor(m => m.SaveFormXModel.ReferenceId, new { @Id = "formReference", @readonly = "readonly", @class = "form-control validate {required, ID}", style = "width:300px;" })
+                </div>
+            </div>
+            @Html.HiddenFor(m => m.SaveFormXModel.No, new { @class = "form-control", @id = "FormXFddNo" }) @*//PrimaryKey*@
+            <div class="w-100 bg-white pt-3 mh-250" style="border-top:1px solid #dee2e6;" id="EditDetails_Scroll">
+
+
+                <div class="bs-example col-md-12" data-example-id="collapse-accordion">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default" id="custom-accordion-one">
+                            <div class="panel-heading" role="tab" id="headingOne">
+                                <h4 class="panel-title">
+                                    <a role="button" class="custom-accordion-title @(IsIdentificationDisabled?"collapsed":"")" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="@(IsIdentificationDisabled?"false":"true")" aria-controls="collapseOne">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Identification Data
+                                        </span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse @(IsIdentificationDisabled?"grpctrldisabled":"show")" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+                                <div class="panel-body">
+                                    @{
+                                        var vd = Model.SaveFormXModel.DateReported;
+                                        string _dtRp = "";
+                                        if (vd.ToString() == "")
+                                        {
+                                            _dtRp = vd.HasValue ? vd.Value.ToString("yyyy-MM-ddThh:mm") : DateTime.Now.ToString("yyyy-MM-ddThh:mm");
+                                        }
+                                        else
+                                        {
+                                            _dtRp = vd.Value.ToString("yyyy-MM-ddThh:mm");
+                                        }
+                                        var _id = Model.SaveFormXModel.DtVer;
+                                        string _DtVer = _id.HasValue ? _id.Value.ToString("yyyy-MM-ddThh:mm") : "";
+                                        vd = Model.SaveFormXModel.DtJkrRcvdFrm;
+                                        string DtJkrRcvdFrm = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                                        vd = Model.SaveFormXModel.DtJkrSent;
+                                        string DtJkrSent = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                                        vd = Model.SaveFormXModel.EstDate;
+                                        string EstDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-ddThh:mm") : "";
+                                        vd = Model.SaveFormXModel.DtAssgn;
+                                        string DtAssgn = vd.HasValue ? vd.Value.ToString("yyyy-MM-ddThh:mm") : "";
+                                        vd = Model.SaveFormXModel.WorkSc;
+                                        string WorkSc = vd.HasValue ? vd.Value.ToString("yyyy-MM-ddThh:mm") : "";
+                                        vd = Model.SaveFormXModel.WorkCompleted;
+                                        string WorkCompleted = vd.HasValue ? vd.Value.ToString("yyyy-MM-ddThh:mm") : "";
+                                        vd = Model.SaveFormXModel.DtSchdVer;
+                                        string DtVer = vd.HasValue ? vd.Value.ToString("yyyy-MM-ddThh:mm") : "";
+                                        vd = Model.SaveFormXModel.CaseClosedOn;
+                                        string CaseClosedOn = vd.HasValue ? vd.Value.ToString("yyyy-MM-ddThh:mm") : "";
+                                    }
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("RMU to Handle", "RMU to Handle")
+                                        @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.Rmu, (IEnumerable
+    <SelectListItem>)ViewBag.RMUList, "Select RMU", new { @Id = "formXRMU", @class = "form-control reference editdisabled validate {required,RMU}" })
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @{
+                                            var roadcode = this.formaservice.GetDropdown(new RAMMS.DTO.ResponseBO.RequestDropdownFormA
+                                            {
+                                                RMU = Model.SaveFormXModel.Rmu ?? ""
+                                            });
+                                            var _road = roadcode.RoadCode.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+
+                                        }
+                                        @Html.Label("Road Code", "Road Code")
+                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.RoadCode, (IEnumerable
+    <SelectListItem>)_road, "Select Road Code", new { @Id = "FormXRoadCode", @class = "form-control  validate {required, Road Code} reference editdisabled" })
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Road Name", "Road Name")
+                                        @Html.TextBoxFor(Adhr => Adhr.SaveFormXModel.RoadName, new { @Id = "FormxRoadName", @readonly = "readonly", @class = "form-control validate{required, Road Name}" })
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Section", "Section")
+                                        @Html.TextBoxFor(Ahdr => Ahdr.SaveFormXModel.Section, new { @Id = "FormXDetsection", @readonly = "readonly", @class = "form-control", @required = "req, Section", })
+                                    </div>
+                                    <div class="form-group col-lg-12 mb-0">
+                                        @Html.HiddenFor(m => m.SaveFormXModel.No, new { @class = "form-control", @id = "FormXID" })
+                                        @Html.Label("Mode of Communication", "Mode of Communication")
+                                        <div class="row">
+                                            <div class="form-group col-lg-2">
+                                                @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.ModComType, (IEnumerable
+    <SelectListItem>)ViewData["communicationmode"], "Select Mode", new { @Id = "formXmod", @class = "form-control " })
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.ModComDesc, new { @Id = "formXcomDesc", @type = "text", @class = "form-control ", @rows = 1 })
+                                            </div>
+                                            <div class="col-lg-6 form-group mb-0">
+                                                <div class="row">
+                                                    <div class="form-group col-lg-5">
+                                                        <input type="file" class="form-control py-0 px-1" id="comUpload" style="padding-top: 4px !important;font-size: 12px;height: 34px !important;padding-left: 4px !important;" />
+                                                    </div>
+
+                                                    @Html.HiddenFor(Adtl => Adtl.SaveFormXModel.ModComUpload, new { @Id = "formXcomUpload", @readonly = "readonly", @class = "form-control", @rows = 1 })
+                                                    @*<button class="btn btn-sm btn-themebtn mb-3" id="btnUpload" type="submit">Import</button>*@
+
+                                                    @{
+
+
+                                                        var link = "";
+                                                        var filename = "";
+                                                        if (Model.SaveFormXModel.ModComUpload != "" && Model.SaveFormXModel.ModComUpload != null)
+                                                        {
+                                                            link = Model.SaveFormXModel.ModComUpload;
+                                                            // link = "Uploads\\FormX\\16\\0_16_sucess.jpg";
+                                                            var tarr = link.Split('\\');      // ["static","images","banner","blue.jpg"]
+                                                            filename = tarr[tarr.Length - 1]; // "blue.jpg"
+                                                                                              //var data = filename.Split('.')[0];
+                                                        }
+
+
+                                                    }
+                                                    @if (link != "")
+                                                    {
+                                                        <div class="form-group col-lg-7" style="margin-top:15px">
+                                                            <a id="imagePreviewAdd" href="~/@link" class='captionDocs' target="_blank" title="Click here to View the Document">@filename</a>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <!--<div class="form-group col-lg-7" style="margin-top:15px">-->
+                                                        @* <label id="noImagePreview">File name</label>*@
+                                                        <!--<a id="imagePreviewAdd" href="#" class='captionDocs' title="Document not available">File name</a>
+                                                        </div>-->
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Reported by", "Reported by")
+                                        @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.Location, (IEnumerable
+    <SelectListItem>)ViewData["Reportedby"], "Select", new { @Id = "formXRepBy", @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-lg-4" id=formXRepNamediv>
+                                        @Html.Label("Reported by Name", "Reported by Name")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.LocRepDesc, new { @Id = "formXRepName", @type = "text", @class = "form-control", @rows = 1 })
+                                    </div>
+                                    @*<div class="form-group col-lg-4 mb-0">
+                                                                                @Html.Label("Reported by", "Reported by")
+                                                                                <div class="row">
+                                                                                    <div class="form-group col-lg-6">
+                                                                                        @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.Location, (IEnumerable
+                                        <SelectListItem>)ViewData["Reportedby"], "Select", new { @Id = "formXRepBy", @class = "form-control" })
+                                                                                        @Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXVeriBy", @class = "form-control " })
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-6" id=formXRepNamediv>
+                                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.LocRepDesc, new { @Id = "formXRepName", @type = "text", @class = "form-control", @rows = 1 })
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>*@
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Name", "Name")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.Name, new { @Id = "formXName", @type = "text", @class = "form-control", @rows = 1 })
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Reported Date & Time (DD-MM-YYYY HH:MM XM)", "Reported Date & Time (DD-MM-YYYY HH:MM XM)")
+                                        <input type="datetime-local" class="datepicker reference" id="formXrepDate" name="formXrepDate" value="@_dtRp">
+                                    </div>
+                                    <div class="clear-b"></div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Work Phone", "Work Phone")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.WorkPhone, new { @Id = "formXWorkPh1", @type = "text", @class = "form-control validate {number, Work Phone}", @rows = 1, @onkeypressvalidate = "number, Work Phone" })
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Hand Phone", "Hand Phone")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.HandPhone, new { @Id = "formXhandPh1", @type = "text", @class = "form-control validate {number, Work Phone}", @rows = 1, @onkeypressvalidate = "number, Hand Phone" })
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("E-mail", "E-Mail")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.EmailId, new { @Id = "formXemail", @type = "text", @class = "form-control", @rows = 1 })
+                                    </div>
+                                    <div class="clear-b"></div>
+                                    <div class="form-group col-lg-4 txtarea-107">
+                                        @Html.Label("Description", "Description")
+                                        @Html.TextAreaFor(m => m.SaveFormXModel.Description, new { @Id = "FormXDescription", @class = "form-control", @maxlength = "4000" })
+                                    </div>
+                                    <div class="form-group col-lg-8 mb-0">
+                                        @Html.Label("Attention to", "Attention to")
+                                        <div class="row">
+                                            @{
+                                                var attentionList = (IEnumerable
+                                                            <SelectListItem>)ViewData["USERVER"];
+
+                                                var finalisedlist = attentionList.Select(s => new SelectListItem
+                                                {
+                                                    Text = s.Text,
+                                                    Value = s.Value,
+                                                    Selected = (Model.SaveFormXModel.AttentionTo != null ? s.Text.Contains(Model.SaveFormXModel.AttentionTo) : false)
+                                                }).ToArray();
+
+
+                                            }
+                                            <div class="form-group col-lg-6">
+                                                @*<select class="form-control" id="FormXAttnto">
+                                                        <option value="">Select User Code</option>
+                                                        @foreach (var l in finalisedlist)
+                                                        {
+                                                            if (l.Selected)
+                                                            {
+                                                                <option value="@l.Value" selected="selected">@l.Text</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@l.Value">@l.Text</option>
+                                                            }
+                                                        }
+                                                    </select>*@
+                                                @Html.DropDownListFor(m => m.SaveFormXModel.UseridAttnTo, (IEnumerable
+    <SelectListItem>)ViewData["USERVER"], "Select User Code", new { @Id = "FormXAttnto", @class = "form-control " })
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                @Html.TextBoxFor(m => m.SaveFormXModel.AttentionTo, new { @Id = "FormXAttnUsername", @class = "form-control " })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-8 mb-0">
+                                        <div class="row">
+                                            @{
+                                                bool VerBydisabled = Model.SaveFormXModel.UseridVer.GetValueOrDefault() != 0 && Model.SaveFormXModel.UseridVer.GetValueOrDefault() != 99999999;
+                                            }
+                                            <div class="form-group col-lg-6 mb-0">
+                                                @Html.Label("Verified by", "Verified by")
+                                                <div class="row">
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.DropDownListFor(m => m.SaveFormXModel.UseridVer, (IEnumerable
+    <SelectListItem>)ViewData["USERVER"], "Select User Code", new { @Id = "FormXVeriBy", @class = "form-control " })
+                                                        @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXVeriBy", @class = "form-control " })*@
+                                                    </div>
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.TextBoxFor(m => m.SaveFormXModel.UsernameVer, new { @Id = "FormXVerUsername", @disabled = VerBydisabled, @class = "form-control disableinput" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                @Html.Label("Verified Date (DD-MM-YYYY)", "Verified Date (DD-MM-YYYY)")
+                                                @*<input type="date" class="datepicker disableinput validate {required, Verified Date}" id="formXverDate" value="@_DtVer" name="formXverDate">*@
+                                                @*<input type="date" class="datepicker disableinput" id="formXverDate" value="@_DtVer" name="formXverDate">*@
+                                                <input type="datetime-local" class="datepicker" id="formXverDate" name="formXverDate reference" value="@_DtVer">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4 txtarea-107">
+                                        @Html.Label("Assigning Work Reference", "Assigning Work Reference")
+                                        @Html.TextAreaFor(m => m.SaveFormXModel.AssignWork, new { @Id = "FormXAssgWorkRef", @class = "form-control ", @maxlength = "4000" })
+                                    </div>
+                                    <div class="form-group col-lg-4 txtarea-107">
+                                        @Html.Label("Comment", "Comment")
+                                        @Html.TextAreaFor(m => m.SaveFormXModel.Comments, new { @Id = "FormXcomment", @class = "form-control", @maxlength = "4000" })
+                                    </div>
+                                    <div class="form-group col-lg-12 mb-0">
+                                        <div class="row">
+                                            <div class="form-group col-lg-3">
+                                                @Html.Label("JKRS Sent Date (DD-MM-YYYY)", "JKRS Sent Date (DD-MM-YYYY)")
+                                                @*<input type="date" class="datepicker validate {required, JKRS Sent date}" id="JkrsSentDt" name="JkrsSentDt" value="@DtJkrSent" />*@
+                                                <input type="date" class="datepicker" id="JkrsSentDt" name="JkrsSentDt" value="@DtJkrSent" />
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                @Html.Label("JKRS Received Date (DD-MM-YYYY)", "JKRS Received Date (DD-MM-YYYY)")
+                                                @*<input type="date" class="datepicker validate {required, JKRS Received Date}" id="DtJkrRcvdFrm" name="DtJkrRcvdFrm" value="@DtJkrRcvdFrm" />*@
+                                                <input type="date" class="datepicker " id="DtJkrRcvdFrm" name="DtJkrRcvdFrm" value="@DtJkrRcvdFrm" />
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                @Html.Label("Status", "Status")
+                                                @*@Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.StsJkr, new { @Id = "formXSts", @type = "text", @class = "form-control", @rows = 1 })*@
+                                                @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.StsJkr, (IEnumerable<SelectListItem>)ViewData["Status"], "Select Status", new { @Id = "formXSts", @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                @Html.Label("Remarks", "Remarks")
+                                                @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.JkrRemarks, new { @Id = "formXRemarks", @type = "text", @class = "form-control", @rows = 1 })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="form-group col-lg-2">*@
+                                    @*@Html.Label("Hand Phone", "Hand Phone")
+                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormXModel.HandPhone, new { @Id = "formXhandPh", @type = "text", @class = "form-control validate {required, Hand Phone}", @rows = 1 })*@
+                                    @*</div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default" id="custom-accordion-two">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                                <h4 class="panel-title">
+                                    <a class="custom-accordion-title @(IsIdentificationDisabled?"":"collapsed")" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="@(IsIdentificationDisabled?"true":"false")" aria-controls="collapseTwo">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Scheduling Information
+                                        </span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse @(IsIdentificationDisabled?"show":"")  @(security.IsFieldDisabled(ModuleNameList.Emergency_Response_Team,"FormX-Scheduling")?"grpctrldisabled":"")" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                <div class="panel-body">
+                                    @*Add Scheduling Information Modal*@
+
+                                    <div class="form-group col-lg-12 mb-0">
+                                        <div class="row">
+                                            @{
+                                                var actmaintask = ViewData["ACTMainTask"] as List<SelectListItem>;
+                                                //if (actmaintask != null)
+                                                //{
+                                                //    actmaintask.Add(new SelectListItem { Text = "Others", Value = "Others" });
+                                                //}
+                                                var factmaintask = actmaintask.Select(s => new SelectListItem
+                                                {
+                                                    Text = s.Text + " - " + s.Value,
+                                                    Value = s.Value,
+                                                    //Selected = Model.SaveFormXModel.ActMainName != null ? s.Text.Contains(Model.SaveFormXModel.ActMainName) : false
+                                                }).ToArray();
+                                            }
+                                            <div class="form-group col-lg-4">
+                                                <label>Activity Code: <span class="font-weight-bold">Main Task</span></label>
+                                                @Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.ActMainName, (IEnumerable
+    <SelectListItem>)factmaintask, "Select Main Task", new { @Id = "formXmainCode", @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <div>
+                                                    @Html.Label("Activity Name", "Activity Name")
+                                                    @Html.TextBoxFor(m => m.SaveFormXModel.ActMainName, new { @Id = "FormXActMainName", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 mb-0">
+                                        <div class="row">
+                                            @{
+                                                bool Subdisabled = Model.SaveFormXModel.ActSubCode != "0" && Model.SaveFormXModel.ActSubCode != "99999999";
+                                            }
+                                            <div class="form-group col-lg-4">
+                                                <label>Activity Code: <span class="font-weight-bold">Sub Task</span></label>
+                                                @*@Html.DropDownListFor(Adtl => Adtl.SaveFormXModel.ActSubName, (IEnumerable
+                                                    <SelectListItem>)actsubtask, "Select Sub Task", new { @Id = "FormXsubCode", @class = "form-control " })*@
+                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.ActSubCode, (IEnumerable
+           <SelectListItem>)ViewData["ACTSubTask"], "Select Sub Task", new { @Id = "FormXsubCode", @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                @Html.Label("Activity Name", "Activity Name")
+                                                @Html.TextBoxFor(m => m.SaveFormXModel.ActSubName, new { @Id = "FormXActSubName", @disabled = Subdisabled, @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 mb-0">
+                                        <div class="row">
+                                            <div class="form-group col-lg-4">
+                                                @Html.Label("Estimated Crew Days", "Estimated Crew Days")
+                                                @Html.TextBoxFor(m => m.SaveFormXModel.EstDays, new { @Id = "FormXEstDays", @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                @Html.Label("Estimated Date & Time (DD-MM-YYYY HH:MM XM)", "Estimated Date & Time (DD-MM-YYYY HH:MM XM)") @*<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="16" height="16" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>*@
+                                                <input type="datetime-local" class="datepicker" id="FormXEstDate" name="FormXEstDate" value="@EstDate">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 mb-0">
+                                        <div class="row">
+                                            @{
+                                                bool Assdisabled = Model.SaveFormXModel.UseridAssgn.GetValueOrDefault() != 0 && Model.SaveFormXModel.UseridAssgn.GetValueOrDefault() != 99999999;                                                
+                                            }
+                                            <div class="form-group col-lg-8 mb-0">
+                                                @Html.Label("Assigned to", "Assigned to")
+                                                <div class="row">
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.UseridAssgn, (IEnumerable<SelectListItem>)ViewData["USERVER"], "Select User Code", CHTMLControls.GetHtmlAttribute("FormXAssgnto", "form-control", true))
+                                                        @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXAssgnto", @class = "form-control " })*@
+                                                    </div>
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.TextBoxFor(m => m.SaveFormXModel.UsernameAssgn, new { @Id = "FormXAssgnUsername", @disabled = Assdisabled, @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                @Html.Label("Assigned Date & Time (DD-MM-YYYY HH:MM XM)", "Assigned Date & Time (DD-MM-YYYY HH:MM XM)")
+                                                @*<input type="datetime-local" class="datepicker validate {required, Assigned Date & Time}" id="formXassgnToDate" name="formXassgnToDate" value="@DtAssgn">*@
+                                                <input type="datetime-local" class="datepicker" id="formXassgnToDate" name="formXassgnToDate" value="@DtAssgn">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 mb-0">
+                                        <div class="row">
+                                            <div class="form-group col-lg-4">
+
+                                                @Html.Label("Work Scheduled Date & Time (DD-MM-YYYY HH:MM XM)", "Work Scheduled Date & Time (DD-MM-YYYY HH:MM XM)")
+                                                @*<input type="datetime-local" class="datepicker validate {required, Work Scheduled Date & Time}" id="formXWrkSchDate" name="formXWrkSchDate" value="@WorkSc">*@
+                                                <input type="datetime-local" class="datepicker" id="formXWrkSchDate" name="formXWrkSchDate" value="@WorkSc">
+                                            </div>
+
+                                            <div class="form-group col-lg-4">
+
+                                                @Html.Label("Work Completed Date & Time (DD-MM-YYYY HH:MM XM)", "Work Completed Date & Time (DD-MM-YYYY HH:MM XM)")
+                                                @*<input type="datetime-local" class="datepicker  validate {required, Work Completed Date & Time}" id="formXWrkCmpDate" name="formXWrkCmpDate" value="@WorkCompleted">*@
+                                                <input type="datetime-local" class="datepicker ctlenabled" id="formXWrkCmpDate" name="formXWrkCmpDate" value="@WorkCompleted">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 mb-0">
+                                        <div class="row">
+                                            @{
+                                                bool SchVerdisabled = Model.SaveFormXModel.UseridSchdVer.GetValueOrDefault() != 0 && Model.SaveFormXModel.UseridSchdVer.GetValueOrDefault() != 99999999;
+                                                SchVerdisabled = security.IsHeadMaintenance ? SchVerdisabled : false;
+                                            }
+                                            <div class="form-group col-lg-8 mb-0">
+                                                @Html.Label("Verified by", "Verified by")
+                                                <div class="row">
+                                                    <div class="form-group col-lg-6">
+
+                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.UseridSchdVer, (IEnumerable
+      <SelectListItem>)ViewData["USERVER"], "Select User Code", CHTMLControls.GetHtmlAttribute("FormXSVerby", "form-control ",security.IsHeadMaintenance))
+                                                        @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXSVerby", @class = "form-control " })*@
+                                                    </div>
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.TextBoxFor(m => m.SaveFormXModel.UsernameSchdVer, new { @Id = "FormXSVerUsername", @disabled = SchVerdisabled, @class = "form-control " })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group col-lg-4">
+                                                @Html.Label("Verified Date & Time (DD-MM-YYYY HH:MM XM)", "Verified Date & Time (DD-MM-YYYY HH:MM XM)")
+                                                @*<input type="datetime-local" class="datepicker  validate {required, Verified Date & Time}" id="formXSchverDate" name="formXSchverDate" value="@DtVer">*@
+                                                <input type="datetime-local" class="datepicker  " id="formXSchverDate" name="formXSchverDate" value="@DtVer" @(security.IsHeadMaintenance? "":"disabled='disabled'")>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+
+                                        @Html.Label("Case Closed Date & Time (DD-MM-YYYY HH:MM XM)", "Case Closed Date & Time (DD-MM-YYYY HH:MM XM)")
+                                        @*<input type="datetime-local" class="datepicker  validate {required, Case Closed Date & Time}" id="formXCaseCloseDate" name="formXCaseCloseDate" value="@CaseClosedOn">*@
+                                        <input type="datetime-local" class="datepicker " id="formXCaseCloseDate" name="formXCaseCloseDate" value="@CaseClosedOn">
+                                    </div>
+
+                                    <div class="form-group col-lg-8 mb-0">
+                                        @Html.Label("Vetted by", "Vetted by")
+                                        <div class="row">
+                                            @{
+                                                bool SchVetdisabled = Model.SaveFormXModel.UseridVet.GetValueOrDefault() != 0 && Model.SaveFormXModel.UseridVet.GetValueOrDefault() != 99999999;
+                                                SchVetdisabled = security.IsJKRSSuperiorOfficer ? SchVetdisabled : false;
+                                            }
+                                            <div class="form-group col-lg-6">
+                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormXModel.UseridVet, (IEnumerable
+                                          <SelectListItem>)ViewData["USERVER"], "Select User Code", CHTMLControls.GetHtmlAttribute("FormXSVetby", "form-control", security.IsJKRSSuperiorOfficer))
+                                                @*@Html.TextBoxFor(m => m.SaveFormXModel.UseridVer, new { @Id = "FormXSVetby", @class = "form-control " })*@
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                @Html.TextBoxFor(m => m.SaveFormXModel.UsernameVet, new { @Id = "FormXSVetUsername", @disabled = SchVetdisabled, @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 txtarea-107">
+                                        @Html.Label("Comment", "Comment")
+                                        @Html.TextAreaFor(m => m.SaveFormXModel.Remarks, new { @Id = "FormXRemark", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <input type="hidden" id="formXHdnId" value="0" />
+        <div class="modal-footer justify-content-between">
+            <div class="float-left">
+                <button type="button" id="btnUCUOpenModal" class="btn btn-sm btn-outline-theme" data-target='#USeeUModal' onclick="openUSeeU()" data-toggle="modal">U SEE U ACT AND ACCIDENT</button>
+                <button type="button" id="btnWarOpenModal" class="btn btn-sm btn-outline-theme" data-target='#WarPhotoModal' onclick="openPhoto()" data-toggle="modal">WAR</button>
+                <button type="button" id="btnFormDOpenModal" class="btn btn-sm btn-themebtn">
+                    @Html.ActionLink("Form D", "EditFormD", new { controller = "ERT" }, new { target = "_blank", @style = "color:#fff" })
+                </button>
+
+            </div>
+            <div class="float-right">
+                <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="AddModalCloseFormX()">Cancel</button>
+                <button id="saveFormXBtn" onclick="saveFormXBtn()" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*U SEE U Form Modal*@
+@*<div class="modal fade" id="USeeUModal" tabindex="-1" aria-labelledby="USeeUModalid" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-body">
+                <div class="modal-header bg-white">
+                    <h5 class="modal-title" id="USeeUModalid">U See U Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="w-100 float-left">
+                    <div class="modal-body pb-3">
+                        <div class="d-flex justify-content-center text-center">
+                            <div class="">
+                                <h5 class="text-dark font-weight-semibold mb-4 mt-2 font-16">
+                                    Please upload the U See U form
+                                </h5>
+
+                                <form method="post" enctype="multipart/form-data" class="mt-3 mb-3">
+                                    <span style="border: 1px solid #e8e8e8;padding: 10px;">
+                                        <input type="file" name="" id="" style="font-size:14px;">
+                                    </span>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Cancel</button>
+                        <button id="" type="submit" class="btn btn-sm btn-themebtn">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="modal fade" id="WarPhotoModal" aria-hidden="true" role="dialog" aria-labelledby="WarPhotoModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AssetsAddModalCenterTitle">WAR Image Upload</h5>
+                <button type="button" class="close" id="close_War" onclick="CloseWarModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="div-WarPhoto">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="USeeUModal" aria-hidden="true" role="dialog" aria-labelledby="USeeUModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AssetsAddModalCenterTitle">U SEE U ACT AND ACCIDENT Document Upload</h5>
+                <button type="button" class="close" id="close_UCU" onclick="CloseUSeeUModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="div-USeeUModal">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('.panel-collapse').on('shown.bs.collapse', function (e) {
+            var $panel = $(this).closest('.panel');
+            $('#EditDetails_Scroll').animate({
+                scrollTop: $panel.offset().top + 100
+            }, 500);
+        });
+    });
+</script>

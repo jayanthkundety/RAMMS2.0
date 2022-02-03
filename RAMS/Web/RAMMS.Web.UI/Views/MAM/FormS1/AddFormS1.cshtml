@@ -1,0 +1,234 @@
+﻿@model Tuple<RAMMS.DTO.RequestBO.FormS1HeaderRequestDTO, CDataTable>
+
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+
+@{
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form S1 - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ASSET MAINTANENCE - Form S1 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strDisabled = ViewBag.IsEdit ? "" : "grpctrldisabled";
+
+    bool IsAdd = Model.Item1 != null ? false : true;
+    bool IsEdit = !IsAdd && ViewBag.IsEdit;
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/FormS1.js" asp-append-version="true"></script>
+    @if (Model.Item1 != null)
+    {
+        <script type="text/javascript">
+        $(document).ready(function () {
+             process.Init("FormS1", "@Model.Item1.Status", @Model.Item1.PkRefNo);
+        });
+        </script>
+    }
+    @if (!IsAdd)
+    {
+        <script type="text/javascript">
+            formS1.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model.Item1));
+        </script>
+    }
+}
+<div class="row" id="frmS1HeaderData">
+    <div class="w-100 float-left bg-body @strDisabled">
+        <div class="w-100 mh-120" id="divFormS1Sec">
+            <div class="col-md-12">
+                <div class="bg-white rounded pt-3 pb-1 px-md-1 landing-division w-100 mb-3 mt-3" id="divFindDetails">
+                    <div class="row">
+                        <div id="headerFindDiv" class="@(IsAdd ? "col-lg-10" : "col-lg-12") @(IsEdit ? "grpctrldisabled" : "")">
+                            <div class="form-group col-md-2">
+                                @Html.Label("RMU", "RMU")
+                                @*@Html.DropDownList("Rmu", (IEnumerable<SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formADetSrchRMU", @class = "form-control validate {req,RMU}", @param = "RMUCode", @RefNumber = "" })*@
+                                @Html.DropDownList("RMU", (IEnumerable<SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formADetSrchRMU", @class = "form-control", @param = "RMUCode" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                <input name="Dt" type="date" id="selecDate" class="form-control validate {req,Date}" RefNumber="" />
+                            </div>
+                            <div class="form-group col-md-7 mb-0">
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        @Html.Label("Week No.", "Week No.")
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Week_No"], "WeekNo", "Select Week No", new { @Id = "drpWeekNo", @class = "form-control searchdropdown validate {req,Please select the date before selecting week no and week no}", @param = "WeekNo", @onchange = "formS1.WeekNoChange(this);", @RefNumber = "" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        @Html.Label("From Date (DD-MM-YYYY)", "From Date (DD-MM-YYYY)")
+                                        <input type="date" name="FromDt" id="frmDate" class="form-control" disabled />
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        @Html.Label("To Date (DD-MM-YYYY)", "To Date (DD-MM-YYYY)")
+                                        <input type="date" name="ToDt" id="toDate" class="form-control" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-5">
+                                @Html.Label("S1 Reference No")
+                                <input name="RefId" type="text" id="txtS1RefNumber" value="" class="form-control" disabled />
+                            </div>
+                        </div>
+                        @if (IsAdd)
+                        {
+                            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4" finddetails="">
+                                <button type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right" onclick="formS1.FindDetails();">Find Details</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+
+                <div class="w-100 position-relative in-tbl-btns">
+                    @if (IsAdd || IsEdit)
+                    {
+                        <div class="grid-btns">
+                            <button type="button" id="btnAddDetails" class="btn btn-sm btn-themebtn" onclick="formS1.LoadDetails(0);" style="display:none;"><span class="intbl-add-icon"></span></button>
+                        </div>
+                    }
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        @{
+                            Html.RenderPartial("_CDataTable", Model.Item2);
+                        }
+                    </div>
+
+                </div>
+
+                <div class="clear-b"></div>
+                <div class="row">
+                    <div id="divFS1HeaderInfo" class="col-lg-10 offset-lg-1">
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Remarks</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-12 float-left txtarea-107">
+                                    <textarea id="FsihRemarks" name="Remarks" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        @{
+                            bool IsSupervisor = security.IsSupervisor && Model.Item1 != null && (string.IsNullOrEmpty(Model.Item1.Status) || Model.Item1.Status == RAMMS.Common.StatusList.S1Init);
+                        }
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3" userIdGroup>
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Planned by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("User Id", "User Id")
+                                    @if (IsSupervisor)
+                                    {
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridPlan", "Select Users", new { @Id = "formS1UserIdPlan", @class = "form-control svalidate {visreq,Planned By User Id}", @useridChange = "" })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridPlan", "Select Users", new { @Id = "formS1UserIdPlan", @class = "form-control svalidate {visreq,Planned By User Id}", @useridChange = "", @disabled = "disabled" })
+                                    }
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input type="text" name="UserNamePlan" userName="" class="form-control cvalidate {req,Planned By User Name}" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input type="text" name="UserDesignationPlan" userDest="" class="form-control cvalidate {req,Planned By User Designation}" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" name="DtPlan" id="FsiihDtPlan" value="" class="form-control svalidate {req,Planned By Date}" @(IsSupervisor ? "" : "disabled='disabled'") />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3" userIdGroup>
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Vetted by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("User Id", "User Id")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVet", "Select Users", new { @Id = "formS1UserIdVet", @class = "form-control svalidate {visreq,Vetted By User Id}", @useridChange = "", @disabled = "disabled" })
+
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input type="text" name="UserNameVet" userName="" class="form-control cvalidate {req,Vetted By User Name}" disabled="disabled" />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input type="text" name="UserDesignationVet" userDest="" class="form-control cvalidate {req,Vetted By User Designation}" disabled="disabled" />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" name="DtVet" id="FsiihDtVet" value="" class="form-control svalidate {visreq,Vetted By Date}" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3" userIdGroup>
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Agreed by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("User Id", "User Id")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridAgrd", "Select Users", new { @Id = "formS1UserIdAgrd", @class = "form-control svalidate {visreq,Agreed By User Id}", @useridChange = "", @disabled = "disabled" })
+
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input type="text" name="UserNameAgrd" userName="" class="form-control cvalidate {visreq,Agreed By User Name}" disabled="disabled" />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input type="text" name="UserDesignationAgrd" userDest="" class="form-control cvalidate {visreq,Agreed By User Designation}" disabled="disabled" />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" name="DtAgrd" id="FsiihDtAgrd" value="" class="form-control svalidate {visreq,Agreed By Date}" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        @{
+                            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                            {
+                                Form = "FormS1",
+                                RefId = Model.Item1.PkRefNo,
+                                Stage = Model.Item1.Status
+                            });
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button type="button" class="btn btn-sm btn-outline-theme" onclick="formS1.Cancel();">Cancel</button>
+            @if (ViewBag.IsEdit)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" depfinddetail onclick="formS1.Save(false);">Save</button>
+                @if (IsSupervisor && (string.IsNullOrEmpty(Model.Item1.Status) || Model.Item1.Status == RAMMS.Common.StatusList.S1Init))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" depfinddetail onclick="formS1.Save(true);">Submit</button>
+                }
+            }
+            @if (security.IsExecutive && Model.Item1 != null && Model.Item1.Status == RAMMS.Common.StatusList.S1Planned)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Vetted By');">Approve / Vetted</button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && Model.Item1 != null && Model.Item1.Status == RAMMS.Common.StatusList.S1Vetted)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Agreed By');">Approve / Agreed</button>
+            }
+        </div>
+    </div>
+</div>
+
+@Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["FS1-StatusLegend"], "drp_StatusLegend", "Select Week No", new { @Id = "drpStatusLegend", @style = "display:none;" })
+@*<script>
+        $(document).ready(function () {
+            $('.choose-status').on('click', function () {
+                $('#status-legend').show()
+            });
+            $('.followup-group li button').on('click', function () {
+                $(this).toggleClass('active')
+            });
+        });
+    </script>*@

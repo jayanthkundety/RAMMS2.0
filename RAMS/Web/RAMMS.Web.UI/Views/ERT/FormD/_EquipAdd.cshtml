@@ -1,0 +1,114 @@
+﻿@model RAMMS.Web.UI.Models.FormDEquipDetailsModel;
+<script type="text/javascript">
+    var val = $("#hdnEquipid").val();
+    var equipDesc = "";
+    $(document).ready(function () {
+        $("#formDEquipCode").chosen();
+        $("#formDEquipUnit").chosen();
+
+        if ($("#formDEquipCode").find(":selected").val() == '99999999') {
+            equipDesc = $("#formDEquipDesc").val();
+            $("#formDEquipDesc").attr('readonly', false);
+        }
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    $("#formDEquipCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+
+        if ($(this).find(":selected").val() == "99999999") {
+            $("#formDEquipDesc").attr('readonly', false);
+            $("#formDEquipDesc").val(equipDesc);
+        }
+        else {
+            $("#formDEquipDesc").val(val);
+            $("#formDEquipDesc").attr('readonly', true);
+        }
+        $("#FormDEquipDescription").val(val);
+    });
+
+   
+    if (val != 0 && val != undefined && val != "") { }//$("#formDEquipCode").trigger("change");
+
+    function GoBackEquip() {
+         FormEquipGridRefresh() 
+        if ($("#hdnEquView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormDEquipModal").modal("hide");
+                }
+            }));
+        } else
+            $("#FormDEquipModal").modal("hide");
+    }
+   
+</script>
+<form id="FormAddEquipDetails" action="/ERT/FormDSaveEquipment">
+    <div class="modal-body mh-100">
+        <div class="row">
+            <div class="form-group col-lg-8 mb-0">
+                @Html.Label("Code", "Code")
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDEquipModel.EquipmentCode, (IEnumerable
+                                                               <SelectListItem>)Model.selectList, "Select Code", new { @Id = "formDEquipCode", @class = "form-control  validate {required, Equipment Code}" })
+                        @Html.HiddenFor(Ahdr => Ahdr.SaveFormDEquipModel.EquipmentCode, new { @id = "hdnformDEquipCode", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormDEquipModel.CodeDesc, new { @Id = "formDEquipDesc", @readonly = "readonly", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                </div>
+            </div>
+            <div class="clear-b"></div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Quantity", "Qty")
+                @Html.TextBoxFor(Adtl => Adtl.SaveFormDEquipModel.Quantity, new { @Id = "formDEquipQty", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required, Quantity}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Unit", "Unit")
+                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDEquipModel.Unit, (IEnumerable
+                                                              <SelectListItem>)Model.UnitList, "Select Unit", new { @Id = "formDEquipUnit", @class = "form-control validate {required, Unit}" })
+            </div>
+            <div class="form-group col-lg-12 txtarea-107">
+                @Html.Label("Description", "Description")
+                @Html.TextAreaFor(m => m.SaveFormDEquipModel.EquipmentDesc, new { @Id = "FormDEquipDescription", @class = "form-control  validate {required, Description}" })
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SaveFormDEquipModel.No, new { @id = "hdnEquipid", @class = "form-control" })
+    @Html.HiddenFor(m => m.SaveFormDEquipModel.SerialNo, new { @id = "EquiSerialNo", @class = "form-control" })
+    @Html.Hidden("hdnEquView", "")
+    <div class="modal-footer">
+        <div id="val-summary-displayer-equip">
+            <div id="val-summary-displayer"></div>
+        </div>
+        <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="GoBackEquip()">Cancel</button>
+        <button id="saveContinueFormDEqBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+        <button id="saveFormDEqBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+    </div>
+</form>

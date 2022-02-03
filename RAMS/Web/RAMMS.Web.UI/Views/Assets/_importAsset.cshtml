@@ -1,0 +1,97 @@
+﻿<div class="modal-body">
+    <ul class="nav nav-tabs nav-bordered mb-3 asset-import-tabs d-flex justify-content-center">
+        <li class="nav-item">
+            <a href="#btabs-alt-static-home" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                <span class="w-100">
+                    <span class="badge badge-primary">Step 1</span>
+                    <span class="font-16 font-weight-bold clear">Download</span>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#btabs-alt-static-profile" data-toggle="tab" aria-expanded="true" class="nav-link">
+                <span class="w-100">
+                    <span class="badge badge-primary">Step 2</span>
+                    <span class="font-16 font-weight-bold clear">Populate</span>
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#btabs-alt-static-settings" data-toggle="tab" aria-expanded="true" class="nav-link">
+                <span class="w-100">
+                    <span class="badge badge-primary">Step 3</span>
+                    <span class="font-16 font-weight-bold clear">Upload</span>
+                </span>
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="tab-content text-center">
+        <div class="tab-pane show active" id="btabs-alt-static-home">
+            <h5 class="text-dark font-weight-semibold font-16 mb-2 mt-4"> Sample Excel Format</h5>
+            <a onclick="assetTemplateDownload()" class="btn btn-sm btn-themebtn mt-3">Download</a>
+            @*<a onclick="location.href='@Url.Action("AssetTemplateDownload", "Assets") + '" class="btn btn-sm btn-themebtn mt-3">Download</a>*@
+            <br /> <br />
+            <p class="text-dark">
+                <span class="badge badge-warning">Note:</span>
+                Columns Name in each sheet cannot be changed
+            </p>
+        </div>
+        <div class="tab-pane" id="btabs-alt-static-profile">
+            <div class="col-md-10 offset-md-1">
+                <h5 class="text-dark font-weight-semibold font-16 mb-4 mt-4">
+                    Fill in all routine works
+                    records according and label the sheet accordingly
+                </h5>
+                <p class="text-dark">
+                    <span class="badge badge-warning">Note:</span> It
+                    is advised utilize the @Html.ActionLink("sample format", "DownloadgridHeader", "Download", null, new { @style = "color:#1d2d50 ;font-weight: bolder;" }) as
+                    @Html.ActionLink("downloaded.", "DownloadgridHeader", "Download", null, new { @style = "color:#1d2d50 ;font-weight: bolder;" })
+                    Remove any unused sheet for better upload process performance
+                </p>
+            </div>
+        </div>
+        <div class="tab-pane" id="btabs-alt-static-settings">
+            <div class="col-md-10 offset-md-1">
+                <h5 class="text-dark font-weight-semibold mb-4 mt-4 font-16">
+                    @*Click on the upload file button
+        or drag and drop your complete Excel file in the space below.*@
+                    @*Click on the Choose file button to select the Excel file for import process.*@
+                    Click on the Choose file button to select the file for import process.
+                </h5>
+                @*<p class="mt-3 mb-0">
+                    <label class="mx-2"><input type="radio" name="uploadDoc" id="Excel" value="Excel"> Excel Upload</label>
+                    <label class="mx-2"><input type="radio" name="uploadDoc" id="ZipImage" value="ZipImage"> Zipped Image Upload</label>
+                </p>*@
+            <form method="post" enctype="multipart/form-data" class="mt-3" id="FileUploadForm" action="@Url.Action("ReadExcelFile", "Assets",new { assetType = @ViewBag.URL})">
+                <span style="border: 1px solid #e8e8e8;padding: 10px;"><input type="file" name="importFile" id="importFile" style="font-size:14px;" accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" /></span>
+                <hr />@*<input type="hidden" id="assetType" value="@ViewBag["AssetTypeName"]" name="assetType" />*@
+                @*@Html.Hidden("assetType", new { @ViewBag.URL })*@
+                <button class="btn btn-sm btn-themebtn mb-3" id="btnUpload" type="submit">Import</button>
+            </form>
+            </div>
+
+            <p class="text-dark">
+                Click on the import button to begin the import
+                process. @*<a href="#" style=" background: #1d2d50;color: white;"
+                    class="btn ">Import</a>*@
+            </p>
+
+            <p class="text-dark">
+                <span class="badge badge-warning">Note:</span> All
+                records will be committed to the system when there are no errors present
+                thoughout the entire file
+            </p>
+        </div>
+    </div>
+</div>
+@{ 
+    var assetType = @ViewBag.AssetTypeName;
+}
+<script type="text/javascript">
+    function assetTemplateDownload() {
+            window.location = "@Url.Action("StaticAssetTemplateDownload", "Assets")" +
+            "?assetType=" + '@assetType';
+    }
+</script>

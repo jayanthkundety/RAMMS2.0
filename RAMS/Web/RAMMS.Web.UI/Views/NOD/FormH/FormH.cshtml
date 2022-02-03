@@ -1,0 +1,514 @@
+﻿@model FormHModel
+@{
+    ViewData["Title"] = "NOD - Form H - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "NOD - Form H - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script type="text/javascript" src="~/js/NodFormH.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#formHAdvSearch").hide();
+        initChoosen();
+        intiAdvancedSearchCascadingDropdowns();
+
+        document.getElementById("FormASmartSearch").focus();
+        //Listener for Smart and Detail Search
+        element = document.querySelector("#detailSearch");
+        element.addEventListener("keyup", () => {
+            if (event.keyCode === 13) {
+                $('#formHSearchBtn').trigger('click');
+            }
+        });
+        $("#FormASmartSearch").keyup(function () {
+            if (event.keyCode === 13) {
+                $('#formHSearchBtn').trigger('click');
+            }
+        })
+        //$('#formHFromKm').keypress(function (event) {
+        //    debugger;
+        //    var keycode = (event.keyCode ? event.keyCode : event.which);
+        //    if (keycode == '13') {
+        //        $("#formHSearchBtn").click();
+        //    }
+        //    event.stopPropagation();
+        //});
+
+        //$('#formHFromM').keypress(function (event) {
+        //    var keycode = (event.keyCode ? event.keyCode : event.which);
+        //    if (keycode == '13') {
+        //        $("#formHSearchBtn").click();
+        //    }
+        //    event.stopPropagation();
+        //});
+
+        //$('#formHToKm').keypress(function (event) {
+        //    var keycode = (event.keyCode ? event.keyCode : event.which);
+        //    if (keycode == '13') {
+        //        $("#formHSearchBtn").click();
+        //    }
+        //    event.stopPropagation();
+        //});
+
+        //$('#formHToM').keypress(function (event) {
+        //    var keycode = (event.keyCode ? event.keyCode : event.which);
+        //    if (keycode == '13') {
+        //        $("#formHSearchBtn").click();
+        //    }
+        //    event.stopPropagation();
+        //});
+    });
+
+    function detailSearch() {
+        $("#formHAdvSearch").slideToggle(500);
+    }
+
+    function initChoosen() {
+        $("#formHDetSrchRMU").chosen();
+        $("#formHDetSrchSec").chosen();
+        $("#formHDetSrchAsstGrp").chosen();
+        $("#formHDetSrchRoadCode").chosen();
+    }
+
+    function clearHeaderSearch() {
+        //debugger;
+        $("#formHDetSrchRMU").val("").trigger("chosen:updated");
+        $('#formHDetSrchRoadCode').val("").trigger("chosen:updated");
+        $("#formHDetSrchSec").val("").trigger("chosen:updated");
+        $("#formHDetSrchAsstGrp").val("").trigger("chosen:updated");
+        $("#formHDetSrchRoadName").val("");
+        $("#formHDetSrchSecName").val("");
+        $("#formHSmartSearch").val("");
+        $("#formHDateOfInspection").val("");
+        $("#formHFromKm").val("");
+        $("#formHFromM").val("");
+        $("#formHToKm").val("");
+        $("#formHToM").val("");
+        $("#FormASmartSearch").val("");
+        var req = {};
+        var _rmu = $("#formHDetSrchRMU");
+        var _sec = $("#formHDetSrchSec");
+        var _road = $("#formHDetSrchRoadCode");
+        //req.RMU = this.value;
+        req.RMU = '';
+        req.SectionCode = '';
+        req.RdCode = '';
+
+        $.ajax({
+            url: '/NOD/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                //debugger;
+                if (req.RMU == "") {
+                    $("#formHDetSrchRMU").empty();
+                    $("#formHDetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
+                    $.each(data.rmu, function (index, v) {
+                        $("#formHDetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                }
+                //if (req.Section == "") {
+                $("#formHDetSrchSec").empty();
+                $("#formHDetSrchSec").append($("<option></option>").val("").html("Select Section"));
+                $.each(data.section, function (index, v) {
+                    $("#formHDetSrchSec").append($("<option></option>").val(v.value).html(v.text));
+                });
+                //}
+                //if (req.RoadCode == "") {
+                $("#formHDetSrchRoadCode").empty();
+                $("#formHDetSrchRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                $.each(data.rdCode, function (index, v) {
+                    $("#formHDetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                });
+                //}
+                $('#formHDetSrchSec').trigger("chosen:updated");;
+                $('#formHDetSrchRoadCode').trigger("chosen:updated");
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+        $("#formHSearchBtn").click();
+    }
+
+    function intiAdvancedSearchCascadingDropdowns() {
+        $("#formHDetSrchRMU").on("change", function () {
+            var req = {};
+            var _rmu = $("#formHDetSrchRMU");
+            var _sec = $("#formHDetSrchSec");
+            var _road = $("#formHDetSrchRoadCode");
+            req.RMU = $("#formHDetSrchRMU option:selected").text();
+            if (req.RMU == "Select RMU") {
+                req.RMU = '';
+            }
+            req.SectionCode = '';
+            req.RdCode = '';
+            $("#formHDetSrchRoadName").val("");
+            $("#formHDetSrchSecName").val("");
+            $.ajax({
+                url: '/NOD/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    if (req.RMU == "") {
+                        $("#formHDetSrchRMU").empty();
+                        $("#formHDetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
+                        $.each(data.rmu, function (index, v) {
+                            $("#formHDetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                    }
+                    //if (req.Section == "") {
+                    $("#formHDetSrchSec").empty();
+                    $("#formHDetSrchSec").append($("<option></option>").val("").html("Select Section"));
+                    $.each(data.section, function (index, v) {
+                        $("#formHDetSrchSec").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    //}
+                    //if (req.RoadCode == "") {
+                    $("#formHDetSrchRoadCode").empty();
+                    $("#formHDetSrchRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                    $.each(data.rdCode, function (index, v) {
+                        $("#formHDetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    //}
+                    $('#formHDetSrchSec').trigger("chosen:updated");;
+                    $('#formHDetSrchRoadCode').trigger("chosen:updated");
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+
+        $("#formHDetSrchSec").on("change", function () {
+            debugger;
+            var req = {};
+            var _rmu = $("#formHDetSrchRMU  option:selected");
+            var _sec = $("#formHDetSrchSec  option:selected");
+            var _road = $("#formHDetSrchRoadCode  option:selected");
+            req.RMU = _rmu.text();
+            if (req.RMU == "Select RMU") {
+                req.RMU = "";
+            }
+            else {
+                req.RMU = $("#formHDetSrchRMU option:selected").text();
+            }
+            req.SectionCode = $("#formHDetSrchSec option:selected").text().split('-')[0];
+            req.RdCode = "";
+            if (req.SectionCode != "") {
+                var dsection = $("#formHDetSrchSec option:selected").text();
+                $("#formHDetSrchSecName").val(dsection.split('-')[1]);
+            }
+            else {
+                $("#formHDetSrchSecName").val("");
+            }
+            $("#formHDetSrchRoadName").val("");
+            $.ajax({
+                url: '/NOD/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    debugger;
+                    if (req.RMU == "") {
+                        $("#formHDetSrchRMU").empty();
+                        $("#formHDetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
+                        $.each(data.rmu, function (index, v) {
+                            $("#formHDetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                    }
+                    //if (req.Section == "") {
+                    //    $("#formADetSrchSec").empty();
+                    //    $("#formADetSrchSec").append($("<option></option>").val("").html("Select Section"));
+                    //    $.each(data.section, function (index, v) {
+                    //        $("#formADetSrchSec").append($("<option></option>").val(v.value).html(v.text));
+                    //    });
+                    //}
+                    //if (req.RoadCode == "") {
+                    $("#formHDetSrchRoadCode").empty();
+                    $("#formHDetSrchRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                    $.each(data.rdCode, function (index, v) {
+                        $("#formHDetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    //}
+
+                    $('#formHDetSrchRMU').trigger("chosen:updated");
+                    $('#formHDetSrchSec').trigger("chosen:updated");;
+                    $('#formHDetSrchRoadCode').trigger("chosen:updated");
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+
+        $("#formHDetSrchRoadCode").on("change", function () {
+            var data = $("#formHDetSrchRoadCode option:selected").text();
+            $("#formHDetSrchRoadName").val(data.split('-')[1]);
+
+            var req = {};
+            var _rmu = $("#formHDetSrchRMU");
+            var _sec = $("#formHDetSrchSec");
+            var _road = $("#formHDetSrchRoadCode");
+            req.RMU = $("#formHDetSrchRMU option:selected").text();
+            if (req.RMU == "Select RMU") {
+                req.RMU = '';
+            }
+            req.Section = $("#formHDetSrchSec option:selected").text();
+            if (req.Section == "Select Section") {
+                req.Section = '';
+            }
+            req.RdCode = _road.val();// data;//$("#formADetSrchRoadCode option:selected").text();
+            //  $("#formADetSrchRoadName").val("");
+            // $("#formADetSrchSecName").val("");
+            $.ajax({
+                url: '/NOD/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    console.log(data);
+
+                    if (req.RMU == "") {
+                        $("#formHDetSrchRMU").empty();
+                        $("#formHDetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
+                        $.each(data.rmu, function (index, v) {
+                            $("#formHDetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                    }
+                    if (req.Section == "") {
+                        $("#formHDetSrchSec").empty();
+                        $("#formHDetSrchSec").append($("<option></option>").val("").html("Select Section"));
+                        $.each(data.section, function (index, v) {
+                            $("#formHDetSrchSec").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                    }
+                    if (req.RdCode == "") {
+                        $("#formHDetSrchRoadCode").empty();
+                        $("#formHDetSrchRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                        $.each(data.rdCode, function (index, v) {
+                            $("#formHDetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                    }
+                    $('#formHDetSrchRMU').trigger("chosen:updated");
+                    $('#formHDetSrchSec').trigger("chosen:updated");
+                    $('#formHDetSrchRoadCode').trigger("chosen:updated");
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+    }</script>
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">NOD - Form H</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">NOD</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Form H
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.SearchFormH.SmartInputValue, new { @Id = "FormASmartSearch", placeholder = "Search...", @class = "form-control" })
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="formHSearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                        @*<button id="formHSearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="12" viewBox="0 0 18 12"><g transform="translate(-3.5 19) rotate(-90)"><line id="Line_25" data-name="Line 25" y1="10" transform="translate(13 7.5)" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" /><line id="Line_26" data-name="Line 26" y1="16" transform="translate(18 4.5)" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" /><line id="Line_27" data-name="Line 27" y1="4" transform="translate(8 10.5)" fill="none" stroke="#FFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" /></g></svg>
+                            </button>*@
+                        <button id="formHSearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                        <button id="formHSearchClearBtn" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formHAdvSearch" style="display:block">
+            <form id="formHDetailsearchForm" name="formHDetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 px-lg-3 px-md-2 advance-search-group w-100">
+                        <div class="form-group">
+                            @Html.Label("RMU ", "RMU ")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SearchFormH.RMU, (IEnumerable
+                             <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formHDetSrchRMU", @class = "form-control" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Section Code ", "Section Code")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SearchFormH.Section, (IEnumerable
+                            <SelectListItem>)ViewData["Section_Code"], "Select Section", new { @Id = "formHDetSrchSec", @class = "form-control searchdropdown" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Section Name ", "Section Name")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SearchFormH.Section, new { @Id = "formHDetSrchSecName", @class = "form-control", @disabled = "disabled", @maxlength = "5" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Road Code ", "Road Code")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SearchFormH.RoadCode, (IEnumerable
+                            <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "formHDetSrchRoadCode", @class = "form-control searchdropdown widget-content-area" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Road Name ", "Road Name")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SearchFormH.RoadCode, new { @Id = "formHDetSrchRoadName", @class = "form-control", @disabled = "disabled", @maxlength = "5" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Asset Group ", "Asset Group")
+                            @Html.DropDownListFor(Ahdr => Ahdr.SearchFormH.AssetGroupCode, (IEnumerable
+                            <SelectListItem>)ViewData["AssetListing"], "Select Asset", new { @Id = "formHDetSrchAsstGrp", @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Date of Inspection")
+                            <input id="formHDateOfInspection" type="date" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Location Chainage From", "Location Chainage From")
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @*@Html.Label("Km", "Km")*@
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SearchFormH.ChinageFromKm, new { @Id = "formHFromKm", @class = "form-control", @maxlength = "5", @onkeypressvalidate = "number, Location Chainage From Km" })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                <div class="col-5 float-left pl-0">
+                                    @*@Html.Label("m", "m")*@
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SearchFormH.ChinageFromM, new { @Id = "formHFromM", @class = "form-control", @maxlength = "3", @onkeypressvalidate = "number, Location Chainage From Km" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.Label("Location Chainage To", "Location Chainage To")
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @*@Html.Label("Km", "Km")*@
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SearchFormH.ChinageToKm, new { @Id = "formHToKm", @class = "form-control", @maxlength = "5", @onkeypressvalidate = "number, Location Chainage From Km" })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                <div class="col-5 float-left pl-0">
+                                    @*@Html.Label("m", "m")*@
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SearchFormH.ChinageToM, new { @Id = "formHToM", @class = "form-control", @maxlength = "3", @onkeypressvalidate = "number, Location Chainage From Km" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            @if (security.IsPCModify(ModuleNameList.NOD))
+            {
+                <div class="grid-btns">
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="javascript:openFormAModel(0);"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg> Add Form H</button>
+                </div>
+            }
+
+
+            @* Add Form A Modal *@
+            <div class="modal fade" id="FormHAddModal" tabindex="-1" role="dialog" aria-labelledby="FormHAddModalid" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+                    <div class="modal-content bg-body">
+                        <div class="modal-header bg-white">
+                            <h5 class="modal-title" id="FormHAddModalid">Add Form H</h5>
+                            <button type="button" class="close" onclick="javascript: $('#formHSearchBtn').click();" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        @* Patial View for add Class to bind data in partial view *@
+                        <div class="w-100 float-left">
+                            @*@{
+                                    Html.RenderPartial("_AddFormHView.cshtml", Model);
+                                }*@
+                            <div id="div-data-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="headerListGrid">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        InitDecimalValidation();
+
+        $("#FormASmartSearch").on("keypress", function (e) {
+            if (e.which == 13) {
+                $("#formHSearchBtn").click();
+            }
+        });
+
+    });
+
+    function InitDecimalValidation() {
+        $("input[class*='decimal']").keydown(function (event) {
+            if (event.shiftKey == true) {
+                event.preventDefault();
+            }
+
+            if ((event.keyCode >= 48 && event.keyCode <= 57) ||
+                (event.keyCode >= 96 && event.keyCode <= 105) ||
+                event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 ||
+                event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190) {
+
+            } else {
+                event.preventDefault();
+            }
+
+            if ($(this).val().indexOf('.') !== -1 && event.keyCode == 190)
+                event.preventDefault();
+
+        });
+    }
+</script>
+@if (ViewBag.ViewId != null && ViewBag.ViewId != "")
+{
+    <script type="text/javascript">
+        $(function () {
+            setTimeout(function () {
+                $("#FormAAddModal").modal();
+                ViewDetailHeader(@ViewBag.ViewId);
+            }, 1000);
+        });
+    </script>
+}

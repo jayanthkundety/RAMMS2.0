@@ -1,0 +1,134 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+@{
+    var AssetIdTitle = ViewBag.AssetTypeName;
+    bool isSign = ViewBag.AssetType == "SG";
+    bool isCarriageway = ViewBag.AssetType == "CW";
+}
+<script src="~/js/AddAssets.js"></script>
+<style>
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #e9ecef6b;
+        opacity: 1;
+    }
+</style>
+
+<div class="accordion custom-accordion" id="custom-accordion-one">
+    <div class="card mb-0">
+        <div class="card-header" id="headingOne">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage1" aria-expanded="true" aria-controls="collapseOne">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        @AssetIdTitle Property
+                    </span>
+                </a>
+            </h5>
+        </div>
+
+        <div id="AccordPage1" class="collapse show avowmodal-form" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+            <div class="card-body">
+                <div class="form-group col-lg-2">
+                    <span class="w-100 float-left lbl-fleft">
+                        @Html.Label("Road Feature ID ", " Road Feature ID", new { @class = "float-left text-danger" })
+                        @Html.Label("*", " *", new { @class = "required float-left pl-1 text-danger" })
+                    </span>
+                    @Html.DropDownListFor(m => m.AddAssetViewModel.FeatureId, (IEnumerable
+                        <SelectListItem>)ViewData["AssetFeatureId"], "Select Feature ID", new { @Id = "AssetFeatureId", @class = "editdisable disableinput form-control validate {required, Road Feature Id}" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Division", "Division", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.DivisionCode, new { @Id = "AssetDivCode", @readonly = "readonly", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.AddAssetViewModel.DivisionCode, null, new { @class = "required" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("RMU Abbreviation", "RMU Abbreviation", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.RMUCode, new { @Id = "AssetRmuCode", @readonly = "readonly", @class = "form-control " })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("RMU Name", "RMU Name", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.RmuName, new { @Id = "AssetRmuName", @readonly = "readonly", @class = "form-control " })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Section Code", "Section Code", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.SectionCode, new { @Id = "AssetSecCode", @readonly = "readonly", @class = "form-control" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Section Name", "Section Name", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.SectionName, new { @Id = "AssetSecName", @readonly = "readonly", @class = "form-control " })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Road Code", "Road Code", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.RoadCode, new { @Id = "AssetRoadCode", @readonly = "readonly", @class = "form-control " })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Road Name", " Road Name ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.RoadName, new { @Id = "AssetRoadName", @readonly = "readonly", @class = "form-control " })
+                </div>
+                <div class="form-group col-lg-2" id="district">
+                    @Html.Label("District", "District", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.District, null, new { @Id = "AssetDistrict", @class = "form-control editdisable  validate {maxcl,250, District}", @onkeypressvalidate = "maxcl,250,District"  })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Asset Group", " Asset Group", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.GroupCode, new { @Id = "AssetGrpCode", @readonly = "readonly", @class = "form-control validate {required, Asset Group}" })
+                </div>
+                <div class="clear-b"></div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Asset type", "Asset Type", new { @class = "float-left" })
+                    @Html.DropDownListFor(m => m.AddAssetViewModel.GroupType, (IEnumerable
+        <SelectListItem>)ViewData["AssetTypeList"], "Select Asset Type", new { @Id = "AssetGrpType", @class = "form-control editdisable validate {required, Asset Type}" })
+                </div>
+                <div class="form-group col-lg-2" id="StrucCodeOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.StrucCodeOthers, null, new { @Id = "AssetStrucCodeOthers", @class = "form-control  validate {maxcl,250, Structure Others}", @onkeypressvalidate = "maxcl,250,Structure Others" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Structure Code ", "Structure Code ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.StructureCode, null, new { @Id = "AssetStrucCode", @readonly = "readonly", @class = "form-control " })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Location CH", "Location CH", new { @class = "float-left" })
+                    <div class="row">
+                        <div class="col-6 float-left pr-0">
+                            @*@Html.Label("Km", "Km")*@
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.LocationChKm, null, new { @onkeypressvalidate = "number,  Location CH KM",@Id = "AssetLocChKm", @class = "form-control validate {required,number, Location CH KM}", @maxlength = "5" })
+                        </div>
+                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                        <div class="col-5 float-left pl-0">
+                            @*@Html.Label("m", "m")*@
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.LocationChM, null, new { @onkeypressvalidate = "number, Location CH M", @Id = "AssetLocChM", @class = "form-control validate {required,number, Location CH M}", @maxlength = "3" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Bound ", "Bound ", new { @class = "float-left" })
+                    @Html.DropDownListFor(m => m.AddAssetViewModel.Bound, (IEnumerable
+                        <SelectListItem>)ViewData["BoundList"], "Select Bound", new { @Id = "AssetBound", @class = "form-control editdisable validate {required, Bound}" })
+                </div>
+                @if (isSign)
+                {
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Asset Number", " Asset Number", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.AssetNumber, null, new { @onkeypressvalidate = "number,  Asset Number", @Id = "AssetNumber", @class = "form-control validate {required,number, Asset NO}", @maxlength = "5" })
+                    </div>
+                }
+                @if (isCarriageway)
+                {
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Lane Number", " Lane Number", new { @class = "float-left" })
+                        @Html.DropDownListFor(m => m.AddAssetViewModel.LaneNo, (IEnumerable<SelectListItem>)ViewData["LaneNumberList"], "Select Lane Number", new { @Id = "AssetLaneNumber", @class = "form-control editdisable validate {required, Lane Number}", @maxlength = "5" })
+
+                    </div>
+                }
+                <div class="form-group col-lg-2">
+                    @Html.Label("Reference No", " Reference No", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.ReferenceNo, null, new { @Id = "AssetRefNo", @class = "form-control validate {maxcl,250, Reference NO}", @onkeypressvalidate = "maxcl,250,Reference NO" })
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

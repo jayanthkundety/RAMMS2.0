@@ -1,0 +1,131 @@
+﻿
+<style>
+    .uploadfile {
+        display: flex;
+        margin-left: 36%;
+        top: 60%;
+        margin-bottom: 0%;
+        position: absolute;
+    }
+</style>
+<script type="text/javascript">
+
+    function uploadFiles(inputId) {
+        var input = document.getElementById(inputId);
+        var files = input.files;
+        var formData = new FormData();
+
+        for (var i = 0; i != files.length; i++) {
+            formData.append("FormFile", files[i]);
+        }
+
+        $.ajax(
+            {
+                url: "/Download/UploadFile",
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    input.value = "";
+                    updateFileList();
+                    GetGridData();
+                },
+                error: function (data) {
+                    updateFileList(0);
+                }
+            }
+        );
+    }
+    function updateFileList(valid) {
+        if (valid) {
+            var input = document.getElementById('FormFile');
+            console.log(input.files)
+            var output = document.getElementById('Filelist');
+            var x;
+            for (var i = 0; i < input.files.length; i++) {
+                x = document.createElement("IMG");
+                x.setAttribute("src", URL.createObjectURL(input.files[i]));
+                x.setAttribute("width", "100");
+                x.setAttribute("height", "100");
+                x.setAttribute("alt", input.files[i].name);
+                output.appendChild(x);
+            }
+        } else if (valid == 0) {
+            var output = document.getElementById('Filelist');
+            output.innerHTML = '<b>Something Went Wrong Please try Again,</b>';
+        } else {
+            document.getElementById("divImg").remove();
+        }
+
+    }
+
+    function GetGridData() {
+        $.ajax(
+            {
+                url: "/Download/GetUploadedImage",
+                processData: false,
+                contentType: false,
+                type: "GET",
+                success: function (data) {
+                    console.log(data)
+                },
+                error: function (data) {
+                    console.log(data)
+                }
+            }
+        );
+    }
+</script>
+<div class="row">
+    <div class="col-12">
+        <div>
+            <h4 class="text-primary h5 font-weight-bolder">Add Photo</h4>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-6 col-lg-6">
+                <label>Please Select Asset Photograph Type:</label>
+            </div>
+            <div class="col-md-5 col-5 col-sm-6 col-xl-6">
+                <select class="form-control" name="ptype">
+                    <option value="'Waterway (Upstream)'">Waterway (Upstream)</option>
+                    <option value="'Inprogress'">Waterway (Downstream)</option>
+                    <option value="'Abutments'">Abutments</option>
+                    <option value="'Piers'">Piers</option>
+                    <option value="'Girders'">Girders</option>
+                    <option value="'Carriageways'">Carriageways</option>
+                    <option value="'Parapet Wall'">Parapet Wall</option>
+                </select>
+            </div>
+            <div class="col-md-6 col-sm-6 col-6 col-lg-6 mt-2">
+                <label>Please Select WAR Photograph Type:</label>
+            </div>
+            <div class="col-md-5 col-5 col-sm-6 col-xl-6 mt-2">
+                <select class="form-control" name="wtype">
+                    <option value="'Before'">Before</option>
+                    <option value="'Inprogress'">In Progress</option>
+                    <option value="'After'">After</option>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <input type="file" id="FormFile" name="FormFile" hidden multiple onchange="updateFileList(true)">
+        </div>
+        <form class="dropzone dz-clickable">
+            <div class="dz-default dz-message">
+                <button class="dz-button btn-alt-primary uploadfile theme-clr"
+                        type="button" onclick="document.getElementById('FormFile').click()">
+                    Browse
+                    files here to upload
+                </button>
+            </div>
+        </form>
+    </div>
+    <div id="divImg" class="row">
+        <output id="Filelist"></output>
+    </div>
+</div>
+<div class="text-center mt-2">
+    <button type="submit" class="theme-clr btn btn-alt-primary" onclick="uploadFiles('FormFile')">Upload</button>
+</div>

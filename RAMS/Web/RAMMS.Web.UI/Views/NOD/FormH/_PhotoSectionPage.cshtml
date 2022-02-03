@@ -1,0 +1,634 @@
+﻿@model RAMMS.Web.UI.Models.FormHModel;
+@{
+
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<style>
+
+    .gallery {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .modal2.fade.in ~ .modal-backdrop.fade.in {
+        opacity: .1;
+        background-color: #f00;
+    }
+
+    .uploadfile {
+        font-size: 18px;
+    }
+</style>
+
+<div class="accordion custom-accordion" id="custom-accordion-eight">
+    <div class="card mb-0">
+        <div class="card-header" id="headingEight" style="padding: .45rem 1.25rem; ">
+            <div class="w-100 float-left d-flex justify-content-between">
+                <a class="custom-accordion-title py-1 " data-toggle="collapse" href="#ImageList" aria-expanded="false" aria-controls="collapseEight">
+                    <span class="float-left" style="padding-top: 2px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        Image List
+                    </span>
+                </a>
+                <div class="img-btns mt-1">
+                    @*<a class="btn btn-sm btn-themebtn" data-toggle="modal" id="AssetImageUploadBtn" href="#myModal2">*@
+                    <a class="btn btn-sm btn-themebtn" data-toggle="modal" id="AssetImageUploadBtn" onclick="FormAAddImage()">
+                        <span class="add-icon"></span> Add Image
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="ImageList" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#custom-accordion-eight">
+            <div class="card-body">
+                <div id="cancel-row">
+                    <div class="simple-tbl">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>S.NO</th>
+                                    <th>Image Type</th>
+                                    <th>FileName</th>
+                                    @if (security.IsPCDelete(ModuleNameList.NOD))
+                                    {
+                                        <th class="deleteImg" id="thPhotoDelete" style="text-align:center">Delete</th>
+                                    }
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{ int i = 1;
+
+                                    if (Model.AssetimageList != null && Model.AssetimageList.Count() > 0)
+                                    {
+
+                                        foreach (var item in Model.AssetimageList)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.ImageFilenameSys)</td>
+                                                @if (security.IsPCDelete(ModuleNameList.NOD))
+                                                {
+                                                    <td class="deleteImg" style="text-align:center"><button type="button" id="btnPhotoDelete" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.ImageId)"><span class="remove-icon"></span></button></td>
+                                                }
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="accordion custom-accordion" id="custom-accordion-Nine">
+    <div class="card mb-0">
+        <div class="card-header" id="headingNine">
+            <a class="custom-accordion-title py-l" data-toggle="collapse" href="#ImageView" aria-expanded="false" aria-controls="collapseNine">
+                <span class="float-left" style="padding-top: 2px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                </span>
+                <span class="float-left" style="padding: 4px 8px;">
+                    Image View
+                </span>
+            </a>
+        </div>
+        <div id="ImageView" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#ImageList">
+            <div class="card-body">
+                @if (Model.AssetimageList.Count() > 0)
+                {
+
+                    @foreach (var list in Model.ImageTypeList)
+                    {
+                        <div class="container">
+                            <h6>@list</h6>
+                            <hr />
+                            @foreach (var item in Model.AssetimageList)
+                            {
+                                if (list == item.ImageTypeCode)
+                                {
+                                    <div class="item">
+                                        <div data-fancybox="gallery" style="text-align:center">
+                                            @{
+                                                var fileType = System.IO.Path.GetExtension(item.ImageFilename);
+                                                string imgTypes = ".png.jpg.jpeg";
+                                            }
+                                            @if (imgTypes.Contains(fileType.ToLower()))
+                                            {
+                                                <img class="item-img" src="@item.ImageFilename" alt="Image_Unavailable" />
+                                                <span class="caption">@item.ImageFilenameSys</span>
+                                            }
+                                            else
+                                            {
+                                                <a href="@item.ImageFilename" class='captionDocs' target="_blank" title="Click here to View the Document">
+                                                    @item.ImageFilenameSys <span style='list-style:none;display:inline'>
+                                                        <i class='fas fa-file'></i>
+                                                    </span>
+                                                </a>
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal hide border-10x addphoto-mdl" id="myModal2" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Photo</h4>
+                <button type="button" id="btnclose" class="close">×</button>
+            </div><div class="container"></div>
+            <div class="modal-body">
+
+                <div class="col-12 d-flex align-items-center flex-column">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Please Select Photograph Type ", "Please Select Photograph Type: ", new { @class = "float-left" })
+
+                            <select id="photoType" class="form-control">
+                                <option value="">Select Type</option>
+                                @foreach (var item in Model.PhotoType)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="row">
+                        <div class="form-group col-lg-12 mt-4">
+                            <input type="file" id="FormFile" name="FormFile" class="form-control" hidden multiple onchange="updateFileList(event)">
+
+                            @*<form class="dropzone dz-clickable">
+                                    <div class="dz-default dz-message">
+                                        <button class="dz-button btn btn-sm btn-outline-primary uploadfile" id="AssetBrowseBtn" type="button" onclick="document.getElementById('FormFile').click()">
+                                            Browse files here to upload
+                                        </button>
+                                    </div>
+
+                                </form>*@
+                            <form id="fileupload" action="#" method="POST" enctype="multipart/form-data">
+                                <div class="files" id="files1" style="text-align:center">
+
+                                    <span class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" id="AssetBrowseBtn">
+                                        Browse files here to upload <input type="file" id="files" name="files1" multiple />
+                                    </span>
+                                    <br />
+                                    <br>
+                                    <ul id="photolist" class="fileList"></ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="divImg" class="row">
+                    <div class="mt-3 col-md-2">
+                        <output id="Filelist" style="display:inline-flex"></output>
+                    </div>
+                </div>
+
+                <div class="text-center mt-2">
+                    <button type="button" id="AssetUploadBtn" class="btn btn-sm btn-themebtn">Upload</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="imageClear" class="btn btn-sm btn-outline-theme" >Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<style>
+    div.item {
+        vertical-align: top;
+        display: inline-flex;
+        text-align: center;
+        margin-right: 5%;
+        margin-bottom: 3%
+    }
+
+    .item-img {
+        width: 350px;
+        height: 200px;
+        margin-bottom: 5%;
+    }
+
+    .item-doc {
+        width: 200px;
+        height: 200px;
+    }
+
+    .caption {
+        display: flex;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .captionDocs {
+        display: flex;
+        /*width: 0%;*/
+        margin: 0 auto;
+        border: none;
+        background: none;
+    }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+        font-size: 1rem
+    }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    .disabled #AssetBrowseBtn {
+        opacity: .65;
+    }
+</style>
+
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#photoType").chosen();
+        var IsView = $("#IsViewDetail").val();
+        if (IsView == "1") {
+            $("#AssetImageUploadBtn").hide();
+            $(".deleteImg").hide();
+        }
+        //var val = document.getElementById("formAFadPKRefNO").value;
+        //if (val == "" || val == 0 || val == undefined) {
+        //    $("#AssetImageUploadBtn").css("display", "none");
+        //}
+        document.getElementById("files").disabled = true;
+        $("#files1").addClass("disabled");
+        document.getElementById("AssetUploadBtn").disabled = true;
+    });
+
+    function FormAAddImage() {
+        if (ValidatePage("#formDiv", "control", "validate")) {
+            if ($("#formAFadPKRefNO").val() != "") {
+                $("#myModal2").modal('show');
+            }
+            else {
+                $("#page1A").click();
+                app.ShowErrorMessage("Required to save the Page1 details and then try to upload photo");
+            }
+        }
+        else {
+            $("#page1A").click();
+            app.ShowErrorMessage("Required fields are incomplete in Page1");
+        }
+        //$("#myModal2").modal('show');
+        @*var dt = $("#formADt").val();
+        var fromCh = $("#formAFromCh").val();
+        var fromChDeci = $("#formAFromChDeci").val();
+        var toCh = $("#formAToCh").val();
+        var ToChDeci = $("#formAToChDeci").val();
+        var siteRef = $("#formASiteRefmultiSelect").val();
+        var defCode = $("#formADefCode").val();
+        if (dt != null && dt != "" && fromCh != null && fromCh != "" && fromChDeci != "" && toCh != "" && ToChDeci != "" && siteRef != "" && defCode != "") {
+            $("#myModal2").modal('show');
+        }
+        else {
+            app.ShowErrorMessage("Required fields are incomplete in Page1")
+        }*@
+
+    }
+
+    //function uploadFiles(inputId) {
+    //    if ($("#asset_PK").val() != "") {
+    //        saveImageUpload(inputId);
+    //    }
+    //    else {
+    //        saveAssets(true);
+
+    //    }
+    //}
+    //var formData = new FormData();
+    //function saveImageUpload(inputId) {
+    //    var input = document.getElementById(inputId);
+    //    var files = input.files;
+    //    formData.append("AssetId", document.getElementById("AssetId").value);
+    //    formData.append("PhotoType", document.getElementById("photoType").value)
+    //    InitAjaxLoading();
+    //    $.ajax(
+    //        {
+    //            url: "/assets/ImageUploaded",
+    //            data: formData,
+    //            processData: false,
+    //            contentType: false,
+    //            type: "POST",
+    //            dataType: 'JSON',
+    //            success: function (data) {
+    //                HideAjaxLoading();
+    //                input.value = "";
+    //                $('#myModal2').modal('hide');
+    //                GetImageList();
+
+    //            },
+    //            error: function (data) {
+    //                HideAjaxLoading();
+    //                console.log("Error");
+    //                alert(data);
+
+    //            }
+    //        }
+    //    );
+
+    //}
+    function CloseUploadModal() {
+        var output = document.getElementById('Filelist');
+        $(output).empty();
+        $("#photolist").empty();
+        $("#myModal2").modal('hide')
+    }
+    $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
+        var fileIdCounter = 0;
+        this.closest(".files").change(function (evt) {
+            var output = [];
+            const fi = evt.target.files;
+            for (var i = 0; i < evt.target.files.length; i++) {
+                fileIdCounter++;
+                var file = evt.target.files[i];
+                var fileId = sectionIdentifier + fileIdCounter;
+                var fileType = $("#photoType").val();
+                var ext = file.name.split('.').pop().toLowerCase();
+                if (fileType != 'Others') {
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                        app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                        evt.target.value = null;
+                        //document.getElementById("AssetUploadBtn").disabled = false;
+                        return
+                    }
+                    if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                        app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                        evt.target.value = null;
+                        //document.getElementById("AssetUploadBtn").disabled = false;
+                        return
+                    }
+                } else { // Other Category only accepts PDF, docx, doc, xlsx, csv, xls,PNG, JPG,JPEG
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf']) == -1) {
+                        app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
+                        evt.target.value = null;
+                        //document.getElementById("AssetUploadBtn").disabled = false;
+                            return
+                    }
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                        if (file.size > 26214400) {// should not be exceed 25 mb for documents
+                            app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 25 MB");
+                            evt.target.value = null;
+                            //document.getElementById("AssetUploadBtn").disabled = false;
+                            return
+                        }
+                    }
+                    else {
+
+                        if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                            app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                            evt.target.value = null;
+                            //document.getElementById("AssetUploadBtn").disabled = false;
+                            return
+                        }
+                    }
+                }
+                const fsize = fi[i].size;
+                const filemb = Math.round((fsize / 1024));
+
+                //if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
+                //    if (filemb > 25600) {
+                //        app.ShowErrorMessage("You cannot upload the file more than 5MB");
+                //        return;
+                //    }
+                //}
+                //else {
+                //    if (filemb >= 5120) {
+                //        app.ShowErrorMessage("Image should not be greater than 5MB");
+                //        return;
+                //    }
+                //}
+
+                filesToUpload.push({
+                    id: fileId,
+                    file: file,
+                    fileType: fileType
+                });
+                if (fileType != 'Others') {
+                    if (file.type == "image/png" || file.type == "image/jpeg" || file.type == "image/jpg") {
+                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "<b>" + filemb + "</b> KB</li> ");
+                    }
+                    else {
+                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i>  ", file.name, " ", removeLink, "<b>" + filemb + "</b> KB</li> ");
+                    }
+                }
+                else {
+
+                    if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
+                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "<b>" + filemb + "</b> KB</li> ");
+                    }
+                    else {
+                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "<b>" + filemb + "</b> KB</li> ");
+                    }
+                }
+            };
+
+            $(this).children(".fileList")
+                .append(output.join(""));
+
+            //reset the input to null - nice little chrome bug!
+            ////evt.target.value = null;
+            document.getElementById("AssetUploadBtn").disabled = false;
+        });
+
+        $(this).on("click", ".removeFile", function (e) {
+            e.preventDefault();
+            var fileId = $(this).parent().children("a").data("fileid");
+
+            // loop through the files array and check if the name of that file matches FileName
+            // and get the index of the match
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id === fileId)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).parent().remove();
+            if (filesToUpload.length == 0) {
+                document.getElementById("AssetUploadBtn").disabled = true;
+
+            }
+            else {
+                document.getElementById("files").disabled = false;
+                document.getElementById("AssetUploadBtn").disabled = false;
+                $("#files1").removeClass("disabled");
+            }
+        });
+
+        this.clear = function () {
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id.indexOf(sectionIdentifier) >= 0)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).children(".fileList").empty();
+        }
+
+        return this;
+    };
+    (function () {
+        var filesToUpload = [];
+
+        var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
+
+        $("#imageClear").click(function (e) {
+            filesToUpload.length = 0;
+            $("#photolist li").remove();
+            $("#myModal2").modal('hide');
+            $("#photoType").val("").trigger("chosen:updated");
+        });
+
+        $("#btnclose").click(function (e) {
+            filesToUpload.length = 0;
+            $("#photolist li").remove();
+            $("#myModal2").modal('hide');
+            $("#photoType").val("").trigger("chosen:updated");
+        });
+
+        $("#AssetUploadBtn").click(function (e) {
+            var type = $("#photoType").val();
+            var RefNo = $("#formAFadPKRefNO").val();
+            debugger;
+            if (RefNo != "0" && RefNo != "" && RefNo != undefined) {
+
+                var formData = new FormData();
+                formData.append("AssetId", document.getElementById("formAFadPKRefNO").value);
+                for (var i = 0, len = filesToUpload.length; i < len; i++) {
+                    formData.append("FormFile", filesToUpload[i].file);
+                    formData.append("PhotoType", filesToUpload[i].fileType);
+                }
+                InitAjaxLoading();
+                $.ajax(
+                    {
+                        url: "/NOD/HImageUploaded",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        dataType: 'JSON',
+                        success: function (data) {
+                            HideAjaxLoading();
+                            $('#myModal2').modal('hide');
+                            app.ShowSuccessMessage("Successfully Saved")
+                            GetImageList();
+
+                        },
+                        error: function (data) {
+                            HideAjaxLoading();
+                            console.log("Error");
+                            alert(data);
+                            $("body").removeClass("loading");
+                        }
+                    }
+                );
+            }
+
+        });
+    })()
+    function deleteImageupload(imageToDelete) {
+        var imagedelete = imageToDelete.cellIndex - 1;
+        app.Confirm("Are you sure you want to remove?, If Yes click OK.", function (e) {
+            if (e) {
+                var row = document.getElementById("ImageRow")
+                row.deleteCell(imageToDelete.cellIndex);
+                row.deleteCell(imagedelete);
+            }
+        });
+
+    }
+    function updateFileList() {
+        var input = document.getElementById('FormFile');
+        console.log(input.files)
+        var output = document.getElementById('Filelist');
+        for (var i = 0; i < input.files.length; i++) {
+            output.innerHTML = '<ul class="list-group"><li>' + input.files[i].name + '</li></ul>'
+            output.addClass("list-group-item");
+        }
+    }
+
+    function DeleteImage(pkId) {
+        var assetPkId = pkId;
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/NOD/HDeleteImage',
+                    data: { assetPkId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            HideAjaxLoading();
+                            app.ShowSuccessMessage("Successfully Deleted")
+                            GetImageList();
+                        }
+                        else {
+                            HideAjaxLoading();
+                            alert("Error in Deleted. Kindly retry later.");
+
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+    $("#photoType").change(function () {
+        document.getElementById("files").disabled = true;
+        $("#files1").addClass("disabled");
+        var type = $("#photoType").val();
+        if (type != "" && type != undefined && type != null) {
+            $("#files1").removeClass("disabled");
+            document.getElementById("files").disabled = false;
+        }
+    })
+
+</script>

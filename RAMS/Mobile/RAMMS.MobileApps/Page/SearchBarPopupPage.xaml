@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             HasSystemPadding="true" CloseWhenBackgroundIsClicked="true"
+             xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials" x:Name="FormADropDownGridRowSelectedRecords"
+             xmlns:local="clr-namespace:RAMMS.MobileApps"
+             x:Class="RAMMS.MobileApps.SearchBarPopupPage">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation PositionIn="Center" PositionOut="Center" ScaleIn="1.2" ScaleOut="0.8" DurationIn="400" DurationOut="400" EasingIn="SinOut" EasingOut="SinIn" HasBackgroundAnimation="True" />
+    </pages:PopupPage.Animation>
+    <Frame CornerRadius="5" Padding="0"  x:Name="outerStack" Margin="40" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+        <StackLayout VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+            <StackLayout BackgroundColor="{StaticResource BaseColor}" Padding="15,10,30,10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" x:Name="lblTitle" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" FontSize="Default" TextColor="White" FontFamily="{StaticResource ProximaNovaSemiboldFont}" />
+                    <Image Source="close.png"  Grid.Column="1" HeightRequest="30"  WidthRequest="30" Margin="-17,10,0,0" VerticalOptions="Center" HorizontalOptions="EndAndExpand" >
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ddPopupCloseCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+            </StackLayout>
+            <fe:AdvancedFrame HeightRequest="40"  CornerRadius="6" Padding="-7,0,0,0" InnerBackground="{StaticResource DashboardbgColor}" OutlineColor="{StaticResource BoxviewColor}">
+                <SearchBar x:Name="formAsearchBar" Text="{Binding FilterDropDownItem}" Placeholder="Search" FontSize="Default"  HorizontalTextAlignment="Center"></SearchBar>
+            </fe:AdvancedFrame>
+            <ListView x:Name="list" ItemsSource="{Binding GetDDListItems}" fe:ListViewItemTappedAttached.Command="{Binding ItemTappedCommand}" SeparatorColor="#b8b8b8" SeparatorVisibility="Default" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Grid  Padding="15" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0"  Grid.Column="0"  Text="{Binding Text}"  HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  FontSize=" Medium" TextColor="#797979" />
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </Frame>
+</pages:PopupPage>

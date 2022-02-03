@@ -1,0 +1,382 @@
+﻿@*<div class="table-responsive mb-3 mt-4" style="max-height: 42vh;">
+        <table id="assetsGridView" class="table table-hover non-hover" style="width:100%;">
+            <thead class="sticky-col first-col">
+                <tr>
+                    <th>Bridge Id</th>
+                    <th>RMU Code</th>
+                    <th>Section Name</th>
+                    <th>Section Code</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>*@
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    var AssetIdTitle = ViewBag.AssetTypeName;
+    var AssetTypeNamedata = ViewBag.AssetType;
+    bool isCulvert = ViewBag.AssetType == "CV";
+    bool isBridge = ViewBag.AssetType == "BR";
+    bool isDrain = ViewBag.AssetType == "DR";
+    bool isEdgeLine = ViewBag.AssetType == "ELM";
+    bool isDitch = ViewBag.AssetType == "DI";
+    bool isCenterLine = ViewBag.AssetType == "CLM";
+    bool isRoadStuds = ViewBag.AssetType == "RS";
+    bool isSign = ViewBag.AssetType == "SG";
+    bool isShoulder = ViewBag.AssetType == "SH";
+    bool isCarriageway = ViewBag.AssetType == "CW";
+    bool isGuardrail = ViewBag.AssetType == "GR";
+    bool isRetainingWall = ViewBag.AssetType == "RW";
+}
+
+<div class="main-container" id="container">
+    <!--  BEGIN CONTENT AREA  GridView -->
+    <div id="content">
+        <table id="assetsGridView" class="table w-100 nowrap">
+            @*<thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>@AssetIdTitle Id</th>
+                        <th>RMU Name</th>
+                        <th>Section Name</th>
+                        <th>Section Code</th>
+                        @if (isDitch || isDrain || isBridge)
+                        {
+                            <th>Road Name</th>
+                        }
+                        <th>Road Code</th>
+                        @if (!isRoadStuds && !isCarriageway && !isShoulder)
+                        {
+                            <th>Location CH</th>
+                        }
+                        @if (isCarriageway || isShoulder)
+                        {
+                            <th>Asset CH Location</th>
+                        }
+                        @if (isRoadStuds || isSign || isShoulder || isCarriageway || isGuardrail || isRetainingWall)
+                        {
+                            <th>CH From</th>
+                            <th>CH To</th>
+                        }
+                        @if (isCulvert)
+                        {
+                            <th>@AssetIdTitle Diameter</th>
+                            <th>@AssetIdTitle Height</th>
+                            <th>@AssetIdTitle Material</th>
+                            <th>Barrel Number</th>
+                            <th>@AssetIdTitle Width</th>
+                        }
+                        @if (isEdgeLine || isCenterLine)
+                        {
+                            <th>Width</th>
+                        }
+                        @if (isBridge)
+                        {
+                            <th>@AssetIdTitle Name</th>
+                            <th>@AssetIdTitle Length</th>
+                        }
+                        @if (isCulvert || isEdgeLine || isCenterLine || isDitch || isDrain)
+                        {
+                            <th>Length</th>
+                        }
+                        @if (isRetainingWall)
+                        {
+                            <th>Total Length(m)</th>
+                        }
+
+                        @if (!isBridge && !isRoadStuds && !isShoulder)
+                        {
+                            <th>Asset Type</th>
+                        }
+                        @if (isBridge || isRoadStuds)
+                        {
+                            <th>Type of @AssetIdTitle</th>
+                        }
+                        @if (isShoulder)
+                        {
+                            <th>@AssetIdTitle Type</th>
+                        }
+                        <th>Bound</th>
+                        @if (isCarriageway)
+                        {
+                            <th>Lane Number</th>
+                        }
+                        @if (isGuardrail)
+                        {
+                            <th>Guardrail Post Spacing (m)</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>*@
+        </table>
+    </div>
+    @*@{
+            Html.RenderPartial("_AssetListGrid", Model);
+        }*@
+    <!--  END CONTENT AREA GridView -->
+</div>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var assetTitle = '@AssetIdTitle.ToString()';//@AssetIdTitle.ToString();
+    var isCulvert = @isCulvert.ToString().ToLowerInvariant();
+    var isBridge = @isBridge.ToString().ToLowerInvariant();
+    var isDrain = @isDrain.ToString().ToLowerInvariant();
+    var isEdgeLine = @isEdgeLine.ToString().ToLowerInvariant();
+    var isDitch = @isDitch.ToString().ToLowerInvariant();
+    var isCenterLine = @isCenterLine.ToString().ToLowerInvariant();
+    var isRoadStuds = @isRoadStuds.ToString().ToLowerInvariant();
+    var isSign = @isSign.ToString().ToLowerInvariant();
+    var isShoulder = @isShoulder.ToString().ToLowerInvariant();
+    var isCarriageway = @isCarriageway.ToString().ToLowerInvariant();
+    var isGuardrail = @isGuardrail.ToString().ToLowerInvariant();
+    var isRetainingWall = @isRetainingWall.ToString().ToLowerInvariant();
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.Asset_Inventory).ToString().ToLowerInvariant()?"":'hidden';
+    var isDeletePerm=@security.IsPCDelete(ModuleNameList.Asset_Inventory).ToString().ToLowerInvariant()?"":'hidden';
+  
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", class: "headcol", title: "Action", autoWidth: true, sortable: false, render: function (data) {
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' "+isModifyPerm+" class='dropdown-item editdel-btns' id='btnAssetEdit' onclick='javascript:AddAssetClick(" + data.no + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' "+isDeletePerm+" onclick='javascript:DeleteAsset(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:AddAssetClick("+ data.no +",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnViewPhoto' onclick='javascript:AssetViewPhoto(" + data.no + ");'><span class='photo-icon'></span> View Photo</button></div></div>";
+            return actionSection;
+           }
+    };
+
+    var assetIdCol = { data: "assetId", name: "AssetId", title: assetTitle + " ID", autoWidth: true, sortable: true };
+    var rmuCodeCol = { data: "rmuName", name: "RMUName", title: "RMU Name", autoWidth: true, sortable: true };
+    var rmuAbbCol = { data: "rmuCode", name: "RmuAbb", title: "RMU Abbreviation", autoWidth: true, sortable: true };
+    var secNameCol = { data: "secName", name: "SectionName", title: "Section Name", autoWidth: true, sortable: true };
+    var secCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
+    var roadNameCol = { data: "rdName", name: "RoadName", title: "Road Name", autoWidth: true, sortable: true };
+    var roadCodeCol = { data: "rdCode", name: "RoadCode", title: "Road Code", autoWidth: true, sortable: true };
+
+    var locationCol = { data: "locCh", name: "locCh", title: "Location CH", autoWidth: true, sortable: true };
+    if (isShoulder || isCarriageway) {
+        var locationCol = { data: "locCh", name: "locCh", title: "Asset Location CH", autoWidth: true, sortable: true };
+    }
+    if (isRoadStuds) {
+        var locationCol = { data: "locCh", name: "locCh", title: "Asset CH", autoWidth: true, sortable: true };
+    }
+    var chFromCol = { data: "frmChKmM", name: "FrmChKmM", title: "CH From", autoWidth: true, sortable: true };
+    var chToCol = { data: "toChKmM", name: "ToChKmM", title: "CH To", autoWidth: true, sortable: true };
+    var diameterCol = { data: "diameter", name: "diameter", title: assetTitle + " Diameter", autoWidth: true, sortable: true };
+    var widthCol = { data: "width", name: "width", title: assetTitle + " Width", autoWidth: true, sortable: true };
+    var heightCol = { data: "height", name: "height", title: assetTitle + " Height", autoWidth: true, sortable: true };
+    var MaterialCol = { data: "material", name: "material", title: assetTitle + " Material", autoWidth: true, sortable: true };
+    var barrelNoCol = { data: "barrelNo", name: "barrelNo", title: "Barrel Number", autoWidth: true, sortable: true };
+    var bridgeNameCol = { data: "bridgeName", name: "bridgeName", title: assetTitle + " Name", autoWidth: true, sortable: true };
+
+    var lengthCol = { data: "length", name: "length", title: assetTitle + " Length", autoWidth: true, sortable: true };
+    if (isDrain || isDitch) {
+        var lengthCol = { data: "length", name: "length", title: "Length (m)", autoWidth: true, sortable: true };
+    }
+    if (isEdgeLine || isCenterLine || isCulvert) {
+        var lengthColWOT = { data: "length", name: "length", title: " Length", autoWidth: true, sortable: true };
+        var widthColWOT = { data: "width", name: "width", title: " Width", autoWidth: true, sortable: true };
+    }
+    if (isRetainingWall) {
+        var lengthCol = { data: "length", name: "length", title: "Total Length (m)", autoWidth: true, sortable: true };
+    }
+    var groupTypeCol = { data: "grpType", name: "grpType", title: "Asset Type", autoWidth: true, sortable: true };
+    if (isBridge || isRoadStuds) {
+        var groupTypeCol = { data: "grpType", name: "grpType", title: "Type of " + assetTitle, autoWidth: true, sortable: true };
+    }
+    if (isShoulder) {
+        var groupTypeCol = { data: "grpType", name: "grpType", title: assetTitle + " Type", autoWidth: true, sortable: true };
+    }
+
+    var boundCol = { data: "bound", name: "bound", title: "Bound", autoWidth: true, sortable: true };
+    var laneNoCol = { data: "laneNo", name: "laneNo", title: "Lane Number", autoWidth: true, sortable: true };
+    var PostSpacingCol = { data: "postSpacing", name: "postSpacing", title: assetTitle + " Post Spacing (m)", autoWidth: true, sortable: true };
+
+    table_columns.push(actionCol);
+    table_columns.push(assetIdCol);
+    table_columns.push(rmuAbbCol);
+    table_columns.push(rmuCodeCol);
+    table_columns.push(secCodeCol);
+    table_columns.push(secNameCol);
+    table_columns.push(roadCodeCol);
+
+    if (isDitch || isDrain || isBridge) {
+        table_columns.push(roadNameCol);
+    }
+
+    if (!isRoadStuds) {
+        table_columns.push(locationCol);
+    }
+    if (isRoadStuds) {
+         table_columns.push(locationCol);
+    }
+    if (isRoadStuds || isSign || isShoulder || isCarriageway || isGuardrail || isRetainingWall) {
+         table_columns.push(chFromCol);
+         table_columns.push(chToCol);
+    }
+    if (isCulvert) {
+        table_columns.push(diameterCol);
+        table_columns.push(widthCol);
+        table_columns.push(heightCol);
+        table_columns.push(lengthColWOT);
+        table_columns.push(groupTypeCol);
+        table_columns.push(MaterialCol);
+        table_columns.push(barrelNoCol);
+
+    }
+    if ( isEdgeLine || isCenterLine) {
+        table_columns.push(widthColWOT);
+    }
+    if (isBridge || isDrain || isDitch) {
+        table_columns.push(boundCol);
+    }
+    if (isBridge)
+    {
+        table_columns.push(bridgeNameCol);
+        table_columns.push(lengthCol);
+    }
+    if (isCenterLine || isEdgeLine){
+        table_columns.push(lengthColWOT);
+    }
+    if (!isCulvert && !isShoulder && !isCarriageway) {
+        table_columns.push(groupTypeCol);
+    }
+    if (  isDitch || isDrain ||  isRetainingWall) {
+        table_columns.push(lengthCol);
+    }
+    if (isGuardrail) {
+        table_columns.push(PostSpacingCol);
+    }
+    if (!isBridge && !isDrain &&!isDitch) {
+        table_columns.push(boundCol);
+    }
+    if (isShoulder || isCarriageway ) {
+        table_columns.push(groupTypeCol);
+    }
+    if (isCarriageway) {
+        table_columns.push(laneNoCol);
+    }
+
+
+     //var table_columns = [
+     //    {
+     //        data: null, "name": "Action", sortable: false, render: function (data) {
+     //            var actionSection = "<div class='btn-group dropright ' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-outline-info theme-clr dropdown-toggle' data-toggle='dropdown'> Click ME </button><div class='dropdown-menu'><button type='button' class='dropdown-item' data-toggle='modal' id='btnAssetEdit' onclick='javascript:AddAssetClick(" + data.no + ");'data-target='#AssetsAddModal'><i class='fas fa-pen'></i> Edit</button><a class='dropdown-item' onclick='javascript:DeleteAsset(" + data.no + ");' href='#'><i class='fas fa-times'></i> Delete</a></div></div>";
+
+     //            return actionSection;
+     //        }
+     //    },
+     //    { data: "assetId", name: "AssetId", autoWidth: true, sortable: false }, //index 0
+     //    { data: "rmuCode", name: "RMUCode", autoWidth: true, sortable: false }, //index 1
+     //    { data: "sectionName", name: "SectionName", autoWidth: true, sortable: false }, //index 2
+     //    { data: "sectionCode", name: "SectionCode", autoWidth: true, sortable: false }, //index 3
+     //];
+
+     var filterData = new Object();
+        function InitializeGrid() {
+            var _currentGridSettings = new CustomGridSettings();
+            $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+            filterData.GroupCode = $("#assetTypeCode").val();
+            filterData.FromCh = $("#FromCh").val();
+            filterData.ToCh = $("#ToCh").val();
+            filterData.SectionName = $("#SectionName").val();
+            filterData.SectionCode = $("#SectionCode").val();
+            filterData.RoadName = $("#RoadName").val();
+            filterData.AssetGroup = $("#AssetGroup").val();
+            filterData.GroupType = $("#AssetType").val();
+            filterData.RoadCode = $("#RoadCode").val();
+            filterData.RMUCode = $("#RMU").val();
+            filterData.Bound = $("#Bound").val();
+            filterData.FromChDesi = $("#FromChDesi").val();
+            filterData.ToChDeci = $("#ToChDeci").val();
+
+            $('#assetsGridView').DataTable({
+            //processing: true, // for show processing bar
+            //serverSide: true, // for process on server side
+            //orderMulti: false, // for disable multi column order
+            //pageLength: 5,
+            //lengthMenu: [
+            //    [5, 10, 25, 50, 100, 500, 100000],//value collection
+            //    ['5 rows', '10 rows', '25 rows', '50 rows', '100 rows', '500 rows', 'All']//display collection
+            //],
+            //dom: '<"top"i>rt<"bottom"lp><"clear">', // for hide default global search box // little confusion? don't worry I explained in the tutorial website
+            ajax: {
+                url: "/assets/LoadAssetList",
+                type: "POST",
+                datatype: "json",
+                //data: function (assetFilter) {
+                //    assetFilter.filterData = {};
+                //    return assetFilter;
+                //    debugger;
+                //    //filterData
+                //},
+                data: {
+                        filterData
+                      }
+                },
+            columns: table_columns
+        });
+        }
+
+    $(document).ready(function () {
+            InitializeGrid();
+
+            //Apply Custom search on jQuery DataTables here
+        oTable = $('#assetsGridView').DataTable();
+        $('#assetsSearchBtn').click(function () {
+                //Apply search for Employee Name // DataTable column index 0
+                //oTable.search("advFilter").search("john");
+
+            ///Condition to restric the To location search lesser than the From Location Search
+            var toCh = $("#ToCh").val();
+            var fromCh = $("#FromCh").val();
+            var istoChGreater = true;
+            if (toCh != "" && toCh != null && toCh != undefined && fromCh != "" && fromCh != null && fromCh != undefined) {
+                if (parseInt(toCh) >= parseInt(fromCh)) {
+                    istoChGreater = true;
+                }
+                else {
+                    istoChGreater = false;
+                }
+            }
+            if (istoChGreater) {
+                oTable.columns(0).search($("#assetTypeCode").val().trim());
+                oTable.columns(1).search($("#AssetssSmartSearch").val().trim());
+                oTable.columns(2).search($("#FromCh").val().trim() + "/" + $("#FromChDesi").val().trim());
+                oTable.columns(3).search($("#ToCh").val().trim() + "/" + $("#ToChDeci").val().trim());
+                oTable.columns(4).search($("#SectionName").val().trim());
+                oTable.columns(5).search($("#RoadName").val().trim());
+                oTable.columns(6).search($("#AssetGroup").val().trim());
+                oTable.columns(7).search($("#AssetType").val().trim());
+                oTable.columns(8).search($("#RoadCode").val().trim());
+                oTable.columns(9).search($("#RMU").val().trim());
+                oTable.columns(10).search($("#Bound").val().trim());
+                oTable.columns(11).search($("#SectionCode").val().trim());
+                //Apply search for Country // DataTable column index 3
+                //oTable.columns(3).search($('#ddCountry').val().trim());
+                //hit search on server
+                //oTable.draw();
+                //oTable.data.filterData = filterData;
+                //oTable.data.Bound = "Bound";
+                //oTable.data.GroupCode = "CL";
+                //filterData.GroupCode = "John";
+                //oTable.data.filterData.GroupCode = "OVW";
+                filterData.FromCh = 100;
+                oTable.data = filterData;
+                oTable.draw();
+            }
+            else {
+                 app.ShowErrorMessage("Location CH To Cannot be Lesser than Location CH From")
+            }
+                //LoadGrid();
+            });
+
+
+        });
+</script>
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>

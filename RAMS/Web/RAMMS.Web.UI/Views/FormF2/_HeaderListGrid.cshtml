@@ -1,0 +1,266 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormF2GridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.pkRefNo != "" && data.pkRefNo != null) {
+                title = data.pkRefNo;
+            }
+            if (data.submitSts) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' " + isViewPerm + " onclick='javascript:viewDetail(" + data.pkRefNo + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteHeader(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' id='formAHeaderEdit'" + isModifyPerm + " onclick='javascript:editDetail(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' data-backdrop='static' onclick='javascript:viewDetail(" + data.pkRefNo + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteHeader(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var noCol = { data: "pkRefNo", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
+    var refNoCol = { data: "formRefId", name: "Id", title: "Reference No", autoWidth: true, sortable: true };
+    var dateofInspection = {
+        data: null, name: "dtOfInsp", title: "Date Of Inspection", autoWidth: true, sortable: true,
+        render: function (data) {
+            if (data.dtOfInsp) {
+                var d = new Date(data.dtOfInsp);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else
+                return "";
+        }
+    };
+    var inspectedby = { data: "userNameInspBy", name: "userNameInspBy", title: "Inspected By", autoWidth: true, sortable: true };
+    var division = { data: "divCode", name: "Division", title: "Division", autoWidth: true, sortable: true };
+    var district = { data: "dist", name: "District", title: "District", autoWidth: true, sortable: true };
+    var rmucode = { data: "rmuCode", name: "rmuCode", title: "RMU Abbreviation", autoWidth: true, sortable: true };
+    var rmuname = { data: "rmuName", name: "rmuName", title: "RMU Name", autoWidth: true, sortable: true };
+    var seccode = { data: "sectionCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
+    var secname = { data: "sectionName", name: "sectionName", title: "Section Name", autoWidth: true, sortable: true };
+    var roadcode = { data: "roadCode", name: "roadCode", title: "Road Code", autoWidth: true, sortable: true };
+    //var roadname = { data: "roadName", name: "Roadname", title: "Road Name", autoWidth: true, sortable: true,visible: false };
+    //var year = { data: "yearOfInsp", name: "Year", title: "Year", autoWidth: true, sortable: true, visible: false };
+    var crewLeader = { data: "crewLeaderName", name: "CrewLeaderName", title: "Crew Leader", autoWidth: true, sortable: true };
+
+    var submitSts = {
+        data: null, name: "submitSts", title: "Status", autoWidth: true, sortable: true, render: function (data) {
+            if (data.submitSts) {
+                return "Submitted";
+            }
+            else {
+                return "Saved";
+            }
+        }
+    };
+
+
+    table_columns.push(noCol);
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(dateofInspection);
+    table_columns.push(inspectedby);
+    table_columns.push(division);
+    table_columns.push(district);
+    table_columns.push(rmucode);
+    table_columns.push(rmuname);
+    table_columns.push(seccode);
+    table_columns.push(secname);
+    table_columns.push(roadcode);
+    //table_columns.push(roadname);
+    //table_columns.push(year);
+    //table_columns.push(submitSts);
+    table_columns.push(crewLeader);
+    function PrintForm(id) {
+        window.location.href = '/FormF2/FormF2Download?id=' + id;
+    }
+
+    function editDetail(id) {
+        window.location.href = '/FormF2/Add?id=' + id + '&isview=false';
+    }
+
+    function viewDetail(id) {
+        window.location.href = '/FormF2/Add?id=' + id + '&isview=true';
+    }
+
+    function deleteHeader(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: '/FormF2/RemoveHeader',
+                    dataType: 'JSON',
+                    data: req,
+                    type: 'Post',
+                    success: function (data) {
+                        if (data) {
+                            app.ShowSuccessMessage("Record deleted successfully");
+                            oTable.draw();
+                        }
+                        else {
+                            app.ShowErrorMessage("Please try again.")
+                        }
+
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.SmartSearch = $("#txtSmartSearch").val();
+        filterData.Division = $("#ddlDivision").val();
+        filterData.RoadCode = $("#ddlRoadCode").val()
+        filterData.Year = $("#ddlYear").val();
+        filterData.FromInspectionDate = $("#txtFromInspectiondate").val();
+        filterData.ToInspectionDate = $("#txtToInspectionDate").val();
+
+        filterData.ChFromKm =$("#txtChFromKm").val().trim();
+        filterData.ChFromM =$("#txtChFromM").val().trim();
+        filterData.ChToKm =$("#txtChToKm").val().trim();
+        filterData.ChToM =$("#txtChToM").val().trim();
+        filterData.Bound = $("#ddlBound").val().trim();
+
+
+        $('#FormF2GridView').DataTable({
+            ajax: {
+                url: "/FormF2/GetHeaderList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormF2GridView').DataTable();
+
+        $("#btnClearSearch").click(function () {
+            //debugger;
+            $("#txtSmartSearch").val('');
+            $("#ddlSection").val('');
+            $("#ddlSection").trigger("chosen:updated");
+            $("#txtSectionName").val('');
+            $("#ddlRMU").val('');
+            $("#ddlRMU").trigger("chosen:updated");
+            $("#ddlRoadCode").val('');
+            $("#ddlRoadCode").trigger("chosen:updated");
+            $("#ddlFrom").val('');
+            $("#ddlFrom").trigger("chosen:updated");
+            $("#ddlTo").val('');
+            $("#ddlTo").trigger("chosen:updated");
+            $("#txtRoadName").val('');
+            $("#ddlAssetType").val('');
+            $("#ddlAssetType").trigger("chosen:updated");
+
+            $("#txtChFromKm").val('');
+            $("#txtChFromM").val('');
+            $("#txtChToKm").val('');
+            $("#txtChToM").val('');
+            $("#ddlBound").val('');
+            $("#ddlBound").trigger("chosen:updated");
+
+            var req = {};
+            req.RMU = "";
+            req.GrpCode = "GR";
+            $.ajax({
+                url: '/FormF2/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    //debugger;
+
+                    $("#ddlRMU").empty();
+                    $("#ddlRMU").append($("<option></option>").val("").html("Select RMU"));
+                    $.each(data.rmu, function (index, x) {
+                        $("#ddlRMU").append($("<option></option>").val(x.value).html(x.text));
+                    });
+                    $("#ddlRMU").trigger("chosen:updated");
+
+                    $("#ddlSection").empty();
+                    $("#ddlSection").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#ddlSection").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    $("#ddlSection").trigger("chosen:updated");
+
+                    $("#ddlRoadCode").empty();
+                    $("#ddlRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                    $.each(data.rdCode, function (index, v) {
+                        $("#ddlRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    $("#ddlRoadCode").trigger("chosen:updated");
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            $("#btnSearch").click();
+
+        });
+        $('#btnSearch').click(function () {
+            //debugger;
+            var secCode = $("#ddlSection").find("option:selected").attr("code");
+            oTable.columns(0).search($("#txtSmartSearch").val());
+            oTable.columns(1).search($("#ddlRMU").val());
+            oTable.columns(2).search(secCode);
+            oTable.columns(3).search($("#ddlRoadCode").val());
+            oTable.columns(4).search($("#ddlFrom").val());
+            oTable.columns(5).search($("#ddlTo").val());
+            oTable.columns(6).search($("#ddlAssetType").val());
+
+            oTable.columns(7).search($("#txtChFromKm").val().trim());
+            oTable.columns(8).search($("#txtChFromM").val().trim());
+            oTable.columns(9).search($("#txtChToKm").val().trim());
+            oTable.columns(10).search($("#txtChToM").val().trim());
+            oTable.columns(11).search($("#ddlBound").val().trim());
+
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>

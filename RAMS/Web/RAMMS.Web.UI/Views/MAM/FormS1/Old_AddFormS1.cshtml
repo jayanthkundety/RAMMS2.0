@@ -1,0 +1,615 @@
+﻿<div class="row" id="">
+    <div class="w-100 float-left bg-body">
+        <div class="w-100 mh-120">
+            <div class="col-md-12">
+                <div class="bg-white rounded pt-3 pb-1 px-md-1 landing-division w-100 mb-3 mt-3">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="form-group col-md-2">
+                                @Html.Label("RMU", "RMU")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                <input type="date" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-7 mb-0">
+                                <div class="row">
+                                    <div class="form-group col-md-4">
+                                        @Html.Label("Week No.", "Week No.")
+                                        <select class="form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        @Html.Label("From Date (DD-MM-YYYY)", "From Date (DD-MM-YYYY)")
+                                        <input type="date" class="form-control" disabled />
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        @Html.Label("To Date (DD-MM-YYYY)", "To Date (DD-MM-YYYY)")
+                                        <input type="date" class="form-control" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                            <button id="" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div class="grid-btns">
+                        <button type="button" id="" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#FormS1AdddetailsModal" data-backdrop="static" onclick=""><span class="intbl-add-icon"></span></button>
+                    </div>
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        @*@{
+                              Html.RenderPartial("_DetailGridList.cshtml");
+                            }*@
+                    </div>
+                </div>
+
+                <div class="clear-b"></div>
+                <div class="row">
+                    <div id="" class="col-lg-10 offset-lg-1">
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Remarks</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-12 float-left txtarea-107">
+                                    <textarea class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Planned by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input type="text" class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input type="text" class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="" value="" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Vetted by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input type="text" class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input type="text" class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="" value="" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Agreed by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input type="text" class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input type="text" class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="" value="" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button type="button" id="" class="btn btn-sm btn-outline-theme" onclick="">Cancel</button>
+            <button id="" type="button" class="btn btn-sm btn-themebtn">Save</button>
+            <button id="" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="FormS1AdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormS1AdddetailsModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormS1AdddetailsModalid">Add Details</h5>
+                <button type="button" class="close" data-dismiss="modal" onclick="" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            @* Patial View for add Class to bind data in partial view *@
+            <div id="div-dtl-container">
+                @*@{
+                        // Html.RenderPartial("_DetailsAdd.cshtml", Model.FormDDetails);
+                    }*@
+
+                <form id="FormAddDetails" action="">
+                    <div class="modal-body bg-body p-0">
+                        <div class="d-flex justify-content-center pt-3 pb-3">
+                            <div class="form-group mb-0">
+                                @Html.Label("Form S1 No.", "Form S1 No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                                <input type="text" class="form-control" style="width:400px;" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="w-100 float-left mh-250 bg-white pt-3" style="border-top: 1px solid #dee2e6;">
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Activity Code", "Activity Code")
+                                        <select class="form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Road Code", "Road Code")
+                                        <select class="form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Road Name", "Road Name")
+                                        <input type="text" class="form-control" disabled />
+                                    </div>
+                                    <div class="form-group col-lg-4 p-0 mb-0">
+                                        <div class="form-group col-lg-6 float-left">
+                                            <label for="Location_Chainage_From">Location Chainage From</label>
+                                            <div class="row">
+                                                <div class="col-6 float-left pr-0">
+                                                    <input class="form-control disableFADinput  validate {required,number, Location Chainage From}" id="formAFromCh" maxlength="5" name="SaveFormADetails.FromCh" rows="1" type="text" value="">
+                                                </div>
+                                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                                <div class="col-5 float-left pl-0">
+                                                    <input class="form-control disableFADinput validate {number, Location Chainage From}" id="formAFromChDeci" maxlength="3" name="SaveFormADetails.FromChDeci" rows="1" type="text" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-6 float-left">
+                                            <label for="Location_Chainage_To">Location Chainage To</label>
+                                            <div class="row">
+                                                <div class="col-6 float-left pr-0">
+                                                    <input class="form-control disableFADinput  validate {required,number, Location Chainage To}" id="formAToCh" maxlength="5" name="SaveFormADetails.ToCh" rows="1" type="text" value="">
+                                                </div>
+                                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                                <div class="col-5 float-left pl-0">
+                                                    <input class="form-control disableFADinput validate {number, Location Chainage To}" id="formAToChDeci" maxlength="3" name="SaveFormADetails.ToChDeci" rows="1" type="text" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Form Type", "Form Type")
+                                        <select class="form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+
+                                    <!--Form Type Form A - Form-->
+                                    @*<div class="form-group col-lg-4">
+                                            @Html.Label("Location Site Ref", "Location Site Ref")
+                                            <select class="form-control">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Priority", "Priority")
+                                            <select class="form-control">
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Work Quantity", "Work Quantity")
+                                            <input type="text" class="form-control" disabled />
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("CDR", "CDR")
+                                            <input type="text" class="form-control" />
+                                        </div>*@
+                                    <!--End-->
+
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Reference No.", "Reference No.")
+                                        <select class="form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Crew Supervisor", "Crew Supervisor")
+                                        <select class="form-control">
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <div class="accordion custom-accordion mt-1 mb-1">
+                                            <div class="card mb-0">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="m-0">
+                                                        <span class="custom-accordion-title py-1">
+                                                            <span class="float-left">
+                                                                Planned
+                                                            </span>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                                <div class="avowmodal-form formgrp-section">
+                                                    <div class="card-body p-2">
+
+                                                        <div class="w-100">
+                                                            <table class="w-100 dataTable dataTables_scroll schedule-tbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">Day Scheduled (Year-2021)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="d-flex">
+                                                                                <div class="flex-md-fill schday-colgroup">
+                                                                                    <ul>
+                                                                                        <li>
+                                                                                            <span class="day-name">MON</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">4</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <div class="position-relative">
+                                                                                                <button type="button" class="choose-status"><span class="dayschl-status"><span class="wday-schl-icon"></span></span></button>
+                                                                                                <div class="dayschdl-statuslegend" id="status-legend">
+                                                                                                    <div class="d-flex flex-column">
+                                                                                                        <a href=""><span class="wday-schl-icon"></span> Workday scheduled</a>
+                                                                                                        <a href=""><span class="w-carriedother-icon"></span> Work carried out on other day</a>
+                                                                                                        <a href=""><span class="w-notcarried-icon"></span> Work not carried out</a>
+                                                                                                        <a href=""><span class="pw-carriedout-icon"></span> Planned work carried out</a>
+                                                                                                        <a href=""><span class="rschl-wday-icon"></span> Reschedule Workday</a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">TUE</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">5</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"><span class="wday-schl-icon"></span></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">WED</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">6</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"><span class="wday-schl-icon"></span></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">THU</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">7</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">FRI</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">8</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">SAT</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">9</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">SUN</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">10</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"></span></button>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-6">
+                                        <div class="accordion custom-accordion mt-1 mb-1">
+                                            <div class="card mb-0">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="m-0">
+                                                        <span class="custom-accordion-title py-1">
+                                                            <span class="float-left">
+                                                                Actual
+                                                            </span>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                                <div class="avowmodal-form formgrp-section">
+                                                    <div class="card-body p-2">
+
+                                                        <div class="w-100">
+                                                            <table class="w-100 dataTable dataTables_scroll schedule-tbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">Day Scheduled (Year-2021)</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="d-flex">
+                                                                                <div class="flex-md-fill schday-colgroup">
+                                                                                    <ul>
+                                                                                        <li>
+                                                                                            <span class="day-name">MON</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">4</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <div class="position-relative">
+                                                                                                <button type="button" class="choose-status"><span class="dayschl-status"><span class="w-carriedother-icon"></span></span></button>
+                                                                                                <div class="dayschdl-statuslegend" id="status-legend">
+                                                                                                    <div class="d-flex flex-column">
+                                                                                                        <a href=""><span class="wday-schl-icon"></span> Workday scheduled</a>
+                                                                                                        <a href=""><span class="w-carriedother-icon"></span> Work carried out on other day</a>
+                                                                                                        <a href=""><span class="w-notcarried-icon"></span> Work not carried out</a>
+                                                                                                        <a href=""><span class="pw-carriedout-icon"></span> Planned work carried out</a>
+                                                                                                        <a href=""><span class="rschl-wday-icon"></span> Reschedule Workday</a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">TUE</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">5</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"><span class="pw-carriedout-icon"></span></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">WED</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">6</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"><span class="pw-carriedout-icon"></span></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">THU</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">7</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"><span class="pw-carriedout-icon"></span></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">FRI</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">8</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">SAT</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">9</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="day-name">SUN</span>
+                                                                                            <span class="dm-group">
+                                                                                                <span class="dt">10</span>
+                                                                                                <span class="mnth">JAN</span>
+                                                                                            </span>
+                                                                                            <button type="button"><span class="dayschl-status"></span></button>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-12 float-left mb-0">
+                                        <label class="font-weight-bold font-16 text-dark">Status</label>
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <label class="font-weight-bold">Choose Status</label>
+                                                <div class="w-100 float-left pt-1">
+                                                    <div class="float-left pr-3">
+                                                        <label class="float-left text-white mb-0" style="line-height: 24px;">
+                                                            <input type="checkbox" id="sentJKRS" name="sentReceivedJKRS" style="height: 20px;">
+                                                            <span class="position-relative pl-2 text-dark" style="top: -5px;">Sent to JKRS</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="float-left">
+                                                        <label class="float-left text-white mb-0" style="line-height: 24px;">
+                                                            <input type="checkbox" id="receivedJKRS" name="sentReceivedJKRS" style="height: 20px;">
+                                                            <span class="position-relative pl-2 text-dark" style="top: -5px;">Received from JKRS</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                @Html.Label("Sent Date (DD-MM-YYYY)", "Sent Date (DD-MM-YYYY)")
+                                                <input type="date" id="submittedJKRSDate" class="form-control" value="">
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                @Html.Label("Received Date (DD-MM-YYYY)", "Received Date (DD-MM-YYYY)")
+                                                <input type="date" id="ReceivedJKRSDate" class="form-control" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-6">
+                                        <div class="accordion custom-accordion mt-1 mb-1">
+                                            <div class="card mb-0">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="m-0">
+                                                        <span class="custom-accordion-title py-1">
+                                                            <span class="float-left">
+                                                                For S.O or Representative
+                                                            </span>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                                <div class="avowmodal-form formgrp-section">
+                                                    <div class="card-body p-2">
+
+                                                        <div class="w-100">
+                                                            <table class="w-100 dataTable dataTables_scroll schedule-tbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">Follow Up Action Plan</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="d-flex">
+                                                                                <div class="flex-md-fill followup-group">
+                                                                                    <ul>
+                                                                                        <li>
+                                                                                            <span class="follow-name">RA</span>
+                                                                                            <button type="button"><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">MT</span>
+                                                                                            <button type="button"><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">QA1</span>
+                                                                                            <button type="button"><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">QA2</span>
+                                                                                            <button type="button"><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">SA</span>
+                                                                                            <button type="button"><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">N1</span>
+                                                                                            <button type="button"><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">N2</span>
+                                                                                            <button type="button"><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-lg-6 txtarea-126">
+                                        @Html.Label("Remarks", "Remarks")
+                                        <textarea class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer float-right w-100">
+                        <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="">Cancel</button>
+                        <button id="" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+                        <button id="" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.choose-status').on('click', function () {
+            $('#status-legend').show()
+        });
+        $('.followup-group li button').on('click', function () {
+            $(this).toggleClass('active')
+        });
+    });
+</script>

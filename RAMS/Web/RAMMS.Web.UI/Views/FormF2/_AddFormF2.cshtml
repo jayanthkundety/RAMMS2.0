@@ -1,0 +1,365 @@
+﻿@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormF2Service formS2
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@model RAMMS.DTO.RequestBO.FormF2HeaderRequestDTO
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    IEnumerable<SelectListItem> division = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Division" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeDesc,
+           Value = s.DdlTypeValue
+       }).ToArray();
+
+    IEnumerable<SelectListItem> year = (await ddlService
+.GetLookups(new DDLookUpDTO { Type = "Year" }))
+.Select(s => new SelectListItem
+{
+    Text = s.DdlTypeValue,
+    Value = s.DdlTypeValue
+}).ToArray();
+    IEnumerable<SelectListItem> section = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
+
+    IEnumerable<SelectListItem> roadcode = new[] {new SelectListItem
+       {
+           Text = "Select Road Code",
+           Value = ""
+       } };
+
+    IEnumerable<SelectListItem> rmu = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "RMU" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
+    IEnumerable<SelectListItem>
+    user = (await usr.GetUserNameRespectToPosition(new UserRequestDTO
+    {
+        Position = "Supervisor"
+    })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
+
+    string inspectedDateBy = Model.DtInspBy.HasValue ? Model.DtInspBy.Value.ToString("yyyy-MM-dd") : "";
+    string inspectionDate = Model.DtOfInsp.HasValue ? Model.DtOfInsp.Value.ToString("yyyy-MM-dd") : "";
+    int IsAlreadyExist = Model.PkRefNo > 0 ? 1 : 0;
+    int viewmode = Model.IsViewMode ? 1 : 0;
+
+
+    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormF2Init);
+
+}
+
+<script type="text/javascript">
+        $(document).ready(function () {
+             process.Init("FormF2", "@Model.Status", @Model.PkRefNo);
+        });
+</script>
+
+<input type="hidden" id="hdnHeaderId" value="@Model.PkRefNo" />
+<input type="hidden" id="hdnHIsViewMode" value="@viewmode" />
+<input type="hidden" id="IsAlreadyExists" value="@IsAlreadyExist" />
+<input type="hidden" id="hdnDetailPkNo" value="" />
+<input type="hidden" id="IsDView" value="" />
+<input type="hidden" id="hdnRoadCode" value="@Model.RoadId" />
+<input type="hidden" id="hdnRoadCodeText" value="@Model.RoadCode" />
+<div class="row">
+    <div class="w-100 bg-body" id="">
+        <div id="headerDiv">
+            <div class="modal-body mh-120 pt-0 pb-0">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div id="" class="form-group mb-0">
+                        @Html.Label("Form F2 No.", "Form F2 No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        <input id="txtHReferenceNo" disabled value="@Model.FormRefId" class="form-control validate {required, Reference No. }" style="width:300px;" type="text">
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+                    <div class="row">
+                        <div class="col-lg-10 p-0">
+                            <div id="headerFindDiv" class="w-100 form-group mb-0">
+                                @*<div class="form-group col-md-3">
+                                @Html.Label("Asset Group", "Asset Group")
+                                <input class="form-control" value="Guardrail" disabled />
+                            </div>*@
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Division", "Division")
+                                    @Html.DropDownListFor(m => m.DivCode, division, "Select Division", new { @Id = "ddlDivision", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("District", "District")
+                                    <input id="txtDist" class="form-control" value="@Model.Dist" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("RMU", "RMU")
+                                    <select id="ddlRMU" class="form-control">
+                                        <option value="">Select RMU</option>
+                                        @foreach (var div in rmu)
+                                        {
+                                            <option value="@div.Value">@div.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Section Code", "Section Code")
+                                    <select id="ddlSection" class="form-control">
+                                        <option value="">Select Section Code</option>
+                                        @*@foreach (var div in section)
+                                    {
+                                        <option value="@div.Value">@div.Text</option>
+                                    }*@
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Section Name", "Section Name")
+                                    <input id="txtSectionName" disabled class="form-control" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Code", "Road Code")
+                                    <select id="ddlRoadCode" class="form-control validate {required, Road Code}">
+                                        <option value="">Select Road Code</option>
+                                        @foreach (var road in roadcode)
+                                        {
+                                            <option value="@road.Value">@road.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Name", "Road Name")
+                                    <input id="txtRoadName" disabled="disabled" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Length (km)", "Road Length (km)")
+                                    <input id="txtRoadlength" disabled="disabled" type="text" value="@Model.RoadLength" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.YearOfInsp, year, "Select Year", new { @Id = "ddlYear", @class = "form-control validate {required, Year }" })
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                            <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        @{
+                            Html.RenderPartial("_DetailGridList.cshtml");
+                        }
+                    </div>
+                </div>
+
+                <div id="F2UserDetail" class="col-lg-12 px-lg-5">
+                    <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Crew Leader</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                @Html.DropDownListFor(Ahdr => Ahdr.CrewLeaderId, (IEnumerable<SelectListItem>)ViewData["Supervisor"], "User Id", new { @Id = "ddlCrewleader", @class = "form-control svalidate {required, Crew Leader Id}" })
+
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input id="txtCrewLeaderName" type="text" value="@Model.CrewLeaderName" class="form-control svalidate {req,Crew leader Name}" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Inspected by</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                @Html.DropDownListFor(Ahdr => Ahdr.UserIdInspBy, (IEnumerable<SelectListItem>)ViewData["User"], "User Id", new { @Id = "ddlInspectedby", @class = "form-control svalidate {required, Inspected by Id}" })
+
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input id="txtInspectedbyName" type="text" value="@Model.UserNameInspBy" class="form-control svalidate {req,Inspected by User Name}" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Designation", "Designation")
+                                <input id="txtInspectedDesignation" type="text" value="@Model.UserDesignationInspBy" class="form-control svalidate {req,Inspected By User Designation}" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
+                                @*<input id="txtInspectedDate" type="date" value="@inspectedDateBy" class="form-control svalidate {req,Inspected By}" disabled />*@
+                                <input id="txtInspectedDate" type="date" value="@inspectedDateBy" class="form-control svalidate {req,Date of Inspection}">
+                            </div>
+                        </div>
+                    </div>
+                    @{
+                        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                        {
+                            Form = "FormF2",
+                            RefId = Model.PkRefNo,
+                            Stage = Model.Status
+                        });
+                    }
+                </div>
+
+            </div>
+            <div class="modal-footer float-left w-100">
+                <button id="btnHCancel" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
+                @if (!Model.SubmitSts)
+                {
+            <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+                    @if (IsSupervisor)
+                    {
+            <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                    }
+                }
+                @if (security.IsExecutive && Model.Status == RAMMS.Common.StatusList.FormF2Inspected)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
+                }
+                else if (security.IsHeadMaintenance && Model.Status == RAMMS.Common.StatusList.FormF2ExecutiveApproved)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
+                }
+                else if (security.IsRegionManager && Model.Status == RAMMS.Common.StatusList.FormF2HeadMaintenanceApproved)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
+                }
+                else if (security.IsJKRSSuperiorOfficer && Model.Status == RAMMS.Common.StatusList.FormF2RegionManagerApproved)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Reject</button>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*Add F2 Details Modal*@
+<div class="modal fade" id="FormF2AdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormF2AdddetailsModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="">Edit Form F2 Details</h5>
+                <button id="btnDClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="AddDetail" class="w-100 float-left">
+                <div class="modal-body p-0">
+                    <div class="mh-182 bg-white py-4">
+                        <div id="AddDetailFormF2">
+                            <div class="col-lg-12 float-left">
+                                @*<div class="form-group col-lg-4">
+                                        @Html.Label("Reference No.", "Reference No.")
+                                        <input id="txtDReferenceNo" type="text" disabled class="form-control viewD validate {required, Reference No}" />
+                                    </div><div class="form-group col-lg-2">
+                                        @Html.Label("Starting CH", "Starting CH")
+                                        <select id="ddlStartinch" class="form-control validate viewD {required, Starting ch}">
+                                            <option>Select Starting CH</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        @Html.Label("Structure Code", "Structure Code")
+                                        <select id="ddlStructurecode" class="form-control viewD  validate {required, Structure Code}">
+                                            <option>Select Structure Code</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        @Html.Label("Bound", "Bound")
+                                        <select id="ddlBound" class="form-control viewD validate {required, Bound}">
+                                            <option>Select Bound</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        @Html.Label("Post Spacing", "Post Spacing")
+                                        <select id="ddlPostspacing" class="form-control viewD validate {required, Post Spacing}">
+                                            <option>Select Post Spacing</option>
+                                        </select>
+                                    </div>*@
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Starting CHKm", "Starting CH (Km)")
+                                    <input id="txtStartinchKm" disabled class="form-control validate {required, Starting ch Km}" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Starting CHM", "Starting CH (M)")
+                                    <input id="txtStartinchM" disabled class="form-control validate {required, Starting ch M}" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Structure Code", "Structure Code")
+                                    <input id="txtStructurecode" disabled class="form-control  validate {required, Structure Code}" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Bound", "Bound")
+                                    <input id="txtBound" disabled class="form-control validate {required, Bound}" />
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Post Spacing", "Post Spacing")
+                                    <input id="txtPostspacing" disabled class="form-control validate {required, Post Spacing}" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Length (M)", "Length (M)")
+                                    <input id="txtLength" disabled class="form-control validate {required, Length}" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Condition 1 (M)", "Condition 1 (M)")
+                                    <input id="txtCondition1" maxlength="11" type="text" class="form-control viewD validate {cdecimal,5,5, Length}" , onkeypressvalidate="cdecimal,5,5,Condition 1 (M)" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Condition 2 (M)", "Condition 2 (M)")
+                                    <input id="txtCondition2" maxlength="11" type="text" class="form-control viewD validate {cdecimal,5,5, Length}" , onkeypressvalidate="cdecimal,5,5,Condition 2 (M)" />
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Condition 3 (M)", "Condition 3 (M)")
+                                    <input id="txtCondition3" maxlength="11" type="text" class="form-control viewD validate {cdecimal,5,5, Length}" , onkeypressvalidate="cdecimal,5,5,Condition 3 (M)" />
+                                </div>
+                                <div class="col-lg-12 form-group txtarea-80">
+                                    @Html.Label("Remarks", "Remarks")
+                                    <textarea id="txtRemarks" class="form-control viewD validate {required, Remarks}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 float-left mt-5">
+                            <div class="abbrevations-group p-2">
+                                <div class="w-100 text-left float-left mb-3 font-weight-bold" style="text-decoration:underline;">Abbrevations</div>
+                                <div class="w-100 d-flex flex-column flex-md-row">
+                                    <div class="d-flex flex-column col-md-3 p-0 mb-2">
+                                        <span><span class="font-weight-bold font-14 mr-1"><span class="float-left" style="width:20px;">S</span>:</span><span class="text-nowrap">Steel</span></span>
+                                        <span><span class="font-weight-bold font-14 mr-1"><span class="float-left" style="width:20px;">W</span>:</span><span class="text-nowrap">Wire</span></span>
+                                        <span><span class="font-weight-bold font-14 mr-1"><span class="float-left" style="width:20px;">R</span>:</span><span class="text-nowrap">Predestrial Railing</span></span>
+                                        <span><span class="font-weight-bold font-14 mr-1"><span class="float-left" style="width:20px;">P</span>:</span><span class="text-nowrap">Parapet Wall</span></span>
+                                        <span><span class="font-weight-bold font-14 mr-1"><span class="float-left" style="width:20px;">O</span>:</span><span class="text-nowrap">Others</span></span>
+                                    </div>
+                                    <div class="d-flex flex-column mb-2">
+                                        <span class="d-flex flex-row align-items-start"><span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 1</span><span class="float-left" style="padding-top:2px">The guardrail is structurally sound. Only routine maintenance such as cleaning is required.</span></span>
+                                        <span class="d-flex flex-row align-items-start"><span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 2</span><span class="float-left" style="padding-top:2px">The guardrail is structurally sound. Only routine maintenance such as cleaning, staraightening or minor bolt & nut replacement is required.</span></span>
+                                        <span class="d-flex flex-row align-items-start"><span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 3</span><span class="float-left" style="padding-top:2px">Damaged beam or post section require replacement.</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnDCancel" type="button" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
+                    <button id="btnDSaveAndContinue" hidden type="button" class="btn btn-sm btn-themebtn">Save &amp; Continue</button>
+                    <button id="btnDSaveAndExit" type="button" class="btn btn-sm btn-themebtn">Save &amp; Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/js/MAMFormF2.js" asp-append-version="true"></script>

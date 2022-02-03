@@ -1,0 +1,366 @@
+﻿@model RAMMS.DTO.RequestBO.FormS1DetailDTO
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+<div class="modal fade" id="FormS1AdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormS1AdddetailsModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormS1AdddetailsModalid">Add Details</h5>
+                <button type="button" class="close" id="cancelAddModelHdrBtn"><span aria-hidden="true">&times;</span></button>
+            </div>
+            @* Patial View for add Class to bind data in partial view *@
+            <div id="div-dtl-container">
+                <form id="FormAddDetails" action="">
+                    <div class="modal-body bg-body p-0">
+                        <div class="d-flex justify-content-center pt-3 pb-3">
+                            <div class="form-group mb-0">
+                                @Html.Label("Refrence_ID", "Refrence ID", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                                <input type="text" class="form-control" style="width:400px;" id="txtDRefNumber" disabled="disabled" />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="w-100 float-left mh-250 bg-white pt-3" style="border-top: 1px solid #dee2e6;">
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Activity Code", "Activity Code")
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Act-FormS2"], "ActId", "Select Activity", new { @Id = "formS1DActivityCode", @class = "form-control validate {required,Activity Code}", @viewdis = "", @formtypedep = "", @editdisabled = "" })
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Road Code", "Road Code")
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Road_Master"], "RoadId", "Select Road Code", new { @Id = "formS1DRoadCode", @class = "form-control validate {required,Road Code}", @onchange = "formS1D.RodeCodeChange(this);", @viewdis = "", @formtypedep = "", @editdisabled = "" })
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Road Name", "Road Name")
+                                        <input type="text" class="form-control" id="txtFS1DRodeName" disabled />
+                                    </div>
+                                    <div class="form-group col-lg-4 p-0 mb-0">
+                                        <div class="form-group col-lg-6 float-left">
+                                            <label for="Location_Chainage_From">Location Chainage From</label>
+                                            <div class="row">
+                                                <div class="col-6 float-left pr-0">
+                                                    <input title="Location Chainage From Km" placeholder="Km" class="form-control disableFADinput  validate {required,number, Location Chainage From Km}" id="formAFromCh" maxlength="5" name="FrmChKm" rows="1" type="text" value="" onkeypressvalidate="num,macl,5,Chainage From Km" viewdis="" formtypeAdep="">
+                                                </div>
+                                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                                <div class="col-5 float-left pl-0">
+                                                    <input title="Location Chainage From m" placeholder="m" class="form-control disableFADinput validate {required,number, Location Chainage From m}" id="formAFromChDeci" maxlength="3" name="FrmChM" rows="1" type="text" value="" onkeypressvalidate="num,macl,3,Chainage From M" viewdis="" formtypeAdep="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-6 float-left">
+                                            <label for="Location_Chainage_To">Location Chainage To</label>
+                                            <div class="row">
+                                                <div class="col-6 float-left pr-0">
+                                                    <input title="Location Chainage To Km" placeholder="Km" class="form-control disableFADinput  validate {required,number, Location Chainage To Km}" id="formAToCh" maxlength="5" name="ToChKm" rows="1" type="text" value="" onkeypressvalidate="num,macl,5,Chainage To Km" viewdis="" formtypeAdep="">
+                                                </div>
+                                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                                <div class="col-5 float-left pl-0">
+                                                    <input title="Location Chainage To m" placeholder="m" class="form-control disableFADinput validate {required,number, Location Chainage To m}" id="formAToChDeci" maxlength="3" name="ToChM" rows="1" type="text" value="" onkeypressvalidate="num,macl,3,Chainage To m" viewdis="" formtypeAdep="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Form Type", "Form Type")
+                                        <select class="form-control" name="FormType" id="drpFormType" viewdis="" onchange="formS1D.FormTypeChange(this);" editdisabled="">
+                                            <option value="">Select Type</option>
+                                            <option value="New">New</option>
+                                            <option value="FormS2">Form S2</option>
+                                            <option value="FormA">Form A</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Reference No.", "Reference No.")
+                                        <select class="form-control {req,Reference No.}" id="drpFormS1DRefNo" name="FormTypeRefNo" viewdis="" onchange="formS1D.FormTypeRefChange(this);" editdisabled="">
+                                            <option value="">Select Ref No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Crew Supervisor", "Crew Supervisor")
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData[GroupNameList.Supervisor], "CrewSupervisor", "Select Users", new { @Id = "formS1DCrewUser", @class = "form-control", @viewdis = "", @onchange = "formS1D.CrewSupChange(this);" })
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Crew Supervisor Name", "Crew Supervisor Name")
+                                        <input type="text" name="CrewSupervisorName" id="txtCrewSupName" value="" disabled="disabled" class="form-control {visreq,Crew Supervisor Name}" viewdis />
+                                    </div>
+                                    <div class="form-group col-lg-12" id="secFromFormA">
+                                        <div class="card mb-0">
+                                            <div class="card-header">
+                                                <h5 class="m-0">
+                                                    <span class="custom-accordion-title py-1">
+                                                        <span class="float-left">
+                                                            From Form A
+                                                        </span>
+                                                    </span>
+                                                </h5>
+                                            </div>
+                                            <div class="avowmodal-form formgrp-section">
+                                                <div class="card-body p-2">
+                                                    <div class="form-group col-lg-3">
+                                                        @Html.Label("Site Reference", "Site Reference")
+                                                        <input type="text" class="form-control" id="txtFASiteRef" disabled name="FormASiteRef" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        @Html.Label("Priority", "Priority")
+                                                        <input type="text" class="form-control" id="txtFAPriority" disabled name="FormAPriority" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        @Html.Label("Work QTY", "Work QTY")
+                                                        <input type="text" class="form-control" id="txtFAWorkQTY" disabled name="FormAWorkQty" />
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        @Html.Label("CDR", "CDR")
+                                                        <input type="text" class="form-control" id="txtFACDR" disabled name="FormACdr" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="form-group col-lg-6">
+                                            <div class="accordion custom-accordion mt-1 mb-1">
+                                                <div class="card mb-0">
+                                                    <div class="card-header" id="headingOne">
+                                                        <h5 class="m-0">
+                                                            <span class="custom-accordion-title py-1">
+                                                                <span class="float-left">
+                                                                    Planned
+                                                                </span>
+                                                            </span>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="avowmodal-form formgrp-section">
+                                                        <div class="card-body p-2">
+
+                                                            <div class="w-100">
+                                                                <table class="w-100 dataTable dataTables_scroll schedule-tbl" id="tblPlanDaySchedule">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center">Day Scheduled (Year-{YYYY})</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <div class="d-flex">
+                                                                                    <div class="flex-md-fill schday-colgroup">
+                                                                                        <ul ulScheduled="">
+                                                                                        </ul>
+                                                                                        <input type="hidden" id="hdnPlnWeekDay" @*insteadof="[ulScheduled]"*@ class="validate {req,Planned Day Scheduled}" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-6">
+                                            <div class="accordion custom-accordion mt-1 mb-1">
+                                                <div class="card mb-0">
+                                                    <div class="card-header" id="headingOne">
+                                                        <h5 class="m-0">
+                                                            <span class="custom-accordion-title py-1">
+                                                                <span class="float-left">
+                                                                    Actual
+                                                                </span>
+                                                            </span>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="avowmodal-form formgrp-section">
+                                                        <div class="card-body p-2">
+
+                                                            <div class="w-100">
+                                                                <table class="w-100 dataTable dataTables_scroll schedule-tbl" id="tblActualDaySchedule">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center">Day Scheduled (Year-{YYYY})</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <div class="d-flex">
+                                                                                    <div class="flex-md-fill schday-colgroup">
+                                                                                        <ul ulScheduled="">
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-12 float-left mb-0">
+                                        <label class="font-weight-bold font-16 text-dark">Status</label>
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <label class="font-weight-bold">Choose Status</label>
+                                                <div class="w-100 float-left pt-1">
+                                                    <div class="float-left pr-3">
+                                                        <label class="float-left text-white mb-0" style="line-height: 24px;">
+                                                            <input type="checkbox" id="sentJKRS" name="SentToJkrs" style="height: 20px;" viewdis="">
+                                                            <span class="position-relative pl-2 text-dark" style="top: -5px;">Sent to JKRS</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="float-left">
+                                                        <label class="float-left text-white mb-0" style="line-height: 24px;">
+                                                            <input type="checkbox" id="receivedJKRS" name="RcvFromJkrs" style="height: 20px;" viewdis="">
+                                                            <span class="position-relative pl-2 text-dark" style="top: -5px;">Received from JKRS</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                @Html.Label("Sent Date (DD-MM-YYYY)", "Sent Date (DD-MM-YYYY)")
+                                                <input type="date" name="SentToJkrsDt" id="submittedJKRSDate" class="form-control validate {chkreq,sentJKRS,Sent Date}" value="" viewdis="">
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                @Html.Label("Received Date (DD-MM-YYYY)", "Received Date (DD-MM-YYYY)")
+                                                <input type="date" id="ReceivedJKRSDate" name="RcvFromJkrsDt" class="form-control validate {chkreq,receivedJKRS,Received Date}" value="" viewdis="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-6">
+                                        <div class="accordion custom-accordion mt-1 mb-1">
+                                            <div class="card mb-0">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="m-0">
+                                                        <span class="custom-accordion-title py-1">
+                                                            <span class="float-left">
+                                                                For S.O or Representative
+                                                            </span>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                                <div class="avowmodal-form formgrp-section">
+                                                    <div class="card-body p-2">
+
+                                                        <div class="w-100">
+                                                            <table class="w-100 dataTable dataTables_scroll schedule-tbl" id="tblFollowupGroup">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">Follow Up Action Plan</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="d-flex">
+                                                                                <div id="divfollowupgroup" class="flex-md-fill followup-group">
+                                                                                    <ul ulFollowup>
+                                                                                        <li>
+                                                                                            <span class="follow-name">RA</span>
+                                                                                            <button RA="" type="button" viewdis=""><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">MT</span>
+                                                                                            <button MT="" type="button" viewdis=""><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">QA1</span>
+                                                                                            <button QA1="" type="button" viewdis=""><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">QA2</span>
+                                                                                            <button QA2="" type="button" viewdis=""><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">SA</span>
+                                                                                            <button SA="" type="button" viewdis=""><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">N1</span>
+                                                                                            <button N1="" type="button" viewdis=""><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <span class="follow-name">N2</span>
+                                                                                            <button N2="" type="button" viewdis=""><span class="followup-action"></span></button>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-lg-6 txtarea-126">
+                                        @Html.Label("Remarks", "Remarks")
+                                        <textarea class="form-control" name="Remarks" id="FS1DRemarks" viewdis></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer float-right w-100" savesec="">
+                        <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme">Cancel</button>
+                        <button type="button" class="btn btn-sm btn-themebtn" onclick="formS1D.Save(false);" scview>Save & Continue</button>
+                        <button type="button" class="btn btn-sm btn-themebtn" onclick="formS1D.Save(true);" seview>Save & Exit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none" id="divScheduleTemplate">
+    <li>
+        <span class="day-name"></span>
+        <span class="dm-group">
+            <span class="dt"></span>
+            <span class="mnth"></span>
+        </span>
+        <div class="position-relative">
+            <button type="button" class="choose-status" viewdis></button>
+        </div>
+    </li>
+</div>
+<div style="display:none" id="divIconTemplate">
+    <span class="dayschl-status"><span icon class=""></span></span>
+</div>
+<div style="display:none" id="divStatusListTemplate">
+    <div class="dayschdl-statuslegend" statuslegend="">
+        <div class="d-flex flex-column">
+            @{
+                var lstStatus = (IEnumerable<CSelectListItem>)ViewData["FS1-StatusLegend"];
+                foreach (var status in lstStatus)
+                {
+                    <a href="#"><span code="@status.Code" legclass="@status.CValue" class="@status.CValue"></span> @status.Text</a>
+                }
+            }
+            @*<a href="#"><span legclass="wday-schl-icon" class="wday-schl-icon"></span> Workday scheduled</a>
+                <a href="#"><span legclass="w-carriedother-icon" class="w-carriedother-icon"></span> Work carried out on other day</a>
+                <a href="#"><span legclass="w-notcarried-icon" class="w-notcarried-icon"></span> Work not carried out</a>
+                <a href="#"><span legclass="pw-carriedout-icon" class="pw-carriedout-icon"></span> Planned work carried out</a>
+                <a href="#"><span legclass="rschl-wday-icon" class="rschl-wday-icon"></span> Reschedule Workday</a>*@
+            <a href="#"><span legclass="" class="fas fa-trash-alt" style="text-align:center; width:20px;"></span> Clear</a>
+        </div>
+    </div>
+</div>
+<script src="~/assets/js/Views/FormS1Details.js" asp-append-version="true" type="text/javascript"></script>
+@if (Model != null)
+{
+    <script type="text/javascript">
+    formS1D.F1DetailInfo = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
+    </script>
+}

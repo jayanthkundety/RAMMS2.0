@@ -1,0 +1,318 @@
+﻿@{
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form QA2 - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ASSET MAINTANENCE - Form QA2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@model RAMMS.Web.UI.Models.FormQa2Model;
+@{
+    Model.SaveFormQa2Model = Model.SaveFormQa2Model ?? new RAMMS.DTO.RequestBO.FormQa2HeaderRequestDTO();
+}
+<script>
+    $(document).ready(function () {
+        if (@Model.viewm== 1) {
+            $('#AddFormQA2 *').attr("disabled", "disabled").off('click');
+            $('#AddFormQA2').attr('disabled','disabled');
+            $("#formQA2CrewUnit").prop("disabled", true).trigger("chosen:updated");
+            $("#formQA2QaInByUserId").prop("disabled", true).trigger("chosen:updated");
+            $("#formQA2UseridQaI").prop("disabled", true).trigger("chosen:updated");
+            $("#formQA2UseridQaII").prop("disabled", true).trigger("chosen:updated");
+            $("#formQA2UseridQaIII").prop("disabled", true).trigger("chosen:updated");
+            $("#formQA2UseridQaIV").prop("disabled", true).trigger("chosen:updated");
+            $("#btnHSave").css("display", "none");
+            $("#btnHSubmit").css("display", "none");
+            $("#btnHCancel").prop("disabled", false);
+        }
+    });
+</script>
+<div class="row">
+    <div class="w-100 bg-body" id="AddFormQA2">
+        <form id="AddFormQA2">
+            <input id="hdnHeaderPkNo" type="hidden" value="@Model.SaveFormQa2Model.No" />
+            <input id="IsViewDetail" type="hidden" value="@Model.viewm" />
+            <div class="modal-body mh-120">
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="col-lg-2 form-group">
+                                @Html.Label("RMU", "RMU")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.Rmu, (IEnumerable
+                                 <SelectListItem>)ViewData["RMU"], "Select RMU Code", new { @Id = "formRmu", @class = "form-control disableHinput editHdisable validate {required, RMU}", @onchange = "bindRoadName()" })
+
+                            </div>
+                            <div class="col-lg-2 form-group">
+                                @Html.Label("Road Code", "Road Code")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.RoadCode, (IEnumerable
+                                 <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "formRoadCode", @class = "form-control disableHinput editHdisable validate {required, Road Code}" })
+
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Road Name", "Road Name")
+                                @Html.TextBoxFor(m => m.SaveFormQa2Model.RoadName, new { @Id = "formRoadName", @readonly = "readonly", @class = "form-control validate {required, Road Name}" })
+                            </div>
+                            <div class="form-group col-lg-2 col-md-4">
+                                @Html.Label("Month (MM)", "Month (MM)")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.Month, (IEnumerable
+                                    <SelectListItem>)ViewData["Month"], "Select Month", new { @Id = "FormQA2HdrMonth", @class = "form-control disableHinput disableHinput validate {required, Month}" })
+                            </div>
+                            @*<div class="form-group col-xl-1" style="max-width:1%;flex:0 0 1%">/</div>*@
+                            <div class="form-group col-lg-2 col-md-4">
+
+                                @Html.Label("Year (YYYY)", "Year (YYYY)")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.Year, (IEnumerable
+                                <SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "FormQA2HdrYear", @class = "form-control disableHinput disableHinput validate {required, Year}" })
+                            </div>
+                            <div class="form-group col-lg-8 form-group">
+                                @Html.Label("Name of Crew Supervisor", "Name of Crew Supervisor")
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.CrewSup, (IEnumerable
+                                                               <SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "formQA2CrewUnit", @class = "form-control disableHinput editHdisable validate {required, Name of Crew Supervisor}" })
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        @Html.TextBoxFor(m => m.SaveFormQa2Model.CrewSupName, new { @Id = "formQA2CrewName", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                @Html.Label("Ref No.", "Ref No.")
+                                <input type="text" id="formReferenceNo" class="form-control validate {required, Reference No.}" readonly value="@Model.SaveFormQa2Model.RefId" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                            <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div class="grid-btns">
+                        <button type="button" id="addFormDetail" class="btn btn-sm btn-themebtn" data-backdrop="static" onclick="AddDetail(0)"><span class="intbl-add-icon"></span></button>
+                    </div>
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        @{
+                            Html.RenderPartial("_DetailGridList.cshtml", Model);
+                        }
+                    </div>
+                </div>
+                <div class="w-100 float-left" id="div-addformd">
+                    <div class="w-100 p-4">
+                        <div class="col-lg-10 offset-lg-1">
+                            <div class="row">
+                                <div class="w-100 py-3">
+                                    <span class="sub-heading mt-3">QA INSPECTION CYCLE</span>
+                                </div>
+                                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                                    <div class="col-lg-12 py-2 px-4">
+                                        <span class="font-14 font-weight-bold">Cycle Initial</span>
+                                    </div>
+                                    <div class="border-top px-4 pt-3 pb-1 float-left w-100">                                        
+                                         <div class="row">
+                                              <div class="form-group col-lg-6 float-left mb-0">
+                                                  @Html.Label("Name", "Name")
+                                                  <div class="row">
+                                                      <div class="form-group col-lg-6">
+                                                          @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.UseridQaIni, (IEnumerable
+                                                          <SelectListItem>)ViewData["USERVER"], "Select Users", new { @Id = "formQA2QaInByUserId", @class = "form-control disableinput " })
+                                                      </div>
+                                                      <div class="form-group col-lg-6">
+                                                          @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.UsernameQaIni, new { @Id = "FormQA2QaInByName", @class = "form-control" })
+                                                      </div>
+                                                  </div>
+
+                                              </div>
+                                              <div class="form-group col-lg-3 float-left">
+                                                  @Html.Label("Designation", "Designation")
+                                                  @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.DesignationQaIni, new { @Id = "FormQA2QaInByDesign", @class = "form-control " })
+                                              </div>
+                                              <div class="form-group col-lg-3 float-left">
+                                                  @Html.Label("Signature", "Signature")
+                                                  <div class="clear-b">
+                                                      <img id="FormQA2InSign" src="" height="50" />
+                                                  </div>
+                                              </div>
+                                         </div>
+                                         <div class="row">
+                                                <div class="col form-group txtarea-80">
+                                                    @Html.Label("Remarks", "Remarks")
+                                                    @Html.TextAreaFor(m => m.SaveFormQa2Model.RemarksQaIni, new { @Id = "dtlRemarksQAIn", @class = "form-control disableinput validate {maxcl,4000,alphanum,Cycle Initial Remarks}", @onkeypressvalidate = "alphanumeric,maxcl,4000,Cycle Initial Remarks" })
+                                                </div>
+                                            </div>                                        
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                                    <div class="col-lg-12 py-2 px-4">
+                                        <span class="font-14 font-weight-bold">Cycle I</span>
+                                    </div>
+                                    <div class="border-top px-4 pt-3 pb-1 float-left w-100">
+                                        <div class="row">
+                                            <div class="form-group col-lg-6 float-left mb-0">
+                                                @Html.Label("Name", "Name")
+                                                <div class="row">
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.UseridQaI, (IEnumerable
+                                                        <SelectListItem>)ViewData["USERVER"], "Select Users", new { @Id = "formQA2UseridQaI", @class = "form-control  disableinput" })
+                                                    </div>
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.UsernameQaI, new { @Id = "FormQA2QaIByName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Designation", "Designation")
+                                                @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.DesignationQaI, new { @Id = "FormQA2QaIDesign", @class = "form-control " })
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Signature", "Signature")
+                                                <div class="clear-b">
+                                                    <img id="FormQA2ISign" src="" height="50" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group txtarea-80">
+                                                @Html.Label("Remarks", "Remarks")
+                                                @Html.TextAreaFor(m => m.SaveFormQa2Model.RemarksQaI, new { @Id = "dtlRemarksQAI", @class = "form-control disableinput validate {maxcl,4000,alphanum,Cycle I Remarks}", @onkeypressvalidate = "alphanumeric,maxcl,4000,Cycle I Remarks" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                                    <div class="col-lg-12 py-2 px-4">
+                                        <span class="font-14 font-weight-bold">Cycle II</span>
+                                    </div>
+                                    <div class="border-top px-4 pt-3 pb-1 float-left w-100">
+                                        <div class="row">
+                                            <div class="form-group col-lg-6 float-left mb-0">
+                                                @Html.Label("Name", "Name")
+                                                <div class="row">
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.UseridQaIi, (IEnumerable
+                                                        <SelectListItem>)ViewData["USERVER"], "Select Users", new { @Id = "formQA2UseridQaII", @class = "form-control disableinput" })
+                                                    </div>
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.UsernameQaIi, new { @Id = "FormQA2QaIIByName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Designation", "Designation")
+                                                @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.DesignationQaIi, new { @Id = "FormQA2QaIIDesign", @class = "form-control " })
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Signature", "Signature")
+                                                <div class="clear-b">
+                                                    <img id="FormQA2IiSign" src="" height="50" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group txtarea-80">
+                                                @Html.Label("Remarks", "Remarks")
+                                                @Html.TextAreaFor(m => m.SaveFormQa2Model.RemarksQaIi, new { @Id = "dtlRemarksQAIi", @class = "form-control disableinput validate {maxcl,4000,alphanum,Cycle I Remarks}", @onkeypressvalidate = "alphanumeric,maxcl,4000,Cycle II Remarks" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                                    <div class="col-lg-12 py-2 px-4">
+                                        <span class="font-14 font-weight-bold">Cycle III</span>
+                                    </div>
+                                    <div class="border-top px-4 pt-3 pb-1 float-left w-100">
+                                        <div class="row">
+                                            <div class="form-group col-lg-6 float-left mb-0">
+                                                @Html.Label("Name", "Name")
+                                                <div class="row">
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.UseridQaIii, (IEnumerable
+                                                        <SelectListItem>)ViewData["USERVER"], "Select Users", new { @Id = "formQA2UseridQaIII", @class = "form-control disableinput" })
+                                                    </div>
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.UsernameQaIii, new { @Id = "FormQA2QaIIIByName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Designation", "Designation")
+                                                @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.DesignationQaIii, new { @Id = "FormQA2QaIIIDesign", @class = "form-control " })
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Signature", "Signature")
+                                                <div class="clear-b">
+                                                    <img id="FormQA2IiiSign" src="" height="50" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group txtarea-80">
+                                                @Html.Label("Remarks", "Remarks")
+                                                @Html.TextAreaFor(m => m.SaveFormQa2Model.RemarksQaIii, new { @Id = "dtlRemarksQAIii", @class = "form-control disableinput validate {maxcl,4000,alphanum,Cycle III Remarks}", @onkeypressvalidate = "alphanumeric,maxcl,4000,Cycle III Remarks" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                                    <div class="col-lg-12 py-2 px-4">
+                                        <span class="font-14 font-weight-bold">Cycle IV</span>
+                                    </div>
+                                    <div class="border-top px-4 pt-3 pb-1 float-left w-100">
+                                        <div class="row">
+                                            <div class="form-group col-lg-6 float-left mb-0">
+                                                @Html.Label("Name", "Name")
+                                                <div class="row">
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.UseridQaIv, (IEnumerable
+                                                        <SelectListItem>)ViewData["USERVER"], "Select Users", new { @Id = "formQA2UseridQaIV", @class = "form-control disableinput" })
+                                                    </div>
+                                                    <div class="form-group col-lg-6">
+                                                        @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.UsernameQaIv, new { @Id = "FormQA2QaIVByName", @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Designation", "Designation")
+                                                @Html.TextBoxFor(Ahdr => Ahdr.SaveFormQa2Model.DesignationQaIv, new { @Id = "FormQA2QaIVDesign", @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-3 float-left">
+                                                @Html.Label("Signature", "Signature")
+                                                <div class="clear-b">
+                                                    <img id="FormQA2IvSign" src="" height="50" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group txtarea-80">
+                                                @Html.Label("Remarks", "Remarks")
+                                                @Html.TextAreaFor(m => m.SaveFormQa2Model.RemarksQaIv, new { @Id = "dtlRemarksQAIV", @class = "form-control disableinput validate {maxcl,4000,alphanum,Cycle IV Remarks}", @onkeypressvalidate = "alphanumeric,maxcl,4000,Cycle IV Remarks" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 float-right text-right custom-footer">
+                <button id="btnHCancel" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
+                <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+                <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!--Add QA2 Detail Form Modal-->
+<div class="modal fade" id="FormQA2AdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormQA2AdddetailsModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="">Add Form QA2 Details</h5>
+                <button type="button" onclick="FormQA2AdddetailsModalClose()" class="close">&times;</button>
+            </div>
+            <div id="AddDetail" class="w-100 float-left">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/MAMFormQa2.js" type="text/javascript" asp-append-version="true"></script>

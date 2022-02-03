@@ -1,0 +1,835 @@
+﻿@model FormHModel
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormHService _formHService;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<input type="hidden" id="formAFadPKRefNO" value="" />
+<input type="hidden" id="formHFhhPkRefNo" value="@Model.FormHDetail.No" />
+<input type="hidden" id="displayReference" value="@Model.FormHDetail.ReferenceNo" />
+<input type="hidden" id="IsViewDetail" value="" />
+<div id="formDiv">
+    <div class="modal-body mh-182 bg-white">
+        <div class="d-flex mb-3" style="border-bottom:1px solid #dee2e6">
+            <ul class="nav nav-tabs nav-bordered" style="border-bottom:none">
+                <li class="nav-item">
+                    <a id="page1A" href="#FormHTab1" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                        <span class="">Page 1</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a id="ancFormHImageList" href="#FormHPhotoTab1" onclick="javascript:GetImageList(@Model.FormHDetail.No);" data-toggle="tab" aria-expanded="true" class="nav-link">
+                        <span>Photo</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="divFormHDetails">
+            <div class="tab-pane show active" id="FormHTab1">
+                <div class="form-group col-lg-2">
+                    @Html.Label("Road Code", "Road Code")
+                    @Html.DropDownListFor(Ahdr => Ahdr.FormHDetail.RoadCode, (IEnumerable
+                 <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "FormADetRoadCode", @class = "form-control disableinput editdisable validate {required, Road Code }" })
+
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Road Name", "Road Name")
+                    @Html.TextBoxFor(m => m.FormHDetail.RdName, new { @Id = "FormADetRoadName", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("RMU", "RMU")
+                    @Html.TextBoxFor(m => m.FormHDetail.Rmu, new { @Id = "FormADetRmu", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Division", "Division")
+                    @Html.TextBoxFor(m => m.FormHDetail.Div, new { @Id = "FormADiv", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+
+                </div>
+                <div class="form-group col-lg-2 col-md-4">
+                    <div>
+                        @Html.Label("Section", "Section")
+                        @Html.TextBoxFor(m => m.FormHDetail.Section, new { @Id = "FormADetsection", @readonly = "readonly", @class = "form-control disableinput editdisable" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 clear-both">
+                    @Html.Label("Asset Group", "Asset Group")
+                    @Html.DropDownListFor(m => m.FormHDetail.AssetGroupCode, (IEnumerable
+                 <SelectListItem>)ViewData["AssetListing"], "Select Asset Group", new { @Id = "FormADetAssetGrpCode", @class = "form-control disableinput editdisable validate {required, Asset Group }" })
+
+                </div>
+                @{
+                    var id = Model.FormHDetail.FormAId.HasValue ? "1" : "";
+                    id = Model.FormHDetail.FormJId.HasValue ? "2" : "";
+                    var dateofinspection = Model.FormHDetail.InspDt.HasValue ? Model.FormHDetail.InspDt.Value.ToString("yyyy-MM-dd") : "";
+                    var formaId = Model.FormHDetail.FormAId.GetValueOrDefault();
+                    var formJId = Model.FormHDetail.FormJId.GetValueOrDefault();
+
+                }
+                <div class="form-group col-lg-2">
+                    @Html.Label("Date of Inspection", "Date of Inspection")
+                    <input type="date" id="Dateofinspection" class="form-control editdisable validate {required, Date of Inspection}" value="@dateofinspection" />
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Location Chainage From", "Location Chainage From")
+                    <div class="row">
+                        <div class="col-6 float-left pr-0">
+                            @*<input id="chainageFrom" type="text" maxlength="5" class="form-control decimal editdisable validate {required,double, Chainge From}" value="@Model.FormHDetail.ChinageFrom" />*@
+                            @Html.TextBoxFor(m => m.FormHDetail.ChinageFrom, null, new { @Id = "chainageFrom", @class = "form-control disableinput editdisable validate {required,number, CH From Km}", @maxlength = "5", @onkeypressvalidate = "number,CH From Km" })
+
+                        </div>
+                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                        <div class="col-5 float-left pl-0">
+                            @*<input id="chainageFromDec" maxlength="3" type="text" class="form-control decimal editdisable validate {required,double, Chainge From}" value="@Model.FormHDetail.ChinageFromDeci" />*@
+                            @Html.TextBoxFor(m => m.FormHDetail.ChinageFromDeci, null, new { @Id = "chainageFromDec", @class = "form-control editdisable disableinput validate {required,number, CH From M}", @maxlength = "3", @onkeypressvalidate = "number,CH From M" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Location Chainage To", "Location Chainage To")
+                    <div class="row">
+                        <div class="col-6 float-left pr-0">
+                            @*<input id="chainageTo" maxlength="5" type="text" class="form-control decimal editdisable validate {required,double, Chainage To}" value="@Model.FormHDetail.ChinageTo" />*@
+                            @Html.TextBoxFor(m => m.FormHDetail.ChinageTo, null, new { @Id = "chainageTo", @class = "form-control disableinput editdisable validate {required,number, CH To Km}", @maxlength = "5", @onkeypressvalidate = "number,CH To Km", @onfocusout = "onFocusOut();" })
+                            @*@Html.TextBoxFor(m => m.FormHDetail.ChinageTo, null, new { @Id = "chainageTo", @class = "form-control disableinput editdisable validate {required,number, CH To Km}", @maxlength = "5", @onkeypressvalidate = "number,CH To Km"})*@
+                        </div>
+                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                        <div class="col-5 float-left pl-0">
+                            @*<input id="chainageToDec" maxlength="3" type="text" class="form-control decimal editdisable validate {required,double, Chainage To}" value="@Model.FormHDetail.ChinageToDeci" />*@
+                            @Html.TextBoxFor(m => m.FormHDetail.ChinageToDeci, null, new { @Id = "chainageToDec", @class = "form-control disableinput editdisable validate {required,number, CH To M}", @maxlength = "3", @onkeypressvalidate = "number,CH To M", @onfocusout = "onFocusOut();" })
+                            @*@Html.TextBoxFor(m => m.FormHDetail.ChinageToDeci, null, new { @Id = "chainageToDec", @class = "form-control disableinput editdisable validate {required,number, CH To M}", @maxlength = "3", @onkeypressvalidate = "number,CH To M"})*@
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Form", "Form")
+                    @{
+                        var disableRefDdl = (formJId == 0 && formaId == 0) ? "none" : "block";
+                    }
+                    <select class="form-control editdisable" id="ddlFormType">
+                        @if (formJId == 0 && formaId == 0)
+                        {
+                            <option value="3" selected="selected">New</option>
+                        }
+                        else
+                        {
+                            <option value="3">New</option>
+                        }
+                        @if (formaId > 0)
+                        {
+                            <option value="1" selected="selected">Form A</option>
+                        }
+                        else
+                        {
+                            <option value="1">Form A</option>
+                        }
+                        @if (formJId > 0)
+                        {
+                            <option value="2" selected="selected">Form J</option>
+                        }
+                        else
+                        {
+                            <option value="2">Form J</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-lg-4 clear-both">
+                    @Html.Label("Ref No.", "Ref No.")
+                    <input id="formHReferenceNo" type="text" class="form-control" disabled="disabled" value="@Model.FormHDetail.ReferenceNo">
+                </div>
+                <div id="divReferenceNo" class="form-group col-lg-4">
+                    @Html.Label("Search Ref No.", "Search Ref No.")
+                    @{
+                        var lst = _formHService.GetReferenceNoByFormType(new RAMMS.DTO.SearchBO.RequestFormReference
+                        {
+                            AssetGroup = Model.FormHDetail.AssetGroupCode,
+                            DateOfInspection = Model.FormHDetail.InspDt,
+                            LocationFrom = Model.FormHDetail.ChinageFrom,
+                            LocationFromDec = Model.FormHDetail.ChinageFromDeci,
+                            LocationTo = Model.FormHDetail.ChinageTo,
+                            LocationToDec = Model.FormHDetail.ChinageToDeci,
+                            RoadCode = Model.FormHDetail.RoadCode,
+                            FormType = formJId > 0 ? RAMMS.DTO.FormType.FormJ : formaId > 0 ? RAMMS.DTO.FormType.FormA : RAMMS.DTO.FormType.New
+                        });
+
+                    }
+                    <select id="ReferenceNo" onchange="changeDdlReference();" class="form-control editdisable  validate {required, Reference No.}">
+                        <option value="">Select Reference</option>
+                        @foreach (var l in lst)
+                        {
+                            if (formaId.ToString() == l.Value || formJId.ToString() == l.Value)
+                            {
+                                <option selected="selected" value="@l.Value">@l.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@l.Value">@l.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-lg-6 mb-0">
+                    <div class="row">
+                        <div class="form-group col-lg-12 txtarea-107">
+                            @Html.Label("Damage Details", "Damage Details")
+                            @Html.TextAreaFor(Adtl => Adtl.FormHDetail.DamDtl, new { @Id = "fromDamagedetail", @class = "form-control disableinput", @rows = 1 })
+                        </div>
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Damage caused by (if known)", "Damage caused by (if known)")
+                            <input id="formDamagedBy" type="text" class="form-control disableinput" value="@Model.FormHDetail.DamCausedby" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 txtarea-107">
+                    @Html.Label("General Comments", "General Comments")
+                    @Html.TextAreaFor(Adtl => Adtl.FormHDetail.CltRemarks, new { @Id = "fromCLTCmnts", @class = "form-control disableinput", @rows = 1 })
+
+                </div>
+                <div class="clear-b"></div>
+                @{
+
+                    var usrLst = usr.GetUserSelectList(Model.FormHDetail.UseridPrp); //await usr.GetUserList();
+                    var vd = Model.FormHDetail.DtVer;
+                    var _id = Model.FormHDetail.UseridVetAuth;
+                    string _verifieddate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                    string _reported = Model.FormHDetail.DtPrp.HasValue ? Model.FormHDetail.DtPrp.Value.ToString("yyyy-MM-dd") : "";
+                    string _dtRecievedAuth = Model.FormHDetail.RecievedFromJKRSDate.HasValue ? Model.FormHDetail.RecievedFromJKRSDate.Value.ToString("yyyy-MM-dd") : "";
+                    string _dtSentAuth = Model.FormHDetail.SentJKRSDate.HasValue ? Model.FormHDetail.SentJKRSDate.Value.ToString("yyyy-MM-dd") : "";
+                    bool ReportedDisabled = Model.FormHDetail.UseridPrp.GetValueOrDefault() != 0 && Model.FormHDetail.UseridPrp.GetValueOrDefault() != 99999999;
+                    bool UserIdDisabled = Model.FormHDetail.UseridVer.GetValueOrDefault() != 0 && Model.FormHDetail.UseridVer.GetValueOrDefault() != 99999999;
+                    bool ReceivedByDisabled = Model.FormHDetail.UseridRcvdAuth.GetValueOrDefault() != 0 && Model.FormHDetail.UseridRcvdAuth.GetValueOrDefault() != 99999999;
+                    bool VettedByDisabled = Model.FormHDetail.UseridVetAuth.GetValueOrDefault() != 0 && Model.FormHDetail.UseridVetAuth.GetValueOrDefault() != 99999999;
+
+                    bool IsExecutive = security.IsExecutive && (string.IsNullOrEmpty(Model.FormHDetail.Status) || Model.FormHDetail.Status == RAMMS.Common.StatusList.FormHInit);
+                }
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Reported By", "Reported By")
+                    <select id="ddlreported" class="form-control disableinput" @(IsExecutive ? "" : "disabled='disabled'")>
+                        <option value="">User Id</option>
+                        @foreach (var s in usrLst)
+                        {
+                            @if (Model.FormHDetail.UseridPrp.GetValueOrDefault().ToString() == s.Value)
+                            {
+                                <option selected="selected" value="@s.Value">@s.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@s.Value">@s.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-lg-3 float-left">
+                    @Html.Label("Name", "Name")
+                    @Html.TextBoxFor(m => m.FormHDetail.UsernamePrp, new { @Id = "reportedName", @disabled = UserIdDisabled, @class = "form-control disableinput" })
+
+                </div>
+
+                <div class="form-group col-lg-3 float-left">
+                    @Html.Label("Designation", "Designation")
+                    @Html.TextBoxFor(m => m.FormHDetail.DesignationPrp, new { @Id = "reportedDesignName", @disabled = UserIdDisabled, @class = "form-control disableinput" })
+
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Date", "Date")
+                    <input type="date" id="reportedDate" value="@_reported" class="form-control disableinput" @(IsExecutive ? "" : "disabled='disabled'") />
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Signature", "Signature")
+                    <div class="clear-b">
+                        <img id="reportedSign" src="" height="50" />
+                    </div>
+                </div>
+
+                <div class="clear-b"></div>
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Verified By", "Verified By")
+                    <select id="ddlUerId" class="form-control disableinput" disabled="disabled">
+                        <option value="">User Id</option>
+                        @foreach (var s in usrLst)
+                        {
+                            @if (Model.FormHDetail.UseridVer.GetValueOrDefault().ToString() == s.Value)
+                            {
+                                <option selected="selected" value="@s.Value">@s.Text</option>
+                            }
+                            else
+                            {
+                                <option value="@s.Value">@s.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-lg-3 float-left">
+                    @Html.Label("Name", "Name")
+                    @Html.TextBoxFor(m => m.FormHDetail.UsernameVer, new { @Id = "InspectedName", @disabled = UserIdDisabled, @class = "form-control disableinput" })
+
+                </div>
+
+                <div class="form-group col-lg-3 float-left">
+                    @Html.Label("Designation", "Designation")
+                    @Html.TextBoxFor(m => m.FormHDetail.DesignationVer, new { @Id = "InspectedDesignName", @disabled = UserIdDisabled, @class = "form-control disableinput" })
+
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Date", "Date")
+                    <input type="date" id="InspectedDate" value="@_verifieddate" class="form-control disableinput" disabled="disabled" />
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    @Html.Label("Signature", "Signature")
+                    <div class="clear-b">
+                        <img id="InspectedSign" src="" height="50" />
+                    </div>
+                </div>
+
+                <div class="clear-b"></div>
+                <div class="form-group col-lg-12 float-left mb-0">
+                    <label class="font-weight-bold font-16 text-dark">Status</label>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label class="font-weight-bold">Choose Status</label>
+                            <div class="w-100 float-left pt-1">
+                                <div class="float-left pr-3">
+                                    <label class="float-left text-white mb-0" style="line-height: 24px;">
+                                        @{
+                                            var hassent = Model.FormHDetail.SubAuthSts == "true";
+                                            var hasreceived = Model.FormHDetail.RcvdAuthSts == "true";
+                                        }
+                                        <input type="checkbox" id="sentJKRS" class="disableinput" name="sentReceivedJKRS" checked="@hassent" style="height: 20px;">
+                                        <span class="position-relative pl-2 text-dark" style="top: -5px;">Sent to JKRS</span>
+                                    </label>
+                                </div>
+                                <div class="float-left">
+                                    <label class="float-left text-white mb-0" style="line-height: 24px;">
+                                        <input type="checkbox" class="disableinput" id="receivedJKRS" name="sentReceivedJKRS" onchange="javascript: if ($('#sentReceivedJKRS').is(':checked') { $('#btnClient').prop('disabled', false); } else { $('#btnClient').prop('disabled', true);}" checked="@hasreceived" style="height: 20px;">
+                                        <span class="position-relative pl-2 text-dark" style="top: -5px;">Received from JKRS</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2">
+                            @Html.Label("Sent Date", "Sent Date")
+                            <input type="date" id="submittedJKRSDate" class="form-control disableinput" value="@_dtSentAuth" />
+
+                        </div>
+                        <div class="form-group col-lg-2">
+                            @Html.Label("Received Date", "Received Date")
+                            <input type="date" id="ReceivedJKRSDate" class="form-control disableinput" value="@_dtRecievedAuth" />
+
+                        </div>
+                    </div>
+                </div>
+                @{
+                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                    {
+                        Form = "FormH",
+                        RefId = Model.FormHDetail.No,
+                        Stage = Model.FormHDetail.Status
+                    });
+                }
+            </div>
+            <div class="tab-pane" id="FormHPhotoTab1">
+
+                <div id="ViewPhoto">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer justify-content-between">
+        <div class="float-left">
+            @{
+                var disabled = !hasreceived;
+            }
+            <button type="button" id="btnClient" onclick="openClientRecord();" disabled="@disabled" class="btn btn-sm btn-outline-theme">Clients Record</button>
+        </div>
+        <div class="float-right modal-footer">
+            <button type="button" class="btn btn-sm btn-outline-theme" onclick="javascript: closeRecordModel();">Cancel</button>
+            @if (!Model.FormHDetail.SubmitSts)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn disablebtn" onclick="javascript:saveDetail(false);" id="btnSubmit">Save</button>
+                @if (IsExecutive)
+                {
+                    <button id="btnSave" type="button" onclick="javascript:saveDetail(true);" class="btn btn-sm btn-themebtn">Submit</button>
+                }
+            }
+            @if (security.IsHeadMaintenance && Model.FormHDetail.Status == RAMMS.Common.StatusList.FormHReported)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Verified By');">Approve / Verified</button>
+            }
+            else if (security.IsRegionManager && Model.FormHDetail.Status == RAMMS.Common.StatusList.FormHVerified)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved By');">Approve</button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && Model.FormHDetail.Status == RAMMS.Common.StatusList.FormHRegionManagerApproved)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Received By');">Approve / Received</button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && Model.FormHDetail.Status == RAMMS.Common.StatusList.FormHReceived)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Vetted  By');">Approve / Vetted</button>
+            }
+        </div>
+    </div>
+    <div class="modal fade" id="ClientsRecordModal" aria-hidden="true" role="dialog" aria-labelledby="ClientsRecordModal">
+        <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ClientsRecordModalTitle">Clients Record</h5>
+                    <button type="button" class="close" aria-label="Close" onclick="closeClientRecordModel();"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body mh-182">
+                    <div class="form-group col-lg-5 txtarea-165">
+                        @Html.Label("Remarks", "Remarks")
+                        @Html.TextAreaFor(Adtl => Adtl.FormHDetail.Remarks, new { @Id = "cientRemarks", @class = "form-control disableinput", @rows = 1 })
+
+                    </div>
+                    <div class="form-group col-lg-7 txtarea-107">
+                        <div class="row">
+                            @Html.Label("Report Number", "Report Number")
+                            @Html.TextBoxFor(Adtl => Adtl.FormHDetail.AuthRemarks, new { @Id = "authRemarks", @class = "form-control disableinput", @rows = 1 })
+                        </div>
+                        <div class="row">
+                            @Html.Label("Recommendation", "Recommendation")
+                            @Html.TextAreaFor(Adtl => Adtl.FormHDetail.AuthRecmd, new { @Id = "authRecommendation", @class = "form-control disableinput", @rows = 1 })
+                        </div>
+                    </div>
+                    @*<div class="form-group col-lg-4 txtarea-107">
+                            @Html.Label("Recommendation", "Recommendation")
+                            @Html.TextAreaFor(Adtl => Adtl.FormHDetail.AuthRecmd, new { @Id = "authRecommendation", @class = "form-control disableinput", @rows = 1 })
+                        </div>*@
+                    <div class="col-lg-12 px-lg-4">
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Received by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("User Id", "User Id")
+                                    <select id="ddlReceivedby" class="form-control disableinput" disabled="disabled">
+                                        <option value="">User Id</option>
+                                        @foreach (var s in usrLst)
+                                        {
+                                            @if (Model.FormHDetail.UseridRcvdAuth.GetValueOrDefault().ToString() == s.Value)
+                                            {
+                                                <option selected="selected" value="@s.Value">@s.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@s.Value">@s.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    @Html.TextBoxFor(m => m.FormHDetail.UsernameRcvdAuth, new { @Id = "ReceivedName", @disabled = ReceivedByDisabled, @class = "form-control disableinput" })
+
+                                </div>
+
+                                <div class="form-group col-lg-3 float-left" style="max-width:21%">
+                                    @Html.Label("Designation", "Designation")
+                                    @Html.TextBoxFor(m => m.FormHDetail.DesignationRcvdAuth, new { @Id = "ReceivedDesignation", @disabled = ReceivedByDisabled, @class = "form-control disableinput" })
+
+                                </div>
+                                <div class="form-group col-lg-2 float-left" style="max-width:20%">
+                                    @Html.Label("Date", "Date")
+                                    @{
+                                        var usrReceivedDate = Model.FormHDetail.DtRcvdAuth.HasValue ? Model.FormHDetail.DtRcvdAuth.Value.ToString("yyyy-MM-dd") : "";
+                                    }
+                                    <input type="date" id="ReceivedDate" class="form-control disableinput" value="@usrReceivedDate" disabled="disabled" />
+
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("Signature", "Signature")
+                                    <div class="clear-b">
+                                        <img id="ReceivedSign" src="" height="50" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Vetted by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("User Id", "User Id")
+                                    <select id="ddlVettedby" class="form-control disableinput" disabled="disabled">
+                                        <option value="">User Id</option>
+                                        @foreach (var s in usrLst)
+                                        {
+                                            @if (Model.FormHDetail.UseridVetAuth.GetValueOrDefault().ToString() == s.Value)
+                                            {
+                                                <option selected="selected" value="@s.Value">@s.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@s.Value">@s.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    @Html.TextBoxFor(m => m.FormHDetail.UsernameVetAuth, new { @Id = "Vettedname", @disabled = VettedByDisabled, @class = "form-control disableinput" })
+
+                                </div>
+
+                                <div class="form-group col-lg-3 float-left" style="max-width:21%">
+                                    @Html.Label("Designation", "Designation")
+                                    @Html.TextBoxFor(m => m.FormHDetail.DesignationVetAuth, new { @Id = "VettedDesignation", @disabled = VettedByDisabled, @class = "form-control disableinput" })
+
+                                </div>
+                                <div class="form-group col-lg-2 float-left" style="max-width:20%">
+                                    @Html.Label("Date", "Date")
+                                    @{
+                                        var usrDtVet = Model.FormHDetail.DtVet.HasValue ? Model.FormHDetail.DtVet.Value.ToString("yyyy-MM-dd") : "";
+                                    }
+                                    <input type="date" id="VettedDate" class="form-control disableinput" value="@usrDtVet" disabled="disabled"/>
+
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("Signature", "Signature")
+                                    <div class="clear-b">
+                                        <img id="VettedSign" src="" height="50" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="javascript: closeClientRecordModel();" class="btn btn-sm btn-outline-theme">Cancel</button>
+                    <button id="saveclient" type="button" onclick="javascript: saveClientDetail();" class="btn btn-sm btn-themebtn">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function onFocusOut() {
+        debugger;
+        var toCh = ($("#chainageTo").val() == "" ? "0" : $("#chainageTo").val());
+        var fromCh = ($("#chainageFrom").val() == "" ? "0" : $("#chainageFrom").val());
+        var from = fromCh + '.' + $("#chainageFromDec").val();
+        var to = toCh + '.' + $("#chainageToDec").val();
+
+        var frmValue = parseFloat(from).toFixed(3);
+        var toValue = parseFloat(to).toFixed(3);
+        if (toCh != null && toCh != undefined && fromCh != null && fromCh != undefined && from != null && to != undefined) {
+            if (parseFloat(toValue) <= parseFloat(frmValue)) {
+                app.ShowErrorMessage('CH TO must be greater than CH From')
+                $('#btnSubmit').attr("disabled", true);
+                $('#btnSave').attr("disabled", true);
+            }
+            else {
+                $('#btnSubmit').attr("disabled", false);
+                $('#btnSave').attr("disabled", false);
+            }
+        }
+    }
+    $(document).ready(function () {
+        process.Init("FormH", "@Model.FormHDetail.Status", @Model.FormHDetail.No);
+        $("#FormADetRoadCode").chosen();
+        $("#FormADetAssetGrpCode").chosen();
+        $("#ddlVettedby").chosen();
+        $("#ddlFormType").chosen();
+        $("#ddlUerId").chosen();
+        $("#ddlReceivedby").chosen();
+        $("#ReferenceNo").chosen();
+        $("#ddlreported").chosen();
+        var IsViewMode = $("#IsViewDetail").val();
+        var DisplayReference = $("#displayReference").val();
+        var No = $("#formHFhhPkRefNo").val();
+        Validation.OnKeyPressInit();
+
+        $("#chainageFrom").on("keypress", function (e) {
+            var value = TryParseInt((this.value + e.originalEvent.key));
+            var _toValue = $("#chainageTo").val();
+            var toValue = TryParseInt((_toValue == "" ? "0" : _toValue));
+            if (value > toValue && _toValue != "") {
+                e.preventDefault();
+            }
+        });
+
+        //$("#chainageTo").on("change", function () {
+        //    debugger;
+        //    //this.value = this.value == "" ? 0 : this.value;
+        //    //var value = TryParseInt(this.value);
+        //    //var _fromValue = $("#chainageFrom").val();
+        //    //var fromValue = TryParseInt((_fromValue == "" ? "0" : _fromValue));
+
+        //    var toCh = ($("#chainageTo").val() == "" ? "0" : $("#chainageTo").val());
+        //    var fromCh = ($("#chainageFrom").val() == "" ? "0" : $("#chainageFrom").val());
+        //    var from = fromCh + '.' + $("#chainageFromDec").val();
+        //    var to = toCh + '.' + $("#chainageToDec").val();
+
+        //    var frmValue = parseFloat(from).toFixed(3);
+        //    var toValue = parseFloat(to).toFixed(3);
+        //    if (toCh != null && toCh != undefined && fromCh != null && fromCh != undefined && from != null && to != undefined) {
+        //        if (toValue <= frmValue) {
+        //            app.ShowErrorMessage('CH TO must be greater than CH From')
+        //            $('#btnSubmit').attr("disabled", true);
+        //            $('#btnSave').attr("disabled", true);
+        //        }
+        //        else {
+        //            $('#btnSubmit').attr("disabled", false);
+        //            $('#btnSave').attr("disabled", false);
+        //        }
+        //    }
+        //    ////if (frmValue >= toValue) {
+        //    ////    app.ShowWarningMessage("Chainage To should be greater than Chainge From");
+        //    ////    $("#chainageTo").focus();
+        //    ////    $("#chainageTo").addClass("border-error");
+        //    ////}
+        //    ////else {
+        //    ////    $("#chainageTo").removeClass("border-error");
+        //    ////}
+        //});
+
+        $("#FormADetRoadCode").on("change", function () {
+
+            $.ajax({
+                url: '/NOD/GetAssetDataByRoadCode',
+                dataType: 'JSON',
+                data: { roadCode: $("#FormADetRoadCode").val() },
+                type: 'POST',
+                success: function (data) {
+                    //console.log(data);
+                    if (data != null) {
+                        $("#FormADetRoadName").val(data.roadName);
+                        $("#FormADetRmu").val(data.rmuCode);
+                        $("#FormADetsection").val(data.secName);
+                        $("#FormADiv").val(data.divisionCode);
+                        bindReferene();
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            return false;
+        });
+        var form = $("#ddlFormType").val();
+        if (form == "3") {
+            $("#ReferenceNo").removeClass("validate {required, Reference No.}");
+            $("#divReferenceNo").hide();
+        }
+        $("#ddlFormType").on("change", function () {
+            if (this.value == "3") {
+                $("#ReferenceNo").removeClass("validate {required, Reference No.}");
+                $("#divReferenceNo").hide();
+            }
+            else {
+                $("#ReferenceNo").addClass("validate {required, Reference No.}");
+                $("#divReferenceNo").show();
+
+            }
+            bindReferene();
+        });
+
+        var title = "Add Form H Detail";
+        if (No != "" && No != "0") {
+            if (IsViewMode == "1") {
+                title = "View Form H Detail";
+
+
+            }
+            else {
+                title = "Edit Form H Detail";
+            }
+            if (DisplayReference != "") {
+                title += " | " + DisplayReference;
+            }
+        }
+        $("#FormHAddModalid").text(title);
+        $("#FormADetAssetGrpCode").on("change", function () { bindReferene(); });
+        $("#Dateofinspection").on("change", function () { bindReferene(); });
+        $("#chainageFrom").on("change", function () { bindReferene(); });
+        $("#chainageFromDec").on("change", function () { bindReferene(); });
+        $("#chainageTo").on("change", function () { bindReferene(); });
+        $("#chainageToDec").on("change", function () { bindReferene(); });
+
+
+        $("#ddlUerId").on("change", function () {
+            var value = this.value;
+            var id = $("#ddlUerId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/NOD/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#InspectedName").val(data.userName);
+                        $("#InspectedDesignName").val(data.position);
+                        $("#InspectedName").prop("disabled", true);
+                        $("#InspectedDesignName").prop("disabled", true);
+                        if (data.signIn != null && data.signIn != "") {
+                            $("#InspectedSign").attr("src", data.signIn);
+                        }
+                        else {
+                            $("#InspectedSign").attr("src", "");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#InspectedName").prop("disabled", false);
+                $("#InspectedDesignName").prop("disabled", false);
+                $("#InspectedName").val('');
+                $("#InspectedDesignName").val('');
+                $("#InspectedSign").attr("src", "");
+            }
+            else {
+                $("#InspectedName").val("");
+                $("#InspectedDesignName").val("");
+                $("#InspectedName").prop("disabled", true);
+                $("#InspectedDesignName").prop("disabled", true);
+                $("#InspectedSign").attr("src", "");
+            }
+        });
+
+
+
+        $("#ddlreported").on("change", function () {
+            var value = this.value;
+            var id = $("#ddlreported option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/NOD/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#reportedName").val(data.userName);
+                        $("#reportedDesignName").val(data.position);
+                        $("#reportedName").prop("disabled", true);
+                        $("#reportedDesignName").prop("disabled", true);
+                        if (data.signIn != null && data.signIn != "") {
+                            $("#reportedSign").attr("src", data.signIn);
+                        }
+                        else {
+                            $("#reportedSign").attr("src", "");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#reportedName").prop("disabled", false);
+                $("#reportedDesignName").prop("disabled", false);
+                $("#reportedName").val('');
+                $("#reportedDesignName").val('');
+                $("#reportedSign").attr("src", "");
+            }
+            else {
+                $("#reportedName").val("");
+                $("#reportedDesignName").val("");
+                $("#reportedName").prop("disabled", true);
+                $("#reportedDesignName").prop("disabled", true);
+                $("#reportedSign").attr("src", "");
+            }
+        });
+
+
+
+        $("#ddlReceivedby").on("change", function () {
+            var value = this.value;
+            var id = $("#ddlReceivedby option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/NOD/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#ReceivedName").val(data.userName);
+                        $("#ReceivedDesignation").val(data.position);
+                        $("#ReceivedName").prop("disabled", true);
+                        $("#ReceivedDesignation").prop("disabled", true);
+                        if (data.signIn != null && data.signIn != "") {
+                            $("#ReceivedSign").attr("src", data.signIn);
+                        }
+                        else {
+                            $("#ReceivedSign").attr("src", "");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#ReceivedName").prop("disabled", false);
+                $("#ReceivedDesignation").prop("disabled", false);
+                $("#ReceivedName").val('');
+                $("#ReceivedDesignation").val('');
+                $("#ReceivedSign").attr("src", "");
+            }
+            else {
+                $("#ReceivedName").val("");
+                $("#ReceivedDesignation").val("");
+                $("#ReceivedName").prop("disabled", true);
+                $("#ReceivedDesignation").prop("disabled", true);
+                $("#ReceivedSign").attr("src", "");
+            }
+        });
+
+
+        $("#ddlVettedby").on("change", function () {
+            var value = this.value;
+            var id = $("#ddlVettedby option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/NOD/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#Vettedname").val(data.userName);
+                        $("#VettedDesignation").val(data.position);
+                        $("#Vettedname").prop("disabled", true);
+                        $("#VettedDesignation").prop("disabled", true);
+                        if (data.signIn != null && data.signIn != "") {
+                            $("#VettedSign").attr("src", data.signIn);
+                        }
+                        else {
+                            $("#VettedSign").attr("src", "");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#Vettedname").prop("disabled", false);
+                $("#VettedDesignation").prop("disabled", false);
+                $("#Vettedname").val('');
+                $("#VettedDesignation").val('');
+                $("#VettedSign").attr("src", "");
+            }
+            else {
+                $("#Vettedname").val("");
+                $("#VettedDesignation").val("");
+                $("#Vettedname").prop("disabled", true);
+                $("#VettedDesignation").prop("disabled", true);
+                $("#VettedSign").attr("src", "");
+            }
+        });
+
+    });
+</script>

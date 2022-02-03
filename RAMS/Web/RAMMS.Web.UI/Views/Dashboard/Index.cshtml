@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.TabTitle = "Home - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "Home - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+
+
+<div class="map-section pt-1">
+    <div class="map-bg mt-3">
+        <div class="sarawak-map">
+            <a href="@Url.Action("Section", "Home")" class="rmu-miri-1">
+                <svg viewBox="0 0 305 297" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#ff0000" stroke="#ff0000" stroke-width="0.09375" opacity="1.00" d=" M 93.1 0.0 L 96.4 0.0 C 121.8 5.6 147.2 11.0 172.6 16.4 C 175.3 17.1 177.3 19.0 179.0 21.0 C 182.5 25.3 185.7 29.8 189.1 34.2 C 193.2 33.9 196.8 35.8 200.4 37.4 C 204.2 37.6 209.1 36.7 211.2 40.8 C 218.7 53.6 225.8 66.7 233.4 79.5 C 236.1 83.6 233.6 88.5 232.8 92.8 C 236.1 95.3 241.0 98.1 240.4 102.9 C 238.9 111.6 237.0 120.2 235.6 128.9 C 237.7 128.9 239.9 128.9 242.1 128.9 C 245.5 129.1 248.5 126.7 251.9 126.9 C 255.5 126.9 259.1 126.5 262.6 127.5 C 267.2 129.4 271.4 132.2 276.1 133.9 C 279.0 135.2 282.3 136.2 284.3 138.8 C 285.5 141.0 285.7 143.6 286.2 146.1 C 286.7 151.3 289.8 155.5 292.0 160.1 C 296.4 168.6 300.2 177.4 305.0 185.6 L 305.0 190.4 C 298.3 223.2 292.6 256.1 286.2 289.0 C 285.6 292.3 284.6 296.2 280.8 297.0 L 277.7 297.0 C 275.0 296.0 272.2 295.2 269.4 294.5 C 227.2 283.9 184.9 273.5 142.7 263.0 C 135.5 261.1 128.0 260.9 120.6 260.2 C 87.2 257.3 53.8 254.3 20.4 251.4 C 14.6 250.4 8.4 251.2 2.8 249.1 C 1.1 248.4 0.7 246.4 0.0 244.9 L 0.0 242.6 C 8.6 233.0 17.3 223.4 25.6 213.6 C 34.8 204.8 37.7 191.6 45.9 181.9 C 56.4 169.0 66.5 155.8 76.5 142.5 C 81.9 134.6 87.7 126.9 92.7 118.7 C 94.4 114.8 96.2 110.9 97.9 107.0 C 100.3 102.7 95.9 98.5 97.1 94.1 C 97.9 90.4 98.5 86.2 101.3 83.3 C 104.1 80.3 107.0 77.3 109.2 73.8 C 110.1 63.1 109.8 51.7 105.1 41.8 C 102.6 36.3 101.3 30.3 97.9 25.2 C 95.1 20.3 90.4 16.6 89.1 10.9 C 88.6 6.9 90.2 2.8 93.1 0.0 M 95.1 5.0 C 94.7 6.7 94.2 8.3 93.9 9.9 C 94.8 12.2 96.1 14.4 97.7 16.3 C 102.7 22.0 105.9 28.9 108.1 36.1 C 111.5 42.9 113.7 50.3 114.4 58.0 C 114.3 64.0 114.5 70.0 114.3 75.9 C 111.2 80.0 107.9 83.8 104.4 87.5 C 103.0 90.1 102.5 93.1 101.9 96.0 C 102.6 98.7 103.6 101.4 104.6 104.0 C 101.0 111.9 98.6 120.4 93.3 127.3 C 86.6 137.2 79.9 147.1 72.4 156.3 C 64.4 166.9 56.2 177.4 47.8 187.8 C 42.8 195.7 39.0 204.2 34.0 212.0 C 29.7 216.1 26.4 221.1 22.1 225.1 C 19.8 228.7 16.5 231.5 13.7 234.8 C 11.3 238.5 7.7 241.4 4.8 244.8 C 11.1 246.1 17.7 245.5 24.0 246.8 C 26.8 246.9 29.7 246.7 32.4 247.4 C 36.1 248.3 40.0 247.3 43.6 248.3 C 46.9 249.3 50.4 248.4 53.8 249.2 C 58.2 250.3 62.8 249.4 67.2 250.7 C 73.5 250.4 79.6 252.0 85.9 251.9 C 90.7 253.4 95.7 252.1 100.4 253.5 C 103.5 254.1 106.7 253.4 109.8 254.2 C 113.7 255.3 117.8 254.2 121.7 255.2 C 125.3 256.2 129.1 255.3 132.7 256.2 C 135.6 256.9 138.6 256.5 141.5 257.4 C 167.6 264.2 193.9 270.4 220.1 277.1 C 240.4 281.5 260.4 287.2 280.6 291.9 C 287.2 257.3 293.4 222.7 300.1 188.1 C 294.6 176.7 288.9 165.3 283.2 153.9 C 281.1 150.2 281.5 145.7 280.3 141.6 C 278.1 140.4 275.8 139.3 273.4 138.4 C 268.8 136.6 264.6 133.8 259.9 131.9 C 256.6 131.6 253.3 131.9 250.0 131.8 C 248.6 132.8 247.4 135.3 245.3 134.6 C 241.1 133.2 236.7 134.0 232.3 133.7 C 231.3 133.1 230.1 132.2 229.8 131.0 C 231.9 121.4 233.7 111.7 235.6 102.1 C 233.6 98.7 229.3 97.2 226.9 94.0 C 227.9 90.5 229.5 86.9 229.6 83.3 C 221.6 69.6 214.2 55.5 205.8 42.0 C 204.2 42.5 202.5 42.9 200.9 43.4 C 198.2 42.1 195.7 40.5 192.8 39.5 C 190.9 39.2 189.0 39.4 187.1 39.1 C 183.3 36.1 181.1 31.6 178.0 28.1 C 175.9 25.8 174.5 22.5 171.5 21.4 C 146.0 16.0 120.5 10.6 95.1 5.0 Z" />
+                </svg>
+            </a>
+            @*<a href="@Url.Action("Index", "Map")" class="rmu-miri-2">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
+                        <path fill="#FF0000" stroke="#ff0000" stroke-width="0.09375" d="M41.1,10.9L41.1,10.9c-2.4-4.5-6.7-8-11.7-9.5l0.1,0c-1.3-0.4-2.5-0.6-3-0.7c-1.2-0.2-2.3-0.3-3.4-0.3l0,0	c-0.3,0-0.6,0-1,0c-0.1,0-0.2,0-0.3,0c-6.1,0-8.2,1.3-8.2,1.3l0,0C8.4,3.7,4,7.9,1.9,13.2l0,0c0,0-2.1,4.4-1.4,11.2l0,0	c0,0,0.5,5.8,2.3,8.3l0,0c2.1,4.4,6,7.7,10.5,9.5l0,0c0,0,11.5,5,21.6-2L34.8,40c3.7-2.5,6.5-6.4,7.8-10.7l0,0	C46.2,19.2,41.1,10.9,41.1,10.9z M35.8,33.8c-5.4,6.3-15.3,8.3-22.5,4c-8.7-4.3-12-16.3-7.1-24.5C8.3,8.7,12.8,6,17.4,4.4	c7-1.6,15.1,0.9,19.3,7C41.5,17.9,41.1,27.6,35.8,33.8z" />
+                    </svg>
+                </a>
+                <a href="@Url.Action("Index", "Map")" class="rmu-miri-3">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44">
+                        <path fill="#FF0000" stroke="#ff0000" stroke-width="0.09375" d="M41.1,10.9L41.1,10.9c-2.4-4.5-6.7-8-11.7-9.5l0.1,0c-1.3-0.4-2.5-0.6-3-0.7c-1.2-0.2-2.3-0.3-3.4-0.3l0,0	c-0.3,0-0.6,0-1,0c-0.1,0-0.2,0-0.3,0c-6.1,0-8.2,1.3-8.2,1.3l0,0C8.4,3.7,4,7.9,1.9,13.2l0,0c0,0-2.1,4.4-1.4,11.2l0,0	c0,0,0.5,5.8,2.3,8.3l0,0c2.1,4.4,6,7.7,10.5,9.5l0,0c0,0,11.5,5,21.6-2L34.8,40c3.7-2.5,6.5-6.4,7.8-10.7l0,0	C46.2,19.2,41.1,10.9,41.1,10.9z M35.8,33.8c-5.4,6.3-15.3,8.3-22.5,4c-8.7-4.3-12-16.3-7.1-24.5C8.3,8.7,12.8,6,17.4,4.4	c7-1.6,15.1,0.9,19.3,7C41.5,17.9,41.1,27.6,35.8,33.8z" />
+                    </svg>
+                </a>*@
+            @*<a href="@Url.Action("Index", "Map")" class="rmu-niah">
+                    <svg viewBox="0 0 190 109" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#ffde00" stroke="#ffde00" stroke-width="0.09375" opacity="1.00" d=" M 81.0 10.0 C 84.8 7.4 88.0 3.9 92.1 1.8 C 99.1 2.1 105.9 3.6 112.9 4.1 C 138.0 7.7 163.3 9.1 188.6 11.7 C 189.0 12.8 189.5 13.9 190.0 15.0 L 190.0 15.8 C 187.0 25.8 182.3 35.2 178.9 45.1 C 172.8 60.9 166.5 76.7 160.4 92.5 C 159.2 96.0 155.5 97.2 152.4 98.2 C 139.8 101.8 127.2 105.3 114.6 109.0 L 111.4 109.0 C 77.2 98.6 43.1 88.2 8.9 78.0 C 5.1 77.0 0.7 75.4 0.0 70.9 L 0.0 70.1 C 0.5 67.3 2.6 65.3 5.0 64.0 C 19.3 54.8 33.2 44.8 47.4 35.4 C 58.7 27.1 69.6 18.3 81.0 10.0 M 51.2 39.2 C 44.5 43.9 37.5 48.0 31.0 53.0 C 22.3 59.0 13.1 64.4 4.7 70.8 C 8.7 72.6 12.8 73.8 17.0 75.0 C 49.0 84.6 81.0 94.4 113.0 104.0 C 124.4 100.7 135.8 97.5 147.2 94.2 C 149.9 93.4 152.9 93.0 155.3 91.3 C 165.1 65.9 175.2 40.5 184.9 15.0 C 182.8 15.0 180.6 15.1 178.6 14.4 C 175.3 13.5 171.7 14.5 168.4 13.6 C 164.3 12.2 159.8 13.8 155.6 12.4 C 152.3 11.5 148.7 12.5 145.4 11.6 C 141.6 10.3 137.4 11.7 133.6 10.4 C 129.9 9.4 126.1 10.6 122.4 9.6 C 120.1 8.8 117.6 9.1 115.2 8.8 C 108.6 7.3 101.9 6.0 95.1 5.6 C 80.6 17.0 65.8 27.9 51.2 39.2 Z" />
+                    </svg>
+                </a>*@
+        </div>
+        @*href="@Url.Action("Index", "Map")"*@
+    <div class="map-legend">
+        @*<div class="legnd-miri">RMU Miri</div>
+        <div class="legnd-niah">RMU Niah</div>*@
+        <div class="legnd-miri">Miri</div>
+        <div class="legnd-niah">Batu Niah</div>
+    </div>
+    </div>
+</div>
+
+<div class="landing-division p-3 pl-4 pr-4 mt-3">
+    <form>
+        <div class="row">
+            <div class="form-group col-md-3 mb-md-1">
+                <label>Division</label>
+                <input type="text" class="form-control" value="Miri" disabled />
+            </div>
+            <div class="form-group col-md-3 mb-md-1">
+                <label>RMU</label>
+                <select id="rmu-dd" class="form-control" onchange="RMUChange()">
+                    <option selected value="Miri">Miri</option>
+                    <option value="batuniah">Batu Niah</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6 mb-md-1">
+                <label>Section</label>
+                <select id="section-dd" class="form-control">
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="landing-card">
+    <div class="w-100 font-weight-bold text-dark mt-4">In Week 25</div>
+    <div class="col-lg-6 mt-3 float-left p-0">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-schedule">
+                    <img src="~/assets/media/calendar.svg" />
+                    <span class="activity-group">
+                        <span class="activity-count font-bebas">18</span>
+                        <span class="activity-content">Work Activities Scheduled</span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="activity-carried">
+                    <img src="~/assets/media/clock.svg" />
+                    <span class="activity-group">
+                        <span class="activity-count font-bebas">12</span>
+                        <span class="activity-content">Work Activities Carried Out</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mt-3 float-left p-0">
+        <div class="row">
+            <div class="col-lg-12 pl-lg-0">
+                <div class="ld-nod">
+                    <span class="ld-n-group">
+                        <span class="ld-n-count font-bebas">12</span>
+                        <span class="ld-n-content">NOD Maintenance to be Closed</span>
+                    </span>
+                    <img src="~/assets/media/NOD.svg" />
+                </div>
+            </div>
+            <div class="col-lg-6 pl-lg-0">
+                <div class="ld-ncn">
+                    <span class="ld-n-group">
+                        <span class="ld-n-count font-bebas">12</span>
+                        <span class="ld-n-content">NCN to be Closed</span>
+                    </span>
+                    <img src="~/assets/media/NCN.svg" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ld-ncr">
+                    <span class="ld-n-group">
+                        <span class="ld-n-count font-bebas">12</span>
+                        <span class="ld-n-content">NCR to be Closed</span>
+                    </span>
+                    <img src="~/assets/media/NCR.svg" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var miriSectionList = [
+        { Text: "Miri", Value: "Miri" },
+        { Text: "Bario & Mulu", Value: "BarioMulu" },
+        { Text: "Beluru", Value: "Beluru" },
+        { Text: "Marudi", Value: "Marudi" },
+        { Text: "Bekenu", Value: "Bekenu" }];
+    var BatuNiahSectionList = [
+        { Text: "Batu Niah", Value: "Batuniah" }
+    ];
+    function RMUChange() {
+        var rmuVal = $('#rmu-dd').val(), sectionList;
+        console.log('RMU ==> ', rmuVal);
+        if (rmuVal == 'batuniah') {
+            sectionList = BatuNiahSectionList;
+        } else {
+            sectionList = miriSectionList;
+        }
+        var select = $("#section-dd");
+        select.empty();
+        $.each(sectionList, function (index, itemData) {
+            select.append($('<option/>', {
+                value: itemData.Value,
+                text: itemData.Text,
+                selected: index == 0
+            }));
+        });
+    }
+    RMUChange();
+</script>

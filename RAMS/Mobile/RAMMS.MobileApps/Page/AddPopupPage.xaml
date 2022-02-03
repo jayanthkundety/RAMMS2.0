@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage x:Class="RAMMS.MobileApps.Page.AddPopupPage"
+                 xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                 xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" >
+    <!--  You can set an animation in the xaml file or in the csharp code behind  -->
+
+    <pages:PopupPage.Animation>
+
+        <animations:ScaleAnimation
+            
+                                   EasingIn="SinOut"
+                                   EasingOut="SinIn"
+                                   HasBackgroundAnimation="True"
+                                   PositionIn="Center"
+                                   PositionOut="Center"
+                                   ScaleIn="1.2"
+                                   ScaleOut="0.8" />
+    </pages:PopupPage.Animation>
+    <!--  You can use any elements here which are extended from Xamarin.Forms.View  -->
+
+    <StackLayout BackgroundColor="Transparent" Margin="140,-100,0,0"
+                 HorizontalOptions="Start"
+                 VerticalOptions="CenterAndExpand">
+        <Frame CornerRadius="15" BorderColor="#d9d9d9">
+            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="5" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <!--<StackLayout Orientation="Horizontal">
+                    <Image Source="Reply.png" Grid.Row="0" Grid.Column="1" />
+                    <Label Text="To IW"  FontSize="Medium" TextColor="Black" Grid.Row="0" Grid.Column="3" />
+                </StackLayout>-->
+
+                <StackLayout Orientation="Horizontal">
+                    <Image Source="location.png" Grid.Row="2" Grid.Column="1" >
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer
+            Command="{Binding TapCommand}"
+            CommandParameter="Image1" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+
+
+
+
+
+
+
+
+                    <Label Text="View" FontSize="Medium" TextColor="Black" Grid.Row="2" Grid.Column="3" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Image Source="Edits.png" Grid.Row="4" Grid.Column="1" />
+                    <Label Text="Edit"  FontSize="Medium" TextColor="Black" Grid.Row="4" Grid.Column="3" />
+                </StackLayout>
+                <!--<StackLayout Orientation="Horizontal">
+                    <Image Source="Delete.png" Grid.Row="6" Grid.Column="1" />
+                    <Label Text="Delete" FontSize="Medium" TextColor="Black" Grid.Row="6" Grid.Column="3" />
+                </StackLayout>-->
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</pages:PopupPage>

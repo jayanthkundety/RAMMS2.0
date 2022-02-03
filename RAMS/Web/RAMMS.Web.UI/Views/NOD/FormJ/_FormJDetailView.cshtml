@@ -1,0 +1,270 @@
+﻿@model RAMMS.Web.UI.Models.FormJModel;
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#formADefCode").on("change", function () {
+            $("#formADesc").val($("#formADefCode option:selected").text());
+            $("#formProblem").val($("#formADefCode option:selected").text());
+        });
+        $("#formAWI").chosen();
+        $("#formAWS").chosen();
+        $("#formAWTC").chosen();
+        $("#formAWC").chosen();
+        $("#formART").chosen();
+        $("#formADefCode").chosen();
+        $("#formAPriority").chosen();
+        $("#formASiteRefmultiSelect").chosen();
+        var id = $("#formAFadPKRefNO").val();
+
+        $("#cancelFADBtn").click(function () {
+            close();
+        });
+    });
+    
+
+
+    //function ViewDetail(detId) {
+    //    debugger
+    //    var Id = + $("#FormADetPKId").val();
+    //    $("body").addClass("loading");
+    //    $.ajax({
+    //        url: '/NOD/JAddNOD',
+    //        data: { assetName: $("#FormADetAssetGrpCode").val(), hdrId: Id, hdrrefno: $("#FormADetReferenceNO").val(), detId: detId },
+    //        type: 'POST',
+    //        success: function (data) {
+
+    //            $("#div-data-container1").html(data);
+    //            var id = $("#formAFadPKRefNO").val();
+    //            $(".disableFADinput").prop("disabled", true);
+    //            $("#saveContFormADetailsBtn").hide();
+    //            $("#saveExitFormADetailsBtn").hide();
+
+    //            $("#clearFormASubDetailBtn").hide();
+    //            if (id != "0") {
+    //                debugger;
+    //                $("#formDetailText").text("View Form J Details | Ref-" + id);
+    //            }
+
+    //            $("body").removeClass("loading");
+    //        }
+    //    });
+    //}
+    function GetImageList() {
+        //debugger;
+        var id = $("#formAFadPKRefNO").val();
+        var group = $("#FormADetAssetGrpCode option:selected").val();
+        $.ajax({
+            url: '/NOD/JGetImageList',
+            data: { assetPk: id, assetgroup: group },
+            type: 'POST',
+            success: function (data) {
+                $("#ViewPhoto").html(data);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+
+        });
+    }
+</script>
+@Html.HiddenFor(Adtl => Adtl.SaveFormADetails.HeaderNo, new { @Id = "formAHeaderNo", @class = "form-control " })
+@Html.HiddenFor(Adtl => Adtl.SaveFormADetails.Srno, new { @Id = "formASrno", @class = "form-control" })
+@Html.HiddenFor(Adtl => Adtl.SaveFormADetails.FadRefNO, new { @Id = "formAFadRefNO", @class = "form-control" })
+@Html.HiddenFor(Adtl => Adtl.SaveFormADetails.No, new {  @Id = "formAFadPKRefNO", @class = "form-control" })
+<div class="modal-body bg-body p-0">
+    <div class="d-flex mt-2">
+        <ul class="nav nav-tabs tabbed round">
+            <li class="nav-item">
+                <a id="page1A" href="#FormJTab1" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                    <span class="">Page 1</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#FormJPhotoTab1" onclick="GetImageList()" data-toggle="tab" aria-expanded="true" class="nav-link">
+                    <span>Photo</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div id="validateDiv" class="mh-240 bg-white py-4">
+        <div class="col-lg-12">
+            <div class="tab-content">
+                <div class="tab-pane show active" id="FormJTab1">
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Reference No.", "Reference No.")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.FadRefNO, new { @Id = "formADetRefno", @class = "form-control disableFADinput", @rows = 1, @readonly = "readonly" })
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Dt, new { @Id = "formADt", @type = "date", @class = "form-control disableFADinput validate {required, Date of Inspection }", @min = Model.SaveFormADetails.MinDate.ToString("yyyy-MM-dd"), @max = Model.SaveFormADetails.MaxDate.ToString("yyyy-MM-dd"), @rows = 1 })
+
+                    </div>
+                    @if (Model.SaveFormAModel.AssetGroupCode != "Culvert" && Model.SaveFormAModel.AssetGroupCode != "Bridge")
+                    {
+                        <div class="form-group col-lg-4">
+                            @Html.Label("Location Site Ref", "Location Site Ref")
+                            <input type="hidden" id="multiSiteHidden" value="@Model.SaveFormADetails?.SiteRef" />
+                            @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.SiteRef_multiSelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["lookupSiteReg"], new { @Id = "formASiteRefmultiSelect", @class = "form-control disableFADinput validate {required, Location Site Ref }", @multiple = "multiple" })
+
+                        </div>
+                    }
+                    <div class="form-group col-lg-2">
+                        @Html.Label("SA Code", "SA Code")
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.DefCode, (IEnumerable
+                                                <SelectListItem>)ViewData["DistressCode"], "Select SA Code", new { @Id = "formADefCode", @class = "form-control validate {required, SA Code } disableFADinput" })
+
+                    </div>
+                    <div class="clear-b"></div>
+                    <div class="form-group col-lg-2 p-0 mb-0">
+                        <div class="form-group col-lg-12 float-left">
+                            @Html.Label("Location Chainage From", "Location Chainage From")
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @*@Html.Label("Km", "Km")*@
+                                    @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.FromCh, new { @Id = "formAFromCh", @class = "form-control numeric disableFADinput  validate {required,double, Location Chainage From}", @maxlength = "5", @rows = 1 })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                <div class="col-5 float-left pl-0">
+                                    @*@Html.Label("m", "m")*@
+                                    @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.FromChDeci, new { @Id = "formAFromChDeci", @class = "form-control numeric disableFADinput validate {double, Location Chainage From}", @maxlength = "3", @rows = 1 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12 float-left">
+                            @Html.Label("Location Chainage To", "Location Chainage To")
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @*@Html.Label("Km", "Km")*@
+                                    @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.ToCh, new { @Id = "formAToCh", @class = "form-control disableFADinput numeric  validate {required,double, Location Chainage To}", @maxlength = "5", @rows = 1 })
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                <div class="col-5 float-left pl-0">
+                                    @*@Html.Label("m", "m")*@
+                                    @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.ToChDeci, new { @Id = "formAToChDeci", @class = "form-control numeric disableFADinput validate {double, Location Chainage To}", @maxlength = "3", @rows = 1 })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4 txtarea-107">
+                        @Html.Label("Deficiencies/Problems Details", "Deficiencies/Problems Details")
+                        @Html.TextAreaFor(Adtl => Adtl.SaveFormADetails.Problem, new { @Id = "formProblem", @class = "form-control disableFADinput", @rows = 1 })
+
+                    </div>
+                    <div class="form-group col-lg-6 txtarea-107">
+                        @Html.Label("Work/Installation Needed", "Work/Installation Needed")
+                        @Html.TextAreaFor(Adtl => Adtl.SaveFormADetails.WorkNeed, new { @Id = "formWorkNeed", @class = "form-control disableFADinput", @rows = 1 })
+
+                    </div>
+                    <div class="clear-b"></div>
+                    <div class="form-group col-lg-4 mb-0">
+                        @Html.Label("Dimension (m)", "Dimension (m)")
+                        @{
+                            Model.SaveFormADetails.Length = Model.SaveFormADetails.Length.GetValueOrDefault() == 0 ? null : Model.SaveFormADetails.Length;
+                            Model.SaveFormADetails.Width = Model.SaveFormADetails.Width.GetValueOrDefault() == 0 ? null : Model.SaveFormADetails.Width;
+                            Model.SaveFormADetails.Height = Model.SaveFormADetails.Height.GetValueOrDefault() == 0 ? null : Model.SaveFormADetails.Height;
+                        }
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-md-4 in-lbl">
+                                @Html.Label("L", "L")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Length, new { @Id = "formALength", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, L-Length}", @rows = 1 })
+
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 in-lbl">
+                                @Html.Label("W", "W")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Width, new { @Id = "formAWidth", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, W-Width}", @rows = 1 })
+
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 in-lbl">
+                                @Html.Label("H", "H")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormADetails.Height, new { @Id = "formAHeight", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, H-Height}", @rows = 1 })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Priority", "Priority")
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Priority, (IEnumerable
+                                                   <SelectListItem>)ViewData["lookupPriority"], "Select Priority", new { @Id = "formAPriority", @class = "form-control disableFADinput" })
+
+                    </div>
+                    <div class="form-group col-lg-1">
+                        @Html.Label("WI", "WI")
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Wi, (IEnumerable
+                                                   <SelectListItem>)ViewBag.WI, "WI", new { @Id = "formAWI", @class = "form-control disableFADinput" })
+
+                    </div>
+                    <div class="form-group col-lg-1">
+                        @Html.Label("WS", "WS")
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Ws, (IEnumerable
+                                                    <SelectListItem>)ViewBag.WS, "WS", new { @Id = "formAWS", @class = "form-control disableFADinput" })
+
+                    </div>
+                    <div class="form-group col-lg-1">
+                        @Html.Label("WTC", "WTC")
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Wtc, (IEnumerable
+                                            <SelectListItem>)ViewBag.WTC, "WTC", new { @Id = "formAWTC", @class = "form-control disableFADinput" })
+
+                    </div>
+                    <div class="form-group col-lg-1">
+                        @Html.Label("WC", "WC")
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Wc, (IEnumerable
+                                                    <SelectListItem>)ViewBag.WC, "WC", new { @Id = "formAWC", @class = "form-control disableFADinput" })
+
+                    </div>
+                    <div class="form-group col-lg-1">
+                        @Html.Label("RT", "RT")
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormADetails.Rt, (IEnumerable
+                        <SelectListItem>)ViewBag.RT, "RT", new { @Id = "formART", @class = "form-control disableFADinput" })
+                    </div>
+                    <div class="clear-b"></div>
+                    <div class="form-group col-lg-6 txtarea-107">
+                        @Html.Label("Remarks", "Remarks")
+                        @Html.TextAreaFor(Adtl => Adtl.SaveFormADetails.Remarks, new { @Id = "formARemarks", @class = "form-control disableFADinput", @rows = 1 })
+
+                    </div>
+                </div>
+                <div class="tab-pane" id="FormJPhotoTab1">
+                    <div id="ViewPhoto">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button id="cancelFADBtn" type="button" onclick="javascript: close();" ondblclick="javascript:void(0);" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
+    <button id="saveContFormADetailsBtn" onclick="javascript: detailSave('Save&Continue');" ondblclick="javascript:void(0)" type="button" class="btn btn-sm btn-themebtn disablebtn">Save &amp; Continue</button>
+    <button id="saveExitFormADetailsBtn" onclick="javascript: detailSave('Save&Exit');" ondblclick="javascript:void(0)" type="button" class="btn btn-sm btn-themebtn disablebtn">Save &amp; Exit</button>
+    <button id="clearFormASubDetailBtn" type="button" ondblclick="javascript:void(0)" class="btn btn-sm btn-outline-theme Clear disablebtn" onclick="javascript: clearForm();">Clear</button>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#formAFromCh").on("keypress", function (e) {
+            var value = TryParseInt((this.value + e.originalEvent.key));
+            var _toValue = $("#formAToCh").val();
+            var toValue = TryParseInt((_toValue == "" ? "0" : _toValue));
+            if (value > toValue && _toValue != "") {
+                e.preventDefault();
+            }
+        });
+
+        $("#formAToCh").on("change", function () {
+            this.value = this.value == "" ? 0 : this.value;
+            var value = TryParseInt(this.value);
+            var _fromValue = $("#formAFromCh").val();
+            var fromValue = TryParseInt((_fromValue == "" ? "0" : _fromValue));
+            if (fromValue >= value && _fromValue != "") {
+                app.ShowWarningMessage("Chainage To should be greater than Chainge From");
+                $("#formAToCh").focus();
+                $("#formAToCh").addClass("border-error");
+            }
+            else {
+                $("#formAToCh").removeClass("border-error");
+            }
+        });
+    });
+</script>

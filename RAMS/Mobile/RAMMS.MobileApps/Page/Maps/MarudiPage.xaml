@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.Maps.MarudiPage"
+             BackgroundColor="#f2f2f2"
+             >
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame HasShadow="True" BorderColor="#f2f2f2">
+                <Label Text="Marudi" TextColor="#1D2D50" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Large" FontAttributes="Bold" BackgroundColor="White" />
+            </Frame>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.1*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <BoxView HeightRequest="2" WidthRequest="2"  BackgroundColor="#b3b3b3" Grid.RowSpan="8" Grid.Column="0"></BoxView>
+                <BoxView Grid.Row="2" BackgroundColor="#bfbfbf" Margin="0,29,0,29"  HeightRequest="1" WidthRequest="1"  Grid.Column="1"></BoxView>
+                <BoxView Grid.Row="3" BackgroundColor="#bfbfbf" Margin="0,29,0,29"  HeightRequest="1" WidthRequest="1"  Grid.Column="1"></BoxView>
+                <BoxView Grid.Row="1" BackgroundColor="#bfbfbf" Margin="0,29,0,29" HeightRequest="1" WidthRequest="1"  Grid.Column="1"></BoxView>
+
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="#ffffcc" Text="S4" Grid.Row="0" Grid.Column="1"></Button>
+
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q669" Grid.Row="1" Grid.Column="2"></Button>
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q289" Grid.Row="2" Grid.Column="2"></Button>
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q649"  Grid.Row="3" Grid.Column="2"></Button>
+
+
+                <BoxView  BackgroundColor="#bfbfbf" Margin="-10,29,0,29"  Grid.Row="2" Grid.Column="3"></BoxView>
+                <BoxView  BackgroundColor="#bfbfbf" Margin="0,29,0,29" Grid.Row="3" Grid.Column="3"></BoxView>
+                <BoxView  BackgroundColor="#bfbfbf" Margin="0,29,0,29" Grid.Row="4" Grid.Column="3"></BoxView>
+                <BoxView  BackgroundColor="#bfbfbf" Margin="0,29,0,29"  Grid.Row="5" Grid.Column="3"></BoxView>
+                <BoxView  BackgroundColor="#bfbfbf" Margin="0,29,0,29" Grid.Row="3" Grid.Column="3"></BoxView>
+                <BoxView  BackgroundColor="#bfbfbf" Margin="0,29,0,29" Grid.Row="6" Grid.Column="3"></BoxView>
+                <BoxView Grid.RowSpan="7" Margin="0,162,78,30"  WidthRequest="1" HeightRequest="1" BackgroundColor="#bfbfbf" Grid.Column="3"></BoxView>
+
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q670" Grid.Row="2" Grid.Column="4"></Button>
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q676" Grid.Row="3" Grid.Column="4"></Button>
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q672" Grid.Row="4" Grid.Column="4"></Button>
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q1904" Grid.Row="5" Grid.Column="4"></Button>
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q643" Grid.Row="6" Grid.Column="4"></Button>
+
+                <BoxView  BackgroundColor="#bfbfbf"  Margin="-10,29,0,29" Grid.Row="6" Grid.Column="5"></BoxView>
+                <BoxView  BackgroundColor="#bfbfbf"  Margin="0,29,0,29" Grid.Row="7" Grid.Column="5"></BoxView>
+                <BoxView Grid.RowSpan="8" Margin="0,430,78,30" WidthRequest="1" HeightRequest="1" BackgroundColor="#bfbfbf" Grid.Column="5"></BoxView>
+
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q691" Grid.Row="6" Grid.Column="6"></Button>
+                <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q674" Grid.Row="7" Grid.Column="6"></Button>
+
+                
+
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

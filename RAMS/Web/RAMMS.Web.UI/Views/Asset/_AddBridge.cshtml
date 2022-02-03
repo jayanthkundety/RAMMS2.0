@@ -1,0 +1,643 @@
+﻿@*@model myPartialModel;*@
+
+@*@using RAMMS.Domain.Models;*@
+@model RAMMS.Business.ServiceProvider.MltyModelBO;
+@*<div>
+        <p>This is my Partcial View</p>
+        <div>My View Bag Content : @ViewBag.MyValue1</div>
+        <div>Road Name : @Model.AiRdName</div>
+    </div>*@
+
+<script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#AiFeatureId").change(function () {
+
+            //alert($("#AiFeatureId").val());
+            $.ajax({
+                type: 'GET',
+                //contentType: "application/json; charset=utf-8",
+                url: '@Url.Action("GetRMAllData")',
+                dataType: 'json',
+                data: { featureid: $("#AiFeatureId").val(), assetId: $("#AiGrpType").val(), boundId: $("#AiBound").val() },
+                success: function (data) {
+                    //debugger;
+                    //console.log(data);
+                    if (data != null) {
+
+                        $("#AiDivCode").val(data.sDivision);
+                        //$("#Division").val("data.AiDivCode");
+                        $("#AiRmuCode").val(data.sRUMCode);
+                        $("#AiSecCode").val(data.sSecCode);
+                        $("#AiSecName").val(data.sSecName);
+                        $("#AiRdCode").val(data.sRoadCode);
+                        $("#AiRdName").val(data.sRoadName);
+                        $('#AiAssetId').val("");
+                        $("#AiAssetId").val(data.sAssetId);
+                    }
+
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+            return false;
+        })
+
+       $("#AiBound").change(function () {
+
+        //alert($("#AiFeatureId").val());
+        $.ajax({
+            type: 'POST',
+            //contentType: "application/json;charset=utf-8",
+            url: '@Url.Action("GetAutoID")',
+            dataType: 'json',
+            data: { formdata: $('#FormId').serialize(), featureid: $("#AiFeatureId").val(), assetId: $("#AiGrpType").val(), boundId: $("#AiBound").val() },
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                if (data != null) {
+
+                    $("#AiDivCode").val(data.sDivision);
+                    //$("#Division").val("data.AiDivCode");
+                    $("#AiRmuCode").val(data.sRUMCode);
+
+                    $("#AiSecCode").val(data.sSecCode);
+                    $("#AiSecName").val(data.sSecName);
+                    $("#AiRdCode").val(data.sRoadCode);
+                    $("#AiRdName").val(data.sRoadName);
+                    $('#AiAssetId').val("");
+                    $("#AiAssetId").val(data.sAssetId);
+                }
+
+            },
+            error: function (ex) {
+                alert('Failed.' + ex);
+            }
+        });
+        return false;
+       })
+      $("#AiGrpType").change(function () {
+
+        //alert($("#AiFeatureId").val());
+        $.ajax({
+            type: 'POST',
+            //contentType: "application/json;charset=utf-8",
+            url: '@Url.Action("GetAutoID")',
+            dataType: 'json',
+            data: { formdata: $('#FormId').serialize(), featureid: $("#AiFeatureId").val(), assetId: $("#AiGrpType").val(), boundId: $("#AiBound").val() },
+            success: function (data) {
+                //debugger;
+                //console.log(data);
+                if (data != null) {
+
+                    $("#AiDivCode").val(data.sDivision);
+                    //$("#Division").val("data.AiDivCode");
+                    $("#AiRmuCode").val(data.sRUMCode);
+
+                    $("#AiSecCode").val(data.sSecCode);
+                    $("#AiSecName").val(data.sSecName);
+                    $("#AiRdCode").val(data.sRoadCode);
+                    $("#AiRdName").val(data.sRoadName);
+                    $('#AiAssetId').val("");
+                    $("#AiAssetId").val(data.sAssetId);
+                }
+
+            },
+            error: function (ex) {
+                alert('Failed.' + ex);
+            }
+        });
+        return false;
+       })
+
+
+    });
+
+
+
+
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#AiFeatureId").chosen();
+        $("#AiStrucSuper").chosen();
+        $("#AiParapetType").chosen();
+        $("#AiGrpType").chosen();
+        $("#AiBound").chosen();
+        $("#AiStrucCode").chosen();
+        $("#AiAssetGrpCode").chosen();
+        $("#AiBearingType").chosen();
+        $("#AiExpanType").chosen();
+        $("#AiDeckType").chosen();
+        $("#AiAbutType").chosen();
+        $("#AiPierType").chosen();
+
+        $("#AiAbutFound").chosen();
+        $("#AiPiersPrimComp").chosen();
+        $("#AiBearingSeatDiaphg").chosen();
+        $("#AiBeamsGridTrusArch").chosen();
+        $("#AiDeckPavement").chosen();
+        $("#AiUtilities").chosen();
+        $("#AiWaterway").chosen();
+        $("#AiWaterDownpipe").chosen();
+        $("#AiParapetRailing").chosen();
+        $("#AiSidewalksAppSlab").chosen();
+        $("#AiExpanJoint").chosen();
+        $("#AiSlopeRetainWall").chosen();
+        $("#AiExpanJointCount").chosen();
+
+
+    });
+</script>
+@using (Html.BeginForm("Add", "Download", FormMethod.Post))
+{
+    <div class="modal-body">
+        <div class="block block-rounded">
+            <table border="0" width="100%">
+                <tr>
+                    <td>
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" class="btn btn-outline-info theme-clr" href="#btabs-alt-static-page1">Page</a></li>
+                            <li><a data-toggle="tab" class="btn btn-outline-info theme-clr" href="#btabs-alt-static-photo">Photo</a></li>
+                        </ul>
+                    </td>
+                    <td>
+                        @*<header>*@
+                        <div class="block block-rounded">
+                            <table>
+                                <tr>
+                                    <td width="130px"> @Html.Label("ID    ", "Bridge ID : ", new { style = "float: left" })</td>
+                                    <td> @Html.TextBoxFor(m => m._rmAllassetInventory.AiAssetId, new { @Id = "AiAssetId", @class = "form-control ", style = "width:350px" })</td>
+                                </tr>
+                            </table>
+                        </div>
+                        @*</header>*@
+                    </td>
+                </tr>
+            </table>
+            <div class="block-content tab-content">
+                <!--Add Bridge Page 1 begins-->
+                <div class="tab-pane active" id="btabs-alt-static-page1" role="tabpanel">
+
+                    <div class="addScroll">
+                        <div id="accordion">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#BridgeProperty">
+                                        >> Bridge Property
+                                    </a>
+                                </div>
+                                <div id="BridgeProperty" class="collapse show" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                @Html.Label("Road Feature ID ", " Road Feature ID", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.DropDownListFor(m => m._rmAllassetInventory.AiFeatureId, (IEnumerable
+          <SelectListItem>)ViewData["AssetType"], "Select Feature ID", new { @Id = "AiFeatureId", @class = "form-control" })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                @Html.Label("Division", "Division", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiDivCode, new { @Id = "AiDivCode", @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m._rmAllassetInventory.AiDivCode, null, new { @class = "required" })
+                                            </div>
+                                            <div class="col-sm-1">
+                                                @Html.Label("RMU", "RMU", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiRmuCode, new { @Id = "AiRmuCode", @class = "form-control " })
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                @Html.Label("Section Code", "Section Code", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiSecCode, new { @Id = "AiSecCode", @class = "form-control" })
+                                            </div>
+                                            <div class="col-sm-2">
+                                                @Html.Label("Section Name", "Section Name", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiSecName, new { @Id = "AiSecName", @class = "form-control " })
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                @Html.Label("Road Code", "Road Code", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiRdCode, new { @Id = "AiRdCode", @class = "form-control " })
+                                            </div>
+                                            <div class="col-9">
+                                                @Html.Label("Road Name", " Road Name ", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiRdName, new { @Id = "AiRdName", @class = "form-control " })
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                @Html.Label("Asset Group", "Asset Group", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.DropDownListFor(m => m._rmAllassetInventory.AiAssetGrpCode, (IEnumerable
+<SelectListItem>)ViewData["AssetGroup"], new { @Id = "AiAssetGrpCode", @class = "form-control" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Asset type", "Asset Type", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.DropDownListFor(m => m._rmAllassetInventory.AiGrpType, (IEnumerable
+<SelectListItem>)ViewData["AssetType1"], "Select Asset Type", new { @Id = "AiGrpType", @class = "form-control" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Bound ", "Bound ", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.DropDownListFor(m => m._rmAllassetInventory.AiBound, (IEnumerable
+<SelectListItem>)ViewData["Bound"], "Select Bound", new { @Id = "AiBound", @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-9"></div>
+                                            <div class="col-3">
+                                                @Html.Label("Location Chainage", "Location Chainage", new { style = "float: left" })
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                @Html.Label("District    ", " District  ", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiDist, null, new { @Id = "AiDist", @class = "form-control " })
+                                            </div>
+
+                                            <div class="col-3">
+                                                @Html.Label("Structure Code ", "Structure Code ", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.DropDownListFor(m => m._rmAllassetInventory.AiStrucCode, (IEnumerable
+<SelectListItem>)ViewData["StructureCode"], "Select Structure Code", new { @Id = "AiStrucCode", @class = "form-control" })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Reference No    ", " Reference No  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiRefNo, null, new { @Id = "AiRefNo", @class = "form -control" })
+                                            </div>
+                                            <div class="col-1">
+                                                @Html.Label("Km", "Km", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiLocChKm, null, new { @Id = "AiLocChKm", @class = "form-control " })
+                                            </div>
+                                            <div class="col-1">
+                                                @Html.Label("m", "m", new { style = "float: left" })
+                                                @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiLocChM, null, new { @Id = "AiLocChM", @class = "form-control " })
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#BridgeParameters">
+                                        >> Bridge Parameter
+                                    </a>
+                                </div>
+                                <div id="BridgeParameters" class="collapse show" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("Rever Name  ", " Rever Name ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiRiverName, null, new { @Id = "AiRiverName", @class = "form-control " })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Lane Width  ", " Lane Width  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiWidthLane, null, new { @Id = "AiWidthLane", @class = "form-control " })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Span Length  ", " Span Length ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiLengthSpan, null, new { @Id = "AiLengthSpan", @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("Bridge Name   ", "Bridge Name  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiBridgeName, null, new { @Id = "AiBridgeName", @class = "form-control " })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Bridge Length    ", " Bridge Length ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiLength, null, new { @Id = "AiLength", @class = "form-control " })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Bridge Width   ", " Bridge Width  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiWidth, null, new { @Id = "AiWidth", @class = "form-control " })
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("No Of Lane   ", " No Of Lane ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiLaneCnt, null, new { @Id = "AiLaneCnt", @class = "form-control " })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("No Of Spn    ", " No Of Span  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiSpanCnt, null, new { @Id = "AiSpanCnt", @class = "form-control " })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Median (m)   ", " Median (m)  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiMedian, null, new { @Id = "AiMedian", @class = "form-control " })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Walk Way  ", " Walk Way ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiWalkway, null, new { @Id = "AiWalkway", @class = "form-control " })
+
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("Super Structure ", "Super Structure ", new { style = "float: left" })
+                                                @*m.AiStrucSuper*@
+                                                @*(List<SelectListItem>)ViewData["Superstructure1"]*@
+                                                @{
+                                                    //List<SelectListItem> myEmptySelectedItem = new List<SelectListItem>();
+                                                    //SelectListItem myItem = new SelectListItem();
+                                                    //myItem.Text = "test";
+                                                    //myItem.Value = "V";
+                                                    //myCol.Add(myItem);
+                                                    //string selectedItem = "V";
+                                                }
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiStrucSuper_mltySelect, (IEnumerable
+                                                            <SelectListItem>)ViewData["Superstructure1"], new { @Id = "AiStrucSuper", @class = "chosen-select", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Parapet Type ", "Parapet Type ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiParapetType_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["ParapetType"], new { @Id = "AiParapetType", @class = "chosen-select", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Bearing Type ", "Bearing Type ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiBearingType_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["BearingType"], new { @Id = "AiBearingType", @class = "form-control,chosen-select", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Expansion Type ", "Expansion Type ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiExpanType_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["ExpansionType"], new { @Id = "AiExpanType", @class = "form-control,chosen-select", @multiple = "true" })
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("Deck Type ", "Deck Type ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiDeckType_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["DeckType"], new { @Id = "AiDeckType", @class = "form-control", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Abutment Type ", "Abutment Type ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiAbutType_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["AbutmentType"], new { @Id = "AiAbutType", @class = "form-control", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Pier type ", "Pier Type ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiPierType_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["PierType"], new { @Id = "AiPierType", @class = "form-control", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+
+
+                                                @Html.Label("No Of Expansion Joint ", "No Of Expansion Joint  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiExpanJointCount, null, new { @Id = "AiExpanJointCount", @class = "form-control " })
+
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("Spacing Of Expansion Joint ", "Spacing Of Expansion Joint  ", new { style = "float: left" })
+
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiExpanJointSpace, null, new { @Id = "AiExpanJointSpace", @class = "form-control " })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Built Year ", "Built Year  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiBuiltYear, null, new { @Id = "AiBuiltYear", @class = "form-control " })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Owner  ", "Owner ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiOwner, null, new { @Id = "AiOwner", @class = "form-control " })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Maintained By  ", "Maintained By  ", new { style = "float: left" })
+                                                @Html.TextBoxFor(m => m._rmAllassetInventory.AiMaintainedBy, null, new { @Id = "AiMaintainedBy", @class = "form-control " })
+
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("GPS Easting  ", "GPS Easting  ", new { style = "float: left" })
+                                                <div class="position-relative c-path float-left w-100">
+                                                    <a onclick="getLocation('Easting', 'AiGpsEasting')" style="cursor:pointer;"><span class="current-location"></span></a>
+                                                    @Html.TextBoxFor(m => m._rmAllassetInventory.AiGpsEasting, null, new { @Id = "AiGpsEasting", @class = "form-control " })
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("GPS Northing  ", "GPS Northing  ", new { style = "float: left" })
+                                                <div class="position-relative c-path float-left w-100">
+                                                    <a onclick="getLocation('Northing', 'AiGpsNorthing')" style="cursor:pointer;"><span class="current-location"></span></a>
+                                                    @Html.TextBoxFor(m => m._rmAllassetInventory.AiGpsNorthing, null, new { @Id = "AiGpsNorthing", @class = "form-control " })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#PrimaryMember">
+                                        >> Primary Member
+                                    </a>
+                                </div>
+                                <div id="PrimaryMember" class="collapse show" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <label style="float: left;">
+                                                    Primary Member
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label("Abutment Walls,Foundations  ", "Abutment Walls,Foundations  ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiAbutFound_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["AbutmentWalls,Foundation"], new { @Id = "AiAbutFound", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+                                            <div class="col-4">
+                                                @Html.Label("Piers,Connection Of Primary Components ", "Piers,Connection Of Primary Components ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiPiersPrimComp_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["Piers,Connectiongofprimarycomponents"], new { @Id = "AiPiersPrimComp", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+                                            <div class="col-4">
+                                                @Html.Label("Bearing,Bearing Seats,Bearing Diaphgram ", "Bearing,Bearing Seats,Bearing Diaphgram ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiBearingSeatDiaphg_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["Bearing,BearingSeats,BearingDiaphgram"], new { @Id = "AiBearingSeatDiaphg", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label(" Beams,Grider,Trusses,Arches", " Beams,Grider,Trusses,Arches ", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiBeamsGridTrusArch_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["Beams,Grider,Trusses,Arches"], new { @Id = "AiBeamsGridTrusArch", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+                                            <br>
+                                            <div class="col-3">
+                                                @Html.Label(" Deck Slab,Pavement", " Deck Slab,Pavement", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiDeckPavement_mltySelect, (IEnumerable
+                                                             <SelectListItem>)ViewData["DeckSlab,Pavement"], new { @Id = "AiDeckPavement", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#SecondaryMember">
+                                        >> Secondary Member
+                                    </a>
+                                </div>
+                                <div id="SecondaryMember" class="collapse show" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <label style="float: left;">
+                                                    Secondary Member
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label(" Signboard,Utilities", " Signboard,Utilities", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiUtilities_mltySelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["Signboard,Utilities"], new { @Id = "AiUtilities", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("Waterway", " Waterway", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiWaterway_mltySelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["Waterway"], new { @Id = "AiWaterway", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label(" Drain Water Down Pipe,Drinage", " Drain Water Down Pipe,Drinage", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiWaterDownpipe_mltySelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["DrainWaterDownPipe,Drainage"], new { @Id = "AiWaterDownpipe", @class = "form-control", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label(" parapet,Railing", " parapet,Railing", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiParapetRailing_mltySelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["parapet,Railing"], new { @Id = "AiParapetRailing", @class = "form-control", @multiple = "true" })
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-5">
+                                                @Html.Label(" Kerb,Sidewalks,Approaches,Approaches Slab", " Kerb,Sidewalks,Approaches,Approaches Slab", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiSidewalksAppSlab_mltySelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["Kerb,Sidewalks,Approaches,ApproachesSlab"], new { @Id = "AiSidewalksAppSlab", @class = "form-control", @multiple = "true" })
+                                            </div>
+                                        </div>
+                                        <div class="row LS1cm">
+                                            <div class="col-3">
+                                                @Html.Label(" Expansion Joint", " Expansion joint", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiExpanJoint_mltySelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["Expansionjoint"], new { @Id = "AiExpanJoint", @class = "form-control", @multiple = "true" })
+
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.Label("  Slope protection,Retaining Wall", "  Slope protection,Retaining Wall", new { style = "float: left" })
+
+                                                @Html.ListBoxFor(m => m._multiSelectDropDownViewModel.AiSlopeRetainWall_mltySelect, (IEnumerable
+                                                     <SelectListItem>)ViewData["Slopeprotection,RetainingWall"], new { @Id = "AiSlopeRetainWall", @class = "form-control", @multiple = "true" })
+                                            </div>
+                                            <div class="col-3">
+                                                @Html.HiddenFor(m => m._rmAllassetInventory.AiPkRefNo, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!--Add Photo begins-->
+                <div class="tab-pane" id="btabs-alt-static-photo" role="tabpanel">
+                    <br>
+                    <div class="col-12">
+                        <label style="float: left;color:red;">
+                            Task
+                            Description
+                        </label>
+                        <br />
+
+                    </div>
+                    <br />
+                    <div class="col-12">
+                        <div class="row">
+                            <label for='files'> Select multiple files:    </label>
+                            <br />
+                            <input id='files' type='file' multiple />
+                            <output id='result' />
+                            <br />
+
+                        </div>
+                        <br />
+                        <div class="row">
+                            <br />
+                        </div>
+                        <div id="divImg" class="row">
+                            <output id="Filelist"></output>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+                <!--Add Photo begins-->
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" onclick="location.href='@Url.Action("Add", "Download")'" class="btn btn-success theme-clr">Confirm</button>
+
+        <button type="button" class="btn btn-outline-info theme-clr" onclick="location.href='@Url.Action("Index", "Download")'" data-dismiss="modal">
+            Cancel
+        </button>
+    </div>
+}

@@ -1,0 +1,114 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.IDivisionService _service;
+@{
+    ViewData["Title"] = "RMU - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "RMU - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    @*string strPageName = ViewBag.PageName;
+        string strPageId = ViewBag.PageID;*@
+
+    var division = (IEnumerable<SelectListItem>)_service.GetList();
+}
+@section Scripts{
+    <script type="text/javascript" src="~/js/RMUMaster.js" asp-append-version="true"></script>
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">RMU</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            RMU
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-lg-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "DivisionSmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" id="txtSmartSearch" placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right" style="line-height: 18px;"><span class="search-icon"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" class="btn btn-sm btn-themebtn" data-target="#AddDivision" data-toggle="modal" data-backdrop="static"><span class="add-icon"></span> Add RMU</button>
+            </div>
+
+            @*Division Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<div class="modal fade" id="AddDivision" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="AddDivisionCenterTitle">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    RMU
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divSave" class="col-lg-12">
+                    <div class="row">
+                        <input type="hidden" id="hdnPkRefNo" />
+                        <div class="form-group col-lg-6">
+                            @Html.Label("Division", "Division")
+                            <select id="ddlDivision" class="form-control validate {required, Division}">
+                                <option>Select Division</option>
+                                @foreach (var v in division)
+                                {
+                                    <option value="@v.Value">@v.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.Label("RMU Code", "RMU Code")
+                            <input id="txtCode" type="text" class="form-control validate {required, RMU Code}" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            @Html.Label("RMU Name", "RMU Name")
+                            <input id="txtName" type="text" class="form-control validate {required, RMU Name}" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCancel" type="button" class="btn btn-sm btn-default">Cancel</button>
+                <button id="btnSave" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+

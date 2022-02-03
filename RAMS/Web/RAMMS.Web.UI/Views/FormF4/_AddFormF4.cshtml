@@ -1,0 +1,214 @@
+﻿@model Tuple<FormF4HeaderRequestDTO, CDataTable>
+@using RAMMS.DTO.RequestBO;
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+@{
+    ViewData["Title"] = "Form F4 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Form F4 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strDisabled = ViewBag.IsEdit ? "" : "grpctrldisabled";
+
+    bool IsAdd = Model.Item1 != null ? false : true;
+    bool IsEdit = !IsAdd && ViewBag.IsEdit;
+
+
+    string formStatus = !IsAdd ? Model.Item1.Status : "";
+    int RefNo = !IsAdd ? Model.Item1.PkRefNo : 0;
+    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(formStatus) || formStatus == RAMMS.Common.StatusList.FormF4Init);
+}
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/FormF4.js" asp-append-version="true"></script>
+    @if (!IsAdd)
+    {
+        <script type="text/javascript">
+            formF4.HeaderData =@Html.Raw(RAMMS.Common.Utility.JSerialize(Model.Item1));
+        </script>
+    }
+
+    <script type="text/javascript">
+             $(document).ready(function () {
+                process.Init("FormF4", "@formStatus", @RefNo);
+             });
+    </script>
+}
+
+
+
+<div class="row" id="frmS1HeaderData">
+    <div class="w-100 float-left bg-body @strDisabled">
+        @*@strDisabled*@
+        <div class="w-100 mh-120" id="divFormF4">
+            <div class="modal-body mh-120 pt-0 pb-0">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div id="" class="form-group mb-0">
+                        @Html.Label("Form F4 No.", "Form F4 No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        <input class="form-control" style="width:300px;" type="text" name="FormRefId" id="FormF4RefNo" disabled />
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3" id="divF4FindDetails">
+                    <div class="row">
+                        <div class="col-lg-10 p-0">
+                            <div class="w-100 form-group mb-0 @(IsEdit ? "grpctrldisabled" : "")">
+                                @if (IsAdd)
+                                {
+                                    <div class="form-group col-md-3" finddetailhide>
+                                        @Html.Label("Division", "Division")
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Division"], "DivCode", "Select Division", new { @Id = "F4HdrDivision", @class = "form-control ", @param = "Division" })
+                                    </div>
+                                    <div class="form-group col-md-3" finddetailhide>
+                                        @Html.Label("District", "District")
+                                        <input type="text" id="F4HdrDistrict" name="Dist" class="form-control" value="" />
+                                    </div>
+                                    <div class="form-group col-md-3" finddetailhide>
+                                        @Html.Label("RMU", "RMU")
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU^Name"], "RmuName", "Select RMU", new { @Id = "F4HdrRMU", @class = "form-control", @param = "RmuName", @onchange = "formF4.F4RMUChange(this)", @rmuCode = "rmuCode", @clear = "rebind" })
+                                    </div>
+                                    <div class="form-group col-md-3" finddetailhide>
+                                        @Html.Label("Section Code", "Section Code")
+                                        @*@Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "Section", "Select Section", new { @Id = "F4HdrSection", @class = "form-control validate {req,Section}", @param = "SectionCode", @onchange = "formF4.F4SectionCodeChange(this)",@sectionCode="sectionCode", @clear = "rebind" })*@
+                                        <select Id="F4HdrSection" name="Section" class="form-control" param="SectionCode" onchange="formF4.F4SectionCodeChange(this,true)" sectionCode="sectionCode">
+                                            <option value="">Select Section Code</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-3" finddetailhide>
+                                        @Html.Label("Section Name", "Section Name")
+                                        <input type="text" id="F4DetSrchSecName" F4SectionName class="form-control FeSectionName" disabled />
+                                    </div>
+                                }
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Code", "Road Code")
+
+                                    @if (IsAdd)
+                                    {
+                                        <select Id="F4HdrRdCode" name="RoadCode" class="form-control validate {req,RoadCode}" param="RoadCode" onchange="formF4.F4RoadCodeChange(this,true)" refnumber="" roadCode="roadCode">
+                                            <option value="">Select Road Code</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @Id = "F4HdrRdCode", @class = "form-control validate {req,RoadCode}", @param = "RoadCode", @onchange = "formF4.F4RoadCodeChange(this)", @refnumber = "", @roadCode = "roadCode", @clear = "rebind" })
+                                    }
+                                    @Html.Hidden("RoadId")
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Name", "Road Name")
+                                    <input type="text" id="F4HdrRdName" name="RoadName" F4RoadName class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Length (km)", "Road Length (km)")
+                                    <input type="text" id="F4HdrRdLength" name="RoadLength" class="form-control" value="" disabled />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Year"], "YearOfInsp", "Select Year", new { @Id = "F4HdrYear", @class = "form-control validate {req,Year of Inspection}", @param = "YearOfInsp", @refnumber = "" })
+                                </div>
+                            </div>
+                        </div>
+                        @if (IsAdd)
+                        {
+                            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                <button id="" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right" findDetails onclick="formF4.FindDetails()">Find Details</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        @{
+                            Html.RenderPartial("_CDataTable", Model.Item2);
+                        }
+                    </div>
+                </div>
+
+                <div id="divF4HeaderInfo" class="col-lg-12 px-lg-5">
+                    @{
+                        var isView = ViewBag.IsEdit ? false : true;
+                    }
+                    <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Crew Leader</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Supervisor"], "CrewLeaderId", "Select Crew Leader", new { @Id = "F4HdrCrewId", @class = "form-control svalidate {req,Crew Leader ID }", @param = "CrewLeaderId", @onchange = " formF4.F4CrewLeader(this," + isView.ToString().ToLower() + ")" })
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input class="form-control svalidate {req,Crew Leader Name }" id="F4CrewLeaderName" name="CrewLeaderName" type="text" value="" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Inspected by</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UserIdInspBy", "Select User", new { @Id = "F4HdrUserId", @class = "form-control svalidate {req,Inspected by User ID }", @param = "UserIdInspBy", @onchange = "formF4.F4UserDetails(this," + isView.ToString().ToLower() + ")" })
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input class="form-control svalidate {req,Inspected by User Name }" id="F4UserameInspBy" name="UserNameInspBy" type="text" value="" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Designation", "Designation")
+                                <input class="form-control svalidate {req,Inspected by User Designation }" id="F4UserDesignationInspBy" name="UserDesignationInspBy" type="text" value="" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
+                                <input class="form-control svalidate {req,Inspected by Date}" id="F4DtInspBy" name="DtInspBy" type="date" value="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @{
+                    if (!IsAdd)
+                    {
+                        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                        {
+                            Form = "FormF4",
+                            RefId = RefNo,
+                            Stage = formStatus
+                        });
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button id="" type="button" class="btn btn-sm btn-outline-theme" onclick="formF4.Cancel()">Cancel</button>
+            @if (Model.Item1 != null && !Model.Item1.SubmitSts && ViewBag.IsEdit)
+            {
+                <button id="" type="button" class="btn btn-sm btn-themebtn" onclick="formF4.Save(false);" saveSubmitBtn>Save</button>
+                @if (IsSupervisor)
+                {
+                    <button id="" type="button" class="btn btn-sm btn-themebtn" onclick="formF4.Save(true);" saveSubmitBtn>Submit</button>
+                }
+            }
+            @if (security.IsExecutive && formStatus == RAMMS.Common.StatusList.FormF4Inspected)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
+            }
+            else if (security.IsHeadMaintenance && formStatus == RAMMS.Common.StatusList.FormF4ExecutiveApproved)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
+            }
+            else if (security.IsRegionManager && formStatus == RAMMS.Common.StatusList.FormF4HeadMaintenanceApproved)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && formStatus == RAMMS.Common.StatusList.FormF4RegionManagerApproved)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Reject</button>
+            }
+
+        </div>
+    </div>
+</div>

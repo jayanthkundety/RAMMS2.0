@@ -1,0 +1,150 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormAGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class:"headcol", autoWidth: true, sortable: false, render: function (data) {
+            if (data.submitSts) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' onclick='javascript:ViewDetailHeader(" + data.no + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' data-target='#FormAAddModal' id='formAHeaderEdit' " + isModifyPerm + " onclick='javascript:openFormAModel(" + data.no + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' " + isViewPerm + " data-target='#FormAAddModal' onclick='javascript:ViewDetailHeader(" + data.no + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var refNoCol = { data: "no", name: "No", title: "No", autoWidth: true, sortable: false, visible: false };
+    var refCol = { data: "referenceNo", name: "No", title: "Reference No", autoWidth: true, sortable: true };
+    var rmuCodeCol = { data: "rmu", name: "RMU Abbreviation", title: "RMU Abbreviation", autoWidth: true, sortable: true };
+    var rmuNameCol = { data: "rmuName", name: "RMU Name", title: "RMU Name", autoWidth: true, sortable: true };
+    var rmuSectionCode = { data: "sectionCode", name: "Section Code", title: "Section Code", autoWidth: true, sortable: true };
+    var rmuSection = { data: "section", name: "Section Name", title: "Section Name", autoWidth: true, sortable: true };
+    var monthCol = {
+        data: "inspDt", type: "date", format: 'DD-MM-YYYY', name: "DateofInspection", title: "Date of Inspection", autoWidth: true, sortable: true,
+        render: function (data) {
+            var d = new Date(data);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true, sortable: true };
+    var assetgrpCol = { data: "assetGroupCode", name: "AssetGroupCode", title: "Asset Group", autoWidth: true, sortable: true };
+    /*var statusCodeCol = {
+        data: "submitSts",
+        render: function (data) {
+            if (data) {
+                return "Submitted";
+            }
+            else {
+                return "Not Submitted";
+            }
+        }, name: "Status", title: "Status", autoWidth: true, sortable: true
+    };*/
+    var statusCodeCol = {
+        data: "processStatus", name: "Status", title: "Status", autoWidth: true, sortable: true };
+    var section = { data: "section", name: "Section", title: "Section", autoWidth: true, sortable: true };
+    var ownernCol = { data: "usernameVer", name: "UsernameVer", title: "User Name", autoWidth: true, sortable: true };
+    var verByCol = { data: "usernameRcvdAuth", name: "UsernameRcvdAuth", title: "Received By", autoWidth: true, sortable: true };
+    var vettedby = { data: "usernameVetAuth", name: "Vetted by", title: "Vetted By", autoWidth: true, sortable: true };
+
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(refCol);
+    table_columns.push(rmuCodeCol);
+    table_columns.push(rmuNameCol);
+    table_columns.push(rmuSectionCode);
+    table_columns.push(rmuSection);
+    table_columns.push(roadCodeCol);
+    table_columns.push(monthCol);
+    table_columns.push(assetgrpCol);
+    table_columns.push(statusCodeCol);
+    table_columns.push(ownernCol);
+    table_columns.push(verByCol);
+    table_columns.push(vettedby);
+
+    function PrintForm(id) {
+        window.location.href = '/nod/HFormJDownload?id=' + id;
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+        filterData.SmartInputValue = $("#FormASmartSearch").val();
+        filterData.Rmu = $("#formADetSrchRMU").val();
+        filterData.Section = $("#formADetSrchSec").val();
+        filterData.RoadCode = $("#formADetSrchRoadCode").val();
+        filterData.AssetGroupCode = $("#formADetSrchAsstGrp").val();
+        filterData.FromChKM = $("#formAFromKm").val();
+        filterData.FromChM = $("#formAFromM").val();
+        filterData.ToChKM = $("#formAToKm").val();
+        filterData.ToChM = $("#formAToM").val();
+
+        $('#FormAGridView').DataTable({
+            ajax: {
+                url: "/NOD/HLoadHeaderList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+    function FormHGridRefresh() {
+        oTable = $('#FormAGridView').DataTable();
+        oTable.columns(0).search($("#FormASmartSearch").val().trim());
+        oTable.columns(1).search($("#formHDetSrchRMU").val().trim());
+        oTable.columns(2).search($("#formHDetSrchSec").val().trim());
+        if ($("#formHDetSrchRoadCode option:selected").val() != "") {
+            oTable.columns(3).search($("#formHDetSrchRoadCode option:selected").val().trim());
+        }
+        else {
+            oTable.columns(3).search("");
+        }
+        oTable.columns(4).search($("#formHDetSrchAsstGrp").val().trim());
+        oTable.columns(5).search($("#formHDateOfInspection").val().trim());
+        oTable.columns(7).search($("#formHFromKm").val().trim());
+        oTable.columns(8).search($("#formHFromM").val().trim());
+        oTable.columns(9).search($("#formHToKm").val().trim());
+        oTable.columns(10).search($("#formHToM").val().trim());
+        oTable.data = filterData;
+        oTable.draw();
+    }
+    $(document).ready(function () {
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        
+        $('#formHSearchBtn').click(function () {
+            FormHGridRefresh();
+        });
+    });
+</script>
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>

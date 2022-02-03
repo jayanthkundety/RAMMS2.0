@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <style name="MyTheme" parent="MyTheme.Base">
+  </style>
+  <!-- Base theme applied no matter what API -->
+  <style name="MyTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!--If you are using revision 22.1 please use just windowNoTitle. Without android:-->
+    <item name="windowNoTitle">true</item>
+    <item name="textAllCaps">false</item>
+    <!--We will be using the toolbar so no need to show ActionBar-->
+    <item name="windowActionBar">false</item>
+    <!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette-->
+    <!-- colorPrimary is used for the default action bar background -->
+    <item name="colorPrimary">#232F3E</item>
+    <!-- colorPrimaryDark is used for the status bar -->
+    <item name="colorPrimaryDark">#232F3E</item>
+    <!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+    <item name="colorAccent">#232F3E</item>
+    <!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight and colorSwitchThumbNormal. -->
+    <item name="windowActionModeOverlay">true</item>
+
+    <item name="android:datePickerDialogTheme">@style/MyDialogTheme</item>
+    <!--<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>-->
+  </style>
+  <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+    <item name="colorAccent">#232F3E</item>
+  </style>
+  <style name="MyTheme.Splash" parent="MyTheme.Base">
+    <item name="android:windowBackground">@drawable/splash_screen</item>
+  </style>
+
+  <style name="MyDialogTheme" parent="android:Theme.Material.Dialog">
+    <item name="android:datePickerStyle">@style/MyDatePicker</item>
+  </style>
+
+  <style name="MyDatePicker" parent="android:Widget.Material.DatePicker">
+    <item name="android:datePickerMode">spinner</item>
+  </style>
+</resources>

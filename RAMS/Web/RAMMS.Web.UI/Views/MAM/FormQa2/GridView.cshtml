@@ -1,0 +1,177 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using RAMMS.Domain.Models;
+@model RAMMS.Web.UI.Models.FormQa2Model;
+
+@{
+    ViewData["Title"] = "Grid View Page";
+}
+<script src="~/js/NodFormQa2.js" asp-append-version="true"></script>
+
+<style>
+    .box-sdw-0020 {
+        box-shadow: 0px 0px 2px 0px;
+    }
+
+    .br-rds-25 {
+        border-radius: 25px;
+    }
+</style>
+
+<script>
+    //////function AddMAMClick() {
+    //////    $("body").addClass("loading");
+    //////    $.ajax({
+    //////        url: '/NODFormQa2/AddMAM',
+    //////        type: 'POST',
+    //////        success: function (data) {
+
+    //////           // $("#div-data-container").html(data);
+    //////           // $("body").removeClass("loading");
+    //////        }
+    //////    })
+    //////}
+
+    $(document).ready(function () {
+        // detailedlistgrid();
+    });
+
+    ////function detailedlistgrid() {
+    ////    var headerid = localStorage.getItem("headeridvalue");
+    ////    $.ajax({
+    ////        url: '/NODFormQa2/DetailedListEdit',
+    ////        data: { headerid },
+    ////        type: 'POST',
+    ////        success: function (data) {
+    ////            $("#DetailListGrid").html(data);
+    ////        }
+    ////    });
+    ////}
+</script>
+
+@*@using (Html.BeginForm())
+    {*@
+<div class="modal-content">
+    <form id="AddFormQa2Form">
+        <div class="modal-body">
+            <div class="bg-body-light box-sdw-0020 br-rds-25">
+                <div class="row p-3">
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("Road Code", "Road Code", new { style = "float: left" })
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.RoadCode, (IEnumerable
+                                 <SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @Id = "FormQa2DetRoadCode", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("Road Name", "Road Name", new { style = "float: left" })
+                            @Html.TextBoxFor(m => m.SaveFormQa2Model.RoadName, new { @Id = "FormQa2DetRoadName", @readonly = "readonly", @class = "form-control " })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("RMU", "RMU", new { style = "float: left" })
+                            @Html.TextBoxFor(m => m.SaveFormQa2Model.Rmu, new { @Id = "FormQa2DetRmu", @readonly = "readonly", @class = "form-control " })
+
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            @Html.Label("Month", "Month", new { style = "float: left" })
+                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.Month, (IEnumerable
+                                <SelectListItem>)ViewData["Months"], "Select Month", new { @Id = "FormQa2DetMonth", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-outline-info theme-clr" data-toggle="modal" data-target="#AddNODModal" onclick="javascript:AddNODClick();" style="margin-top: 27px;">Create new</button>
+                    </div>
+                </div>
+            </div>
+            @*Add MAM Modal*@
+            <div class="modal fade" id="AddMAMModal" tabindex="-1" role="dialog"
+                 aria-labelledby="AddMAMModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="AddMAMModalCenterTitle">Add Form Qa2 Details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        @*Patial View for add Class to bind data in partial view*@
+                        <div id="div-data-container">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="DetailListGrid" class="p-2">
+                @*our view*@
+                @{
+                    Html.RenderPartial("_DetailGridList.cshtml");
+                }
+            </div>
+
+            <br />
+
+            @*Page @(Model.SaveFormQa2Model.FormQa2Details.ToPagedList().PageCount < Model.SaveFormQa2Model.FormQa2Details.ToPagedList().PageNumber ? 0 : Model.SaveFormQa2Model.FormQa2Details.ToPagedList().PageNumber) of @Model.SaveFormQa2Model.FormQa2Details.ToPagedList().PageCount
+                @Html.PagedListPager((IPagedList)Model.SaveFormQa2Model.FormQa2Details, Page_No => Url.Action("GridView",
+                     new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))*@
+
+            @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                 @Html.PagedListPager(Model, Page_No => Url.Action("Index",
+                new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))*@
+
+            <div class="box-sdw-0020 col-5 p-2" style="margin:0 auto;">
+                <h5 class="pt-2 pl-3">Inspected By:</h5>
+                <div class="m-2">
+                    @Html.Label("Name", "Name", new { @class = "col-4", style = "float: left", })
+
+                    @*Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model., (IEnumerable
+                                                            <SelectListItem>)ViewData["RD_Code"], "Select Name", new { @Id = "InspectedName", @class = "form-control" })
+                        </div>*@
+                    @*<div class="m-2">
+                                @Html.Label("Designion", "Designion", new { @class = "col-4", style = "float: left", })
+
+                                @Html.TextBoxFor(m => m.SaveFormQa2Model.DesignationPrp, new { @Id = "InspectedDesignName", @class = "form-control " })
+
+                            </div>
+                            <div class="m-2">
+                                @Html.Label("Date", "Date", new { @class = "col-4", style = "float: left", })
+
+                                @Html.TextBoxFor(m => m.SaveFormQa2Model.DtPrp, new { @Id = "InspectedDate", @class = "form-control " })
+                            </div>
+                            <h5 class="pt-2 pl-3">Verified By:</h5>
+                            <div class="m-2">
+                                @Html.Label("Name", "Name", new { @class = "col-4", style = "float: left", })
+
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa2Model.UsernameVer, (IEnumerable
+                                                                <SelectListItem>)ViewData["RD_Code"], "Select Name", new { @Id = "VerifiedName", @class = "form-control" })
+                            </div>
+                            <div class="m-2">
+                                @Html.Label("Designion", "Designion", new { @class = "col-4", style = "float: left", })
+
+                                @Html.TextBoxFor(m => m.SaveFormQa2Model.DesignationVer, new { @Id = "VerifiedDate", @class = "form-control " })
+                            </div>
+                            <div class="m-2">
+                                @Html.Label("Date", "Date", new { @class = "col-4", style = "float: left", })
+
+                                @Html.TextBoxFor(m => m.SaveFormQa2Model.VerifiedDt, new { @Id = "VerifiedDate", @class = "form-control " })
+                            </div>
+                        </div>*@
+
+                    <div class="row float-right mt-2">
+                        <button type="button" onclick="location.href='@Url.Action("Index", "MAMFormQa2")'" class="btn btn-success theme-clr m-2" id="saveFormQa2Btn" data-toggle="modal">Save</button>
+
+                        <button type="button" onclick="location.href='@Url.Action("Index", "MAMFormQa2")'" class="btn btn-success theme-clr m-2" id="SubmitFormQa2Btn">Submit</button>
+                        <button type="button" class="btn btn-danger theme-clr m-2" onclick="location.href='@Url.Action("Index", "NODFormQa2")'">
+                            Cancel
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@*}*@

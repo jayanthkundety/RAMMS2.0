@@ -1,0 +1,416 @@
+﻿@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormS2Service formS2
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@model FormS2HeaderRequestDto
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form S2 - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ASSET MAINTANENCE - Form S2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    IEnumerable<SelectListItem> year = formS2.GetYears() as IEnumerable<SelectListItem>;
+    IEnumerable<SelectListItem> rmu = ViewData["RMU"] as IEnumerable<SelectListItem>;
+    List<SelectListItem> _quarter = new List<SelectListItem>();
+    _quarter.Add(new SelectListItem { Value = "1", Text = "Q1" });
+    _quarter.Add(new SelectListItem { Value = "2", Text = "Q2" });
+    _quarter.Add(new SelectListItem { Value = "3", Text = "Q3" });
+    _quarter.Add(new SelectListItem { Value = "4", Text = "Q4" });
+    IEnumerable<SelectListItem> user = await usr.GetUserList();
+    IEnumerable<SelectListItem> quarter = _quarter as IEnumerable<SelectListItem>;
+    IEnumerable<SelectListItem> activity = (await ddlService.GetLookups(new DDLookUpDTO
+    {
+        Type = "Act-FormS2"
+    })).Select(s => new SelectListItem
+    {
+        Text = s.DdlTypeCode + "-" + s.DdlTypeValue,
+        // Value = s.DdlPkRefNo.ToString()
+        Value = s.DdlPkRefNo.ToString()
+    }).ToArray();
+    IEnumerable<SelectListItem> priority = (await ddlService.GetLookups(new DDLookUpDTO
+    {
+        Type = "Priority"
+    })).Select(s => new SelectListItem
+    {
+        Text = s.DdlTypeValue,
+        Value = s.DdlPkRefNo.ToString()
+    }).ToArray();
+    string PrioritizedDate = Model.DtPrioritised.HasValue ? Model.DtPrioritised.Value.ToString("yyyy-MM-dd") : "";
+    string ScheduledDate = Model.DtSchld.HasValue ? Model.DtSchld.Value.ToString("yyyy-MM-dd") : "";
+    string SubmittedDate = Model.DtSub.HasValue ? Model.DtSub.Value.ToString("yyyy-MM-dd") : "";
+    string VettedDate = Model.DtVet.HasValue ? Model.DtVet.Value.ToString("yyyy-MM-dd") : "";
+    string AgreedDate = Model.DtAgrd.HasValue ? Model.DtAgrd.Value.ToString("yyyy-MM-dd") : "";
+    int IsAlreadyExist = Model.PkRefNo > 0 ? 1 : 0;
+    int IsView = Model.IsViewMode ? 1 : 0;
+}
+<input type="hidden" id="HdnHeaderPkId" value="@Model.PkRefNo" />
+<input type="hidden" id="IsAlreadyExists" value="@IsAlreadyExist" />
+<input type="hidden" id="IsHView" value="@IsView" />
+<input type="hidden" id="IsDView" value="" />
+<div class="row" id="headerDiv">
+    <div class="w-100 float-left bg-body">
+        <div class="w-100 mh-120">
+            <div class="col-md-12">
+                <div class="bg-white rounded pt-3 pb-1 px-md-1 landing-division w-100 mb-3 mt-3">
+                    <div class="row">
+                        <div class="col-lg-10" id="headerFindDiv">
+                            <div class="form-group col-md-4">
+                                @Html.Label("RMU", "RMU")
+                                @Html.DropDownListFor(Ahdr => Ahdr.Rmu, rmu, "Select RMU", new { @Id = "ddlRmu", @class = "form-control validate {required, RMU }" })
+
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.Label("Activity Code", "Activity Code")
+                                @Html.DropDownListFor(Ahdr => Ahdr.ActId, activity, "Select Activity Code", new { @Id = "ddlActivityCode", @class = "form-control validate {required, Activity Code }" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.Label("Activity Name", "Activity Name")
+                                <input id="txtActivityName" type="text" class="form-control" disabled />
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.Label("Year (YYYY)", "Year (YYYY)")
+                                @Html.DropDownListFor(Ahdr => Ahdr.Year, year, "Select Year", new { @Id = "ddlYear", @class = "form-control validate {required, Year }" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.Label("Quarter", "Quarter")
+                                @Html.DropDownListFor(Ahdr => Ahdr.QuaterId, quarter, "Select Quarter", new { @Id = "ddlQuarter", @class = "form-control validate {required, Quarter }" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.Label("Reference No.", "Reference No.")
+                                <input id="txtReferenceNo" value="@Model.RefId" readonly type="text" class="form-control validate {required, Reference No. }" />
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                            <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div class="grid-btns">
+                        <button type="button" id="btnOpenDetailView" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#FormS2AdddetailsModal" data-backdrop="static" onclick=""><span class="intbl-add-icon"></span></button>
+                    </div>
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        @{
+                            Html.RenderPartial("_DetailGridList.cshtml");
+                        }
+                    </div>
+                </div>
+                @{
+                    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.S2Init);
+                }
+                <div class="clear-b"></div>
+                <div class="row">
+                    <div id="" class="col-lg-10 offset-lg-1">
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Prioritized by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+
+                                    @Html.DropDownListFor(Ahdr => Ahdr.UseridPrioritised, user, "User Id", CHTMLControls.GetHtmlAttribute("ddlPrioritizedId", "form-control view", IsSupervisor))
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input id="txtPrioritizedName" type="text" class="form-control" value="@Model.UserNamePrioritised" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input id="txtPrioritizedDesignation" type="text" class="form-control" value="@Model.UserDesignationPrioritised" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="txtPrioritizedDate" value="@PrioritizedDate" class="form-control view" @(IsSupervisor ? "" : "disabled='disabled'") />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Scheduled by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+                                    @Html.DropDownListFor(Ahdr => Ahdr.UseridSchld, user, "User Id", CHTMLControls.GetHtmlAttribute("ddlSchduledUserId", "form-control view", IsSupervisor))
+
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input id="txtScheduledName" type="text" class="form-control" value="@Model.UserNameSchId" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input id="txtScheduledDesignation" type="text" class="form-control" value="@Model.UserDesignationSchId" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="txtScheduledDate" value="@ScheduledDate" class="form-control view" @(IsSupervisor ? "" : "disabled='disabled'") />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Submitted by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+                                    @Html.DropDownListFor(Ahdr => Ahdr.UseridSub, user, "User Id", CHTMLControls.GetHtmlAttribute("ddlSubmittedUserId", "form-control view", IsSupervisor))
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input id="txtSubmittedName" type="text" class="form-control" value="@Model.UserNameSub" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input id="txtSubmittedDesignation" type="text" class="form-control" value="@Model.UserDesignationSub" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="txtSubmittedDate" value="@SubmittedDate" class="form-control view" @(IsSupervisor ? "" : "disabled='disabled'") />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Vetted by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+                                    @Html.DropDownListFor(Ahdr => Ahdr.UseridVet, user, "User Id", new { @Id = "ddlVettedUserId", @class = "form-control view", @disabled = "disabled" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input id="txtVettedName" type="text" class="form-control" value="@Model.UserNameVet" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input id="txtVettedDesignation" type="text" class="form-control" value="@Model.UserDesignationVet" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="txtVettedDate" value="@VettedDate" class="form-control view" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Agreed by</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-3 float-left">
+                                    <label>User Id</label>
+                                    @Html.DropDownListFor(Ahdr => Ahdr.UseridAgrd, user, "User Id", new { @Id = "ddlAgreedUserId", @class = "form-control view", @disabled = "disabled" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input id="txtAgreedName" type="text" class="form-control" value="@Model.UserNameAgrd" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input id="txtAgreedDesignation" type="text" class="form-control" value="@Model.UserDesignationAgrd" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" id="txtAgreedDate" value="@AgreedDate" class="form-control view" disabled="disabled" />
+                                </div>
+                            </div>
+                        </div>
+                        @{
+                            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                            {
+                                Form = "FormS2",
+                                RefId = Model.PkRefNo,
+                                Stage = Model.Status
+                            });
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button type="button" id="btnHCancel" class="btn btn-sm btn-outline-theme" onclick="">Cancel</button>
+            @if (!Model.IsViewMode)
+            {
+                <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+                @if (IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.S2Init))
+                {
+                    <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                }
+            }
+            @if (security.IsExecutive && Model.Status == RAMMS.Common.StatusList.S2Submitted)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Vetted By');">Approve / Vetted</button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && Model.Status == RAMMS.Common.StatusList.S2Vetted)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Agreed By');">Approve / Agreed</button>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="FormS2AdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormS2AdddetailsModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormS2AdddetailsModalid">Add Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            @* Patial View for add Class to bind data in partial view *@
+            <div id="div-dtl-container">
+                <input type="hidden" id="hdnDetailPkNo" value="" />
+                <form id="FormAddDetails" action="">
+                    <div class="modal-body bg-body p-0">
+                        <div class="d-flex justify-content-center pt-3 pb-3">
+                            <div class="form-group mb-0">
+                                @Html.Label("Form S2 No.", "Form S2 No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                                <input type="text" id="txtDReference" value="@Model.RefId" class="form-control" style="width:400px;" disabled />
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="w-100 float-left mh-250 bg-white pt-3" style="border-top: 1px solid #dee2e6;">
+                                    <div class="form-group col-lg-8 mb-0">
+                                        <div class="row">
+                                            <div class="form-group col-lg-6">
+                                                @Html.Label("Road Code", "Road Code")
+                                                <select id="ddlDRoadCode" class="form-control viewD  validate {required, Road Code}">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                @Html.Label("Road Name", "Road Name")
+                                                <input id="txtDRoadName" type="text" class="form-control" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clear-b"></div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Paved Length (L)", "Paved Length (L)")
+                                        <input id="txtDPavedLength" type="text" class="form-control" disabled />
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Unpaved Length (L)", "Unpaved Length (L)")
+                                        <input id="txtDUnpavedLength" type="text" class="form-control" disabled />
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Road Location Sequence", "Road Location Sequence")
+                                        <input id="txtDRoadLocationSequence" type="text" class="form-control viewD " />
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Priority", "Priority")
+                                        <select id="ddlDPriority" class="form-control viewD ">
+                                            <option value="">Select Priority</option>
+                                            @foreach (var l in priority)
+                                            {
+                                                <option value="@l.Value">@l.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Work Qty", "Work Qty")
+                                        <input id="txtWorkQty" type="text" class="form-control numeric viewD " />
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("ADP", "ADP")
+                                        <input id="txtDADP" type="text" class="form-control numeric viewD " />
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Crew Required(Per day)", "Crew Required(Per day)")
+                                        <input id="txtDCrewday" type="text" class="form-control numeric viewD" />
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        @Html.Label("Crewday Allocated for this Quarter", "Crew Allocated for this Quarter")
+                                        <div class="row">
+                                            <div class="col-3 float-left pr-0">
+                                                <input id="txtDCCrewDay" type="text" disabled class="form-control numeric viewD " />
+                                            </div>
+                                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> @Html.Label("x", "x")</div>
+                                            <div class="col-3 float-left pl-0 pr-0">
+                                                <input id="txtDCTotalDay" type="text" class="form-control numeric viewD" />
+                                            </div>
+                                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> @Html.Label("=", "=")</div>
+                                            <div class="col-4 float-left pl-0">
+                                                <input id="txtDCRemainingDay" type="text" disabled class="form-control numeric viewD" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        @Html.Label("Target %", "Target %")
+                                        <input id="txtDTarget" type="text" min="0" max="100" maxlength="5" class="form-control numeric viewD" />
+                                    </div>
+
+                                    <div class="form-group col-lg-12">
+                                        <div class="accordion custom-accordion mt-1 mb-1">
+                                            <div class="card mb-0">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="m-0">
+                                                        <span class="custom-accordion-title py-1">
+                                                            <span class="float-left">
+                                                                Scheduled Week No.
+                                                            </span>
+                                                        </span>
+                                                    </h5>
+                                                </div>
+                                                <div class="avowmodal-form formgrp-section">
+                                                    <div class="card-body p-2">
+
+                                                        <div class="w-100">
+                                                            <table class="w-100 dataTable dataTables_scroll schedule-tbl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="text-center">Year <span id="spanYear"></span></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div id="divWeeks" class="d-flex">
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-8 txtarea-107">
+                                        @Html.Label("Remarks", "Remarks")
+                                        <textarea id="txtDRemarks" class="form-control viewD"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer float-right w-100">
+                        <button type="button" id="btnDCancel" class="btn btn-sm btn-outline-theme" onclick="">Cancel</button>
+                        <button id="btnDSaveAndContinue" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+                        <button id="btnDSaveAndExit" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/js/MAMFormS2.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function () {
+        process.Init("FormS2", "@Model.Status", @Model.PkRefNo);
+        $('.sch-colgroup li button').on('click', function () {
+            $(this).toggleClass('active')
+        });
+        InitnumericValidation();
+    });
+</script>
+

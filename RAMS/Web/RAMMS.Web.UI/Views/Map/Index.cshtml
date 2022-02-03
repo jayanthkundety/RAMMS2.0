@@ -1,0 +1,417 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    ViewData["Title"] = "Road Condition Mapping - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Road Condition Mapping - Road Asset Management and Maintenance System";
+}
+<form name="mapFilter" class="row rd-mapfilter">
+    <div class="col-lg-12">
+        <div class="row d-flex justify-content-between">
+            <div class="col-lg-4">
+                <span class="mb-0 font-weight-semibold font-16 text-white float-left" style="margin-top: 11px;">
+                    <a href="javascript:void(0)" onclick="navigateToSection()" title="Back" class="text-white pt-2"><span class="backarrow-icon-white mr-2" style="top: 0;"></span> Back</a>
+                </span>
+            </div>
+            <div class="">
+                <div class="road-map-legend" id="mpdLegend">
+                    <span class="pl-3 pr-3 pt-1 pb-1 map-legend-content">
+                        <span class="legend-section right-border pl-1">
+                            MPD
+                            <i class="fa fa-2x fa-caret-up pl-3 icon" aria-hidden="true"></i>
+                        </span>
+                        <span class="legend-section right-border">
+
+                            <span class="notify-box bg-green mr-2"></span>
+                            >=0.40
+                            <span class="notify-box bg-red ml-4 mr-3"></span>
+                            < 0.40
+                        </span>
+                        @*<span class="legend-section pr-1">
+                                <span class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </span>
+                            </span>*@
+                    </span>
+                </div>
+                <div class="road-map-legend" id="iriLegend">
+                    <span class="pl-3 pr-3 pt-1 pb-1 map-legend-content">
+                        <span class="legend-section right-border pl-1">
+                            IRI
+                            <i class="fa fa-2x fa-caret-up pl-3 icon" aria-hidden="true"></i>
+                        </span>
+                        <span class="legend-section right-border">
+
+                            <span class="notify-box bg-green mr-2"></span>
+                            >0.00 - 4.99
+                            <span class="notify-box ml-4 mr-2" style="background-color:orange"></span>
+                            5.00 - 7.99
+                            <span class="notify-box bg-red ml-4 mr-2"></span>
+                            ≥ 8.00
+                            <span class="notify-box bg-dark ml-4 mr-2"></span>
+                            Unaccessed
+
+                        </span>
+                        @*<span class="legend-section pr-1">
+                                <span class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </span>
+                            </span>*@
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group float-right map-legend-content pl-2 pr-2 mt-2 pb-0 ml-1 w-130px">
+                    <select class="form-control" id="second-level" onchange="initMap(); showLegend()">
+                        <option value="IRI" selected>IRI</option>
+                        <option value="MPD">MPD</option>
+                        <option value="RESIDUAL+LIFE">Residual Life</option>
+                    </select>
+                </div>
+                <div class="form-group float-right map-legend-content pl-2 pr-2 mt-2 pb-0 w-90px">
+                    <select class="form-control" id="third-level" onchange="initMap()">
+                        <option value="L1" selected>Left</option>
+                        <option value="R1">Right</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div id="map" class="rd-map"></div>
+</div>
+<div id="capture" style="display: none;"></div>
+<script>
+    var latlanForRoads = {
+        Q1231: { lat: 4.5481702, lan: 114.05933598 },
+        Q645: { lat: 4.41652086, lan: 114.01758104 },
+        Q353: { lat: 4.37990709, lan: 113.9851094 },
+        Q290: { lat: 4.35258486, lan: 114.0000509 },
+        Q292: { lat: 4.3640789, lan: 113.96960547 },
+        Q20072D: { lat: 4.32172645, lan: 113.96453156 },
+        Q20072C: { lat: 4.27556354, lan: 113.94174357 },
+        Q20072B: { lat: 3.69791216, lan: 113.49463708 },
+        Q2007: { lat: 4.06382084243006, lan: 113.834337924871 },// value not in excel
+        Q287: { lat: 4.06179995, lan: 113.84707968 },
+        Q3080: { lat: 4.30622643, lan: 113.99663536 },
+        Q320: { lat: 4.57909147, lan: 113.98187717 },
+        Q650: { lat: 4.43220944, lan: 114.00373683 },
+        Q664: { lat: 4.40199403, lan: 113.98582568 },
+        Q1902: { lat: 4.41318557, lan: 114.0189418 },
+        Q658: { lat: 4.37629381, lan: 113.99246274 },
+        Q3073: { lat: 4.36218917, lan: 113.98637034 },
+        Q1901: { lat: 4.37380582, lan: 113.99835268 },
+        Q683: { lat: 4.36470205, lan: 113.9685865 },
+        Q655: { lat: 4.31439271, lan: 114.03190313 },
+        Q656: { lat: 4.30625903, lan: 114.02982299 },
+        Q3079: { lat: 4.30504416, lan: 113.99665704 },
+        Q3074: { lat: 4.30614868, lan: 113.99584016 },
+        Q3078: { lat: 4.31043369, lan: 113.99676084 },
+        Q657: { lat: 4.30919325, lan: 114.03104411 },
+        Q3075: { lat: 4.31662484, lan: 114.00065463 },
+        Q3076: { lat: 4.31740351, lan: 114.00569607 },
+        Q3077: { lat: 4.31438841, lan: 113.99934075 },
+        Q288: { lat: 4.27523297, lan: 113.94263107 },
+        Q3008: { lat: 4.2523752, lan: 113.92774925 },
+        Q3009: { lat: 4.24678435, lan: 113.92371458 },
+        Q286: { lat: 4.096154, lan: 113.96515888 },
+        Q285: { lat: 3.99168183, lan: 113.94482342 },
+        Q21_1: { lat: 3.8478799, lan: 114.10958855 },
+        Q21_2: { lat: 3.72478525, lan: 114.16206077 },
+        Q21_3: { lat: 3.70895322, lan: 114.19198943 },
+        Q21_4: { lat: 3.76838415, lan: 114.38721812 },
+        Q3186: { lat: 3.83134404, lan: 114.09332224 },
+        Q686: { lat: 3.97479058, lan: 114.10083065 },
+        Q693: { lat: 3.97442268, lan: 114.03620182 },
+        Q732: { lat: 3.97340602, lan: 114.048974 },
+        Q354: { lat: 4.10029341, lan: 113.95842989 },
+        Q756: { lat: 4.11756484, lan: 113.97662571 },
+        Q684: { lat: 4.14095803, lan: 113.9168146 },
+        Q638: { lat: 4.11266159, lan: 113.82560282 },
+        Q1115: { lat: 4.1061258, lan: 113.82840567 },
+        Q637: { lat: 4.05836429, lan: 113.84242556 },
+        Q697: { lat: 4.06576453, lan: 113.80137907 },
+        Q696: { lat: 4.06591897, lan: 113.79298353 },
+        Q636: { lat: 4.0558952, lan: 113.80947868 },
+        Q1953: { lat: 4.06408958, lan: 113.83135557 },
+        Q1114: { lat: 4.06343795, lan: 113.848758 },
+        Q685: { lat: 4.09642612, lan: 113.86415318 },
+        Q1117: { lat: 4.09807598, lan: 113.86119478 },
+        Q692: { lat: 4.09516297, lan: 113.93966552 },
+        Q1297: { lat: 4.03375626, lan: 113.82624166 },
+        Q1294: { lat: 4.02330141, lan: 113.845519 },
+        Q1296: { lat: 4.01276424, lan: 113.84822387 },
+        Q695: { lat: 4.16662407, lan: 114.01790045 },
+        Q641: { lat: 4.14493498, lan: 114.00435525 },
+        Q289: { lat: 4.12932713, lan: 114.40850093 },
+        Q669: { lat: 4.17852442, lan: 114.31531905 },
+        Q670: { lat: 4.17996348, lan: 114.32743712 },
+        Q676: { lat: 4.19343458, lan: 114.34192603 },
+        Q672: { lat: 4.1913307, lan: 114.3826322 },
+        Q1904: { lat: 4.19343458, lan: 114.34192603 },
+        Q643: { lat: 4.13894158, lan: 114.40229832 },
+        Q691: { lat: 4.12847802, lan: 114.34012397 },
+        Q674: { lat: 4.12311725, lan: 114.3674047 },
+        Q1084: { lat: 3.86714332, lan: 113.71680735 },
+        Q648: { lat: 3.86278048, lan: 113.71478429 },
+        Q1056: { lat: 3.86282302, lan: 113.71696167 },
+        Q647: { lat: 3.83182456, lan: 113.75352802 },
+        Q284: { lat: 3.80784447, lan: 113.74649912 },
+        Q291: { lat: 3.86109814, lan: 113.71530408 },
+        Q283: { lat: 3.80255082, lan: 113.75437571 },
+        Q281: { lat: 3.72402222, lan: 113.77963367 },
+        Q646: { lat: 3.7354626, lan: 113.79003097 },
+        Q644: { lat: 3.7454457, lan: 113.78394778 },
+        Q278_1: { lat: 3.57069295, lan: 113.64217348 },
+        Q1085: { lat: 3.7864301, lan: 113.657122 },
+        Q282: { lat: 3.79725989, lan: 113.64833033 },
+        Q1055: { lat: 3.86587367, lan: 113.88023233 },
+        Q675: { lat: 4.51518947, lan: 114.03243244 },
+        Q661: { lat: 4.47402627, lan: 114.01162767 },
+        Q667: { lat: 4.42294019, lan: 114.00815329 },
+        Q651: { lat: 4.38282323, lan: 113.98240444 },
+        Q652: { lat: 4.35821403, lan: 113.97100935 },
+        Q653: { lat: 4.34009564, lan: 113.99142218 },
+        Q1903: { lat: 4.37248574, lan: 114.00106398 },
+        Q681: { lat: 4.42924777, lan: 114.02114566 },
+        Q3188: { lat: 4.54721907, lan: 114.06015261 },
+        Q1295: { lat: 4.03373854, lan: 113.82369547 },
+        Q640: { lat: 4.06563854, lan: 113.83203776 },
+        Q694: { lat: 4.09120352, lan: 113.96114237 },
+        Q757: { lat: 4.07906944, lan: 113.95328734 },
+        Q3187: { lat: 4.24794043, lan: 114.04724548 },
+        Q653_1: { lat: 4.34010734, lan: 113.9913943 },
+        Q1231A: { lat: 4.50470933, lan: 114.0421255 },
+        Q1231B: { lat: 4.54694746, lan: 114.0592768 },
+        Q773:{ lat:4.044597, lan: 114.8075 },
+        Q1086: { lat: 3.75119167, lan: 115.4508333 },
+        Q1275:{	lat:3.73988333,lan:	115.465},
+        Q1276: { lat: 3.75086111, lan: 115.4552778 },
+        Q1277: { lat: 3.75118056, lan: 115.4519444 },
+        Q1278: { lat: 3.74001944, lan: 115.4683333 },
+        Q1279: { lat:3.75073056,lan:115.4502778 },
+        Q279: { lat: 3.65125833, lan: 113.7147222 },
+        Q1048: { lat: 3.571225, lan: 113.7152778 },
+        Q1052: { lat: 3.80560556, lan: 113.8594444 },
+        Q1053: { lat: 3.83441111, lan: 113.8461111 },
+        Q1054: { lat: 3.86701111, lan: 113.8527778 },
+        Q1116: {lat: 4.064069, lan: 113.8124 },
+        Q649: { lat: 4.17486944, lan: 114.3205556}
+        }
+    var map, mapCoordinates;
+    var zoom;
+        $(document).ready(function () {
+            document.getElementById("second-level").value = 'IRI';
+            document.getElementById("third-level").value = 'L1';
+        });
+    function initMap() {
+            var firstLevel = '@ViewBag.section' || 'MIRI';
+            var secondLevel = document.getElementById("second-level").value;
+            var thirdLevel = document.getElementById("third-level").value;
+        var roadCode = '@Html.Raw(ViewBag.roadCode)';
+        var unassessedRoadCode = ["Q649", "Q279","Q1052","Q1054","Q1048","Q1053","Q278-2", "Q1279","Q773","Q1279","Q1278","Q1277","Q1276","Q1275","Q1086","Q1116"]
+        zoom = 17;
+          var src = 'https://ramms.s3.ap-south-1.amazonaws.com/';
+            var ext = secondLevel == 'RESIDUAL+LIFE' ? '.kmz' : '.kml';
+            firstLevel = firstLevel == 'Bakong' ? 'BELURU' : firstLevel;
+            firstLevel = firstLevel == 'BATUNIAH' ? 'BATU+NIAH' : firstLevel;
+            if (roadCode && roadCode != "" && latlanForRoads[roadCode]) {
+                mapCoordinates = latlanForRoads[roadCode];
+            }
+            else if (firstLevel == 'BATU+NIAH') {
+                 mapCoordinates = { lat: 3.719357293791143, lan: 113.8091095 };
+            }
+            else {
+                mapCoordinates = { lat: 4.39914292453429, lan: 114.00625527275 };
+            }
+            if (firstLevel == 'Bario') {
+                ext = '.kmz';
+                src = src + firstLevel + ext;
+            }
+            else if (firstLevel.toUpperCase() == 'MIRI' && secondLevel == 'IRI' && thirdLevel == 'L1') {
+                ext = '.kmz';
+                src = src + "MIRI" + '+' + secondLevel + '+' + thirdLevel + ext;
+            }
+            else if (firstLevel.toUpperCase() == 'BEKENU' && secondLevel == 'IRI' && thirdLevel == 'L1') {
+                src = src + "BEKENU" + '+' + secondLevel + '+' + thirdLevel + ext;
+            }
+            else {
+                src = src + firstLevel + '+' + secondLevel + '+' + thirdLevel + ext;
+        }
+        if (unassessedRoadCode.find(x => x == roadCode)) {
+            var link = 'https://ramms.s3.ap-south-1.amazonaws.com/';
+            var unassess = "Unassessed+Road";
+            var exKml = ".kml";
+            var exKmz = ".kmz";
+
+            if (firstLevel == 'BATU+NIAH') {
+                if (roadCode == "Q1053") {
+                    zoom = 14;
+                }
+                //https://ramms.s3.ap-south-1.amazonaws.com/Batu+Niah+Unassessed+Road.kmz
+                src = link + "Batu+Niah+" + unassess + exKmz;
+            }
+            else if (roadCode == "Q773") {
+                //mapCoordinates = { lat: 4.0415369191147725, lan: 114.80507349999999 };
+                //https://ramms.s3.ap-south-1.amazonaws.com/Mulu+Unassessed+Road.kml
+                src = link + "Mulu+" + unassess + exKml;
+            }
+            else if (firstLevel == 'BEKENU') {
+                //https://ramms.s3.ap-south-1.amazonaws.com/Bekenu+Unassessed+Road+07042021.kml
+                src = link + "Bekenu+" + unassess +"+07042021"+ exKml; //"https://ramms.s3.ap-south-1.amazonaws.com/Bekenu+Unassessed+Road+07042021.kml"
+            }
+            else if (firstLevel == 'MARUDI') {
+                //https://ramms.s3.ap-south-1.amazonaws.com/Marudi+Unassessed+Road+07042021.kml
+                src = link + "Marudi+" + unassess +"+07042021"+ exKml;
+            }
+            else {
+                //mapCoordinates = { lat: 3.7436249993959665, lan: 115.48125249999997 };
+                //zoom = 15;
+                //https://ramms.s3.ap-south-1.amazonaws.com/Bario+Unassessed+Road.kml
+                src = link + "Bario+" + unassess + exKml;
+            }
+            //else if (firstLevel == "Marudi") {
+
+            //}
+
+             }
+            //if (secondLevel == 'MPD') {
+            //    document.getElementById('mpdLegend').style('display', 'block');
+            //    document.getElementById('iriLegend').style('display', 'none');
+            //}
+            //if (secondLevel == 'IRI') {
+            //    document.getElementById('mpdLegend').style('display', 'none');
+            //    document.getElementById('iriLegend').style('display', 'block');
+            //}
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: new google.maps.LatLng(mapCoordinates.lat, mapCoordinates.lan),
+                zoom: zoom,
+                mapTypeId: 'terrain'
+            });
+            var kmlLayer = new google.maps.KmlLayer(src, {
+                suppressInfoWindows: true,
+                preserveViewport: true,
+                map: map
+            });
+            kmlLayer.addListener('click', function (event) {
+                var content = event.featureData.infoWindowHtml;
+                var testimonial = document.getElementById('capture');
+                testimonial.innerHTML = content;
+            });
+        }
+
+        function showLegend() {
+            var secondLevel = document.getElementById("second-level").value;
+            if (secondLevel == 'MPD') {
+                //document.getElementById('mpdLegend').style('display', 'block');
+                document.getElementById('mpdLegend').style.display = "block";
+                document.getElementById('iriLegend').style.display = "none";
+            }
+            if (secondLevel == 'IRI') {
+                document.getElementById('mpdLegend').style.display = "none";
+                document.getElementById('iriLegend').style.display = "block";
+            }
+    }
+
+    function navigateToSection() {
+        var section = '@ViewBag.section';
+        if (section == "BATUNIAH") {
+            location.href = '@Url.Action("Section", "Home")?rmu=batuniah';
+        }
+        else {
+            location.href = '@Url.Action("Section", "Home")?rmu=miri';
+        }
+    }
+</script>
+<script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZvIUK2uy-7gLu9VF67CIdU71MpGkhFsg&callback=initMap">
+</script>
+
+
+<style>
+    .notify-box {
+        border: 1px solid;
+        width: 35px;
+        height: 10px;
+        display: inline-block;
+    }
+
+    .bg-green {
+        background: green;
+    }
+
+    .bg-red {
+        background: red;
+    }
+
+    .road-map-legend .icon {
+        vertical-align: middle;
+        margin-bottom: 5px;
+    }
+    /* The switch - the box around the slider */
+    .road-map-legend .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 21px;
+    }
+
+        /* Hide default HTML checkbox */
+        .road-map-legend .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+    /* The slider */
+    .road-map-legend .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .road-map-legend .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 4px;
+            bottom: 2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    .road-map-legend .switch input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    .road-map-legend .switch input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    .road-map-legend .switch input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .road-map-legend .slider.round {
+        border-radius: 34px;
+    }
+
+        .road-map-legend .slider.round:before {
+            border-radius: 50%;
+        }
+</style>

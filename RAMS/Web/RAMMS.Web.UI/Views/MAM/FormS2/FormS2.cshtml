@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewData["Title"] = "ASSET MAINTANENCE - Form S2 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form S2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormS2Service formS2
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity _secutiry;
+@model S2HeaderSearchRequestDTO
+@{
+    IEnumerable<SelectListItem> searchyear = formS2.GetYears() as IEnumerable<SelectListItem>;
+    IEnumerable<SelectListItem> searchrmu = ViewData["RMU"] as IEnumerable<SelectListItem>;
+    IEnumerable<SelectListItem> activity = await ddlService.GetLookUpCodeTextConcat(new DDLookUpDTO
+    {
+        Type = "Act-FormS2"
+    });
+    List<SelectListItem> _quarter = new List<SelectListItem>();
+    _quarter.Add(new SelectListItem { Value = "1", Text = "Q1" });
+
+    _quarter.Add(new SelectListItem { Value = "2", Text = "Q2" });
+
+    _quarter.Add(new SelectListItem { Value = "3", Text = "Q3" });
+
+    _quarter.Add(new SelectListItem { Value = "4", Text = "Q4" });
+    IEnumerable<SelectListItem> quarter = _quarter as IEnumerable<SelectListItem>;
+}
+@{
+    var isModifyPerm = _secutiry.IsPCModify(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">Form S2</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Asset Maintenance</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Form S2
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                <input class="form-control" id="txtAdvSearch" autocomplete="off" name="" placeholder="Search..." type="text" value="">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormS2SmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="btnS2Searchheader" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                        <button id="btnS2Expand" type="button" onclick="javascript: openSearch();" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                        <button id="btnS2Clear" type="button" onclick="javascript: clearSearch();" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formS2AdvSearch" style="display:block;">
+            <div id="formS2DetailsearchForm" name="formS2DetailsearchForm">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                @Html.Label("RMU", "RMU")
+                                @Html.DropDownListFor(Ahdr => Ahdr.Rmu, searchrmu, "Select RMU", new { @Id = "ddlSearchRmu", @class = "form-control" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Activity Code", "Activity Code")
+                                @Html.DropDownListFor(Ahdr => Ahdr.ActivityCode, activity, "Select Activity Code", new { @Id = "ddlSearchActivity", @class = "form-control" })
+
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Year (YYYY)", "Year (YYYY)")
+                                @Html.DropDownListFor(Ahdr => Ahdr.Year, searchyear, "Select Year", new { @Id = "ddlSearchYear", @class = "form-control" })
+
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Quarter", "Quarter")
+                                @Html.DropDownListFor(Ahdr => Ahdr.Quarter, quarter, "Select Quarter", new { @Id = "ddlSearchQuarter", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" @isModifyPerm class="btn btn-sm btn-themebtn" onclick="javascript:window.location.href = '/FormS2/AddS2?id=0&isview=false';"><span class="add-icon"></span> Add Form S2</button>
+            </div>
+
+            @*Form S2 Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+
+        </div>
+    </div>
+</main>
+<script type="text/javascript">
+    var _hd = {
+        ddlSearchQuarter: $("#ddlSearchQuarter"),
+        ddlSearchYear: $("#ddlSearchYear")
+    }
+
+    $(document).ready(function () {
+        $("#txtAdvSearch").focus();
+        _hd.ddlSearchYear.on("change", function () {
+            bindQuarter();
+        });
+
+        $('#detailSearch').hide();
+        $("#txtAdvSearch").on("keypress", function (e) {
+            if (e.which == 13) {
+                $("#btnS2Searchheader").click();
+            }
+        });
+    });
+    function openSearch() {
+        $('#detailSearch').slideToggle(500);
+    }
+    function clearSearch() {
+        $("#txtAdvSearch").val("");
+        $("#ddlSearchRmu").val("");
+        $("#ddlSearchRmu").trigger("chosen:updated");
+        $("#ddlSearchActivity").val("");
+        $("#ddlSearchActivity").trigger("chosen:updated");
+        $("#ddlSearchYear").val("");
+        $("#ddlSearchYear").trigger("chosen:updated");
+        $("#ddlSearchQuarter").val("");
+        $("#ddlSearchQuarter").trigger("chosen:updated");
+        $("#btnS2Searchheader").click();
+    }
+    function bindQuarter() {
+        var req = {};
+        req.year = _hd.ddlSearchYear.val();
+        @*$.ajax({
+            url: '/FormS2/GetQuarter',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                _hd.ddlSearchQuarter.empty();
+                _hd.ddlSearchQuarter.append($("<option></option>").val("").html("Select Quarter"));
+                $.each(data, function (index, v) {
+                    _hd.ddlSearchQuarter.append($("<option></option>").val(v.value).html(v.text));
+                });
+
+                _hd.ddlSearchQuarter.trigger("chosen:updated");
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });*@
+    }
+
+
+</script>
+

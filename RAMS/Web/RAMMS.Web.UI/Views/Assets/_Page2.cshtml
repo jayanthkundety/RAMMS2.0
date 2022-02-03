@@ -1,0 +1,197 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+@{
+    var AssetIdTitle = ViewBag.AssetTypeName;
+    bool isCarriageway = ViewBag.AssetType == "CW";
+    bool isGuardrail = ViewBag.AssetType == "GR";
+    bool isRetainingWall = ViewBag.AssetType == "RW";
+    bool isSign = ViewBag.AssetType == "SG";
+}
+
+<div class="accordion custom-accordion" id="custom-accordion-two">
+    <div class="card mb-0">
+        <div class="card-header" id="headingTwo">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        @AssetIdTitle Parameter
+                    </span>
+                </a>
+            </h5>
+        </div>
+
+        <div id="AccordPage2" class="collapse avowmodal-form" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+            <div class="card-body">
+                @if (!isRetainingWall && !isSign)
+                {
+                    <div class="form-group col-lg-4 mb-0">
+                        @Html.Label("Dimension (m)", "Dimension (m)", new { @class = "float-left" })
+                        <div class="row">
+                            <div class="form-group col-lg-6 col-md-6 in-lbl">
+                                <label for="L">L</label>
+                                @Html.TextBoxFor(m => m.AddAssetViewModel.Length, null, new { @Id = "AssetLength", @class = "form-control validate {cdecimal,5,5, Length}", @onkeypressvalidate = "cdecimal,5,5,Length",@maxlength="11" })
+                            </div>
+                            <div class="form-group col-lg-6 col-md-6 in-lbl">
+                                <label for="W">W</label>
+                                @Html.TextBoxFor(m => m.AddAssetViewModel.Width, null, new { @Id = "AssetWidth", @class = "form-control validate {cdecimal,5,5, Width}", @onkeypressvalidate = "cdecimal,5,5,Width",@maxlength="11" })
+                            </div>
+                        </div>
+                    </div>
+                }
+                @*@if (isCarriageway)*@
+                    
+                    <!--<div class="form-group col-lg-2">
+                        @Html.Label("Lane Number", " Lane Number", new { @class = "float-left" })-->
+                        @* Validation added as text Since it is varchar in BE *@
+                        <!--@Html.DropDownListFor(m => m.AddAssetViewModel.LaneNo, (IEnumerable<SelectListItem>)ViewData["LaneNumberList"], "Select Lane Number", new { @Id = "AssetLaneNumber", @class = "form-control disableinput validate {required, Lane Number}",@maxlength="5" })
+
+                    </div>-->
+                  
+                @if (isGuardrail)
+                {
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Guardrail Post Spacing ", " Guardrail Post Spacing", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.PostSpacing, null, new { @Id = "AssetGuardrailPostSpacing", @class = "form-control validate {cdecimal,5,5, Post Spacing}", @onkeypressvalidate = "cdecimal,5,5,Post Spacing",@maxlength="11" })
+                    </div>
+                }
+              
+                <div class="form-group col-lg-2">
+                    @Html.Label("CH From", "CH From", new { @class = "float-left" })
+                    <div class="row">
+                        <div class="col-6 float-left pr-0">
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.FromCh, null, new { @Id = "AssetFromCh", @class = "form-control validate {number, CH From Km}", @maxlength = "5", @onkeypressvalidate = "number,CH From Km" })
+                        </div>
+                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                        <div class="col-5 float-left pl-0">
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.FromChDesi, null, new { @Id = "AssetFromChDesi", @class = "form-control validate {number, CH From M}", @maxlength = "3", @onkeypressvalidate = "number,CH From M" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-2">
+                    @Html.Label("CH To", "CH To", new { @class = "float-left" })
+                    <div class="row">
+                        <div class="col-6 float-left pr-0">
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.ToCh, null, new { @Id = "AssetToCh", @class = "form-control validate {number, CH To Km}", @maxlength = "5", @onkeypressvalidate = "number,CH To Km" })
+                        </div>
+                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                        <div class="col-5 float-left pl-0">
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.ToChDeci, null, new { @Id = "AssetToChDesi", @class = "form-control validate {number, CH To M}", @maxlength = "3", @onkeypressvalidate = "number,CH To M" })
+                        </div>
+                    </div>
+                </div>
+                @if (isRetainingWall)
+                {
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Tier", " Tier ", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.Tier, null, new { @Id = "AssetTier", @class = "form-control validate {cdecimal,5,5, Tier}" , @onkeypressvalidate = "cdecimal,5,5,Tier",@maxlength="11" })
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Total Length", " Total Length ", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.Length, null, new { @Id = "AssetTotLength", @class = "form-control validate {cdecimal,5,5, Total Length}", @onkeypressvalidate = "cdecimal,5,5,Total Length",@maxlength="11" })
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Top Width", " Top Width ", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.Width, null, new { @Id = "AssetTotWidth", @class = "form-control validate {cdecimal,5,5, Top Width}" , @onkeypressvalidate = "cdecimal,5,5,Top Width",@maxlength="11"})
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Bottom Width", " Bottom Width ", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.BotWidth, null, new { @Id = "AssetBotWidth", @class = "form-control validate {cdecimal,5,5, Bottom Width}", @onkeypressvalidate = "cdecimal,5,5,Bottom Width",@maxlength="11" })
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Height", " Height ", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.Height, null, new { @Id = "AssetRetainHeight", @class = "form-control validate {cdecimal,5,5, Height}", @onkeypressvalidate = "cdecimal,5,5,Height",@maxlength="11" })
+                    </div>
+                }
+                @if (isSign)
+                {
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Sign Height ", " Sign Height ", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.Height, null, new { @Id = "AssetSignHeight", @class = "form-control validate {cdecimal,5,5, Height}", @onkeypressvalidate = "cdecimal,5,5,Height",@maxlength="11" })
+
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Sign Width", " Sign Width ", new { @class = "float-left" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.Width, null, new { @Id = "AssetSignWidth", @class = "form-control validate {cdecimal,5,5, Width}", @onkeypressvalidate = "cdecimal,5,5,Width",@maxlength="11" })
+                    </div>
+                }
+                <div class="form-group col-lg-2">
+                    @Html.Label("Owner", " Owner ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Owner, null, new { @Id = "AssetOwner", @class = "form-control validate {maxcl,250, Owner Name}", @onkeypressvalidate = "maxcl,250,Owner Name" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Maintained By", " Maintained By", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.MaintainedBy, null, new { @Id = "AssetMaintained", @class = "form-control validate {maxcl,250, Name}", @onkeypressvalidate = "maxcl,250,Name" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("GPS Easting", " GPS Easting", new { @class = "float-left" })
+                    <div class="position-relative c-path float-left w-100">
+                        <a onclick="getLocation('Easting', 'AssetGpsEasting')" style="cursor:pointer;"><span class="current-location"></span></a>
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.GpsEasting, null, new { @Id = "AssetGpsEasting", @class = "form-control validate {cdecimal, GPS Easting}", @onkeypressvalidate = "cdecimal,GPS Easting" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("GPS Northing", " GPS Northing", new { @class = "float-left" })
+                    <div class="position-relative c-path float-left w-100">
+                        <a onclick="getLocation('Northing', 'AssetGpsNorthing')" style="cursor:pointer;"><span class="current-location"></span></a>
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.GpsNorthing, null, new { @Id = "AssetGpsNorthing", @class = "form-control validate {cdecimal, GPS Northing}", @onkeypressvalidate = "cdecimal,GPS Northing"})
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    //https://ramms.atlassian.net/browse/RU-68
+
+    //function onFocusOut() {
+      
+    //    var toCh = $("#AssetToCh").val();
+    //    if (toCh == "") {
+    //        toCh = 0;
+    //    }
+    //    var fromCh = $("#AssetFromCh").val();
+    //    if (fromCh == "") {
+    //        fromCh = 0;
+    //    }
+    //    var frmDecimal = $("#AssetFromChDesi").val();
+    //    var toDecimal = $("#AssetToChDesi").val();
+
+    //    var from = fromCh + '.' + $("#AssetFromChDesi").val();
+    //   // var to = $("#AssetToCh").val() + '.' + $("#AssetToChDesi").val();
+    //    var to = toCh + '.' + $("#AssetToChDesi").val();
+    //    var frmValue = parseFloat(from).toFixed(3);
+    //    var toValue = parseFloat(to).toFixed(3);
+    //    var istoChGreater = true;
+    //    //debugger;
+    //    if (toCh != null && toCh != undefined  && fromCh != null && fromCh != undefined && from != null && to != undefined) {
+    //        //if (parseInt(toCh) < parseInt(fromCh) && parseInt(toCh) > 1) {
+    //        //    app.ShowErrorMessage('CH TO Km must be greater than CH From Km')
+    //        //    $('#AddAssetsBtn').attr("disabled", true);
+    //        //}
+    //        //else {
+    //            //if (parseFloat(to.toFixed(3)) <= parseFloat(from.toFixed(3))) {
+    //            if (toValue <= frmValue) {
+    //                app.ShowErrorMessage('CH TO must be greater than CH From')
+    //                $('#AddAssetsBtn').attr("disabled", true);
+    //            }
+    //            else
+    //                {
+    //                    $('#AddAssetsBtn').attr("disabled", false);
+    //                }
+    //          //  $('#AddAssetsBtn').attr("disabled", false);
+    //      //  }
+            
+    //            //if (parseFloat(to) <= parseFloat(from)) {
+    //            //    app.ShowErrorMessage('CH TO must be greater than CH From')
+    //            //    $('#AddAssetsBtn').attr("disabled", true);
+            
+    //    }
+    //}
+    
+</script>

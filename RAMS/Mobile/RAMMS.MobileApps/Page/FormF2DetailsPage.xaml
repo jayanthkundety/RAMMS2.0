@@ -1,0 +1,248 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.FormF2DetailsPage"
+              xmlns:local="clr-namespace:RAMMS.MobileApps"
+             xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NegateBoolConverter x:Key="NegatebooleanConverter" />
+            <local:NumberToColorConverter x:Key="NumberToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            
+            <StackLayout>
+            <Frame Margin="0,0,0,0" BorderColor="#e6e6e6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" LineBreakMode="TailTruncation" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+                <ScrollView>
+                    <StackLayout>
+            <Frame  Margin="10,10,10,0"   BackgroundColor="White" HasShadow="True" BorderColor="#bfbfbf"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <StackLayout>
+                <Grid RowSpacing="15"  ColumnSpacing="5" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Text="Starting CHKm" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+                            <locals:FrameRenders Grid.Row="1"   Grid.Column="1" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl IsEnabled="{Binding IsHeaderEnable}" InputTransparent="True" Text="{Binding StartingChKm}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                            </locals:FrameRenders>
+
+
+                 
+                    <Label Text="Starting CHM" Grid.Row="0" Grid.Column="2"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                            <locals:FrameRenders Grid.Row="1"   Grid.Column="2" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl  IsEnabled="{Binding IsHeaderEnable}" InputTransparent="True" Text="{Binding StartingChM}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}" Keyboard="Default" />
+                            </locals:FrameRenders>
+                            
+                  
+
+
+                    <Label Text="Structure Code" Grid.Row="0" Grid.Column="3"  Grid.ColumnSpan="2" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                            <locals:FrameRenders Grid.Row="1"   Grid.Column="3" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl  IsEnabled="{Binding IsHeaderEnable}" InputTransparent="True" Text="{Binding GrCode}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                            </locals:FrameRenders>
+
+                       
+                   
+
+
+                    <Label Text="Bound" Grid.Row="0"  Grid.Column="4"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                            <locals:FrameRenders Grid.Row="1"   Grid.Column="4" HeightRequest="40" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl  IsEnabled="{Binding IsHeaderEnable}" InputTransparent="True" Text="{Binding Bound}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                            </locals:FrameRenders>
+
+                       
+                   
+                </Grid>
+
+
+
+                        <Grid RowSpacing="15"  ColumnSpacing="5" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="0.7*" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Post Spacing" Grid.Row="0" Grid.Column="1"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                            <locals:FrameRenders Grid.Row="1"   Grid.Column="1" HeightRequest="40" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl  IsEnabled="{Binding IsHeaderEnable}" InputTransparent="True" Text="{Binding PostSpac}" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                            </locals:FrameRenders>
+
+                          
+
+                            <Label Text="Length (M)" Grid.Row="0" Grid.Column="2"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+
+                            <locals:FrameRenders Grid.Row="1"   Grid.Column="2" HeightRequest="40" BackgroundColor="#f2f2f2" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:EntryControl Text="{Binding Length}" IsEnabled="{Binding IsHeaderEnable}" InputTransparent="True" TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                            </locals:FrameRenders>
+
+
+                        
+
+
+                            <Label Text="Condition 1 (M)" Grid.Row="0" Grid.Column="3"  Grid.ColumnSpan="2" FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                            <locals:FrameRenders Grid.Row="1" Grid.Column="3" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:DecimalEntryControl x:Name="cnd1" Text="{Binding GrCondition1}" MaxLength="11"  Placeholder="Condition 1" IsEnabled="{Binding CanSave}"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray" Keyboard="Numeric"/>
+                            </locals:FrameRenders>
+
+
+
+
+                            <Label Text="Condition 2 (M)" Grid.Row="0"  Grid.Column="4"  FontSize="Medium"   FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                            <locals:FrameRenders Grid.Row="1"   Grid.Column="4" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:DecimalEntryControl x:Name="cnd2" Text="{Binding GrCondition2}" MaxLength="11" Placeholder="Condition 2" IsEnabled="{Binding CanSave}" ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"   HorizontalOptions="FillAndExpand" TextColor="Gray" Keyboard="Numeric"/>
+                            </locals:FrameRenders>
+
+
+
+                        </Grid>
+
+                        <Grid RowSpacing="15"  ColumnSpacing="5" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Condition 3 (M)" Grid.Row="0" Grid.Column="0"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                            <locals:FrameRenders Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="2"  BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <local:DecimalEntryControl x:Name="cnd3" MaxLength="11" Text="{Binding GrCondition3}" TextChanged="DecimalEntryControl_TextChanged" IsEnabled="{Binding CanSave}" Placeholder="Condition 3"  ClassId ="ClassPickGrey"  VerticalOptions="CenterAndExpand"  HorizontalOptions="FillAndExpand" TextColor="Gray" Keyboard="Numeric"/>
+                            </locals:FrameRenders>
+
+                            <Label Text="Remarks" Grid.Row="2" Grid.Column="0"  FontSize="Medium"  FontFamily="{StaticResource ProximaNovaRegularFont}" TextColor="#000" />
+
+                                    <locals:FrameRenders Grid.Row="3" HeightRequest="150"  Grid.Column="0" Grid.ColumnSpan="5"   BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+                                        <Editor HeightRequest="150" Text="{Binding Remarks}" IsEnabled="{Binding CanSave}"  TextColor="Black" ClassId="ClassDetails" FontFamily="{StaticResource ProximaNovaRegularFont}"  Keyboard="Default" />
+                            </locals:FrameRenders>
+
+
+                        </Grid>
+
+                       
+                        
+                        
+                    </StackLayout>
+                </Frame>
+                <StackLayout>
+                            <Frame Margin="50,50,50,55" BackgroundColor="#e6e6e6" CornerRadius="5" HasShadow="True" >
+                                <StackLayout>
+                                    <Label Text="Abbrevations" FontAttributes="Bold" TextDecorations="Underline" FontSize="Large" TextColor="Black"/>
+                                    <Label  FontAttributes="Bold" TextDecorations="Underline" FontSize="Large" TextColor="Black"/>
+
+                                    <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="S :" Grid.Row="0" Grid.Column="0" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Text="W :" Grid.Row="1" Grid.Column="0" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Text="R :" Grid.Row="2" Grid.Column="0" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Text="P :" Grid.Row="3" Grid.Column="0" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Text="O :" Grid.Row="4" Grid.Column="0" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+
+                                    <Label Text="Steel" Grid.Row="0" Grid.Column="1" FontSize="Medium" TextColor="Black"/>
+                                    <Label Text="Wire" Grid.Row="1" Grid.Column="1" FontSize="Medium" TextColor="Black"/>
+                                    <Label Text="Predestrial Railing" Grid.Row="2" Grid.Column="1" FontSize="Medium" TextColor="Black"/>
+                                    <Label Text="Parapet Wall" Grid.Row="3" Grid.Column="1" FontSize="Medium" TextColor="Black"/>
+                                    <Label Text="Others" Grid.Row="4" Grid.Column="1" FontSize="Medium" TextColor="Black"/>
+
+                                    <Label Grid.Row="0" Grid.Column="2" Text="Condition 1" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="1" Grid.Column="2" Text="Condition 2" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="2" Grid.Column="2" Text=""/>
+                                    <Label Grid.Row="3" Grid.Column="2" Text="Condition 3" FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Grid.Row="4" Grid.Column="2" Text=""/>
+                                    <Label Grid.Row="0" Grid.Column="3" TextColor="Black" FontSize="Medium" Text="The guardrail is structurally sound. Only routine maintenance such as cleaning is required."/>
+                                    <Label Grid.Row="1" Grid.Column="3" TextColor="Black" FontSize="Medium" Text="The guardrail is structurally sound. Only routine maintenance such as cleaning, staraightening or minor bolt and nut replacement is required."/>
+                                    <Label Grid.Row="2" Grid.Column="3" TextColor="Black" Text=""/>
+                                    <Label Grid.Row="3" Grid.Column="3" TextColor="Black" FontSize="Medium" Text="Damaged beam or post section require replacement."/>
+                                    <Label Grid.Row="4" Grid.Column="3" Text=""/>
+
+                                </Grid>
+                                </StackLayout>
+                            </Frame>
+                </StackLayout>
+            </StackLayout>
+                </ScrollView>
+            </StackLayout>
+           
+            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,0,5,5"  >
+                <Button Text="Cancel" Command="{Binding CancelAction}"  BackgroundColor="White" TextColor="#1D2D50" BorderColor="#1D2D50" BorderWidth="2" CornerRadius="5" />
+                <Button Text="Save and Exit" Command="{Binding SaveAction}" IsVisible="{Binding CanSave}"  TextColor="White" BackgroundColor="#1D2D50" CornerRadius="5" />
+            </StackLayout>
+
+        </StackLayout>
+            
+    </ContentPage.Content>
+</ContentPage>

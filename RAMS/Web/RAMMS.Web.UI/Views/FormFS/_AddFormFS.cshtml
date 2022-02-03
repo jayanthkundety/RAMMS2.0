@@ -1,0 +1,311 @@
+﻿@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormFSService formFS
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@model FormFSHeaderRequestDTO
+@{
+    ViewBag.TabTitle = "Form FS - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "Form FS - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    List<SelectListItem> formtype = new List<SelectListItem>();
+    formtype.Add(new SelectListItem
+    {
+        Text = "BRIDGE INVENTORY & CONDITION ASSESSMENT FORM (FORM FS)",
+        Value = "Form FS"
+    });
+    IEnumerable<SelectListItem> division = formtype.ToArray();
+
+    IEnumerable<SelectListItem> year = (await ddlService
+.GetLookups(new DDLookUpDTO { Type = "Year" }))
+.Select(s => new SelectListItem
+{
+    Text = s.DdlTypeValue,
+    Value = s.DdlTypeValue
+}).ToArray();
+    IEnumerable<SelectListItem> section = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
+
+    IEnumerable<SelectListItem> roadcode = (IEnumerable<SelectListItem>)ViewData["RD_Code"];
+
+
+    IEnumerable<SelectListItem>
+        rmu = (await ddlService
+        .GetLookups(new DDLookUpDTO { Type = "RMU" }))
+        .Select(s => new SelectListItem
+        {
+            Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+            Value = s.DdlTypeCode
+        }).ToArray();
+    IEnumerable<SelectListItem>
+        crewleader = (IEnumerable<SelectListItem>)ViewData["Supervisor"];
+    IEnumerable<SelectListItem>
+       user = (IEnumerable<SelectListItem>)ViewData["User"];
+    string inspecteddate = Model.DtInspBy.HasValue ? Model.DtInspBy.Value.ToString("yyyy-MM-dd") : "";
+    string checkedbydate = Model.DtChckdBy.HasValue ? Model.DtChckdBy.Value.ToString("yyyy-MM-dd") : "";
+    string summarizedbydate = Model.DtSmzdBy.HasValue ? Model.DtSmzdBy.Value.ToString("yyyy-MM-dd") : "";
+    int IsView = Model.IsView ? 1 : 0;
+
+    string formStatus = Model.Status;
+    int RefNo = Model.PkRefNo;
+    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(formStatus) || formStatus == RAMMS.Common.StatusList.FormFSInit);
+}
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            process.Init("FormFS", "@formStatus", @RefNo);
+        });
+</script>
+
+<input type="hidden" id="hdnHeaderId" value="@Model.PkRefNo" />
+<input type="hidden" id="hdnHIsViewMode" value="@IsView" />
+<input type="hidden" id="IsAlreadyExists" value="" />
+<input type="hidden" id="hdnDetailPkNo" value="" />
+<input type="hidden" id="IsDView" value="" />
+<input type="hidden" id="hdnRoadCode" value="" />
+<input type="hidden" id="hdnRoadCodeText" value="" />
+<div class="row">
+    <div class="w-100 bg-body" id="">
+        <div id="headerDiv">
+            <div class="modal-body mh-120 pt-0 pb-0">
+                @*<div class="d-flex justify-content-center pt-3 pb-3">
+                <div id="" class="form-group mb-0">
+                    @Html.Label("Form FS No.", "Form FS No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                    <input id="txtHReferenceNo" disabled value="@Model.FormRefId" class="form-control validate {required, Reference No. }" style="width:300px;" type="text">
+                </div>
+            </div>*@
+                <div class="clear-b"></div>
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+                    <div class="row">
+                        <div class="col-lg-10 p-0">
+                            <div id="headerFindDiv" class="w-100 form-group mb-0">
+                                @*<div class="form-group col-md-3">
+                                @Html.Label("Asset Group", "Asset Group")
+                                <input class="form-control" value="Guardrail" disabled />
+                            </div>*@
+                                <div hidden class="form-group col-md-3">
+                                    @Html.Label("Form Type", "Form Type")
+                                    <select disabled id="ddlFormType" class="form-control validate {required, Form Type }">
+                                        <option selected value="BRIDGE INVENTORY & CONDITION ASSESSMENT FORM (FORM F5)">BRIDGE INVENTORY & CONDITION ASSESSMENT FORM (FORM F5)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Year", "Year")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.YearOfInsp, year, "Select Year", new { @Id = "ddlYear", @class = "form-control validate {required, Year }" })
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("District", "District")
+                                    <input id="txtDist" class="form-control" value="@Model.Dist" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("RMU", "RMU")
+                                    @Html.DropDownListFor(Model => Model.RmuCode, rmu, "Select RMU", new { @Id = "ddlRMU", @class = "form-control  validate {required, RMU }" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Section Code", "Section Code")
+                                    @Html.DropDownListFor(Model => Model.SecCode, section, "Select Section Code", new { @Id = "ddlSection", @class = "form-control  validate {required, Section Code }" })
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Section Name", "Section Name")
+                                    <input id="txtSectionName" value="@Model.SecName" disabled class="form-control" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Code", "Road Code")
+                                    @Html.DropDownListFor(Model => Model.RoadCode, roadcode, "Select Road Code", new { @Id = "ddlRoadCode", @class = "form-control  validate {required, Road Code }" })
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Name", "Road Name")
+                                    <input id="txtRoadName" disabled="disabled" value="@Model.RoadName" type="text" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                            <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        @{
+                            Html.RenderPartial("_DetailGridList.cshtml");
+                        }
+                    </div>
+                </div>
+
+                <div id="F2UserDetail" class="col-lg-12 px-lg-5">
+                    <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Crew Leader</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                @Html.DropDownListFor(Ahdr => Ahdr.CrewLeaderId, crewleader, "User Id", new { @Id = "ddlCrewleader", @class = "form-control validate {required, Crew Leader }" })
+
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input id="txtCrewLeaderName" type="text" value="@Model.CrewLeaderName" class="form-control svalidate {req,Crew leader Name}" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
+                                <input id="txtInspectedDate" type="date" value="@inspecteddate" class="form-control validate {req,Date of Inspection}" />
+                            </div>
+                        </div>
+                    </div>
+                    @*<div hidden class="bg-white rounded landing-division w-100 float-left mb-0">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">Inspected by</span>
+                    </div>
+                    <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("User ID", "User ID")
+                            @Html.DropDownListFor(Ahdr => Ahdr.UserIdInspBy, user, "User Id", new { @Id = "ddlInspectedby", @class = "form-control validate {required, Inspected by}" })
+
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Name", "Name")
+                            <input id="txtInspectedbyName" type="text" value="@Model.UserNameInspBy" class="form-control validate {req,Inspected by User Name}" disabled />
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Designation", "Designation")
+                            <input id="txtInspectedDesignation" type="text" value="@Model.UserDesignationInspY" class="form-control validate {req,Inspected By User Destination}" disabled />
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
+                            <input id="txtInspectedDate" type="date" value="@inspecteddate" class="form-control validate {req,Inspected By}" />
+                        </div>
+                    </div>
+                </div>*@
+                    <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Summarized by</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                @Html.DropDownListFor(Ahdr => Ahdr.UserIdSmzdBy, user, "User Id", new { @Id = "ddlSmzdby", @class = "form-control svalidate {required, Summarized by}" })
+
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input id="txtSmzdbyName" type="text" value="@Model.UserNameSmzdBy" class="form-control validate {req,Summarized By Name}" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Designation", "Designation")
+                                <input id="txtSmzdDesignation" type="text" value="@Model.UserDesignationSmzdY" class="form-control validate {req,Summarized By Designation}" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Summarized By Date (DD-MM-YYYY)", "Summarized By Date (DD-MM-YYYY)")
+                                <input id="txtSmzdDate" type="date" value="@summarizedbydate" class="form-control validate {req,Summarized By Date}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Checked by</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                @Html.DropDownListFor(Ahdr => Ahdr.UserIdChckdBy, user, "User Id", new { @Id = "ddlCheckedby", @class = "form-control svalidate {required, Checked by}" })
+
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input id="txtCheckedbyName" type="text" value="@Model.UserNameChckdBy" class="form-control validate {req,Checked by User Name}" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Designation", "Designation")
+                                <input id="txtCheckedDesignation" type="text" value="@Model.UserDesignationChckdBy" class="form-control validate {req,Checked By User Destination}" disabled />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Checked By Date (DD-MM-YYYY)", "Checked By Date (DD-MM-YYYY)")
+                                <input id="txtCheckedDate" type="date" value="@checkedbydate" class="form-control validate {req,Checked By Date}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @{
+                Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                {
+                    Form = "FormFS",
+                    RefId = RefNo,
+                    Stage = formStatus
+                });
+            }
+
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button id="btnHCancel" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
+            @if (Model != null && !Model.SubmitSts)
+            {
+                <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+                @if (IsSupervisor)
+                {
+                    <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                }
+            }
+            @if (security.IsHeadMaintenance && formStatus == RAMMS.Common.StatusList.FormFSSummarized)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance' , 'Approved / Rejected By');">Approve / Reject</button>
+            }
+            else if (security.IsRegionManager && formStatus == RAMMS.Common.StatusList.FormFSHeadMaintenanceApproved)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && formStatus == RAMMS.Common.StatusList.FormFSRegionManagerApproved)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Reject</button>
+            }
+
+        </div>
+        </div>
+    </div>
+</div>
+
+
+@*Add F2 Details Modal*@
+<div class="modal fade" id="FormFSAdddetailsModal" tabindex="-1" role="dialog" aria-labelledby="FormF2AdddetailsModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+        <div class="modal-content bg-body">
+            <div class="modal-header bg-white">
+                <h5 class="modal-title" id="">Inspection</h5>
+                <button id="btnDClose" type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div id="AddDetail" class="w-100 float-left">
+                <div class="modal-body p-0">
+                    <div class="mh-182 bg-white py-4">
+                        <div id="AddDetailFormF2">
+                            <div class="col-lg-12 float-left">
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Needed", "Needed")
+                                    <input id="txtDNeeded" maxlength="11" type="text" class="form-control viewD validate {cdecimal,5,5, Length}" , onkeypressvalidate="cdecimal,5,5,Needed" />
+                                </div>
+                                <div class="col-lg-12 form-group txtarea-80">
+                                    @Html.Label("Remarks", "Remarks")
+                                    <textarea id="txtDRemarks" class="form-control viewD validate {required, Remarks}"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnDCancel" type="button" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
+                    <button id="btnDSaveAndExit" type="button" class="btn btn-sm btn-themebtn">Save &amp; Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/js/MAMFormFS.js" asp-append-version="true"></script>

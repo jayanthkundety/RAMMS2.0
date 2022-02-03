@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.Maps.BairoPage"
+             BackgroundColor="#f2f2f2"
+             >
+    <ContentPage.Content>
+        
+        <ScrollView>
+            <StackLayout>
+                <Frame HasShadow="True" BorderColor="#f2f2f2">
+                    <Label Text="Mulu" TextColor="#1D2D50" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Large" FontAttributes="Bold" BackgroundColor="White" />
+                </Frame>
+                <StackLayout>
+            
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="*"/>
+                      
+                    </Grid.ColumnDefinitions>
+
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="#e6e6ff" Text="Mulu" Grid.Row="1" Grid.Column="2" ></Button>
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="#ffffcc" Text="S2" Grid.Row="2" Grid.Column="2" Margin="60,0,60,0"></Button>
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q733" Grid.Row="3" Grid.Column="2" Margin="60,0,60,0"></Button>
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="To Marudi" Grid.Row="6" Grid.Column="2" Margin="60,0,60,0"></Button>
+                        <BoxView Grid.RowSpan="9" Margin="155,210,150,40" Grid.Column="2" BackgroundColor="#b3b3b3" ></BoxView>
+            </Grid>
+                
+            </StackLayout>
+
+
+                <BoxView BackgroundColor="#b3b3b3" HeightRequest="2"></BoxView>
+
+
+            <StackLayout  >
+                    <Frame>
+                        <Label Text="Bairo" TextColor="#1D2D50" HorizontalOptions="Center" VerticalOptions="Center" FontSize="Large" FontAttributes="Bold" BackgroundColor="White" />
+                    </Frame>
+
+                    <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="#e6e6ff"  Text="Bario" Grid.Row="0" Margin="-60,0,-60,60" Grid.Column="3" ></Button>
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="#ffffcc" Text="S2" Grid.Row="1" Grid.Column="3" Margin="0,0,0,30" ></Button>
+                        <BoxView HeightRequest="2" WidthRequest="2" Margin="65,200,65,0"  BackgroundColor="#bfbfbf" Grid.RowSpan="6" Grid.Column="3"></BoxView>
+
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q1279" Grid.Row="2" Margin="0,0,0,30" Grid.Column="1" ></Button>
+                        <BoxView  BackgroundColor="#d9d9d9"  Margin="0,37,-70,57" Grid.Row="2" Grid.Column="2"></BoxView>
+
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q1276" Grid.Row="2" Margin="0,0,0,30" Grid.Column="5" ></Button>
+                        <BoxView  BackgroundColor="#d9d9d9"  Margin="-70,37,0,57" Grid.Row="2" Grid.Column="4"></BoxView>
+
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q1277" Grid.Row="2" Margin="0,0,0,30" Grid.Column="7" ></Button>
+                        <BoxView  BackgroundColor="#d9d9d9"  Margin="0,37,0,57" Grid.Row="2" Grid.Column="6"></BoxView>
+
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q1086" Grid.Row="3" Margin="0,0,0,30" Grid.Column="3" ></Button>
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q1278" Grid.Row="4" Margin="0,0,0,30" Grid.Column="3" ></Button>
+                        <Button BorderWidth="4"  BorderColor="#1D2D50" BackgroundColor="White" Text="Q1225" Grid.Row="5" Margin="0,0,0,30" Grid.Column="5" ></Button>
+                        <BoxView  BackgroundColor="#d9d9d9"  Margin="-70,37,0,57" Grid.Row="5" Grid.Column="4"></BoxView>
+
+
+                        <!--<BoxView Grid.RowSpan="9" Margin="155,210,150,40" Grid.Column="2" BackgroundColor="Red" ></BoxView>-->
+                </Grid>
+
+            </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

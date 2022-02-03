@@ -1,0 +1,650 @@
+﻿
+@{
+    ViewBag.TabTitle = "Manage " + ViewBag.AssetTypeName + " - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "Manage " + ViewBag.AssetTypeName + " - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@model RAMMS.Web.UI.Models.AssetsModel;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#advSearch").hide();
+
+                //OnLoad focus for Smart search
+                document.getElementById("AssetssSmartSearch").focus();
+
+                //Listener for Smart and Detail Search
+                element = document.querySelector("#detailSearch");
+                element.addEventListener("keyup", () => {
+                if (event.keyCode === 13) {
+                $('#assetsSearchBtn').trigger('click');
+        }
+        });
+        $("#AssetssSmartSearch").keyup(function () {
+            if (event.keyCode === 13) {
+                $('#assetsSearchBtn').trigger('click');
+        }
+        })
+
+    });
+
+    function DeleteAsset(id) {
+        var assetId = id;
+
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+                InitAjaxLoading();
+            $.ajax({
+                url: '/assets/AssetDelete',
+                data: { assetId },
+                type: 'POST',
+                success: function (data) {
+                    HideAjaxLoading();
+                    if (data > 0) {
+                        app.ShowSuccessMessage("Deleted Successfully");
+                        GridReload();
+                    }
+                    else {
+                        app.ShowDialog("Error in Deleting. Kindly retry later.");
+                    }
+
+                },
+                error: function () {
+                    HideAjaxLoading();
+                    app.ShowDialog("Error in Deleting. Kindly retry later.");
+
+                }
+            });
+            }
+        }));
+
+        //if (confirm("Are you sure you want to delete the record?")) {
+
+        //}
+    }
+     //detailSearch
+    function detailSearch() {
+        $("#advSearch").slideToggle(500);
+    }
+
+    function AddAssetClick(pid, view) {
+
+        InitAjaxLoading();
+        var AssetTypeName = '@ViewBag.AssetType';
+        $.ajax({
+            url: '/assets/assetEdit',
+            data: { EditID: pid,AssetTypeName:AssetTypeName },
+            type: 'POST',
+            success: function (data) {
+                $("#div-data-container").html(data);
+                $('#AssetsAddModal').modal('show');
+                HideAjaxLoading();
+
+                if (pid != 0) {
+                    $('#custom-accordion-one *').attr("disabled", "disabled").off('click');
+                    $(".editdisable").prop("disabled", true).trigger("chosen:updated");
+                    $('#AssetRefNo').prop('disabled', false);
+                    $('#AssetDistrict').prop('disabled', false);
+                    $('#AssetLaneNumber').prop('disabled', true);
+                }
+                else {
+                     $('#AssetGrpType').prop('disabled', true).trigger("chosen:updated");
+                     $('#AssetBound').prop('disabled', true).trigger("chosen:updated");
+                     $('#AssetLocChKm').prop('disabled', true);
+                     $('#AssetLocChM').prop('disabled', true);
+                     $('#AssetRefNo').prop('disabled', true);
+                    $('#AssetDistrict').prop('disabled', true);
+                    $('#AssetNumber').prop('disabled', true);
+                  $('#AssetLaneNumber').prop('disabled', true).trigger("chosen:updated");
+                }
+                if (view == 1) {
+                    $("#div-data-container *").attr("disabled", "disabled").off("click");
+                     $(".disableinput").prop("disabled", true).trigger("chosen:updated");
+                    $("#div-data-container").addClass("disableAssetImageAddBtn");
+                    $("#cancelAddModel").removeAttr("disabled");
+                }
+                else {
+                    $("#div-data-container").removeClass("disableAssetImageAddBtn");
+                }
+                $("body").removeClass("loading");
+                Validation.OnKeyPressInit();
+            },
+            error: function () {
+                HideAjaxLoading();
+            }
+        })
+    }
+    //View Photo
+    function AssetViewPhoto(pkId) {
+        var assetPk = pkId;
+           var assetId = $("#AssetId").val();
+        InitAjaxLoading();
+    $.ajax({
+        url: '/assets/GetImageList',
+        data: { assetPk: assetPk, assetId: assetId, location: window.location.origin },
+        type: 'POST',
+        success: function (data) {
+            $("#ViewPhoto").html(data);
+            $("#ViewPhotoModal").modal('show');
+             $("#div-data-container").addClass("disableAssetImageAddBtn");
+            HideAjaxLoading();
+        },
+        error: function (data) {
+            HideAjaxLoading();
+            alert(data.responseText);
+        }
+
+   });
+
+    }
+    function GridReload() {
+            var toCh = $("#ToCh").val();
+            var fromCh = $("#FromCh").val();
+            var istoChGreater=true;
+            if (toCh != "" && toCh != null && toCh != undefined && fromCh != "" && fromCh != null && fromCh != undefined) {
+                if (parseInt(toCh) >= parseInt(fromCh)) {
+                    istoChGreater = true;
+                }
+                else {
+                    istoChGreater = false;
+                }
+            }
+        if (istoChGreater) {
+            oTable = $('#assetsGridView').DataTable();
+            oTable.columns(0).search($("#assetTypeCode").val().trim());
+            oTable.columns(1).search($("#AssetssSmartSearch").val().trim());
+            oTable.columns(2).search($("#FromCh").val().trim() + "/" + $("#FromChDesi").val().trim());
+            oTable.columns(3).search($("#ToCh").val().trim() + "/" + $("#ToChDeci").val().trim());
+            oTable.columns(4).search($("#SectionName").val().trim());
+            oTable.columns(5).search($("#RoadName").val().trim());
+            oTable.columns(6).search($("#AssetGroup").val().trim());
+            oTable.columns(7).search($("#AssetType").val().trim());
+            oTable.columns(8).search($("#RoadCode").val().trim());
+            oTable.columns(9).search($("#RMU").val().trim());
+            oTable.columns(10).search($("#Bound").val().trim());
+            oTable.columns(11).search($("#SectionCode").val().trim());
+
+            filterData.FromCh = 100;
+            oTable.data = filterData;
+            oTable.draw();
+        }
+        else {
+                 app.ShowErrorMessage("Location CH To Cannot be Lesser than Location CH From")
+        }
+    }
+    function LoadAssetList() {
+        var filterData = new Object();
+        filterData.GroupCode = $("#assetTypeCode").val();
+        filterData.FromCh = $("#FromCh").val();
+        filterData.ToCh = $("#ToCh").val();
+        filterData.SectionName = $("#SectionName").val();
+        filterData.SectionCode = $("#SectionCode").val();
+        filterData.RoadName = $("#RoadName").val();
+          filterData.AssetGroup = $("#AssetGroup").val();
+        filterData.GroupType = $("#AssetType").val();
+        filterData.RoadCode = $("#RoadCode").val();
+        filterData.RMUCode = $("#RMU").val();
+        filterData.Bound = $("#Bound").val();
+        $("body").addClass("loading");
+        filterData.SmartInputValue = $("#AssetssSmartSearch").val();
+        $.ajax({
+            url: '/assets/loadassets',
+            data: filterData,
+            type: 'POST',
+            success: function (data) {
+                $("#assetListGrid").html(data);
+                $("body").removeClass("loading");
+            },
+            error: function (error) {
+                alert("Unable to load data");
+            }
+        });
+    }
+
+    $(function () {
+        $("#btnUpload").click(function (e) {
+            console.log(e)
+            e.preventDefault();
+
+            console.log('Doing ajax submit for Asset Import');
+
+            var formAction = $("#FileUploadForm").attr("action");
+            console.log(formAction)
+            var fdata = new FormData();
+
+
+            var fileInput = $("#importFile").get(0).files;
+            var file = fileInput[0];
+            fdata.append("importFile", file);
+            fdata.append("assetType", '@ViewBag.AssetTypeName');
+            InitAjaxLoading();
+            $.ajax({
+                type: 'post',
+                url: formAction,
+                data: fdata,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    var response = data.payload.split(",")
+                    var obj = {
+                        Imported: response[0],
+                        Failed: response[1],
+                        Inserted: response[2],
+                        Updated:response[3],
+                        Message: null
+                    };
+                    if (data.status == 0) {
+                        if (response.length >= 4) {
+                            obj.Message =response[4] != "" ? response[4] :  "File Uploaded Successfully";
+                            app.ShowDialog('Imported:' + obj.Imported + ' ' + '\nFailed:' + obj.Failed + ' ' + '\nInserted:' + obj.Inserted + ' ' + '\nUpdated:' + obj.Updated+' ' + '\nMessage:' + obj.Message);
+                        } else {
+                            app.ShowDialog('Imported:' + obj.Imported + '\nFailed:' + obj.Failed + ' ' + '\nInserted:' + obj.Inserted + ' ' + '\nUpdated:' + obj.Updated);
+                        }
+                        //alert(data.payload)
+                        HideAjaxLoading();
+                        $("#importFile").val(null);
+                        document.getElementById("closeBtn").click()
+
+                    } else {
+                        if (data.errorMessage != null && data.errorMessage != undefined) {
+                            var errMessage = data.errorMessage.split(",")
+                            if (errMessage.length >= 4) {
+                                if (errMessage[4] != "" && errMessage[4] != null && errMessage[4] != undefined) {
+                                    obj.Message = errMessage[4] != "" ? errMessage[4] :  "File Uploaded Successfully";
+                                    if (errMessage[1] > 0) {
+                                        app.ShowDialog('Imported:' + errMessage[0] + ' ' + '\nFailed:' + errMessage[1]  + ' ' + '\nInserted:' + errMessage[2] + ' ' + '\nUpdated:' + errMessage[3]+' '+ ' ' + '\nMessage:' + errMessage[4] +' and Please find the Error details in the Errorfile.xlsx');
+                                    }
+                                    else {
+                                        app.ShowDialog('Imported:' + errMessage[0] + ' ' + '\nFailed:' + errMessage[1]  + ' ' + '\nInserted:' +errMessage[2] + ' ' + '\nUpdated:' + errMessage[3]+' '+ ' ' + '\nMessage:' + errMessage[4]);
+                                    }
+                                }
+                                else {
+                                    app.ShowDialog('\nMessage: File Imported:' + errMessage[0] + ' ' + '\nFailed:'+ errMessage[1]  + ' ' + '\nInserted:' +errMessage[2] + ' ' + '\nUpdated:' + errMessage[3] + ' ' + 'Please find the details in the Errorfile.xlsx');
+                                }
+                            } else {
+                                app.ShowDialog('\nMessage: File Imported Failed, Please retry later');
+                            }
+                        }
+                        else {
+                            app.ShowErrorMessage("Import Failed please retry later.")
+                        }
+                        downloadErrorTemplate(data.payload);
+                        HideAjaxLoading();
+                        $("#importFile").val(null);
+                        document.getElementById("closeBtn").click();
+                        //app.ShowErrorMessage("Import Failed please find the details in the Errorfile.xlsx")
+
+                    }
+
+                    GridReload();
+
+                    //if (data.status != undefined) {
+                    //    alert(data.status)
+                    //    location.reload();
+                    //} else {
+                    //    HideAjaxLoading();
+                    //    console.log(data)
+                    //    //location.reload();
+                    //}
+                    //console.log(data)
+                    //alert(data.status)
+                    //HideAjaxLoading();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    //if (debug) {
+                        HideAjaxLoading();
+
+                        //location.reload();
+                    //}
+                }
+            });
+            //    .done(function (result) {
+            //    // do something with the result now
+            //    alert(typeof result);
+            //    //if (result.status === "success") {
+            //    //    alert(result.url);
+            //    //} else {
+            //    //    alert(result.message);
+            //    //}
+            //});
+
+
+
+        });
+    })
+
+
+       $(document).on("click", "#Dbutton", function () {
+        var filterData = new Object();
+        filterData.GroupCode = $("#assetTypeCode").val();
+
+        filterData.FromCh = $("#FromCh").val();
+        filterData.ToCh = $("#ToCh").val();
+        filterData.SectionName = $("#SectionName").val();
+        filterData.SectionCode = $("#SectionCode").val();
+        filterData.RoadName = $("#RoadName").val();
+          filterData.AssetGroup = $("#AssetGroup").val();
+        filterData.GroupType = $("#AssetType").val();
+        filterData.RoadCode = $("#RoadCode").val();
+        filterData.RMUCode = $("#RMU").val();
+        filterData.Bound = $("#Bound").val();
+         filterData.SmartInputValue = $("#AssetssSmartSearch").val();
+        var imgType;
+        var ele = document.getElementsByName('ImageType');
+        for (i = 0; i < ele.length; i++) {
+            if (ele[i].checked)
+                imgType = ele[i].value;
+        }
+        filterData.AssetImageType = imgType;
+           var txtVal = $("#AssetssSmartSearch").val();
+        InitAjaxLoading();
+        $.ajax({
+            url: '/assets/Downloadgridresults',
+            data: filterData,
+            type: 'POST',
+            success: function (data) {
+                HideAjaxLoading();
+                downloadAssetExcel(data);
+            },
+             error: function (data) {
+                    HideAjaxLoading();
+                    alert(data)
+                }
+        });
+
+    });
+
+    function downloadAssetExcel(data) {
+        window.location = "@Url.Action("DowloadExcel", "Assets")" +
+            "?id=" + data;
+    }
+
+    function downloadErrorTemplate(fileId) {
+        window.location = "@Url.Action("ReadExcelErrorFile", "Assets")" + "?fileID=" + fileId;
+    }
+
+    function ImportModal() {
+        $("#importFile").val('');
+    }
+
+    //Method to Clear the valud in detail search
+    function clrAssetSearchField() {
+        $("#AssetType").val("").trigger("chosen:updated");
+        $("#Bound").val("").trigger("chosen:updated");
+        $("#AssetssSmartSearch").val("");
+        $("#FromCh").val("");
+        $("#FromChDesi").val("");
+        $("#ToCh").val("");
+        $("#ToChDeci").val("");
+        var obj = new Object();
+        searchList(obj,"clear");
+    }
+</script>
+@{
+    var AssetIdTitle = ViewBag.AssetTypeName;
+    var AssetTypeNamedata = ViewBag.AssetType;
+    bool isCulvert = ViewBag.AssetType == "CV";
+    bool isBridge = ViewBag.AssetType == "BR";
+    bool isDrain = ViewBag.AssetType == "DR";
+    bool isEdgeLine = ViewBag.AssetType == "ELM";
+    bool isDitch = ViewBag.AssetType == "DI";
+    bool isCenterLine = ViewBag.AssetType == "CLM";
+    bool isRoadStuds = ViewBag.AssetType == "RS";
+    bool isSign = ViewBag.AssetType == "SG";
+    bool isShoulder = ViewBag.AssetType == "SH";
+    bool isCarriageway = ViewBag.AssetType == "CW";
+    bool isGuardrail = ViewBag.AssetType == "GR";
+    bool isRetainingWall = ViewBag.AssetType == "RW";
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Asset_Inventory) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Asset_Inventory) ? "" : "hidden";
+}
+
+@*BreadCrumbs*@
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <input type="hidden" id="assetTypeCode" name="assetTypeCode" value="@AssetTypeNamedata" />
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">@AssetIdTitle</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Road Furniture</li>
+                        <li class="breadcrumb-item">@AssetIdTitle</li>
+                        @*<li class="breadcrumb-item" aria-current="page">
+                                <a class="link-fx" href="">@AssetIdTitle</a>
+                            </li>*@
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+@* Assets Smart & Detail Search *@
+<div class="search-section">
+    @using (Html.BeginForm("AssetsList", "Assets"))
+    {
+        <form id="assetsSearchForm" method="POST">
+            <div class="row justify-content-center mb-1">
+                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.AssetListRequest.SmartInputValue, new { @Id = "AssetssSmartSearch", placeholder = "Search...", @class = "form-control" })
+                        <div class="input-group-append">
+                            <div class="btn-group">
+                                <button id="assetsSearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0 btn btn-sm btn-themebtn" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                <button id="assetsSearchExpBtn" type="button" onclick="detailSearch()" class="btn btn-sm btn-themebtn bg-theme-color js-tooltip-enabled px-2 border-0 "><span class="filter-icon"></span></button>
+                                <button id="clearAssetSearchBtn" type="button" onclick="clrAssetSearchField()" class="btn btn-sm btn-themebtn bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Detail Search Screen*@
+            <div id="detailSearch">
+                <div class="row" id="advSearch" style="display:block">
+                    <div class="col-lg-10 offset-lg-1">
+                        <div class="bg-white rounded float-left pt-3 pb-1 px-lg-3 px-md-2 advance-search-group w-100">
+                            <partial name="~/Views/Asset/SearchBridge.cshtml" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
+<!-- Main Container -->
+
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+            <div class="grid-btns">
+                <button class="btn btn-sm btn-themebtn" @isModifyPerm data-target="#AssetDataUPLOAD" data-toggle="modal"><span class="import-icon"></span> Asset Import</button>
+                <button class="btn btn-sm btn-themebtn" data-target="#AssetDataDownload" data-toggle="modal"><span class="download-icon"></span>  Download</button>
+                <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:AddAssetClick(0);"><span class="add-icon"></span>  Add @AssetIdTitle</button>
+                @*data-toggle="modal" data-target="#AssetsAddModal"*@
+            </div>
+            @* Add Assets Modal *@
+            <div class="modal fade" id="AssetsAddModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+                 aria-labelledby="AssetsAddModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="AssetsAddModalCenterTitle">@AssetIdTitle Property</h5>
+                            <button type="button" class="close" onclick="javascript: cancelAddPopup();" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        @* Patial View for add Class to bind data in partial view *@
+                        <div id="div-data-container" class="bg-body">
+                            @{
+                                //Html.RenderPartial("_BridgeGrid.cshtml");
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Asset Upload Start-->
+            <div class="modal fade" id="AssetDataUPLOAD" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="AssetDataUPLOADCenterTitle">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bridgeAddModalCenterTitle">
+                                Import Asset
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" onclick="ImportModal()" aria-label="Close" id="closeBtn">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <partial name="_importAsset" />
+                    </div>
+                </div>
+
+            </div>
+
+            @*Asset Download*@
+            <div class="modal fade" id="AssetDataDownload" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="AssetDataDownloadCenterTitle">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="width:30%">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="bridgeAddModalCenterTitle">
+                                Asset Download
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-center flex-column align-items-center">
+                                <div class="font-weight-bold font-20 mt-1">
+                                    Select your type of download
+                                </div>
+                                <p class="mt-3 mb-0">
+                                    <label class="mx-2"><input type="radio" name="ImageType" id="WI" value="WI"> With images</label>
+                                    <label class="mx-2"><input type="radio" name="ImageType" id="WOI" value="WOI"> Without images</label>
+                                </p>
+
+
+                                <button class="btn btn-sm btn-themebtn mt-3 mb-3" id="Dbutton">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* View Photo Modal *@
+            <div class="modal fade" id="ViewPhotoModal" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="AssetPhotoModal">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="AssetsAddModalCenterTitle">@AssetIdTitle - View Photo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body  mh-260">
+
+                            <div id="ViewPhoto">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            @*Pagination & Add*@
+            <div id="assetListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_AssetDTGrid.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    #ViewPhoto #AssetImageUploadBtn {
+        display: none;
+    }
+
+    .disableAssetImageAddBtn #AssetImageUploadBtn {
+        display: none;
+    }
+
+    .disableAssetImageAddBtn #val-summary-displayer {
+        display: none;
+    }
+
+    .disableAssetImageAddBtn #AddAssetsBtn {
+        display: none;
+    }
+
+    .disableAssetImageAddBtn #assetRemoveIcon {
+        display: none;
+    }
+
+    #ViewPhoto #assetRemoveIcon {
+        display: none;
+    }
+
+    #ViewPhoto #thPhotoDelete {
+        display: none;
+    }
+
+    .disableAssetImageAddBtn #thPhotoDelete {
+        display: none;
+    }
+</style>
+@if (ViewBag.ViewId != null && ViewBag.ViewId != "")
+{
+    <script type="text/javascript">
+        $(function () {
+            setTimeout(function () {
+                AddAssetClick(@ViewBag.ViewId, 1);
+            }, 1000);
+        });
+    </script>
+}
+<!--Alertify-->
+@*<a href="#" id="confirm">Confirm Dialog</a>
+    <script>
+        function reset() {
+            alertify.set({
+                labels: {
+                    ok: "OK",
+                    cancel: "Cancel"
+                },
+                delay: 5000,
+                buttonReverse: false,
+                buttonFocus: "ok"
+            });
+        }
+        // Standard Dialogs
+        $("#confirm").on('click', function () {
+            reset();
+            alertify.confirm("This is a confirm dialog", function (e) {
+                if (e) {
+                    alertify.success("You've clicked OK");
+                } else {
+                    alertify.error("You've clicked Cancel");
+                }
+            });
+            return false;
+        });
+    </script>*@
+
+@*//app.ShowDialog("This is my dialog Message"); // To show center popup dialog message
+    //app.Confirm("message", function (e) { //To show confirmation Box
+    //    if (e) {
+    //        //your code here
+    //    }
+    //});
+    //app.ShowSuccessMessage("message");
+    //app.ShowWarningMessage("message");
+    //app.ShowErrorMessage("message");
+    //app.ShowInfoMessage("message");*@

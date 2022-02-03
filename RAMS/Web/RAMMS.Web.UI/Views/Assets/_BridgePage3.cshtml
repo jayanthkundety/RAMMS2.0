@@ -1,0 +1,171 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+
+<div class="accordion custom-accordion" id="custom-accordion-four">
+    <div class="card mb-0">
+        <div class="card-header" id="headingFour">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordBridgePage3" aria-expanded="false" aria-controls="collapseFour">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        Primary Member
+                    </span>
+                </a>
+            </h5>
+        </div>
+
+        <div id="AccordBridgePage3" class="collapse avowmodal-form" aria-labelledby="headingFour" data-parent="#custom-accordion-four">
+            <div class="card-body">
+                <div class="form-group col-lg-4">
+                    @Html.Label("Abutment Walls, Foundations ", "Abutment Walls, Foundations ", new { @class = "float-left" })
+
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.AbutFound_multiSelect, (IEnumerable
+                    <SelectListItem>)ViewData["AbutWallsFoundationList"], new { @Id = "AssetAbutFound", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="AbutFoundOther">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.AbutFoundOthers, new { @Id = "AssetAbutFoundOther", @class = "form-control validate {maxcl,250, Abutment Walls Others }", @onkeypressvalidate = "maxcl,250,Abutment Walls Others" })
+                </div>
+
+                <div class="form-group col-lg-4">
+                    @Html.Label("Piers, Connection Of Primary Components ", "Piers, Connection Of Primary Components ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.PiersPrimComp_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["PiersConnOfPrimaryComponentsList"], new { @Id = "AssetPiersPrimComp", @class = "disableinput chosen-select", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" Id="PiersCompOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.PiersPrimCompOthers, new { @Id = "PiersPrimCompOthers", @class = "form-control validate {maxcl,250, Piers Others}", @onkeypressvalidate = "maxcl,250,Piers Others" })
+                </div>
+
+                <div class="form-group col-lg-4">
+                    @Html.Label("Bearing, Bearing Seats, Bearing Diaphragm ", "Bearing, Bearing Seats, Bearing Diaphragm ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.BearingSeatDiaphg_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["BearingSeatsDiaphgramsList"], new { @Id = "AssetBearingSeatDiaphg", @class = "disableinput chosen-select", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="BearingSeatDiaphgOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.BearingSeatDiaphgOthers, new { @Id = "AssetBearingSeatDiaphgOthers", @class = "form-control validate {maxcl,250, Bearing Others}", @onkeypressvalidate = "maxcl,250,Bearing Others" })
+                </div>
+
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Beams, Grider, Trusses, Arches", " Beams, Grider, Trusses, Arches ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.BeamsGridTrusArch_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["BeamsGirdersTrussesArchesList"], new { @Id = "AssetBeamsGridTrusArch", @class = "disableinput chosen-select", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="BeamsGridTrusArchOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.BeamsGridTrusArchOthers, null, new { @Id = "AssetBeamsGridTrusArchOthers", @class = "form-control validate {maxcl,250, Beams Others}", @onkeypressvalidate = "maxcl,250,Beams Others" })
+                </div>
+
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Deck Slab, Pavement", " Deck Slab, Pavement", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.DeckPavement_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["DeckSlabPavementList"], new { @Id = "AssetDeckPavement", @class = "disableinput chosen-select", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="DeckPavementOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.DeckPavementOthers, null, new { @Id = "AssetDeckPavementOthers", @class = "form-control validate {maxcl,250, Deck Slab Others}", @onkeypressvalidate = "maxcl,250,Deck Slab Others" })
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="accordion custom-accordion" id="custom-accordion-five">
+    <div class="card mb-0">
+        <div class="card-header" id="headingFive">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#SecondaryMember" aria-expanded="false" aria-controls="collapseFive">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        Secondary Member
+                    </span>
+                </a>
+            </h5>
+        </div>
+
+        <div id="SecondaryMember" class="collapse avowmodal-form" aria-labelledby="headingFive" data-parent="#custom-accordion-five">
+            <div class="card-body">
+                @*<div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-3">
+                            <label style="float: left;">
+                                Secondary Member
+                            </label>
+                        </div>
+                    </div>*@
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Signboard, Utilities", " Signboard, Utilities", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.Utilities_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["SignboardUtilitiesList"], new { @Id = "AssetUtilities", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="SignboardUtilitiesOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.UtilitiesOthers, null, new { @Id = "AssetSignboardUtilitiesOthers", @class = "form-control validate {maxcl,250, Signboard Utilities Others}", @onkeypressvalidate = "maxcl,250,Signboard Utilities Others" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Waterway", " Waterway", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.Waterway_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["WaterwayList"], new { @Id = "AssetWaterway", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="WaterwayOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.WaterwayOthers, null, new { @Id = "AssetWaterwayOthers", @class = "form-control validate {maxcl,250, Waterway Others}", @onkeypressvalidate = "maxcl,250,Waterway Others" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Drain Water Down Pipe, Drainage", " Drain Water Down Pipe, Drainage", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.WaterDownpipe_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["DrainWaterDownPipeDrainageList"], new { @Id = "AssetWaterDownpipe", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="WaterDownPipeOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.WaterDownpipeOthers, null, new { @Id = "AssetWaterDownPipeOthers", @class = "form-control validate {maxcl,250, Drain Water Down Pipe Others}", @onkeypressvalidate = "maxcl,250,Drain Water Down Pipe Others" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Parapet, Railing", " Parapet, Railing", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.ParapetRailing_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["ParapetRailingList"], new { @Id = "AssetParapetRailing", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="ParapetRailingOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.ParapetRaiolingOthers, null, new { @Id = "AssetParapetRailingOthers", @class = "form-control validate {maxcl,250, parapet Railing Others}", @onkeypressvalidate = "maxcl,250,parapet Railing Others" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Kerb, Sidewalks, Approaches, Approaches Slab", " Kerb, Sidewalks, Approaches, Approaches Slab", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.SidewalksAppSlab_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["KerbSidewalksApproachesSlabList"], new { @Id = "AssetSidewalksAppSlab", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="SidewalkAppSlabOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.SidewalksAppSlabOthers, null, new { @Id = "AssetSidewalkAppSlabOthers", @class = "form-control validate {maxcl,250, Kerb Sidewalks Approaches Others}", @onkeypressvalidate = "maxcl,250,Kerb Sidewalks Approaches Others" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Expansion Joint", " Expansion Joint", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.ExpanJoint_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["ExpansionJointList"], new { @Id = "AssetExpanJoint", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="ExpanJointOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.ExpanJointOthers, null, new { @Id = "AssetExpanJointOthers", @class = "form-control validate {maxcl,250, Expansion joint Others}", @onkeypressvalidate = "maxcl,250,Expansion joint Others" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label(" Slope Protection, Retaining Wall", " Slope Protection, Retaining Wall", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.SlopeRetainWall_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["SlopeProtectionRetainingWallList"], new { @Id = "AssetSlopeRetainWall", @class = "form-control disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2" id="SlopeRetainWallOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.SlopeRetAionWallOthers, null, new { @Id = "AssetSlopeRetainWallOthers", @class = "form-control validate {maxcl,250, Slope protection Others}", @onkeypressvalidate = "maxcl,250,Slope protection Others" })
+                </div>
+                @Html.HiddenFor(m => m.AddAssetViewModel.No, new { @class = "form-control",@id="AssetPkId" })
+                @Html.HiddenFor(m => m.addAssetOtherModel.RefNo, new { @class = "form-control",@id="AssetOtherPk" })                
+            </div>
+        </div>
+    </div>
+</div>

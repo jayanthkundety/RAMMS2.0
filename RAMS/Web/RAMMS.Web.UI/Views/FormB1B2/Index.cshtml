@@ -1,0 +1,379 @@
+﻿
+@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormF2Service formS2
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormN1Service n1Service
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity _security
+@{
+    ViewData["Title"] = "Form B1/B2 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Form B1/B2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    IEnumerable<SelectListItem> assetType = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Asset Type", TypeCode = "BR" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeDesc,
+           Value = s.DdlTypeValue
+       }).ToArray();
+
+    IEnumerable<SelectListItem> year = (await ddlService
+.GetLookups(new DDLookUpDTO { Type = "Year" }))
+.Select(s => new SelectListItem
+{
+    Text = s.DdlTypeValue,
+    Value = s.DdlTypeValue
+}).ToArray();
+    IEnumerable<SelectListItem> section = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
+
+    IEnumerable<SelectListItem> roadcode = (IEnumerable<SelectListItem>)ViewData["RD_Code"];
+
+
+    IEnumerable<SelectListItem> rmu = (await ddlService
+.GetLookups(new DDLookUpDTO { Type = "RMU" }))
+.Select(s => new SelectListItem
+{
+    Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+    Value = s.DdlTypeCode
+}).ToArray();
+
+
+
+}
+<script type="text/javascript">
+    function fnEditForm(pid, view) {
+        window.location = '@Url.Action("Add", "FormB1B2")' + "?id=" + pid + "&view=" + view;
+    }
+
+    function bindRoadCode() {
+        var _ddlRoadCode = $("#ddlRoadCode");
+        _ddlRoadCode.chosen();
+        var req = {};
+        req.code = $("#ddlDivision").val();
+        $.ajax({
+            url: '/FormF2/GetRoadListByDivisionCode',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                _ddlRoadCode.empty();
+                _ddlRoadCode.append($("<option></option>").val("").html("Select Road Code"));
+                $.each(data, function (index, v) {
+                    var text = v.roadCode + " - " + v.roadName;
+                    _ddlRoadCode.append($("<option></option>").val(v.roadCode).html(text));
+                });
+
+                _ddlRoadCode.trigger("chosen:updated");
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#btnAdvSearch").on("click", function () {
+            $("#formF2AdvSearch").toggle();
+        });
+
+        $("#ddlRMU").on("change", function () {
+            bindDropDown($("#ddlRMU"), null, null);
+                if ($("#ddlSection").val() == "") {
+                    $("#txtSectionName").val("");
+                }
+        });
+        $("#ddlRMU").trigger("change");        
+        $("#ddlSection").on("change", function () {
+            if (this.value == "") {
+                $("#txtSectionName").val("");
+            }
+            else {
+                $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
+                //bindDropDown( $("#ddlRMU"),$("#ddlSection"),$("#ddlRoadCode"))
+                bindDropDown(null, $("#ddlSection"), null)
+            }
+        });
+
+        $("#ddlRoadCode").on("change", function () {
+         
+            if (this.value != "") {
+                $("#txtRoadName").val($("#ddlRoadCode").find(":selected").text().split("-")[1].trim());
+                bindDropDown(null, null, $("#ddlRoadCode"))
+            }
+            else {
+                $("#txtRoadName").val("");
+            }
+        });
+
+        bindRoadCode();
+        document.getElementById('txtSmartSearch').focus();
+        elem = document.querySelector('#B1B2Search')
+        elem.addEventListener('keyup', () => {
+            if (event.keyCode === 13) {
+                $("#btnSearch").trigger("click");
+            }
+
+        })
+    });
+
+    function bindDropDown(rmu, sec, rdCode) {
+        var req = new Object();
+        if (rmu != null) {
+            if (rmu.val() != "") {
+                req.RMU = rmu.find("option:selected").text().split("-")[1];
+            }
+            else {
+                req.RMU = '';
+            }
+        }
+        else {
+            req.RMU = '';
+        }
+        if (sec != null) {
+            req.SectionCode = sec.find("option:selected").val();
+        }
+        else req.SectionCode = "";
+        req.GrpCode = "BR"
+
+        if (rdCode != null) {
+            req.RdCode = rdCode.find("option:selected").val();
+        }
+        else {
+            req.RdCode = '';
+        }
+       
+        $.ajax({
+            url: '/FormB1B2/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                if (req.SectionCode == "") {
+                    sec = $("#ddlSection");
+                    $("#txtSectionName").val("");
+                    sec.empty();
+                    
+                    if (data.section.length != 1) {
+                        sec.append($("<option></option>").val("").html("Select Section"));
+                    }
+                    $.each(data.section, function (index, v) {
+                        sec.append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
+                    sec.trigger("chosen:updated");
+                }
+                if (req.RdCode == "") {
+                    $("#txtRoadName").val("");
+                    rdCode = $("#ddlRoadCode");
+                    rdCode.empty();
+                   
+                    if (data.rdCode.length != 1) {
+                        rdCode.append($("<option></option>").val("").html("Select Road Code"));
+                    }
+                    $.each(data.rdCode, function (index, v) {
+                        rdCode.append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    rdCode.trigger("chosen:updated");
+
+                }
+                if (req.RMU == "") {
+                    rmu = $("#ddlRMU");
+                    rmu.empty();
+                    if (data.rmu.length != 1) {
+                        rmu.append($("<option></option>").val("").html("Select RMU"));
+                    }
+                    $.each(data.rmu, function (index, v) {
+                        rmu.append($("<option></option>").val(v.value).html(v.value + "-" + v.text));
+                    });
+                    rmu.trigger("chosen:updated");
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+    }
+
+</script>
+@{
+    var isModifyPerm = _security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
+}
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">Condition Inspection - Form B1/B2</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Condition Inspection</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Form B1/B2
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Search Section -->
+<div class="search-section" id="B1B2Search">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormB1B2SmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" id="txtSmartSearch" placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                        <button id="btnAdvSearch" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                        <button id="btnClearSearch" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formF2AdvSearch" style="display:none">
+            <div id="formF2DetailsearchForm" name="formF2DetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-md-12 px-4">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                @Html.Label("Asset Group", "Asset Group")
+                                <input class="form-control" value="Bridge" disabled />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Asset Type", "Asset Type")
+                                <select id="ddlAssetType" class="form-control">
+                                    <option value="">Select Asset Type</option>
+                                    @foreach (var div in assetType)
+                                    {
+                                        <option value="@div.Value">@div.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("RMU", "RMU")
+                                <select id="ddlRMU" class="form-control">
+                                    <option value="">Select RMU</option>
+                                    @foreach (var sRMU in rmu)
+                                    {
+                                        <option value="@sRMU.Value">@sRMU.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Code", "Section Code")
+                                <select id="ddlSection" class="form-control">
+                                    <option value="">Select Section Code</option>
+                                    @foreach (var div in section)
+                                    {
+                                        <option value="@div.Value">@div.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Name", "Section Name")
+                                <input id="txtSectionName" disabled class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Code", "Road Code")
+                                <select id="ddlRoadCode" class="form-control">
+                                    <option value="">Select Road Code</option>
+                                    @foreach (var road in roadcode)
+                                    {
+                                        <option value="@road.Value">@road.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Name", "Road Name")
+                                <input id="txtRoadName" disabled="disabled" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-1">
+                                @Html.Label("Year of Inspection", "Year of Inspection")
+                                <select id="ddlFrom" class="form-control">
+                                    <option value="">From</option>
+                                    @foreach (var yr in year)
+                                    {
+                                        <option value="@yr.Value">@yr.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-1">
+                                @Html.Label("", "")
+                                <select id="ddlTo" class="form-control">
+                                    <option value="">To</option>
+                                    @foreach (var yr in year)
+                                    {
+                                        <option value="@yr.Value">@yr.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Location Chainage From", "Location Chainage From")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,maxcl,5,Chainage From Km" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,maxcl,3,Chainage From M" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Location Chainage To", "Location Chainage To")
+                                <div class="row">
+                                    <div class="col-6 float-left pr-0">
+                                        <input id="txtChToKm" type="text" class="form-control" onkeypressvalidate="num,maxcl,5,Chainage To Km" />
+                                    </div>
+                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                    <div class="col-5 float-left pl-0">
+                                        <input id="txtChToM" type="text" class="form-control" onkeypressvalidate="num,maxcl,3,Chainage To M" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                @*<button class="btn btn-sm btn-themebtn"><span class="download-icon"></span> Download</button>*@
+                <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript: fnEditForm(0, false);"><span class="add-icon"></span> Add Form B1/B2</button>
+            </div>
+
+            @*Form B1/B2 Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+

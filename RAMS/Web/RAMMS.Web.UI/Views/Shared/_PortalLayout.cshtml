@@ -1,0 +1,744 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="description" content="RAMMS">
+    <meta name="author" content="RAMMS">
+    <meta name="robots" content="noindex, nofollow">
+    <title>@(ViewBag.TabTitle ?? "Road Asset Management and Maintenance System")</title>
+
+    <!-- Open Graph Meta -->
+    <meta property="og:title" content="RAMS">
+    <meta property="og:site_name" content="RAMS">
+    <meta property="og:description" content="RAMS">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+
+    <link rel="icon" href="" type="image/png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/navigation.css" />
+    <link rel="stylesheet" type="text/css" href="~/assets/css/icomoon.css" />
+    <link href="~/js/AutoComplete/AutoComplete.css" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="~/js/navbar-vertical.js"></script>
+
+    <!--Chosen-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.css" />
+
+    <!-- Jquery DataTable JS library -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/CDataTable.js" asp-append-version="true"></script>
+    @*This is for server side validation*@
+    <script src="~/js/jsCustomValidator.js"></script>
+    <script src="~/js/jquery.mask.min.js?v=1.1"></script>
+
+    @*This is for client side Validation*@
+    <script src="~/js/validate.js" asp-append-version="true"></script>
+    <script src="~/js/Resource.js"></script>
+
+    @*To handle all Ajax Calls*@
+    <script src="~/js/jAjax.js" asp-append-version="true"></script>
+
+    @*Jquery Toast*@
+    <script src="~/js/jquery.toast.js"></script>
+    <script src="~/js/jquery.toast.custom.js?v=1"></script>
+    <link href="~/assets/css/jquery.toast.css" rel="stylesheet" />
+    <script src="~/Scripts/moment.min.js" asp-append-version="true"></script>
+    @*Jquery AlertifyJS*@
+    <link href="~/js/alertifyjs/alertify.core.css" rel="stylesheet" />
+    <link href="~/js/alertifyjs/alertify.default.css" rel="stylesheet" />
+    <script src="~/js/alertifyjs/alertify.min.js"></script>
+    <script src="~/js/AutoComplete/AutoComplete.js"></script>
+    <script src="~/js/UserNofication.js" asp-append-version="true"></script>
+    <script src="~/js/Process.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        _APPLocation = "@Url.Content("~/home").Replace("/home", "/")";
+    </script>
+    @RenderSection("header", false)
+</head>
+<body class="has-navbar-vertical-aside navbar-vertical-aside-show-xl navbar-vertical-aside-mini-mode">
+    <div id="page-preloader">
+        <div class="spinner-set">
+            <span class="spinner border-t_second_b border-t_prim_a"></span>
+            <span class="loadblink">
+                <span>Loading</span>
+            </span>
+        </div>
+    </div>
+
+    <aside class="js-navbar-vertical-aside navbar navbar-vertical-aside navbar-vertical navbar-vertical-fixed navbar-expand-xl default navbar-vertical-aside-initialized">
+        <div class="navbar-vertical-container">
+            <div class="navbar-vertical-footer-offset">
+                <div class="navbar-brand-wrapper justify-content-between">
+                    <div class="navbar-nav-wrap-content-left">
+                        <button type="button" class="js-navbar-vertical-aside-toggle-invoker close mr-3">
+                            <i class="icon-chevron-left navbar-vertical-aside-toggle-short-align"></i>
+                            <i class="icon-chevron-right navbar-vertical-aside-toggle-full-align"></i>
+                        </button>
+                    </div>
+
+                    <button type="button" class="js-navbar-vertical-aside-toggle-invoker navbar-vertical-aside-toggle btn btn-icon btn-xs btn-ghost-dark">
+                        <i class="icon-x"></i>
+                    </button>
+                </div>
+
+                <div class="navbar-vertical-content mt-md-2 mt-sm-0">
+                    <ul class="navbar-nav navbar-nav-lg nav-tabs">
+
+                        <li class="nav-item">
+                            <a class="js-nav-tooltip-link nav-link " href="@Url.Action("Index", "Home")" data-placement="left" data-original-title="Home">
+                                <i class="icon-home nav-icon"></i>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Home</span>
+                            </a>
+                        </li>
+                        @if (security.IsPCView(ModuleNameList.Road_Condition_Mapping) || security.HasGroup(GroupNameList.Admin))
+                        {
+                            <li class="nav-item">
+                                <a class="js-nav-tooltip-link nav-link" id="Map" href="@Url.Action("Section", "Home", new { rmu = "miri" })" data-placement="left" data-original-title="Road Condition Mapping">
+                                    <i class="icon-map nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Road Condition Mapping</span>
+                                </a>
+                            </li>
+                        }
+                        @if (security.IsPCView(ModuleNameList.Asset_Inventory) || security.HasGroup(GroupNameList.Admin))
+                        {
+                            <li class="navbar-vertical-aside-has-menu">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="roadfurniture" href="javascript:;" title="Road Furniture">
+                                    <i class="icon-grid nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Road Furniture</span>
+                                </a>
+
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("List", "Assets", new { id = "CV" })" class="nav-link"><span class="text-truncate">Culvert</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("List", "Assets", new { id = "BR" })" class="nav-link"><span class="text-truncate">Bridge</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "DR" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "DR" })" class="nav-link"><span class="text-truncate">Drain</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "DI" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "DI" })" class="nav-link"><span class="text-truncate">Ditch</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "RS" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "RS" })" class="nav-link"><span class="text-truncate">Road Stud</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "ELM" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "ELM" })" class="nav-link"><span class="text-truncate">Edge Line Marking</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "CLM" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "CLM" })" class="nav-link"><span class="text-truncate">Centre Line Marking</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "SH" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "SH" })" class="nav-link"><span class="text-truncate">Shoulder</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "CW" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "CW" })" class="nav-link"><span class="text-truncate">Carriageway</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "GR" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "GR" })" class="nav-link"><span class="text-truncate">Guardrail</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "SG" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "SG" })" class="nav-link"><span class="text-truncate">Signs</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        @*@Url.Action("List", "Assets", new { id = "RW" })*@
+                                        <a href="@Url.Action("List", "Assets", new { id = "RW" })" class="nav-link"><span class="text-truncate">Retaining Wall</span></a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        }
+                        @if (security.IsPCView(ModuleNameList.NOD) || security.HasGroup(GroupNameList.Admin))
+                        {
+                            <li class="navbar-vertical-aside-has-menu">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="NODForm" href="javascript:;" title="Notification of Defect">
+                                    <i class="icon-tool nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">NOD</span>
+                                </a>
+
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "NOD")" class="nav-link"><span class="text-truncate">Road Feature Condition Register (Form A)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormJ", "NOD")" class="nav-link"><span class="text-truncate">Road Safety Audit Report (Form J)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormH", "NOD")" class="nav-link"><span class="text-truncate">Road Asset Damage (Form H)</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (security.IsPCView(ModuleNameList.Emergency_Response_Team) || security.HasGroup(GroupNameList.Admin))
+                        {
+                            <li class="navbar-vertical-aside-has-menu">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="ERTForm" href="javascript:;" title="Emergency Response Team">
+                                    <i class="icon-activity nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">ERT</span>
+                                </a>
+
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormD", "ERT")" class="nav-link"><span class="text-truncate">Daily Work Report, DWR (Form D)</span></a>
+                                        @*<a href="#" class="dropdown-item">Form D</a>*@
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormX", "ERT")" class="nav-link"><span class="text-truncate">Work Request (Form X)</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (security.IsPCView(ModuleNameList.Routine_Maintanance_Work) || security.HasGroup(GroupNameList.Admin))
+                        {
+                            <li class="navbar-vertical-aside-has-menu">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="AssetMaintenance" href="javascript:;" title="Asset Maintenance">
+                                    <i class="icon-sliders nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Asset Maintenance</span>
+                                </a>
+
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormN1", "MAM")" class="nav-link"><span class="text-truncate">Non-Compliance Notice, NCN (Form N1)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormN2", "MAM")" class="nav-link"><span class="text-truncate">Non-Conformance Report, NCR (Form N2)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("QA2", "MAM")" class="nav-link"><span class="text-truncate">Quality Assurance 2 (Form QA2)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormS1")" class="nav-link"><span class="text-truncate">Weekly Work Schedule, WWS (Form S1)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormS2")" class="nav-link"><span class="text-truncate">Quaterly Work Schedule, QWS (Form S2)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormD", "ERT")" class="nav-link"><span class="text-truncate">Daily Work Report, DWR (Form D)</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @if (security.IsPCView(ModuleNameList.Condition_Inspection) || security.HasGroup(GroupNameList.Admin))
+                        {
+                            <li class="navbar-vertical-aside-has-menu">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="ConditionInspection" href="javascript:;" title="Condition Inspection">
+                                    <i class="icon-zap nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Condition Inspection</span>
+                                </a>
+
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormC1C2")" class="nav-link"><span class="text-truncate">Culvert Inspection (Form C1/C2)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormF4")" class="nav-link"><span class="text-truncate">Culvert Summary (Form F4)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormB1B2")" class="nav-link"><span class="text-truncate">Bridge Inspection (Form B1/B2)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormF5")" class="nav-link"><span class="text-truncate">Bridge Summary (Form F5)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormF2")" class="nav-link"><span class="text-truncate">Guardrail Inspection (Form F2)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormFC")" class="nav-link"><span class="text-truncate">Carriageway Inspection (Form FC)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormFD")" class="nav-link"><span class="text-truncate">Drainage & Shoulder Inspection (Form FD)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "FormFS")" class="nav-link"><span class="text-truncate">Road Inventory & Condition Summary (Form FS)</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @*Commented based on the mentioned issue https://ramms.atlassian.net/browse/RU-118*@
+                        @*@if (security.IsPCView(ModuleNameList.Instructed_Works) || security.HasGroup(GroupNameList.Admin))
+                            {*@
+                        <li class="nav-item">
+                            <a class="js-nav-tooltip-link nav-link" id="instructedWorks" href="@Url.Action("Index", "InstructedWorks")" data-placement="left" data-original-title="Instructed Works">
+                                <i class="icon-cpu nav-icon"></i>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Instructed Works</span>
+                            </a>
+                        </li>
+                        @*}
+                            @if (security.IsPCView(ModuleNameList.User_Management) || security.HasGroup(GroupNameList.Admin))
+                            {*@
+                        <li class="navbar-vertical-aside-has-menu">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle svg-hover" id="UserManagement" href="javascript:;" title="User Management">
+                                <svg style="width: 22px; height: 22px; margin-left: -2px;" viewBox="0 0 22 22">
+                                    <path style="width:22px;height:22px;" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M12,13C14.67,13 20,14.33 20,17V20H4V17C4,14.33 9.33,13 12,13M12,14.9C9.03,14.9 5.9,16.36 5.9,17V18.1H18.1V17C18.1,16.36 14.97,14.9 12,14.9Z" />
+                                </svg>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">User Management</span>
+                            </a>
+
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("UserGroup", "Account")" class="nav-link"><span class="text-truncate">User Group</span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Account")" class="nav-link"><span class="text-truncate">User</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                        @* } *@
+                        @if (security.HasGroup(GroupNameList.Admin))
+                        {
+                            <li class="navbar-vertical-aside-has-menu">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle svg-hover" id="UserManagement" href="javascript:;" title="Administration">
+                                    <svg style="width: 24px; height: 22px; margin-left: -2px;" viewBox="0 0 22 22">
+                                        <path style="width:22px;height:22px;" d="M10 4A4 4 0 0 0 6 8A4 4 0 0 0 10 12A4 4 0 0 0 14 8A4 4 0 0 0 10 4M10 6A2 2 0 0 1 12 8A2 2 0 0 1 10 10A2 2 0 0 1 8 8A2 2 0 0 1 10 6M17 12C16.84 12 16.76 12.08 16.76 12.24L16.5 13.5C16.28 13.68 15.96 13.84 15.72 14L14.44 13.5C14.36 13.5 14.2 13.5 14.12 13.6L13.16 15.36C13.08 15.44 13.08 15.6 13.24 15.68L14.28 16.5V17.5L13.24 18.32C13.16 18.4 13.08 18.56 13.16 18.64L14.12 20.4C14.2 20.5 14.36 20.5 14.44 20.5L15.72 20C15.96 20.16 16.28 20.32 16.5 20.5L16.76 21.76C16.76 21.92 16.84 22 17 22H19C19.08 22 19.24 21.92 19.24 21.76L19.4 20.5C19.72 20.32 20.04 20.16 20.28 20L21.5 20.5C21.64 20.5 21.8 20.5 21.8 20.4L22.84 18.64C22.92 18.56 22.84 18.4 22.76 18.32L21.72 17.5V16.5L22.76 15.68C22.84 15.6 22.92 15.44 22.84 15.36L21.8 13.6C21.8 13.5 21.64 13.5 21.5 13.5L20.28 14C20.04 13.84 19.72 13.68 19.4 13.5L19.24 12.24C19.24 12.08 19.08 12 19 12H17M10 13C7.33 13 2 14.33 2 17V20H11.67C11.39 19.41 11.19 18.77 11.09 18.1H3.9V17C3.9 16.36 7.03 14.9 10 14.9C10.43 14.9 10.87 14.94 11.3 15C11.5 14.36 11.77 13.76 12.12 13.21C11.34 13.08 10.6 13 10 13M18.04 15.5C18.84 15.5 19.5 16.16 19.5 17.04C19.5 17.84 18.84 18.5 18.04 18.5C17.16 18.5 16.5 17.84 16.5 17.04C16.5 16.16 17.16 15.5 18.04 15.5Z" />
+                                    </svg>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Administration</span>
+                                </a>
+
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                    @*<li class="nav-item">
+                                        <a href="@Url.Action("list", "Administration",new {id="division"})" class="nav-link"><span class="text-truncate">Division</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("list", "Administration",new { id="rmu"})" class="nav-link"><span class="text-truncate">RMU</span></a>
+                                    </li>*@
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("list", "Administration",new { id="division"})" class="nav-link"><span class="text-truncate">Division/RMU/Section</span></a>
+                                    </li>
+                                    @*<li class="nav-item">
+                                        <a href="@Url.Action("list", "Administration",new { id="assettype"})" class="nav-link"><span class="text-truncate">Asset Type</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("list", "Administration",new { id="defect"})" class="nav-link"><span class="text-truncate">Defect</span></a>
+                                    </li>*@
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("list", "Administration",new { id="road"})" class="nav-link"><span class="text-truncate">List of Road</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        @*<li class="nav-item">
+                            <a class="js-nav-tooltip-link nav-link svg-hover" id="" href="" data-placement="left" data-original-title="Audit Log">
+                                <svg style="width: 22px; height: 24px; margin-left: -2px;" viewBox="0 0 22 22">
+                                    <path style="width:22px;height:24px;" d="M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14M5,3H19C20.11,3 21,3.89 21,5V13.03C20.5,12.23 19.81,11.54 19,11V5H5V19H9.5C9.81,19.75 10.26,20.42 10.81,21H5C3.89,21 3,20.11 3,19V5C3,3.89 3.89,3 5,3M7,7H17V9H7V7M7,11H12.03C11.23,11.5 10.54,12.19 10,13H7V11M7,15H9.17C9.06,15.5 9,16 9,16.5V17H7V15Z" />
+                                </svg>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Audit Log</span>
+                            </a>
+                        </li>*@
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="container-fluid">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-4 al-575-l"><img src="~/assets/media/JKKR-logo.png" height="50" /></div>
+                    <div class="col-4 text-center al-575-c font-26 font-bebas text-uppercase pt-1 pt-sm-0 txt-sm-white">
+                        <span class="show-only-after-1440"><img src="~/assets/media/RAMS-Logo.png" class="rams-l" width="70"/>ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM</span>
+
+                        <span class="show-only-before-1440"><img src="~/assets/media/RAMS-Logo.png" width="70" class="rams-l" />RAMS</span>
+                        
+                    </div>
+                    <div class="col-4 al-575-r d-flex justify-content-end">
+                        @*<span class="notify-group position-relative float-right d-none d-md-block">
+                             <span class="notify-icon"></span>
+                            </span>*@
+                        <div class="navbar-custom">
+                            <ul class="list-unstyled topbar-right-menu float-right mb-0 d-flex align-items-lg-center">
+                                <li><div class="position-relative glb-search"><i class="icon-search"></i><input id="globalSearch" type="text" class="form-control" autocomplete="off"></div></li>
+                                <!--<li class="dropdown notification-list" id="liNotification" style="display:none;">
+                                    <a class="nav-link dropdown-toggle arrow-none notify-i" href="#" id="topbar-notifydrop" role="button" aria-haspopup="true" aria-expanded="false" onclick="return false;" notification>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                                        <span class="noti-icon-badge"></span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-lg" aria-labelledby="topbar-notifydrop" notificationMenu>-->
+
+                                        <!-- item-->
+                                        <!--<div class="dropdown-item noti-title">
+                                            <h5 class="m-0">
+                                                <span class="float-right">
+                                                    <a href="javascript: void(0);" class="text-dark">
+                                                        <small>Clear All</small>
+                                                    </a>
+                                                </span>Notification
+                                            </h5>
+                                        </div>
+
+                                        <div class="slimscroll overflow-auto" style="max-height: 230px;" notificationItem>
+
+                                        </div>-->
+
+                                        <!-- All-->
+                                        <!--<a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-footer">
+                                            View All
+                                        </a>
+
+                                    </div>
+                                </li>-->
+                                <li class="dropdown notification-list" id="liNotification" style="display:none;">
+                                    <a class="nav-link dropdown-toggle arrow-none notify-i" href="" onclick="return false;" role="button" notification>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#152e4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                                        <span class="noti-icon-badge"></span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-lg" notificationMenu>
+                                        <!-- item-->
+                                        <div class="dropdown-item noti-title">
+                                            <h5 class="m-0">
+                                                <span class="float-right">
+                                                    <a href="javascript: void(0);" class="text-dark">
+                                                        <small>Clear All</small>
+                                                    </a>
+                                                </span>Notification
+                                            </h5>
+                                        </div>
+
+                                        <div class="slimscroll overflow-auto" style="max-height: 230px;" notificationItem>
+
+                                        </div>
+
+                                        <!-- All-->
+                                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-footer">
+                                            View All
+                                        </a>
+
+                                    </div>
+                                </li>
+
+                                <li class="dropdown notification-list">
+                                    <a class="nav-link dropdown-toggle head-userset mr-0" data-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
+                                       aria-expanded="false">
+                                        <span>AV</span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown nav-user" aria-labelledby="topbar-userdrop">
+                                        <!-- item-->
+                                        <div class="dropdown-header noti-title">
+                                            <h6 class="text-overflow m-0">Welcome !</h6>
+                                            <span class="account-user-name">@security.UserName</span>
+                                        </div>
+
+                                        <!-- item-->
+                                        <a href="" class="dropdown-item notify-item">
+                                            <span>Profile</span>
+                                        </a>
+
+                                        <!-- item-->
+                                        <a href="" class="dropdown-item notify-item">
+                                            <span>Settings</span>
+                                        </a>
+
+                                        <!-- item-->
+                                        <a href="#" class="dropdown-item notify-item" ResetPassword>
+                                            <span>Reset Password</span>
+                                        </a>
+
+                                        <!-- item-->
+                                        <a href="@(Url.Action("Index", "SignIn",new { id = "logout" }) + "?action=logout")" class="dropdown-item notify-item">
+                                            <span>Logout</span>
+                                        </a>
+
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <img src="~/assets/media/endaya-logo.png" height="50" class="float-right">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="resetpassword" tabindex="-1" role="dialog" aria-labelledby="resetpassword_title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-body">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resetpassword_title">Reset Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-white">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="form-group col-12">
+                                @Html.Label("Old Password", "Old Password")
+                                <input type="password" name="txtOldPassword" class="form-control validate {req,Old Password}" />
+                            </div>
+                            <div class="form-group col-12">
+                                @Html.Label("New Password", "New Password")
+                                <input type="password" class="form-control validate {req,mincl,5,pwdcmp,txtNewConfirmPassword,New Password}" name="txtNewPassword" id="txtNewPassword" />
+                            </div>
+                            <div class="form-group col-12">
+                                @Html.Label("Confirm Password", "Confirm Password")
+                                <input type="password" id="txtNewConfirmPassword" class="form-control validate {req,Confirm Password}" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer py-2">
+                    <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-themebtn" SaveResetPassword>Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        //insert this in your jquery
+        //control the resizing of menu and go down the content in the correct position
+        $(document).ready(function () {
+            AutoComplete("globalSearch", "Home/GlobalSearchData", function (data, mode) {
+                if (data) {
+                    window.location = data.data.Url;
+                }
+            }, 3);
+
+            if ($('#liInspection ul li').length == 0) {
+                $('#liInspection').remove();
+            }
+            if ($('#liEvent ul li').length == 0) {
+                $('#liEvent').remove();
+            }
+            if ($('#liWorksManagement ul li').length == 0) {
+                $('#liWorksManagement').remove();
+            }
+            if ($('#liWorkPrograms ul li').length == 0) {
+                $('#liWorkPrograms').remove();
+            }
+            if ($('#liRoutineWork ul li').length == 0) {
+                $('#liRoutineWork').remove();
+            }
+
+            if ($('#liUserManagement ul li').length == 0) {
+                $('#liUserManagement').remove();
+            }
+
+            if ($('#liAdministration ul li').length == 0) {
+                $('#liAdministration').remove();
+            }
+
+            if ($('#liBuilding ul li').length == 0) {
+                $('#liBuilding').remove();
+            }
+            if ($('#liLandscaping ul li').length == 0) {
+                $('#liLandscaping').remove();
+            }
+            if ($('#liCarriageway ul li').length == 0) {
+                $('#liCarriageway').remove();
+            }
+            if ($('#liDelineation ul li').length == 0) {
+                $('#liDelineation').remove();
+            }
+            if ($('#liDrainage ul li').length == 0) {
+                $('#liDrainage').remove();
+            }
+            if ($('#liMEE ul li').length == 0) {
+                $('#liMEE').remove();
+            }
+            if ($('#liPavement ul li').length == 0) {
+                $('#liPavement').remove();
+            }
+            if ($('#liRoadFurniture ul li').length == 0) {
+                $('#liRoadFurniture').remove();
+            }
+            if ($('#liSlopes ul li').length == 0) {
+                $('#liSlopes').remove();
+            }
+            if ($('#liTunnel ul li').length == 0) {
+                $('#liTunnel').remove();
+            }
+
+            if ($('#liAsset ul li').length == 0) {
+                $('#liAsset').remove();
+            }
+            if ($('#liMCSCivil ul li').length == 0) {
+                $('#liMCSCivil').remove();
+            }
+            if ($('#liMCSMEE ul li').length == 0) {
+                $('#liMCSMEE').remove();
+            }
+            if ($('#liMCSCivilBacklog ul li').length == 0) {
+                $('#liMCSCivilBacklog').remove();
+            }
+            if ($('#liMCS ul li').length == 0) {
+                $('#liMCS').remove();
+            }
+            if ($('#liPIT ul li').length == 0) {
+                $('#liPIT').remove();
+            }
+            //Report
+
+            if ($('#liAssetReport ul li').length == 0) {
+                $('#liAssetReport').remove();
+            }
+            if ($('#liBreakdownAndDefects ul li').length == 0) {
+                $('#liBreakdownAndDefects').remove();
+            }
+            if ($('#liMeeMonthly ul li').length == 0) {
+                $('#liMeeMonthly').remove();
+            }
+            if ($('#liWorksReport ul li').length == 0) {
+                $('#liWorksReport').remove();
+            }
+            if ($('#liPavementReport ul li').length == 0) {
+                $('#liPavementReport').remove();
+            }
+            if ($('#liMcsCivilReport ul li').length == 0) {
+                $('#liMcsCivilReport').remove();
+            }
+            if ($('#liMcsMeeReport ul li').length == 0) {
+                $('#liMcsMeeReport').remove();
+            }
+            if ($('#liMcsCivilBacklogReport ul li').length == 0) {
+                $('#liMcsCivilBacklogReport').remove();
+            }
+            if ($('#liPitFormReport ul li').length == 0) {
+                $('#liPitFormReport').remove();
+            }
+
+            if ($('#liReport ul li').length == 0) {
+                $('#liReport').remove();
+            }
+
+            // Handler for .ready() called.
+            $(window).resize(function () {
+                $('#godown').height($("#navMenu").height() + 10);
+            });
+
+            if ($("#navMenu").height() > $('#godown').height()) {
+                $('#godown').height($("#navMenu").height() + 10);
+            }
+
+            $('ul.dropdown-menu [data-toggle=dropdown]').on('click', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                $(this).parent().siblings().removeClass('open');
+                $(this).parent().toggleClass('open');
+            });
+
+            /* Anything that gets to the document
+will hide the dropdown */
+            $(document).click(function () {
+                $('#navMenu').css('position', 'fixed');
+                $('#navMenu').css('margin-bottom', '20px');
+                $('#godown').show();
+                // window.scrollTo(0,0);
+            });
+
+            /* Clicks within the dropdown won't make
+               it past the dropdown itself */
+            $("#dropdown").click(function (e) {
+                // e.stopPropagation();
+
+            });
+
+            $('li.dropdown [data-toggle=dropdown]').on('click', function (event) {
+                $('#navMenu').css('position', 'relative');
+                $('#navMenu').css('margin-bottom', '9px');
+                $('#godown').hide();
+                window.scrollTo(0, 0);
+            });
+
+            window.TryParseInt = function (e) {
+                try {
+                    if (e != null && e != undefined && e != "") {
+                        return parseInt(e);
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+                catch (e) {
+                    return 0;
+                }
+            };
+
+            InitnumericValidation();
+        });
+
+        function InitnumericValidation() {
+            $("input[class*='numeric']").keydown(function (event) {
+                if (event.shiftKey == true) {
+                    event.preventDefault();
+                }
+
+                if ((event.keyCode >= 48 && event.keyCode <= 57) ||
+                    (event.keyCode >= 96 && event.keyCode <= 105) ||
+                    event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 ||
+                    event.keyCode == 39 || event.keyCode == 46 || event.keyCode == 190) {
+
+                } else {
+                    event.preventDefault();
+                }
+
+                if ($(this).val().indexOf('.') !== -1 && event.keyCode == 190)
+                    event.preventDefault();
+
+            });
+
+            $("input[class*='alphaNumeric']").keypress(function (e) {
+                var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        }
+        function redirectUrl(action, controller) {
+            location.href = '/' + controller + '/' + action;
+        }
+        $(document).on('ready', function () {
+            var sidebar = $('.js-navbar-vertical-aside').hsSideNav();
+            $("input[type='date'][msg]").on("blur", function () { jsMaster.DateCtrlValidate(this); });
+        });
+
+    </script>
+    @if (security.IsLogin)
+    {
+        <script type="text/javascript">
+            notification.init();
+            notification.event();
+        </script>
+    }
+    <script src="~/js/ResetPassword.js"></script>
+    <script src="~/assets/js/Views/Master.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

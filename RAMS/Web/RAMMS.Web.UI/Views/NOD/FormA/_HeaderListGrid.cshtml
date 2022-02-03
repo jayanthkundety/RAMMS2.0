@@ -1,0 +1,206 @@
+﻿@*<div class="col-xl-4 col-lg-5 col-md-6 col-sm-12 pb-1">
+        @Html.PagedListPager((IPagedList)Model.searchObj, Page_No => Url.Action("GridView",
+      new { Page_No, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }), X.PagedList.Mvc.Core.Common.PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+    </div>*@
+@*<div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 pb-1">
+        Rows per page: @Html.DropDownList("pageSize")
+    </div>*@
+@*Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords*@
+
+
+@*<div class="main-container">
+        <table id="bridgeGridView" class="display nowrap">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Reference No</th>
+                    <th>RMU</th>
+                    <th>Month</th>
+                    <th>Road Code</th>
+                    <th>Asset Group</th>
+                    <th>Status</th>
+                    <th>Owner</th>
+                    <th>Verified By</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.FormAHeaderList)
+                {
+                    <tr>
+                        <td>
+                            <div class="btn-group dropright " id="actiondropdown">
+                                <button id="actionclick" type="button" class="btn btn-outline-info theme-clr dropdown-toggle" data-toggle="dropdown">
+                                    Click me
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="submit" class="dropdown-item" data-toggle="modal" id="formAHeaderEdit" onclick="javascript:EditHeaderRecord(@item.No);">
+                                        <i class="fas fa-pen"></i>Edit
+                                    </button>
+                                    <a class="dropdown-item" onclick="javascript:DeleteHeaderRecord(@item.No);" href="#"><i class="fas fa-times"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.No)
+                            @Html.HiddenFor(modelItem => item.No, new { @id = "headerIdForEdit" })
+                        </td>
+                        <td> @Html.DisplayFor(modelItem => item.Rmu)</td>
+                        <td> @Html.DisplayFor(modelItem => item.Month)</td>
+                        <td> @Html.DisplayFor(modelItem => item.RoadCode)</td>
+                        <td> @Html.DisplayFor(modelItem => item.AssetGroupCode)</td>
+                        @if (item.SubmitSts)
+                        {
+                            <td>Submitted</td>
+                        }
+                        else
+                        {
+                            <td>Saved</td>
+                        }
+                        <td> @Html.DisplayFor(modelItem => item.UsernamePrp)</td>
+                        <td> @Html.DisplayFor(modelItem => item.UsernameVer)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>*@
+@*<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 pb-1">
+        Showing Results @ViewBag.DisplayRecords of @ViewBag.TotalNoRecords
+    </div>*@
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormAGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+
+            if (data.id != "" && data.id != null) {
+                title = data.id;
+            }
+            if (data.submitSts) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' " + isViewPerm + " data-target='#FormAAddModal' onclick='javascript:ViewDetailHeader(" + data.no + ",&#39;" + title + "&#39;);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' data-target='#FormAAddModal' id='formAHeaderEdit'" + isModifyPerm + " onclick='javascript:openFormAModel(" + data.no + ",&#39;" + title + "&#39;);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' data-target='#FormAAddModal' " + isViewPerm + " onclick='javascript:ViewDetailHeader(" + data.no + ",&#39;" + title + "&#39;);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var noCol = { data: "no", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
+    var refNoCol = { data: "id", name: "Id", title: "Reference No", autoWidth: true, sortable: true };
+    var rmuCodeCol = { data: "rmu", name: "RMU Abbreviation", title: "RMU Abbreviation", autoWidth: true, sortable: true };
+    var rmuNameCol = { data: "rmuName", name: "RMU Name", title: "RMU Name", autoWidth: true, sortable: true };
+    var rmuSectionCode = { data: "sectionCode", name: "Section Code", title: "Section Code", autoWidth: true, sortable: true };
+    var rmuSection = { data: "section", name: "Section Name", title: "Section Name", autoWidth: true, sortable: true };
+    var monthCol = { data: "monthYear", name: "Month/Year", title: "Month/Year", autoWidth: true, sortable: true };
+    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true, sortable: true };
+   // var roadNameCol = { data: "roadName", name: "RoadName", title: "Road Name", autoWidth: true, sortable: false };
+    var assetgrpCol = { data: "assetGroupCode", name: "AssetGroupCode", title: "Asset Group", autoWidth: true, sortable: true };
+    var statusCodeCol = { data: "processStatus", name: "Status", title: "Status", autoWidth: true, sortable: true };
+    var ownernCol = { data: "usernamePrp", name: "UsernamePrp", title: "Owner", autoWidth: true, sortable: true };
+    var verByCol = { data: "usernameVer", name: "UsernameVer", title: "Verified By", autoWidth: true, sortable: true };
+    table_columns.push(noCol);
+    table_columns.push(actionCol);
+    table_columns.push(refNoCol);
+    table_columns.push(rmuCodeCol);
+    table_columns.push(rmuNameCol);
+    table_columns.push(rmuSectionCode);
+    table_columns.push(rmuSection);
+    table_columns.push(monthCol);
+    table_columns.push(roadCodeCol);
+   // table_columns.push(roadNameCol);
+    table_columns.push(assetgrpCol);
+    table_columns.push(statusCodeCol);
+    table_columns.push(ownernCol);
+    table_columns.push(verByCol);
+
+    function PrintForm(id) {
+        window.location.href = '/nod/FormADownload?id=' + id;
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.SmartInputValue = $("#FormASmartSearch").val();
+        filterData.Rmu = $("#formADetSrchRMU").val();
+        filterData.Section = $("#formADetSrchSec").val();
+        filterData.RoadCode = $("#formADetSrchRoadCode option:selected").val();
+        filterData.AssetGroupCode = $("#formADetSrchAsstGrp").val();
+        filterData.Month = $("#formADetSrchMonth").val();
+        filterData.Year = $("#formADetSrchYear").val();
+        filterData.ChinageFromKm = $("#formAFromKm").val();
+        filterData.ChinageFromM = $("#formAFromM").val();
+        filterData.ChinageToKm = $("#formAToKm").val();
+        filterData.ChinageToM = $("#formAToM").val();
+
+        $('#FormAGridView').DataTable({
+            ajax: {
+                url: "/NOD/LoadHeaderList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+        //Apply Custom search on jQuery DataTables here
+        oHdrTable = $('#FormAGridView').DataTable();
+        $("#FormASmartSearch").on("keyup", function (event) {
+            //debugger;
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                //debugger;
+                $("#formASearchBtn").click();
+            }
+        })
+        $('#formASearchBtn').click(function () {
+            //debugger;
+            oHdrTable.columns(0).search($("#FormASmartSearch").val().trim());
+            oHdrTable.columns(1).search($("#formADetSrchRMU").val().trim());
+            oHdrTable.columns(2).search($("#formADetSrchSec").val().trim());
+            if ($("#formADetSrchRoadCode option:selected").val() != "") {
+                oHdrTable.columns(3).search($("#formADetSrchRoadCode option:selected").val().trim());
+            }
+            else {
+                oHdrTable.columns(3).search("");
+            }
+            oHdrTable.columns(4).search($("#formADetSrchAsstGrp").val().trim());
+            oHdrTable.columns(5).search($("#formADetSrchMonth").val().trim());
+            oHdrTable.columns(6).search($("#formADetSrchYear").val().trim());
+            oHdrTable.columns(7).search($("#formAFromKm").val().trim());
+            oHdrTable.columns(8).search($("#formAFromM").val().trim());
+            oHdrTable.columns(9).search($("#formAToKm").val().trim());
+            oHdrTable.columns(10).search($("#formAToM").val().trim());
+            oHdrTable.data = filterData;
+            oHdrTable.draw();
+        });
+    });
+
+
+</script>
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>

@@ -1,0 +1,420 @@
+﻿@model RAMMS.Web.UI.Models.FormDDetailsDtlModel;
+@*<script src="~/js/ERTFormD.js"></script>*@
+<link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
+<script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
+<script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
+
+<script>
+    $(document).ready(function () {
+        //debugger;
+        if ($("#hdnView").val() == "" || $("#hdnView").val() == "0") {
+            $("#FormDSiteRef").chosen();
+            $("#formDtlActivityCode").chosen();
+            $("#formDDtlRoadCode").chosen();
+            $("#FormDWorkStatus").chosen();
+            $("#FormDSourceType").chosen();
+            $("#FormDSourceRefID").chosen();
+            $("#formDProductionUnit").chosen();
+        }
+        $("#FormDSiteRef").chosen();
+        $("#formDDtlReferenceNo").prop("disabled", true);
+
+        $("#formDtlActivityCode").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#formDActivityDesc").val(val);
+        });
+
+        if ($("#FormDisFormSource").val() == 'True') {
+            $("#formListText").css("display", "none");
+            $("#formList").css("display", "block");
+        } else {
+            $("#formListText").css("display", "block");
+            $("#formList").css("display", "none");
+        }
+
+        if ($("#FormDDtlNo").val() == "") {
+            //debugger;
+            var formDrefNo = $("#formDReferenceNo").val();
+            var no = $("#FormDDetailsGridView").find("tbody>tr").length;
+             no = no == 1 ? 1 : (no+1);
+            if (no < 10)
+                no = "00" + no
+            else if (no >= 10 && no <= 99)
+                no = "0" + no;
+           
+            $("#formDDtlReferenceNo").val(formDrefNo + "-" + no);
+            $("#formDDtlReferenceNo").prop("disabled", true);
+        }
+
+        $("#FormDSourceType").on("change", function () {
+            if ($(this).val() == "New") {
+                $("#formListText").css("display", "block");
+                $("#formList").css("display", "none");
+                $("#FormDisFormSource").val("False");
+                $("#FormDSourceRefID").removeAttr("class");
+                $("#FormDTextReferenceID").attr("class", "form-control validate { required, Source Type }")
+            }
+            else {
+                var _rcode = $("#formDDtlRoadCode").find(":selected").val();
+                if (_rcode != "" && _rcode != null) {
+                    $("#formListText").css("display", "none");
+                    $("#formList").css("display", "block");
+                    $("#FormDisFormSource").val("True");
+                    $("#FormDSourceRefID").attr("class", "form-control validate {required, Source Type}")
+                    $("#FormDTextReferenceID").removeAttr("class");
+
+                    $.ajax({
+                        url: '/ERT/GetReferenceId',
+                        dataType: 'JSON',
+                        data: {
+                            form: $(this).val(), roadCode: $("#formDDtlRoadCode").find(":selected").val()
+                        },
+                        type: 'Post',
+                        success: function (data) {
+                            if (data != null) {
+                                $('#FormDSourceRefID').empty();
+                                $('#FormDSourceRefID')
+                                    .append($("<option></option>")
+                                        .attr("value", "")
+                                        .text("Select Reference"));
+                                $.each(data, function (key, value) {
+                                    $('#FormDSourceRefID')
+                                        .append($("<option></option>")
+                                            .attr("value", value.value)
+                                            .text(value.text));
+                                });
+                            }
+                            if ($("#hdnFormXPKRefNo").val() != "")
+                                $('#FormDSourceRefID').val($("#hdnFormXPKRefNo").val());
+                            else
+                                $('#FormDSourceRefID').val("");
+
+                            $('#FormDSourceRefID').trigger("chosen:updated");
+                        },
+                        error: function (data) {
+
+                            console.error(data);
+                        }
+                    });
+                }
+                else {
+                    app.ShowErrorMessage("Please select road code and try again");
+                    $(this).val("").trigger("chosen:updated");
+                }
+
+            }
+        });
+
+        var val = $("#FormDDtlNo").val();
+        if (val != 0 && val != undefined && val != "") {
+            document.getElementById("btnUCUOpenModal").disabled = false;
+            document.getElementById("btnWarOpenModal").disabled = false;
+
+            $("#formDDtlRoadCode").trigger("change");
+            $("#formDtlActivityCode").trigger("change");
+            if ($("#hdnSourceType").val() == "New") {
+                //$("#FormDTextReferenceID").val("");
+                $("#FormDSourceRefID").css("display", "none");
+                $("#FormDSourceRefID").removeAttr("class");
+            }
+            else {
+                if ($("#hdnFormXPKRefNo").val() != "")
+                    $('#FormDSourceRefID').val($("#hdnFormXPKRefNo").val());
+                //else
+                //    $('#FormDSourceRefID').val("");
+            }
+            //else if ($("#hdnSourceType").val().indexOf("New-") >= 0) {
+            //    $("#FormDSourceType").val('New');
+            //    $("#FormDSourceType").trigger("chosen:updated");
+            //    $("#FormDTextReferenceID").val($("#hdnSourceType").val().split("-")[1]);
+            //    $("#FormDSourceType").trigger("change");
+            //    $("#FormDSourceRefID").removeAttr("class");
+            //} 
+        $("#FormDSourceRefID").trigger("chosen:updated");
+            $("#FormDSourceType").trigger("change");
+
+        }
+        else {
+            $("#formDtlActivityCode").chosen();
+            document.getElementById("btnUCUOpenModal").disabled = true;
+            document.getElementById("btnWarOpenModal").disabled = true;
+        }
+
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+
+        $("#formDDepartureTime").timeEntry();
+
+        $("#formDArrivalTime").timeEntry();
+    });
+
+    $("#formDDtlRoadCode").on("change", function () {
+
+        var d = new Date();
+
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+
+        var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
+            (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
+
+        RpDate = output;
+        $("#FormDSourceType").trigger("change");
+        $.ajax({
+            url: '/ERT/GetDivisionByRoadCode',
+            dataType: 'JSON',
+            data: { roadCode: $(this).val(), RpDate: RpDate },
+            type: 'Post',
+            success: function (data) {
+                if (data != null) {
+                    if (data._RMAllData != undefined && data._RMAllData != null) {
+                        $("#formDDtlroadDesc").val(data._RMAllData.roadName);
+                    }
+
+                    document.getElementById("formDDtlroadDesc").disabled = true;
+                } else {
+                    document.getElementById("formDDtlroadDesc").disabled = false;
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+        return false;
+    });
+
+    function GoBackDtl() {
+        FormDDtlGridRefresh();
+        if ($("#hdnDetView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormDDetailsModal").modal("hide");
+                }
+            }));
+        } else
+            $("#FormDDetailsModal").modal("hide");
+    }
+
+</script>
+<form id="FormAddDetails" action="/ERT/FormDSaveDetails">
+    <div class="modal-body bg-body p-0">
+        <div class="d-flex justify-content-center pt-3 pb-3">
+            <div class="form-group mb-0">
+                @Html.Label("Form D No.", "Form D No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                @Html.TextBoxFor(m => m.SaveFormDDetailsModel.ReferenceID, new { @Id = "formDDtlReferenceNo", @class = "form-control  validate {required, Reference No}", style = "width:400px;" })
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="w-100 float-left mh-250 bg-white pt-3" style="border-top: 1px solid #dee2e6;">
+                    <div class="form-group col-lg-2 mb-0">
+                        @Html.Label("Chainage From", "Chainage From")
+                        @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                        <div class="row">
+                            <div class="col-6 float-left pr-0">
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.FrmCh, new { @Id = "formDChinageFrom", @maxlength = 5, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required,number, Chainage From}", @rows = 1 })
+                            </div>
+                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> @Html.Label("+", "+")</div>
+                            <div class="col-5 float-left pl-0">
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.FrmChDeci, new { @Id = "formDChinageFromDeci", @maxlength = 3, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required,number, Chainage From Deci}", @rows = 1 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-2 mb-0">
+                        @Html.Label("Chainage To", "Chainage To")
+                        @Html.Label("*", " *", new { @class = "required", style = "float: left" })
+                        <div class="row">
+                            <div class="col-6 float-left pr-0">
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.ToCh, new { @Id = "formDChinageTo", @maxlength = 5, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required,number, Chainage To}", @rows = 1 })
+                            </div>
+                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> @Html.Label("+", "+")</div>
+                            <div class="col-5 float-left pl-0">
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.ToChDeci, new { @Id = "formDChinageToDeci", @maxlength = 3, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required,number, Chainage To Deci}", @rows = 1 })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-2">
+                        @Html.Label("Site Ref", "Site Ref")
+                        <input type="hidden" id="multiSiteHidden" value="@Model.SaveFormDDetailsModel?.SiteRef" />
+                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDDetailsModel.SiteRef_multiSelect, (IEnumerable
+                                                           <SelectListItem>)Model.siteRefList, "", new { @Id = "FormDSiteRef", @class = "form-control validate {required, Site Ref}", @multiple = "multiple" })
+                    </div>
+
+                    <div class="clear-b"></div>
+                    <div class="form-group col-lg-8 mb-0">
+                        @Html.Label("Activity Code", "Activity Code")
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDDetailsModel.ActCode, (IEnumerable
+                                                           <SelectListItem>)Model.ActCodeList, "Select Activity Code", new { @Id = "formDtlActivityCode", @class = "form-control  validate {required, Activity Code}" })
+                                @Html.HiddenFor(Ahdr => Ahdr.SaveFormDDetailsModel.ActCode, new { @id = "hdnformDActCode", @class = "form-control" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                @Html.TextBoxFor(m => m.ActivityDescription, new { @Id = "formDActivityDesc", @readonly = "readonly", @class = "form-control " })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-b"></div>
+                    <div class="form-group col-lg-8 mb-0">
+                        @Html.Label("Road Code", "Road Code")
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDDetailsModel.RoadCode, (IEnumerable
+                                                           <SelectListItem>)Model.RoadCodeList, "Select Road Code", new { @Id = "formDDtlRoadCode", @class = "form-control validate {required, Road Code}" })
+                            </div>
+                            <div class="form-group col-lg-6">
+                                @Html.TextBoxFor(m => m.RoadDescription, new { @Id = "formDDtlroadDesc", @readonly = "readonly", @class = "form-control " })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clear-b"></div>
+                    <div class="form-group col-lg-8 mb-0">
+                        @Html.Label("Source", "Source")
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDDetailsModel.SourceType, (IEnumerable
+                                                           <SelectListItem>)Model.sourceTypefList, "Select Source", new { @Id = "FormDSourceType", @class = "form-control validate {required, Source Type}" })
+                                @Html.HiddenFor(Dhdr => Dhdr.SaveFormDDetailsModel.SourceType, new { @id = "hdnSourceType" })
+                            </div>
+                            <div id="formList" class="form-group col-lg-6">
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDDetailsModel.FormXPKRefNo, (IEnumerable
+                                                           <SelectListItem>)Model.sourceFormList, "Select Reference ID", new { @Id = "FormDSourceRefID", @class = "form-control validate {required, Source Type}" })
+                                @Html.HiddenFor(Dhdr => Dhdr.SaveFormDDetailsModel.FormXPKRefNo, new { @id = "hdnFormXPKRefNo" })
+                            </div>
+                            <div id="formListText" class="form-group col-lg-6">
+                                @Html.TextBoxFor(Dhdr => Dhdr.SaveFormDDetailsModel.SourceRefID, new { @id = "FormDTextReferenceID", @autocomplete = "off", @class = "form-control  validate {required, Reference Id}" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clear-b"></div>
+                    <div class="form-group col-lg-2 position-relative time-entry">
+                        @Html.Label("Arrival Time (HH:MM XM)", "Arrival Time (HH:MM XM)")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.TimeArr, new { @Id = "formDArrivalTime", @type = "text", @autocomplete = "off", @class = "form-control  validate {required, Arrival Time}", @rows = 1 })
+                    </div>
+
+                    <div class="form-group col-lg-2 position-relative time-entry">
+                        @Html.Label("Departure Time (HH:MM XM)", "Departure Time (HH:MM XM)")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.TimeDep, new { @Id = "formDDepartureTime", @type = "text", @autocomplete = "off", @class = "form-control validate {required, Departure Time}", @rows = 1 })
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        @Html.Label("Production Quantity", "Production Quantity")
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.ProdQty, new { @Id = "formDProductionQuality", @maxlength = 5, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required, Production Quality}", @rows = 1 })
+                    </div>
+                    <div class="form-group col-lg-4 mb-0">
+                        @Html.Label("Dimension (m)", "Dimension (m)")
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-md-3 in-lbl">
+                                @Html.Label("L", "L")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.Length, new { @width = "60px", @Id = "formDLength", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, Length}", @rows = 1 })
+
+                            </div>
+                            <div class="form-group col-lg-4 col-md-3 in-lbl">
+                                @Html.Label("W", "W")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.Width, new { @width = "60px", @Id = "formDWidth", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, Width}", @rows = 1 })
+                            </div>
+                            <div class="form-group col-lg-4 col-md-3 in-lbl">
+                                @Html.Label("H", "H")
+                                @Html.TextBoxFor(Adtl => Adtl.SaveFormDDetailsModel.Height, new { @width = "60px", @Id = "formDHeight", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric disableFADinput validate {cdecimal,5,5, Height}", @rows = 1 })
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4 mb-0">
+                        <div class="row">
+                            <div class="form-group col-lg-12">
+                                @Html.Label("Production Unit", "Production Unit")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDDetailsModel.ProdUnit, (IEnumerable
+                                                                      <SelectListItem>)Model.UnitList, "Select Unit", new { @Id = "formDProductionUnit", @class = "form-control validate {required, Production Unit}" })
+                            </div>
+                            <div class="form-group col-lg-12">
+                                @Html.Label("Work Status", "Work Status")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDDetailsModel.WorkSts, (IEnumerable
+                                                                       <SelectListItem>)Model.WrkStatusList, "Select Work Status", new { @Id = "FormDWorkStatus", @class = "form-control validate {required, Work Status}" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-8 txtarea-107">
+                        @Html.Label("Remarks", "Remarks")
+                        @Html.TextAreaFor(m => m.SaveFormDDetailsModel.Remarks, new { @Id = "FormDRemarks", @class = "form-control validate {required, Remarks}" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SaveFormDDetailsModel.No, new { @id = "FormDDtlNo", @class = "form-control" })
+    @Html.HiddenFor(m => m.isFromSource, new { @id = "FormDisFormSource", @class = "form-control" })
+    @Html.HiddenFor(m => m.SaveFormDDetailsModel.SrNo, new { @id = "FormDDtlSerialNo", @class = "form-control" })
+    @Html.Hidden("hdnDetView", "")
+    <div class="modal-footer justify-content-between">
+        <div class="float-left">
+            <button type="button" id="btnUCUOpenModal" class="btn btn-sm btn-outline-theme" data-target='#USeeUModal' data-backdrop='static' onclick="openUSeeU()" data-toggle="modal">U See U Act and Accident Form</button>
+            <button type="button" id="btnWarOpenModal" class="btn btn-sm btn-outline-theme" data-target='#WarPhotoModal' data-backdrop='static' onclick="openPhoto()" data-toggle="modal">WAR</button>
+        </div>
+
+        <div class="float-right row">
+            <div id="val-summary-displayer-details">
+                <div id="val-summary-displayer"></div>
+            </div>
+            <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme mr-1" onclick="GoBackDtl()">Cancel</button>
+            <button id="saveContinueFormDDtlBtn" type="button" class="btn btn-sm btn-themebtn mr-1">Save & Continue</button>
+            <button id="saveFormDDtlBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="WarPhotoModal" aria-hidden="true" role="dialog" aria-labelledby="WarPhotoModal">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AssetsAddModalCenterTitle">WAR Image Upload</h5>
+                    <button type="button" class="close" onclick="CloseWarModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                </div>
+                <div id="div-WarPhoto">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="USeeUModal" aria-hidden="true" role="dialog" aria-labelledby="USeeUModal">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AssetsAddModalCenterTitle">U See U Act and Accident PDF Upload</h5>
+                    <button type="button" class="close" onclick="CloseUSeeUModal()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div id="div-USeeUModal">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

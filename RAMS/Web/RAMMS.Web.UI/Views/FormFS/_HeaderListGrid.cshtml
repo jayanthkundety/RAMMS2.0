@@ -1,0 +1,233 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormFSGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+
+
+    var table_columns = [];
+    var pkRefNo = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            var title = "";
+            if (data.pkRefNo != "" && data.pkRefNo != null) {
+                title = data.pkRefNo;
+            }
+            if (data.submitSts) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' " + isViewPerm + " onclick='javascript:viewDetail(" + data.pkRefNo + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteHeader(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' id='formAHeaderEdit'" + isModifyPerm + " onclick='javascript:editDetail(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' data-backdrop='static' onclick='javascript:viewDetail(" + data.pkRefNo + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteHeader(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    table_columns.push(pkRefNo); var divCode = { data: "divCode", name: "divCode", title: "DivCode", autoWidth: true, sortable: true, visible: false };
+    table_columns.push(divCode); var dist = { data: "dist", name: "dist", title: "Dist", autoWidth: true, sortable: true, visible: false };
+    var activeYn = { data: "activeYn", name: "activeYn", title: "ActiveYn", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(activeYn);
+    table_columns.push(dist); var rmuName = { data: "rmuName", name: "rmuName", title: "RMU", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(rmuName); var roadId = { data: "roadId", name: "roadId", title: "RoadId", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(roadId); var roadCode = { data: "roadCode", name: "roadCode", title: "Road Code", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(roadCode); var roadName = { data: "roadName", name: "roadName", title: "Road Name", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(roadName); var roadLength = { data: "roadLength", name: "roadLength", title: "Road Length", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(roadLength); var yearOfInsp = { data: "yearOfInsp", name: "yearOfInsp", title: "Year Of Inspection", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(yearOfInsp); var userIdInspBy = { data: "userIdInspBy", name: "userIdInspBy", title: "Inspected By", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userIdInspBy); var userNameInspBy = { data: "userNameInspBy", name: "userNameInspBy", title: "Inspected By", autoWidth: true, sortable: true, visible: false };
+    table_columns.push(userNameInspBy); var userDesignationInspY = { data: "userDesignationInspY", name: "userDesignationInspY", title: "UserDesignationInspY", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userDesignationInspY); var dtInspBy = { data: "dtInspBy", name: "dtInspBy", title: "DtInspBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(dtInspBy); var signpathInspBy = { data: "signpathInspBy", name: "signpathInspBy", title: "SignpathInspBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(signpathInspBy); var formRefId = { data: "formRefId", name: "formRefId", title: "FormRefId", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(formRefId); var crewLeaderId = { data: "crewLeaderId", name: "crewLeaderId", title: "CrewLeaderId", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(crewLeaderId); var crewLeaderName = { data: "crewLeaderName", name: "crewLeaderName", title: "Crew Leader", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(crewLeaderName); var userIdSmzdBy = { data: "userIdSmzdBy", name: "userIdSmzdBy", title: "UserIdSmzdBy",autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userIdSmzdBy); var userNameSmzdBy = { data: "userNameSmzdBy", name: "userNameSmzdBy", title: "UserNameSmzdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userNameSmzdBy); var userDesignationSmzdY = { data: "userDesignationSmzdY", name: "userDesignationSmzdY", title: "UserDesignationSmzdY", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userDesignationSmzdY); var dtSmzdBy = { data: "dtSmzdBy", name: "dtSmzdBy", title: "DtSmzdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(dtSmzdBy); var signpathSmzdBy = { data: "signpathSmzdBy", name: "signpathSmzdBy", title: "SignpathSmzdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(signpathSmzdBy); var userIdChckdBy = { data: "userIdChckdBy", name: "userIdChckdBy", title: "UserIdChckdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userIdChckdBy); var userNameChckdBy = { data: "userNameChckdBy", name: "userNameChckdBy", title: "UserNameChckdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userNameChckdBy); var userDesignationChckdBy = { data: "userDesignationChckdBy", name: "userDesignationChckdBy", title: "UserDesignationChckdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(userDesignationChckdBy); var dtChckdBy = { data: "dtChckdBy", name: "dtChckdBy", title: "DtChckdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(dtChckdBy); var signpathChckdBy = { data: "signpathChckdBy", name: "signpathChckdBy", title: "SignpathChckdBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(signpathChckdBy); var modBy = { data: "modBy", name: "modBy", title: "ModBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(modBy); var modDt = { data: "modDt", name: "modDt", title: "ModDt", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(modDt); var crBy = { data: "crBy", name: "crBy", title: "CrBy", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(crBy); var crDt = { data: "crDt", name: "crDt", title: "CrDt", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(crDt); var submitSts = {
+        data: null, name: "submitSts", title: "Status", autoWidth: true, sortable: true, visible: true, render: function (data) {
+            if (data.submitSts)
+                return "Submitted";
+            else
+                return "Saved";
+        }
+    };
+    table_columns.push(submitSts);
+
+    function PrintForm(id) {
+        window.location.href = '/FormFS/Download?id=' + id;
+    }
+
+    function editDetail(id) {
+        window.location.href = '/FormFS/Add?id=' + id + '&isview=false';
+    }
+
+    function viewDetail(id) {
+        window.location.href = '/FormFS/Add?id=' + id + '&isview=true';
+    }
+
+    function deleteHeader(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: '/FormFS/RemoveHeader',
+                    dataType: 'JSON',
+                    data: req,
+                    type: 'Post',
+                    success: function (data) {
+                        if (data) {
+                            app.ShowSuccessMessage("Record deleted successfully");
+                            $("#btnClearSearch").click();
+                        }
+                        else {
+                            app.ShowErrorMessage("Please try again.")
+                        }
+
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.SmartSearch = $("#txtSmartSearch").val();
+        filterData.Division = $("#ddlDivision").val();
+        filterData.RoadCode = $("#ddlRoadCode").val()
+        filterData.Year = $("#ddlYear").val();
+        filterData.FromInspectionDate = $("#txtFromInspectiondate").val();
+        filterData.ToInspectionDate = $("#txtToInspectionDate").val();
+        filterData.locchFromKm = $("#txtChFromKm").val();
+        filterData.locchFromM = $("#txtChFromM").val();
+        filterData.locchToKm = $("#txtChToKm").val();
+        filterData.locchToM = $("#txtChToM").val();
+        $('#FormFSGridView').DataTable({
+            ajax: {
+                url: "/FormFS/GetHeaderList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormFSGridView').DataTable();
+        $("#btnClearSearch").click(function () {
+            $("#txtSmartSearch").val('');
+            $("#ddlSection").val('');
+            $("#ddlSection").trigger("chosen:updated");
+            $("#txtSectionName").val('');
+            $("#ddlRmuCode").val('');
+            $("#ddlRmuCode").trigger("chosen:updated");
+            $("#ddlRoadCode").val('');
+            $("#ddlRoadCode").trigger("chosen:updated");
+            $("#txtRoadName").val('');
+            $("#txtChFromKm").val('');
+            $("#txtChFromM").val('');
+            $("#txtChToKm").val('');
+            $("#txtChToM").val('');
+            $("#ddlFrom").val('');
+            $("#ddlFrom").trigger("chosen:updated");
+            $("#ddlTo").val('');
+            $("#ddlTo").trigger("chosen:updated");
+            var req = {};
+            req.RMU = "";
+            req.GrpCode = "";
+            $.ajax({
+                url: '/FormF2/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    //debugger;
+
+                    $("#ddlRmuCode").empty();
+                    $("#ddlRmuCode").append($("<option></option>").val("").html("Select RMU"));
+                    $.each(data.rmu, function (index, x) {
+                        $("#ddlRmuCode").append($("<option></option>").val(x.value).html(x.text));
+                    });
+                    $("#ddlRmuCode").trigger("chosen:updated");
+
+                    $("#ddlSection").empty();
+                    $("#ddlSection").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#ddlSection").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    $("#ddlSection").trigger("chosen:updated");
+
+                    $("#ddlRoadCode").empty();
+                    $("#ddlRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                    $.each(data.rdCode, function (index, v) {
+                        $("#ddlRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    $("#ddlRoadCode").trigger("chosen:updated");
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+            $("#btnSearch").click();
+            $("#btnSearch").click();
+
+
+        });
+        $('#btnSearch').click(function () {
+            oTable.columns(0).search($("#txtSmartSearch").val());
+            oTable.columns(1).search($("#ddlRmuCode").val());
+            oTable.columns(2).search($("#ddlSection").val());
+            oTable.columns(3).search($("#ddlRoadCode").val());
+            oTable.columns(4).search($("#ddlFrom").val());
+            oTable.columns(5).search($("#ddlTo").val());
+            oTable.columns(6).search($("#ddlFormType").val());
+            oTable.columns(7).search($("#txtChFromKm").val());
+            oTable.columns(8).search($("#txtChFromM").val());
+            oTable.columns(9).search($("#txtChToKm").val());
+            oTable.columns(10).search($("#txtChToM").val());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>

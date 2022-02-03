@@ -1,0 +1,905 @@
+﻿
+
+.form-signin {
+    max-width:330px;
+    padding:15px;
+    margin:auto;
+}
+
+.container-center {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+input {
+    max-width:inherit;
+}
+
+.form-control {
+    width:100%;
+    border-radius:0px;
+    max-width:inherit;
+}
+
+.top1 {
+    margin-top:5px;
+}
+.top2 {
+    margin-top:10px;
+}
+.top3 {
+    margin-top:15px;
+}
+.top4 {
+    margin-top:20px;
+}
+.top5 {
+    margin-top:25px;
+}
+.top6 {
+    margin-top:30px;
+}
+.topradiochk {
+    margin-top:29px;
+}
+
+btn,
+.btn-sm,
+.btn-lg,
+.btn-primary,
+.btn-warning,
+.btn-success,
+.btn-danger,
+.btn-info {
+    border-radius:0px;
+}
+
+.glyphicon {
+    margin-right:8px;
+}
+
+.alert {
+    width:inherit;
+}
+
+img.breadcrumb {
+    margin-left:10px;
+    margin-right:10px;
+    background-color:transparent;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding:0px;
+    content:url("../Images/Shared/breadcrumb-arrow.png");
+}
+
+.bold {
+    font-weight:bold;
+}
+.footer-text 
+{
+    text-align:center;
+}
+
+textarea {
+    max-width:none;
+}
+
+h4 {
+    margin-bottom:5px;
+}
+
+.btn-warning .badge {
+  color: #f0ad4e;
+  background-color: #fff;
+}
+
+.modal-xl {
+    margin:10px;
+    position:relative;
+    width:auto;
+}
+
+.pre-scrollable-y {
+    overflow-x:hidden;
+}
+
+.pre-scrollable-x {
+    overflow-y:hidden;
+}
+
+
+.list-group-sort{
+    border-radius: 0px;
+}
+.list-group-sort li {
+    margin:5px;
+    border-radius: 0px;
+}
+.list-group-sort .list-group-item:first-child {
+  border-top-right-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+}
+
+.list-group-sort .list-group-item:last-child {
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+
+.list-group-item.warning, 
+.list-group-item.warning:hover, 
+.list-group-item.warning:focus {
+      color: #ffffff;
+      background-color: #f0ad4e;
+      border-color: #f0ad4e;
+}
+
+.list-group-item.success, 
+.list-group-item.success:hover, 
+.list-group-item.success:focus {
+      color: #ffffff;
+      background-color: #5cb85c;
+      border-color: #5cb85c;
+}
+.list-group-item.info, 
+.list-group-item.info:hover, 
+.list-group-item.info:focus {
+      color: #ffffff;
+      background-color: #5bc0de;
+      border-color: #5bc0de;
+}
+.list-group-item.danger, 
+.list-group-item.danger:hover, 
+.list-group-item.danger:focus {
+      color: #ffffff;
+      background-color: #d9534f;
+      border-color: #d9534f;
+}
+
+td.block {
+    white-space:nowrap;
+    width:1%
+}
+
+a.logo {
+    /*background: url(../Images/logo.png) no-repeat top left;*/
+    content:"RAMS";
+     display: block;
+     width: 252px;
+     height: auto;
+     text-indent: -9999px; /* hides the link text */
+}
+
+
+.logoCompany {
+    background: url(../Images/Icon/Company.png) no-repeat top left;
+    resize:both;
+    width:100%;
+    height:100%;
+}
+ .modal { 
+     /*
+         Scroll and focus issue with multiple modals open.
+         https://github.com/nakupanda/bootstrap3-dialog/issues/70
+     */
+     overflow: auto !important;
+ }
+.no-record
+{
+    color:#C4C4C4;
+  
+}
+
+.ui-autocomplete {
+    position: absolute;
+    z-index: 1000;
+    cursor: default;
+    padding: 0;
+    margin-top: 2px;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+       -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+             max-height: 300px;
+    overflow-y: auto;   /* prevent horizontal scrollbar */
+    overflow-x: hidden; /* add padding to account for vertical scrollbar */
+}
+.ui-autocomplete > li {
+  padding: 3px 20px;
+}
+.ui-autocomplete > li.ui-state-focus {
+  background-color: #DDD;
+}
+.ui-helper-hidden-accessible {
+  display: none;
+}
+
+
+
+.ui-autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1100;
+    float: left;
+    display: none;
+    min-width: 160px;
+    _width: 160px;
+    padding: 4px 0;
+    margin: 2px 0 0 0;
+    list-style: none;
+    background-color: #ffffff;
+    border-color: #ccc;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-style: solid;
+    border-width: 1px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    background-image:none;
+}
+.ui-menu-item
+{
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif !important ;
+    font-weight:normal !important;
+    font-size:inherit !important;
+}
+.ui-menu-item > a.ui-corner-all {
+    display: block;
+    font-weight:normal;
+    border-radius: 0px !important;
+    padding: 3px 15px !important;
+    clear: both !important;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+}
+.ui-state-hover, .ui-state-focus, .ui-state-active {
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif !important ;
+    font-weight:normal !important;
+    font-size:inherit !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+    background-color: #0088cc !important;
+    background-image: none !important;
+    border:1px solid #2e6da4 !important;
+}
+.qq-thumbnail-selector
+{
+    cursor: pointer;
+}
+
+.navbar-inverse
+{
+    background-color:#336ea0;
+    border-color:#336ea0;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color:white;
+}
+.navbar-inverse .navbar-nav > li > a:hover {
+    background-color:#3c82c3;
+}
+
+@media (min-width: 1200px)
+{
+    .container {
+        width: 100%;
+    }
+}
+@media (min-width: 992px)
+{
+    .container {
+        width: 100%;
+    }
+}
+@media (min-width: 768px)
+{
+    .container {
+        width: 100%;
+    }
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: #245389;
+}
+
+.dropdown-menu
+{
+    background-color:#1c1c1c;
+    padding:0px;
+}
+.dropdown-menu > li > a
+{
+    border-bottom:1px solid #2e2e2e;
+    padding:10px 15px;
+    color:#dbdbdb;
+}
+.dropdown-menu > li > a:hover
+{
+    background-color:#272727;
+    color:#dbdbdb;
+}
+
+.navbar-inverse .navbar-toggle {
+    border-color: white;
+}
+
+/*Samuel: To Set Min Menu Collapse Breakpoint*/
+@media (max-width: 1100px) {
+    .navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);    
+        margin-right: -15px !important;
+        margin-left: -15px !important;
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav .open .dropdown-menu > li > a, .navbar-nav .open .dropdown-menu .dropdown-header {
+        
+    }
+    .navbar-nav {
+        width:100%;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav > li > a {
+        padding-top:15px;
+        padding-bottom:15px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
+   .navbar-nav .open .dropdown-menu {
+       position: static;
+       float: none;
+       width: auto;
+       margin-top: 0;
+       border: 0;
+       -webkit-box-shadow: none;
+       box-shadow: none;
+    }
+    .dropdown-menu
+    {
+        background-color:#1c1c1c;
+        padding:0px;
+    }
+    .dropdown-menu > li > a
+    {
+        border-bottom:1px solid #2e2e2e;
+        padding:10px 15px;
+        color:#dbdbdb;
+    }
+    .dropdown-menu > li > a:hover
+    {
+        background-color:#272727;
+        color:#dbdbdb;
+    }
+}
+
+@media (max-width: 767px) {
+   .navbar-nav
+   {
+       width:auto !important;
+   } 
+   .navbar-nav .open .dropdown-menu {
+       position: static;
+       float: none;
+       width: auto;
+       margin-top: 0;
+       border: 0;
+       -webkit-box-shadow: none;
+       box-shadow: none;
+        background-color:#1c1c1c;
+    }
+    .dropdown-menu
+    {
+        background-color:#1c1c1c;
+        padding:0px;
+    }
+    .dropdown-menu > li > a
+    {
+        color:#dbdbdb !important;
+        border-bottom:1px solid #2e2e2e !important;
+        padding:10px 15px !important;
+    }
+    .dropdown-menu > li > a:hover
+    {
+        background-color:#272727 !important;
+        color:#dbdbdb;
+    }
+}
+
+.navbar-brand
+{
+    color:white !important;
+}
+.navbar-brand:hover
+{
+    color:white !important;
+    background-color: #3c82c3 !important;
+}
+
+.bottom2{
+    margin-bottom:10px;
+    display:inline-block;
+    width:100%;
+}
+
+
+/*Site.css*/
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/*table formatting */
+.no-record::before
+{
+      content:"No record found!";
+}
+.no-record
+{
+    text-align:center;
+    color:#949596;
+  
+}
+.failed-to-load::before{
+  content:"Failed to load record! Please refresh and try again.";
+}
+.failed-to-load
+{
+    text-align:center;
+    color:#ff0000;
+    font-size:larger;
+    font-weight:bold;
+  
+}
+
+#loading-indicator {
+  /*position: absolute;
+  left: 10px;
+  top: 10px;*/
+     
+      /* border: 1px solid #000000;*/
+       /*some magic to align the element in the center;
+       width:        1000px;
+       margin-left:  -500px;/* half of the width */
+}
+#div-loading-indicator{
+    position:fixed;
+   width:100%;
+   top:10px;
+      margin1: 0 auto;
+       background-color:Transparent;
+       z-index: 10000 !important;
+}
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
+}
+.front-banner
+{
+    margin:10px;
+}
+.main-category
+{
+    background-color:#e3e3e3;
+}
+.container-top-margin
+{
+    margin-top:80px;
+    padding-top:80px;
+}
+
+.form-change-password{
+    width:400px
+}
+
+.col-centered{
+    float: none !important;
+    margin: 0 auto;
+}
+/* http://stackoverflow.com/questions/19741145/bootstrap-navbar-fixed-top-covers-content */
+#godown{
+   height: 60px;
+}
+
+.dropdown-menu > li > a:hover {
+    color: #dbdbdb !important;
+}
+.dropdown-menu > li > a:focus:hover {
+    color: #000099 !important;
+}
+
+
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.bs-callout-primary {
+    border-left-color: #337ab7;
+}
+.bs-callout-success {
+    border-left-color: #5cb85c;
+}
+.bs-callout-info {
+    border-left-color: #5bc0de;
+}
+.bs-callout-danger {
+    border-left-color: #f0ad4e;
+}
+.bs-callout-warning {
+    border-left-color: #d9534f;
+}
+.bs-callout h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.datepicker-days, .datepicker-months, .datepicker-years
+{
+    background-color:white;
+    border:1px;
+}
+
+.datepicker-dropdown
+{
+    background-color:white !important;
+}
+
+.datepicker
+{
+    padding:0px !important;
+}
+
+.margin-reset{
+    margin:0px !important;
+}
+
+.divider
+{
+    margin:0px !important;
+    height: 3px !important;
+    background-color:#2e2e2e !important;
+}
+
+/*Dropdown List Start*/
+.just-padding {
+    padding: 15px;
+}
+
+.list-group.list-group-root {
+    padding: 0;
+    overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+    margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+    border-top-width: 0;
+}
+
+.list-group.list-group-root > .list-group > .list-group-item {
+    padding-left: 30px;
+}
+
+.list-group.list-group-root > .list-group > .list-group > .list-group-item {
+    padding-left: 45px;
+}
+.list-group.list-group-root > .list-group > .list-group > .list-group >  .list-group-item {
+    padding-left: 60px;
+}
+
+.list-group-item .glyphicon {
+    margin-right: 5px;
+}
+/*Dropdown List End*/
+
+.no-white-space
+{
+    white-space:nowrap;
+}
+.set-white-space
+{
+    white-space:pre-wrap;
+}
+
+#fine-uploader-manual-trigger .qq-upload-button {
+    margin-right: 15px;
+}
+
+#fine-uploader-manual-trigger .buttons {
+    width: 36%;
+}
+
+#fine-uploader-manual-trigger .qq-uploader .qq-total-progress-bar-container {
+    width: 60%;
+}
+        
+.qq-upload-thumb{
+    max-width: 120px !important;
+    display: inline-block !important;
+}
+
+
+/**Yip Change **/
+@media screen and (max-width: 1100px) {
+    .table-responsive {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+}
+    .table-responsive > .table {
+        margin-bottom: 0; 
+    }
+
+    .indent-content{
+    margin-left: 15px !important;
+}
+
+}
+
+.table-responsive > .table > thead > tr > th, .table-responsive > .table > tbody > tr > th, .table-responsive > .table > tfoot > tr > th, .table-responsive > .table > thead > tr > td, .table-responsive > .table > tbody > tr > td, .table-responsive > .table > tfoot > tr > td {
+    white-space: nowrap;
+}
+
+
+
+@media screen and (min-width: 768px){
+    .col-lg-offset-4 {
+        margin-left: 33.33333333%;
+        
+    }
+}
+
+@media screen and (max-width: 1200px) and (min-width: 768px) {
+    .col-lg-offset-4 {
+        margin-left: 25%;
+        width: 50%;
+    }
+}
+
+/*** Yip Change End */
+
+.dropdown-submenu > .dropdown-menu {
+    margin-top: -1px !important;
+}
+
+.qq-upload-file
+{
+    font-size:12px !important;
+    height:100% !important;
+}
+.qq-uploader
+{
+    max-height: none !important;
+}
+.qq-upload-delete-selector
+{
+   /*display:block !important; */ 
+}
+
+.required > label:after {
+  content: "  *";
+}
+
+.required > label {
+  color: Red;
+}
+
+.preline {
+    white-space: pre-line !important;
+}
+
+
+.list-group-item-dark {
+    color: #fff;
+    background-color: #343a40;
+}
+
+a.list-group-item-dark,
+button.list-group-item-dark {
+    color: #fff;
+}
+
+    a.list-group-item-dark .list-group-item-heading,
+    button.list-group-item-dark .list-group-item-heading {
+        color: inherit;
+    }
+
+    a.list-group-item-dark:hover,
+    button.list-group-item-dark:hover,
+    a.list-group-item-dark:focus,
+    button.list-group-item-dark:focus {
+        color: #fff;
+        background-color: #343a40;
+    }
+
+    a.list-group-item-dark.active,
+    button.list-group-item-dark.active,
+    a.list-group-item-dark.active:hover,
+    button.list-group-item-dark.active:hover,
+    a.list-group-item-dark.active:focus,
+    button.list-group-item-dark.active:focus {
+        color: #fff;
+        background-color: #343a40;
+        border-color: #343a40;
+    }
+
+
+
+.list-group-item-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+
+a.list-group-item-secondary,
+button.list-group-item-secondary {
+    color: #fff;
+}
+
+    a.list-group-item-secondary .list-group-item-heading,
+    button.list-group-item-secondary .list-group-item-heading {
+        color: inherit;
+    }
+
+    a.list-group-item-secondary:hover,
+    button.list-group-item-secondary:hover,
+    a.list-group-item-secondary:focus,
+    button.list-group-item-secondary:focus {
+        color: #fff;
+        background-color: #5a6268;
+    }
+
+    a.list-group-item-secondary.active,
+    button.list-group-item-secondary.active,
+    a.list-group-item-secondary.active:hover,
+    button.list-group-item-secondary.active:hover,
+    a.list-group-item-secondary.active:focus,
+    button.list-group-item-secondary.active:focus {
+        color: #fff;
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+
+
+
+.list-group-item-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+
+a.list-group-item-light,
+button.list-group-item-light {
+    color: #212529;
+}
+
+    a.list-group-item-light .list-group-item-heading,
+    button.list-group-item-light .list-group-item-heading {
+        color: inherit;
+    }
+
+    a.list-group-item-light:hover,
+    button.list-group-item-light:hover,
+    a.list-group-item-light:focus,
+    button.list-group-item-light:focus {
+        color: #212529;
+        background-color: #e2e6ea;
+    }
+
+    a.list-group-item-light.active,
+    button.list-group-item-light.active,
+    a.list-group-item-light.active:hover,
+    button.list-group-item-light.active:hover,
+    a.list-group-item-light.active:focus,
+    button.list-group-item-light.active:focus {
+        color: #212529;
+        background-color: #e2e6ea;
+        border-color: #dae0e5;
+    }
+
+
+.list-group-item-gray {
+    color: #212529;
+    background-color: #e3e6e8;
+}
+a.list-group-item-gray,
+button.list-group-item-gray {
+    color: #212529;
+}
+
+    a.list-group-item-gray .list-group-item-heading,
+    button.list-group-item-gray .list-group-item-heading {
+        color: inherit;
+    }
+
+    a.list-group-item-gray:hover,
+    button.list-group-item-gray:hover,
+    a.list-group-item-gray:focus,
+    button.list-group-item-gray:focus {
+        color: #212529;
+        background-color: #e3e6e8;
+    }
+
+    a.list-group-item-gray.active,
+    button.list-group-item-gray.active,
+    a.list-group-item-gray.active:hover,
+    button.list-group-item-gray.active:hover,
+    a.list-group-item-gray.active:focus,
+    button.list-group-item-gray.active:focus {
+        color: #212529;
+        background-color: #e3e6e8;
+        border-color: #dae0e5;
+    }
+
+    .chartGoogle {
+        margin:0 auto !important;
+        text-align:center;
+    }
+
+.chartGoogle > div{
+    position:absolute;
+}

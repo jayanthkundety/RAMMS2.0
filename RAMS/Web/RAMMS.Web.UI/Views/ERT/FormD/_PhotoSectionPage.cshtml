@@ -1,0 +1,511 @@
+﻿@model RAMMS.Web.UI.Models.FormDModel;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+
+<style>
+
+    .gallery {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .modal2.fade.in ~ .modal-backdrop.fade.in {
+        opacity: .1;
+        background-color: #f00;
+    }
+
+    .uploadfile {
+        font-size: 18px;
+    }
+</style>
+<div class="modal-body  mh-260">
+    <div class="accordion custom-accordion" id="WarModalaccordion">
+        <div class="col-3">
+            @Html.HiddenFor(m => m.SaveFormDModel.No, new { @class = "form-control", @id = "formDWarNo" }) @*//PrimaryKey*@
+
+        </div>
+        <div class="card mb-0">
+            <div class="card-header" id="headingEight" style="padding: .45rem 1.25rem; ">
+                <div class="w-100 float-left d-flex justify-content-between">
+                    <a class="custom-accordion-title py-l" data-toggle="collapse" href="#ImageList" aria-expanded="true" aria-controls="collapseEight">
+                        <span class="float-left" style="padding-top: 2px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        </span>
+                        <span class="float-left" style="padding: 4px 8px;">
+                            Image List
+                        </span>
+                    </a>
+                    <div class="img-btns mt-1">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" id="AssetImageUploadBtn" href="#myModal2">
+                            <span class="add-icon"></span> Add Image
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="ImageList" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#WarModalaccordion">
+                <div class="card-body">
+                    <div id="cancel-row">
+                        <div class="simple-tbl">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>S.NO</th>
+                                        <th>Image Type</th>
+                                        <th>FileName</th>
+                                        @if (security.IsPCDelete(ModuleNameList.Emergency_Response_Team))
+                                        {
+                                            <th style="text-align:center">Delete</th>
+                                        }
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 1;
+
+                                        if (Model.WarImageimageList != null && Model.WarImageimageList.Count() > 0)
+                                        {
+
+                                            foreach (var item in Model.WarImageimageList)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.ImageUserFilename)</td>
+                                                    @if (security.IsPCDelete(ModuleNameList.Emergency_Response_Team))
+                                                    {
+                                                        <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.NO,'War')"><span class="remove-icon"></span></button></td>
+                                                    }
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="accordion custom-accordion" id="WarImageList">
+        <div class="card mb-0">
+            <div class="card-header" id="headingNine">
+                <a class="custom-accordion-title py-l collapsed" data-toggle="collapse" href="#WarImageView" aria-expanded="true" aria-controls="collapseNine">
+                    <span class="float-left" style="padding-top: 2px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        Image View
+                    </span>
+                </a>
+                <div class="img-btns">
+                    <a class="btn btn-sm btn-themebtn" id="printWarButton" onclick="printWAR()" role="button">
+                        <span class="print-icon-white"></span> Print
+                    </a>
+                </div>
+            </div>
+            <div id="WarImageView" class="collapse  avowmodal-form" aria-labelledby="headingEight" data-parent="#WarImageList">
+                <div class="card-body">
+                    @if (Model.WarImageimageList.Count() > 0)
+                    {
+
+                        @foreach (var list in Model.ImageTypeList)
+                        {
+                            <div class="container">
+                                <h6>@list</h6>
+                                <hr />
+                                @foreach (var item in Model.WarImageimageList)
+                                {
+                                    if (list == item.ImageTypeCode)
+                                    {
+                                        <div class="waritem">
+                                            <div data-fancybox="gallery" style="text-align:center">
+                                                @{
+                                                    var type = item.ImageUserFilename.Split('.');
+                                                    var fileType = "";
+                                                    if (type.Length > 0)
+                                                    {
+                                                        fileType = type[1];
+                                                    }
+                                                }
+                                                @if (item.ImageTypeCode != "Others")
+                                                {
+                                                    if (fileType.ToLower() == "png" || fileType.ToLower() == "jpg" || fileType.ToLower() == "jpeg")
+                                                    {
+                                                        <img src="~/@item.ImageFilenameUpload" alt="Image_Unavailable" />
+                                                        <span class="warCaption">@item.ImageUserFilename</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (fileType.ToLower() != "png" && fileType.ToLower() != "jpg" && fileType.ToLower() != "jpeg")
+                                                    {
+
+                                                        <img class="item-doc"  src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
+                                                        <a class="warCaption" href="~/Uploads/FormD/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@item.ImageUserFilename</a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/Uploads/FormD/@item.ImageFilenameUpload" alt="Image_Unavailable" />
+                                                        <span class="warCaption">@item.ImageUserFilename</span>
+                                                    }
+                                                }
+
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
+</div>
+
+<div class="modal hide border-10x addphoto-mdl" id="myModal2">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">WAR Image Upload</h4>
+                <button type="button" id="btnclose" class="close">×</button>
+            </div><div class="container"></div>
+            <div class="modal-body">
+
+                <div class="col-12 d-flex align-items-center flex-column">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Please Select WAR Type ", "Please Select WAR Type: ", new { @class = "float-left" })
+                            @Html.DropDownList("Select Type", (IEnumerable
+                                <SelectListItem>)ViewData["PhotoTypeList"], "Select Type", new { @Id = "WarphotoType", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="row">
+                        <div class="form-group col-lg-12 mt-4">                            
+                            <form id="fileupload" action="#" method="POST" enctype="multipart/form-data">
+                                <div class="files" id="files1" style="text-align:center">
+
+                                    <span class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" id="FormDBrowseBtn">
+                                        Browse files here to upload <input type="file" id="files" name="files1" multiple />
+                                    </span>
+                                    <br />
+                                    <br>
+                                    <ul id="photolist" class="fileList"></ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="divImg" class="row">
+                    <div class="mt-3 col-md-2">
+                        <output id="Filelist" style="display:inline-flex"></output>
+                    </div>
+                </div>
+
+                <div class="text-center mt-2">
+                    <button type="button" id="btnWarImageUpload" onclick="UploadModalClose()" class="btn btn-sm btn-themebtn">Upload</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="imageClear" class="btn btn-sm btn-outline-theme">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+        div.waritem {
+        vertical-align: top;
+        display: inline-flex;
+        text-align: center;
+        margin-right: 5%;
+        margin-bottom: 3%
+    }
+
+    .item-doc {
+        width: 200px;
+        height: 200px;
+    }
+    .waritem img {
+        /*width: 350px;*/
+        
+        height: 200px;
+        margin-bottom: 5%;
+    }
+
+    .warCaption {
+        display: flex;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+        font-size: 1rem
+    }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    .disabled #FormDBrowseBtn {
+        opacity: .65;
+    }
+</style>
+
+
+
+<script>
+    $(document).ready(function () {
+        document.getElementById("files").disabled = true;
+        $("#files1").addClass("disabled");
+        document.getElementById("FormDBrowseBtn").disabled = true;
+        document.getElementById("btnWarImageUpload").disabled = true;
+    });
+
+
+    function UploadModalClose() {
+        $("#WarphotoType").val("").trigger("chosen:updated");
+        document.getElementById("files").disabled = true;
+        $("#files1").addClass("disabled");
+        document.getElementById("FormDBrowseBtn").disabled = true;
+        document.getElementById("btnWarImageUpload").disabled = true;
+        $("#photolist").empty();
+        $('#myModal2').modal('hide');
+    }
+    $("#WarphotoType").change(function () {
+         document.getElementById("files").disabled = true;
+        $("#files1").addClass("disabled");
+        var type = $("#WarphotoType").val();
+        if (type != "" && type != undefined && type != null) {
+            $("#files1").removeClass("disabled");
+            document.getElementById("files").disabled = false;
+        }
+    })
+    function printWAR() {
+            window.location = "@Url.Action("PrintWarForm", "ERT")" + "?id=" + document.getElementById('formDWarNo').value + "&form="+"FormD"+"&filename="+"WARFormD";
+    }
+
+     $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
+        var fileIdCounter = 0;
+
+        this.closest(".files").change(function (evt) {
+            var output = [];
+            for (var i = 0; i < evt.target.files.length; i++) {
+                fileIdCounter++;
+                var file = evt.target.files[i];
+                var fileId = sectionIdentifier + fileIdCounter;
+                var fileType = $("#WarphotoType").val();
+
+                //PDF--application / pdf
+                //docx--application / vnd.openxmlformats - officedocument.wordprocessingml.document
+                //doc--application / msword
+                //xlsx--application / vnd.openxmlformats - officedocument.spreadsheetml.sheet
+                //csv--text / csv
+                //xls--application / vnd.ms - excel
+                //PNG--image / png
+                //JPG--image / jpeg
+                //JPEG--image / jpeg
+                var ext = file.name.split('.').pop().toLowerCase();
+
+                if (fileType != 'Others') {
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                        app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                        return
+                    }
+                    if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                        app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                        return
+                    }
+                }
+                else {
+
+                    //if (file.type != "image/png" && file.type != "image/jpeg" && file.type != "application/vnd.ms-excel" && file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.type != "application/msword" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.type != "application/pdf") {
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf']) == -1) {
+                        app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
+                            return
+                    }
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                        if (file.size > 26214400) {// should not be exceed 25 mb for documents
+                            app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 25 MB");
+                            return
+                        }
+                    }
+                    else {
+
+                        if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                            app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                            return
+                        }
+                    }
+                }
+
+                filesToUpload.push({
+                    id: fileId,
+                    file: file,
+                    fileType: fileType
+                });
+                if (fileType != 'Others') {
+                    if (file.type == "image/png" || file.type == "image/jpeg"|| file.type == "image/jpg") {
+                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+                    }
+                    else {
+                         var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
+                    }
+                }
+                else {
+
+                    if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
+                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
+                    }
+                    else {
+                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+                    }
+                }
+            };
+
+            $(this).children(".fileList")
+                .append(output.join(""));
+
+            //reset the input to null - nice little chrome bug!
+            evt.target.value = null;
+            document.getElementById("btnWarImageUpload").disabled = false;
+        });
+
+        $(this).on("click", ".removeFile", function (e) {
+            e.preventDefault();
+            var fileId = $(this).parent().children("a").data("fileid");
+
+            // loop through the files array and check if the name of that file matches FileName
+            // and get the index of the match
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id === fileId)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).parent().remove();
+            if (filesToUpload.length == 0) {
+                document.getElementById("btnWarImageUpload").disabled = true;
+
+            }
+            else {
+                document.getElementById("files").disabled = false;
+                document.getElementById("btnWarImageUpload").disabled = false;
+                $("#files1").removeClass("disabled");
+            }
+        });
+
+        this.clear = function () {
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id.indexOf(sectionIdentifier) >= 0)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).children(".fileList").empty();
+        }
+
+        return this;
+    };
+    (function () {
+        var filesToUpload = [];
+
+        var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
+
+        $("#imageClear").click(function (e) {
+            filesToUpload.length = 0;
+            $("#photolist li").remove();
+            $("#myModal2").modal('hide');
+            $("#WarphotoType").val("").trigger("chosen:updated");
+        });
+
+        $("#btnclose").click(function (e) {
+            filesToUpload.length = 0;
+            $("#photolist li").remove();
+            $("#myModal2").modal('hide');
+            $("#WarphotoType").val("").trigger("chosen:updated");
+        });
+
+        $("#btnWarImageUpload").click(function (e) {
+            var type = $("#WarphotoType").val();
+            var formData = new FormData();
+             formData.append("Id", document.getElementById("formDWarNo").value);
+            for (var i = 0, len = filesToUpload.length; i < len; i++) {
+                formData.append("FormFile", filesToUpload[i].file);
+                formData.append("PhotoType", filesToUpload[i].fileType);
+            }
+            InitAjaxLoading();
+            $.ajax(
+                {
+                    url: "/ERT/ImageUploadedWarFormD",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    dataType: 'JSON',
+                    success: function (data) {
+                        HideAjaxLoading();
+                        if (data) {
+                        app.ShowSuccessMessage('Uploaded Successcully', false);
+                        $('#myModal2').modal('hide');
+                        if ($("#div-WarPhotod").is(':visible'))
+                            openPhotod();
+                        else
+                            openPhoto();
+
+                    }
+                    else {
+                        app.ShowErrorMessage('Upload Failed. Kindly retry later.', false);
+                        HideAjaxLoading();
+                    }
+
+                    },
+                    error: function (data) {
+                        HideAjaxLoading();
+                        app.ShowErrorMessage("Upload Failed. Kindly retry later.")
+
+                    }
+                }
+            );
+
+        });
+    })()
+    function deleteImageupload(imageToDelete) {
+        var imagedelete = imageToDelete.cellIndex - 1;
+        app.Confirm("Are you sure you want to remove?, If Yes click OK.", function (e) {
+            if (e) {
+                var row = document.getElementById("ImageRow")
+                row.deleteCell(imageToDelete.cellIndex);
+                row.deleteCell(imagedelete);
+            }
+        });
+    }
+   
+</script>

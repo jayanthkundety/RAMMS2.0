@@ -1,0 +1,163 @@
+
+  /*
+  =====
+  DEPENDENCES
+  =====
+  */
+
+  .r-list{
+    --uirListPaddingLeft: var(--rListPaddingLeft, 0);
+    --uirListMarginTop: var(--rListMarginTop, 0);
+    --uirListMarginBottom: var(--rListMarginBottom, 0);
+    --uirListListStyle: var(--rListListStyle, none);
+
+    padding-left: var(--uirListPaddingLeft) !important;
+    margin-top: var(--uirListMarginTop) !important;
+    margin-bottom: var(--uirListMarginBottom) !important;
+    list-style: var(--uirListListStyle) !important;
+  }
+
+  .r-link{
+    --uirLinkDisplay: var(--rLinkDisplay, inline-flex);
+    --uirLinkTextColor: var(--rLinkTextColor);
+    --uirLinkTextDecoration: var(--rLinkTextDecoration, none);
+
+    display: var(--uirLinkDisplay) !important;
+    color: var(--uirLinkTextColor) !important;
+    text-decoration: var(--uirLinkTextDecoration) !important;
+  }
+
+  /*
+  =====
+  COMPONENT
+  =====
+  */
+
+  .pagination{
+    --uiPaginationAlignmentX: var(--paginationAlignmentX, flex-start);
+    --uiPaginationAlignmentY: var(--paginationAlignmentY, center);
+
+    display: var(--paginationDisplay, flex);
+    align-items: var(--uiPaginationAlignmentY);
+    justify-content: var(--uiPaginationAlignmentX);  
+  }
+
+  .pagination__list{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: var(--uiPaginationAlignmentY);
+    justify-content: var(--uiPaginationAlignmentX);  
+  }
+
+  .pagination__group:nth-child(n+2){
+    margin-left: var(--paginationGroupMargin, .25em);
+  }
+
+  .pagination__point{
+    padding: var(--paginationPointPadding, .5875em .8em);
+    line-height: 1;
+  }
+
+  /*
+  =====
+  SKIN
+  =====
+  */
+  .pagination{
+    --uiPaginationPointBgColor: var(--paginationPointBgColor);
+    --uiPaginationPointBorderWidth: var(--paginationPointBorderWidth);
+    --uiPaginationPointBorderColor: var(--paginationPointBorderColor);
+    --uiPaginationPointFontWeight: var(--paginationPointFontWeight);
+    --uiPaginationPointTextColor: var(--paginationPointTextColor);  
+
+    --rLinkTextColor: var(--paginationPointTextColor);
+
+    --uiPaginationActivePointTextColor: var(--paginationActivePointTextColor);  
+    --uiPaginationActivePointFontWeight: var(--paginationActivePointFontWeight, 700);
+    --uiPaginationActivePointBgColor: var(--paginationActivePointBgColor);
+    --uiPaginationActivePointBorderWidth: var(--paginationActivePointBorderWidth, 0);
+    --uiPaginationActivePointBorderColor: var(--paginationActivePointBorderColor, transparent);  
+
+    --uiPaginationArrowSize: var(--paginationArrowSize, 22px);
+    --uiPaginationArrowMargin: var(--paginationArrowMargin, .25em);
+    --uiPaginationArrowDisplay: var(--paginationArrowDisplay, inline-flex);  
+  }
+
+  .pagination__point{
+    background-color: var(--uiPaginationPointBgColor);
+    border: var(--uiPaginationPointBorderWidth) solid var(--uiPaginationPointBorderColor);
+
+    font-weight: var(--uiPaginationPointFontWeight);
+    color: var(--uiPaginationPointTextColor);    
+  }
+
+  /*
+  The attribute selector helps to avoid mistakes with a11y
+  */
+
+  .pagination__point:not([href])[aria-current]{
+    --uiPaginationPointBgColor: var(--uiPaginationActivePointBgColor);
+    --uiPaginationPointBorderWidth: var(--uiPaginationActivePointBorderWidth);
+    --uiPaginationPointBorderColor: var(--uiPaginationActivePointBorderColor);
+    --uiPaginationPointFontWeight: var(--uiPaginationActivePointFontWeight);
+    --uiPaginationPointTextColor: var(--uiPaginationActivePointTextColor);
+
+    display: inline-flex;  
+  }
+
+  .pagination__control{
+    align-items: center;
+  }
+
+  .pagination__symbol{
+    display: var(--uiPaginationArrowDisplay);
+    height: 1em;
+    font-size: var(--uiPaginationArrowSize);
+    line-height: 1;
+  }
+
+  .pagination__prev-symbol{
+    margin-right: var(--uiPaginationArrowMargin);
+  }
+
+  .pagination__next-symbol{
+    margin-left: var(--uiPaginationArrowMargin);
+  }
+
+  /*
+  =====
+  SETTINGS
+  =====
+  */
+
+  :root{
+    --paginationPointTextColor: #4557bb;
+    --paginationActivePointTextColor: #fff;
+    --paginationActivePointBgColor: #4557bb;
+    --paginationActivePointBorderColor: #4557bb;
+    --paginationActivePointBorderWidth: 2px;
+  }
+
+
+  /*
+  =====
+  DEMO
+  =====
+  */
+
+  body{
+    margin: 0;
+
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+    font-size: 1rem;
+    background-color: #f0f0f0;
+    min-height: 98vh;
+    display: flex;
+  }
+
+  .page{
+    /* margin: auto; */
+    padding: 1.5rem .75rem;
+    /* background-color: #fff; */
+    /* border-radius: 2px; */
+  }

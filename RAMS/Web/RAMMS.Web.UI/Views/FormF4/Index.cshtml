@@ -1,0 +1,137 @@
+﻿@model CDataTable;
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewData["Title"] = "Form F4 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Form F4 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+<script type="text/javascript" src="~/assets/js/Views/FormF4.js" asp-append-version="true"></script>
+<!--BreadCrumbs-->
+@{
+    Html.RenderPartial("_breadcrumb", new BreadCrumb()
+    {
+        Title = "Condition Inspection - Form F4",
+        SimpleNavigation = "Home,Condition Inspection,Form F4"
+    });
+}
+
+@{
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
+}
+<!-- Search Section -->
+<div class="search-section" id="F4SrchSection">
+    <div class="row justify-content-center mb-1">
+        @{
+            Html.RenderPartial("_SearchSection", new Tuple<string, string, string>(Model.Name, "#formF4AdvSearch", "KeySearch"));
+        }
+    </div>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formF4AdvSearch" style="display:none">
+            <form id="formF4DetailsearchForm" name="formF4DetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-md-12 px-4">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                @Html.Label("Asset Group ", "Asset Group")
+                                @Html.Label("Culvert ", "Culvert", new { @class = "form-control", @readonly = true })
+                                @*<input type="text" value="Culvert" class="form-control" disabled />*@
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Asset Type", "Asset Type")
+                                @Html.DropDownList("AssetType", (IEnumerable<SelectListItem>
+                                    )ViewData["Asset_Type~CV^Value"], "Select Asset Type", new { @Id = "F4DetSrchType", @class = "form-control", @param = "AssetType" })
+                                @*@Html.DropDownList("AssetType", (IEnumerable<SelectListItem>)ViewData["Asset_Type~CV"], "Select Asset Type", new { @Id = "F4DetSrchType", @class = "form-control", @param = "AssetType" })*@
+
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("RMU", "RMU")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RMU", "Select RMU", new { @Id = "F4DetSrchRMU", @class = "form-control", @param = "RMU", @onchange = "formF4.F4RMUChange(this)", @rmuCode = "rmuCode", @clear = "rebind" })
+
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Code", "Section Code")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "SectionCode", "Select Section Code", new { @Id = "F4DetSrchSecCode", @class = "form-control", @param = "SecName", @onchange = "formF4.F4SectionCodeChange(this,false)", @sectionCode = "sectionCode", @clear = "rebind" })
+
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Section Name", "Section Name")
+                                <input type="text" id="F4DetSrchSecName" F4SectionName class="form-control" disabled />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Code", "Road Code")
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @Id = "F4DetSrchRdCode", @class = "form-control", @param = "RdCode", @onchange = "formF4.F4RoadCodeChange(this,false)", @roadCode = "roadCode", @clear = "rebind" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Name", "Road Name")
+                                <input type="text" id="F4DetSrchRdName" F4RoadName class="form-control" disabled />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
+                                <div class="row">
+                                    <div class="col-6 float-left">
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Year"], "Year", "From", new { @Id = "F4DetSrchFromYear", @param = "FromYear", @class = "form-control" })
+                                    </div>
+                                    <div class="col-6 float-left">
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Year"], "Year", "To", new { @Id = "F4DetSrchToYear", @param = "ToYear", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="form-group col-md-3">
+                                    @Html.Label("Bound", "Bound")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Bound~CV"],"Bound","Select Bound",new { @Id="F4DetSrchBound",@class="form-control",@param="Bound"})
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Location Chainage From", "Location Chainage From")
+                                    <div class="row">
+                                        <div class="col-6 float-left pr-0">
+                                            <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,maxcl,5,Chainage From Km" param="chFromKM" />
+                                        </div>
+                                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                        <div class="col-5 float-left pl-0">
+                                            <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,maxcl,3,Chainage From M" param="chFromM" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Location Chainage To", "Location Chainage To")
+                                    <div class="row">
+                                        <div class="col-6 float-left pr-0">
+                                            <input id="txtChToKm" type="text" class="form-control" onkeypressvalidate="num,maxcl,5,Chainage To Km" param="chToKm" />
+                                        </div>
+                                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                        <div class="col-5 float-left pl-0">
+                                            <input id="txtChToM" type="text" class="form-control" onkeypressvalidate="num,maxcl,3,Chainage To M" param="chToM" />
+                                        </div>
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" @isModifyPerm class="btn btn-sm btn-themebtn" onclick="window.location=_APPLocation + 'FormF4/Add'"><span class="add-icon"></span> Add Form F4</button>
+            </div>
+
+            @*Form F4 Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_CDataTable", Model);
+                }
+            </div>
+        </div>
+    </div>
+</main>

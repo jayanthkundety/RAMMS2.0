@@ -1,0 +1,395 @@
+﻿@model RAMMS.Web.UI.Models.FormDModel
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+<style>
+
+    .gallery {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .modal2.fade.in ~ .modal-backdrop.fade.in {
+        opacity: .1;
+        background-color: #f00;
+    }
+
+    .uploadfile {
+        font-size: 18px;
+    }
+</style>
+<div class="modal-body  mh-260">
+    <div class="accordion custom-accordion" id="custom-accordion-eight">
+        <div class="col-3">
+            @Html.HiddenFor(m => m.SaveFormDModel.No, new { @class = "form-control", @id = "formDUCUId" }) @*//PrimaryKey*@
+
+        </div>
+        <div class="card mb-0">
+            <div class="card-header" id="headingEight" style="padding: .45rem 1.25rem; ">
+                <div class="w-20 float-left d-flex justify-content-between" style="display:inline">
+
+                    <a class="custom-accordion-title py-l" data-toggle="collapse" href="#PdfList" aria-expanded="true" aria-controls="collapseEight">
+                        <span class="float-left" style="padding-top: 2px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        </span>
+                        <span class="float-left" style="padding: 4px 8px;">
+                            PDF List
+                        </span>
+                    </a>
+                </div>
+                <div style="float:right;display:inline">
+                    <div class="img-btns mt-1">
+                        <a class="btn btn-sm btn-themebtn mr-2" data-toggle="modal" id="ImageUploadBtn" href="#AddpdfModal">
+                            <span class="add-icon"></span> Add
+                        </a>
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" id="downloadPdfBtn" href="#DownloadPdfModal">
+                            <span class="download-icon"></span> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="PdfList" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#custom-accordion-eight">
+                <div class="card-body">
+                    <div id="cancel-row">
+                        <div class="simple-tbl">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>S.NO</th>
+                                        <th>Image Type</th>
+                                        <th>FileName</th>
+                                        @if (security.IsPCDelete(ModuleNameList.Emergency_Response_Team))
+                                        {
+                                            <th style="text-align:center">Delete</th>
+                                        }
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int i = 1;
+
+                                        if (Model.AccUccImageList != null && Model.AccUccImageList.Count() > 0)
+                                        {
+
+                                            foreach (var item in Model.AccUccImageList)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.AccUcu)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.ImageUserFilename)</td>
+                                                    @if (security.IsPCDelete(ModuleNameList.Emergency_Response_Team))
+                                                    {
+                                                        <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.NO,'UCU')"><span class="remove-icon"></span></button></td>
+                                                    }
+
+                                                </tr>
+                                                i++;
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="accordion custom-accordion" id="ImagePreview">
+        <div class="card mb-0">
+            <div class="card-header" id="headingNine">
+                <a class="custom-accordion-title py-l collapsed" data-toggle="collapse" href="#ImageView" aria-expanded="true" aria-controls="collapseNine">
+                    <span class="float-left" style="padding-top: 2px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        PDF View
+                    </span>
+                </a>
+            </div>
+            <div id="ImageView" class="collapse  avowmodal-form" aria-labelledby="headingEight" data-parent="#ImagePreview">
+                <div class="card-body">
+                    @if (Model.AccUccImageList.Count() > 0)
+                    {
+
+                        @foreach (var list in Model.ImageTypeList)
+                        {
+                            <div class="container">
+                                <h6>@list</h6>
+                                <hr />
+                                @foreach (var item in Model.AccUccImageList)
+                                {
+
+                                    if (list == item.AccUcu)
+                                    {
+                                        <div class="item">
+                                            <span data-fancybox="gallery" style="text-align:center">
+                                                <img src="~/Uploads/FormD/USeeU_Accident_PDF/Pdf.png" />
+                                                @*<input style="width:70%" type='button' class='caption' id='inputtest' value="@item.ImageFilenameUpload" onclick='pdfTarget(@item.NO,@item.HeaderId);'>*@
+                                                <a class='caption' onclick='pdfTarget(@item.NO,@item.HeaderId);'>
+                                                    @item.ImageUserFilename
+                                                </a>
+                                            </span>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" id="btncoseucu" class="btn btn-sm btn-outline-theme" onclick="CloseUSeeUModal()">Close</button>
+</div>
+<div class="modal fade" id="DownloadPdfModal" aria-hidden="true" role="dialog" aria-labelledby="DownloadPdfModal">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="width:30%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="AssetsAddModalCenterTitle">PDF</h5>
+                <button type="button" class="close" onclick="CloseDownload()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body  mh-100">
+                <div class="d-flex justify-content-center flex-column align-items-center">
+                    <div class="font-weight-bold font-20 mt-1">
+                        U See U Act/Accident PDF Download
+
+                    </div>
+                    <p class="mt-3 mb-0">
+                        <label class="mx-2"><input type="radio" name="downloadpdf" id="UCU" value="UCU"> U See U Act</label>
+                        <label class="mx-2"><input type="radio" name="downloadpdf" id="Accid" value="Accid"> Accident</label>
+                    </p>
+                    <button onclick="return Downloadpdf()" class="btn btn-sm btn-themebtn">Download</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-outline-theme" onclick="CloseDownload()">Cancel</button>
+    </div>
+
+</div>
+
+
+<div class="modal hide border-10x addphoto-mdl" id="AddpdfModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Upload PDF</h4>
+                <button type="button" onclick="Addpdf()" class="close" aria-label="Close">×</button>
+            </div><div class="container"></div>
+            <div class="modal-body">
+                <div class="col-3">
+                    @Html.HiddenFor(m => m.SaveFormDModel.No, new { @class = "form-control", @id = "formDUCUId" }) @*//PrimaryKey*@
+
+                </div>
+                <div class="col-12 d-flex align-items-center flex-column">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            @Html.Label("Please Select U See U Act/Accident Type ", "Please Select U See U Act/Accident Type: ", new { @class = "float-left" })
+                            @Html.DropDownList("Select Type", (IEnumerable
+                                <SelectListItem>)ViewData["PhotoTypeList"], "Select Type", new { @Id = "UCUphotoType", @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="row">
+                        <div class="form-group col-lg-12 mt-4">
+                            <input type="file" id="FormFile" name="FormFile" class="form-control" hidden multiple onchange="updateFileList(true)">
+
+                            <form class="dropzone dz-clickable">
+                                <div class="dz-default dz-message">
+                                    <button class="dz-button btn btn-sm btn-outline-primary uploadfile" id="btnUCUDocBrowse" type="button" onclick="document.getElementById('FormFile').click()">
+                                        Browse files here to upload
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="divImg" class="row">
+                    <div class="mt-3 col-md-3">
+                        <output id="Filelist" style="display:inline-flex"></output>
+                    </div>
+                </div>
+
+                <div class="text-center mt-2">
+                    <button type="button" class="btn btn-sm btn-themebtn" id="btnUCUDocUpload" onclick="uploadFiles('FormFile')">Upload</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    div.item {
+        vertical-align: top;
+        display: inline-flex;
+        text-align: center;
+        margin-right: 5%;
+        margin-bottom: 3%
+    }
+
+    .item img {
+        width: 350px;
+        height: 200px;
+        margin-bottom: 5%;
+    }
+
+    .caption {
+        display: flex;
+        /*width: 0%;*/
+        margin: 0 auto;
+    }
+</style>
+
+
+
+<script>
+    $(document).ready(function () {
+
+
+    });
+
+    function Addpdf() {
+        $('#AddpdfModal').modal('hide');
+    }
+    function uploadFiles(inputId) {
+        if ($("#formDUCUId").val() != "") {
+            saveImageUpload(inputId);
+        }
+        else {
+            saveData(true);
+
+        }
+    }
+    var formData1 = new FormData();
+    function saveImageUpload(inputId) {
+        InitAjaxLoading();
+        var input = document.getElementById(inputId);
+        var files = input.files;
+        var test = document.getElementById("formDUCUId").value
+        formData1.append("Id", test)
+        formData1.append("PhotoType", document.getElementById("UCUphotoType").value)
+
+
+        $.ajax(
+            {
+                url: "/ERT/ImageUploadedUCUFormD",
+                data: formData1,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                dataType: 'JSON',
+                success: function (data) {
+                    if (data) {
+                        app.ShowSuccessMessage("Successfully Saved",false)
+                        input.value = "";
+                        $('#AddpdfModal').modal('hide');
+                        //debugger;
+                        if ($("#div-USeeUModald").is(':visible'))
+                            openUSeeUd();
+                        else
+                            openUSeeU();
+                    }
+                    else {
+                        alert("Error");
+                    }
+                    HideAjaxLoading();
+                },
+                error: function (data) {
+                    app.ShowSuccessMessage(data.responseText, false)
+                    HideAjaxLoading();
+                }
+            }
+        );
+
+    }
+
+    function saveData(saveImg) {
+        if (saveImg) {
+                    saveImageUpload('FormFile')
+        }
+    }
+
+    function updateFileList() {
+        var input = document.getElementById('FormFile');
+
+            var output = document.getElementById('Filelist');
+            for (var i = 0; i < input.files.length; i++) {
+                output.innerHTML = '<ul class="list-group"><li><span><i class="fas fa-file-pdf"></i></span>' + input.files[i].name + '</li></ul>'
+                output.addClass("list-group-item");
+            }
+
+    }
+    function updateFileList(valid) {
+        if (valid) {
+            var input = document.getElementById('FormFile');
+            var allowedExtensions =
+                /(\.pdf)$/i;
+            var filePath = input.value;
+            if (!allowedExtensions.exec(filePath)) {
+                app.ShowErrorMessage("Invalid extension! On this Type, You can only upload only pdf files.");
+                input.value = '';
+                return false;
+            }
+            else {
+                var output = document.getElementById('Filelist');
+                var x;
+                for (var i = 0; i < input.files.length; i++) {
+                    x = document.createElement("Span");
+                    var t = document.createTextNode(input.files[i].name);
+                    x.appendChild(t);
+                    y = document.createElement("i");
+                    y.setAttribute("class", "fas fa-file-pdf");
+                    y.setAttribute("style", "margin:5px;font-size:20px")
+                    output.appendChild(y)
+                    output.appendChild(x);
+                    formData1.append("FormFile", input.files[i]);
+
+                    document.getElementById("btnUCUDocUpload").disabled = false;
+                }
+            }
+        } else if (valid == 0) {
+            var output = document.getElementById('Filelist');
+            output.innerHTML = '<b>Something Went Wrong Please try Again,</b>';
+        } else {
+            document.getElementById("divImg").remove();
+            }
+
+    }
+    function Downloadpdf() {
+    var download = document.getElementsByName('downloadpdf');
+    for (i = 0; i < download.length; i++) {
+        if (download[i].checked)
+            id = download[i].value;
+        }
+        window.open("/ERT/DownloadPdfFormD?id=" + id + "&t=" + Math.random(), "_blank", "toolbar=no,scrollbars=no,resizable=no,top=no,left=100,width=500,height=100");
+        return false;
+        @*window.location = "@Url.Action("DowloadPdfFormD", "ERT")" +
+            "?id=" + id + "&t=" + Math.random();*@
+    }
+
+    function pdfTarget(id,headerId) {
+            window.open('/ERT/OpenPdfFormD'+ "?id=" + id + "&headerId="+headerId, "_blank")
+    }
+
+    $("#UCUphotoType").change(function () {
+        document.getElementById("btnUCUDocBrowse").disabled = true;
+        var type = $("#UCUphotoType").val();
+        if (type != null && type != undefined && type != "") {
+             document.getElementById("btnUCUDocBrowse").disabled = false;
+        }
+    })
+
+
+</script>

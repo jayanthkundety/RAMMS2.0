@@ -1,0 +1,142 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+@{
+    var AssetIdTitle = ViewBag.AssetTypeName;
+}
+
+<div class="accordion custom-accordion" id="custom-accordion-three">
+    <div class="card mb-0">
+        <div class="card-header" id="headingThree">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordBridgePage2" aria-expanded="false" aria-controls="collapseThree">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        @AssetIdTitle Parameter
+                    </span>
+                </a>
+            </h5>
+        </div>
+
+        <div id="AccordBridgePage2" class="collapse avowmodal-form" aria-labelledby="headingThree" data-parent="#custom-accordion-three">
+            <div class="card-body">
+                <div class="form-group col-lg-2">
+                    @Html.Label("River Name ", " River Name ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.RiverName, null, new { @Id = "AssetsRiverName", @class = "form-control validate {maxcl,250, River Name}",@onkeypressvalidate = "maxcl,250,River Name" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Lane Width (m) ", " Lane Width (m)  ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.WidthLane, new { @Id = "AssetsWidthLane", @class = "form-control validate {cdecimal,5,5,Span Length}", @maxlength = "11", @onkeypressvalidate = "cdecimal,5,5,Lane width" })
+
+
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Span Length (m) ", " Span Length (m) ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.LengthSpan, null, new { @Id = "AssetsLengthSpan", @class = "form-control validate {cdecimal,5,5,Span Length}", @maxlength = "11", @onkeypressvalidate = "cdecimal,5,5, Span Length" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Bridge Name ", "Bridge Name ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.BridgeName, null, new { @Id = "AssetsBridgeName", @class = "form-control validate {maxcl,250,Bridge Name}", @onkeypressvalidate = "maxcl,250,Bridge Name"})
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Bridge Length (m) ", " Bridge Length (m) ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Length, null, new { @Id = "AssetsLength", @class = "form-control validate {cdecimal,5,5,Length}", @maxlength = "11", @onkeypressvalidate = "cdecimal,5,5,Bridge Length" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Bridge Width (m) ", " Bridge Width (m) ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Width, null, new { @Id = "AssetsWidth", @class = "form-control validate {cdecimal,5,5,Width}", @maxlength = "11", @onkeypressvalidate = "cdecimal,5,5,Bridge width" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("No Of Lane ", " No Of Lane ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.LaneCount, null, new { @Id = "AssetsLaneCnt", @class = "form-control validate {number,Lane Count}", @maxlength = "2", @onkeypressvalidate = "number,No Of Lane"})
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("No Of Spn ", " No Of Span ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.SpanCount, null, new { @Id = "AssetsSpanCnt", @class = "form-control validate {number,Span Count}", @maxlength = "2", @onkeypressvalidate = "number,No Of Span" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Median (m) ", " Median (m) ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Median, null, new { @Id = "AssetsMedian", @class = "form-control validate {cdecimal,5,5,Median}", @onkeypressvalidate = "cdecimal,5,5,Median" ,@maxlength="11"})
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Walkway (m) ", " Walkway (m) ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Walkway, null, new { @Id = "AssetsWalkway", @class = "form-control validate {cdecimal,5,5,WalkWay}", @onkeypressvalidate = "cdecimal,5,5,Walkway",@maxlength="11" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Superstructure ", "Superstructure ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.StrucSuper_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["SuperStructureList"], new { @Id = "AssetStrucSuper", @class = "chosen-select disableinput", @multiple = "true" })
+
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Parapet Type ", "Parapet Type ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.ParapetType_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["ParapetList"], new { @Id = "AssetParapetType", @class = "chosen-select disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Bearing Type ", "Bearing Type ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.BearingType_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["BearingTypeList"], new { @Id = "AssetBearingType", @class = "form-control,chosen-select disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Expansion Type ", "Expansion Type ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.ExpanType_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["ExpansionList"], new { @Id = "AssetExpanType", @class = "form-control,chosen-select disableinput", @multiple = "true" })
+                </div>
+                <div class="clear-b"></div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Deck Type ", "Deck Type ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.DeckType_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["DeckTypeList"], new { @Id = "AssetDeckType", @class = "chosen-select disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Abutment Type ", "Abutment Type ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.AbutType_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["AbutmentTypeList"], new { @Id = "AssetAbutType", @class = "chosen-select disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Pier type ", "Pier Type ", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.PierType_multiSelect, (IEnumerable
+                        <SelectListItem>)ViewData["PierTypeList"], new { @Id = "AssetPierType", @class = "chosen-select disableinput", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("No Of Expansion Joint ", "No Of Expansion Joint ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.ExpanJointCount, null, new { @Id = "AiExpanJointCount", @class = "form-control validate {number,Expansion Joint}", @onkeypressvalidate = "number, Expansion Joint", @maxlength = "5" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Spacing Of Expansion Joint ", "Spacing Of Expansion Joint ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.ExpanJointSpace, null, new { @Id = "AssetsExpanJointSpace", @class = "form-control validate {cdecimal,5,5,Spacing of Expansion Joint}", @onkeypressvalidate = "cdecimal,5,5,Spacing of Expansion Joint" ,@maxlength="11"})
+                </div>
+                <div class="clear-b"></div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Built Year ", "Built Year ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.BuiltYear, null, new { @Id = "AssetsBuiltYear", @class = "form-control validate {number,Built Year}", @onkeypressvalidate = "number,Built Year", @maxlength = "5" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Owner ", "Owner ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Owner, null, new { @Id = "AssetsOwner", @class = "form-control validate {maxcl,250,Owner Name}", @onkeypressvalidate = "maxcl,250,Owner Name" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Maintained By ", "Maintained By ", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.MaintainedBy, null, new { @Id = "AssetsMaintainedBy", @class = "form-control validate {maxcl,250,Name} ", @onkeypressvalidate = "maxcl,250,Name" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("GPS Easting ", "GPS Easting ", new { @class = "float-left" })
+                    <div class="position-relative c-path float-left w-100">
+                        <a onclick="getLocation('Easting', 'AssetsGpsEasting')" style="cursor:pointer;"><span class="current-location"></span></a>
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.GpsEasting, null, new { @Id = "AssetsGpsEasting", @class = "form-control validate {cdecimal,GPS Easting} ", @onkeypressvalidate = "cdecimal,GPS Easting" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("GPS Northing ", "GPS Northing ", new { @class = "float-left" })
+                    <div class="position-relative c-path float-left w-100">
+                        <a onclick="getLocation('Northing', 'AssetsGpsNorthing')" style="cursor:pointer;"><span class="current-location"></span></a>
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.GpsNorthing, null, new { @Id = "AssetsGpsNorthing", @class = "form-control validate {cdecimal,GPS Northing}", @onkeypressvalidate = "cdecimal,GPS Northing" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

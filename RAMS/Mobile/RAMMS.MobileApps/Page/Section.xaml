@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RAMMS.MobileApps.Page.Section">
+    <ContentPage.Content>
+        <StackLayout>
+          
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="section.png" Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" />
+
+                <Button  BackgroundColor="Transparent" Clicked="Button_Clicked" Grid.Row="1" Grid.Column="0" Margin="0,-35,0,25"/>
+                <Button BackgroundColor="Transparent" Clicked="Button_Clicked_1" Grid.Row="2" Grid.Column="0" Margin="0,-35,0,30"/>
+                <Button  BackgroundColor="Transparent" Clicked="Button_Clicked_2" Grid.Row="3" Grid.Column="0" Margin="0,-35,0,25"/>
+                <Button  BackgroundColor="Transparent" Clicked="Button_Clicked_3" Grid.Row="4" Grid.Column="0" Margin="0,-35,0,30"/>
+                <Button  BackgroundColor="Transparent" Clicked="Button_Clicked_4" Grid.Row="5" Grid.Column="0" Margin="0,-35,0,30"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

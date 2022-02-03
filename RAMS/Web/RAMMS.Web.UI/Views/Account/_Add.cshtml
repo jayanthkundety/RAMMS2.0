@@ -1,0 +1,137 @@
+﻿@using RAMMS.DTO.RequestBO;
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IFormF2Service formS2
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@model RAMMS.DTO.RequestBO.UserDetailRequestDTO
+@{
+    ViewBag.TabTitle = "ADD ACCOUNT - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ADD ACOUNT - Form N1 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    var usrList = await usr.GetUserList();
+    var department = usr.GetDepartments().Select(s => new SelectListItem
+    {
+        Value = s.DeptName,
+        Text = s.DeptName
+    }).ToArray();
+
+}
+<input type="hidden" id="hdnPkId" value="@Model.PkId" />
+<div class="row">
+    <div class="w-100 bg-body" id="">
+        <div id="headerDiv">
+            <div class="modal-body mh-120 pt-0 pb-0">
+                <div class="clear-b"></div>
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+                    <div class="row">
+                        <div class="col-lg-10 p-0">
+                            <div id="headerFindDiv" class="w-100 form-group mb-0">
+
+                                <div class="form-group col-md-3">
+                                    @Html.Label("User Id", "User Id")
+                                    <input id="txtUserid" class="form-control validate {required, User Id}" value="@Model.Userid" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Password", "Password")
+                                    <input id="txtPassword" type="password" class="form-control validate {pwd, Password}" value="@Model.Password" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Name", "Name")
+                                    <input id="txtUsername" class="form-control validate {required, Name}" value="@Model.Username" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Position", "Position")
+                                    <input id="txtPosition" class="form-control validate {required, Position}" value="@Model.Position" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Department", "Department")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.Department, department, "Department", new { @Id = "txtDepartment", @class = "form-control validate {required, Deparment}" })
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Company", "Company")
+                                    <input id="txtCompany" class="form-control validate {required, Company}" value="@Model.Companyname" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Email", "Email")
+                                    <input id="txtEmail" type="text" class="form-control validate {email, Email}" value="@Model.Email" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Contact No.", "Contact No.")
+                                    <input id="txtContactNo" class="form-control validate {phone, Contact No.}" value="@Model.Contactno" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Reporting To", "Reporting To")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.ReportingPkId, usrList, "User Id", new { @Id = "ddlReportingTo", @class = "form-control svalidate {required, Reporting To}" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Is Disabled?", "Is Disabled?")
+                                    <input type="checkbox" id="chkIsDisabled" class="" value="@Model.Isdisabled" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Locked Upto Date?", "Locked Upto Date?")
+                                    <input type="date" id="txtLockedUpto" class="form-control" value="@Model.Lockeduntil" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Password will be expired on?", "Password will be expired on?")
+                                    <input type="date" id="txtPasswordexpiry" class="form-control" value="@Model.Passwordexpiry" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-10 p-0">
+                            <div class="w-100 form-group mb-0">
+                                <div class="form-group col-md-12">
+                                    @Html.Label("User Group", "User Group")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["GroupList"], "GroupList", "", new { @Id = "selGroupList", @class = "form-control", @multiple = "multiple" })
+                                </div>
+                                <div class="form-group col-md-12">
+                                    @Html.Label("Module Rights", "Module Rights")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["ModuleList"], "ModuleList", "", new { @Id = "selModuleList", @class = "form-control", @multiple = "multiple" })
+                                </div>
+                            </div>
+                            <div class="w-100 form-group mb-0">
+                                <div class="cusgrid col-md-12">
+                                    <table id="tblModuleList" class="table w-100 dataTable no-footer dataTables_scroll">
+                                        <thead>
+                                            <tr class="dataTables_scrollHead">
+                                                <th>Module Name</th>
+                                                <th>PC View</th>
+                                                <th>PC Add</th>
+                                                <th>PC Modify</th>
+                                                <th>PC Delete</th>
+                                                <th>Device View</th>
+                                                <th>Device Add</th>
+                                                <th>Device Modify</th>
+                                                <th>Device Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+            </div>
+
+            <div class="col-md-12 float-right text-right custom-footer">
+                <button id="btnHCancel" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
+                <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/js/Account.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    userModules = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model.ModuleRights));
+    userModules = userModules == null ? [] : userModules;
+    if (userModules.length > 0) {
+        var selModuleList = $("#selModuleList");
+        $.each(userModules,function (idx,obj) {
+            selModuleList.find("[value='" + obj.ModPkId + "']").attr("selected", "selected");
+        });
+    }
+</script>

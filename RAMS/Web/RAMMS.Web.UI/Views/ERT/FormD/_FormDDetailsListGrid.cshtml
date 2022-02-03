@@ -1,0 +1,135 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="w-100 position-relative in-tbl-btns">
+            @if (security.IsPCModify(ModuleNameList.Emergency_Response_Team))
+            {
+                <div class="grid-btns">
+                    <button type="button" id="btnFormDDtlAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormDDetailsModal" onclick="javascript:EditFormDDetails(0);"><span class="intbl-add-icon"></span></button>
+                </div>
+            }
+
+            <table id="FormDDetailsGridView" class="table w-100 nowrap minwidth100">
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : "hidden";
+    var dtable_columns = [];
+    var Dtable = null;
+    var dtactionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: true, sortable: false, render: function (data) {
+            if (IsView != "1" && (!data.submitSts)) {
+                var actionSection = "<div class='btn-group dropright' id='actionDtldropdown'> <button id='Dtlactionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormDDetailsModal' id='formDDtlEdit' onclick='javascript:EditFormDDetails(" + data.no + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteFormDDetailRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnDtlView' data-toggle='modal' data-target='#FormDDetailsModal'  href='#' onclick='javascript:EditFormDDetails(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnDtlucuView' data-toggle='modal' data-target='#USeeUModald'  href='#' onclick='javascript:openUSeeUd(" + data.no + ");'><span class='useeuact-icon'></span> U See U Act</button><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' data-target='#WarPhotoModald'  href='#' onclick='javascript:openPhotod(" + data.no + ");'><span class='war-icon'></span> WAR</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' id='btnDtlView' data-toggle='modal' data-target='#FormDDetailsModal'  href='#' onclick='javascript:EditFormDDetails(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnDtlucuView' data-toggle='modal' data-target='#USeeUModald'  href='#' onclick='javascript:openUSeeUd(" + data.no + ",1);'><span class='useeuact-icon'></span> U See U Act</button><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' data-target='#WarPhotoModald'  href='#' onclick='javascript:openPhotod(" + data.no + ",1);'><span class='war-icon'></span> WAR</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var chFromCol = {
+        data: "frmCh",
+        render: function (data, type, full, meta) {
+            return full["frmCh"] + "." + full["frmChDeci"];
+        },
+        title: "Chainage From", autoWidth: true, sortable: false
+    };
+
+    var chToCol = {
+        data: "toCh",
+        render: function (data, type, full, meta) {
+            return full["toCh"] + "." + full["toChDeci"];
+        }, title: "Chainage To", autoWidth: true, sortable: false
+    };
+
+    var SRNoCol = { data: "srNo", name: "SrNo", title: "S No", autoWidth: true, width: 20, sortable: false };
+
+    var actSiteRefCol = { data: "siteRef", name: "SiteRef", title: "Site Ref.", autoWidth: true, sortable: false };
+    var actCodeCol = { data: "actCode", name: "ActivityCode", title: "Activity Code", autoWidth: true, sortable: false };
+    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true, sortable: false };
+    var timeArrCol = { data: "timeArr", name: "ArrTime", title: "Arrival Time", autoWidth: true, sortable: false };
+    var timeDepCol = { data: "timeDep", name: "DepartureTime", title: "Departure Time", autoWidth: true, sortable: false };
+    //var dimensionCol = { data: "width", name: "Dimension", title: "Dimension", autoWidth: true, sortable: false };
+     var dimensionCol = {
+        data: null, name: "Dimension", title: "Dimension (L x W x H)", autoWidth: true, sortable: false, render: function (data) {
+            var len = 0;
+            var wid = 0;
+            var height = 0;
+            if (data.length != null) { len = data.length;}
+            if (data.height != null) { height = data.height; }
+            if (data.width != null) { wid = data.width; }
+            if (len == 0 && wid == 0 && height == 0) { return null;}
+            return len + " x " + wid + " x " + height;
+        }
+    };
+    var proQtyCol = { data: "prodQty", name: "ProdQty", title: "Qty", autoWidth: true, sortable: false };
+    var prodUnitCol = { data: "prodUnit", name: "ProdUnit", title: "Unit", autoWidth: true, sortable: false };
+    var workStsCol = { data: "workSts", name: "WrkStatus", title: "Work Status", autoWidth: true, sortable: false };
+    var remarkCol = { data: "remarks", name: "Remarks", title: "Remarks", autoWidth: true, sortable: false };
+
+
+
+    dtable_columns.push(dtactionCol);
+    dtable_columns.push(SRNoCol);
+    dtable_columns.push(chFromCol);
+    dtable_columns.push(chToCol);
+    //dtable_columns.push(chFromCold);
+    //dtable_columns.push(chToCold);
+    dtable_columns.push(actSiteRefCol);
+    dtable_columns.push(actCodeCol);
+    dtable_columns.push(roadCodeCol);
+    dtable_columns.push(timeArrCol);
+    dtable_columns.push(timeDepCol);
+    dtable_columns.push(dimensionCol);
+    dtable_columns.push(proQtyCol);
+    dtable_columns.push(prodUnitCol);
+    dtable_columns.push(workStsCol);
+    dtable_columns.push(remarkCol);
+
+    var dfilterData = new Object();
+
+    function dInitializeGrid(id) {
+        var _dcurrentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _dcurrentGridSettings);
+        //if (id == undefined) {
+        //    id = "0";
+        //}
+        if (Dtable != null) {
+            Dtable.destroy();
+            $('#FormDDetailsGridView').empty();
+        }
+        Dtable =$('#FormDDetailsGridView').DataTable({
+            ajax: {
+                url: "/ERT/LoadFormDDetailsList?id=" + $("#FDHRef_No").val(),
+                type: "POST",
+                datatype: "json",
+                data: {
+                    dfilterData
+                }
+            },
+            columns: dtable_columns
+        });
+        Dtable.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        dInitializeGrid();
+        IsView = $("#hdnView").val();
+        //Apply Custom search on jQuery DataTables here
+        doTable = $('#FormDDetailsGridView').DataTable();
+        if ($("#hdnView").val() == "1") {
+            $("#FormDDetailsListGrid *").attr("disabled", "disabled").off('click');
+            $("#FormDDetailsGridView_wrapper *").attr("disabled", "disabled").off('click');
+            $("#FormDDetailsGridView *").attr("disabled", "disabled").off('click');
+            $("#formDDtlEdit").removeAttr("onclick");//attr("disabled", "disabled").off('click');
+        }
+    });
+</script>

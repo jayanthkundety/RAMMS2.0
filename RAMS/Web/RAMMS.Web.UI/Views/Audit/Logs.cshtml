@@ -1,0 +1,64 @@
+﻿@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@{
+    ViewData["Title"] = "Audit Logs - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Audit Logs - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/AuditLog.js" asp-append-version="true"></script>
+}
+<!--BreadCrumbs-->
+
+@{
+    Html.RenderPartial("_breadcrumb", new BreadCrumb()
+    {
+        Title = "Audit Logs",
+        SimpleNavigation = "Home,Audit Logs"
+    });
+}
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        @*@{
+                Html.RenderPartial("_SearchSection", new Tuple<string, string, string>("Test", "#formAdvSearch", "KeySearch"));
+            }*@
+
+    </div>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formAdvSearch" style="display:none">
+            <form id="formFDDetailsearchForm" name="formFDDetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-md-12 px-4">
+                        <div class="row">
+                            <div class="form-group col-md-2">
+
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("From Date", "From Date")
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.Label("To Date", "To Date")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+            @{
+                Html.RenderPartial("_AuditAction.cshtml");
+            }
+        </div>
+    </div>
+</main>

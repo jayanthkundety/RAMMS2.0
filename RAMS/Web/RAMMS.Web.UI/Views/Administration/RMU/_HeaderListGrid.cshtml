@@ -1,0 +1,91 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormDivisionGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+   var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.pkRefNo != "" && data.pkRefNo != null) {
+                title = data.pkRefNo;
+            }
+            var actionSection = "<button type='button' class='btn btn-sm btn-themebtn'  data-backdrop='static' id='formAHeaderEdit' onclick='javascript:edit(" + data.pkRefNo + ");'>Edit</button>&nbsp;<button type='button' class='btn btn-sm btn-themebtn'  data-backdrop='static' id='formAHeaderEdit'" + isModifyPerm + " onclick='javascript:deleteHeader(" + data.pkRefNo + ");'>Delete</button>";
+                return actionSection;
+        }
+    };
+    table_columns.push(actionCol);
+    var divcode = { data: "divCode", name: "code", title: "Division", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(divcode);
+    var code = { data: "code", name: "code", title: "Code", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(code);
+    var _name = { data: "name", name: "name", title: "Name", autoWidth: true, sortable: true, visible: true };
+    table_columns.push(_name);
+    @*var isactive = { data: "isactive", name: "isactive", title: "Isactive", autoWidth: true, sortable: false, visible: false };
+    table_columns.push(isactive);*@
+
+
+    function deleteHeader(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: "/Administration/RemoveRMU", dataType: "JSON", data: req, type: "Post", success: function (data) {
+                        if (data) {
+                            app.ShowSuccessMessage("Record deleted successfully");
+                            $('#btnSearch').click();
+                        }
+                        else { app.ShowErrorMessage("Please try again."); }
+                    }, error: function (data) { console.error(data); }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.Code = $("#txtSmartSearch").val();
+        $('#FormDivisionGridView').DataTable({
+            ajax: {
+                url: "/Administration/GetRMUList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        //debugger;
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormDivisionGridView').DataTable();
+        $('#btnSearch').click(function () {
+            oTable.columns(0).search($("#txtSmartSearch").val());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>

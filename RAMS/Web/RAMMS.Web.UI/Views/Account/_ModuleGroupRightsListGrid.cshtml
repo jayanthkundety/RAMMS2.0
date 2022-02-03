@@ -1,0 +1,173 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormF2GridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var mgrPkid = { data: "mgrPkid", name: "mgrPkid", title: "MgrPkid", autoWidth: true, sortable: false, visible: false };
+    var modPkid = { data: "module", name: "module", title: "Module", autoWidth: true, sortable: false, visible: true };
+    var ugpkid = {
+        data: null, name: "group", title: "Group", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            //debugger;
+            return "<a href='" + _APPLocation + "Account/GroupRights/" + data.ugpkid + "'>" + data.group + "</a>";
+        }
+    };
+    var dvIsview = {
+        data: null, name: "dvIsview", title: "Dv Is view?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsview) {
+                return "Yes";
+            }
+            else
+                return "No";
+        }
+    };
+    var dvIsmodify = {
+        data: null, name: "dvIsmodify", title: "Dv Is modify?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsmodify) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var dvIsdelete = {
+        data: null, name: "dvIsdelete", title: "Dv Is delete?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsdelete) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var pcIsview = {
+        data: null, name: "pcIsview", title: "Pc Is view?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.pcIsview) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var pcIsmodify = {
+        data: null, name: "pcIsmodify", title: "Pc Is modify?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.pcIsmodify) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var pcIsdelete = {
+        data: null, name: "pcIsdelete", title: "Pc Is delete?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.pcIsdelete) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var mgrCreatedby = {
+        data: "mgrCreatedby", name: "mgrCreatedby", title: "MgrCreatedby", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsview) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var mgrCreatedon = {
+        data: "mgrCreatedon", name: "mgrCreatedon", title: "MgrCreatedon", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsview) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var mgrModifiedby = {
+        data: "mgrModifiedby", name: "mgrModifiedby", title: "MgrModifiedby", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsview) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var mgrModifiedon = {
+        data: "mgrModifiedon", name: "mgrModifiedon", title: "MgrModifiedon", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsview) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var dvIsadd = {
+        data: null, name: "dvIsadd", title: "Dv Is add?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.dvIsadd) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    var pcIsadd = {
+        data: null, name: "pcIsadd", title: "Pc Is add?", autoWidth: true, sortable: false, visible: true, render: function (data) {
+            if (data.pcIsadd) {
+                return "Yes";
+            }
+            else
+                return "No";
+        } };
+    table_columns.push(mgrPkid);
+    table_columns.push(ugpkid);
+    table_columns.push(modPkid);
+    table_columns.push(pcIsadd);
+    table_columns.push(pcIsview);
+    table_columns.push(pcIsmodify);
+    table_columns.push(pcIsdelete);
+    table_columns.push(dvIsadd);
+    table_columns.push(dvIsview);
+    table_columns.push(dvIsmodify);
+    table_columns.push(dvIsdelete);
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        $('#FormF2GridView').DataTable({
+            ajax: {
+                url: "/Account/GetMGList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+        @*grp.trigger("chosen:updated");
+        usgrp.trigger("chosen:updated");*@
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormF2GridView').DataTable();
+
+        $("#btnClearSearch").click(function () {
+            $("#txtSmartSearch").val('');
+            $("#btnSearch").click();
+        });
+        $('#btnSearch').click(function () {
+            oTable.columns(0).search($("#txtSmartSearch").val());
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>

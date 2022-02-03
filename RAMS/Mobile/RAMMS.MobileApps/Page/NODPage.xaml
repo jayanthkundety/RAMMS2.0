@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:RAMMS.MobileApps.Helpers" xmlns:behaviors="clr-namespace:RAMMS.MobileApps.Controls"
+             mc:Ignorable="d" Title="Notification of Defects"
+             x:Class="RAMMS.MobileApps.NODPage"
+            >
+
+    <StackLayout >
+    <StackLayout>
+        <Frame Margin="0,0,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="Large" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+            </Grid>
+        </Frame>
+    </StackLayout>
+    
+    <Grid >
+
+        
+        <!--<local:VideoPlayer Source="Ramms.mp4" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,0,0,-350" />-->
+        <Frame Margin="100,30,100,-70" BackgroundColor="Black" Opacity="0.5" BorderColor="White" CornerRadius="25">
+          
+            <StackLayout   Spacing="30">
+            <Label Text="Welcome"  HorizontalOptions="Center" Margin="0,20,0,-25" TextColor="White" FontSize="30" FontAttributes="Bold"  />
+                    <Label Text=""/>
+                    <Label Text="Notification Of Defects"  HorizontalOptions="Center" TextColor="White" FontSize="31" FontAttributes="Bold"  />
+             
+                <Label Text="                                             Choose Form (A or D)" HorizontalOptions="Start" TextColor="White" FontSize="Large" FontAttributes="Bold" />
+               
+                <StackLayout>
+                        <Button   ImageSource="RedArrow.png" BorderWidth="5" BorderColor="#e6b800" Text="Form A        " FontSize="27"  Margin="210,0,210,0" FontAttributes="Bold" WidthRequest="10" HeightRequest="60" TextColor="Black" CornerRadius="50" BackgroundColor="#fff5cc" >
+                        <Button.Behaviors>
+                            <behaviors:ViewTappedButtonBehavior Command="{Binding FormACommand}" AnimationType="Scale"/>
+                        </Button.Behaviors>
+                    </Button>
+                </StackLayout>
+                
+                <StackLayout>
+                        <Button ImageSource="GreenArrow.png" BorderColor="#248f24" BorderWidth="5"  Text="Form D       " FontSize="27" Margin="210,0,215,0"  FontAttributes="Bold" HeightRequest="60" WidthRequest="10" TextColor="Black" CornerRadius="50" BackgroundColor="#d9ffcc" >
+                        <Button.Behaviors>
+                            <behaviors:ViewTappedButtonBehavior Command="{Binding FormJCommand}" AnimationType="Scale"/>
+                        </Button.Behaviors>
+                    </Button>
+                </StackLayout>
+                    <Label Text=""/>
+                </StackLayout>
+            
+        </Frame>
+    </Grid>
+    
+    </StackLayout>
+    <!--<ContentPage.Content>
+        <StackLayout>
+            <StackLayout VerticalOptions="CenterAndExpand" Orientation="Vertical" Spacing="20" Padding="12">
+                <Frame CornerRadius="25" Padding="8"  WidthRequest="300" HorizontalOptions="Center" OutlineColor="White">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FormACommand}">
+                        </TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+
+                    <Grid VerticalOptions="FillAndExpand"  HorizontalOptions="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="96" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image  Aspect="AspectFill" Source="Form_A.png" Grid.Row="0" Grid.Column="0" />
+                        <Label Text="Form A" TextColor="#EF7F1A" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="22" />
+                        <Image Source="RightArrow.png" Grid.Row="0" Grid.Column="2" />
+                    </Grid>
+                </Frame>
+                <Frame CornerRadius="25"  BackgroundColor="{StaticResource LightGrey}" WidthRequest="300" HorizontalOptions="Center" OutlineColor="White" Padding="8">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FormJCommand}">
+                        </TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="96" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96" />
+                            <ColumnDefinition Width="*" />
+                             <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Aspect="AspectFill" Source="Form_J.png" Grid.Row="0" Grid.Column="0" />
+                        <Label Text="Form J" TextColor="#6E952C" Grid.Row="0" Grid.Column="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" FontSize="22" />
+                        <Image Source="RightArrow.png" Grid.Row="0" Grid.Column="2" />
+                    </Grid>
+                </Frame>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>-->
+</ContentPage>

@@ -1,0 +1,179 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+@*<script src="~/js/AddAssets.js"></script>*@
+
+@{
+    var AssetIdTitle = ViewBag.AssetTypeName;
+    bool isCulvert = ViewBag.AssetType == "CV";
+    bool isBridge = ViewBag.AssetType == "BR";
+    bool isDrain = ViewBag.AssetType == "DR";
+    bool isEdgeLine = ViewBag.AssetType == "ELM";
+    bool isDitch = ViewBag.AssetType == "DI";
+    bool isCenterLine = ViewBag.AssetType == "CLM";
+    bool isRoadStuds = ViewBag.AssetType == "RS";
+    bool isSign = ViewBag.AssetType == "SG";
+    bool isShoulder = ViewBag.AssetType == "SH";
+    bool isCarriageway = ViewBag.AssetType == "CW";
+    bool isGuardrail = ViewBag.AssetType == "GR";
+    bool isRetainingWall = ViewBag.AssetType == "RW";
+
+}
+
+    <form id="AddAssetModalForm" action="/assets/add">
+        @*<div class="modal fade" id="validationModal" aria-hidden="true" role="dialog" aria-labelledby="AssetDataDownloadCenterTitle">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="width:30%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="validationModalCenterTitle">
+                            Validation Messages
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="ValidationSummary">
+                            @Html.ValidationSummary()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+
+        <div class="modal-body p-0">
+            <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
+                <ul class="nav nav-tabs tabbed round">
+                    <li class="nav-item">
+                        <a href="#AssetTabPage1" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                            <span class="">Page 1</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#AssetTabPage2" onclick="GetImageList()" data-toggle="tab" aria-expanded="true" class="nav-link">
+                            <span>Photo</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="position-absolute" style="margin:0 auto;top:12px;">
+                    <div class="form-group mb-0">
+                        @Html.Label("ID ", @AssetIdTitle + " ID:", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.AssetId, new { @Id = "AssetId", @class = "form-control assetid-top", @readonly = "readonly", style = "width:300px;" })
+                    </div>
+                </div>
+            </div>
+            <div class="mh-240 bg-white py-4">
+                <div class="col-lg-12">
+                    <div class="tab-content">
+                        <div class="tab-pane show active" id="AssetTabPage1">
+                            <div id="accordion">
+                                <!--Add Asset Modal Partial View Rendering begins-->
+                                @* Page 1 *@
+                                @{
+                                    Html.RenderPartial("_Page1.cshtml", Model);
+                                }
+
+                                @* Page 2 *@
+                                @if (!isBridge && !isCulvert)
+                                {
+                                    Html.RenderPartial("_Page2.cshtml", Model);
+                                }
+
+                                @* Bridge Page 2 *@
+                                @if (isBridge)
+                                {
+                                    Html.RenderPartial("_BridgePage2.cshtml", Model);
+                                }
+
+                                @* Bridge Page 3 *@
+                                @if (isBridge)
+                                {
+                                    Html.RenderPartial("_BridgePage3.cshtml", Model);
+                                }
+
+                                @* Culvert Page 2 *@
+                                @if (isCulvert)
+                                {
+                                    Html.RenderPartial("_CulvertPage2.cshtml", Model);
+                                }
+
+                                <div class="col-3">
+                                    @Html.HiddenFor(m => m.AddAssetViewModel.No, new { @class = "form-control", @id = "assetPK" })
+                                </div>
+
+                            </div>
+                            <!--Add Asset Modal Partial View Rendering ends-->
+                        </div>
+                        <div class="tab-pane" id="AssetTabPage2">
+                            <!--Add Photo begins-->
+                            @*@{
+                                Html.RenderPartial("_PhotoSectionPage.cshtml", Model);
+                            }*@
+                            <div id="photoView">
+
+                            </div>
+                            <!--Add Photo ends-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.AddAssetViewModel.No, new { @class = "form-control", @id = "asset_PK" }) @*//PrimaryKey*@
+        @Html.HiddenFor(m => m.addAssetOtherModel.RefNo, new { @class = "form-control", @id = "AssetOtherPk" })
+        @Html.HiddenFor(m => m.AddAssetViewModel.CreatedBy)
+        @Html.HiddenFor(m => m.AddAssetViewModel.CreatedDate)
+        @Html.HiddenFor(m => m.addAssetOtherModel.CreatedBy)
+        @Html.HiddenFor(m => m.addAssetOtherModel.CreatedDt)
+        <div class="modal-footer" id="AddModalFooter">
+            <div id="val-summary-displayer"></div>
+            <button type="button" class="btn btn-sm btn-outline-theme" id="cancelAddModel" onclick="cancelAddPopup();">Cancel</button>
+            <button id="AddAssetsBtn" type="button" class="btn btn-sm btn-themebtn">Confirm</button>
+        </div>
+    </form>
+
+<script>
+    function cancelAddPopup() {
+        //Handled for View
+        disableAttrExist = $("#AddAssetModalForm").attr("disabled")
+        if (!disableAttrExist) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $('#AssetsAddModal').modal('hide');
+                    GridReload();
+                }
+            }));
+        }
+        else {
+            $('#AssetsAddModal').modal('hide');
+            GridReload();
+        }
+    }
+
+    function getLocation(gpstype, elemID) {
+        if (gpstype == 'Easting') {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) { getGPSEasting(position, elemID) });
+            } else {
+                app.ShowInfoMessage("Geolocation is not supported by this browser.");
+            }
+        }
+        if (gpstype == 'Northing') {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) { getGPSNorthing(position, elemID) });
+            } else {
+                app.ShowInfoMessage("Geolocation is not supported by this browser.");
+            }
+        }
+    }
+
+    function getGPSNorthing(position, element) {
+        //x.innerHTML = "Latitude: " + position.coords.latitude +
+        //    "<br>Longitude: " + position.coords.longitude;
+        document.getElementById(element).value = position.coords.latitude.toFixed(5)
+    }
+
+    function getGPSEasting(position, element) {
+        //x.innerHTML = "Latitude: " + position.coords.latitude +
+        //    "<br>Longitude: " + position.coords.longitude;
+        document.getElementById(element).value = position.coords.longitude.toFixed(5)
+    }
+</script>

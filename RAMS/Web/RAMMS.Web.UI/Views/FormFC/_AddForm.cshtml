@@ -1,0 +1,290 @@
+﻿@{
+    ViewData["Title"] = "Form FC - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Form FC - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@section Scripts{
+    <style>
+        th.fixed, td.fixed, th.rfixed, td.rfixed {
+            position: -webkit-sticky;
+            position: sticky;
+            z-index: 2;
+        }
+        td.fixed {
+            background-color: #fff;
+        }
+        td.rfixed {
+            background-color: #8eb9b9;
+        }
+        .simple-tbl table th{
+            white-space:nowrap;
+        }
+        .simple-tbl table th.kmrange {
+            min-width:135px;
+        }
+        .simple-tbl table th, .simple-tbl table td {
+            border: 1px solid #a7c6ea !important;
+            text-align: center;
+        }        
+        .simple-tbl th, .simple-tbl td{
+            padding:0px !important;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var twidth = $("#tblFormFC").width();
+            $("#tblFormFC .fixed").each(function () {
+                var obj = $(this);               
+                obj.css("left", (obj.position().left - 1) + "px");
+            });
+            $("#tblFormFC .rfixed").each(function () {
+                var obj = $(this);
+                var rgt = twidth - (obj.position().left + obj.width()) - 2;
+                rgt = rgt > 6 ? rgt : 0;                
+                obj.css("right", rgt + "px");
+            });
+        });
+    </script>
+}
+<div class="row">
+    <div class="w-100 bg-body" id="">
+        <form id="">
+            <div class="modal-body mh-120 pt-0 pb-0">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div id="" class="form-group mb-0">
+                        @Html.Label("Form FC No.", "Form FC No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        <input class="form-control" style="width:300px;" type="text" disabled>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+                    <div class="row">
+                        <div class="col-lg-10 p-0">
+                            <div class="w-100 form-group mb-0">
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Division", "Division")
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Code", "Road Code")
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    @Html.Label("Road Name", "Road Name")
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Length (km)", "Road Length (km)")
+                                    <input type="text" class="form-control" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("District", "District")
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("RMU", "RMU")
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Crew Leader", "Crew Leader")
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                            <button id="" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                        <div class="simple-tbl" style="overflow:auto;">
+                            <table id="tblFormFC">
+                                <thead>
+                                    <tr>
+                                        <th class="fixed" colspan="4" style="min-width:280px;">Distance in Km</th>
+                                        <th colspan="5" class="kmrange">174+500 to 174+900</th>
+                                        <th colspan="5" class="kmrange">175+000 to 175+400</th>
+                                        <th colspan="5" class="kmrange">175+500 to 175+900</th>
+                                        <th colspan="5" class="kmrange">175+000 to 175+400</th>
+                                        <th colspan="5" class="kmrange">175+500 to 175+900</th>
+                                        <th colspan="5" class="kmrange">175+000 to 175+400</th>
+                                        <th colspan="5" class="rfixed kmrange">175+500 to 175+900</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fixed" rowspan="3" style="line-height:13px;">L<br />e<br />f<br />t</td>
+                                        <td class="fixed" rowspan="2" style="width:70px; line-height:13px;">Edge Line</td>
+                                        <td class="fixed" style="width:100px;">Paint</td>
+                                        <td class="fixed">P</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td class="rfixed">1</td>
+                                        <td class="rfixed">1</td>
+                                        <td class="rfixed">1</td>
+                                        <td class="rfixed">1</td>
+                                        <td class="rfixed">1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fixed">Thermoplastic</td>
+                                        <td class="fixed">T</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td>2</td>
+                                        <td class="rfixed">2</td>
+                                        <td class="rfixed">2</td>
+                                        <td class="rfixed">2</td>
+                                        <td class="rfixed">2</td>
+                                        <td class="rfixed">2</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fixed" colspan="2">Road Struds</td>
+                                        <td class="fixed">R</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td>3</td>
+                                        <td class="rfixed">3</td>
+                                        <td class="rfixed">3</td>
+                                        <td class="rfixed">3</td>
+                                        <td class="rfixed">3</td>
+                                        <td class="rfixed">3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="" class="col-lg-12 px-lg-5">
+                    <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">Inspected by</span>
+                        </div>
+                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                            <div class="form-group col-lg-2 float-left">
+                                @Html.Label("User ID", "User ID")
+                                <select class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Name", "Name")
+                                <input class="form-control" type="text" />
+                            </div>
+                            <div class="form-group col-lg-3 float-left">
+                                @Html.Label("Designation", "Designation")
+                                <input class="form-control" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100 float-left mt-3">
+                        <div class="form-group col-md-12 d-flex flex-column txtarea-80 p-0">
+                            @Html.Label("Remarks/Sketch (if any)", "Remarks/Sketch (if any)", new { @class = "mr-2 font-weight-semibold" })
+                            <textarea class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 float-right text-right custom-footer">
+                <button id="" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
+                <button id="" type="button" class="btn btn-sm btn-themebtn">Save</button>
+                <button id="" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

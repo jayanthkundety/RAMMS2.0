@@ -1,0 +1,129 @@
+﻿@model RAMMS.Web.UI.Models.AssetsModel;
+
+<div class="accordion custom-accordion" id="custom-accordion-six">
+    <div class="card mb-0">
+        <div class="card-header" id="headingSix">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordBridgePage6" aria-expanded="false" aria-controls="collapseSix">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        Parameter
+                    </span>
+                </a>
+            </h5>
+        </div>
+        <div id="AccordBridgePage6" class="collapse avowmodal-form" aria-labelledby="headingSix" data-parent="#custom-accordion-six">
+            <div class="card-body">
+                <div class="form-group col-lg-4 mb-0">
+                    @Html.Label("Culvert Dimension (m)", "Culvert Dimension (m)", new { @class = "float-left" })
+                    <div class="row">
+                        <div class="form-group col-lg-3 col-md-3 in-lbl">
+                            <label for="D">D</label>
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.Diameter, null, new { @Id = "AssetsDiameter", @class = "form-control validate {cdecimal,5,5, Diameter}", @onkeypressvalidate = "cdecimal,5,5,Diameter", @maxlength = "11" })
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3 in-lbl">
+                            <label for="W">W</label>
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.Width, null, new { @Id = "AssetsWidth", @class = "form-control validate {cdecimal,5,5, Width}", @onkeypressvalidate = "cdecimal,5,5,Width", @maxlength = "11" })
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3 in-lbl">
+                            <label for="H">H</label>
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.Height, null, new { @Id = "AssetsHeight", @class = "form-control validate {cdecimal,5,5, Height}", @onkeypressvalidate = "cdecimal,5,5,Height", @maxlength = "11" })
+                        </div>
+                        <div class="form-group col-lg-3 col-md-3 in-lbl">
+                            <label for="L">L</label>
+                            @Html.TextBoxFor(m => m.AddAssetViewModel.Length, null, new { @Id = "AssetsLength", @class = "form-control validate {cdecimal,5,5, Length}", @onkeypressvalidate = "cdecimal,5,5,Length", @maxlength = "11" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Culvert Type", "Culvert Type", new { @class = "float-left" })
+                    @Html.DropDownListFor(m => m.AddAssetViewModel.CulvertType, (IEnumerable
+                    <SelectListItem>)ViewData["CulvertType"], "Select Culvert Type", new { @Id = "CulvertType", @class = "form-control disableinput" })
+                </div>
+                <div class="form-group col-lg-2" id="CulvertTypeOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.CulvertTypeOthers, null, new { @Id = "AssetCulvertTypeOthers", @class = "form-control validate {maxcl,250, Culvert Type Others}", @onkeypressvalidate = "maxcl,250,Culvert Type Others" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Culvert Material", "Culvert Material", new { @class = "float-left" })
+                    @Html.DropDownListFor(m => m.AddAssetViewModel.Material, (IEnumerable
+                    <SelectListItem>)ViewData["MaterialList"], "Select Culvert Material", new { @Id = "AssetMaterial", @class = "form-control disableinput" })
+                </div>
+                <div class="form-group col-lg-2" id="CulvertMaterialOthers">
+                    @Html.Label("Other", "Other", new { style = "float: left" })
+                    @Html.TextBoxFor(m => m.addAssetOtherModel.MaterialOthers, null, new { @Id = "AssetCulvertMaterialOthers", @class = "form-control validate {maxcl,250, Culvert Material Others}", @onkeypressvalidate = "maxcl,250,Culvert Material Others" })
+                </div>
+
+                <div class="form-group col-lg-2">
+                    @Html.Label("Finished Road Level (m)", "Finished Road Level (m)", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.FindRoadLevel, null, new { @Id = "AssetsRoadLevel", @class = "form-control validate {cdecimal,5,5, Road Level} ", @onkeypressvalidate = "cdecimal,5,5,Road Level", @maxlength = "11" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Catchment Area (Sq.Km)", "Catchment Area (Sq.Km)", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.CatchArea, null, new { @Id = "AssetsCatchArea", @class = "form-control validate {cdecimal,5,5, Catchment Area}", @onkeypressvalidate = "cdecimal,5,5, Catchment Area", @maxlength = "11" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Culvert Skew", "Culvert Skew", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Skew, null, new { @Id = "AssetsSkew", @class = "form-control validate {cdecimal,5,5, Culvert Skew}", @onkeypressvalidate = "cdecimal,5,5,Culvert Skew", @maxlength = "11" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Design Flow (Cu.m/s)", "Design Flow (Cu.m/s)", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.DesignFlow, null, new { @Id = "AssetsDesignFlow", @class = "form-control validate {cdecimal,5,5, Design Flow}", @onkeypressvalidate = "cdecimal,5,5,Design Flow", @maxlength = "11" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Precast/In-situ", "Precast/In-situ", new { @class = "float-left" })
+                    @Html.DropDownListFor(m => m.AddAssetViewModel.PrecastSitu, (IEnumerable
+                    <SelectListItem>)ViewData["PrecastInSuitList"], "Select Precast/In-situ", new { @Id = "AssetPreCast", @class = "form-control disableinput" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Barrel Number", "Barrel Number", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.BarrelNo, null, new { @Id = "AssetsBarrelNo", @class = "form-control validate {number, Barrel Number}", @onkeypressvalidate = "number,Barrel Number", @maxlength = "5" })
+                </div>
+                <div class="form-group col-lg-1">
+                    @Html.Label("Inlet Level", "Inlet Level", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.IntelLevel, null, new { @Id = "AssetsIntelLevel", @class = "form-control validate {cdecimal,5,5, Inlet Level}", @onkeypressvalidate = "cdecimal,5,5,Inlet Level", @maxlength = "11" })
+                </div>
+                <div class="form-group col-lg-1">
+                    @Html.Label("Outlet Level", "Outlet Level", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.OutletLevel, null, new { @Id = "AssetsOutletStruc", @class = "form-control validate {cdecimal,5,5, Outlet Level}", @onkeypressvalidate = "cdecimal,5,5,Outlet Level", @maxlength = "11" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("GPS Easting", "GPS Easting", new { @class = "float-left" })
+                    <div class="position-relative c-path float-left w-100">
+                        <a onclick="getLocation('Easting', 'AssetsGpsEasting')" style="cursor:pointer;"><span class="current-location"></span></a>
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.GpsEasting, null, new { @Id = "AssetsGpsEasting", @class = "form-control validate {cdecimal, GPS Easting}", @onkeypressvalidate = "cdecimal,GPS Easting" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("GPS Northing", "GPS Northing", new { @class = "float-left" })
+                    <div class="position-relative c-path float-left w-100">
+                        <a onclick="getLocation('Northing', 'AssetsGpsNorthing')" style="cursor:pointer;"><span class="current-location"></span></a>
+                        @Html.TextBoxFor(m => m.AddAssetViewModel.GpsNorthing, null, new { @Id = "AssetsGpsNorthing", @class = "form-control validate {cdecimal, GPS Northing}", @onkeypressvalidate = "cdecimal,GPS Northing" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Inlet Structure", "Inlet Structure", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.InletStruc_MultiSelect, (IEnumerable
+                    <SelectListItem>)ViewData["InletStrucList"], new { @Id = "AssetIntelStruc", @class = "disableinput form-control,chosen-select", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-4">
+                    @Html.Label("Outlet Structure", "Outlet Structure", new { @class = "float-left" })
+                    @Html.ListBoxFor(m => m.AddAssetViewModel.OutletStruc_MultiSelect, (IEnumerable
+                    <SelectListItem>)ViewData["OutletStrucList"], new { @Id = "AssetOutletStruc", @class = "disableinput form-control,chosen-select", @multiple = "true" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Maintained By", "Maintained By", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.MaintainedBy, null, new { @Id = "AssetsMaintainedBy", @class = "form-control validate {maxcl,250, Name}", @onkeypressvalidate = "maxcl,250,Name" })
+                </div>
+                <div class="form-group col-lg-2">
+                    @Html.Label("Owner", "Owner", new { @class = "float-left" })
+                    @Html.TextBoxFor(m => m.AddAssetViewModel.Owner, null, new { @Id = "AssetsOwner", @class = "form-control validate {maxcl,250,Owner Name}", @onkeypressvalidate = "maxcl,250,Owner Name" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

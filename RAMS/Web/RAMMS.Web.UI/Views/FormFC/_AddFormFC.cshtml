@@ -1,0 +1,370 @@
+﻿@model RAMMS.DTO.ResponseBO.FormFCDTO
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewData["Title"] = "Form FC - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "Form FC - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    string strRoadname = string.Empty;
+    string strRoadCode = string.Empty;
+    string strYear = string.Empty;
+    string strRefId = string.Empty;
+    string formStatus = string.Empty;
+    int RefNo = 0;
+    bool IsSupervisor = false;
+
+    if (Model != null)
+    {
+        strRoadname = Model.RoadName;
+        strRoadCode = Model.RoadCode;
+        strYear = Model.YearOfInsp.Value.ToString();
+        strRefId = Model.FormRefId;
+        ViewBag.IsEdit = ViewBag.IsEdit ? (Model.SubmitSts ? false : true) : false;
+
+        formStatus = Model.Status;
+        RefNo = Model.PkRefNo;
+        IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(formStatus) || formStatus == RAMMS.Common.StatusList.FormFCInit);
+    }
+}
+@section Scripts{
+    <style>
+        th.fixed, td.fixed, th.rfixed, td.rfixed, th.sfixed {
+            position: -webkit-sticky;
+            position: sticky;
+            z-index: 2;
+        }
+
+        td.fixed {
+            background-color: #fff;
+        }
+
+        .simple-tbl table {
+            position: relative;
+        }
+
+            .simple-tbl table th {
+                white-space: nowrap;
+            }
+
+                .simple-tbl table th.kmrange {
+                    min-width: 135px;
+                }
+
+            .simple-tbl table th, .simple-tbl table td {
+                border: 1px solid #a7c6ea !important;
+                text-align: center;
+            }
+
+        .simple-tbl th, .simple-tbl td {
+            padding: 0px !important;
+        }
+
+        .avgwidth {
+            max-width: 100px;
+        }
+
+        .conwidth {
+            width: 140px;
+            max-width: 140px;
+            min-width: 140px;
+        }
+
+        .simple-tbl tbody tr:hover td, .simple-tbl tbody tr:nth-child(even):hover td, .simple-tbl tbody tr:nth-child(even):hover td.fcblock, .simple-tbl tbody tr:hover td.rfixed {
+            background-color: #fff1ad;
+        }
+
+            .simple-tbl tbody tr:nth-child(even) td, .simple-tbl tbody tr:hover td.fcconactive {
+                background-color: #f2f6f9;
+            }
+
+                .simple-tbl tbody tr:nth-child(even) td.rowspantd, .simple-tbl tbody tr:hover td.rowspantd {
+                    background-color: #fff;
+                }
+
+        .simple-tbl tbody tr td.rfixed, .simple-tbl tr th.rfixed, .simple-tbl tr th.rfixedcolor {
+            background-color: #E2EFD9;
+        }
+
+        .fcconditionsel {
+            position: absolute;
+        }
+
+        .arrow-up {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #152e4d;
+            position: absolute;
+        }
+
+        .fcconditiontd.fcblock, .simple-tbl tbody tr:nth-child(even) td.fcblock {
+            background-color: lightgrey;
+        }
+
+        .fcconditiontd {
+            width: 25px;
+            max-width: 25px;
+            background-color: #fff;
+        }
+
+        .fcconditionsel ul {
+            width: 30px;
+            background-color: #fff;
+            margin-bottom: 0px;
+            margin-top: 5px;
+            border: 1px solid #152e4d;
+        }
+
+            .fcconditionsel ul li:hover {
+                background-color: #fff1ad;
+            }
+
+            .fcconditionsel ul li {
+                list-style: none;
+                cursor: pointer;
+            }
+    </style>
+
+    <script src="~/assets/js/Views/FormFC.js" asp-append-version="true"></script>
+    @if (Model != null)
+    {
+        <script type="text/javascript">
+            formFC.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
+            formFC.IsEdit = @(ViewBag.IsEdit ? "true" : "false");
+        </script>
+    }
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            process.Init("FormFC", "@formStatus", @RefNo);
+        });
+    </script>
+
+    <script type="text/javascript">
+        formFC.Pattern = "@RAMMS.Common.RefNumber.FormRefNumber.GetRawRefNumber(RAMMS.Common.RefNumber.FormType.FormFCHeader)";
+    </script>
+}
+<div class="row">
+    <div class="w-100 bg-body" id="">
+        <form>
+            <div class="modal-body mh-120 pt-0 pb-0">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div id="" class="form-group mb-0">
+                        @Html.Label("Form FC No.", "Form FC No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        <input id="formFCRefNO" class="form-control" value="@strRefId" style="width:300px;" type="text" disabled>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+                    <div class="row" id="frmFCHeaderInformation">
+                        <div class="col-lg-10 p-0">
+                            <div class="w-100 form-group mb-0">
+                                @if (ViewBag.IsAdd)
+                                {
+                                    <div class="form-group col-md-3" finddetailhide>
+                                        @Html.Label("Division", "Division")
+                                        @if (ViewBag.IsAdd)
+                                        {
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Division"], "DivCode", "Select Division", new { @Id = "selDivision", @class = "form-control" })
+                                        }
+                                        else
+                                        {
+                                            <input value="@Model.DivCode" type="text" class="form-control" disabled="disabled" />
+                                        }
+                                    </div>
+                                    <div class="form-group col-md-3" finddetailhide>
+                                        @Html.Label("RMU", "RMU")
+                                        @if (ViewBag.IsAdd)
+                                        {
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "selRMU", @class = "form-control", @onchange = "formFC.Search.RmuChange(this);" })
+                                        }
+                                        else
+                                        {
+                                            <input value="@Model.RmuName" type="text" class="form-control" disabled="disabled" />
+                                        }
+                                    </div>
+                                    @if (ViewBag.IsAdd)
+                                    {
+                                        <div class="form-group col-md-3" finddetailhide>
+                                            @Html.Label("Section Code", "Section Code")
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "selSectionCode", "Select Section Code", new { @Id = "selSectionCode", @class = "form-control", @onchange = "formFC.Search.SecCodeChange(this);" })
+                                        </div>
+                                        <div class="form-group col-md-3" finddetailhide>
+                                            @Html.Label("Section Name", "Section Name")
+                                            <input id="txtSectionName" type="text" class="form-control" disabled />
+                                        </div>
+                                    }
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Road Code", "Road Code")
+                                        @if (ViewBag.IsAdd)
+                                        {
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @Id = "selRoadCode", @class = "form-control validate {req,Road Code}", @onchange = "formFC.Search.RoadCodeChange(this);" })
+                                        }
+                                        else
+                                        {
+                                            <input value="@strRoadCode-@strRoadname" name="RoadCode" id="txtRoadCode" type="text" class="form-control" disabled="disabled" />
+                                        }
+                                    </div>
+                                }
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Road Name", "Road Name")
+                                    <input value="@strRoadname" id="txtRoadName" name="RoadName" type="text" class="form-control" disabled />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
+                                    @if (ViewBag.IsAdd)
+                                    {
+                                        @Html.DropDownList("YearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formFCInsYear", @class = "form-control validate {req,Year}", @onchange = "formFC.InsYearChange(this);" })
+                                    }
+                                    else
+                                    {
+                                        <input value="@strYear" name="AiAssetId" id="txtC1C2InsYear" type="text" class="form-control" disabled="disabled" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                            <button id="btnFindDetails" onclick="formFC.FindDetails()" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="fcconditionseltemplate" style="display:none;">
+                    <div class="fcconditionsel">
+                        <div class="arrow-up"></div>
+                        <ul>
+                            <li val="1" onclick="formFC.ConSelect(this,event)">1</li>
+                            <li val="2" onclick="formFC.ConSelect(this,event)">2</li>
+                            <li val="3" onclick="formFC.ConSelect(this,event)">3</li>
+                            <li val="" onclick="formFC.ConSelect(this,event)">Clear</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+                <div class="w-100 position-relative in-tbl-btns">
+                    <div class="w-100 dt-tbl-section">
+                        <div id="DetailListGrid" class="simple-tbl" style="overflow:auto;">
+                            <table id="tblFormFC" style="display:none;">
+                                <thead>
+                                    <tr>
+                                        <th class="fixed" colspan="4" style="min-width:280px;">&nbsp;</th>
+                                        <th class="fixed avgwidth" colspan="2">&nbsp;</th>
+                                        <th condhd1 class="fixed" style="min-width:280px;">CONDITION IN 1, 2 or 3 ONLY</th>
+                                        <th condhd1after class="sfixed rfixedcolor" style="right:140px;">&nbsp;</th>
+                                        <th class="sfixed conwidth rfixedcolor" colspan="4" style="right:0px;">CONDITION</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="fixed" colspan="4" style="min-width:280px;">Distance in Km</th>
+                                        <th condbeforehd colspan="2" class="fixed">Avg Width</th>
+                                        <th condafterhd class="rfixed"></th>
+                                        <th class="rfixed" style="width:30px;min-width:30px;">1</th>
+                                        <th class="rfixed" style="width:30px;min-width:30px;">2</th>
+                                        <th class="rfixed" style="width:30px;min-width:30px;">3</th>
+                                        <th class="rfixed" style="width:50px;min-width:50px;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100 position-relative" id="frmFCHeader">
+                    <input type="hidden" value="" class="svalidate {req,Condition}" id="hdnFormFCCond" />
+                    <div class="col-lg-12 px-lg-5" style="margin-top:10px;">
+                        <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Crew Leader</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-md-3">
+                                    @Html.Label("User ID", "User ID")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Supervisor"], "CrewLeaderId", "Select User ID", new { @Id = "selCrewLeaderName", @class = "form-control svalidate {req,Crew Leader Name}", @onchange = "formFC.CrewLeaderChange(this);" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input name="CrewLeaderName" id="txtCrewLeaderName" class="form-control {req,Crew Leader Name}" type="text" value="" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 px-lg-5">
+                        <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Inspected By</span>
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("User ID", "User ID")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UserIdInspBy", "Select User", new { @Id = "selUserIdInspBy", @class = "form-control svalidate {req,Inspected By User ID}", @onchange = "formFC.UserIDChange(this);" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    <input name="UserNameInspBy" id="txtUserNameInspBy" class="form-control {req,Inspected By Name}" type="text" disabled />
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    <input name="UserDesignationInspBy" id="txtUserDesignationInspBy" class="form-control {req,Inspected By Designation}" type="text" disabled />
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input name="DtInspBy" class="form-control svalidate {req,Inspected By date}" type="date" value="" id="dtInspection" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-100 float-left mt-3">
+                            <div class="form-group col-md-12 d-flex flex-column txtarea-80 p-0">
+                                @Html.Label("Remarks/Sketch (if any)", "Remarks/Sketch (if any)", new { @class = "mr-2 font-weight-semibold" })
+                                <textarea name="Remarks" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @{
+                    if (ViewBag.IsEdit)
+                    {
+                        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                        {
+                            Form = "FormFC",
+                            RefId = RefNo,
+                            Stage = formStatus
+                        });
+                    }
+                }
+            </div>
+
+            <div class="col-md-12 float-right text-right custom-footer">
+                <button type="button" class="btn btn-sm btn-outline-theme" onclick="formFC.Cancel();">Cancel</button>
+                @if (Model != null && !Model.SubmitSts && ViewBag.IsEdit)
+                {
+            <button type="button" class="btn btn-sm btn-themebtn" onclick="formFC.Save(false)" finddetailsdep>Save</button>
+                    @if (IsSupervisor)
+                    {
+            <button type="button" class="btn btn-sm btn-themebtn" onclick="formFC.Save(true)" finddetailsdep>Submit</button>
+                    }
+                }
+                @if (security.IsExecutive && formStatus == RAMMS.Common.StatusList.FormFCInspected)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
+                }
+                else if (security.IsHeadMaintenance && formStatus == RAMMS.Common.StatusList.FormFCExecutiveApproved)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
+                }
+                else if (security.IsRegionManager && formStatus == RAMMS.Common.StatusList.FormFCHeadMaintenanceApproved)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
+                }
+                else if (security.IsJKRSSuperiorOfficer && formStatus == RAMMS.Common.StatusList.FormFCRegionManagerApproved)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Reject</button>
+                }
+
+            </div>
+
+           
+        </form>
+    </div>
+</div>

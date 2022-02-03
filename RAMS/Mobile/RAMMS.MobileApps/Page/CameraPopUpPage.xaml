@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" xmlns:local="clr-namespace:RAMMS.MobileApps"
+                 x:Class="RAMMS.MobileApps.Page.CameraPopUpPage"
+                   xmlns:locals="clr-namespace:RAMMS.MobileApps.Controls;assembly=RAMMS.MobileApps"
+                  xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials"
+    xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation PositionIn="Center" PositionOut="Center" ScaleIn="1.2" ScaleOut="0.8" DurationIn="400" DurationOut="400" EasingIn="SinOut" EasingOut="SinIn" HasBackgroundAnimation="True" />
+    </pages:PopupPage.Animation>
+    <Frame Margin="50,20,50,20" CornerRadius="30">
+        <StackLayout BackgroundColor="White">
+            <Frame Margin="0,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="JKRSLogo.png" Grid.Row="0" Grid.Column="0" Margin="0,-10,0,0"/>
+                    <Label Text="ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM" HorizontalOptions="CenterAndExpand" LineBreakMode="TailTruncation" VerticalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" FontSize="18" Grid.Row="0" Grid.Column="2"  Margin="0,-10,0,0"/>
+                    <Image Source="ECSBLogo.png" Grid.Row="0" Grid.Column="4"  Margin="0,-10,0,0"/>
+
+
+                </Grid>
+            </Frame>
+
+
+
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!--0-->
+                    <RowDefinition Height="0.5*"/>
+                    <!--1-->
+                    <RowDefinition Height="2"/>
+                    <!--2-->
+                    <RowDefinition Height="1"/>
+                    <!--3-->
+                    <RowDefinition Height="1.5*"/>
+                    <!--1-->
+                    <RowDefinition Height="2"/>
+                    <!--4-->
+                    <RowDefinition Height="5*"/>
+                    <!--5-->
+                    <RowDefinition Height="1"/>
+                    <!--6-->
+                    <RowDefinition Height="2"/>
+                    <!--7-->
+                    <RowDefinition Height="0.8*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="10"/>
+
+                </Grid.ColumnDefinitions>
+
+
+                <Label Text="Add Photo" FontSize="Large" TextColor="Black" FontAttributes="Bold" Grid.Row="0" Grid.Column="1"/>
+                <BoxView BackgroundColor="#cccccc" Grid.Row="1" Grid.Column="1" Margin="0,-7,0,7" />
+
+
+
+                <StackLayout Grid.Row="3" Grid.Column="1" Margin="-15,-7,-15,0" >
+                    <Frame HasShadow="True" BorderColor="#f2f2f2" CornerRadius="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0.8*"/>
+                                <ColumnDefinition Width="0.5*"/>
+                                <ColumnDefinition Width="2"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Text="Photograph Type:"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" TextColor="Black" FontSize="Medium"  />
+
+                            <locals:FrameRenders Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,50,0" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                <local:ExtendedPicker   x:Name="phototypepicker"  HeightRequest="50"   ClassId ="ClassPickGrey"   FontSize="Medium"  />
+                            </locals:FrameRenders>
+
+
+                            <!--<locals:FrameRenders Grid.Row="1" Grid.Column="2" BackgroundColor="White" FrameCornerRadius="7"   IsClippedToBounds="True" Padding="0,0,0,0"  ColorName="LightGray"    BorderColor="Black" >
+
+                                    <Picker Title="Select Type"  Margin="0,0,0,-8"  x:Name="photo"   HeightRequest="50"   ClassId ="ClassPickGrey"   FontSize="16"  >
+                                <Picker.Items>
+                                    <x:String>Before</x:String>
+                                    <x:String>After</x:String>
+                                    <x:String>Incomplete</x:String>
+                                    <x:String>Others</x:String>
+                                   
+                                </Picker.Items>
+                            </Picker>
+                                </locals:FrameRenders>-->
+
+                            <Button Text="Select to Image Gallery" Clicked="Button_Clicked_2"  Grid.Row="1" Grid.Column="3" CornerRadius="5" BorderWidth="2" BorderColor="#1D2D50" FontSize="12" FontAttributes="Bold" TextColor="#1D2D50" BackgroundColor="#e6e6e6"  />
+                            <Button Text="Take Camera" Clicked="Button_Clicked_3" Grid.Row="1"  Grid.Column="4" CornerRadius="5" BorderWidth="2" BorderColor="#1D2D50"  TextColor="#1D2D50" BackgroundColor="#e6e6e6" FontAttributes="Bold" FontSize="12"  />
+
+
+
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+
+
+
+                <StackLayout Grid.Row="5" Grid.Column="1" >
+
+
+
+
+
+                    <!--<Frame BackgroundColor="White" BorderColor="#1D2D50" HorizontalOptions="Center" VerticalOptions="Center">
+                        <StackLayout Orientation="Horizontal">
+                             <Image Source="upload.png"  HeightRequest="28" WidthRequest="28" HorizontalOptions="EndAndExpand" VerticalOptions="Center"  >
+                                 <Image.GestureRecognizers>
+                                     <TapGestureRecognizer Tapped="SelectImagesButton_Clicked"/>
+                                 </Image.GestureRecognizers>
+                             </Image>
+                            <Label Text="Gallery and TakePhoto" TextColor="#1D2D50" FontSize="Large" HorizontalOptions="StartAndExpand" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="SelectImagesButton_Clicked" />
+                            </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </Frame>-->
+                    <Frame BackgroundColor="#f2f2f2" BorderColor="#e6e6e6" CornerRadius="20" Margin="0,10,0,0"   >
+                        <Frame  CornerRadius="20" Margin="-9,-9,-9,-9">
+                            <StackLayout Orientation="Horizontal" >
+                                <ScrollView Orientation="Vertical">
+                                    <RefreshView x:Name="CameraLayout">
+                                        <StackLayout Orientation="Vertical" >
+                                            <!--<Label x:Name="lbl1"   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" FontSize="Medium" FontAttributes="Bold"   />
+                                    <Image x:Name="image" HeightRequest="115" WidthRequest="115"/>-->
+
+                                            <flv:FlowListView FlowColumnCount="3" x:Name="listItemsCam" HorizontalScrollBarVisibility="Always"
+                                            SeparatorVisibility="None"
+                                            HasUnevenRows="false" RowHeight="100">
+                                                <flv:FlowListView.FlowColumnTemplate>
+                                                    <DataTemplate >
+                                                        <Frame>
+                                                            <Grid>
+                                                                <Image Source="wrong.png" HorizontalOptions="End" VerticalOptions="Center"  HeightRequest="20" WidthRequest="20">
+                                                                <Image.GestureRecognizers>
+                                                                        <TapGestureRecognizer Command="{Binding BindingContext.DeleteImageCommand, Source={x:Reference listItemsCam}}" CommandParameter="{Binding .}" />
+                                                                </Image.GestureRecognizers>
+                                                                </Image>
+                                                                <ActivityIndicator IsRunning="{Binding Path=IsLoading, Source={x:Reference Name = Image} }" IsVisible="{Binding Path=IsLoading, Source={x:Reference Name=Image}}"/>
+                                                                <ffimageloading:CachedImage x:Name="Image" AbsoluteLayout.LayoutFlags="All" Source="{Binding .}"/>
+
+                                                            </Grid>
+                                                        </Frame>
+                                                    </DataTemplate>
+                                                </flv:FlowListView.FlowColumnTemplate>
+                                            </flv:FlowListView>
+                                            <!--<Image x:Name="image" IsVisible="False"></Image>-->
+
+                                        </StackLayout>
+
+                                    </RefreshView>
+
+
+
+                                </ScrollView>
+                                <!--<StackLayout>
+                                
+                                <Image x:Name="image" HeightRequest="115" WidthRequest="115"/>
+                                
+                            </StackLayout>-->
+                            </StackLayout>
+                        </Frame>
+                    </Frame>
+
+                </StackLayout>
+
+
+
+                <!--<Button Text="Upload" Clicked="Button_Clicked_1" HorizontalOptions="Center" Margin="0,20,0,0" CornerRadius="8" TextColor="White" BackgroundColor="#1D2D50" VerticalOptions="Center" Grid.Row="5" Grid.Column="1" />-->
+
+                <BoxView BackgroundColor="#cccccc" Grid.Row="7" Grid.Column="1" />
+
+                <StackLayout Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
+                    <Button Text="Upload"  Clicked="Button_Clicked_1" Margin="0,5,0,0" CornerRadius="8" TextColor="White" BackgroundColor="#1D2D50" HorizontalOptions="EndAndExpand"  />
+
+                    <Button Text="cancel" Margin="0,5,0,0"   CornerRadius="8" BorderWidth="1" BorderColor="Black" Clicked="Button_Clicked"  TextColor="White" BackgroundColor="#1D2D50"  HorizontalOptions="End"  />
+                </StackLayout>
+
+            </Grid>
+        </StackLayout>
+    </Frame>
+
+</pages:PopupPage>
