@@ -12,5 +12,15 @@ namespace RAMMS.Web.UI.Controllers
         {
             return View();
         }
+
+        public IActionResult AddFormW1()
+        {
+            return View("~/Views/InstructedWorks/AddFormW1.cshtml");
+        }
+
+        public IActionResult AddFormW2()
+        {
+            return View("~/Views/InstructedWorks/AddFormW2.cshtml");
+        }
     }
 }
