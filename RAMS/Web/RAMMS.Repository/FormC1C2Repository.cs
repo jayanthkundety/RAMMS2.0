@@ -150,7 +150,8 @@ namespace RAMMS.Repository
                              CDia = asset.AiDiameter,
                              CULWidth = asset.AiWidth,
                              Active = hdr.FcvihActiveYn,
-                             Status = (hdr.FcvihSubmitSts ? "Submitted" : "Saved")
+                             Status = (hdr.FcvihSubmitSts ? "Submitted" : "Saved"),
+                             ProcessStatus = hdr.FcvihStatus
                          });
             query = query.Where(x => x.Active == true);
             if (searchData.filter != null)

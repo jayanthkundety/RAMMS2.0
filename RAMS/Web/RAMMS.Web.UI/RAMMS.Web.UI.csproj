@@ -69,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\IW\" />
     <Folder Include="wwwroot\Templates\" />
     <Folder Include="wwwroot\Uploads\FormD\" />
   </ItemGroup>

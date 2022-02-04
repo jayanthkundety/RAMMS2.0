@@ -1,0 +1,799 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.TabTitle = "Form W2 -  Initiation of Instructed Work";
+    ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+
+<div class="row bg-white row bg-white pt-3 pb-0">
+    <div class="col-md-12">
+        <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
+            <ul class="nav nav-tabs tabbed round">
+                <li class="nav-item">
+                    <a href="#page" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                        <span class="">
+                            Form W2
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#formw1" data-toggle="tab" aria-expanded="false" class="nav-link">
+                        <span class="">
+                            Form W1
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#AccordPagegallery" data-toggle="tab" aria-expanded="false" class="nav-link">
+                        <span class="">
+                            Photo
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row bg-white py-4">
+            <div class="col-lg-12">
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="page">
+                        <div class="col-md-12">
+                            <div class="row" id="div-addformd">
+                                <div class="col-12 bg-white mh-240" style="border-top:1px solid #dee2e6;">
+                                    <div class="p-4">
+
+                                        <div class="row">
+                                            <div id="accordion" class="col-lg-12">
+                                                               
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+
+                                                                            <div class="row">
+                                                                                <div class="col-lg-4 mb-2">
+                                                                                    <label class="lh30 mb-0"> Superintending Officer's Instruction No:</label>
+                                                                                </div>
+                                                                                <div class="col-lg-8 mb-2">
+                                                                                    <input class="form-control" type="text" disabled value=" coming from W1">
+                                                                                </div>
+                                                                                <div class="col-12 mt-2">
+                                                                                        <div class="row">
+                                                                                            <div class="form-group col-lg-3">
+                                                                                                <label for="RMU">RMU</label>
+                                                                                                <select class="form-control " id="formDrmu" name="SaveFormDModel.Rmu">
+                                                                                                    <option value="">Select RMU</option>
+                                                                                                    <option value="MRI">MRI-Miri</option>
+                                                                                                    <option value="BTN">BTN-Batu Niah</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-2">
+                                                                                                <label for="Division_Code">Division</label>
+                                                                                                <select class="form-control ">
+                                                                                                    <option>select Division</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-2 pr-lg-0">
+                                                                                                <label>
+                                                                                                    Region
+                                                                                                </label>
+                                                                                                <input class="form-control" type="text" placeholder="JKR Ref " />
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-3 pr-lg-0">
+                                                                                                <label>
+                                                                                                    JKR Ref
+                                                                                                </label>
+                                                                                                <input class="form-control" type="text" placeholder="JKR Ref " disabled value="PWD/HOB/B130/2019/2020(97)(ii) " />
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-2 ">
+                                                                                                <label>
+                                                                                                    Date of Initiation
+                                                                                                </label>
+                                                                                                <input class="form-control" type="date" value="29 September 2020 " disabled placeholder="Date" />
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-6">
+
+                                                                                                <div class="form-group col-lg-6">
+                                                                                                    <label>
+                                                                                                        Service Provider's Ref
+                                                                                                    </label>
+                                                                                                    <input class="form-control" type="text" value="" placeholder="">
+                                                                                                </div>
+                                                                                                <div class="form-group col-lg-6">
+                                                                                                    <label>
+                                                                                                        Service Provider
+                                                                                                    </label>
+                                                                                                    <input class="form-control" type="text" placeholder="Attn" />
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            
+
+
+                                                                                            <div class="form-group col-lg-3 pr-lg-0">
+                                                                                                <label>
+                                                                                                    Attn
+                                                                                                </label>
+                                                                                                <input class="form-control" type="text" placeholder="Attn" />
+                                                                                            </div>
+
+                                                                                            <div class="form-group col-lg-3 pr-lg-0">
+                                                                                                <label>
+                                                                                                    CC
+                                                                                                </label>
+                                                                                                <input class="form-control" type="text" placeholder="Attn" />
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                               
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-12 py-2 px-4">
+                                                                                    <span class="font-14 font-weight-bold"> PART A: LOCATION (to be completed by S.O. or his representative)</span>
+                                                                                </div>
+                                                                                <div class="col-12">
+                                                                                    <div class="border-top px-2 pb-1 float-left w-100">
+                                                                                        <div class="row pt-3">
+                                                                                            <div class="form-group col-lg-4">
+                                                                                                <label for="RoadCode">Road Code</label>
+                                                                                                <input class="form-control" type="number" placeholder="Road Code" />
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-4">
+                                                                                                <label for="RoadCode"> Road Name:</label>
+                                                                                                <select class="form-control  ">
+                                                                                                    <option value=""> Service Provider'S</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-4">
+                                                                                                <label for="RoadCode">  Chainage Location:</label>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-5 pl-1 pr-0"><input type="text" class="form-control" value="28 "></div>
+                                                                                                    <div class="col-1 text-center"> + </div>
+                                                                                                    <div class="col-5 pl-1 pr-0"><input type="text" class="form-control" value="970"></div>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-12 py-2 px-4">
+                                                                                    <span class="font-14 font-weight-bold">PART B: PARTICULARS OF INSTRUCTED WORK (to be completed by S.O. or his representative)</span>
+                                                                                </div>
+                                                                                <div class="col-12">
+                                                                                    <div class="border-top px-2 pb-1 float-left w-100">
+                                                                                        <div class="row pt-3">
+                                                                                            <div class="form-group col-lg-12">
+                                                                                                <label for="RoadCode">Title of Instructed Work:</label>
+                                                                                                <textarea class="form-control" style="height:70px;"></textarea>
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-3">
+                                                                                                <label for="Date of commencement">
+                                                                                                    Date of commencement
+                                                                                                </label>
+                                                                                                <input type="date" class="form-control">
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-3">
+                                                                                                <label for="Date of commencement">
+                                                                                                    Date of completion
+                                                                                                </label>
+                                                                                                <input type="date" class="form-control">
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-3">
+                                                                                                <label for="Date of commencement">
+                                                                                                    Instructed Work duration
+                                                                                                </label>
+                                                                                                <input type="text" placeholder="Months" class="form-control">
+                                                                                            </div>
+                                                                                            <div class="form-group col-lg-3">
+                                                                                                <label for="Date of commencement">
+                                                                                                    Remarks
+                                                                                                </label>
+                                                                                                <textarea class="form-control" placeholder="Remarks"></textarea>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-12 py-2 px-4">
+                                                                                    <span class="font-14 font-weight-bold">PART C: DETAILS OF WORKS (to be completed by S.O. or his representative)</span>
+                                                                                </div>
+                                                                                <div class="col-12">
+
+                                                                                    <div class="border-top px-2 pb-1 float-left w-100">
+                                                                                        <div class="row">
+                                                                                            <div class="form-group col-lg-12">
+                                                                                                <textarea class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="Details of Works" style="height:105px;"></textarea>
+                                                                                            </div>
+                                                                                            @*<div class="form-group col-lg-6">
+                                                                                    <label for="ProposedDesignDuration">Proposed Design Duration</label>
+                                                                                    <select class="form-control">
+                                                                                        <option value="">Select Month</option>
+                                                                                        <option value="">1 Month</option>
+                                                                                        <option value="">2 Month</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="form-group col-lg-6">
+                                                                                    <label for="ProposedCompletionofIWPeriod">Proposed Completion of IW Period</label>
+                                                                                    <select class="form-control  ">
+                                                                                        <option value="">Select Month</option>
+                                                                                        <option value="">1 Month</option>
+                                                                                        <option value="">2 Month</option>
+                                                                                    </select>
+                                                                                </div>*@
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                            <div class="col-lg-12 py-2 px-2">
+                                                                                <span class="font-14 font-weight-bold">
+                                                                                    S.O. Representative
+                                                                                </span>
+                                                                            </div>
+                                                                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                                                                <div class="form-group col-lg-4 float-left">
+                                                                                    <label>
+                                                                                        Celling Estimated cost (RM )
+                                                                                    </label>
+                                                                                    <input type="text" class="form-control " value="9,98,292.65" placeholder="RM">
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation"> Issued By </label>
+                                                                                <select class="form-group">
+                                                                                    <option>User Id</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation"> Name </label>
+                                                                                <input class="form-control" type="text" value="Mohd. Riduan Osman">
+                                                                            </div>
+                                                                            @*<div class="form-group col-lg-3 p-0">
+                    <label for="Designation"> Designation</label>
+                    <input class="form-control " type="text" value=" Regional Manager">
+                </div>*@
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Date (DD-MM-YYYY)</label>
+                                                                                <input type="date" class="datepicker form-control disableinput ">
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Signature</label>
+                                                                                <div class="clear-b">
+                                                                                    <input type="checkbox">
+                                                                                </div>
+                                                                            </div>
+                                                                            @*<div class="form-group col-lg-3 float-left">
+                    <label>
+                        Name
+                    </label>
+                    <input type="text" class="form-control " placeholder="Name">
+                </div>
+                <div class="form-group col-lg-3 float-left">
+                    <label>
+                        Date
+                    </label>
+                    <input type="Date" class="form-control">
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label>Signature</label>
+                    <div class="clear-b">
+                        <input type="checkbox"> Chong Chi Fam
+
+                    </div>
+                </div>*@
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12">
+                                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                            <div class="col-lg-12 py-2 px-2">
+                                                                                <span class="font-14 font-weight-bold">
+                                                                                    Sertvice Provider's Representative
+                                                                                </span>
+                                                                            </div>
+                                                                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                                                                <div class="row">
+                                                                                    <div class="form-group col-lg-2">
+                                                                                        <label for="Designation">
+                                                                                            Requested by
+                                                                                        </label>
+                                                                                        <select class="form-group">
+                                                                                            <option>User Id</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-2">
+                                                                                        <label for=""> Issued </label>
+                                                                                        <select class="form-group">
+                                                                                            <option>User Id</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-3">
+                                                                                        <label for="Designation"> Name </label>
+                                                                                        <input class="form-control" type="text" value="Mohd. Riduan Osman">
+                                                                                    </div>
+
+                                                                                    <div class="form-group col-lg-3">
+                                                                                        <label>Date (DD-MM-YYYY)</label>
+                                                                                        <input type="date" class="datepicker form-control disableinput ">
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-2">
+                                                                                        <label>Signature</label>
+                                                                                        <div class="clear-b">
+                                                                                            <input type="checkbox">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                           
+                                                                         
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                 
+
+                                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2 float-right text-right custom-footer">
+                            <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                            <button type="button" class="btn btn-sm btn-themebtn">Save</button>
+                            <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane show" id="formw1">
+                        <div class="p-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="form-group col-lg-3">
+                                            <label>
+                                                IW Reference No
+                                            </label>
+                                            <input type="text" placeholder="" disabled class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label>
+                                                Name of the Title
+                                            </label>
+                                            <input type="text" disabled class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label>
+                                                TECH Name
+                                            </label>
+                                            <input type="text" disabled class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label>
+                                                TECH Status
+                                            </label>
+                                            <input type="text" disabled class="form-control" />
+                                        </div>
+                                        <div class="form-group col-lg-5 mb-0">
+                                            <label>
+                                                Service Provider's Proposal Ref
+                                            </label>
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    <select class="form-control  " disabled>
+                                                        <option value=""> Service Provider'S</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <input class="form-control" type="text" value="" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-3 pr-lg-0">
+                                            <label>
+                                                Date
+                                            </label>
+                                            <input class="form-control" type="date" disabled placeholder="Date" />
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            <label for="RMU">RMU</label>
+                                            <input class="form-control" disabled placeholder="RMU" type="text" value="">
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            <label for="Division_Code">Division Code</label>
+                                            <input class="form-control " disabled type="text" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                        <div class="col-lg-12 py-2 px-4">
+                                            <span class="font-14 font-weight-bold">
+                                                Part A:  Name of Site/Location
+                                            </span>
+                                        </div>
+                                        <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                                            <div class="w-100 dt-tbl-section">
+                                                <div class="form-group col-lg-4 pl-2 pr-2">
+                                                    <label for="RoadCode">Road Code</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">Road Code</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4 pl-2">
+                                                    <label for="RoadCode"> Road Name:</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">Road Name</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4 pl-2 pr-2">
+                                                    <label for="RoadCode">  Chainage Location:</label>
+                                                    <div class="row">
+                                                        <div class="col-5 pl-3 pr-0"><input type="text" disabled class="form-control" value="28 "></div>
+                                                        <div class="col-1 text-center"> + </div>
+                                                        <div class="col-5 pl-1 pr-0"><input type="text" disabled class="form-control" value="970"></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+
+                                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                        <div class="col-lg-12 py-2 px-4">
+                                            <span class="font-14 font-weight-bold">
+                                                PART B : Details of Works
+                                            </span>
+                                        </div>
+                                        <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                                            <div class="row">
+                                                <div class="form-group col-lg-12">
+                                                    <textarea class="form-control border-left border-top-0 border-left-0 border-right-0" disabled placeholder="Details of Works" style="height:105px;"></textarea>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label for="ProposedDesignDuration">Proposed Design Duration</label>
+                                                    <select class="form-control" disabled>
+                                                        <option value="">Select Month</option>
+                                                        <option value="">1 Month</option>
+                                                        <option value="">2 Month</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4">
+                                                    <label for="ProposedCompletionofIWPeriod">
+                                                        Proposed Completion of IW Period
+                                                    </label>
+                                                    <input class="form-control" disabled placeholder=" Proposed Completion of IW Period" type="text">
+                                                </div>
+                                                <div class="col-lg-4 pt-4">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" disabled name="optradio">&nbsp;	Critical&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" disabled name="optradio">&nbsp;	Urgent&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" disabled name="optradio" checked>&nbsp;	None&nbsp;
+                                                    </label>
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                        <div class="col-lg-12 py-2 px-4">
+                                            <span class="font-14 font-weight-bold">
+                                                PART C: COST ESTIMATE (refer to attached Bill of Quantities, Drawings and all its associated supporting documents )
+                                            </span>
+                                        </div>
+                                        <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="row py-1 border-bottom">
+                                                            <div class="col-8">
+                                                                <label class="pt-1 mb-0" for=" PhysicalWorks">
+                                                                    <b class="lh30 mb-0">  Physical Works</b>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input class="form-control" disabled type="text" value="RM 687018.55">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-1 border-bottom">
+                                                            <div class="col-8">
+                                                                <label class="pt-1 mb-0" for="GeneralandPreliminaries">
+                                                                    <b class="lh30 mb-0">  General and Preliminaries</b>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input class="form-control" disabled type="text" value="RM 34350.93">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-1 border-bottom">
+                                                            <div class="col-8">
+                                                                <label for="Consultancy Fees" class="pt-1 mb-0">
+                                                                    <b class="lh30 mb-0">
+                                                                        <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">(If any)</span>
+                                                                    </b>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input class="form-control" disabled type="text" placeholder="RM">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-1 border-bottom">
+                                                            <div class="col-8">
+                                                                <label for="SiteInvestigation" class="pt-1 mb-0">
+                                                                    <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Ta</span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">   (If any)</span></b>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input class="form-control" disabled type="text" placeholder="RM">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-1 border-bottom">
+                                                            <div class="col-8">
+                                                                <label for="Surveyworks" class="pt-1 mb-0">
+                                                                    <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left"> (If any)</span></b>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input class="form-control" disabled type="text" placeholder="RM">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-1 border-bottom">
+                                                            <div class="col-8">
+                                                                <label for="Othercost " class="pt-1 mb-0">
+                                                                    <b class="lh30 mb-0">Any other cost </b>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input class="form-control" disabled type="text" placeholder="RM">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row py-1">
+                                                            <div class="col-8">
+                                                                <label for="Estimatedtotalcost" class="pt-1 mb-0">
+                                                                    <b class="lh30 mb-0">
+                                                                        Estimated Total Cost
+                                                                    </b>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input class="form-control" disabled type="text" value="RM 721369.48">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 mt-3">
+                                                        <div class="row border-top pt-3 pb-1">
+                                                            <div class="form-group col-lg-2 p-0">
+                                                                <label for="Designation">
+                                                                    Requested by
+                                                                </label>
+                                                                <select class="form-group" disabled>
+                                                                    <option>User Id</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-lg-3">
+                                                                <label for="Designation"> Name </label>
+                                                                <input class="form-control" disabled type="text" value="Mohd. Riduan Osman">
+                                                            </div>
+                                                            <div class="form-group col-lg-3 p-0">
+                                                                <label for="Designation"> Designation</label>
+                                                                <input class="form-control " disabled type="text" value=" Regional Manager">
+                                                            </div>
+                                                            <div class="form-group col-lg-2 pr-0">
+                                                                <label>Date (DD-MM-YYYY)</label>
+                                                                <input type="date" disabled class="datepicker form-control disableinput ">
+                                                            </div>
+                                                            <div class="form-group col-lg-2">
+                                                                <label>Signature</label>
+                                                                <div class="clear-b">
+                                                                    <input disabled type="checkbox">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row pt-3 pb-1">
+                                                            <div class="form-group col-lg-2 p-0">
+                                                                <label for="Designation">
+                                                                    Verified By
+                                                                </label>
+                                                                <select class="form-group" disabled>
+                                                                    <option>User Id</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-lg-3">
+                                                                <label for="Designation"> Name </label>
+                                                                <input class="form-control" disabled type="text" value="Mohd. Riduan Osman">
+                                                            </div>
+                                                            <div class="form-group col-lg-3 p-0">
+                                                                <label for="Designation"> Designation</label>
+                                                                <input class="form-control " disabled type="text" value=" Regional Manager">
+                                                            </div>
+                                                            <div class="form-group col-lg-2 pr-0">
+                                                                <label>Date (DD-MM-YYYY)</label>
+                                                                <input type="date" disabled class="datepicker form-control disableinput ">
+                                                            </div>
+                                                            <div class="form-group col-lg-2">
+                                                                <label>Signature</label>
+                                                                <div class="clear-b">
+                                                                    <input type="checkbox">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+
+                                                        <div class="row d-none">
+                                                            <div class="col-lg-12 p-1">
+                                                                <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                    <div class="col-lg-12 py-2 px-2">
+                                                                        <span class="font-14 font-weight-bold">
+                                                                            Critical / Urent
+                                                                            @*CRITICAL / URGENT*@
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="border-top px-2 py-2 pb-1 float-left w-100">
+                                                                        The reinstatement work required is considered as CRITICAL / URGENT. I hereby recommend that the work to be carried out as Instructed Works.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row d-none">
+                                                            <div class="col-lg-12">
+                                                                <div class="form-group float-left pl-2 pr-2">
+                                                                    <label>Name for this Instructed Work Proposal: (to be given by S.O. / S.O.'s Rep.)</label>
+                                                                    <div class="clear-b">
+                                                                        <input type="checkbox">
+                                                                        PROPOSED REHABILATION FOR SLOPE AT CH28+970, Q3178 JALAN MIRI MARUDI
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        </div>
+                    <div class="tab-pane" id="AccordPagegallery">
+                        <div class="accordion custom-accordion" id="custom-accordion-eight">
+                            <div class="card">
+                                <div class="card-header" id="headingEight" style="padding: .45rem 1.25rem; ">
+                                    <div class="w-100 float-left d-flex justify-content-between">
+                                        <a class="custom-accordion-title py-1" data-toggle="collapse" href="#ImageList" aria-expanded="true" aria-controls="collapseEight">
+                                            <span class="float-left" style="padding-top: 2px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Image List
+                                            </span>
+                                        </a>
+                                        <div class="img-btns mt-1">
+
+                                            <a id="ancAddImage" class="btn btn-sm btn-themebtn" onclick="frmC1C2.ShowAddImage();" finddetailsdep>
+                                                <span class="add-icon"></span> Add Image
+                                            </a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="ImageList" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#custom-accordion-eight">
+                                    <div class="card-body">
+                                        <div id="cancel-row">
+                                            <div class="simple-tbl">
+                                                <table id="tblImageList">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.NO</th>
+                                                            <th>Image Type</th>
+                                                            <th>FileName</th>
+                                                            <th class="deleteImg" id="" style="text-align:center">Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div style="display:none" id="ImageListTRTemplate">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td imgsno></td>
+                                                        <td imgtype></td>
+                                                        <td imgfilename></td>
+
+                                                        <td deleteImg class="deleteImg" style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="frmC1C2.DeleteImg(this);"><span class="remove-icon"></span></button></td>
+
+                                                        <td class="deleteImg" style="text-align:center"></td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="accordion custom-accordion mt-3" id="custom-accordion-Nine">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingNine">
+                                    <a class="custom-accordion-title py-l collapsed" data-toggle="collapse" href="#ImageView" aria-expanded="false" aria-controls="collapseNine">
+                                        <span class="float-left" style="padding-top: 2px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Image View
+                                        </span>
+                                    </a>
+                                </div>
+                                <div id="ImageView" class="collapse avowmodal-form" aria-labelledby="headingEight" data-parent="#ImageList">
+                                    <div class="card-body" id="ImageViewBody">
+
+                                    </div>
+                                </div>
+                                <div style="display:none;" id="ImageViewBodyTemplate">
+                                    <div class="container">
+                                        <h6 phototype></h6>
+                                        <hr>
+                                    </div>
+                                    <div class="item">
+                                        <div data-fancybox="gallery" style="text-align:center" gallery>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    </div>
