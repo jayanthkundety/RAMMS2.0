@@ -47,6 +47,7 @@ namespace RAMMS.Web.UI.Controllers
             grid.Columns.Add(new CDataColumns() { data = "RdCode", title = "Road Code" });
             grid.Columns.Add(new CDataColumns() { data = "RdId", title = "Road Id", visible = false });
             grid.Columns.Add(new CDataColumns() { data = "CrewLeaderName", title = "Crew Leader" });
+            grid.Columns.Add(new CDataColumns() { data = "ProcessStatus", title = "Status" });
             return View("~/Views/FormF4/Index.cshtml", grid);
         }
         public async Task<JsonResult> HeaderList(DataTableAjaxPostModel searchData)
