@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace RAMMS.Domain.EF
+namespace RAMMS.Domain.Models
 {
     public partial class RAMMS_DevelopmentContext : DbContext
     {
