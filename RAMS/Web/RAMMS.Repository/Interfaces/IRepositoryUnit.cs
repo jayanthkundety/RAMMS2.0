@@ -67,6 +67,8 @@ namespace RAMMS.Repository.Interfaces
 
 
 
+        IFormW2Repository FormW2Repository { get; }
+
         int Commit();
         Task<int> CommitAsync();
         void Rollback();

@@ -50,6 +50,10 @@ namespace RAMMS.Repository
         private IFormFSDetailRepository _formFsDetailRepository;
         private IFormC1C2Repository _formC1C2Repository;
         private IDivRmuSectionRepository _divRmuSectionRepository;
+        private IFormW2Repository _formW2Repository;
+
+
+        public IFormW2Repository FormW2Repository => _formW2Repository = _formW2Repository ?? new FormW2Repository(_context);
         private IFormW1Repository _formW1Repository;
 
 

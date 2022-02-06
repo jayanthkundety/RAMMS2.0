@@ -5,8 +5,14 @@ namespace RAMMS.Domain.EF
 {
     public partial class RmIwFormW2
     {
+        public RmIwFormW2()
+        {
+            RmIwFormW2Image = new HashSet<RmIwFormW2Image>();
+        }
+
         public int Fw2PkRefNo { get; set; }
-        public string Fw1RefNo { get; set; }
+        public string Fw2SupInstNo { get; set; }
+        public int? Fw2Fw1RefNo { get; set; }
         public string Fw2JkrRefNo { get; set; }
         public string Fw2SerProviderRefNo { get; set; }
         public DateTime? Fw2DateOfInitation { get; set; }
@@ -23,14 +29,16 @@ namespace RAMMS.Domain.EF
         public string Fw2TitleOfInstructWork { get; set; }
         public DateTime? Fw2DateOfCommencement { get; set; }
         public DateTime? Fw2DateOfComplition { get; set; }
-        public decimal? Fw2InstructWorkDuration { get; set; }
+        public double? Fw2InstructWorkDuration { get; set; }
         public string Fw2Remarks { get; set; }
         public string Fw2DetailsOfWorks { get; set; }
-        public decimal? Fw2CeilingEstCost { get; set; }
+        public double? Fw2CeilingEstCost { get; set; }
+        public int? Fw2IssuedBy { get; set; }
         public bool? Fw2IssuedSignature { get; set; }
         public string Fw2IssuedName { get; set; }
         public DateTime? Fw2IssuedDate { get; set; }
         public bool? Fw2ReceivedSignature { get; set; }
+        public int? Fw2ReceivedBy { get; set; }
         public string Fw2ReceivedName { get; set; }
         public DateTime? Fw2ReceivedDate { get; set; }
         public int? Fw2ModBy { get; set; }
@@ -39,5 +47,10 @@ namespace RAMMS.Domain.EF
         public DateTime? Fw2CrDt { get; set; }
         public bool? Fw2SubmitSts { get; set; }
         public bool? Fw2ActiveYn { get; set; }
+        public string Fw2Status { get; set; }
+        public string Fw2AuditLog { get; set; }
+
+        public virtual RmIwFormW1 Fw2Fw1RefNoNavigation { get; set; }
+        public virtual ICollection<RmIwFormW2Image> RmIwFormW2Image { get; set; }
     }
 }

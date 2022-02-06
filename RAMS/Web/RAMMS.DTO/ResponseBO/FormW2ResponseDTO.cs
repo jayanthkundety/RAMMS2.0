@@ -7,6 +7,7 @@ namespace RAMMS.DTO.ResponseBO
     public class FormW2ResponseDTO
     {
         public int PkRefNo { get; set; }
+        public string SupInstNo { get; set; }
         public string Fw1RefNo { get; set; }
         public string JkrRefNo { get; set; }
         public string SerProviderRefNo { get; set; }
@@ -28,9 +29,13 @@ namespace RAMMS.DTO.ResponseBO
         public string Remarks { get; set; }
         public string DetailsOfWorks { get; set; }
         public decimal? CeilingEstCost { get; set; }
+
+        public string IssuedBy { get; set; }
         public bool? IssuedSignature { get; set; }
         public string IssuedName { get; set; }
         public DateTime? IssuedDate { get; set; }
+
+        public string ReceivedBy { get; set; }
         public bool? ReceivedSignature { get; set; }
         public string ReceivedName { get; set; }
         public DateTime? ReceivedDate { get; set; }
@@ -38,7 +43,11 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
-        public bool? SubmitSts { get; set; }
+        public bool SubmitSts { get; set; }
         public bool? ActiveYn { get; set; }
+
+        public string Status { get; set; }
+
+        public string AuditLog { get; set; }
     }
 }
