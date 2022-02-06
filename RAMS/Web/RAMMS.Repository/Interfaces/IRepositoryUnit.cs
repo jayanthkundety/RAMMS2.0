@@ -62,6 +62,10 @@ namespace RAMMS.Repository.Interfaces
         IModuleGroupRepository ModuleGroupRepository { get; }
         IAuditTransactionRepository AuditTransactionRepository { get; }
         IAuditActionRepository AuditActionRepository { get; }
+        IFormW1Repository FormW1Repository { get; }
+
+
+
 
         int Commit();
         Task<int> CommitAsync();
