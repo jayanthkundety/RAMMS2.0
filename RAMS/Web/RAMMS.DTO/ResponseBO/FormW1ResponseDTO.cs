@@ -11,8 +11,8 @@ namespace RAMMS.DTO.ResponseBO
         public int PkRefNo { get; set; }
         public string FomrhRefNo { get; set; }
         public string ServPropRefNo { get; set; }
-        public string IWReferenceNo { get; set; }
-        public string DivisionFw1Division { get; set; }
+        public string ReferenceNo { get; set; }
+        public string Division { get; set; }
         public string Rmu { get; set; }
         public DateTime? RmuDate { get; set; }
         public string RoadCode { get; set; }
