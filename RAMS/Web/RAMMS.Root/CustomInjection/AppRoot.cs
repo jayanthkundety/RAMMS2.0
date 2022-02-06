@@ -85,6 +85,7 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IProcessService, ProcessService>();
             services.AddTransient<IDivisionService, DivisionService>();
             services.AddTransient<IRMUService, RMUService>();
+            services.AddTransient<IFormW2Service, FormW2Service>();
 
         }
 
@@ -131,6 +132,7 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IFormFCRepository, FormFCRepository>();
             services.AddTransient<IAdministratorRepository, AdministratorRepository>();
             services.AddTransient<IDivRmuSectionRepository, DivRmuSectionRepository>();
+            services.AddTransient<IFormW2Repository, FormW2Repository>();
 
             services.AddScoped<IUserContext, UserContext>();
             //services.AddTransient<IRmAssetImgRepository, RmAssetImgDtlRepository>();

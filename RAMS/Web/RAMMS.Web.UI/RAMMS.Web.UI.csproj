@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AppRoot.cs" />
     <Compile Remove="Controllers\ADownloadController.cs" />
     <Compile Remove="Models\Class.cs" />
   </ItemGroup>
