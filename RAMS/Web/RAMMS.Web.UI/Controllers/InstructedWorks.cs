@@ -1,5 +1,5 @@
- 
-﻿using System;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,23 +34,31 @@ namespace RAMMS.Web.UI.Controllers
         FormW2Model _formW2Model = new FormW2Model();
         private readonly IConfiguration _configuration;
         private readonly IBridgeBO _bridgeBO;
+        private readonly IMapper _mapper;
 
         public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,IConfiguration configuration, IBridgeBO bridgeBO)
         {      
+        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,
+
+       IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service, IMapper mapper)
+        {
+
+
             _ddLookupService = ddLookupService;
             Environment = _environment;
             _webHostEnvironment = webhostenvironment;
- 
+
             _userService = userService;
             _formW1Service = formW1Service ?? throw new ArgumentNullException(nameof(formW1Service));
             _formW2Service = formW2Service ?? throw new ArgumentNullException(nameof(formW2Service));
             _configuration = configuration;
             _bridgeBO = bridgeBO;
             _security = security;
+            _mapper = mapper;
             //  _logger = logger;
 
         }
- 
+
         public IActionResult Index()
         {
             return View();
@@ -59,6 +67,8 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
+            model.FormW1.RecomondedInstrctedWork = "none";
+
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
@@ -66,12 +76,43 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 
+        public async Task<IActionResult> EditFormW1(int id)
+        {
+            var _formW1Model = new FormW1ResponseDTO();
+
+
+            if (id > 0)
+            {
+                DDLookUpDTO ddLookup = new DDLookUpDTO();
+                ddLookup.Type = "Month";
+                ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
+                LoadLookupService("RMU", "Division", "RD_Code", "User");
+                _formW1Model = await _formW1Service.FindFormW1ByID(id);
+            }
+            FormW1Model model = new FormW1Model();
+            model.FormW1 = _formW1Model;
+
+            return PartialView("~/Views/InstructedWorks/AddFormW1.cshtml", model);
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> SaveFormW1(FormW1Model frm)
         {
+            int refNo = 0;
+            frm.FormW1.ActiveYn = true;
+            if (frm.FormW1.PkRefNo == 0)
+            {
+                refNo = await _formW1Service.SaveFormW1(frm.FormW1);
+            }
+            else
+            {
+                refNo = await _formW1Service.Update(frm.FormW1);
+            }
+            return Json(refNo);
 
-            var result = await _formW1Service.SaveFormW1(frm);
-            return Json("");
+
         }
 
 
@@ -113,7 +154,8 @@ namespace RAMMS.Web.UI.Controllers
                 _formW2Model.SaveFormW2Model = result;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1RefNoNavigation;
             }
-            return PartialView("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
+
+            return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
         }
 
         [HttpPost]

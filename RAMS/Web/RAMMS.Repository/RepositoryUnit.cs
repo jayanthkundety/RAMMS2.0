@@ -51,10 +51,10 @@ namespace RAMMS.Repository
         private IFormC1C2Repository _formC1C2Repository;
         private IDivRmuSectionRepository _divRmuSectionRepository;
         private IFormW2Repository _formW2Repository;
-
+        private IFormW1Repository _formW1Repository;
 
         public IFormW2Repository FormW2Repository => _formW2Repository = _formW2Repository ?? new FormW2Repository(_context);
-        private IFormW1Repository _formW1Repository;
+        public IFormW1Repository FormW1Repository => _formW1Repository= _formW1Repository ?? new FormW1Repository(_context);
 
 
         public IFormB1B2HeaderRepository FormB1B2HeaderRepository => _formB1B2HeaderRepository = _formB1B2HeaderRepository ?? new FormB1B2HeaderRepository(_context);
@@ -125,7 +125,7 @@ namespace RAMMS.Repository
 
         public IDivRmuSectionRepository DivRmuSectionRepository => _divRmuSectionRepository ?? new DivRmuSectionRepository(_context);
 
-        public IFormW1Repository FormW1Repository => _formW1Repository ?? new FormW1Repository(_context);
+       
 
         
 

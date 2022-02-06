@@ -14,6 +14,9 @@ namespace RAMMS.DTO.ResponseBO
         public string ReferenceNo { get; set; }
         public string Division { get; set; }
         public string Rmu { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? RmuDate { get; set; }
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
@@ -45,12 +48,16 @@ namespace RAMMS.DTO.ResponseBO
         public string ServProvName { get; set; }
         public string ServProvDesig { get; set; }
         public string ServProvOffice { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? ServProvDate { get; set; }
         public string VerifySOBy { get; set; }
         public string VerifySoSign { get; set; }
         public string VerifySoName { get; set; }
         public string VerifySoDesig { get; set; }
         public string VerifySoOffice { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? VerifySoDate { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
