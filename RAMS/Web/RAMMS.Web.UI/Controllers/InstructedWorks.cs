@@ -1,5 +1,5 @@
-﻿
-using System;
+ 
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,13 +30,13 @@ namespace RAMMS.Web.UI.Controllers
         public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,
 
        IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service)
-        {
+        { 
 
-
+       
             _ddLookupService = ddLookupService;
             Environment = _environment;
             _webHostEnvironment = webhostenvironment;
-
+ 
             _userService = userService;
             _formW1Service = formW1Service ?? throw new ArgumentNullException(nameof(formW1Service));
             _formW2Service = formW2Service ?? throw new ArgumentNullException(nameof(formW2Service));
@@ -44,7 +44,7 @@ namespace RAMMS.Web.UI.Controllers
             //  _logger = logger;
 
         }
-
+ 
         public IActionResult Index()
         {
             return View();
@@ -117,7 +117,7 @@ namespace RAMMS.Web.UI.Controllers
             FormW2ResponseDTO saveRequestObj = new FormW2ResponseDTO();
             saveRequestObj = formW2.SaveFormW2Model;
             if (saveRequestObj.PkRefNo == 0)
-                refNo = await _formW2Service.Save(formW2.SaveFormW2Model);
+            refNo = await _formW2Service.Save(formW2.SaveFormW2Model);
             else
                 refNo = await _formW2Service.Update(formW2.SaveFormW2Model);
 
