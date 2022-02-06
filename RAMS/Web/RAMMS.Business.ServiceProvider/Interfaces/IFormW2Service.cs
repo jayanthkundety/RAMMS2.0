@@ -33,7 +33,9 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<int> DeActivateImage(int warId);
 
-        Task<List<RmIwFormW1>> GetFormW1List();
-        Task<RmIwFormW1> GetFormW1ById(int formW1Id);
+        Task<List<FormW1ResponseDTO>> GetFormW1List();
+        Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id);
+
+        Task<IEnumerable<CSelectListItem>> GetFormW1DDL();
     }
 }

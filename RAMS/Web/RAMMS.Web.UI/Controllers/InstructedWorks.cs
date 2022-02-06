@@ -37,9 +37,9 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IBridgeBO _bridgeBO;
         private readonly IMapper _mapper;
 
-        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
-        {      
-      
+        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
+        {
+
 
             _ddLookupService = ddLookupService;
             Environment = _environment;
@@ -130,6 +130,8 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
             ViewData["Users"] = _userService.GetUserSelectList(null);
+
+            ViewData["FormW1s"] = await _formW2Service.GetFormW1DDL();
 
         }
         public async Task<IActionResult> AddFormW2()
@@ -341,11 +343,11 @@ namespace RAMMS.Web.UI.Controllers
                 }};
             }
             ViewBag.PhotoTypeList = await _ddLookupService.GetDdLookup(ddLookup);
-            assetsModel.ImageList  = await _formW2Service.GetImageList(formW2Id);
+            assetsModel.ImageList = await _formW2Service.GetImageList(formW2Id);
             assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
             return PartialView("~/Views/InstructedWorks/_PhotoSectionPage.cshtml", assetsModel);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> ImageUploadedFormW2(IList<IFormFile> formFile, string id, List<string> photoType)
         {
@@ -422,10 +424,5 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-        //public async Task<IEnumerable<CSelectListItem>> GetFormW1List() {
-
-        //    IList<CSelectListItem> lstItem = _formW2Service.GetFormW1List();
-
-        //}
     }
 }

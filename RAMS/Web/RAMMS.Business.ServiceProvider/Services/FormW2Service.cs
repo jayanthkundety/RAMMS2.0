@@ -219,7 +219,14 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
-        public async Task<List<FormW1ResponseDTO>> GetFormW1List(){
+
+        public async Task<IEnumerable<CSelectListItem>> GetFormW1DDL()
+        {
+            return await _repoUnit.FormW2Repository.FindAsync(null, x => new CSelectListItem() { Text = x.Fw2Fw1RefNoNavigation.Fw1ReferenceNo, Value = x.Fw2Fw1RefNoNavigation.Fw1PkRefNo.ToString() });
+        }
+
+        public async Task<List<FormW1ResponseDTO>> GetFormW1List()
+        {
             List<FormW1ResponseDTO> images = new List<FormW1ResponseDTO>();
             try
             {
@@ -236,7 +243,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             return images;
         }
-        public async Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id){
+        public async Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id)
+        {
             RmIwFormW1 formW1 = await _repo.GetFormW1ById(formW1Id);
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
