@@ -12,7 +12,7 @@ function Save(submit) {
         $("#div-addformd .svalidate").addClass("validate");
     }
 
-    if (ValidatePage('#page')) {
+    if (ValidatePage('#divpage')) {
         InitAjaxLoading();
         $.post('./SaveFormW2', $("form").serialize(), function (data) {
 
@@ -54,3 +54,30 @@ function Delete(id) {
         }
     });
 }
+
+function GetImageList(id) {
+
+    var group = $("#FormADetAssetGrpCode option:selected").val();
+    var FormType = "FormW2"
+    if (id && id > 0) {
+        $("#FW2HRef_No").val(id);
+    }
+    else {
+        id = $("#FW2HRef_No").val();
+    }
+
+    $.ajax({
+        url: '/InstructedWorks/GetW2ImageList',
+        data: { formW2Id: id, assetgroup: group },
+        type: 'POST',
+        success: function (data) {
+            $("#ViewPhoto").html(data);
+            $("#FW2HRef_No").val(id);
+        },
+        error: function (data) {
+            alert(data.responseText);
+        }
+
+    });
+}
+
