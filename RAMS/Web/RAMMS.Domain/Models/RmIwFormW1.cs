@@ -14,8 +14,8 @@ namespace RAMMS.Domain.Models
         public int Fw1PkRefNo { get; set; }
         public string Fw1FormhRefNo { get; set; }
         public string Fw1ServPropRefNo { get; set; }
-        public string Fw1IwReferenceNo { get; set; }
-        public string Fw1DivisionFw1Division { get; set; }
+        public string Fw1ReferenceNo { get; set; }
+        public string Fw1Division { get; set; }
         public string Fw1Rmu { get; set; }
         public string Fw1ProjectTitle { get; set; }
         public DateTime? Fw1TecmDate { get; set; }

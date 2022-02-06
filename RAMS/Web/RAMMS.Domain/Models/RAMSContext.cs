@@ -9648,8 +9648,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw1DetailsOfWork).HasColumnName("FW1_Details_Of_Work");
 
-                entity.Property(e => e.Fw1DivisionFw1Division)
-                    .HasColumnName("FW1_DivisionFW1_Division")
+                entity.Property(e => e.Fw1Division)
+                    .HasColumnName("FW1_Division")
                     .HasMaxLength(250);
 
                 entity.Property(e => e.Fw1EstimTotalCost).HasColumnName("FW1_Estim_Total_cost");
@@ -9661,10 +9661,6 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fw1FrmCh).HasColumnName("FW1_FRM_CH");
 
                 entity.Property(e => e.Fw1GenPrelims).HasColumnName("FW1_Gen_Prelims");
-
-                entity.Property(e => e.Fw1IwReferenceNo)
-                    .HasColumnName("FW1_IW_ReferenceNo")
-                    .HasMaxLength(50);
 
                 entity.Property(e => e.Fw1ModBy).HasColumnName("FW1_Mod_By");
 
@@ -9686,6 +9682,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw1RecomondedInstrctedWork)
                     .HasColumnName("FW1_Recomonded_Instrcted_Work")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ReferenceNo)
+                    .HasColumnName("FW1_ReferenceNo")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Fw1Rmu)
