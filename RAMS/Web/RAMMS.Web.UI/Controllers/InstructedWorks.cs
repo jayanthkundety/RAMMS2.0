@@ -17,6 +17,7 @@ using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
+using AutoMapper;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -36,13 +37,9 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IBridgeBO _bridgeBO;
         private readonly IMapper _mapper;
 
-        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,IConfiguration configuration, IBridgeBO bridgeBO)
+        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
         {      
-        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,
-
-       IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service, IMapper mapper)
-        {
-
+      
 
             _ddLookupService = ddLookupService;
             Environment = _environment;
