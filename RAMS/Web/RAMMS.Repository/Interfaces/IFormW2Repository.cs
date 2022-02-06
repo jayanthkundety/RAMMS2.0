@@ -13,5 +13,6 @@ namespace RAMMS.Repository.Interfaces
         RmIwFormW2 SaveFormW2(RmIwFormW2 formS1Header, bool updateSubmit);
 
         public Task<RmIwFormW2> FindW2ByID(int Id);
+    
     }
 }

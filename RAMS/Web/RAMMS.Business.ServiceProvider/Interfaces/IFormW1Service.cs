@@ -8,6 +8,9 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 {
     public interface IFormW1Service
     {
-        public Task<int> SaveFormW1(FormW1ResponseDTO FormW1);
+
+        Task<FormW1ResponseDTO> FindFormW1ByID(int id);
+        Task<int> SaveFormW1(FormW1ResponseDTO FormW1);
+        Task<int> Update(FormW1ResponseDTO FormW1);
     }
 }

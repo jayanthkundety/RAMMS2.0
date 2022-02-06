@@ -51,17 +51,17 @@
 
                                                                         <div class="form-group col-lg-2">
                                                                             @Html.Label("Division Code", "Division Code")
-                                                                            @Html.DropDownListFor(m => m.Division, (IEnumerable<CSelectListItem>)ViewData["Division"], "Select Division", new { @class = "form-control" })
+                                                                            @Html.DropDownListFor(m => m.FormW1.Division, (IEnumerable<CSelectListItem>)ViewData["Division"], "Select Division", new { @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-4">
                                                                             <div class="row">
                                                                                 <div class="col-6">
                                                                                     @Html.Label("RMU", "RMU")
-                                                                                    @Html.DropDownListFor(m => m.Rmu, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select Division", new { @class = "form-control" })
+                                                                                    @Html.DropDownListFor(m => m.FormW1.Rmu, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select RMU", new { @class = "form-control" })
                                                                                 </div>
                                                                                 <div class="col-6">
                                                                                     @Html.Label("FormH Reference No", "FormH Reference No")
-                                                                                    @Html.TextBoxFor(m => m.FomrhRefNo, new { @class = "form-control" })
+                                                                                    @Html.TextBoxFor(m => m.FormW1.FomrhRefNo, new { @class = "form-control" })
                                                                                 </div>
                                                                             </div>
 
@@ -69,28 +69,28 @@
 
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("IW Reference No", "IW Reference No")
-                                                                            @Html.TextBoxFor(m => m.ReferenceNo, new { @class = "form-control" })
+                                                                            @Html.TextBoxFor(m => m.FormW1.ReferenceNo, new { @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("Project Title", "Project Title")
-                                                                            @Html.TextBoxFor(m => m.ProjectTitle, new { @class = "form-control" })
+                                                                            @Html.TextBoxFor(m => m.FormW1.ProjectTitle, new { @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("TECM Date", "TECM Date")
-                                                                            @Html.TextBoxFor(m => m.TECMDate, new { @class = "form-control" })
+                                                                            @Html.TextBoxFor(m => m.FormW1.TECMDate, new { @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("TECM Status", "TECM Status")
-                                                                            @Html.TextBoxFor(m => m.TECMStatus, new { @class = "form-control" })
+                                                                            @Html.TextBoxFor(m => m.FormW1.TECMStatus, new { @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3 mb-0">
                                                                             @Html.Label("Service Provider's Proposal Ref", "Service Provider's Proposal Ref")
-                                                                            @Html.TextBoxFor(m => m.ServPropRefNo, new { @class = "form-control" })
+                                                                            @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @class = "form-control" })
 
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("Date", "Date")
-                                                                            @Html.TextBoxFor(m => m.RmuDate, new { type = "date", placeholder = "Date", @class = "form-control" })
+                                                                            @Html.EditorFor(m => m.FormW1.RmuDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
 
                                                                         </div>
 
@@ -109,24 +109,24 @@
                                                                             <div class="w-100 dt-tbl-section">
                                                                                 <div class="form-group col-lg-3 pl-2 pr-2">
                                                                                     @Html.Label("Road Code", "Road Code")
-                                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode" ,"Select Division", new { id= "RoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
-                                                                              
+                                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Division", new { id = "RoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
+
                                                                                 </div>
                                                                                 <div class="form-group col-lg-3 pl-2">
                                                                                     @Html.Label("Road Name", "Road Name")
-                                                                                    <input id="txtRoadName" type="text" class="form-control" disabled />
+                                                                                    <input data-toggle="tooltip" data-placement="bottom" id="txtRoadName" type="text" class="form-control" disabled />
                                                                                 </div>
                                                                                 <div class="form-group col-lg-3 pl-2 pr-2">
                                                                                     @Html.Label("Chainage Location", "Chainage Location")
                                                                                     <div class="row">
-                                                                                        <div class="col-5 pl-3 pr-0"> @Html.TextBoxFor(m => m.FrmCh, new { @class = "form-control" })</div>
+                                                                                        <div class="col-5 pl-3 pr-0"> @Html.TextBoxFor(m => m.FormW1.FrmCh, new { @class = "form-control" })</div>
                                                                                         <div class="col-1 text-center"> + </div>
-                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.ToCh, new { @class = "form-control" })</div>
+                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.ToCh, new { @class = "form-control" })</div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group col-lg-3 pl-2 pr-2">
                                                                                     @Html.Label("Approved IW Ref. (to be given by S.O)", "Approved IW Ref. (to be given by S.O)")
-                                                                                    @Html.TextBoxFor(m => m.ChainageApprovedIwref, new { @class = "form-control" })
+                                                                                    @Html.TextBoxFor(m => m.FormW1.ChainageApprovedIwref, new { @class = "form-control" })
                                                                                 </div>
                                                                             </div>
 
@@ -145,30 +145,30 @@
                                                                         <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                                                                             <div class="row">
                                                                                 <div class="form-group col-lg-12">
-                                                                                    @Html.TextAreaFor(m => m.DetailsOfWork, new { placeholder = "Details of Works", @class = "form-control border-left border-top-0 border-left-0 border-right-0", @style = "height:105px;" })
+                                                                                    @Html.TextAreaFor(m => m.FormW1.DetailsOfWork, new { placeholder = "Details of Works", @class = "form-control border-left border-top-0 border-left-0 border-right-0", @style = "height:105px;" })
 
                                                                                 </div>
                                                                                 <div class="form-group col-lg-4">
                                                                                     @Html.Label("Proposed Design Duration", "Proposed Design Duration")
-                                                                                    @Html.DropDownListFor(m => m.PropDesignDuration, (IEnumerable<SelectListItem>)ViewData["Months"], "Select Month", new { @class = "form-control" })
+                                                                                    @Html.DropDownListFor(m => m.FormW1.PropDesignDuration, (IEnumerable<SelectListItem>)ViewData["Months"], "Select Month", new { @class = "form-control" })
 
                                                                                 </div>
                                                                                 <div class="form-group col-lg-4">
                                                                                     @Html.Label("Proposed Completion of IW Period", "Proposed Completion of IW Period")
-                                                                                    @Html.TextBoxFor(m => m.PropCompletionPeriod, new { @class = "form-control" })
+                                                                                    @Html.TextBoxFor(m => m.FormW1.PropCompletionPeriod, new { @class = "form-control" })
 
                                                                                 </div>
                                                                                 <div class="col-lg-4">
                                                                                     @Html.Label("Recomonded Instructed Work", "Recomonded Instructed Work")
                                                                                     <br />
                                                                                     <label class="radio-inline">
-                                                                                        <input type="radio" name="optradio">&nbsp;	Critical&nbsp;
+                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Critical")&nbsp;	Critical&nbsp;
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        <input type="radio" name="optradio">&nbsp;	Urgent&nbsp;
+                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Urgent")&nbsp;	Urgent&nbsp;
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        <input type="radio" name="optradio" checked>&nbsp;	None&nbsp;
+                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "None")&nbsp;	None&nbsp;
                                                                                     </label>
                                                                                 </div>
 
@@ -198,7 +198,7 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
-                                                                                                @Html.TextBoxFor(m => m.PhyWorks, new { placeholder = "RM", @class = "form-control" })
+                                                                                                @Html.TextBoxFor(m => m.FormW1.PhyWorks, new { placeholder = "RM", @class = "form-control" })
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="row py-1 border-bottom">
@@ -208,7 +208,7 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
-                                                                                                @Html.TextBoxFor(m => m.GenPrelims, new { placeholder = "RM", @class = "form-control" })
+                                                                                                @Html.TextBoxFor(m => m.FormW1.GenPrelims, new { placeholder = "RM", @class = "form-control" })
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="row py-1 border-bottom">
@@ -220,7 +220,7 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
-                                                                                                @Html.TextBoxFor(model => model.ConsulFee, new { @class = "form-control numeric" })
+                                                                                                @Html.TextBoxFor(model => model.FormW1.ConsulFee, new { @class = "form-control numeric" })
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="row py-1 border-bottom">
@@ -230,7 +230,7 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
-                                                                                                @Html.TextBoxFor(model => model.SiteInvest, new { @class = "form-control numeric" })
+                                                                                                @Html.TextBoxFor(model => model.FormW1.SiteInvest, new { @class = "form-control numeric" })
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="row py-1 border-bottom">
@@ -240,7 +240,7 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
-                                                                                                @Html.TextBoxFor(model => model.SurvyWorks, new { @class = "form-control numeric" })
+                                                                                                @Html.TextBoxFor(model => model.FormW1.SurvyWorks, new { @class = "form-control numeric" })
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="row py-1 border-bottom">
@@ -250,7 +250,7 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
-                                                                                                @Html.TextBoxFor(model => model.OtherCost, new { @class = "form-control numeric" })
+                                                                                                @Html.TextBoxFor(model => model.FormW1.OtherCost, new { @class = "form-control numeric" })
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="row py-1">
@@ -262,7 +262,7 @@
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
-                                                                                                @Html.TextBoxFor(model => model.EstimTotalCost, new { @class = "form-control numeric" })
+                                                                                                @Html.TextBoxFor(model => model.FormW1.EstimTotalCost, new { @class = "form-control numeric" })
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -277,25 +277,26 @@
                                                                     <div class="row pt-3 pb-1">
                                                                         <div class="form-group col-lg-2">
                                                                             @Html.Label("Requested by", "Requested by")
-                                                                            @Html.DropDownListFor(m => m.CrBy, (IEnumerable<CSelectListItem>)ViewData["User"], "Select Users", new { @class = "form-control" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "RequestedBy", "Select Users", new { Id = "ddlRequestedBy", @class = "form-control", @onchange = "OnRequestedByUserChange(this);" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("Name", "Name")
-                                                                            <input name="SerProviderUserName" class="form-control {req,Inspected By User Name}" type="text" value="" userName disabled />
+                                                                            <input id="SerProviderUserName" class="form-control {req,Inspected By User Name}" type="text" value="" userName disabled />
                                                                         </div>
                                                                         <div class="form-group col-lg-3 p-0">
                                                                             <label for="Designation"> Designation</label>
-                                                                            <input name="SerProviderUserDesignation" class="form-control {req,Inspected By User Designation}" type="text" value="" userDest disabled />
+                                                                            <input id="SerProviderUserDesignation" class="form-control {req,Inspected By User Designation}" type="text" value="" userDest disabled />
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                                                            @Html.TextBoxFor(model => model.ServProvDate, new { type = "date", @disabled = true, @class = "datepicker form-control numeric" })
+                                                                            @Html.EditorFor(m => m.FormW1.ServProvDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
 
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                <input type="checkbox">
+                                                                                @Html.TextBoxFor(model => model.FormW1.ServProvSign, new {type="checkbox", @class = "form-control numeric" })
                                                                             </div>
 
                                                                         </div>
@@ -305,24 +306,24 @@
                                                                             <label for="Designation">
                                                                                 Verified By
                                                                             </label>
-                                                                            @Html.DropDownListFor(m => m.VerifySOBy, (IEnumerable<CSelectListItem>)ViewData["User"], "Select Users", new { @disabled = true, @class = "form-control" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "VerifiedBy", "Select Users", new { Id = "ddlVerifiedBy", @disabled = true, @class = "form-control", @onchange = "OnVerifyUserChange(this);" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             <label for="Designation"> Name</label>
-                                                                            <input name="VerifierUserName" class="form-control {req,Inspected By User Name}" type="text" value="" VerifieruserName disabled />
+                                                                            <input id="VerifierUserName" class="form-control {req,Inspected By User Name}" type="text" value="" VerifieruserName disabled />
                                                                         </div>
                                                                         <div class="form-group col-lg-3 p-0">
                                                                             <label for="Designation"> Designation</label>
-                                                                            <input name="VerifierDesignation" class="form-control {req,Inspected By User Designation}" type="text" value="" VerifierDesg disabled />
+                                                                            <input id="VerifierDesignation" class="form-control {req,Inspected By User Designation}" type="text" value="" VerifierDesg disabled />
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             <label>Date(DD-MM-YYYY)</label>
-                                                                            @Html.TextBoxFor(model => model.VerifySoDate, new { type = "date", @disabled = true, @class = "datepicker form-control numeric" })
+                                                                            @Html.EditorFor(m => m.FormW1.VerifySoDate, new { type = "date", htmlAttributes = new { @disabled = true, @class = "form-control" } })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
-                                                                            <label>Signature</label>
+                                                                            @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                <input type="checkbox" disabled>
+                                                                                @Html.TextBoxFor(model => model.FormW1.VerifySoSign, new { type = "checkbox", @class = "form-control numeric" })
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -483,30 +484,108 @@
             </div>
         </div>
     </div>
+
+    @Html.HiddenFor(m => m.FormW1.PkRefNo);
 }
+
 
 
 <script>
 
-    function Save() {
-        $.post('./SaveFormW1', $("form").serialize(), function (data) {
+    var RecomondedInstrctedWorkValue = "@Model.FormW1.RecomondedInstrctedWork";
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
 
-            if (data.Status === "Success") {
+        $('input[type=radio][id=FormW1_RecomondedInstrctedWork]').change(function () {
+
+            if (this.value == 'Critical' || this.value == 'Urgent') {
+                $('#ddlVerifiedBy').prop("disabled", false);
+                $('#ddlVerifiedBy').trigger('chosen:updated');
+                $("#FormW1_VerifySoDate").prop("disabled", false);
+            }
+            else {
+                $('#ddlVerifiedBy').prop("disabled", true);
+                $('#ddlVerifiedBy').val(0);
+                $('#ddlVerifiedBy').trigger('chosen:updated');
+                $("#VerifierUserName").val('');
+                $("#VerifierDesignation").val('');
+                $("#SerProviderUserName").val('');
+                $("#SerProviderUserDesignation").val('');
+                $("#FormW1_VerifySoDate").prop("disabled", true);
             }
         });
+
+        if (RecomondedInstrctedWorkValue != "None") {
+            $('#ddlVerifiedBy').prop("disabled", false);
+            $("#FormW1_VerifySoDate").prop("disabled", false);
+            $('#ddlVerifiedBy').trigger('chosen:updated');
+        }
+
+    });
+    function Save() {
+        //if (submit) {
+        //    $("#div-addformd .svalidate").addClass("validate");
+        //}
+        if (ValidatePage('#page')) {
+            InitAjaxLoading();
+            $.post('./SaveFormW1', $("form").serialize(), function (data) {
+                HideAjaxLoading();
+                if (data == -1) {
+                    app.ShowErrorMessage(data.errorMessage);
+
+                }
+                else {
+                    $("#FW2HRef_No").val(data.pkRefNo);
+                    app.ShowSuccessMessage('Successfully Saved', false);
+                    // location.href = "/InstructedWorks/AddFormW2";
+                }
+            });
+        }
     }
 
     function OnRoadChange(tis) {
-        
+
         var ctrl = $(tis);
-     
+
         if (ctrl.val() != null && ctrl.val() != "") {
             $("#txtRoadName").val(ctrl.find("option:selected").attr("Item1"));
         }
         else {
             $("#txtRoadName").val('');
         }
-      
+
     }
+
+    function OnRequestedByUserChange(tis) {
+
+        var ctrl = $(tis);
+
+        if (ctrl.val() != null && ctrl.val() != "") {
+            $("#SerProviderUserName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#SerProviderUserDesignation").val(ctrl.find("option:selected").attr("Item2"));
+        }
+        else {
+            $("#SerProviderUserName").val('');
+            $("#SerProviderUserDesignation").val('');
+        }
+
+    }
+
+    function OnVerifyUserChange(tis) {
+
+        var ctrl = $(tis);
+
+        if (ctrl.val() != null && ctrl.val() != "") {
+            $("#VerifierUserName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#VerifierDesignation").val(ctrl.find("option:selected").attr("Item2"));
+        }
+        else {
+            $("#VerifierUserName").val('');
+            $("#VerifierDesignation").val('');
+
+        }
+    }
+
+
 
 </script>
