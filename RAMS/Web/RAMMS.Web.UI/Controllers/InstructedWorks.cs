@@ -134,12 +134,26 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["FormW1s"] = await _formW2Service.GetFormW1DDL();
 
         }
-        public async Task<IActionResult> AddFormW2()
+        public async Task<IActionResult> AddFormW2(int id = 0)
         {
             _formW2Model = new FormW2Model();
             _formW2Model.SaveFormW2Model = new DTO.ResponseBO.FormW2ResponseDTO();
+            if (id != 0)
+            {
+                var _formW1Model = await _formW2Service.GetFormW1ById(id);
+                _formW2Model.SaveFormW2Model.SupInstNo = _formW1Model.ReferenceNo;
+                _formW2Model.SaveFormW2Model.Fw1RefNo = _formW1Model.PkRefNo;
+                _formW2Model.SaveFormW2Model.TitleOfInstructWork = _formW1Model.ProjectTitle;
+                _formW2Model.SaveFormW2Model.CeilingEstCost = _formW1Model.EstimTotalCost;
+                _formW2Model.FormW1 = _formW1Model;
+            }
             await LoadN2DropDown();
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
+        }
+
+        public IActionResult IWIndex()
+        {
+            return View();
         }
 
         public async Task<IActionResult> EditFormW2(int id)
@@ -150,6 +164,9 @@ namespace RAMMS.Web.UI.Controllers
             {
                 await LoadN2DropDown();
                 var result = await _formW2Service.FindW2ByID(id);
+                var res = (List<CSelectListItem>)ViewData["RD_Code"];
+                res.Find(c => c.Value == result.RoadCode).Selected = true;
+                
                 _formW2Model.SaveFormW2Model = result;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1RefNoNavigation;
             }

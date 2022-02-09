@@ -1,204 +1,205 @@
-﻿@model RAMMS.Web.UI.Models.FormW2Model;
-@using RAMMS.Business.ServiceProvider;
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 @{
     ViewBag.TabTitle = "Form W2 -  Initiation of Instructed Work";
     ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
-
-    var vd = Model.SaveFormW2Model.DateOfInitation;
-    string _InitationDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
-
-    vd = Model.SaveFormW2Model.DateOfCommencement;
-    string _CommencementDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
-
-    vd = Model.SaveFormW2Model.DateOfComplition;
-    string _CompletionDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
-
-    vd = Model.SaveFormW2Model.IssuedDate;
-    string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
-
-    vd = Model.SaveFormW2Model.ReceivedDate;
-    string _ReceivedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
-
 }
-<script src="~/js/FormW2.js" type="text/javascript"></script>
-<script>
 
-
-    function OnRoadChange(tis) {
-        var ctrl = $(tis);
-
-        if (ctrl.val() != null && ctrl.val() != "") {
-            var name = ctrl.find("option:selected").text();
-            name = name.split('-')[1];
-            $("#formW2roadDesc").val(name);
-            //$("#formW2roadDesc").val(ctrl.find("option:selected").attr("Item1"));
-        }
-        else {
-            $("#formW2roadDesc").val('');
-        }
-
-    }
-
-    function ChangeIUser(obj) {
-        var ctrl = $(obj);
-
-        if (ctrl.val() != null && ctrl.val() != "") {
-            var name = ctrl.find("option:selected").text();
-            name = name.split('-')[1];
-            $("#formW2IssuedName").val(name);
-        }
-        else {
-            $("#formW2IssuedName").val('');
-        }
-    }
-
-
-
-    function ChangeRUser(obj) {
-        var ctrl = $(obj);
-
-        if (ctrl.val() != null && ctrl.val() != "") {
-            var name = ctrl.find("option:selected").text();
-            name = name.split('-')[1];
-            $("#formW2ReceivedName").val(name);
-        }
-        else {
-            $("#formW2ReceivedName").val('');
-        }
-    }
-
-    function GoBack() {
-        if ($("#hdnView").val() == "0") {
-            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
-                if (e) {
-                    location.href = "/InstructedWorks/Index";
-                }
-            }));
-        }
-        else
-            location.href = "/InstructedWorks/Index";
-    }
-</script>
-<div class="row bg-white row bg-white pt-3 pb-0">
-    <div class="col-md-12">
-        <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
-            <ul class="nav nav-tabs tabbed round">
-                <li class="nav-item">
-                    <a href="#page" data-toggle="tab" aria-expanded="false" class="nav-link active" id="tab1">
-                        <span class="">
-                            Form W2
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#photoGallery" onclick="javascript:GetImageList(@Model.SaveFormW2Model.PkRefNo);" data-toggle="tab" aria-expanded="false" class="nav-link">
-                        <span class="">
-                            Photo W2
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#formw1" data-toggle="tab" aria-expanded="false" class="nav-link">
-                        <span class="">
-                            Form W1
-                        </span>
-                    </a>
-                </li>
-            </ul>
+<div class="row bg-white pt-4">
+   <div class="w-100">
+      
         </div>
+    </div>
+    <div class="row bg-white row bg-white pt-3 pb-0" style="border-top:1px solid #dee2e6;">
+        <div class="col-md-12">
+            <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
+                <ul class="nav nav-tabs tabbed round">
+                    <li class="nav-item">
+                        <a href="#list" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                            <span class="">
+                                FECM
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#page" data-toggle="tab" aria-expanded="false" class="nav-link ">
+                            <span class="">
+                                Form W2
+                            </span>
+                        </a>
+                    </li>
 
-        <div class="row bg-white py-4">
-            <div class="col-lg-12">
-                <div class="tab-content">
-                    <div class="tab-pane show active" id="page">
-                        @using (Html.BeginForm())
-                        {
-                            <div class="col-md-12" id="divpage">
+                    <li class="nav-item">
+                        <a href="#AccordPagegallery" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            <span class="">
+                                Attachment
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#formw1" data-toggle="tab" aria-expanded="false" class="nav-link">
+                            <span class="">
+                                Form W1
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex py-2 position-absolute" style="right: 0px;width: 40%; top:0px;">
+                    <div class="form-group mb-0 px-2" style="margin-top: -9px;">
+                        IW Ref No: <input type="text" placeholder="" disabled class="form-control">
+                    </div>
+                    <div class="form-group mb-0" style="margin-top: -9px;">
+                        Project Title<input type="text" class="form-control" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row bg-white py-3">
+                <div class="col-lg-12">
+                    <div class="tab-content mh-250">
+                        <div class="tab-pane show active" id="list">
+                            <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
+                                <div class="p-4">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    <label>
+                                                        FECM Date
+                                                    </label>
+                                                    <input class="form-control" type="date" />
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="Division_Code">Status </label>
+                                                    <select class="form-control">
+                                                        <option value="">Select Status</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <label for="RMU">PROGRESS %</label>
+                                                    <input class="form-control" type="text" />
+                                                </div>
+                                                <div class="form-group col-lg-6 px-4">
+                                                    <div class="row mt-4">
+                                                        <div class="col-6 ">
+                                                            <label class="checkbox-inline"><input type="checkbox" disabled value=""> BQ</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label class="checkbox-inline"><input type="checkbox" disabled value=""> Drawing</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group col-lg-7">
+                                            <label>
+                                                Remarks
+                                            </label>
+                                            <textarea class="form-control" style="height:108px;"> </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane show " id="page">
+                            <div class="col-md-12">
                                 <div class="row" id="div-addformd">
-                                    <div class="col-12 bg-white mh-240" style="border-top:1px solid #dee2e6;">
+                                    <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
                                         <div class="p-4">
+
                                             <div class="row">
                                                 <div id="accordion" class="col-lg-12">
 
                                                     <div class="row">
                                                         <div class="col-12">
+
                                                             <div class="row">
-                                                                <div class="col-lg-2 mb-2">
-                                                                    @Html.Label("Superintending Officer's Instruction No", "Superintending Officer's Instruction No", new { @class = "mb-0" })
-                                                                </div>
-                                                                <div class="col-lg-4 mb-2">
-                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.SupInstNo, new { @Id = "SupInstNo", @class = "form-control  svalidate {required, Superintending Officer's Instruction No}" })
-                                                                </div>
-                                                                <div class="col-lg-2 mb-2">
-                                                                    @Html.Label("Form W1 Reference No", "Form W1 Reference No")
-                                                                </div>
-                                                                <div class="form-group col-lg-4 ">
-                                                                    @Html.DropDownListFor(m => m.SaveFormW2Model.Fw1RefNo, (IEnumerable
-   <CSelectListItem>)ViewData["FormW1s"], "Select FormW1", new { @id = "formW1Reference", @class = "form-control svalidate {required, Form W1 Reference No.}" })
-                                                                </div>
+                                                                @*<div class="col-lg-3 mb-2">
+                                                                <label class="lh30 mb-0"> Superintending Officer's Instruction No:</label>
+                                                            </div>
+                                                            <div class="col-lg-9 mb-2">
+                                                                <input class="form-control" type="text">
+                                                            </div>*@
                                                                 <div class="col-12 mt-2">
                                                                     <div class="row">
-                                                                        <div class="form-group col-lg-2 pr-lg-0">
-                                                                            @Html.Label("Region", "Region")
-                                                                            @{
-                                                                                Model.SaveFormW2Model.Region = string.IsNullOrEmpty(Model.SaveFormW2Model.Region) ? "Sarawak" : Model.SaveFormW2Model.Region;
-                                                                            }
-                                                                            @Html.DropDownListFor(m => m.SaveFormW2Model.Region, (IEnumerable
-    <SelectListItem>)ViewData["Region"], "Select Region", new { @id = "formW2Region", @class = "form-control svalidate {required, Region}" })
+                                                                        <div class="form-group col-lg-4 pr-lg-0">
+                                                                            <label>
+                                                                                Region
+                                                                            </label>
+                                                                            <div class="row">
+                                                                                <div class="col-6 pr-lg-0"> <input class="form-control" type="text" /></div>
+                                                                                <div class="col-6"><input class="form-control" /></div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="form-group col-lg-4 pr-lg-0">
+                                                                            <label for="Division_Code">Division</label>
+                                                                            <div class="row">
+                                                                                <div class="col-6 pr-lg-0">
+                                                                                    <select class="form-control">
+                                                                                        <option value="">Select Division</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-6"><input class="form-control" /></div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="form-group col-lg-4 pr-lg-0">
+                                                                        
+                                                                            <div class="row">
+                                                                                <div class="col-6 pr-lg-0">
+                                                                                    <label for="RMU">RMU</label>
+                                                                                    <select class="form-control">
+                                                                                        <option value="">Select RMU </option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-6">    <label for="RMU">RMU Name</label><input class="form-control" /></div>
+                                                                            </div>
 
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-lg-0">
-                                                                            @Html.Label("Division", "Division")
-                                                                            @Html.DropDownListFor(m => m.SaveFormW2Model.Division, (IEnumerable
-    <SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formW2Division", @class = "form-control svalidate {required, Division}" })
-                                                                        </div>
-
-                                                                        <div class="form-group col-lg-3 pr-lg-0">
-                                                                            @Html.Label("RMU", "RMU")
-                                                                            @Html.DropDownListFor(m => m.SaveFormW2Model.Rmu, (IEnumerable
-   <SelectListItem>)ViewData["RMU"], "Select RMU", new { @id = "formW2RMU", @class = "form-control svalidate {required, RMU}" })
-                                                                        </div>
-
-                                                                        <div class="form-group col-lg-3 pr-lg-0">
-                                                                            @Html.Label("JKR Ref", "JKR Ref")
-                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.JkrRefNo, new { @Id = "JkrRefNo", @class = "form-control  svalidate {required, JkrRefNo}" })
-
+                                                                            <label>
+                                                                                JKR Ref
+                                                                            </label>
+                                                                            <input class="form-control" type="text" />
                                                                         </div>
                                                                         <div class="form-group col-lg-2 ">
-                                                                            @Html.Label("Date of Initiation (DD-MM-YYYY)", "Date of Initiation (DD-MM-YYYY)")
-                                                                            @*@Html.EditorFor(m => m.SaveFormW2Model.DateOfInitation, new { type = "date", htmlAttributes = new { @class = "form-control datepicker  svalidate {required, Initiation date}", @id = "formW2InitationDate" } })*@
-                                                                            <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2InitiationDate" name="formW2InitiationDate" value="@_InitationDate" />
-
+                                                                            <label>
+                                                                                Date of Initiation
+                                                                            </label>
+                                                                            <input class="form-control" type="date" placeholder="Date" />
                                                                         </div>
-                                                                        <div class="form-group col-lg-6">
+                                                                        <div class="form-group col-lg-4">
                                                                             <div class="row">
-                                                                                <div class="form-group col-lg-6">
-                                                                                    @Html.Label("Service Provider's Ref", "Service Provider's Ref")
-                                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.SerProviderRefNo, new { @Id = "SerProviderRef", @class = "form-control  svalidate {required, Service Provider's Ref}" })
+                                                                                <div class="col-6">
+                                                                                    <label>
+                                                                                        Service Provider's Ref
+                                                                                    </label>
+                                                                                    <input class="form-control" type="text" value="" placeholder="">
                                                                                 </div>
-                                                                                <div class="form-group col-lg-6">
-                                                                                    @Html.Label("Service Provider", "Service Provider")
-                                                                                    @{
-                                                                                        Model.SaveFormW2Model.ServiceProvider = string.IsNullOrEmpty(Model.SaveFormW2Model.ServiceProvider) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormW2Model.ServiceProvider;
-                                                                                    }
-                                                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ServiceProvider, (IEnumerable
-                                                     <SelectListItem>)ViewData["Service Provider"], "Select Service Provider", new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}" })
+                                                                                <div class="col-6">
+                                                                                    <label>
+                                                                                        Service Provider
+                                                                                    </label>
+                                                                                    <input class="form-control" type="text" />
                                                                                 </div>
                                                                             </div>
 
                                                                         </div>
-                                                                        <div class="form-group col-lg-3 pr-lg-0">
-                                                                            @Html.Label("Attn", "Attn")
-                                                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.Attn, (IEnumerable
-                                             <SelectListItem>)ViewData["Users"], "Select Attn", new { @Id = "formW2Attn", @class = "form-control  svalidate {required, Attention}" })
-
+                                                                        <div class="form-group col-lg-2 pr-lg-0">
+                                                                            <label>
+                                                                                Attn
+                                                                            </label>
+                                                                            <input class="form-control" type="text" placeholder="Attn" />
                                                                         </div>
-
-                                                                        <div class="form-group col-lg-3">
-                                                                            @Html.Label("CC", "CC")
-                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.Cc, new { @Id = "Cc", @class = "form-control  svalidate {required, CC}" })
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label>
+                                                                                CC
+                                                                            </label>
+                                                                            <input class="form-control" type="text" placeholder="CC" />
                                                                         </div>
                                                                     </div>
 
@@ -212,29 +213,33 @@
                                                             <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
                                                                 <div class="row">
                                                                     <div class="col-lg-12 py-2 px-4">
-                                                                        <span class="font-14 font-weight-bold">@Html.Label("PART A: LOCATION (to be completed by S.O. or his representative)", "PART A: LOCATION (to be completed by S.O. or his representative)") </span>
+                                                                        <span class="font-14 font-weight-bold"> PART A: LOCATION (to be completed by S.O. or his representative)</span>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <div class="border-top px-2 pb-1 float-left w-100">
                                                                             <div class="row pt-3">
-                                                                                <div class="form-group col-lg-4">
-                                                                                    @Html.Label("Road Code", "Road Code")
-                                                                                    @Html.DropDownListFor(m => m.SaveFormW2Model.RoadCode, (IEnumerable<CSelectListItem>)ViewData["RD_Code"], "Select Road Code", new { id = "frmW2RoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
-                                                                                </div>
-                                                                                <div class="form-group col-lg-4">
-                                                                                    @Html.Label("Road Name", "Road Name")
-                                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.RoadName, new { @Id = "formW2roadDesc", @readonly = "readonly", @class = "form-control svalidate {required, Road Name} " })
-                                                                                </div>
-                                                                                <div class="form-group col-lg-4">
-                                                                                    @Html.Label("Location Chainage From", "Location Chainage From")
-
+                                                                                <div class="form-group col-lg-8">
                                                                                     <div class="row">
-                                                                                        <div class="col-5 pl-1 pr-0">
-                                                                                            @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.FrmCh, new { @Id = "formW2ChinageFrom", @maxlength = 5, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required,number, Location Chainage Km}", @rows = 1 })
+                                                                                        <div class="col-6">
+                                                                                            <label for="RoadCode">Road Code</label>
+                                                                                            <select class="form-control">
+                                                                                                <option value="">Select Road Code</option>
+                                                                                            </select>
                                                                                         </div>
+                                                                                        <div class="col-6">
+                                                                                            <label for="RoadCode"> Road Name:</label>
+                                                                                            <input type="text" class="form-control" disabled placeholder="" />
+                                                                                        </div>
+                                                                                    </div>
 
-                                                                                        <div class="col-1 text-center pt-2">@Html.Label("+", "+")</div>
-                                                                                        <div class="col-5 pl-1 pr-0"> @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.ToCh, new { @Id = "formW2Toch", @maxlength = 3, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required,number,Location Chainage m}", @rows = 1 })</div>
+                                                                                </div>
+
+                                                                                <div class="form-group col-lg-4">
+                                                                                    <label for="RoadCode">  Chainage Location:</label>
+                                                                                    <div class="row">
+                                                                                        <div class="col-5 pl-1 pr-0"><input type="text" class="form-control" value="28 "></div>
+                                                                                        <div class="col-1 text-center pt-2"> + </div>
+                                                                                        <div class="col-5 pl-1 pr-0"><input type="text" class="form-control" value="970"></div>
                                                                                     </div>
 
                                                                                 </div>
@@ -247,40 +252,50 @@
                                                             <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
                                                                 <div class="row">
                                                                     <div class="col-lg-12 py-2 px-4">
-                                                                        <span class="font-14 font-weight-bold">@Html.Label("PART B: PARTICULARS OF INSTRUCTED WORK (to be completed by S.O. or his representative)", "PART B: PARTICULARS OF INSTRUCTED WORK (to be completed by S.O. or his representative)")</span>
+                                                                        <span class="font-14 font-weight-bold">PART B: PARTICULARS OF INSTRUCTED WORK (to be completed by S.O. or his representative)</span>
                                                                     </div>
                                                                     <div class="col-12">
                                                                         <div class="border-top px-2 pb-1 float-left w-100">
                                                                             <div class="row pt-3">
                                                                                 <div class="form-group col-lg-12">
-                                                                                    @Html.Label("Title of Instructed Work:", "Title of Instructed Work:")
-                                                                                    @Html.TextAreaFor(m => m.SaveFormW2Model.TitleOfInstructWork, new { @style = "height:70px", @Id = "formW2TitleOfInstructWork", @class = "form-control svalidate {required, Title of Instructed Work}" })
-
+                                                                                    <label for="RoadCode">Title of Instructed Work:</label>
+                                                                                    <textarea class="form-control" style="height:70px;"></textarea>
                                                                                 </div>
-                                                                                <div class="form-group col-lg-5">
+                                                                                <div class="form-group col-lg-12">
                                                                                     <div class="row">
-                                                                                        <div class="col-lg-12 form-group">
-                                                                                            @Html.Label("Date of commencement (DD-MM-YYYY)", "Date of commencement (DD-MM-YYYY)")
-                                                                                            @*@Html.EditorFor(m => m.SaveFormW2Model.DateOfCommencement, new { type = "date", htmlAttributes = new { @class = "form-control datepicker svalidate {required, Commencement date}", @id = "formW2CommencementDate" } })*@
-                                                                                            <input type="date" class="datepicker form-control  svalidate {required, Commencement date}" id="formW2CommencementDate" value="@_CommencementDate" />
+                                                                                        <div class="col-lg-4">
+                                                                                            <div class="row">
+                                                                                                <div class="mb-2 col-lg-12">
+                                                                                                    <label for="Date of commencement">
+                                                                                                        Date of commencement
+                                                                                                    </label>
+                                                                                                    <input type="date" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="mb-2 col-lg-12">
+                                                                                                    <label for="Date of commencement">
+                                                                                                        Date of completion
+                                                                                                    </label>
+                                                                                                    <input type="date" class="form-control">
+                                                                                                </div>
+                                                                                                <div class="mb-2 col-lg-12">
+                                                                                                    <label for="Date of commencement">
+                                                                                                        Instructed Work duration(Months)
+                                                                                                    </label>
+                                                                                                    <input type="text" placeholder="Months" class="form-control">
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
-                                                                                        <div class="col-lg-12 form-group">
-                                                                                            @Html.Label("Date of Completion (DD-MM-YYYY)", "Date of Completion (DD-MM-YYYY)")
-                                                                                            @*@Html.EditorFor(m => m.SaveFormW2Model.DateOfComplition, new { type = "date", htmlAttributes = new { @class = "form-control datepicker svalidate {required, Completion date}", @id = "formW2CompletionDate" } })*@
-                                                                                            <input type="date" class="datepicker form-control  svalidate {required, Completion date}" id="formW2CompletionDate" value="@_CompletionDate" />
-                                                                                        </div>
-                                                                                        <div class="col-lg-12 form-group">
-                                                                                            @Html.Label("Instructed Work duration", "Instructed Work duration")
-
-                                                                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.InstructWorkDuration, (IEnumerable
-                                                                                                     <SelectListItem>)ViewData["Months"], "Select Month", new { @Id = "formW2InstructWorkDuration", @class = "form-control disableinput editdisable" })
+                                                                                        <div class="form-group col-lg-8">
+                                                                                            <label for="Date of commencement">
+                                                                                                Remarks
+                                                                                            </label>
+                                                                                            <textarea class="form-control" placeholder="Remarks" style="height:166px;"></textarea>
                                                                                         </div>
                                                                                     </div>
+
                                                                                 </div>
-                                                                                <div class="form-group col-lg-7">
-                                                                                    @Html.Label("Remarks", "Remarks")
-                                                                                    @Html.TextAreaFor(m => m.SaveFormW2Model.Remarks, new { @style = "height:178px", @Id = "formW2Remarks", @class = "form-control svalidate {required, Description Of NC}" })
-                                                                                </div>
+
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -289,33 +304,31 @@
                                                             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                                                                 <div class="row">
                                                                     <div class="col-lg-12 py-2 px-4">
-                                                                        <span class="font-14 font-weight-bold">
-                                                                            @Html.Label("PART C: DETAILS OF WORK (to be completed by S.O. or his representative)", "PART C: DETAILS OF WORK (to be completed by S.O. or his representative)")
-                                                                        </span>
+                                                                        <span class="font-14 font-weight-bold">PART C: DETAILS OF WORK (to be completed by S.O. or his representative)</span>
                                                                     </div>
                                                                     <div class="col-12">
 
                                                                         <div class="border-top px-2 pb-1 float-left w-100">
                                                                             <div class="row">
                                                                                 <div class="form-group col-lg-12">
-                                                                                    @Html.TextAreaFor(m => m.SaveFormW2Model.DetailsOfWorks, new { @style = "height:70px", @Id = "formW2DetailsOfWorks", @class = "form-control svalidate {required, Details Of Work}" })
+                                                                                    <textarea class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="Details of Works" style="height:105px;"></textarea>
                                                                                 </div>
                                                                                 @*<div class="form-group col-lg-6">
-                                                                                        <label for="ProposedDesignDuration">Proposed Design Duration</label>
-                                                                                        <select class="form-control">
-                                                                                            <option value="">Select Month</option>
-                                                                                            <option value="">1 Month</option>
-                                                                                            <option value="">2 Month</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                    <div class="form-group col-lg-6">
-                                                                                        <label for="ProposedCompletionofIWPeriod">Proposed Completion of IW Period</label>
-                                                                                        <select class="form-control  ">
-                                                                                            <option value="">Select Month</option>
-                                                                                            <option value="">1 Month</option>
-                                                                                            <option value="">2 Month</option>
-                                                                                        </select>
-                                                                                    </div>*@
+                                                                                <label for="ProposedDesignDuration">Proposed Design Duration</label>
+                                                                                <select class="form-control">
+                                                                                    <option value="">Select Month</option>
+                                                                                    <option value="">1 Month</option>
+                                                                                    <option value="">2 Month</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-6">
+                                                                                <label for="ProposedCompletionofIWPeriod">Proposed Completion of IW Period</label>
+                                                                                <select class="form-control  ">
+                                                                                    <option value="">Select Month</option>
+                                                                                    <option value="">1 Month</option>
+                                                                                    <option value="">2 Month</option>
+                                                                                </select>
+                                                                            </div>*@
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -328,428 +341,674 @@
                                                             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                                                                 <div class="col-lg-12 py-2 px-2">
                                                                     <span class="font-14 font-weight-bold">
-                                                                        @Html.Label("PART D: CEILING ESTIMATED COST (to be completed by S.O. or his representative)", "PART D: CEILING ESTIMATED COST (to be completed by S.O. or his representative)")
+                                                                        PART D: CEILING ESTIMATED COST
                                                                     </span>
                                                                 </div>
+
                                                                 <div class="border-top px-2 pt-3 pb-1 float-left w-100">
-                                                                    <div class="form-group col-lg-4 float-left px-0">
-
-                                                                        @Html.Label("Estimated Cost (RM)", "Estimated Cost (RM)")
-
-                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.CeilingEstCost, new { @Id = "formW2CeilingEstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required,number, Estimated Cost}" })
-                                                                    </div>
-                                                                    <div class="clear-b"></div>
-                                                                    <div class="form-group col-lg-3 pl-0">
-                                                                        @Html.Label("Issued By", "Issued By")
-                                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.IssuedBy, (IEnumerable
-                                             <SelectListItem>)ViewData["Users"], "Select IssuedBy", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}", @onchange = "ChangeIUser(this)" })
+                                                                    <div class="form-group col-lg-4 px-0 float-left">
+                                                                        <label>
+                                                                            Estimated Cost (RM )
+                                                                        </label>
+                                                                        <input type="text" class="form-control " value="9,98,292.65" placeholder="RM">
+                                                                    </div> <div class="clear-b"></div>
+                                                                    <div class="form-group col-lg-3 px-0">
+                                                                        <label for="Designation"> Issued By </label>
+                                                                        <select class="form-group">
+                                                                            <option>User Id</option>
+                                                                        </select>
                                                                     </div>
                                                                     <div class="form-group col-lg-4">
-                                                                        @Html.Label("Name", "Name")
-                                                                        @Html.TextBoxFor(w => w.SaveFormW2Model.IssuedName, new { @id = "formW2IssuedName", @class = "form-control svalidate  {required, Attention To Name}", @readonly = "readonly" })
+                                                                        <label for="Designation"> Name </label>
+                                                                        <input class="form-control" type="text" value="Mohd. Riduan Osman">
                                                                     </div>
-                                                                    @*<div class="form-group col-lg-3 p-0">
-                                                                            <label for="Designation"> Designation</label>
-                                                                            <input class="form-control " type="text" value=" Regional Manager">
-                                                                        </div>*@
+
                                                                     <div class="form-group col-lg-3">
-                                                                        @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                        @*@Html.EditorFor(m => m.SaveFormW2Model.IssuedDate, new { type = "date", htmlAttributes = new { @class = "form-control datepicker form-control  svalidate {required, Issue date}", @id = "formW2IssueDate" } })*@
-                                                                        <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" value="@_IssuedDate" />
+                                                                        <label>Date (DD-MM-YYYY)</label>
+                                                                        <input type="date" class="datepicker form-control disableinput ">
                                                                     </div>
                                                                     <div class="form-group col-lg-2 text-center">
-                                                                        @Html.Label("Signature", "Signature")
-                                                                        @{
-                                                                            var issued = Model.SaveFormW2Model.ReceivedSignature == null || Model.SaveFormW2Model.ReceivedSignature == false ? false : true;
-
-                                                                        }
-                                                                        <div class="clear-b mt-2">
-                                                                            @*@Html.CheckBoxFor(w => (w.SaveFormW2Model.IssuedSignature == null ? false : true), new { @id = "formW2IssuedSignture", @class = "form-control" })*@
-                                                                            <input type="checkbox" id="formW2ReceivedSignature" class="disableinput" checked="@issued" style="height: 20px;">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                @*<div class="form-group col-lg-3 float-left">
-                                                                        <label>
-                                                                            Name
-                                                                        </label>
-                                                                        <input type="text" class="form-control " placeholder="Name">
-                                                                    </div>
-                                                                    <div class="form-group col-lg-3 float-left">
-                                                                        <label>
-                                                                            Date
-                                                                        </label>
-                                                                        <input type="Date" class="form-control">
-                                                                    </div>
-                                                                    <div class="form-group col-lg-2 float-left">
                                                                         <label>Signature</label>
-                                                                        <div class="clear-b">
-                                                                            <input type="checkbox"> Chong Chi Fam
-
+                                                                        <div class="clear-b mt-2">
+                                                                            <input type="checkbox">
                                                                         </div>
-                                                                    </div>*@
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                                                <div class="col-lg-12 py-2 px-2">
-                                                                    <span class="font-14 font-weight-bold">
-                                                                        @Html.Label("Service Provider's Representative", "Service Provider's Representative")
-                                                                    </span>
+                                                                    </div>
                                                                 </div>
+
+
                                                                 <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                                                     <div class="row">
-                                                                        <div class="form-group col-lg-3">
-
-                                                                            @Html.Label("Received by", "Received by")
-
-                                                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ReceivedBy, (IEnumerable
-                                     <SelectListItem>)ViewData["Users"], "Select Received By", new { @Id = "formw2ReceivedBy", @class = "form-control  svalidate {required, Received By}", @onchange = "ChangeRUser(this)" })
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label for="Designation">
+                                                                                Requested by
+                                                                            </label>
+                                                                            <select class="form-group">
+                                                                                <option>User Id</option>
+                                                                            </select>
                                                                         </div>
-                                                                        <div class="form-group col-lg-4">
-                                                                            @Html.Label("Name", "Name")
-                                                                            @Html.TextBoxFor(w => w.SaveFormW2Model.ReceivedName, new { @id = "formW2ReceivedName", @class = "form-control svalidate  {required, ReceivedName To Name}", @readonly = "readonly" })
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label for=""> Issued </label>
+                                                                            <select class="form-group">
+                                                                                <option>User Id</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label for="Designation"> Name </label>
+                                                                            <input class="form-control" type="text" value="Mohd. Riduan Osman">
                                                                         </div>
 
                                                                         <div class="form-group col-lg-3">
-                                                                            @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                            @*@Html.EditorFor(m => m.SaveFormW2Model.ReceivedDate, new { type = "date", htmlAttributes = new { @class = "form-control datepicker svalidate {required, Recieved date}", @id = "formW2RecievedDate" } })*@
-                                                                            <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2ReceivedDate" value="@_ReceivedDate" />
+                                                                            <label>Date (DD-MM-YYYY)</label>
+                                                                            <input type="date" class="datepicker form-control disableinput ">
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
-                                                                            @Html.Label("Signature", "Signature")
-                                                                            @{
-                                                                                var rcvd = Model.SaveFormW2Model.ReceivedSignature == null || Model.SaveFormW2Model.ReceivedSignature == false ? false : true;
-
-                                                                            }
+                                                                            <label>Signature</label>
                                                                             <div class="clear-b mt-2">
-                                                                                <input type="checkbox" id="formW2ReceivedSignature" class="disableinput" checked="@rcvd" style="height: 20px;">
-                                                                                @*@Html.CheckBoxFor(w => w.SaveFormW2Model.ReceivedSignature, new { @id = "formW2ReceivedSignature", @class = "form-control" })*@
-
+                                                                                <input type="checkbox">
                                                                             </div>
                                                                         </div>
-
                                                                     </div>
 
-
                                                                 </div>
+
+
+
+                                                                @*<div class="form-group col-lg-3 float-left">
+                                                                <label>
+                                                                    Name
+                                                                </label>
+                                                                <input type="text" class="form-control " placeholder="Name">
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @Html.HiddenFor(m => m.SaveFormW2Model.PkRefNo, new { @id = "FW2HRef_No", @class = "form-control" })
-                                @Html.HiddenFor(m => m.View, new { @id = "hdnView", @class = "form-control" })
-                                <div class="col-md-12 mb-2 float-right text-right custom-footer">
-                                    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-                                    <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                                    <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
-                                </div>
-                            </div>
-                        }
-                    </div>
-
-                    <div class="tab-pane show" id="formw1">
-                        <div class="p-4">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="form-group col-lg-3">
-                                            @Html.Label("IW Reference No", "IW Reference No")
-                                            @Html.TextBoxFor(x => x.FormW1.ReferenceNo, new { @disabled = "true", @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-3">
-                                            @Html.Label("Project Title", "Project Title")
-                                            @Html.TextBoxFor(x => x.FormW1.ProjectTitle, new { @disabled = "true", @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-3">
-                                            @Html.Label("TECM Date", "TECM Date")
-                                            @Html.TextBoxFor(x => x.FormW1.TECMDate, new { @disabled = "true", @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-3">
-                                            @Html.Label("TECM Status", "TECM Status")
-                                            @Html.TextBoxFor(x => x.FormW1.TECMStatus, new { @disabled = "true", @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-3 mb-0">
-                                            @Html.Label("Service Provider's Proposal Ref", "Service Provider's Proposal Ref")
-                                            @Html.TextBoxFor(x => x.FormW1.ServPropRefNo, new { @disabled = "true", @class = "form-control" })
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-lg-3 pr-lg-0">
-                                        @Html.Label("Date", "Date")
-                                        @Html.TextBoxFor(x => x.FormW1.RmuDate, new { @disabled = "true", @class = "form-control" })
-                                    </div>
-                                    <div class="form-group col-lg-2">
-                                        @Html.Label("RMU", "RMU")
-                                        @Html.TextBoxFor(x => x.FormW1.Rmu, new { @disabled = "true", @class = "form-control" })
-                                    </div>
-                                    <div class="form-group col-lg-2">
-                                        @Html.Label("Division Code", "Division Code")
-                                        @Html.TextBoxFor(x => x.FormW1.Division, new { @disabled = "true", @class = "form-control" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                    <div class="col-lg-12 py-2 px-4">
-                                        <span class="font-14 font-weight-bold">
-                                            Part A:  Name of Site/Location
-                                        </span>
-                                    </div>
-                                    <div class="border-top px-3 pt-3 pb-1 float-left w-100">
-                                        <div class="w-100 dt-tbl-section">
-                                            <div class="form-group col-lg-4 pl-2 pr-2">
-                                                @Html.Label("Road Code", "Road Code")
-                                                @Html.TextBoxFor(x => x.FormW1.RoadCode, new { @disabled = "true", @class = "form-control" })
-                                            </div>
-                                            <div class="form-group col-lg-4 pl-2">
-                                                @Html.Label("Road Name", "Road Name")
-                                                @Html.TextBoxFor(x => x.FormW1.RoadName, new { @disabled = "true", @class = "form-control" })
-                                            </div>
-                                            <div class="form-group col-lg-4 pl-2 pr-2">
-                                                @Html.Label("Chainage Location", "Chainage Location")
-                                                <div class="row">
-                                                    <div class="col-5 pl-3 pr-0"> @Html.TextBoxFor(x => x.FormW1.FrmCh, new { @disabled = "true", @class = "form-control" })</div>
-                                                    <div class="col-1 text-center"> + </div>
-                                                    <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.FormW1.ToCh, new { @disabled = "true", @class = "form-control" })</div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-
-                                <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                    <div class="col-lg-12 py-2 px-4">
-                                        <span class="font-14 font-weight-bold">
-                                            PART B : Details of Works
-                                        </span>
-                                    </div>
-                                    <div class="border-top px-3 pt-3 pb-1 float-left w-100">
-                                        <div class="row">
-                                            <div class="form-group col-lg-12">
-                                                @Html.TextAreaFor(m => m.FormW1.DetailsOfWork, new { @class = "form-control border-left border-top-0 border-left-0 border-right-0", @style = "height:105px;", @readonly = "true" })
-                                            </div>
-                                            <div class="form-group col-lg-4">
-                                                @Html.Label("Proposed Design Duration", "Proposed Design Duration")
-                                                @Html.TextBoxFor(x => x.FormW1.PropDesignDuration, new { @disabled = "true", @class = "form-control" })
-                                            </div>
-                                            <div class="form-group col-lg-4">
-                                                @Html.Label("Proposed Completion of IW Period", "Proposed Completion of IW Period")
-                                                @Html.TextBoxFor(x => x.FormW1.PropCompletionPeriod, new { @disabled = "true", @class = "form-control" })
-                                            </div>
-                                            <div class="col-lg-4 pt-4">
-                                                @Html.Label("Recomonded Instructed Work", "Recomonded Instructed Work")
-                                                <br />
-                                                <label class="radio-inline">
-                                                    @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Critical")&nbsp;	Critical&nbsp;
-                                                </label>
-                                                <label class="radio-inline">
-                                                    @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Urgent")&nbsp;	Urgent&nbsp;
-                                                </label>
-                                                <label class="radio-inline">
-                                                    @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "None")&nbsp;	None&nbsp;
-                                                </label>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                    <div class="col-lg-12 py-2 px-4">
-                                        <span class="font-14 font-weight-bold">
-                                            PART C: COST ESTIMATE (refer to attached Bill of Quantities, Drawings and all its associated supporting documents )
-                                        </span>
-                                    </div>
-                                    <div class="border-top px-3 pt-3 pb-1 float-left w-100">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <div class="row py-1 border-bottom">
-                                                        <div class="col-8">
-                                                            <label class="pt-1 mb-0" for=" PhysicalWorks">
-                                                                <b class="lh30 mb-0">  Physical Works</b>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            @Html.TextBoxFor(m => m.FormW1.PhyWorks, new { placeholder = "RM", @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="row py-1 border-bottom">
-                                                        <div class="col-8">
-                                                            <label class="pt-1 mb-0" for="GeneralandPreliminaries">
-                                                                <b class="lh30 mb-0">  General and Preliminaries</b>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            @Html.TextBoxFor(m => m.FormW1.GenPrelims, new { placeholder = "RM", @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="row py-1 border-bottom">
-                                                        <div class="col-8">
-                                                            <label for="Consultancy Fees" class="pt-1 mb-0">
-                                                                <b class="lh30 mb-0">
-                                                                    <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">(If any)</span>
-                                                                </b>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            @Html.TextBoxFor(model => model.FormW1.ConsulFee, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="row py-1 border-bottom">
-                                                        <div class="col-8">
-                                                            <label for="SiteInvestigation" class="pt-1 mb-0">
-                                                                <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Ta</span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">   (If any)</span></b>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            @Html.TextBoxFor(model => model.FormW1.SiteInvest, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="row py-1 border-bottom">
-                                                        <div class="col-8">
-                                                            <label for="Surveyworks" class="pt-1 mb-0">
-                                                                <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left"> (If any)</span></b>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            @Html.TextBoxFor(model => model.FormW1.SurvyWorks, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="row py-1 border-bottom">
-                                                        <div class="col-8">
-                                                            <label for="Othercost " class="pt-1 mb-0">
-                                                                <b class="lh30 mb-0">Any other cost </b>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            @Html.TextBoxFor(model => model.FormW1.OtherCost, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                    </div>
-                                                    <div class="row py-1">
-                                                        <div class="col-8">
-                                                            <label for="Estimatedtotalcost" class="pt-1 mb-0">
-                                                                <b class="lh30 mb-0">
-                                                                    Estimated Total Cost
-                                                                </b>
-                                                            </label>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            @Html.TextBoxFor(model => model.FormW1.EstimTotalCost, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-12 mt-3">
-                                                    <div class="row border-top pt-3 pb-1">
-                                                        <div class="form-group col-lg-2 p-0">
-                                                            @Html.Label("Requested by", "Requested by")
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvName, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-3">
-                                                            <label for="Designation"> Name </label>
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvName, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-3 p-0">
-                                                            <label for="Designation"> Designation</label>
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvDesig, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-2 pr-0">
-                                                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvDate, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-2">
-                                                            <label>Signature</label>
-                                                            <div class="clear-b">
-                                                                <input disabled type="checkbox">
+                                                            <div class="form-group col-lg-3 float-left">
+                                                                <label>
+                                                                    Date
+                                                                </label>
+                                                                <input type="Date" class="form-control">
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row pt-3 pb-1">
-                                                        <div class="form-group col-lg-2 p-0">
-                                                            <label for="Designation">
-                                                                Verified By
-                                                            </label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySOBy, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-3">
-                                                            <label for="Designation"> Name </label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoName, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-3 p-0">
-                                                            <label for="Designation"> Designation</label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoDesig, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-2 pr-0">
-                                                            <label>Date (DD-MM-YYYY)</label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoDate, new { @class = "form-control", @disabled = "true" })
-                                                        </div>
-                                                        <div class="form-group col-lg-2">
-                                                            <label>Signature</label>
-                                                            <div class="clear-b">
-                                                                <input type="checkbox">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-
-
-                                                    <div class="row d-none">
-                                                        <div class="col-lg-12 p-1">
-                                                            <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                                                <div class="col-lg-12 py-2 px-2">
-                                                                    <span class="font-14 font-weight-bold">
-                                                                        Critical / Urent
-                                                                        @*CRITICAL / URGENT*@
-                                                                    </span>
-                                                                </div>
-                                                                <div class="border-top px-2 py-2 pb-1 float-left w-100">
-                                                                    The reinstatement work required is considered as CRITICAL / URGENT. I hereby recommend that the work to be carried out as Instructed Works.
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row d-none">
-                                                        <div class="col-lg-12">
-                                                            <div class="form-group float-left pl-2 pr-2">
-                                                                <label>Name for this Instructed Work Proposal: (to be given by S.O. / S.O.'s Rep.)</label>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label>Signature</label>
                                                                 <div class="clear-b">
-                                                                    <input type="checkbox">
-                                                                    PROPOSED REHABILATION FOR SLOPE AT CH28+970, Q3178 JALAN MIRI MARUDI
+                                                                    <input type="checkbox"> Chong Chi Fam
+
                                                                 </div>
+                                                            </div>*@
                                                             </div>
                                                         </div>
+
+
+
+
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                    </div>
+                        <div class="tab-pane show" id="formw1">
+                            <div class="p-3">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="bg-white py-2">
 
-                    <div id="photoGallery" class="tab-pane">
-                        <div id="ViewPhoto">
+
+
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="row">
+                                                                <div class="form-group col-md-2">
+                                                                    <label for="RMU">RMU</label>
+                                                                    <select class="form-control" disabled>
+                                                                        <option value="">RMU Name</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Division_Code">Division Code</label>
+                                                                    <select class="form-control" disabled>
+                                                                        <option value="">Division Code</option>
+                                                                    </select>
+
+                                                                </div>
+                                                                <div class="form-group col-lg-2">
+                                                                    <label>
+                                                                        FormH Reference No
+                                                                    </label>
+                                                                    <input type="text" placeholder="" disabled class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label>
+                                                                        IW Reference No
+                                                                    </label>
+                                                                    <input type="text" placeholder="" disabled class="form-control" />
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label>
+                                                                        Project Title
+                                                                    </label>
+                                                                    <input type="text" class="form-control" disabled />
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label>
+                                                                        TECM Date
+                                                                    </label>
+                                                                    <input type="date" class="form-control" disabled />
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label>
+                                                                        TECM Status
+                                                                    </label>
+                                                                    <input type="text" class="form-control" disabled />
+                                                                </div>
+                                                                <div class="form-group col-lg-4">
+                                                                    <label>
+                                                                        Service Provider's Proposal Ref
+                                                                    </label>
+                                                                    <div class="row">
+                                                                        <div class="col-6 pr-0">
+                                                                            <select class="form-control " disabled>
+                                                                                <option value=""> Service Provider'S</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-6 pr-0">
+                                                                            <input type="text" class="form-control" disabled />
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="form-group col-lg-2">
+                                                                    <label>
+                                                                        Date
+                                                                    </label>
+                                                                    <input class="form-control" disabled type="date" placeholder="Date" />
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                <div class="col-lg-12 py-2 px-4">
+                                                                    <span class="font-14 font-weight-bold">
+                                                                        Part A:  Name of Site/Location
+                                                                    </span>
+                                                                </div>
+                                                                <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                                                                    <div class="w-100 dt-tbl-section">
+                                                                        <div class="form-group col-lg-4 ">
+                                                                            <label for="RoadCode">Road Code</label>
+                                                                            <select class="form-control" disabled>
+                                                                                <option value="">Road Code</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="form-group col-lg-4">
+                                                                            <label for="RoadCode"> Road Name:</label>
+                                                                            <input type="text" placeholder="Road name" class="form-control" disabled />
+                                                                        </div>
+                                                                        <div class="form-group col-lg-4">
+                                                                            <label for="RoadCode">  Chainage Location:</label>
+                                                                            <div class="row">
+                                                                                <div class="col-5 pl-3 pr-0"><input type="text" class="form-control" disabled value="28 "></div>
+                                                                                <div class="col-1 text-center pt-2"> + </div>
+                                                                                <div class="col-5 pl-1 pr-0"><input type="text" class="form-control" disabled value="970"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        @*<div class="form-group col-lg-3 pl-2 pr-2">
+                                                                        <label for="RoadCode">Approved IW Ref. (to be given by S.O)</label>
+                                                                        <input type="text" class="form-control" disabled value=" ">
+                                                                    </div>*@
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+
+                                                            <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                <div class="col-lg-12 py-2 px-4">
+                                                                    <span class="font-14 font-weight-bold">
+                                                                        PART B : Details of Works
+                                                                    </span>
+                                                                </div>
+                                                                <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                                                                    <div class="row">
+                                                                        <div class="form-group col-lg-12">
+                                                                            <textarea class="form-control border-left border-top-0 border-left-0 border-right-0" disabled placeholder="Details of Works" style="height:105px;"></textarea>
+                                                                        </div>
+                                                                        <div class="form-group col-lg-6">
+                                                                            <label for="ProposedDesignDuration">Proposed Design Duration (Month)</label>
+                                                                            <input class="form-control" placeholder="Month" type="text" disabled>
+                                                                        </div>
+                                                                        <div class="form-group col-lg-6">
+                                                                            <label for="ProposedCompletionofIWPeriod">
+                                                                                Proposed Completion of IW Period
+                                                                            </label>
+                                                                            <input class="form-control" disabled placeholder=" Proposed Completion of IW Period" type="text">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                <div class="col-lg-12 py-2 px-4">
+                                                                    <span class="font-14 font-weight-bold">
+                                                                        PART C: COST ESTIMATE (refer to attached Bill of Quantities, Drawings and all its associated supporting documents )
+                                                                    </span>
+                                                                </div>
+                                                                <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                                                                    <div class="container-fluid">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                                <div class="row py-2 border-bottom">
+                                                                                    <div class="col-8">
+                                                                                        <label class="pt-1 mb-0" for=" PhysicalWorks">
+                                                                                            <b class="lh30 mb-0">  Physical Works</b>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text">RM</span>
+                                                                                            </div>
+                                                                                            <input class="form-control" disabled type="text">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row py-2 border-bottom">
+                                                                                    <div class="col-8">
+                                                                                        <label class="pt-1 mb-0" for="GeneralandPreliminaries">
+                                                                                            <b class="lh30 mb-0">  General and Preliminaries</b>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text">RM</span>
+                                                                                            </div>
+                                                                                            <input class="form-control" disabled type="text">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row py-1 pt-2 border-bottom">
+                                                                                    <div class="col-8">
+                                                                                        <label for="Consultancy Fees" class="pt-1 mb-0">
+                                                                                            <b class="lh30 mb-0">
+                                                                                                <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">(If any)</span>
+                                                                                            </b>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text">RM</span>
+                                                                                            </div>
+                                                                                            <input class="form-control" disabled type="text" placeholder="">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row py-1  pt-2 border-bottom">
+                                                                                    <div class="col-8">
+                                                                                        <label for="Surveyworks" class="pt-1 mb-0">
+                                                                                            <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left"> (If any)</span></b>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text">RM</span>
+                                                                                            </div>
+                                                                                            <input class="form-control" disabled type="text" placeholder="">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row py-1 pt-2 border-bottom">
+                                                                                    <div class="col-8">
+                                                                                        <label for="SiteInvestigation" class="pt-1 mb-0">
+                                                                                            <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Ta</span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">   (If any)</span></b>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text">RM</span>
+                                                                                            </div>
+                                                                                            <input class="form-control" disabled type="text" placeholder="">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row py-2 border-bottom">
+                                                                                    <div class="col-8">
+                                                                                        <label for="Othercost " class="pt-1 mb-0">
+                                                                                            <b class="lh30 mb-0">Any other cost </b>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="input-group">
+
+                                                                                            <input class="form-control" disabled type="text" maxlength="50" placeholder="">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row py-2">
+                                                                                    <div class="col-8">
+                                                                                        <label for="Estimatedtotalcost" class="pt-1 mb-0">
+                                                                                            <b class="lh30 mb-0">
+                                                                                                Estimated Total Cost
+                                                                                            </b>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text">RM</span>
+                                                                                            </div>
+                                                                                            <input class="form-control" disabled type="text">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+
+                                                            <div class="row">
+                                                                <div class="col-lg-4">
+                                                                    <label>Recomonded Instructed Work</label>
+                                                                    <br />
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" name="optradio">&nbsp;	Critical&nbsp;
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" name="optradio">&nbsp;	Urgent&nbsp;
+                                                                    </label>
+                                                                    <label class="radio-inline">
+                                                                        <input type="radio" name="optradio" checked>&nbsp;	None&nbsp;
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 mt-3">
+                                                            <div class="row py-1">
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Designation">
+                                                                        Reported by
+                                                                    </label>
+                                                                    <select class="form-group" disabled>
+                                                                        <option>User Id</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="Designation"> Name </label>
+                                                                    <input class="form-control" type="text" value="Mohd. Riduan Osman" disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-3 p-0">
+                                                                    <label for="Designation"> Designation</label>
+                                                                    <input class="form-control " type="text" value=" Regional Manager" disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-2 pr-0">
+                                                                    <label>Date (DD-MM-YYYY)</label>
+                                                                    <input type="date" class="datepicker form-control disableinput " disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-2 text-center">
+                                                                    <label>Signature</label>
+                                                                    <div class="clear-b mt-2">
+                                                                        <input type="checkbox" disabled>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row pt-3 pb-1">
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Designation">
+                                                                        Requested by
+                                                                    </label>
+                                                                    <select class="form-group" disabled>
+                                                                        <option>User Id</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="Designation"> Name </label>
+                                                                    <input class="form-control" type="text" value="Mohd. Riduan Osman" disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-3 p-0">
+                                                                    <label for="Designation"> Designation</label>
+                                                                    <input class="form-control " type="text" value=" Regional Manager" disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-2 pr-0">
+                                                                    <label>Date (DD-MM-YYYY)</label>
+                                                                    <input type="date" class="datepicker form-control disableinput " disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-2 text-center">
+                                                                    <label>Signature</label>
+                                                                    <div class="clear-b mt-2">
+                                                                        <input type="checkbox" disabled>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row pt-3 pb-1">
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Designation">
+                                                                        Verified By
+                                                                    </label>
+                                                                    <select class="form-group" disabled>
+                                                                        <option>User Id</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="Designation"> Name </label>
+                                                                    <input class="form-control" type="text" value="Mohd. Riduan Osman" disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-3 p-0">
+                                                                    <label for="Designation"> Designation</label>
+                                                                    <input class="form-control " type="text" value=" Regional Manager" disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-2 pr-0">
+                                                                    <label>Date (DD-MM-YYYY)</label>
+                                                                    <input type="date" class="datepicker form-control disableinput " disabled>
+                                                                </div>
+                                                                <div class="form-group col-lg-2 text-center">
+                                                                    <label>Signature</label>
+                                                                    <div class="clear-b mt-2">
+                                                                        <input type="checkbox" disabled>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+
+
+                                                            <div class="row d-none">
+                                                                <div class="col-lg-12 p-1">
+                                                                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                        <div class="col-lg-12 py-2 px-2">
+                                                                            <span class="font-14 font-weight-bold">
+                                                                                Critical / Urent
+                                                                                @*CRITICAL / URGENT*@
+                                                                            </span>
+                                                                        </div>
+                                                                        <div class="border-top px-2 py-2 pb-1 float-left w-100">
+                                                                            The reinstatement work required is considered as CRITICAL / URGENT. I hereby recommend that the work to be carried out as Instructed Works.
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row d-none">
+                                                                <div class="col-lg-12">
+                                                                    <div class="form-group float-left pl-2 pr-2">
+                                                                        <label>Name for this Instructed Work Proposal: (to be given by S.O. / S.O.'s Rep.)</label>
+                                                                        <div class="clear-b">
+                                                                            <input type="checkbox">
+                                                                            PROPOSED REHABILATION FOR SLOPE AT CH28+970, Q3178 JALAN MIRI MARUDI
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!--gallery start-->
+                                                <!--galler end-->
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="AccordPagegallery">
+                            <div class="accordion custom-accordion" id="custom-accordion-eight">
+                                <div class="card">
+                                    <div class="card-header" id="headingEight" style="padding: .45rem 1.25rem; ">
+                                        <div class="w-100 float-left d-flex justify-content-between">
+                                            <a class="custom-accordion-title py-1" data-toggle="collapse" href="#ImageList" aria-expanded="true" aria-controls="collapseEight">
+                                                <span class="float-left" style="padding-top: 2px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Image List
+                                                </span>
+                                            </a>
+                                            <div class="img-btns mt-1">
+
+                                                <a id="ancAddImage" class="btn btn-sm btn-themebtn" onclick="frmC1C2.ShowAddImage();" finddetailsdep>
+                                                    <span class="add-icon"></span> Add Image
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="ImageList" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#custom-accordion-eight">
+                                        <div class="card-body">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="form-group col-lg-1">
+                                                        <label>
+                                                            S. No
+                                                        </label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label>
+                                                            Image Type
+                                                        </label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-lg-4">
+                                                        <label>
+                                                            FileName
+                                                        </label>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-lg-3">
+                                                        <label>
+                                                            Uplaod
+                                                        </label>
+                                                        <input type="file" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-lg-1">
+                                                        <i class="fas fa-trash mt-4 pt-1"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<div id="cancel-row">
+                                            <div class="simple-tbl">
+                                                <table id="tblImageList">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S.NO</th>
+                                                            <th>Image Type</th>
+                                                            <th>File Name</th>
+                                                            <th class="deleteImg" id="" style="text-align:center">Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>*@
+                                            <div style="display:none" id="ImageListTRTemplate">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td imgsno></td>
+                                                            <td imgtype></td>
+                                                            <td imgfilename></td>
+
+                                                            <td deleteImg class="deleteImg" style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="frmC1C2.DeleteImg(this);"><span class="remove-icon"></span></button></td>
+
+                                                            <td class="deleteImg" style="text-align:center"></td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="accordion custom-accordion mt-3" id="custom-accordion-Nine">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingNine">
+                                        <a class="custom-accordion-title py-l collapsed" data-toggle="collapse" href="#ImageView" aria-expanded="false" aria-controls="collapseNine">
+                                            <span class="float-left" style="padding-top: 2px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Image View
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <div id="ImageView" class="collapse avowmodal-form" aria-labelledby="headingEight" data-parent="#ImageList">
+                                        <div class="card-body" id="ImageViewBody">
+
+                                        </div>
+                                    </div>
+                                    <div style="display:none;" id="ImageViewBodyTemplate">
+                                        <div class="container">
+                                            <h6 phototype></h6>
+                                            <hr>
+                                        </div>
+                                        <div class="item">
+                                            <div data-fancybox="gallery" style="text-align:center" gallery>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 mb-2 float-right text-right custom-footer">
+                <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                <button type="button" class="btn btn-sm btn-themebtn">Save</button>
+                <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            </div>
         </div>
     </div>
-</div>

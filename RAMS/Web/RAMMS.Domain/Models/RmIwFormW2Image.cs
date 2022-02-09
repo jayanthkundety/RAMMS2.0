@@ -19,6 +19,8 @@ namespace RAMMS.Domain.Models
         public DateTime? Fw2iCrDt { get; set; }
         public bool Fw2iSubmitSts { get; set; }
         public bool? Fw2iActiveYn { get; set; }
+        public string Fw2iStatus { get; set; }
+        public string Fw2iAuditLog { get; set; }
 
         public virtual RmIwFormW2 Fw2iFw2RefNoNavigation { get; set; }
     }
