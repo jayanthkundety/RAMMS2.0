@@ -70,6 +70,9 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.Type = "Month";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
             LoadLookupService("RMU", "Division", "RD_Code", "User");
+
+            GetRMUWithDivision("RMU_Division");
+
             return View("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 
@@ -84,7 +87,8 @@ namespace RAMMS.Web.UI.Controllers
                 ddLookup.Type = "Month";
                 ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
                 LoadLookupService("RMU", "Division", "RD_Code", "User");
-                _formW1Model = await _formW1Service.FindFormW1ByID(id);
+            
+               _formW1Model = await _formW1Service.FindFormW1ByID(id);
             }
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;

@@ -97,7 +97,13 @@ namespace RAMMS.Web.UI.Models
             }
 
         }
-        public object JsonOption()
+
+        public void GetRMUWithDivision(string name)
+        {
+            ViewData[name] = LookupService.GetRMUwithDivisionDetails().Result;
+        }
+        
+            public object JsonOption()
         {
             return Common.Utility.JsonOption;
         }

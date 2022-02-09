@@ -16,9 +16,7 @@ namespace RAMMS.Web.UI.Models
             FormW1 = new FormW1ResponseDTO();
         }
         public FormW1ResponseDTO FormW1 { get; set; }
-
-        public string road { get; set; }
-
+ 
 
     }
 }

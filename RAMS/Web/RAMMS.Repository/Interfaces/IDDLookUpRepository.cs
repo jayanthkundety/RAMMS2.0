@@ -11,6 +11,8 @@ namespace RAMMS.Repository.Interfaces
 {
     public interface IDDLookUpRepository : IRepositoryBase<RmDdLookup>
     {
+
+        Task<IEnumerable<RoadMasterResponseDTO>> GetRMUwithDivisionDetails();
         Task<IEnumerable<RmDdLookup>> GetDdLookUp(DDLookUpDTO rmDdLookup);
         Task<string> GetDesc(DDLookUpDTO rmDdLookup);
         Task<IEnumerable<RmDdLookup>> GetRMUBasedSection(DDLookUpDTO dDLookUp);

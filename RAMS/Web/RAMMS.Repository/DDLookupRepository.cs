@@ -19,6 +19,8 @@ namespace RAMS.Repository
 
     public class DDLookupRepository : RepositoryBase<RmDdLookup>, IDDLookUpRepository
     {
+
+
         public DDLookupRepository(RAMMSContext context) : base(context)
         {
             _context = context ?? throw new ArgumentException(nameof(context));
@@ -55,6 +57,34 @@ namespace RAMS.Repository
 
             }
         }
+
+         
+        public async Task<IEnumerable<RoadMasterResponseDTO>> GetRMUwithDivisionDetails()
+        {
+            //return await _context.RmDivRmuSecMaster.Where(x => x.RdsmActiveYn == true ) .ToListAsync();
+
+           return await (from x in _context.RmDivRmuSecMaster
+                          select new  RoadMasterResponseDTO
+                          {
+                              CategoryName = x.RdsmDivision,
+                              DivisionCode = x.RdsmDivCode,
+                              RmuCode = x.RdsmRmuCode ,
+                              RmuName = x.RdsmRmuName
+                          }).Distinct().ToListAsync();
+
+        
+
+            //return await (from x in _context.RmDivRmuSecMaster
+            //              select new RmDivRmuSecMaster
+            //              {
+            //                  RdsmDivision = x.RdsmDivision,
+            //                  RdsmDivCode = x.RdsmDivCode,
+            //                  RdsmRmuCode = x.RdsmRmuCode,
+            //                  RdsmPkRefNo = x.RdsmPkRefNo,
+            //                  RdsmRmuName = x.RdsmRmuName
+            //              }).Distinct().ToListAsync();
+        }
+
 
         public async Task<IEnumerable<SelectListItem>> GetDefCode()
         {

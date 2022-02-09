@@ -29,6 +29,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RAMMS.Web.UI.Filters;
+using System.Globalization;
 
 namespace RAMMS.Web.UI
 {
@@ -96,6 +97,8 @@ namespace RAMMS.Web.UI
                 config.Filters.Add(typeof(CustomExceptionFilter));
             });
             //.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
