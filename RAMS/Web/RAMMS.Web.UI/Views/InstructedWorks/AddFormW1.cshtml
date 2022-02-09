@@ -109,7 +109,7 @@
                                                                             <div class="w-100 dt-tbl-section">
                                                                                 <div class="form-group col-lg-3 pl-2 pr-2">
                                                                                     @Html.Label("Road Code", "Road Code")
-                                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Division", new { id = "RoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
+                                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
 
                                                                                 </div>
                                                                                 <div class="form-group col-lg-3 pl-2">
@@ -277,7 +277,7 @@
                                                                     <div class="row pt-3 pb-1">
                                                                         <div class="form-group col-lg-2">
                                                                             @Html.Label("Requested by", "Requested by")
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "RequestedBy", "Select Users", new { Id = "ddlRequestedBy", @class = "form-control", @onchange = "OnRequestedByUserChange(this);" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "RequestedBy", "Select Users", new { Id = "ddlCreatedBy", @class = "form-control", @onchange = "OnRequestedByUserChange(this);" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("Name", "Name")
@@ -296,7 +296,7 @@
 
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.TextBoxFor(model => model.FormW1.ServProvSign, new {type="checkbox", @class = "form-control numeric" })
+                                                                                @Html.TextBoxFor(model => model.FormW1.ServProvSign, new { type = "checkbox", @class = "form-control numeric" })
                                                                             </div>
 
                                                                         </div>
@@ -486,6 +486,9 @@
     </div>
 
     @Html.HiddenFor(m => m.FormW1.PkRefNo);
+    @Html.HiddenFor(m => m.FormW1.RoadCode);
+    @Html.HiddenFor(m => m.FormW1.CrBy);
+    @Html.HiddenFor(m => m.FormW1.VerifySOBy);
 }
 
 
@@ -495,6 +498,16 @@
     var RecomondedInstrctedWorkValue = "@Model.FormW1.RecomondedInstrctedWork";
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
+
+        $('#ddlRoadCode').val("@Model.FormW1.RoadCode");
+        $('#ddlRoadCode').trigger('chosen:updated');
+
+        $('#ddlCreatedBy').val("@Model.FormW1.CrBy");
+        $('#ddlCreatedBy').trigger('chosen:updated');
+
+        $('#ddlVerifiedBy').val("@Model.FormW1.VerifySOBy");
+        $('#ddlVerifiedBy').trigger('chosen:updated');
+
 
         $('input[type=radio][id=FormW1_RecomondedInstrctedWork]').change(function () {
 
@@ -546,7 +559,7 @@
     function OnRoadChange(tis) {
 
         var ctrl = $(tis);
-
+        $('#FormW1_RoadCode').val(ctrl.val());
         if (ctrl.val() != null && ctrl.val() != "") {
             $("#txtRoadName").val(ctrl.find("option:selected").attr("Item1"));
         }
@@ -559,7 +572,7 @@
     function OnRequestedByUserChange(tis) {
 
         var ctrl = $(tis);
-
+        $('#FormW1_CrBy').val(ctrl.val());
         if (ctrl.val() != null && ctrl.val() != "") {
             $("#SerProviderUserName").val(ctrl.find("option:selected").attr("Item1"));
             $("#SerProviderUserDesignation").val(ctrl.find("option:selected").attr("Item2"));
@@ -574,7 +587,7 @@
     function OnVerifyUserChange(tis) {
 
         var ctrl = $(tis);
-
+        $('#FormW1_VerifySOBy').val(ctrl.val());
         if (ctrl.val() != null && ctrl.val() != "") {
             $("#VerifierUserName").val(ctrl.find("option:selected").attr("Item1"));
             $("#VerifierDesignation").val(ctrl.find("option:selected").attr("Item2"));
