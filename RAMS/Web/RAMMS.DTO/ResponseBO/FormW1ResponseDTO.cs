@@ -60,14 +60,14 @@ namespace RAMMS.DTO.ResponseBO
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime? RequestedByDate { get; set; }
-        public int? Fw1VerifiedBy { get; set; }
-        public bool? Fw1VerifiedSign { get; set; }
-        public string Fw1VerifiedName { get; set; }
-        public string Fw1VerifiedDesig { get; set; }
-        public string Fw1VerifiedOffice { get; set; }
+        public int? VerifiedBy { get; set; }
+        public bool? VerifiedSign { get; set; }
+        public string VerifiedName { get; set; }
+        public string VerifiedDesig { get; set; }
+        public string VerifiedOffice { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime? Fw1VerifiedDate { get; set; }
+        public DateTime? VerifiedDate { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }

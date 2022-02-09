@@ -64,7 +64,7 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
-            model.FormW1.RecomondedInstrctedWork = "none";
+            model.FormW1.RecommendedInstructedWork   = "none";
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
@@ -141,7 +141,7 @@ namespace RAMMS.Web.UI.Controllers
             if (id != 0)
             {
                 var _formW1Model = await _formW2Service.GetFormW1ById(id);
-                _formW2Model.SaveFormW2Model.SupInstNo = _formW1Model.ReferenceNo;
+                _formW2Model.SaveFormW2Model.Fw1IwRefNo = _formW1Model.ReferenceNo;
                 _formW2Model.SaveFormW2Model.Fw1RefNo = _formW1Model.PkRefNo;
                 _formW2Model.SaveFormW2Model.TitleOfInstructWork = _formW1Model.ProjectTitle;
                 _formW2Model.SaveFormW2Model.CeilingEstCost = _formW1Model.EstimTotalCost;
