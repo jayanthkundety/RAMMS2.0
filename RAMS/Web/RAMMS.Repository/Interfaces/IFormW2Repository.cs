@@ -20,5 +20,7 @@ namespace RAMMS.Repository.Interfaces
         Task<List<RmIwFormW1>> GetFormW1List();
         Task<RmIwFormW1> GetFormW1ById(int formW1Id);
 
+        Task<RmIwFormW1> GetFormW1ByRoadCode(string roadCode);
+
     }
 }

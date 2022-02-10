@@ -64,7 +64,7 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
-            model.FormW1.RecomondedInstrctedWork = "none";
+            model.FormW1.RecommendedInstructedWork   = "none";
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
@@ -96,8 +96,6 @@ namespace RAMMS.Web.UI.Controllers
             return PartialView("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> SaveFormW1(FormW1Model frm)
         {
@@ -115,7 +113,6 @@ namespace RAMMS.Web.UI.Controllers
 
 
         }
-
 
         private async Task LoadN2DropDown()
         {
@@ -138,6 +135,7 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["FormW1s"] = await _formW2Service.GetFormW1DDL();
 
         }
+      
         public async Task<IActionResult> AddFormW2(int id = 0)
         {
             _formW2Model = new FormW2Model();
@@ -145,7 +143,7 @@ namespace RAMMS.Web.UI.Controllers
             if (id != 0)
             {
                 var _formW1Model = await _formW2Service.GetFormW1ById(id);
-                _formW2Model.SaveFormW2Model.SupInstNo = _formW1Model.ReferenceNo;
+                _formW2Model.SaveFormW2Model.Fw1IwRefNo = _formW1Model.ReferenceNo;
                 _formW2Model.SaveFormW2Model.Fw1RefNo = _formW1Model.PkRefNo;
                 _formW2Model.SaveFormW2Model.TitleOfInstructWork = _formW1Model.ProjectTitle;
                 _formW2Model.SaveFormW2Model.CeilingEstCost = _formW1Model.EstimTotalCost;
@@ -443,6 +441,12 @@ namespace RAMMS.Web.UI.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        public async Task<IActionResult> GetW1Details(string roadCode)
+        {
+            FormW1ResponseDTO formW1 = await _formW2Service.GetFormW1ByRoadCode(roadCode);
+            return Json(formW1);
         }
 
     }

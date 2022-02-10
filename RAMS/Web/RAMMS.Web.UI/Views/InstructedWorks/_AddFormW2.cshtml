@@ -11,7 +11,7 @@
     vd = Model.SaveFormW2Model.DateOfCommencement;
     string _CommencementDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
-    vd = Model.SaveFormW2Model.DateOfComplition;
+    vd = Model.SaveFormW2Model.DateOfCompletion;
     string _CompletionDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
     vd = Model.SaveFormW2Model.IssuedDate;
@@ -187,7 +187,7 @@
                                                                     @Html.Label("Superintending Officer's Instruction No", "Superintending Officer's Instruction No", new { @class = "mb-0" })
                                                                 </div>
                                                                 <div class="col-lg-4 mb-2">
-                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.SupInstNo, new { @Id = "SupInstNo", @class = "form-control  svalidate {required, Superintending Officer's Instruction No}" })
+                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1IwRefNo, new { @Id = "SupInstNo", @class = "form-control  svalidate {required, Superintending Officer's Instruction No}" })
                                                                  @Html.HiddenFor(m => m.SaveFormW2Model.Fw1RefNo , new { @Id="Fw1RefNo" })
                                                                 </div>
                                                                 <div class="col-12 mt-2">
@@ -516,11 +516,11 @@
                                         </div>
                                         <div class="form-group col-lg-3">
                                             @Html.Label("TECM Date", "TECM Date")
-                                            @Html.TextBoxFor(x => x.FormW1.TECMDate, new { @disabled = "true", @class = "form-control" })
+                                            @Html.TextBoxFor(x => x.FormW1.TecmDate, new { @disabled = "true", @class = "form-control" })
                                         </div>
                                         <div class="form-group col-lg-3">
                                             @Html.Label("TECM Status", "TECM Status")
-                                            @Html.TextBoxFor(x => x.FormW1.TECMStatus, new { @disabled = "true", @class = "form-control" })
+                                            @Html.TextBoxFor(x => x.FormW1.TecmStatus, new { @disabled = "true", @class = "form-control" })
                                         </div>
                                         <div class="form-group col-lg-3 mb-0">
                                             @Html.Label("Service Provider's Proposal Ref", "Service Provider's Proposal Ref")
@@ -598,13 +598,13 @@
                                                 @Html.Label("Recomonded Instructed Work", "Recomonded Instructed Work")
                                                 <br />
                                                 <label class="radio-inline">
-                                                    @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Critical")&nbsp;	Critical&nbsp;
+                                                    @Html.RadioButtonFor(x => x.FormW1.RecommendedInstructedWork, "Critical")&nbsp;	Critical&nbsp;
                                                 </label>
                                                 <label class="radio-inline">
-                                                    @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Urgent")&nbsp;	Urgent&nbsp;
+                                                    @Html.RadioButtonFor(x => x.FormW1.RecommendedInstructedWork, "Urgent")&nbsp;	Urgent&nbsp;
                                                 </label>
                                                 <label class="radio-inline">
-                                                    @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "None")&nbsp;	None&nbsp;
+                                                    @Html.RadioButtonFor(x => x.FormW1.RecommendedInstructedWork, "None")&nbsp;	None&nbsp;
                                                 </label>
                                             </div>
                                         </div>
@@ -704,19 +704,19 @@
                                                     <div class="row border-top pt-3 pb-1">
                                                         <div class="form-group col-lg-2 p-0">
                                                             @Html.Label("Requested by", "Requested by")
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvName, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.RequestedByName, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-3">
                                                             <label for="Designation"> Name </label>
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvName, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.RequestedByName, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-3 p-0">
                                                             <label for="Designation"> Designation</label>
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvDesig, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.RequestedByDesig, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-2 pr-0">
                                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                                            @Html.TextBoxFor(model => model.FormW1.ServProvDate, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.RequestedByDate, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-2">
                                                             <label>Signature</label>
@@ -730,19 +730,19 @@
                                                             <label for="Designation">
                                                                 Verified By
                                                             </label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySOBy, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.VerifiedBy, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-3">
                                                             <label for="Designation"> Name </label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoName, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.VerifiedName, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-3 p-0">
                                                             <label for="Designation"> Designation</label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoDesig, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.VerifiedDesig, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-2 pr-0">
                                                             <label>Date (DD-MM-YYYY)</label>
-                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoDate, new { @class = "form-control", @disabled = "true" })
+                                                            @Html.TextBoxFor(model => model.FormW1.VerifiedDate, new { @class = "form-control", @disabled = "true" })
                                                         </div>
                                                         <div class="form-group col-lg-2">
                                                             <label>Signature</label>
