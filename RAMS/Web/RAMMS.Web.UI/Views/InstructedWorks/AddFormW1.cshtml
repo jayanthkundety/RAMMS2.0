@@ -374,20 +374,20 @@
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             <label for="Designation"> Name </label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.Fw1VerifiedName, new { @disabled = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.VerifiedName, new { @disabled = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3 p-0">
                                                                             <label for="Designation"> Designation</label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.Fw1VerifiedDesig, new { @disabled = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.VerifiedDesig, new { @disabled = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             <label>Date (DD-MM-YYYY)</label>
-                                                                            @Html.EditorFor(m => m.FormW1.Fw1VerifiedDate, new { type = "date", htmlAttributes = new { @disabled = true, @class = "form-control" } })
+                                                                            @Html.EditorFor(m => m.FormW1.VerifiedDate, new { type = "date", htmlAttributes = new { @disabled = true, @class = "form-control" } })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             <label>Signature</label>
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.TextBoxFor(model => model.FormW1.Fw1VerifiedSign, new { type = "checkbox", @class = "form-control numeric" })
+                                                                                @Html.TextBoxFor(model => model.FormW1.VerifiedSign, new { type = "checkbox", @class = "form-control numeric" })
                                                                             </div>
 
                                                                         </div>
@@ -646,14 +646,14 @@
     @Html.HiddenFor(m => m.FormW1.PkRefNo);
     @Html.HiddenFor(m => m.FormW1.RoadCode);
     @Html.HiddenFor(m => m.FormW1.CrBy);
-    @Html.HiddenFor(m => m.FormW1.VerifySOBy);
+    @Html.HiddenFor(m => m.FormW1.VerifiedBy);
 }
 
 
 
 <script>
 
-    var RecomondedInstrctedWorkValue = "@Model.FormW1.RecomondedInstrctedWork";
+    var RecomondedInstrctedWorkValue = "@Model.FormW1.RecommendedInstructedWork";
     $(document).ready(function () {
 
 
@@ -669,7 +669,7 @@
         $('#ddlCreatedBy').val("@Model.FormW1.CrBy");
         $('#ddlCreatedBy').trigger('chosen:updated');
 
-        $('#ddlVerifiedBy').val("@Model.FormW1.VerifySOBy");
+        $('#ddlVerifiedBy').val("@Model.FormW1.VerifiedBy");
         $('#ddlVerifiedBy').trigger('chosen:updated');
 
 
