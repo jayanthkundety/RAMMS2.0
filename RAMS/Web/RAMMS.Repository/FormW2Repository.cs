@@ -73,5 +73,10 @@ namespace RAMMS.Repository
             return await _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true && x.Fw1PkRefNo == formW1Id).FirstOrDefaultAsync();
         }
 
+        public async Task<RmIwFormW1> GetFormW1ByRoadCode(string roadCode)
+        {
+            return await _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true && x.Fw1RoadCode == roadCode).FirstOrDefaultAsync();
+        }
+
     }
 }

@@ -248,5 +248,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             RmIwFormW1 formW1 = await _repo.GetFormW1ById(formW1Id);
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
+
+        public async Task<FormW1ResponseDTO> GetFormW1ByRoadCode(string roadCode)
+        {
+            RmIwFormW1 formW1 = await _repo.GetFormW1ByRoadCode(roadCode);
+            return _mapper.Map<FormW1ResponseDTO>(formW1);
+        }
     }
 }
