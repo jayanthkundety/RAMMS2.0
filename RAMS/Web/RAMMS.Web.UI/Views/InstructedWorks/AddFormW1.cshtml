@@ -75,7 +75,7 @@
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("TECM Status", "TECM Status")
-                                                                            @Html.EditorFor(m => m.FormW1.TECMDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                                                            @Html.EditorFor(m => m.FormW1.TecmDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             <label>
@@ -314,13 +314,13 @@
                                                                             @Html.Label("Recomonded Instructed Work", "Recomonded Instructed Work")
                                                                             <br />
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Critical")&nbsp;	Critical&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecommendedInstructedWork, "Critical")&nbsp;	Critical&nbsp;
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Urgent")&nbsp;	Urgent&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecommendedInstructedWork, "Urgent")&nbsp;	Urgent&nbsp;
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "None")&nbsp;	None&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecommendedInstructedWork, "None")&nbsp;	None&nbsp;
                                                                             </label>
                                                                         </div>
                                                                         <div class="col-lg-4">
@@ -330,8 +330,8 @@
                                                                         <div class="col-lg-4">
                                                                             <label>Recommendation</label>
                                                                             <br />
-                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "Yes")&nbsp;Yes&nbsp;</label>
-                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomondedInstrctedWork, "No")&nbsp;No&nbsp;</label>
+                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecommendedStatus, "Yes")&nbsp;Yes&nbsp;</label>
+                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecommendedStatus, "No")&nbsp;No&nbsp;</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -344,23 +344,23 @@
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("Name", "Name")
-                                                                            @Html.TextBoxFor(model => model.FormW1.ServProvName, new { @disabled = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.RequestedByName, new { @disabled = true, @class = "form-control" })
 
                                                                         </div>
                                                                         <div class="form-group col-lg-3 p-0">
                                                                             <label for="Designation"> Designation</label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.ServProvDesig, new { @disabled = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.RequestedByDesig, new { @disabled = true, @class = "form-control" })
 
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                                                            @Html.EditorFor(m => m.FormW1.ServProvDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                            @Html.EditorFor(m => m.FormW1.RequestedByDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
 
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.TextBoxFor(model => model.FormW1.ServProvSign, new { type = "checkbox", @class = "form-control numeric" })
+                                                                                @Html.TextBoxFor(model => model.FormW1.RequestedByDate, new { type = "checkbox", @class = "form-control numeric" })
                                                                             </div>
 
                                                                         </div>
@@ -374,25 +374,25 @@
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             <label for="Designation"> Name </label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoName, new { @disabled = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.Fw1VerifiedName, new { @disabled = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3 p-0">
                                                                             <label for="Designation"> Designation</label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoDesig, new { @disabled = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.Fw1VerifiedDesig, new { @disabled = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             <label>Date (DD-MM-YYYY)</label>
-                                                                            @Html.EditorFor(m => m.FormW1.VerifySoDate, new { type = "date", htmlAttributes = new { @disabled = true, @class = "form-control" } })
+                                                                            @Html.EditorFor(m => m.FormW1.Fw1VerifiedDate, new { type = "date", htmlAttributes = new { @disabled = true, @class = "form-control" } })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             <label>Signature</label>
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.TextBoxFor(model => model.FormW1.VerifySoSign, new { type = "checkbox", @class = "form-control numeric" })
+                                                                                @Html.TextBoxFor(model => model.FormW1.Fw1VerifiedSign, new { type = "checkbox", @class = "form-control numeric" })
                                                                             </div>
 
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row pt-3 pb-1">
+                                                                    @*<div class="row pt-3 pb-1">
                                                                         <div class="form-group col-lg-2">
                                                                             <label for="Designation">
                                                                                 Verified By
@@ -401,7 +401,7 @@
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             <label for="Designation"> Name </label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.VerifySoName, new { @disabled = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1., new { @disabled = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3 p-0">
                                                                             <label for="Designation"> Designation</label>
@@ -417,7 +417,7 @@
                                                                                 @Html.TextBoxFor(model => model.FormW1.VerifySoSign, new { type = "checkbox", @class = "form-control numeric" })
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div>*@
 
 
 
