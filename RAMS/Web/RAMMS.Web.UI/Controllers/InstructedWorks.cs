@@ -64,10 +64,11 @@ namespace RAMMS.Web.UI.Controllers
             return View();
         }
 
+        #region FormW1
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
-            model.FormW1.RecommendedInstructedWork   = "none";
+            model.FormW1.RecommendedInstructedWork   = "None";
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
@@ -76,6 +77,7 @@ namespace RAMMS.Web.UI.Controllers
 
             GetRMUWithDivision("RMU_Division");
 
+           
             return View("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 
@@ -95,6 +97,10 @@ namespace RAMMS.Web.UI.Controllers
             }
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;
+
+            GetRMUWithDivision("RMU_Division");
+            FormW1Model assetsModel = new FormW1Model();
+            model.ImageList = await _formW1Service.GetImageList(_formW1Model.PkRefNo);
 
             return PartialView("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
@@ -116,6 +122,108 @@ namespace RAMMS.Web.UI.Controllers
 
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetW1ImageList(int FormW1Id, string assetgroup)
+        {
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            FormW1Model assetsModel = new FormW1Model();
+            assetsModel.ImageList = new List<FormW1ImageResponseDTO>();
+            assetsModel.ImageTypeList = new List<string>();
+            ddLookup.Type = "Photo Type";
+            assetsModel.PhotoType = await _ddLookupService.GetDdLookup(ddLookup);
+            if (assetsModel.PhotoType.Count() == 0)
+            {
+                assetsModel.PhotoType = new[]{ new SelectListItem
+                {
+                    Text = "Others",
+                    Value = "Others"
+                }};
+            }
+            ViewBag.PhotoTypeList = await _ddLookupService.GetDdLookup(ddLookup);
+            assetsModel.ImageList = await _formW1Service.GetImageList(FormW1Id);
+            assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
+            return PartialView("~/Views/InstructedWorks/_PhotoSectionPageW1.cshtml", assetsModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ImageUploadedFormW1(IList<IFormFile> formFile, string id, List<string> photoType)
+        {
+            try
+            {
+                bool successFullyUploaded = false;
+                string wwwPath = this._webHostEnvironment.WebRootPath;
+                string contentPath = this._webHostEnvironment.ContentRootPath;
+                string _id = Regex.Replace(id, @"[^0-9a-zA-Z]+", "");
+
+                int j = 0;
+                foreach (IFormFile postedFile in formFile)
+                {
+                    List<FormW1ImageResponseDTO> uploadedFiles = new List<FormW1ImageResponseDTO>();
+                    FormW1ImageResponseDTO _rmAssetImageDtl = new FormW1ImageResponseDTO();
+                    string photo_Type = Regex.Replace(photoType[j], @"[^a-zA-Z]", "");
+                    string subPath = Path.Combine(@"Uploads/FormW1/", _id, photo_Type);
+                    string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormW1\", _id, photo_Type));
+                    int i = await _formW1Service.LastInsertedIMAGENO(int.Parse(id), photo_Type);
+                    i++;
+                    string fileName = Path.GetFileName(postedFile.FileName);
+                    string fileRename = i + "_" + photo_Type + "_" + fileName;
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    using (FileStream stream = new FileStream(Path.Combine(path, fileRename), FileMode.Create))
+                    {
+                        _rmAssetImageDtl.Fw1RefNo = int.Parse(id);
+                        _rmAssetImageDtl.ImageTypeCode = photoType[j];
+                        _rmAssetImageDtl.ImageUserFilePath = postedFile.FileName;
+                        _rmAssetImageDtl.ImageSrno = i;
+
+                        _rmAssetImageDtl.ActiveYn = true;
+                        if (i < 10)
+                        {
+                            _rmAssetImageDtl.ImageFilenameSys = _id + "_" + photo_Type + "_" + "00" + i;
+                        }
+                        else if (i >= 10 && i < 100)
+                        {
+                            _rmAssetImageDtl.ImageFilenameSys = _id + "_" + photo_Type + "_" + "0" + i;
+                        }
+                        else
+                        {
+                            _rmAssetImageDtl.ImageFilenameSys = _id + "_" + photo_Type + "_" + i;
+                        }
+                        _rmAssetImageDtl.ImageFilenameUpload = $"{subPath}/{fileRename}";
+
+
+                        postedFile.CopyTo(stream);
+
+
+                    }
+                    uploadedFiles.Add(_rmAssetImageDtl);
+                    if (uploadedFiles.Count() > 0)
+                    {
+                        await _formW1Service.SaveImage(uploadedFiles);
+                        successFullyUploaded = true;
+                    }
+                    else
+                    {
+                        successFullyUploaded = false;
+                    }
+
+                    j = j + 1;
+                }
+
+                return Json(successFullyUploaded);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        #endregion
 
         private async Task LoadN2DropDown()
         {
@@ -205,6 +313,7 @@ namespace RAMMS.Web.UI.Controllers
                 string _filename = filename + DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString();
                 string cachefile = templatePath + _filename + ".xlsx";
                 var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                var imageDetailsW1 = new List<FormW1ImageResponseDTO>();
                 var imageDetails = new List<FormW2ImageResponseDTO>();
                 #endregion Get File and renaming
 
@@ -216,7 +325,7 @@ namespace RAMMS.Web.UI.Controllers
                     xlWorkbook.Worksheets.TryGetWorksheet("Sheet1", out ixlWorksheet);
                     if (form == "FormW1")
                     {
-                        imageDetails = await _formW2Service.GetImageList(id);
+                        imageDetailsW1 = await _formW1Service.GetImageList(id);
                     }
                     else if (form == "FormW2")
                     {

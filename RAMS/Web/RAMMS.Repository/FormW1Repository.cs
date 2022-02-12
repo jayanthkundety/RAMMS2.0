@@ -40,13 +40,29 @@ namespace RAMMS.Repository
             return await _context.RmIwFormW1.Where(x => x.Fw1PkRefNo == Id && x.Fw1ActiveYn == true).FirstOrDefaultAsync();
         }
 
+        public Task<List<RmIwFormW1Image>> GetImagelist(int formW1Id)
+        {
+            return _context.RmIwFormW1Image.Where(x => x.Fw1iFw1RefNo == formW1Id && x.Fw1iActiveYn == true).ToListAsync();
+        }
+
+        public async Task<int> GetImageId(int formW1Id, string type)
+        {
+            int? result = await _context.RmIwFormW1Image.Where(x => x.Fw1iFw1RefNo == formW1Id && x.Fw1iImageTypeCode == type).Select(x => x.Fw1iImageSrno).MaxAsync();
+            return result.HasValue ? result.Value : 0;
+        }
+
+        public void SaveImage(IEnumerable<RmIwFormW1Image> image)
+        {
+            _context.RmIwFormW1Image.AddRange(image);
+        }
+
         //public async Task<RmDivRmuSecMaster> GetDDl()
         //{
         //  //  return await _context.RoadmasterRepository.FindAsync(x => x.RdmActiveYn == true, x => new CSelectListItem() { Text = x.RdmRdCode + "-" + x.RdmRdName, Value = x.RdmPkRefNo.ToString(), CValue = x.RdmRmuCode, Item1 = x.RdmRdName, PKId = x.RdmPkRefNo, Code = x.RdmRdCode, Item2 = x.RdmSecCode.ToString(), Item3 = (x.RdmLengthPaved + x.RdmLengthUnpaved).ToString(), FromKm = (int)x.RdmFrmCh, FromM = x.RdmFrmChDeci.ToString(), ToKm = (int)x.RdmToCh, ToM = x.RdmToChDeci.ToString() });
         //  //  return await _context.RmDivRmuSecMaster.Where(x => x.RdsmActiveYn == true).Select(x => new RAMMS.Business.ServiceProvider.CSelectListItem() { Text = x. + "-" + x.RdmRdName, Value = x.RdmPkRefNo.ToString(), CValue = x.RdmRmuCode, Item1 = x.RdmRdName, PKId = x.RdmPkRefNo, Code = x.RdmRdCode, Item2 = x.RdmSecCode.ToString(), Item3 = (x.RdmLengthPaved + x.RdmLengthUnpaved).ToString(), FromKm = (int)x.RdmFrmCh, FromM = x.RdmFrmChDeci.ToString(), ToKm = (int)x.RdmToCh, ToM = x.RdmToChDeci.ToString() });
         //}
 
-        
+
 
     }
 }

@@ -9,7 +9,7 @@ namespace RAMMS.DTO.ResponseBO
     {
 
         public int PkRefNo { get; set; }
-        public string FomrhRefNo { get; set; }
+        public string FormhRefNo { get; set; }
         public string ServPropRefNo { get; set; }
         public string ServPropName { get; set; }
         public string ReferenceNo { get; set; }
@@ -29,7 +29,7 @@ namespace RAMMS.DTO.ResponseBO
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
         public int? FrmCh { get; set; }
-        public int? ToCh { get; set; }      
+        public int? ToCh { get; set; }
         public string ChainageApprovedIwref { get; set; }
         public string DetailsOfWork { get; set; }
         public decimal? PropDesignDuration { get; set; }
@@ -45,15 +45,16 @@ namespace RAMMS.DTO.ResponseBO
         public decimal? SurvyWorks { get; set; }
         public decimal? SiteInvestPercent { get; set; }
         public decimal? SiteInvest { get; set; }
+        public string OtherCostLabel { get; set; }
         public decimal? OtherCost { get; set; }
         public decimal? EstimTotalCost { get; set; }
         public int? ReportedBy { get; set; }
         public string ReportedName { get; set; }
         public string ReportedDesig { get; set; }
-        public bool? ReportedSign { get; set; }
+        public bool ReportedSign { get; set; }
         public DateTime? ReportedDate { get; set; }
         public int? RequestedBy { get; set; }
-        public bool? RequestedBySign { get; set; }
+        public bool RequestedBySign { get; set; }
         public string RequestedByName { get; set; }
         public string RequestedByDesig { get; set; }
         public string RequestedByOffice { get; set; }
@@ -61,7 +62,7 @@ namespace RAMMS.DTO.ResponseBO
         [DataType(DataType.Date)]
         public DateTime? RequestedByDate { get; set; }
         public int? VerifiedBy { get; set; }
-        public bool? VerifiedSign { get; set; }
+        public bool VerifiedSign { get; set; }
         public string VerifiedName { get; set; }
         public string VerifiedDesig { get; set; }
         public string VerifiedOffice { get; set; }
