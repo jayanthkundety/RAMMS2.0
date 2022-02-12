@@ -19,5 +19,6 @@ namespace RAMMS.Web.UI.Models
 
         public FormW1ResponseDTO FormW1 { get; set; }
 
+        public FormW2FCEMResponseDTO Fcem { get; set; }
     }
 }

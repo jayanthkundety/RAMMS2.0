@@ -249,6 +249,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             _formW2Model = new FormW2Model();
             _formW2Model.SaveFormW2Model = new DTO.ResponseBO.FormW2ResponseDTO();
+            _formW2Model.Fcem = new FormW2FCEMResponseDTO();
             if (id != 0)
             {
                 var _formW1Model = await _formW2Service.GetFormW1ById(id);
@@ -279,6 +280,7 @@ namespace RAMMS.Web.UI.Controllers
                 res.Find(c => c.Value == result.RoadCode).Selected = true;
                 
                 _formW2Model.SaveFormW2Model = result;
+                _formW2Model.Fcem = new FormW2FCEMResponseDTO();
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1RefNoNavigation;
             }
 

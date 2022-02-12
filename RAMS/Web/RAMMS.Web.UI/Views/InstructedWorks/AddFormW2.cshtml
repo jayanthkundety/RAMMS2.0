@@ -20,6 +20,9 @@
     vd = Model.SaveFormW2Model.RequestedDate;
     string _RequestedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
+    vd = Model.Fcem.Date;
+    string  _FCEMDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
 }
 
 <script src="~/js/FormW2.js" type="text/javascript"></script>
@@ -151,28 +154,35 @@
                                         <div class="col-lg-5">
                                             <div class="row">
                                                 <div class="form-group col-lg-6">
-                                                    <label>
-                                                        FECM Date
-                                                    </label>
-                                                    <input class="form-control" type="date" />
+                                                    @Html.Label("FCEM (DD-MM-YYYY)", "FCEM (DD-MM-YYYY)")
+                                                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="fcemDate" value="@_FCEMDate" />
                                                 </div>
                                                 <div class="form-group col-lg-6">
-                                                    <label for="Division_Code">Status </label>
+                                                    @Html.Label("Status", "Status")
                                                     <select class="form-control">
                                                         <option value="">Select Status</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-lg-6">
                                                     <label for="RMU">PROGRESS %</label>
-                                                    <input class="form-control" type="text" />
+                                                    @Html.TextBoxFor(m => m.Fcem.Progress , new { @id = "fcemProgress", @class = "form-control  validate {required, PROGRESS % }"})
                                                 </div>
                                                 <div class="form-group col-lg-6 px-4">
                                                     <div class="row mt-4">
+                                                        @{
+                                                            var _BQ = Model.Fcem.IsBq  == null || Model.Fcem.IsBq == false ? false : true;
+
+                                                        }
                                                         <div class="col-6 ">
-                                                            <label class="checkbox-inline"><input type="checkbox" disabled value=""> BQ</label>
+                                                            <label class="checkbox-inline"><input type="checkbox" disabled value="@_BQ"> BQ</label>
                                                         </div>
+                                                        
+                                                        @{
+                                                            var _Drawing = Model.Fcem.IsDrawing == null || Model.Fcem.IsDrawing == false ? false : true;
+
+                                                        }
                                                         <div class="col-6">
-                                                            <label class="checkbox-inline"><input type="checkbox" disabled value=""> Drawing</label>
+                                                            <label class="checkbox-inline"><input type="checkbox" disabled value="@_Drawing"> Drawing</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -183,7 +193,7 @@
                                             <label>
                                                 Remarks
                                             </label>
-                                            <textarea class="form-control" style="height:108px;"> </textarea>
+                                            @Html.TextAreaFor(m => m.Fcem.Remark, new { @id = "fcemRemark", @class = "form-control  validate {required, Remark }" })
                                         </div>
                                     </div>
                                 </div>

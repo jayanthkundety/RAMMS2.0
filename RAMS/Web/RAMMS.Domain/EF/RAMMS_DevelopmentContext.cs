@@ -96,6 +96,7 @@ namespace RAMMS.Domain.EF
         public virtual DbSet<RmIwFormW1> RmIwFormW1 { get; set; }
         public virtual DbSet<RmIwFormW1Image> RmIwFormW1Image { get; set; }
         public virtual DbSet<RmIwFormW2> RmIwFormW2 { get; set; }
+        public virtual DbSet<RmIwFormW2Fcem> RmIwFormW2Fcem { get; set; }
         public virtual DbSet<RmIwFormW2Image> RmIwFormW2Image { get; set; }
         public virtual DbSet<RmModule> RmModule { get; set; }
         public virtual DbSet<RmModuleGroupFieldRights> RmModuleGroupFieldRights { get; set; }
@@ -10023,6 +10024,60 @@ namespace RAMMS.Domain.EF
                     .WithMany(p => p.RmIwFormW2)
                     .HasForeignKey(d => d.Fw2Fw1RefNo)
                     .HasConstraintName("FK_RM_IW_ FormW2_RM_IW_ FormW1");
+            });
+
+            modelBuilder.Entity<RmIwFormW2Fcem>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("RM_IW_Form_W2_FCEM");
+
+                entity.Property(e => e.FcemActiveYn).HasColumnName("FCEM_Active_YN");
+
+                entity.Property(e => e.FcemAuditLog).HasColumnName("FCEM_AuditLog");
+
+                entity.Property(e => e.FcemCrBy).HasColumnName("FCEM_CR_By");
+
+                entity.Property(e => e.FcemCrDt)
+                    .HasColumnName("FCEM_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FcemDate)
+                    .HasColumnName("FCEM_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FcemFw2PkRefNo)
+                    .HasColumnName("FCEM_FW2_PK_Ref_No")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.FcemIsBq).HasColumnName("FCEM_IsBQ");
+
+                entity.Property(e => e.FcemIsDrawing).HasColumnName("FCEM_IsDrawing");
+
+                entity.Property(e => e.FcemModBy).HasColumnName("FCEM_Mod_By");
+
+                entity.Property(e => e.FcemModDt)
+                    .HasColumnName("FCEM_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FcemPkRefNo).HasColumnName("FCEM_PK_Ref_No");
+
+                entity.Property(e => e.FcemProgress).HasColumnName("FCEM_Progress");
+
+                entity.Property(e => e.FcemRemark)
+                    .HasColumnName("FCEM_Remark")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FcemSstatus)
+                    .HasColumnName("FCEM_SStatus")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FcemStatus)
+                    .HasColumnName("FCEM_Status")
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.FcemSubmitSts).HasColumnName("FCEM_SUBMIT_STS");
             });
 
             modelBuilder.Entity<RmIwFormW2Image>(entity =>
