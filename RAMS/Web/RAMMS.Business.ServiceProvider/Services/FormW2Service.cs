@@ -273,22 +273,21 @@ namespace RAMMS.Business.ServiceProvider.Services
                     var iwform = new FormIWResponseDTO();
                     iwform.ReferenceNo = listData.Fw1PkRefNo.ToString();
                     iwform.projectTitle = listData.Fw1ProjectTitle;
-                    iwform.agreedNego = "";
+                    iwform.initialPropDt = "";
+                    iwform.recommdDE = "Yes";
+                    iwform.w1dt = Convert.ToString(listData.Fw1RmuDate);
+                    iwform.recommd = "Recommended";
+                    iwform.status = "Approved";
+                    iwform.technicalDt = "";
+                    iwform.financeDt = "";
+                    iwform.agreedNego = "-";
+                    iwform.issueW2Ref = "-";
                     iwform.commenDt = "01/01/2020";
                     iwform.compDt = "";
-                    iwform.ContractPeriod = "";
-                    iwform.dlpPeriod = "";
-                    iwform.finalAmt =
-                    iwform.financeDt = "";
-                    iwform.initialPropDt = "";
-                    iwform.issueW2Ref = "";
-                    iwform.recommd = "";
-                    iwform.recommdDE = "";
+                    iwform.ContractPeriod = "10";
+                    iwform.dlpPeriod = "10";
+                    iwform.finalAmt = "";
                     iwform.sitePhy = "";
-                    iwform.status = "";
-                    iwform.technicalDt = "";
-                    iwform.w1dt = "";
-
                     formIWList.Add(iwform);
                 }
 

@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using RAMMS.DTO.Wrappers;
 using X.PagedList;
+using RAMMS.DTO.JQueryModel;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -285,15 +286,15 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> SaveFormW2(Models.FormW2Model formW2)
+        public async Task<JsonResult> SaveFormW2(FormW2ResponseDTO formW2)
         {
             int refNo = 0;
             FormW2ResponseDTO saveRequestObj = new FormW2ResponseDTO();
-            saveRequestObj = formW2.SaveFormW2Model;
+            saveRequestObj = formW2;
             if (saveRequestObj.PkRefNo == 0)
-                refNo = await _formW2Service.Save(formW2.SaveFormW2Model);
+                refNo = await _formW2Service.Save(formW2);
             else
-                refNo = await _formW2Service.Update(formW2.SaveFormW2Model);
+                refNo = await _formW2Service.Update(formW2);
 
             return Json(refNo);
         }
@@ -461,6 +462,7 @@ namespace RAMMS.Web.UI.Controllers
             assetsModel.ImageList = new List<FormW2ImageResponseDTO>();
             assetsModel.ImageTypeList = new List<string>();
             ddLookup.Type = "Photo Type";
+            ddLookup.TypeCode = "IW";
             assetsModel.PhotoType = await _ddLookupService.GetDdLookup(ddLookup);
             if (assetsModel.PhotoType.Count() == 0)
             {
@@ -559,7 +561,78 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        public async Task<IActionResult> LoadFormIWList(FormIWSearchGridDTO filterData)
+        public async Task<IActionResult> LoadFormIWList(DataTableAjaxPostModel<FormIWSearchGridDTO> searchData)
+        {
+            if (Request.Form.ContainsKey("columns[0][search][value]"))
+            {
+                searchData.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[1][search][value]"))
+            {
+                searchData.filterData.IssueW2Ref  = Request.Form["columns[1][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                searchData.filterData.CommencementFrom = Request.Form["columns[2][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[3][search][value]"))
+            {
+                searchData.filterData.CommencementTo = Request.Form["columns[3][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                searchData.filterData.ProjectTitle = Request.Form["columns[4][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                searchData.filterData.Status = Request.Form["columns[4][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                if (!string.IsNullOrEmpty(Request.Form["columns[6][search][value]"].ToString()))
+                {
+                    searchData.filterData.Percentage = Convert.ToInt32(Request.Form["columns[6][search][value]"].ToString());
+                }
+            }
+
+
+            if (Request.Form.ContainsKey("columns[7][search][value]"))
+            {
+                if (!string.IsNullOrEmpty(Request.Form["columns[7][search][value]"].ToString()))
+                {
+                    searchData.filterData.Months = Convert.ToInt32(Request.Form["columns[7][search][value]"].ToString());
+                }
+            }
+
+            if (Request.Form.ContainsKey("columns[8][search][value]"))
+            {
+                searchData.filterData.RMU = Request.Form["columns[8][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[9][search][value]"))
+            {
+                searchData.filterData.RoadCode = Request.Form["columns[9][search][value]"].ToString();
+            }
+
+            FilteredPagingDefinition<FormIWSearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormIWSearchGridDTO>();
+
+            filteredPagingDefinition.Filters = searchData.filterData;
+            filteredPagingDefinition.RecordsPerPage = searchData.length;
+            filteredPagingDefinition.StartPageNo = searchData.start;
+            if (searchData.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = searchData.order[0].column;
+                filteredPagingDefinition.sortOrder = searchData.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+            var result = await _formW2Service.GetFilteredFormIWGrid(filteredPagingDefinition).ConfigureAwait(false);
+
+            return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+
+        }
+
+        public async Task<IActionResult> SearchFormIWList(FormIWSearchGridDTO filterData)
         {
             FormIWModel formObj = new FormIWModel();
             formObj.SearchObj = filterData;

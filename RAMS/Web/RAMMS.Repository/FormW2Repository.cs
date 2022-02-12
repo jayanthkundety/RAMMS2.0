@@ -242,7 +242,7 @@ namespace RAMMS.Repository
             }
 
 
-            if (filterOptions.Filters.CommencementFrom != null && filterOptions.Filters.CommencementTo != null)
+            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
                 DateTime dt;
                 if (DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
@@ -251,7 +251,7 @@ namespace RAMMS.Repository
                 }
             }
 
-            if (filterOptions.Filters.CommencementTo != null)
+            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
                 DateTime dt;
                 if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))

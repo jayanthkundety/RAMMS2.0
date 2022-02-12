@@ -17,8 +17,8 @@
     vd = Model.SaveFormW2Model.IssuedDate;
     string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
-    vd = Model.SaveFormW2Model.ReceivedDate;
-    string _ReceivedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+    vd = Model.SaveFormW2Model.RequestedDate;
+    string _RequestedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
 }
 <script src="~/js/FormW2.js" type="text/javascript"></script>
@@ -316,7 +316,7 @@
                                                                                         <div class="col-lg-12 form-group">
                                                                                             @Html.Label("Date of Completion (DD-MM-YYYY)", "Date of Completion (DD-MM-YYYY)")
                                                                                             @*@Html.EditorFor(m => m.SaveFormW2Model.DateOfComplition, new { type = "date", htmlAttributes = new { @class = "form-control datepicker svalidate {required, Completion date}", @id = "formW2CompletionDate" } })*@
-                                                                                            <input type="date" class="datepicker form-control  svalidate {required, Completion date}" id="formW2CompletionDate" name="SaveFormW2Model.DateOfComplition" value="@_CompletionDate" />
+                                                                                            <input type="date" class="datepicker form-control  svalidate {required, Completion date}" id="formW2CompletionDate" name="SaveFormW2Model.DateOfCompletion" value="@_CompletionDate" />
                                                                                         </div>
                                                                                         <div class="col-lg-12 form-group">
                                                                                             @Html.Label("Instructed Work duration", "Instructed Work duration")
@@ -408,12 +408,12 @@
                                                                     <div class="form-group col-lg-2 text-center">
                                                                         @Html.Label("Signature", "Signature")
                                                                         @{
-                                                                            var issued = Model.SaveFormW2Model.ReceivedSignature == null || Model.SaveFormW2Model.ReceivedSignature == false ? false : true;
+                                                                            var _issued = Model.SaveFormW2Model.RequestedSign == null || Model.SaveFormW2Model.RequestedSign == false ? false : true;
 
                                                                         }
                                                                         <div class="clear-b mt-2">
                                                                             @*@Html.CheckBoxFor(w => (w.SaveFormW2Model.IssuedSignature == null ? false : true), new { @id = "formW2IssuedSignture", @class = "form-control" })*@
-                                                                            <input type="checkbox" id="formW2IssuedSignture" class="disableinput" checked="@issued" style="height: 20px;">
+                                                                            <input type="checkbox" id="formW2IssuedSignture" class="disableinput" checked="@_issued" style="height: 20px;">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -450,30 +450,29 @@
                                                                     <div class="row">
                                                                         <div class="form-group col-lg-3">
 
-                                                                            @Html.Label("Received by", "Received by")
+                                                                            @Html.Label("Requested by", "Received by")
 
-                                                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ReceivedBy, (IEnumerable
-                                     <SelectListItem>)ViewData["Users"], "Select Received By", new { @Id = "formw2ReceivedBy", @class = "form-control  svalidate {required, Received By}", @onchange = "ChangeRUser(this)" })
+                                                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.RequestedBy, (IEnumerable
+                                     <SelectListItem>)ViewData["Users"], "Select Received By", new { @Id = "formw2RequestedBy", @class = "form-control  svalidate {required, Requested By}", @onchange = "ChangeRUser(this)" })
                                                                         </div>
                                                                         <div class="form-group col-lg-4">
                                                                             @Html.Label("Name", "Name")
-                                                                            @Html.TextBoxFor(w => w.SaveFormW2Model.ReceivedName, new { @id = "formW2ReceivedName", @class = "form-control svalidate  {required, ReceivedName To Name}", @disabled = true })
+                                                                            @Html.TextBoxFor(w => w.SaveFormW2Model.RequestedName, new { @id = "formW2ReceivedName", @class = "form-control svalidate  {required, Requested Name}", @disabled = true })
                                                                         </div>
 
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
                                                                             @*@Html.EditorFor(m => m.SaveFormW2Model.ReceivedDate, new { type = "date", htmlAttributes = new { @class = "form-control datepicker svalidate {required, Recieved date}", @id = "formW2RecievedDate" } })*@
-                                                                            <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2ReceivedDate" name="SaveFormW2Model.ReceivedDate" value="@_ReceivedDate" />
+                                                                            <input type="date" class="datepicker form-control  svalidate {required, Requested date}" id="formW2ReceivedDate" name="SaveFormW2Model.RequestedDate" value="@_RequestedDate" />
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             @Html.Label("Signature", "Signature")
                                                                             @{
-                                                                                var rcvd = Model.SaveFormW2Model.ReceivedSignature == null || Model.SaveFormW2Model.ReceivedSignature == false ? false : true;
+                                                                                var _Requested = Model.SaveFormW2Model.RequestedSign == null || Model.SaveFormW2Model.RequestedSign == false ? false : true;
 
                                                                             }
                                                                             <div class="clear-b mt-2">
-                                                                                <input type="checkbox" id="formW2ReceivedSignature" class="disableinput" checked="@rcvd" style="height: 20px;">
-                                                                                @*@Html.CheckBoxFor(w => w.SaveFormW2Model.ReceivedSignature, new { @id = "formW2ReceivedSignature", @class = "form-control" })*@
+                                                                                <input type="checkbox" id="formW2RequestedSign" name="SaveFormW2Model.RequestedSign" class="disableinput" checked="@_Requested" style="height: 20px;">
 
                                                                             </div>
                                                                         </div>

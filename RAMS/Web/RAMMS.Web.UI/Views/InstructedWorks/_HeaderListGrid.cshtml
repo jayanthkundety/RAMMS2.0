@@ -7,30 +7,32 @@
     </div>
 </div>
 <!-- Jquery DataTable JS library -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+@*<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>*@
 <script src="~/js/CDTGrid.js"></script>
 <script>
     var isModifyPerm =@security.IsPCModify(ModuleNameList.Instructed_Works).ToString().ToLowerInvariant()? "" : 'hidden';
     var isDeletePerm =@security.IsPCDelete(ModuleNameList.Instructed_Works).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
 
     var table_columns = [];
     var chkRefNoCol = {
-        data: null, name: "chkBox", title: "", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-            return "<input type='checkbox' value='" + + data.referenceNo + "' />";
+        data: null, name: "chkBox", title: "", autoWidth: true, sortable: false, render: function (data) {
+            return "<input type='checkbox' value='" + data.referenceNo + "' />";
         }
     };
-
-    var projectTitleCol = { data: "projectTitle", name: "Rmu", title: "Title", autoWidth: true, sortable: true };
-    var iniProposedDtCol = { data: "initialPropDt", name: "InitialProposedDate", title: "Initial Proposed Date", autoWidth: true, sortable: true };
-    var recommDECol = { data: "recommdDE", name: "RecommendDE", title: "Recommendation by DE(Yes/No)", autoWidth: true, sortable: true };
-    var w1DateCol = { data: "w1dt", name: "W1Date", title: "W1 (date)", autoWidth: true, sortable: true };
-    var recommendCol = { data: "recommd", name: "Recommend", title: "Recommendation (Yes/No)", autoWidth: true, sortable: true };
+    var refNoCol = { data: "referenceNo", name: "ProjectTitle", title: "Title", autoWidth: true, sortable: false, visible: false };
+    var projectTitleCol = { data: "projectTitle", name: "ProjectTitle", title: "Title", autoWidth: true, sortable: true };
+    var iniProposedDtCol = { data: "initialPropDt", name: "InitialProposedDate", title: "Initial Proposed Date", autoWidth: false, width: 150, sortable: true };
+    var recommDECol = { data: "recommdDE", name: "RecommendDE", title: "Recommendation by DE(Yes/No)", autoWidth: false, width: 50, sortable: true };
+    var w1DateCol = { data: "w1dt", name: "W1Date", title: "W1 (date)", autoWidth: false, width: 150, sortable: true };
+    var recommendCol = { data: "recommd", name: "Recommend", title: "Recommendation (Yes/No)", autoWidth: false, width: 50, sortable: true };
     var estCellCostCol = { data: "status", name: "Status", title: "Estimated Ceiling Cost (RM)", autoWidth: true, sortable: true };
     var technicalDtCol = {
-        data: "technicalDt", type: "date", format: 'DD-MM-YYYY', name: "TechnicalDt", title: "Technical (Date)", autoWidth: true, sortable: true,
+        data: "technicalDt", type: "date", format: 'DD-MM-YYYY', name: "TechnicalDt", title: "Technical (Date)", autoWidth: false, width: 150, sortable: true,
         render: function (data) {
+            if (data == "") return "";
             var d = new Date(data);
             var day = d.getDate();
             var month = d.getMonth() + 1;
@@ -47,8 +49,9 @@
 
     };
     var financialDtCol = {
-         data: "financeDt", type: "date", format: 'DD-MM-YYYY', name: "FinanceDt", title: "Financial (Date)", autoWidth: true, sortable: true,
+        data: "financeDt", type: "date", format: 'DD-MM-YYYY', name: "FinanceDt", title: "Financial (Date)", autoWidth: false, width: 150, sortable: true,
         render: function (data) {
+            if (data == "") return "";
             var d = new Date(data);
             var day = d.getDate();
             var month = d.getMonth() + 1;
@@ -67,8 +70,9 @@
     var agreeNegoCol = { data: "agreedNego", name: "AgreedNegoPrice", title: "Agreed Nego Price Letter (Yes / No)", autoWidth: true, sortable: true };
     var issuW2IWRefCol = { data: "issueW2Ref", name: "IssuW2IWRef", title: "Issuance of W2 IW Ref", autoWidth: true, sortable: true };
     var commencementDtCol = {
-         data: "commenDt", type: "date", format: 'DD-MM-YYYY', name: "CommencementDt", title: "Commencement (Date)", autoWidth: true, sortable: true,
+        data: "commenDt", type: "date", format: 'DD-MM-YYYY', name: "CommencementDt", title: "Commencement (Date)", autoWidth: false, width: 150, sortable: true,
         render: function (data) {
+            if (data == "") return "";
             var d = new Date(data);
             var day = d.getDate();
             var month = d.getMonth() + 1;
@@ -84,8 +88,9 @@
         }
     };
     var completionDtCol = {
-         data: "compDt", type: "date", format: 'DD-MM-YYYY', name: "CompletionDt", title: "Completion (Date)", autoWidth: true, sortable: true,
+        data: "compDt", type: "date", format: 'DD-MM-YYYY', name: "CompletionDt", title: "Completion (Date)", autoWidth: false, width: 150, sortable: true,
         render: function (data) {
+            if (data == "") return "";
             var d = new Date(data);
             var day = d.getDate();
             var month = d.getMonth() + 1;
@@ -109,6 +114,7 @@
 
 
     table_columns.push(chkRefNoCol);
+    table_columns.push(refNoCol);
     table_columns.push(projectTitleCol);
     table_columns.push(iniProposedDtCol);
     table_columns.push(recommDECol);
@@ -145,7 +151,7 @@
         filterData.Month = $("#txtMonth").val();
         filterData.Rmu = $("#txtRmu option:selected").text().split("-")[0];
         filterData.RoadCode = $("#txtRoadCode option:selected").text().split("-")[0];
-        
+
         $('#FormIWGridView').DataTable({
             ajax: {
                 url: "/InstructedWorks/LoadFormIWList",
@@ -163,9 +169,17 @@
         debugger;
         InitializeGrid();
 
-        //Apply Custom search on jQuery DataTables here
-        oTable = $('#FormIWGridView').DataTable();
         $('#btnSearch').click(function () {
+            FormIWGridRefresh();
+        });
+
+    });
+
+
+    function FormIWGridRefresh() {
+        //Apply Custom search on jQuery DataTables here
+              
+            oTable = $('#FormIWGridView').DataTable();
             oTable.columns(0).search($("#txtSmartSearch").val().trim());
             oTable.columns(1).search($("#txtIWRefNo").val().trim());
             oTable.columns(2).search($("#txtCommenceDtFrom").val().trim());
@@ -190,11 +204,22 @@
             if (rdCode >= 0) {
                 oTable.columns(9).search(rdCode);
             } else {
-                 oTable.columns(9).search("");
+                oTable.columns(9).search("");
             }
 
             oTable.data = filterData;
             oTable.draw();
-        });
-    });
+
+    }
 </script>
+
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+
+    td {
+        text-align:left;
+    }
+</style>

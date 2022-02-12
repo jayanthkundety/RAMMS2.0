@@ -96,6 +96,7 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmIwFormW1> RmIwFormW1 { get; set; }
         public virtual DbSet<RmIwFormW1Image> RmIwFormW1Image { get; set; }
         public virtual DbSet<RmIwFormW2> RmIwFormW2 { get; set; }
+        public virtual DbSet<RmIwFormW2Fcem> RmIwFormW2Fcem { get; set; }
         public virtual DbSet<RmIwFormW2Image> RmIwFormW2Image { get; set; }
         public virtual DbSet<RmModule> RmModule { get; set; }
         public virtual DbSet<RmModuleGroupFieldRights> RmModuleGroupFieldRights { get; set; }
@@ -9622,9 +9623,10 @@ namespace RAMMS.Domain.Models
 
             modelBuilder.Entity<RmIwFormW1>(entity =>
             {
-                entity.HasKey(e => e.Fw1PkRefNo);
+                entity.HasKey(e => e.Fw1PkRefNo)
+                    .HasName("PK_RM_IW_ FormW1");
 
-                entity.ToTable("RM_IW_ FormW1");
+                entity.ToTable("RM_IW_FormW1");
 
                 entity.Property(e => e.Fw1PkRefNo).HasColumnName("FW1_PK_Ref_No");
 
@@ -9872,9 +9874,10 @@ namespace RAMMS.Domain.Models
 
             modelBuilder.Entity<RmIwFormW2>(entity =>
             {
-                entity.HasKey(e => e.Fw2PkRefNo);
+                entity.HasKey(e => e.Fw2PkRefNo)
+                    .HasName("PK_RM_IW_ FormW2");
 
-                entity.ToTable("RM_IW_ FormW2");
+                entity.ToTable("RM_IW_FormW2");
 
                 entity.Property(e => e.Fw2PkRefNo).HasColumnName("FW2_PK_Ref_No");
 
@@ -9959,18 +9962,6 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FW2_Mod_DT")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw2ReceivedBy).HasColumnName("FW2_Received_By");
-
-                entity.Property(e => e.Fw2ReceivedDate)
-                    .HasColumnName("FW2_Received_Date")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fw2ReceivedName)
-                    .HasColumnName("FW2_Received_Name")
-                    .HasMaxLength(250);
-
-                entity.Property(e => e.Fw2ReceivedSign).HasColumnName("FW2_Received_Sign");
-
                 entity.Property(e => e.Fw2Region)
                     .HasColumnName("FW2_Region")
                     .HasMaxLength(50);
@@ -9980,6 +9971,18 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Fw2Remarks).HasColumnName("FW2_Remarks");
+
+                entity.Property(e => e.Fw2RequestedBy).HasColumnName("FW2_Requested_By");
+
+                entity.Property(e => e.Fw2RequestedDate)
+                    .HasColumnName("FW2_Requested_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2RequestedName)
+                    .HasColumnName("FW2_Requested_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2RequestedSign).HasColumnName("FW2_Requested_Sign");
 
                 entity.Property(e => e.Fw2Rmu)
                     .HasColumnName("FW2_RMU")
@@ -10021,6 +10024,60 @@ namespace RAMMS.Domain.Models
                     .WithMany(p => p.RmIwFormW2)
                     .HasForeignKey(d => d.Fw2Fw1RefNo)
                     .HasConstraintName("FK_RM_IW_ FormW2_RM_IW_ FormW1");
+            });
+
+            modelBuilder.Entity<RmIwFormW2Fcem>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("RM_IW_Form_W2_FCEM");
+
+                entity.Property(e => e.FcemActiveYn).HasColumnName("FCEM_Active_YN");
+
+                entity.Property(e => e.FcemAuditLog).HasColumnName("FCEM_AuditLog");
+
+                entity.Property(e => e.FcemCrBy).HasColumnName("FCEM_CR_By");
+
+                entity.Property(e => e.FcemCrDt)
+                    .HasColumnName("FCEM_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FcemDate)
+                    .HasColumnName("FCEM_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FcemFw2PkRefNo)
+                    .HasColumnName("FCEM_FW2_PK_Ref_No")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.FcemIsBq).HasColumnName("FCEM_IsBQ");
+
+                entity.Property(e => e.FcemIsDrawing).HasColumnName("FCEM_IsDrawing");
+
+                entity.Property(e => e.FcemModBy).HasColumnName("FCEM_Mod_By");
+
+                entity.Property(e => e.FcemModDt)
+                    .HasColumnName("FCEM_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FcemPkRefNo).HasColumnName("FCEM_PK_Ref_No");
+
+                entity.Property(e => e.FcemProgress).HasColumnName("FCEM_Progress");
+
+                entity.Property(e => e.FcemRemark)
+                    .HasColumnName("FCEM_Remark")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FcemSstatus)
+                    .HasColumnName("FCEM_SStatus")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FcemStatus)
+                    .HasColumnName("FCEM_Status")
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.FcemSubmitSts).HasColumnName("FCEM_SUBMIT_STS");
             });
 
             modelBuilder.Entity<RmIwFormW2Image>(entity =>

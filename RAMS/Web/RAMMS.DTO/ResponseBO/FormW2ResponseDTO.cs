@@ -23,7 +23,7 @@ namespace RAMMS.DTO.ResponseBO
         public string DivisonName { get; set; }
         public string Rmu { get; set; }
         public string RmuName { get; set; }
-        public int? Attn { get; set; }
+        public string Attn { get; set; }
         public string Cc { get; set; }
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
@@ -42,20 +42,20 @@ namespace RAMMS.DTO.ResponseBO
         public string DetailsOfWorks { get; set; }
         public decimal? CeilingEstCost { get; set; }
         public string IssuedBy { get; set; }
-        public bool? IssuedSignature { get; set; }
+        public bool? IssuedSign { get; set; }
         public string IssuedName { get; set; }
 
         [DisplayFormat(DataFormatString = "{​​​​​0:yyyy-MM-dd}​​​​​", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime? IssuedDate { get; set; }
 
-        public string ReceivedBy { get; set; }
-        public bool? ReceivedSignature { get; set; }
-        public string ReceivedName { get; set; }
+        public string RequestedBy { get; set; }
+        public bool? RequestedSign { get; set; }
+        public string RequestedName { get; set; }
 
         [DisplayFormat(DataFormatString = "{​​​​​0:yyyy-MM-dd}​​​​​", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime? ReceivedDate { get; set; }
+        public DateTime? RequestedDate { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }

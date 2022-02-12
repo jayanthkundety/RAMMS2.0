@@ -9903,17 +9903,17 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Mod_DT")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw2ReceivedBy).HasColumnName("FW2_Received_By");
+                entity.Property(e => e.Fw2RequestedBy).HasColumnName("FW2_Requested_By");
 
-                entity.Property(e => e.Fw2ReceivedDate)
-                    .HasColumnName("FW2_Received_Date")
+                entity.Property(e => e.Fw2RequestedDate)
+                    .HasColumnName("FW2_Requested_Date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw2ReceivedName)
-                    .HasColumnName("FW2_Received_Name")
+                entity.Property(e => e.Fw2RequestedName)
+                    .HasColumnName("FW2_Requested_Name")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw2ReceivedSign).HasColumnName("FW2_Received_Sign");
+                entity.Property(e => e.Fw2RequestedSign).HasColumnName("FW2_Requested_Sign");
 
                 entity.Property(e => e.Fw2Region)
                     .HasColumnName("FW2_Region")

@@ -41,10 +41,10 @@ namespace RAMMS.Domain.EF
         public bool? Fw2IssuedSign { get; set; }
         public string Fw2IssuedName { get; set; }
         public DateTime? Fw2IssuedDate { get; set; }
-        public bool? Fw2ReceivedSign { get; set; }
-        public int? Fw2ReceivedBy { get; set; }
-        public string Fw2ReceivedName { get; set; }
-        public DateTime? Fw2ReceivedDate { get; set; }
+        public bool? Fw2RequestedSign { get; set; }
+        public int? Fw2RequestedBy { get; set; }
+        public string Fw2RequestedName { get; set; }
+        public DateTime? Fw2RequestedDate { get; set; }
         public int? Fw2ModBy { get; set; }
         public DateTime? Fw2ModDt { get; set; }
         public int? Fw2CrBy { get; set; }

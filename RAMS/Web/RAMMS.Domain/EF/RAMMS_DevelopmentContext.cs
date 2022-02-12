@@ -9622,9 +9622,10 @@ namespace RAMMS.Domain.EF
 
             modelBuilder.Entity<RmIwFormW1>(entity =>
             {
-                entity.HasKey(e => e.Fw1PkRefNo);
+                entity.HasKey(e => e.Fw1PkRefNo)
+                    .HasName("PK_RM_IW_ FormW1");
 
-                entity.ToTable("RM_IW_ FormW1");
+                entity.ToTable("RM_IW_FormW1");
 
                 entity.Property(e => e.Fw1PkRefNo).HasColumnName("FW1_PK_Ref_No");
 
@@ -9872,9 +9873,10 @@ namespace RAMMS.Domain.EF
 
             modelBuilder.Entity<RmIwFormW2>(entity =>
             {
-                entity.HasKey(e => e.Fw2PkRefNo);
+                entity.HasKey(e => e.Fw2PkRefNo)
+                    .HasName("PK_RM_IW_ FormW2");
 
-                entity.ToTable("RM_IW_ FormW2");
+                entity.ToTable("RM_IW_FormW2");
 
                 entity.Property(e => e.Fw2PkRefNo).HasColumnName("FW2_PK_Ref_No");
 
@@ -9959,18 +9961,6 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Mod_DT")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw2ReceivedBy).HasColumnName("FW2_Received_By");
-
-                entity.Property(e => e.Fw2ReceivedDate)
-                    .HasColumnName("FW2_Received_Date")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fw2ReceivedName)
-                    .HasColumnName("FW2_Received_Name")
-                    .HasMaxLength(250);
-
-                entity.Property(e => e.Fw2ReceivedSign).HasColumnName("FW2_Received_Sign");
-
                 entity.Property(e => e.Fw2Region)
                     .HasColumnName("FW2_Region")
                     .HasMaxLength(50);
@@ -9980,6 +9970,18 @@ namespace RAMMS.Domain.EF
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Fw2Remarks).HasColumnName("FW2_Remarks");
+
+                entity.Property(e => e.Fw2RequestedBy).HasColumnName("FW2_Requested_By");
+
+                entity.Property(e => e.Fw2RequestedDate)
+                    .HasColumnName("FW2_Requested_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2RequestedName)
+                    .HasColumnName("FW2_Requested_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2RequestedSign).HasColumnName("FW2_Requested_Sign");
 
                 entity.Property(e => e.Fw2Rmu)
                     .HasColumnName("FW2_RMU")

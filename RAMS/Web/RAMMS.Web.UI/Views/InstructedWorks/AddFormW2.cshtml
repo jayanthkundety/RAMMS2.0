@@ -17,8 +17,8 @@
     vd = Model.SaveFormW2Model.IssuedDate;
     string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
-    vd = Model.SaveFormW2Model.ReceivedDate;
-    string _ReceivedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+    vd = Model.SaveFormW2Model.RequestedDate;
+    string _RequestedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
 }
 
@@ -81,6 +81,8 @@
 
                 return false;
             });
+
+           
         });
 
 
@@ -95,7 +97,7 @@
 <div class="row bg-white row bg-white pt-3 pb-0" style="border-top:1px solid #dee2e6;">
     @using (Html.BeginForm())
     {
-        <div class="col-md-12">
+        <div class="col-md-12" id="divPage">
             <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
                 <ul class="nav nav-tabs tabbed round">
                     <li class="nav-item">
@@ -131,11 +133,11 @@
                 </ul>
                 <div class="d-flex py-2 mb-2 position-absolute" style="right: 0px;width: 40%; top:0px;">
                     <div class="form-group mb-0 px-2" style="margin-top: -14px;">
-                        @Html.Label("IW Ref No:", "IW Ref No:")  @Html.TextBoxFor(m => m.FormW1.ReferenceNo, new { @id = "Fw1RefNo", @class = "form-control  svalidate {required, IW Reference No.}", @disabled = "true" })
-                        @Html.HiddenFor(m => m.SaveFormW2Model.Fw1IwRefNo, new { @Id = "Fw1PKRefNo" })
+                        @Html.Label("IW Ref No:", "IW Ref No:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1IwRefNo, new { @id = "fw1RefNo", @class = "form-control  validate {required, IW Reference No.}", @disabled = "true" })
+                        @Html.HiddenFor(m => m.SaveFormW2Model.Fw1RefNo, new { @Id = "fw1PKRefNo" })
                     </div>
                     <div class="form-group mb-0" style="margin-top: -14px;">
-                        @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @id = "Fw1ProjectTitle", @class = "form-control  svalidate {required, Project Title }", @disabled = "true" })
+                        @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @id= "fw1ProjectTitle",  @class = "form-control  validate {required, Project Title }", @disabled = "true" })
                     </div>
                 </div>
             </div>
@@ -188,7 +190,7 @@
                             </div>
                         </div>
                         <div class="tab-pane show active" id="page">
-                            <div class="col-md-12" id="divpage">
+                            <div class="col-md-12" id="divpage1">
                                 <div class="row" id="div-addformd">
                                     <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
                                         <div class="p-4">
@@ -217,7 +219,7 @@
                                                                         </div>
                                                                         <div class="col-6">
                                                                             <label for="Division_Code">Division Name</label>
-                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.DivisonName, new { @Id = "formW2DivisonName", @class = "form-control  svalidate {required, Division Name}", @disabled = true })
+                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.DivisonName, new { @name= "SaveFormW2Model.DivisonName", @Id = "formW2DivisonName", @class = "form-control  svalidate {required, Division Name}", @disabled = true })
                                                                         </div>
                                                                     </div>
 
@@ -236,7 +238,7 @@
                                                                 <div class="col-12 mt-2">
                                                                     <div class="form-group col-lg-2 pl-lg-0">
                                                                         @Html.Label("JKR Ref", "JKR Ref")
-                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.JkrRefNo, new { @Id = "JkrRefNo", @class = "form-control  svalidate {required, JkrRefNo}" })
+                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.JkrRefNo, new { @Id = "fw2JkrRefNo", @class = "form-control  svalidate {required, JkrRefNo}" })
                                                                     </div>
                                                                     <div class="form-group col-lg-2 ">
                                                                         @Html.Label("Date of Initiation (DD-MM-YYYY)", "Date of Initiation (DD-MM-YYYY)")
@@ -246,7 +248,7 @@
                                                                         <div class="row">
                                                                             <div class="col-6">
                                                                                 @Html.Label("Service Provider's Ref", "Service Provider's Ref")
-                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.SerProviderRefNo, new { @Id = "SerProviderRef", @class = "form-control  svalidate {required, Service Provider's Ref}" })
+                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.SerProviderRefNo, new { @Id = "fw2SerProviderRef", @class = "form-control  svalidate {required, Service Provider's Ref}" })
                                                                             </div>
                                                                             <div class="col-6">
                                                                                 @Html.Label("Service Provider", "Service Provider")
@@ -260,11 +262,11 @@
                                                                     </div>
                                                                     <div class="form-group col-lg-2 pr-lg-0">
                                                                         @Html.Label("Attn", "Attn")
-                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.Attn, new { @class = "form-control  svalidate {required, Attention}" })
+                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.Attn, new { @id="fw2Attn",  @class = "form-control  svalidate {required, Attention}" })
                                                                     </div>
                                                                     <div class="form-group col-lg-2">
                                                                         @Html.Label("CC", "CC")
-                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.Cc, new { @class = "form-control  svalidate {required, CC}" })
+                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.Cc, new { @id="fw2cc", @class = "form-control  svalidate {required, CC}" })
                                                                     </div>
                                                                 </div>
 
@@ -287,12 +289,12 @@
                                                                                     <div class="row">
                                                                                         <div class="col-6">
                                                                                             @Html.Label("Road Code", "Road Code")
-                                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @class = "form-control", @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
+                                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @class = "form-control  validate {required, Road Name}", @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
                                                                                             @Html.HiddenFor(m => m.SaveFormW2Model.RoadCode, new { id = "frmW2RoadCode" })
                                                                                         </div>
                                                                                         <div class="col-6">
                                                                                             @Html.Label("Road Name", "Road Name")
-                                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.RoadName, new { @Id = "formW2roadDesc", @readonly = "readonly", @class = "form-control svalidate {required, Road Name} " })
+                                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.RoadName, new { @Id = "formW2roadDesc", @readonly = "readonly", @class = "form-control validate {required, Road Name} " })
                                                                                         </div>
                                                                                     </div>
 
@@ -335,11 +337,11 @@
                                                                                                 </div>
                                                                                                 <div class="mb-2 col-lg-12">
                                                                                                     @Html.Label("Date of Completion (DD-MM-YYYY)", "Date of Completion (DD-MM-YYYY)")
-                                                                                                    <input type="date" class="datepicker form-control  svalidate {required, Completion date}" id="formW2CompletionDate" name="SaveFormW2Model.DateOfComplition" value="@_CompletionDate" />
+                                                                                                    <input type="date" class="datepicker form-control  svalidate {required, Completion date}" id="formW2CompletionDate" name="SaveFormW2Model.DateOfCompletion" value="@_CompletionDate" />
                                                                                                 </div>
                                                                                                 <div class="mb-2 col-lg-12">
                                                                                                     @Html.Label("Instructed Work duration(Months)", "Instructed Work duration(Months)")
-                                                                                                    <input type="text" placeholder="Months" class="form-control">
+                                                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.InstructWorkDuration , new { @id= "fw2InstructWorkDuration", @type="numeric", @class = "form-control svalidate {required, Instructed Work duration}" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -398,8 +400,7 @@
                                                                     <div class="clear-b mb-3"></div>
                                                                     <div class="form-group col-lg-3 px-0">
                                                                         @Html.Label("Issued By", "Issued By")
-                                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.IssuedBy, (IEnumerable
-<SelectListItem>)ViewData["Users"], "Select IssuedBy", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}" })
+                                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.IssuedBy, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Issued By", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}" })
                                                                     </div>
                                                                     <div class="form-group col-lg-4">
                                                                         @Html.Label("Name", "Name")
@@ -408,44 +409,43 @@
 
                                                                     <div class="form-group col-lg-3">
                                                                         @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                        <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" name="SaveFormW2Model.IssuedDate" value="@_IssuedDate" />
+                                                                        <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate"  value="@_IssuedDate" />
                                                                     </div>
                                                                     <div class="form-group col-lg-2 text-center">
                                                                         @Html.Label("Signature", "Signature")
                                                                         @{
-                                                                            var issued = Model.SaveFormW2Model.ReceivedSignature == null || Model.SaveFormW2Model.ReceivedSignature == false ? false : true;
+                                                                            var _issued = Model.SaveFormW2Model.IssuedSign == null || Model.SaveFormW2Model.IssuedSign == false ? false : true;
 
                                                                         }
                                                                         <div class="clear-b mt-2">
-                                                                            <input type="checkbox" id="formW2IssuedSignture" class="disableinput" checked="@issued" style="height: 20px;">
+                                                                            <input type="checkbox" id="formW2IssuedSignture"  class="disableinput" checked="@_issued" style="height: 20px;">
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="border-top px-2 pt-3 pb-1 float-left w-100">
 
                                                                     <div class="form-group col-lg-3 px-0">
-                                                                        @Html.Label("Recieved by", "Requested by")
+                                                                        @Html.Label("Requested by", "Requested by")
 
-                                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ReceivedBy, (IEnumerable
-<SelectListItem>)ViewData["Users"], "Select Recieved By", new { @Id = "formw2RecievedBy", @class = "form-control  svalidate {required, Requested By}" })
+                                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.RequestedBy, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Requested By", new { @Id = "formw2RequestedBy", @class = "form-control  svalidate {required, Requested By}" , @onchange="ChangeRUser(this);" })
                                                                     </div>
                                                                     <div class="form-group col-lg-4">
                                                                         @Html.Label("Name", "Name")
-                                                                        @Html.TextBoxFor(w => w.SaveFormW2Model.ReceivedName, new { @id = "formW2ReceivedName", @class = "form-control svalidate  {required, ReceivedName To Name}", @disabled = true })
+                                                                        @Html.TextBoxFor(w => w.SaveFormW2Model.RequestedName, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Requested by Name}", @disabled = true })
                                                                     </div>
 
                                                                     <div class="form-group col-lg-3">
                                                                         @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                        <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2ReceivedDate" name="SaveFormW2Model.ReceivedDate" value="@_ReceivedDate" />
+                                                                        <input type="date" class="datepicker form-control  svalidate {required, Requested by date}" id="formW2RequestedDate" value="@_RequestedDate" />
                                                                     </div>
                                                                     <div class="form-group col-lg-2 text-center">
                                                                         @Html.Label("Signature", "Signature")
                                                                         @{
-                                                                            var rcvd = Model.SaveFormW2Model.ReceivedSignature == null || Model.SaveFormW2Model.ReceivedSignature == false ? false : true;
+                                                                            var _Requested = Model.SaveFormW2Model.RequestedSign == null || Model.SaveFormW2Model.RequestedSign == false ? false : true;
 
                                                                         }
                                                                         <div class="clear-b mt-2">
-                                                                            <input type="checkbox" id="formW2ReceivedSignature" class="disableinput" checked="@rcvd" style="height: 20px;">
+                                                                            <input type="checkbox" id="formW2RequestedSign"  class="disableinput" checked="@_Requested" style="height: 20px;">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -483,7 +483,7 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("FormH Reference No", "FormH Reference No")
-                                                                    @Html.TextBoxFor(x => x.FormW1.FomrhRefNo, new { @disabled = "true", @class = "form-control" })
+                                                                    @Html.TextBoxFor(x => x.FormW1.FormhRefNo, new { @disabled = "true", @class = "form-control" })
                                                                 </div>
                                                                 <div class="form-group col-lg-3">
                                                                     @Html.Label("IW Reference No", "IW Reference No")
@@ -764,7 +764,7 @@
                                                             <div class="row pt-3 pb-1">
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Requested by", "Requested by")
-                                                                    @Html.TextBoxFor(model => model.FormW1.RequestedByName, new { @class = "form-control", @disabled = "true" })
+                                                                    @Html.TextBoxFor(model => model.FormW1.RequestedBy, new { @class = "form-control", @disabled = "true" })
                                                                 </div>
                                                                 <div class="form-group col-lg-3">
                                                                     <label for="Designation"> Name </label>
