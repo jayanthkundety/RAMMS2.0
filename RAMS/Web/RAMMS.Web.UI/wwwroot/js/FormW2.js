@@ -81,3 +81,113 @@ function GetImageList(id) {
     });
 }
 
+function changeRegion(obj) {
+    var ctrl = $(obj);
+
+    if (ctrl.val() != null && ctrl.val() != "") {
+        var name = ctrl.find("option:selected").text();
+        name = name.split('-').length > 1 ? name.split('-')[1] : name;
+        $("#formW2RegionName").val(name);
+    }
+    else {
+        $("#formW2RegionName").val('');
+    }
+}
+
+function changeDivision(obj) {
+    var ctrl = $(obj);
+    if (ctrl.val() != null && ctrl.val() != "") {
+        var name = ctrl.find("option:selected").text();
+        name = name.split('-').length > 1 ? name.split('-')[1] : name;
+        $("#formW2DivisonName").val(name);
+    }
+    else {
+        $("#formW2DivisonName").val('');
+    }
+}
+
+function changeRMU(obj) {
+    var ctrl = $(obj);
+    if (ctrl.val() != null && ctrl.val() != "") {
+        var name = ctrl.find("option:selected").text();
+        name = name.split('-')[1];
+        $("#formW2RMUName").val(name);
+    }
+    else {
+        $("#formW2RMUName").val('');
+    }
+}
+
+function OnRoadChange(tis) {
+    var ctrl = $(tis);
+
+    if (ctrl.val() != null && ctrl.val() != "") {
+        $("#formW2roadDesc").val(ctrl.find("option:selected").attr("Item1"));
+        $("#formW2Fromch").val(ctrl.find("option:selected").attr("fromm"));
+        $("#formW2Toch").val(ctrl.find("option:selected").attr("tom"));
+        $("#frmW2RoadCode").val(ctrl.val());
+        var roadCode = ctrl.val();
+        InitAjaxLoading();
+        $.ajax({
+            url: '/InstructedWorks/GetW1Details',
+            dataType: 'JSON',
+            data: { roadCode },
+            type: 'Post',
+            success: function (data) {
+                $("#Fw1RefNo").val(data.referenceNo);
+                $("#Fw1PKRefNo").val(data.pkRefNo);
+                $("#Fw1ProjectTitle").val(data.projectTitle);
+                $("#formW2TitleOfInstructWork").val(data.detailsOfWork);
+                $("#formW2EstCost").val(data.estimTotalCost);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                console.error(data);
+            }
+        });
+
+    }
+    else {
+        $("#formW2roadDesc").val('');
+    }
+
+}
+
+function ChangeIUser(obj) {
+    var ctrl = $(obj);
+
+    if (ctrl.val() != null && ctrl.val() != "") {
+        var name = ctrl.find("option:selected").text();
+        name = name.split('-')[1];
+        $("#formW2IssuedName").val(name);
+    }
+    else {
+        $("#formW2IssuedName").val('');
+    }
+}
+
+function ChangeRUser(obj) {
+    var ctrl = $(obj);
+
+    if (ctrl.val() != null && ctrl.val() != "") {
+        var name = ctrl.find("option:selected").text();
+        name = name.split('-')[1];
+        $("#formW2ReceivedName").val(name);
+    }
+    else {
+        $("#formW2ReceivedName").val('');
+    }
+}
+
+function GoBack() {
+    if ($("#hdnView").val() == "0") {
+        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+            if (e) {
+                location.href = "/InstructedWorks/Index";
+            }
+        }));
+    }
+    else
+        location.href = "/InstructedWorks/Index";
+}
+

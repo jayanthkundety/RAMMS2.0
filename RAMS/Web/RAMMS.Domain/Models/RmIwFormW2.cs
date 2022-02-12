@@ -19,8 +19,11 @@ namespace RAMMS.Domain.Models
         public string Fw2ServiceProvider { get; set; }
         public DateTime? Fw2DateOfInitation { get; set; }
         public string Fw2Region { get; set; }
+        public string Fw2RegionName { get; set; }
         public string Fw2Division { get; set; }
+        public string Fw2DivisonName { get; set; }
         public string Fw2Rmu { get; set; }
+        public string Fw2RmuName { get; set; }
         public string Fw2Attn { get; set; }
         public string Fw2Cc { get; set; }
         public string Fw2RoadCode { get; set; }

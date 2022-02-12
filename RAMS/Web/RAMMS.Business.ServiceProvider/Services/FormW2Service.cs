@@ -14,6 +14,7 @@ using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.Report;
 using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
+using RAMMS.DTO.Wrappers;
 using RAMMS.Repository.Interfaces;
 
 namespace RAMMS.Business.ServiceProvider.Services
@@ -253,6 +254,56 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             RmIwFormW1 formW1 = await _repo.GetFormW1ByRoadCode(roadCode);
             return _mapper.Map<FormW1ResponseDTO>(formW1);
+        }
+
+        public async Task<PagingResult<FormIWResponseDTO>> GetFilteredFormIWGrid(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
+        {
+            PagingResult<FormIWResponseDTO> result = new PagingResult<FormIWResponseDTO>();
+
+            List<FormIWResponseDTO> formIWList = new List<FormIWResponseDTO>();
+            try
+            {
+
+                var filteredRecords = await _repoUnit.FormW2Repository.GetFilteredRecordList(filterOptions).ConfigureAwait(false);
+
+                result.TotalRecords = await _repoUnit.FormW2Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+
+                foreach (var listData in filteredRecords)
+                {
+                    var iwform = new FormIWResponseDTO();
+                    iwform.ReferenceNo = listData.Fw1PkRefNo.ToString();
+                    iwform.projectTitle = listData.Fw1ProjectTitle;
+                    iwform.agreedNego = "";
+                    iwform.commenDt = "01/01/2020";
+                    iwform.compDt = "";
+                    iwform.ContractPeriod = "";
+                    iwform.dlpPeriod = "";
+                    iwform.finalAmt =
+                    iwform.financeDt = "";
+                    iwform.initialPropDt = "";
+                    iwform.issueW2Ref = "";
+                    iwform.recommd = "";
+                    iwform.recommdDE = "";
+                    iwform.sitePhy = "";
+                    iwform.status = "";
+                    iwform.technicalDt = "";
+                    iwform.w1dt = "";
+
+                    formIWList.Add(iwform);
+                }
+
+                result.PageResult = formIWList;
+
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return result;
         }
     }
 }

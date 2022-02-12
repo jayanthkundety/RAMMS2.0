@@ -9674,6 +9674,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw1OtherCost).HasColumnName("FW1_Other_Cost");
 
+                entity.Property(e => e.Fw1OtherCostLabel)
+                    .HasColumnName("FW1_Other_Cost_Label")
+                    .HasMaxLength(200);
+
                 entity.Property(e => e.Fw1PhyWorks).HasColumnName("FW1_Phy_Works");
 
                 entity.Property(e => e.Fw1ProjectTitle)
@@ -9913,7 +9917,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw2Division)
                     .HasColumnName("FW2_Division")
-                    .HasMaxLength(250);
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw2DivisonName)
+                    .HasColumnName("FW2_Divison_Name")
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Fw2FrmCh).HasColumnName("FW2_FRM_CH");
 
@@ -9965,13 +9973,21 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw2Region)
                     .HasColumnName("FW2_Region")
-                    .HasMaxLength(100);
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw2RegionName)
+                    .HasColumnName("FW2_Region_Name")
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Fw2Remarks).HasColumnName("FW2_Remarks");
 
                 entity.Property(e => e.Fw2Rmu)
                     .HasColumnName("FW2_RMU")
-                    .HasMaxLength(250);
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw2RmuName)
+                    .HasColumnName("FW2_RMU_Name")
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Fw2RoadCode)
                     .HasColumnName("FW2_Road_Code")

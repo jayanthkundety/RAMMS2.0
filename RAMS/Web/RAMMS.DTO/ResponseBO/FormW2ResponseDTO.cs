@@ -18,8 +18,11 @@ namespace RAMMS.DTO.ResponseBO
         [DataType(DataType.Date)]
         public DateTime? DateOfInitation { get; set; }
         public string Region { get; set; }
+        public string RegionName { get; set; }
         public string Division { get; set; }
+        public string DivisonName { get; set; }
         public string Rmu { get; set; }
+        public string RmuName { get; set; }
         public int? Attn { get; set; }
         public string Cc { get; set; }
         public string RoadCode { get; set; }

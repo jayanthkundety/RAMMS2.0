@@ -43,6 +43,7 @@ namespace RAMMS.Domain.Models
         public double? Fw1SurvyWorks { get; set; }
         public double? Fw1SiteInvestPercent { get; set; }
         public double? Fw1SiteInvest { get; set; }
+        public string Fw1OtherCostLabel { get; set; }
         public double? Fw1OtherCost { get; set; }
         public double? Fw1EstimTotalCost { get; set; }
         public int? Fw1ReportedBy { get; set; }

@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 using AutoMapper;
+using RAMMS.DTO.Wrappers;
+using X.PagedList;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -36,6 +38,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IBridgeBO _bridgeBO;
         private readonly IMapper _mapper;
+        FormIWModel _formIWModel = new FormIWModel();
 
         public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
         {
@@ -124,16 +127,13 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "SP";
             ViewData["Service Provider"] = await _ddLookupService.GetDdLookup(ddLookup);
 
-            LoadLookupService("RMU", "Division", "RD_Code");
+            LoadLookupService("RMU", "Division", "RD_Code", "Region");
 
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
             ViewData["Users"] = _userService.GetUserSelectList(null);
-
-            ViewData["FormW1s"] = await _formW2Service.GetFormW1DDL();
-
         }
       
         public async Task<IActionResult> AddFormW2(int id = 0)
@@ -448,6 +448,74 @@ namespace RAMMS.Web.UI.Controllers
             FormW1ResponseDTO formW1 = await _formW2Service.GetFormW1ByRoadCode(roadCode);
             return Json(formW1);
         }
+
+
+        public async Task<IActionResult> LoadFormIWList(FormIWSearchGridDTO filterData)
+        {
+            FormIWModel formObj = new FormIWModel();
+            formObj.SearchObj = filterData;
+            await LoadHeaderGridList(formObj);
+            return PartialView("~/Views/InstructedWorks/_HeaderListGrid.cshtml", formObj);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadHeaderGridList(FormIWModel formIWModel)
+        {
+            FormIWSearchGridDTO searchObj = new FormIWSearchGridDTO();
+            searchObj = formIWModel.SearchObj;
+
+            ViewBag.CurrentSort = formIWModel.SearchObj.sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(formIWModel.SearchObj.sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = formIWModel.SearchObj.sortOrder == "Date" ? "date_desc" : "Date";
+            if (formIWModel.SearchObj.searchString != null)
+            {
+                formIWModel.SearchObj.Page_No = 1;
+            }
+            else
+            {
+                formIWModel.SearchObj.searchString = formIWModel.SearchObj.currentFilter;
+            }
+
+            ViewBag.CurrentFilter = formIWModel.SearchObj.searchString;
+            int Size_Of_Page = (formIWModel.SearchObj.pageSize ?? 1000);
+            int No_Of_Page = (formIWModel.SearchObj.Page_No ?? 1);
+            ViewBag.psize = Size_Of_Page;
+            ViewBag.PageSize = new List<SelectListItem>()
+            {
+             new SelectListItem() { Value="5", Text= "5" },
+             new SelectListItem() { Value="10", Text= "10" },
+             new SelectListItem() { Value="15", Text= "15" },
+             new SelectListItem() { Value="25", Text= "25" },
+             new SelectListItem() { Value="50", Text= "50" }
+            };
+
+
+            FilteredPagingDefinition<FormIWSearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormIWSearchGridDTO>();
+            filteredPagingDefinition.Filters = searchObj;
+            filteredPagingDefinition.RecordsPerPage = 5;
+            filteredPagingDefinition.StartPageNo = 1; //TODO
+
+            var result = await _formW2Service.GetFilteredFormIWGrid(filteredPagingDefinition);
+            var obj = result.PageResult;
+            IPagedList<FormIWResponseDTO> headerList = obj.ToPagedList(No_Of_Page, Size_Of_Page);
+
+            _formIWModel.FormIWHeaderList = headerList;
+            ViewBag.TotalNoRecords = headerList.TotalItemCount.ToString();
+            int iPreDisplay = ((No_Of_Page) * Size_Of_Page);
+            ViewBag.DisplayRecords = iPreDisplay;
+
+            ViewBag.TotalPage = headerList.PageCount;
+            var CurrentPage = (headerList.PageCount < headerList.PageNumber ? 0 : headerList.PageNumber);
+            ViewBag.CurrentPage = CurrentPage;
+
+            //Added for Temporary Count showing
+            ViewBag.DisplayRecords = result.FilteredRecords;
+            ViewBag.TotalNoRecords = result.TotalRecords;
+
+            return View(_formIWModel);
+        }
+
 
     }
 }

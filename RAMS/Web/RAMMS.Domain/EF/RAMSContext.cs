@@ -9684,8 +9684,8 @@ namespace RAMMS.Domain.EF
 
                 entity.Property(e => e.Fw1PropDesignDuration).HasColumnName("FW1_Prop_Design_Duration");
 
-                entity.Property(e => e.Fw1RecomondedInstrctedWork)
-                    .HasColumnName("FW1_Recomonded_Instrcted_Work")
+                entity.Property(e => e.Fw1RecommendedInstructedWork)
+                    .HasColumnName("FW1_Recommended_Instrcted_Work")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Fw1Rmu)
@@ -9708,24 +9708,24 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW1_Serv_Prop_RefNo")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Fw1ServProvDate)
-                    .HasColumnName("FW1_Serv_Prov_Date")
+                entity.Property(e => e.Fw1RequestedByDate)
+                    .HasColumnName("FW1_RequestedBy_Date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw1ServProvDesig)
-                    .HasColumnName("FW1_Serv_Prov_Desig")
+                entity.Property(e => e.Fw1RequestedByDesig)
+                    .HasColumnName("FW1_RequestedBy_Desig")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw1ServProvName)
-                    .HasColumnName("FW1_Serv_Prov_Name")
+                entity.Property(e => e.Fw1RequestedByName)
+                    .HasColumnName("FW1_RequestedBy_Name")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw1ServProvOffice)
-                    .HasColumnName("FW1_Serv_Prov_Office")
+                entity.Property(e => e.Fw1RequestedByOffice)
+                    .HasColumnName("FW1_RequestedBy_Office")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw1ServProvSign)
-                    .HasColumnName("FW1_Serv_Prov_Sign")
+                entity.Property(e => e.Fw1RequestedBySign)
+                    .HasColumnName("FW1_RequestedBy_Sign")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Fw1SiteInvest).HasColumnName("FW1_Site_Invest");
@@ -9752,25 +9752,25 @@ namespace RAMMS.Domain.EF
 
                 entity.Property(e => e.Fw1ToCh).HasColumnName("FW1_To_CH");
 
-                entity.Property(e => e.Fw1VerifySoBy).HasColumnName("FW1_Verify_SO_By");
+                entity.Property(e => e.Fw1VerifiedBy).HasColumnName("FW1_Verified_By");
 
-                entity.Property(e => e.Fw1VerifySoDate)
-                    .HasColumnName("FW1_Verify_SO_Date")
+                entity.Property(e => e.Fw1VerifiedDate)
+                    .HasColumnName("FW1_Verified_Date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw1VerifySoDesig)
-                    .HasColumnName("FW1_Verify_SO_Desig")
+                entity.Property(e => e.Fw1VerifiedDesig)
+                    .HasColumnName("FW1_Verified_Desig")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw1VerifySoName)
-                    .HasColumnName("FW1_Verify_SO_Name")
+                entity.Property(e => e.Fw1VerifiedName)
+                    .HasColumnName("FW1_Verified_Name")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw1VerifySoOffice)
-                    .HasColumnName("FW1_Verify_SO_Office")
+                entity.Property(e => e.Fw1VerifiedOffice)
+                    .HasColumnName("FW1_Verified_Office")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw1VerifySoSign).HasColumnName("FW1_Verify_SO_Sign");
+                entity.Property(e => e.Fw1VerifiedSign).HasColumnName("FW1_Verified_Sign");
             });
 
             modelBuilder.Entity<RmIwFormW1Image>(entity =>
@@ -9861,8 +9861,8 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Date_of_Commencement")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw2DateOfComplition)
-                    .HasColumnName("FW2_Date_of_Complition")
+                entity.Property(e => e.Fw2DateOfCompletion)
+                    .HasColumnName("FW2_Date_of_Completion")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fw2DateOfInitation)
@@ -9891,7 +9891,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Issued_Name")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw2IssuedSignature).HasColumnName("FW2_Issued_Signature");
+                entity.Property(e => e.Fw2IssuedSign).HasColumnName("FW2_Issued_Sign");
 
                 entity.Property(e => e.Fw2JkrRefNo)
                     .HasColumnName("FW2_JKR_RefNo")
@@ -9913,7 +9913,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Received_Name")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw2ReceivedSignature).HasColumnName("FW2_Received_Signature");
+                entity.Property(e => e.Fw2ReceivedSign).HasColumnName("FW2_Received_Sign");
 
                 entity.Property(e => e.Fw2Region)
                     .HasColumnName("FW2_Region")
@@ -9947,9 +9947,7 @@ namespace RAMMS.Domain.EF
 
                 entity.Property(e => e.Fw2SubmitSts).HasColumnName("FW2_SUBMIT_STS");
 
-                entity.Property(e => e.Fw2SupInstNo)
-                    .HasColumnName("FW2_Sup_Inst_No")
-                    .HasMaxLength(50);
+               
 
                 entity.Property(e => e.Fw2TitleOfInstructWork)
                     .HasColumnName("FW2_Title_OF_Instruct_Work")

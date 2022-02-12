@@ -1,6 +1,8 @@
 ﻿using RAMMS.Domain.Models;
 using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.Report;
+using RAMMS.DTO.ResponseBO;
+using RAMMS.DTO.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +23,10 @@ namespace RAMMS.Repository.Interfaces
         Task<RmIwFormW1> GetFormW1ById(int formW1Id);
 
         Task<RmIwFormW1> GetFormW1ByRoadCode(string roadCode);
+
+        Task<List<RmIwFormW1>> GetFilteredRecordList(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
+
+        Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
 
     }
 }

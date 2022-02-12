@@ -39,5 +39,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<IEnumerable<CSelectListItem>> GetFormW1DDL();
 
         Task<FormW1ResponseDTO> GetFormW1ByRoadCode(string roadCode);
+
+        Task<PagingResult<FormIWResponseDTO>> GetFilteredFormIWGrid(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
     }
 }

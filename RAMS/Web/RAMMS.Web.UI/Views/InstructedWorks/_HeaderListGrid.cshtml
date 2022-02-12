@@ -1,0 +1,200 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormIWGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.Instructed_Works).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Instructed_Works).ToString().ToLowerInvariant()? "" : 'hidden';
+
+    var table_columns = [];
+    var chkRefNoCol = {
+        data: null, name: "chkBox", title: "", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
+            return "<input type='checkbox' value='" + + data.referenceNo + "' />";
+        }
+    };
+
+    var projectTitleCol = { data: "projectTitle", name: "Rmu", title: "Title", autoWidth: true, sortable: true };
+    var iniProposedDtCol = { data: "initialPropDt", name: "InitialProposedDate", title: "Initial Proposed Date", autoWidth: true, sortable: true };
+    var recommDECol = { data: "recommdDE", name: "RecommendDE", title: "Recommendation by DE(Yes/No)", autoWidth: true, sortable: true };
+    var w1DateCol = { data: "w1dt", name: "W1Date", title: "W1 (date)", autoWidth: true, sortable: true };
+    var recommendCol = { data: "recommd", name: "Recommend", title: "Recommendation (Yes/No)", autoWidth: true, sortable: true };
+    var estCellCostCol = { data: "status", name: "Status", title: "Estimated Ceiling Cost (RM)", autoWidth: true, sortable: true };
+    var technicalDtCol = {
+        data: "technicalDt", type: "date", format: 'DD-MM-YYYY', name: "TechnicalDt", title: "Technical (Date)", autoWidth: true, sortable: true,
+        render: function (data) {
+            var d = new Date(data);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+
+    };
+    var financialDtCol = {
+         data: "financeDt", type: "date", format: 'DD-MM-YYYY', name: "FinanceDt", title: "Financial (Date)", autoWidth: true, sortable: true,
+        render: function (data) {
+            var d = new Date(data);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+
+    };
+    var agreeNegoCol = { data: "agreedNego", name: "AgreedNegoPrice", title: "Agreed Nego Price Letter (Yes / No)", autoWidth: true, sortable: true };
+    var issuW2IWRefCol = { data: "issueW2Ref", name: "IssuW2IWRef", title: "Issuance of W2 IW Ref", autoWidth: true, sortable: true };
+    var commencementDtCol = {
+         data: "commenDt", type: "date", format: 'DD-MM-YYYY', name: "CommencementDt", title: "Commencement (Date)", autoWidth: true, sortable: true,
+        render: function (data) {
+            var d = new Date(data);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    var completionDtCol = {
+         data: "compDt", type: "date", format: 'DD-MM-YYYY', name: "CompletionDt", title: "Completion (Date)", autoWidth: true, sortable: true,
+        render: function (data) {
+            var d = new Date(data);
+            var day = d.getDate();
+            var month = d.getMonth() + 1;
+            var year = d.getFullYear();
+            if (day < 10) {
+                day = "0" + day;
+            }
+            if (month < 10) {
+                month = "0" + month;
+            }
+            var date = day + "/" + month + "/" + year;
+            return date;
+        }
+    };
+    var contractPeriodCol = { data: "contractPeriod", name: "ContractPeriod", title: "Contract Period (Month)", autoWidth: true, sortable: true };
+    var dLPPeriodCol = { data: "dlpPeriod", name: "DLPPeriod", title: "DLP Period(Month)", autoWidth: true, sortable: true };
+    var finalAmountCol = { data: "finalAmt", name: "FinalAmount", title: "Final Amount (RM)", autoWidth: true, sortable: true };
+    var sitePhysicalCol = { data: "sitePhy", name: "SitePhysical", title: "Site Physical Progress(%) (A/P)", autoWidth: true, sortable: true };
+
+
+
+
+    table_columns.push(chkRefNoCol);
+    table_columns.push(projectTitleCol);
+    table_columns.push(iniProposedDtCol);
+    table_columns.push(recommDECol);
+    table_columns.push(w1DateCol);
+    table_columns.push(recommendCol);
+    table_columns.push(estCellCostCol);
+    table_columns.push(technicalDtCol);
+    table_columns.push(financialDtCol);
+    table_columns.push(agreeNegoCol);
+    table_columns.push(issuW2IWRefCol);
+    table_columns.push(commencementDtCol);
+    table_columns.push(completionDtCol);
+    table_columns.push(contractPeriodCol);
+    table_columns.push(dLPPeriodCol);
+    table_columns.push(finalAmountCol);
+    table_columns.push(sitePhysicalCol);
+
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        filterData.SmartInputValue = $("#txtSmartSearch").val();
+        filterData.IWRefNo = $("#txtIWRefNo").val();
+        filterData.CommenceDtFrom = $("#txtCommenceDtFrom").text();
+        filterData.CommenceDtTo = $("#txtCommenceDtTo").val().trim();
+        filterData.ProjectTitle = $("#txtProjectTitle").val();
+        filterData.Status = $("#txtStatus option:selected").text().split("-")[0];
+        filterData.StatusPercentage = $("#txtStPerc").val();
+        filterData.Month = $("#txtMonth").val();
+        filterData.Rmu = $("#txtRmu option:selected").text().split("-")[0];
+        filterData.RoadCode = $("#txtRoadCode option:selected").text().split("-")[0];
+        
+        $('#FormIWGridView').DataTable({
+            ajax: {
+                url: "/InstructedWorks/LoadFormIWList",
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+    }
+
+    $(document).ready(function () {
+        debugger;
+        InitializeGrid();
+
+        //Apply Custom search on jQuery DataTables here
+        oTable = $('#FormIWGridView').DataTable();
+        $('#btnSearch').click(function () {
+            oTable.columns(0).search($("#txtSmartSearch").val().trim());
+            oTable.columns(1).search($("#txtIWRefNo").val().trim());
+            oTable.columns(2).search($("#txtCommenceDtFrom").val().trim());
+            oTable.columns(3).search($("#txtCommenceDtTo").val().trim());
+            oTable.columns(4).search($("#txtProjectTitle").val().trim());
+            var stsCode = $("#txtStatus option:selected").text().split("-")[0];
+            if (rmuCode >= 0) {
+                oTable.columns(5).search(stsCode);
+            } else {
+                oTable.columns(5).search("");
+            }
+
+            oTable.columns(6).search($("#txtStPerc").val().trim());
+            oTable.columns(7).search($("#txtMonth").val().trim());
+            var rmuCode = $("#txtRmu option:selected").text().split("-")[0];
+            if (rmuCode >= 0) {
+                oTable.columns(8).search(rmuCode);
+            } else {
+                oTable.columns(8).search("");
+            }
+            var rdCode = $("#txtRoadCode option:selected").text().split("-")[0];
+            if (rdCode >= 0) {
+                oTable.columns(9).search(rdCode);
+            } else {
+                 oTable.columns(9).search("");
+            }
+
+            oTable.data = filterData;
+            oTable.draw();
+        });
+    });
+</script>

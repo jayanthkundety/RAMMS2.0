@@ -19,6 +19,8 @@ namespace RAMMS.Domain.EF
         public DateTime? Fw1iCrDt { get; set; }
         public bool Fw1iSubmitSts { get; set; }
         public bool? Fw1iActiveYn { get; set; }
+        public string Fw1iStatus { get; set; }
+        public string Fw1iAuditLog { get; set; }
 
         public virtual RmIwFormW1 Fw1iFw1RefNoNavigation { get; set; }
     }
