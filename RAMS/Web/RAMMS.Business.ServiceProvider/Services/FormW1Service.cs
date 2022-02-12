@@ -44,6 +44,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             RmIwFormW1 formW1 = await _repo.FindFormW1ByID(id);
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
+
+        public async Task<int> LastInsertedIMAGENO(int hederId, string type)
+        {
+            int imageCt = await _repoUnit.FormW1Repository.GetImageId(hederId, type);
+            return imageCt;
+        }
         public async Task<int> SaveFormW1(FormW1ResponseDTO FormW1)
         {
             FormW1ResponseDTO formW1Response;
@@ -61,6 +67,50 @@ namespace RAMMS.Business.ServiceProvider.Services
                 await _repoUnit.RollbackAsync();
                 throw ex;
             }
+        }
+
+        public async Task<List<FormW1ImageResponseDTO>> GetImageList(int formW1Id)
+        {
+            List<FormW1ImageResponseDTO> images = new List<FormW1ImageResponseDTO>();
+            try
+            {
+                var getList = await _repoUnit.FormW1Repository.GetImagelist(formW1Id);
+                foreach (var listItem in getList)
+                {
+                    images.Add(_mapper.Map<FormW1ImageResponseDTO>(listItem));
+                }
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return images;
+        }
+
+
+        public async Task<int> SaveImage(List<FormW1ImageResponseDTO> image)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormW1 = new List<RmIwFormW1Image>();
+
+                foreach (var list in image)
+                {
+                    domainModelFormW1.Add(_mapper.Map<RmIwFormW1Image>(list));
+                }
+                _repoUnit.FormW1Repository.SaveImage(domainModelFormW1);
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
         }
 
 

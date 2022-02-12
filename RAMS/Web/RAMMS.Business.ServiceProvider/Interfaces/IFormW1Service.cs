@@ -9,8 +9,13 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     public interface IFormW1Service
     {
 
+        Task<List<FormW1ImageResponseDTO>> GetImageList(int formW1Id);
+        Task<int> LastInsertedIMAGENO(int hederId, string type);
         Task<FormW1ResponseDTO> FindFormW1ByID(int id);
         Task<int> SaveFormW1(FormW1ResponseDTO FormW1);
         Task<int> Update(FormW1ResponseDTO FormW1);
+        Task<int> SaveImage(List<FormW1ImageResponseDTO> image);
+
+
     }
 }
