@@ -4,23 +4,23 @@
 @{
     ViewBag.TabTitle = "Form W1 - Request for Instructed Work";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
- 
-        bool ImageTypeBQ = false;
-        bool ImageTypeDrawing = false;
-        if (Model.ImageList != null && Model.ImageList.Count() > 0)
+
+    bool ImageTypeBQ = false;
+    bool ImageTypeDrawing = false;
+    if (Model.ImageList != null && Model.ImageList.Count() > 0)
+    {
+        foreach (var item in Model.ImageList)
         {
-            foreach (var item in Model.ImageList)
+            if (item.ImageTypeCode == "BQ")
             {
-                if (item.ImageTypeCode == "")
-                {
-                    ImageTypeBQ = true;
-                }
-                if (item.ImageTypeCode == "")
-                {
-                    ImageTypeDrawing = true;
-                }
+                ImageTypeBQ = true;
+            }
+            if (item.ImageTypeCode == "Drawing")
+            {
+                ImageTypeDrawing = true;
             }
         }
+    }
 }
 
 <script src="~/js/FormW1.js" type="text/javascript"></script>
@@ -97,12 +97,10 @@
                                                                             @Html.EditorFor(m => m.FormW1.TecmDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
-                                                                            <label>
-                                                                                Status
-                                                                            </label>
-                                                                            <select class="form-control">
-                                                                                <option>  Select Status</option>
-                                                                            </select>
+                                                                            @Html.Label("Status", "Status")
+                                                                            @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
+                                                                 <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control validate {required, RMU}" })
+
                                                                         </div>
                                                                         <div class="form-group col-lg-2">
                                                                             <div class="row mt-4">
@@ -525,11 +523,37 @@
     var ImageTypeBQ = "@ImageTypeBQ";
     var ImageTypeDrawing = "@ImageTypeDrawing";
 
-    if (ImageTypeBQ == false) {
-        $('#chkBQ').prop("selected", "selected");
-    }
-    if (ImageTypeDrawing == false) {
-        $('#chkDrawing').prop("selected", "selected");
-    }
-   
+
+    $(document).ready(function () {
+
+
+        if (ImageTypeBQ == "True") {
+            $('#chkBQ').prop("checked", true);
+        }
+        else {
+            $('#chkBQ').prop("checked", false);
+        }
+        if (ImageTypeDrawing == "True") {
+            $('#chkDrawing').prop("checked", true);
+        }
+        else {
+            $('#chkDrawing').prop("checked", false);
+        }
+
+
+        $('#ddlRMU').val("@Model.FormW1.Rmu");
+        $('#ddlRMU').trigger('chosen:updated');
+
+        $('#ddlRoadCode').val("@Model.FormW1.RoadCode");
+        $('#ddlRoadCode').trigger('chosen:updated');
+
+        $('#ddlRequestedBy').val("@Model.FormW1.RequestedBy");
+        $('#ddlRequestedBy').trigger('chosen:updated');
+
+        $('#ddlVerifiedBy').val("@Model.FormW1.VerifiedBy");
+        $('#ddlVerifiedBy').trigger('chosen:updated');
+
+        $('#ddlReportedBy').val("@Model.FormW1.ReportedBy");
+        $('#ddlReportedBy').trigger('chosen:updated');
+    });
 </script>

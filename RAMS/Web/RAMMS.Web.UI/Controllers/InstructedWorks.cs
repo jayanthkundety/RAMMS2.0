@@ -74,7 +74,7 @@ namespace RAMMS.Web.UI.Controllers
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
-            LoadLookupService("RMU", "Division", "RD_Code", "User");
+            LoadLookupService("RMU", "Division", "RD_Code", "User", "TECM_Status");
 
             GetRMUWithDivision("RMU_Division");
 
@@ -92,7 +92,7 @@ namespace RAMMS.Web.UI.Controllers
                 DDLookUpDTO ddLookup = new DDLookUpDTO();
                 ddLookup.Type = "Month";
                 ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
-                LoadLookupService("RMU", "Division", "RD_Code", "User");
+                LoadLookupService("RMU", "Division", "RD_Code", "User", "TECM_Status");
             
                _formW1Model = await _formW1Service.FindFormW1ByID(id);
             }

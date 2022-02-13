@@ -52,6 +52,8 @@ namespace RAMMS.DTO.ResponseBO
         public string ReportedName { get; set; }
         public string ReportedDesig { get; set; }
         public bool ReportedSign { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? ReportedDate { get; set; }
         public int? RequestedBy { get; set; }
         public bool RequestedBySign { get; set; }
