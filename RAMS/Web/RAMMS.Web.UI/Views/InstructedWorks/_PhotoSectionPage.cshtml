@@ -171,9 +171,9 @@
         </div>
     </div>
 </div>
-<div class="modal-footer">
+@*<div class="modal-footer">
     <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
-</div>
+</div>*@
 
 <div class="modal hide border-10x addphoto-mdl" id="myModal2">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -293,13 +293,13 @@
     });
 
     function FormW2AddImage() {
-        if (ValidatePage("#page")) {
+        if (ValidatePage("#divpage")) {
             if ($("#FW2HRef_No").val() != "0") {
                 $("#myModal2").modal('show');
             }
             else {
-                $("#tab1").click();
-                app.ShowErrorMessage("Required to save the Form W2 details and then try to upload photo");
+                $("#lnkPage").click();
+                app.ShowErrorMessage("Required to save the Form W2 details and then try to upload attachments");
             }
         }
         else {

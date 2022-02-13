@@ -134,7 +134,7 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IAdministratorRepository, AdministratorRepository>();
             services.AddTransient<IDivRmuSectionRepository, DivRmuSectionRepository>();
             services.AddTransient<IFormW2Repository, FormW2Repository>();
-
+            services.AddTransient<IFormW2FcemRepository, FormW2FcemRepository>();
             services.AddScoped<IUserContext, UserContext>();
             services.AddTransient<IFormW1Repository, FormW1Repository>();
 

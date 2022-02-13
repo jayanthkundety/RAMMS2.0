@@ -22,14 +22,16 @@ namespace RAMMS.Business.ServiceProvider.Services
     public class FormW2Service : IFormW2Service
     {
         private readonly IFormW2Repository _repo;
+        private readonly IFormW2FcemRepository _repoFCEM;
         private readonly IRepositoryUnit _repoUnit;
         private readonly IMapper _mapper;
         private readonly ISecurity _security;
         private readonly IProcessService processService;
-        public FormW2Service(IRepositoryUnit repoUnit, IFormW2Repository repo, IMapper mapper, ISecurity security, IProcessService process)
+        public FormW2Service(IRepositoryUnit repoUnit, IFormW2Repository repo, IMapper mapper, ISecurity security, IProcessService process, IFormW2FcemRepository repoFCEM)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
+            _repoFCEM = repoFCEM ?? throw new ArgumentNullException(nameof(repoFCEM));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _security = security;
             processService = process;
@@ -304,5 +306,62 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return result;
         }
+
+        #region FCEM
+
+        public async Task<int> SaveFCEM(FormW2FCEMResponseDTO formW2BO)
+        {
+            FormW2FCEMResponseDTO formW2Response;
+            try
+            {
+                var domainModelFcem = _mapper.Map<RmIwFormW2Fcem>(formW2BO);
+                domainModelFcem.FcemPkRefNo = 0;
+                var entity = _repoUnit.FormW2FcemRepository.CreateReturnEntity(domainModelFcem);
+                formW2Response = _mapper.Map<FormW2FCEMResponseDTO>(entity);
+                return formW2Response.PkRefNo;
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+        public async Task<int> UpdateFCEM(FormW2FCEMResponseDTO formW2Bo)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelformW2 = _mapper.Map<RmIwFormW2Fcem>(formW2Bo);
+                domainModelformW2.FcemPkRefNo = formW2Bo.PkRefNo;
+                domainModelformW2.FcemActiveYn = true;
+                //domainModelformW2 = UpdateStatus(domainModelformW2);
+                _repoUnit.FormW2FcemRepository.Update(domainModelformW2);
+                rowsAffected = await _repoUnit.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+        public async Task<FormW2FCEMResponseDTO> FindFCEM2ByW2ID(int Id)
+        {
+            RmIwFormW2Fcem formW2 = await _repoFCEM.FindFCEM2ByW2ID(Id);
+            return _mapper.Map<FormW2FCEMResponseDTO>(formW2);
+        }
+
+        public async Task<FormW2FCEMResponseDTO> FindFCEM2ByID(int Id)
+        {
+            RmIwFormW2Fcem formW2 = await _repoFCEM.FindFCEM2ByID(Id);
+            return _mapper.Map<FormW2FCEMResponseDTO>(formW2);
+        }
+
+
+        #endregion
     }
 }

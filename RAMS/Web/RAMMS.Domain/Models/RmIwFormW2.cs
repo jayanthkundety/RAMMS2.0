@@ -7,6 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public RmIwFormW2()
         {
+            RmIwFormW2Fcem = new HashSet<RmIwFormW2Fcem>();
             RmIwFormW2Image = new HashSet<RmIwFormW2Image>();
         }
 
@@ -55,6 +56,7 @@ namespace RAMMS.Domain.Models
         public string Fw2AuditLog { get; set; }
 
         public virtual RmIwFormW1 Fw2Fw1RefNoNavigation { get; set; }
+        public virtual ICollection<RmIwFormW2Fcem> RmIwFormW2Fcem { get; set; }
         public virtual ICollection<RmIwFormW2Image> RmIwFormW2Image { get; set; }
     }
 }

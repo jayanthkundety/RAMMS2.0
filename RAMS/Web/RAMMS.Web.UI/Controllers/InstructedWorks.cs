@@ -226,6 +226,8 @@ namespace RAMMS.Web.UI.Controllers
 
         #endregion
 
+
+        #region FormW2
         private async Task LoadN2DropDown()
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -278,10 +280,11 @@ namespace RAMMS.Web.UI.Controllers
                 var result = await _formW2Service.FindW2ByID(id);
                 var res = (List<CSelectListItem>)ViewData["RD_Code"];
                 res.Find(c => c.Value == result.RoadCode).Selected = true;
-                
+                var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
+
                 _formW2Model.SaveFormW2Model = result;
-                _formW2Model.Fcem = new FormW2FCEMResponseDTO();
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1RefNoNavigation;
+                _formW2Model.Fcem = resultFCEM != null ? resultFCEM : new FormW2FCEMResponseDTO();
             }
 
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
@@ -700,6 +703,23 @@ namespace RAMMS.Web.UI.Controllers
             return View(_formIWModel);
         }
 
+        #endregion
 
+
+        #region FCEM
+
+        public async Task<JsonResult> SaveFCEM(FormW2FCEMResponseDTO formW2)
+        {
+            int refNo = 0;
+            FormW2FCEMResponseDTO saveRequestObj = new FormW2FCEMResponseDTO();
+            saveRequestObj = formW2;
+            if (saveRequestObj.PkRefNo == 0)
+                refNo = await _formW2Service.SaveFCEM(formW2);
+            else
+                refNo = await _formW2Service.UpdateFCEM(formW2);
+
+            return Json(refNo);
+        }
+        #endregion
     }
 }

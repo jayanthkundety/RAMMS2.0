@@ -10028,9 +10028,11 @@ namespace RAMMS.Domain.EF
 
             modelBuilder.Entity<RmIwFormW2Fcem>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.FcemPkRefNo);
 
                 entity.ToTable("RM_IW_Form_W2_FCEM");
+
+                entity.Property(e => e.FcemPkRefNo).HasColumnName("FCEM_PK_Ref_No");
 
                 entity.Property(e => e.FcemActiveYn).HasColumnName("FCEM_Active_YN");
 
@@ -10046,10 +10048,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FCEM_Date")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.FcemFw2PkRefNo)
-                    .HasColumnName("FCEM_FW2_PK_Ref_No")
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.Property(e => e.FcemFw2PkRefNo).HasColumnName("FCEM_FW2_PK_Ref_No");
 
                 entity.Property(e => e.FcemIsBq).HasColumnName("FCEM_IsBQ");
 
@@ -10060,8 +10059,6 @@ namespace RAMMS.Domain.EF
                 entity.Property(e => e.FcemModDt)
                     .HasColumnName("FCEM_Mod_DT")
                     .HasColumnType("datetime");
-
-                entity.Property(e => e.FcemPkRefNo).HasColumnName("FCEM_PK_Ref_No");
 
                 entity.Property(e => e.FcemProgress).HasColumnName("FCEM_Progress");
 
@@ -10078,6 +10075,11 @@ namespace RAMMS.Domain.EF
                     .HasMaxLength(30);
 
                 entity.Property(e => e.FcemSubmitSts).HasColumnName("FCEM_SUBMIT_STS");
+
+                entity.HasOne(d => d.FcemFw2PkRefNoNavigation)
+                    .WithMany(p => p.RmIwFormW2Fcem)
+                    .HasForeignKey(d => d.FcemFw2PkRefNo)
+                    .HasConstraintName("FK_RM_IW_Form_W2_FCEM_RM_IW_FormW2");
             });
 
             modelBuilder.Entity<RmIwFormW2Image>(entity =>

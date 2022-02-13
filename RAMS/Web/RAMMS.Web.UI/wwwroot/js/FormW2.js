@@ -7,29 +7,130 @@ $(document).on("click", "#submitFormW2Btn", function () {
     Save(true);
 });
 
-function Save(submit) {
+$(document).on("click", "#saveFCEMBtn", function () {
+
+    SaveFCEM(false);
+});
+
+$(document).on("click", "#submitFCEMBtn", function () {
+    SaveFCEM(true);
+});
+
+
+function SaveFCEM(submit) {
     if (submit) {
         $("#divPage .svalidate").addClass("validate");
     }
 
-    //if (ValidatePage('#divpage')) {
-    //    InitAjaxLoading();
-    //    $.post('./SaveFormW2', $("form").serialize(), function (data) {
+    if (!ValidatePage('#divPage')) {
+        return false;
+    }
 
-    //        HideAjaxLoading();
-    //        if (data == -1) {
-    //            app.ShowErrorMessage(data.errorMessage);
-    //        }
-    //        else {
-    //            $("#FW2HRef_No").val(data.pkRefNo);
-    //            app.ShowSuccessMessage('Successfully Saved', false);
-    //            // location.href = "/InstructedWorks/AddFormW2";
-    //        }
+    InitAjaxLoading();
 
-    //    });
-    //}
+    var d = new Date();
 
-    /////
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+
+    var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
+        (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
+
+    var saveObj = new Object;
+
+    saveObj.PkRefNo = $("#fcemPkRefNo").val();
+    saveObj.Fw2PkRefNo = $("#FW2HRef_No").val();
+    saveObj.Date = $("#fcemDate").val();
+    saveObj.Sstatus = $("#fcemStatus").find(":selected").val();
+    saveObj.Progress = $("#fcemProgress").val();
+    saveObj.IsBq = $("#fcemBQ").prop("checked");
+    saveObj.IsDrawing = $("#fcemDrawing").prop("checked");
+    saveObj.Remark = $("#fcemRemark").val();
+   
+    //Created by
+    if ($("#formw2RequestedBy").find(":selected").val() != "") saveObj.ModBy = $("#formw2RequestedBy").find(":selected").val();
+    if ($("#FW2HRef_No").val() != "") saveObj.ModDt = output
+    if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.CrBy = $("#formW2IssuedBy").find(":selected").val();
+    if ($("#FW2HRef_No").val() == "") saveObj.CrDt = output;
+
+    saveObj.ActiveYn = true;
+    saveObj.SubmitSts = submit;
+    console.log(saveObj);
+    $.ajax({
+        url: '/InstructedWorks/SaveFCEM',
+        data: saveObj,
+        type: 'POST',
+        success: function (data) {
+            HideAjaxLoading();
+            if (data == -1) {
+                app.ShowErrorMessage("Reference id already Exist");
+            }
+            else {
+                $("#FW2HRef_No").val(data);
+                if (submit) {
+                    $("#saveFormW2Btn").hide();
+                    $("#submitFormW2Btn").hide();
+                    app.ShowSuccessMessage('Successfully Submitted', false);
+                    location.href = "/InstructedWorks";
+                }
+                else {
+                    $("#saveFormW2Btn").show();
+                    $("#submitFormW2Btn").show();
+                    app.ShowSuccessMessage('Successfully Saved', false);
+                }
+            }
+        },
+        error: function (data) {
+            HideAjaxLoading();
+            app.ShowErrorMessage(data.responseText);
+        }
+
+    });
+
+}
+
+function openW1() {
+    $("#saveFormW2Btn").hide();
+    $("#submitFormW2Btn").hide();
+
+    $("#saveFCEMBtn").hide();
+    $("#submitFCEMBtn").hide();
+}
+
+function openFCEM() {
+    $("#saveFormW2Btn").hide();
+    $("#submitFormW2Btn").hide();
+
+    $("#saveFCEMBtn").show();
+    $("#submitFCEMBtn").show();
+}
+
+function checkW2Exist() {
+    if (ValidatePage("#divpage")) {
+        if ($("#FW2HRef_No").val() == "0" || $("#FW2HRef_No").val() == "" ) {
+            $("#lnkPage").click();
+            app.ShowErrorMessage("Required to save the Form W2 details and then try to create FCEM");
+        }
+    }
+     else {
+         $("#saveFormW2Btn").click();
+         app.ShowErrorMessage("Required fields are incomplete in Form W2");
+     }
+}
+
+function openW2() {
+
+    $("#saveFormW2Btn").show();
+    $("#submitFormW2Btn").show();
+
+    $("#saveFCEMBtn").hide();
+    $("#submitFCEMBtn").hide();
+}
+
+function Save(submit) {
+    if (submit) {
+        $("#divPage .svalidate").addClass("validate");
+    }
 
     if (!ValidatePage('#divPage')) {
         return false;
@@ -72,22 +173,22 @@ function Save(submit) {
     if ($("#formW2Fromch").val() != "") saveObj.FrmCh = $("#formW2Fromch").val();
     if ($("#formW2Toch").val() != "") saveObj.ToCh = $("#formW2Toch").val();
     saveObj.TitleOfInstructWork = $("#formW2TitleOfInstructWork").val();
-    if ($("#formW2CommencementDate").val() != "dd/mm/yyyy") saveObj.DateOfCommencement = $("#formW2CommencementDate").val();
-    if ($("#formW2CompletionDate").val() != "dd/mm/yyyy") saveObj.DateOfCompletion = $("#formW2CompletionDate").val();
+    if ($("#formW2CommencementDate").val() != "dd/mm/yyyy" && $("#formW2CommencementDate").val() != "") saveObj.DateOfCommencement = $("#formW2CommencementDate").val();
+    if ($("#formW2CompletionDate").val() != "dd/mm/yyyy" && $("#formW2CompletionDate").val() != "") saveObj.DateOfCompletion = $("#formW2CompletionDate").val();
     if ($("#fw2InstructWorkDuration").val() != "") saveObj.InstructWorkDuration = $("#fw2InstructWorkDuration").val();
     saveObj.Remarks = $("#formW2Remarks").val();
     saveObj.DetailsOfWorks = $("#formW2DetailsOfWorks").val();
     saveObj.CeilingEstCost = $("#formW2EstCost").val();
 
     if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.IssuedBy = $("#formW2IssuedBy option:selected").val();
-    saveObj.IssuedName = $("#formW2EstCost").val();
-    if ($("#formW2IssuedDate").val() != "dd/mm/yyyy") saveObj.IssuedDate = $("#formW2IssuedDate").val();
-    saveObj.IssuedSign = $("#formW2IssuedSignture").val() == true ? true : false;
+    if ($("#formW2IssuedName").val() != "") saveObj.IssuedName = $("#formW2IssuedName").val();
+    if ($("#formW2IssuedDate").val() != "dd/mm/yyyy" && $("#formW2IssuedDate").val() != "") saveObj.IssuedDate = $("#formW2IssuedDate").val();
+    saveObj.IssuedSign = $("#formW2IssuedSignture").prop("checked");
 
     if ($("#formw2RequestedBy").find(":selected").val() != "") saveObj.RequestedBy = $("#formw2RequestedBy option:selected").val();
-    if ($("#formW2EstCost").val() != "") saveObj.RequestedName = $("#formW2EstCost").val();
-    if ($("#formW2RequestedDate").val() != "dd/mm/yyyy") saveObj.RequestedDate = $("#formW2RequestedDate").val();
-    saveObj.RequestedSign = $("#formW2RequestedSign").val() == true ? true : false;
+    if ($("#formW2RequestedName").val() != "") saveObj.RequestedName = $("#formW2RequestedName").val();
+    if ($("#formW2RequestedDate").val() != "dd/mm/yyyy" && $("#formW2RequestedDate").val() != "" ) saveObj.RequestedDate = $("#formW2RequestedDate").val();
+    saveObj.RequestedSign = $("#formW2RequestedSign").prop("checked");
 
     //Created by
 
@@ -157,9 +258,13 @@ function Delete(id) {
 }
 
 function GetImageList(id) {
-
     var group = $("#FormADetAssetGrpCode option:selected").val();
-    var FormType = "FormW2"
+
+    $("#saveFormW2Btn").hide();
+    $("#submitFormW2Btn").hide();
+    $("#saveFCEMBtn").hide();
+    $("#submitFCEMBtn").hide();
+
     if (id && id > 0) {
         $("#FW2HRef_No").val(id);
     }
@@ -180,6 +285,8 @@ function GetImageList(id) {
         }
 
     });
+
+    return true;
 }
 
 function changeRegion(obj) {

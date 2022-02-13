@@ -6,7 +6,7 @@ namespace RAMMS.Domain.Models
     public partial class RmIwFormW2Fcem
     {
         public int FcemPkRefNo { get; set; }
-        public string FcemFw2PkRefNo { get; set; }
+        public int? FcemFw2PkRefNo { get; set; }
         public DateTime? FcemDate { get; set; }
         public string FcemSstatus { get; set; }
         public double? FcemProgress { get; set; }
@@ -18,8 +18,10 @@ namespace RAMMS.Domain.Models
         public int? FcemCrBy { get; set; }
         public DateTime? FcemCrDt { get; set; }
         public bool? FcemSubmitSts { get; set; }
-        public bool? FcemActiveYn { get; set; }
+        public bool FcemActiveYn { get; set; }
         public string FcemStatus { get; set; }
         public string FcemAuditLog { get; set; }
+
+        public virtual RmIwFormW2 FcemFw2PkRefNoNavigation { get; set; }
     }
 }
