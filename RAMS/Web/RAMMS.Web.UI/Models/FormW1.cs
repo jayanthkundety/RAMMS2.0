@@ -16,15 +16,13 @@ namespace RAMMS.Web.UI.Models
         {
             FormW1 = new FormW1ResponseDTO();
         }
-       
+
         public string View { get; set; }
         public List<string> ImageTypeList { get; set; }
         public IEnumerable<FormW1ImageResponseDTO> ImageList { get; set; }
         public IEnumerable<SelectListItem> PhotoType { get; set; }
-
-        FormW1Model assetsModel = new FormW1Model();
         public FormW1ResponseDTO FormW1 { get; set; }
- 
+
 
     }
 }

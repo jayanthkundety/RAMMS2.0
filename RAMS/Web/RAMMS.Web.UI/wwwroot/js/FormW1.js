@@ -29,20 +29,7 @@
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    $('#ddlRMU').val("@Model.FormW1.Rmu");
-    $('#ddlRMU').trigger('chosen:updated');
-
-    $('#ddlRoadCode').val("@Model.FormW1.RoadCode");
-    $('#ddlRoadCode').trigger('chosen:updated');
-
-    $('#ddlRequestedBy').val("@Model.FormW1.RequestedBy");
-    $('#ddlRequestedBy').trigger('chosen:updated');
-
-    $('#ddlVerifiedBy').val("@Model.FormW1.VerifiedBy");
-    $('#ddlVerifiedBy').trigger('chosen:updated');
-
-    $('#ddlReportedBy').val("@Model.FormW1.ReportedBy");
-    $('#ddlReportedBy').trigger('chosen:updated');
+   
 
 
     $('input[type=radio][id=FormW1_RecommendedInstructedWork]').change(function () {
