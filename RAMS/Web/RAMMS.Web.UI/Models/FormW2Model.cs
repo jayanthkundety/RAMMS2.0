@@ -11,6 +11,8 @@ namespace RAMMS.Web.UI.Models
     {
         public FormW2ResponseDTO SaveFormW2Model { get; set; }
 
+        public FormIWSearchGridDTO SearchObj { get; set; }
+
         public string View { get; set; }
 
         public List<string> ImageTypeList { get; set; }

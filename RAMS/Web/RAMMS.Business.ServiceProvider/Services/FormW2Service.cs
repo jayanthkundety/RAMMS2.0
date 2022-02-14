@@ -275,11 +275,11 @@ namespace RAMMS.Business.ServiceProvider.Services
                     var iwform = new FormIWResponseDTO();
                     iwform.ReferenceNo = listData.Fw1PkRefNo.ToString();
                     iwform.projectTitle = listData.Fw1ProjectTitle;
-                    iwform.initialPropDt = "";
-                    iwform.recommdDE = "Yes";
+                    iwform.initialPropDt = Convert.ToString(listData.Fw1ReportedDate);
+                    iwform.recommdDE = listData.Fw1RecommendedByDe;
                     iwform.w1dt = Convert.ToString(listData.Fw1RmuDate);
-                    iwform.recommd = "Recommended";
-                    iwform.status = "Approved";
+                    iwform.recommd = listData.Fw1RecommendedStatus;
+                    iwform.status = "-";
                     iwform.technicalDt = "";
                     iwform.financeDt = "";
                     iwform.agreedNego = "-";

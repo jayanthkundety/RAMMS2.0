@@ -68,14 +68,14 @@ function SaveFCEM(submit) {
             else {
                 $("#FW2HRef_No").val(data);
                 if (submit) {
-                    $("#saveFormW2Btn").hide();
-                    $("#submitFormW2Btn").hide();
+                    $("#saveFCEMBtn").hide();
+                    $("#submitFCEMBtn").hide();
                     app.ShowSuccessMessage('Successfully Submitted', false);
                     location.href = "/InstructedWorks";
                 }
                 else {
-                    $("#saveFormW2Btn").show();
-                    $("#submitFormW2Btn").show();
+                    $("#saveFCEMBtn").show();
+                    $("#submitFCEMBtn").show();
                     app.ShowSuccessMessage('Successfully Saved', false);
                 }
             }
@@ -418,4 +418,5 @@ function GoBack() {
     else
         location.href = "/InstructedWorks/Index";
 }
+
 

@@ -3,7 +3,7 @@
 @{
     ViewBag.TabTitle = "Form W2 -  Initiation of Instructed Work";
     ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
-    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    Layout = null;
 
     var vd = Model.SaveFormW2Model.DateOfInitation;
     string _InitationDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";

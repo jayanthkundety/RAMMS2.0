@@ -233,7 +233,7 @@ namespace RAMMS.Repository
                 query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
             }
 
-
+           
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
             {
@@ -284,6 +284,10 @@ namespace RAMMS.Repository
             {
                 query = query.Where(x => x.x.Fw1PropDesignDuration >= filterOptions.Filters.Months && x.x.Fw1PropDesignDuration <= filterOptions.Filters.Months);
             }
+
+
+
+
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
             {

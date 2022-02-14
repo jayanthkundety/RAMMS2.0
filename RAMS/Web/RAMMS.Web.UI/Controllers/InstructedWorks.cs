@@ -69,7 +69,7 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
-            model.FormW1.RecommendedInstructedWork   = "None";
+            model.FormW1.RecommendedInstructedWork = "None";
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
@@ -78,7 +78,7 @@ namespace RAMMS.Web.UI.Controllers
 
             GetRMUWithDivision("RMU_Division");
 
-           
+
             return View("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 
@@ -93,8 +93,8 @@ namespace RAMMS.Web.UI.Controllers
                 ddLookup.Type = "Month";
                 ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
                 LoadLookupService("RMU", "Division", "RD_Code", "User", "TECM_Status");
-            
-               _formW1Model = await _formW1Service.FindFormW1ByID(id);
+
+                _formW1Model = await _formW1Service.FindFormW1ByID(id);
             }
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;
@@ -238,7 +238,7 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "SP";
             ViewData["Service Provider"] = await _ddLookupService.GetDdLookup(ddLookup);
 
-            LoadLookupService("RMU", "Division", "RD_Code", "Region");
+            LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status");
 
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
@@ -246,21 +246,19 @@ namespace RAMMS.Web.UI.Controllers
 
             ViewData["Users"] = _userService.GetUserSelectList(null);
         }
-      
-        public async Task<IActionResult> AddFormW2(int id = 0)
+
+        public async Task<IActionResult> AddFormW2()
         {
             _formW2Model = new FormW2Model();
             _formW2Model.SaveFormW2Model = new DTO.ResponseBO.FormW2ResponseDTO();
             _formW2Model.Fcem = new FormW2FCEMResponseDTO();
-            if (id != 0)
-            {
-                var _formW1Model = await _formW2Service.GetFormW1ById(id);
-                _formW2Model.SaveFormW2Model.Fw1IwRefNo = _formW1Model.ReferenceNo;
-                _formW2Model.SaveFormW2Model.Fw1RefNo = _formW1Model.PkRefNo;
-                _formW2Model.SaveFormW2Model.TitleOfInstructWork = _formW1Model.ProjectTitle;
-                _formW2Model.SaveFormW2Model.CeilingEstCost = _formW1Model.EstimTotalCost;
-                _formW2Model.FormW1 = _formW1Model;
-            }
+
+            //_formW2Model.SaveFormW2Model.Fw1IwRefNo ="
+            //_formW2Model.SaveFormW2Model.Fw1RefNo = _formW1Model.PkRefNo;
+            //_formW2Model.SaveFormW2Model.TitleOfInstructWork = _formW1Model.ProjectTitle;
+            //_formW2Model.SaveFormW2Model.CeilingEstCost = _formW1Model.EstimTotalCost;
+            _formW2Model.FormW1 = new FormW1ResponseDTO();
+
             await LoadN2DropDown();
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
         }
@@ -574,7 +572,7 @@ namespace RAMMS.Web.UI.Controllers
             }
             if (Request.Form.ContainsKey("columns[1][search][value]"))
             {
-                searchData.filterData.IssueW2Ref  = Request.Form["columns[1][search][value]"].ToString();
+                searchData.filterData.IssueW2Ref = Request.Form["columns[1][search][value]"].ToString();
             }
             if (Request.Form.ContainsKey("columns[2][search][value]"))
             {

@@ -3,7 +3,7 @@
 @{
     ViewBag.TabTitle = "Form W2 -  Initiation of Instructed Work";
     ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
-    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    Layout = null;
 
     var vd = Model.SaveFormW2Model.DateOfInitation;
     string _InitationDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
@@ -156,10 +156,8 @@
                                                 <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="fcemDate" value="@_FCEMDate" />
                                             </div>
                                             <div class="form-group col-lg-6">
-                                                @Html.Label("Status", "Status")
-                                                <select class="form-control" id="fcemStatus">
-                                                    <option value="">Select Status</option>
-                                                </select>
+                                                @Html.Label("Status", "Status") 
+                                                @Html.DropDownListFor(m => m.Fcem.Sstatus, (IEnumerable<SelectListItem>)ViewData["TECM_Status"], "Select Status", new { @id = "fcemStatus", @class = "form-control svalidate {required, Status}" })
                                             </div>
                                             <div class="form-group col-lg-6">
                                                 <label for="RMU">PROGRESS %</label>
