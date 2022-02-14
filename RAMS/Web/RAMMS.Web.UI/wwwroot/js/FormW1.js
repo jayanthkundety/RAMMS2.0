@@ -29,7 +29,7 @@
 
     $('[data-toggle="tooltip"]').tooltip();
 
-   
+
 
 
     $('input[type=radio][id=FormW1_RecommendedInstructedWork]').change(function () {
@@ -113,7 +113,7 @@ function Save() {
     //}
     if (ValidatePage('#page')) {
         InitAjaxLoading();
-        $.post('./SaveFormW1', $("form").serialize(), function (data) {
+        $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
             HideAjaxLoading();
             if (data == -1) {
                 app.ShowErrorMessage(data.errorMessage);
@@ -227,4 +227,7 @@ function GetImageList(id) {
 
     });
 }
+
+
+
 
