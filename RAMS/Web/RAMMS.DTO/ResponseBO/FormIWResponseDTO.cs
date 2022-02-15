@@ -6,8 +6,13 @@ namespace RAMMS.DTO.ResponseBO
 {
     public class FormIWResponseDTO
     {
-        public string ReferenceNo { get; set; }
+        public string W1RefNo { get; set; }
+        public string W2RefNo { get; set; }
 
+        public string WCRefNo { get; set; }
+        public string WGRefNo { get; set; }
+        public string WDRefNo { get; set; }
+        public string WNRefNo { get; set; }
         public string projectTitle { get; set; }
 
         public string initialPropDt { get; set; }

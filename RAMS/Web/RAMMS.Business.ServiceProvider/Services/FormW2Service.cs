@@ -270,30 +270,30 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 result.TotalRecords = await _repoUnit.FormW2Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
 
-                foreach (var listData in filteredRecords)
-                {
-                    var iwform = new FormIWResponseDTO();
-                    iwform.ReferenceNo = listData.Fw1PkRefNo.ToString();
-                    iwform.projectTitle = listData.Fw1ProjectTitle;
-                    iwform.initialPropDt = Convert.ToString(listData.Fw1ReportedDate);
-                    iwform.recommdDE = listData.Fw1RecommendedByDe;
-                    iwform.w1dt = Convert.ToString(listData.Fw1RmuDate);
-                    iwform.recommd = listData.Fw1RecommendedStatus;
-                    iwform.status = "-";
-                    iwform.technicalDt = "";
-                    iwform.financeDt = "";
-                    iwform.agreedNego = "-";
-                    iwform.issueW2Ref = "-";
-                    iwform.commenDt = "01/01/2020";
-                    iwform.compDt = "";
-                    iwform.ContractPeriod = "10";
-                    iwform.dlpPeriod = "10";
-                    iwform.finalAmt = "";
-                    iwform.sitePhy = "";
-                    formIWList.Add(iwform);
-                }
+                //foreach (var listData in filteredRecords)
+                //{
+                //    var iwform = new FormIWResponseDTO();
+                //    iwform.ReferenceNo = listData.Fw1PkRefNo.ToString();
+                //    iwform.projectTitle = listData.Fw1ProjectTitle;
+                //    iwform.initialPropDt = Convert.ToString(listData.Fw1ReportedDate);
+                //    iwform.recommdDE = listData.Fw1RecommendedByDe;
+                //    iwform.w1dt = Convert.ToString(listData.Fw1RmuDate);
+                //    iwform.recommd = listData.Fw1RecommendedStatus;
+                //    iwform.status = "-";
+                //    iwform.technicalDt = "";
+                //    iwform.financeDt = "";
+                //    iwform.agreedNego = "-";
+                //    iwform.issueW2Ref = "-";
+                //    iwform.commenDt = "01/01/2020";
+                //    iwform.compDt = "";
+                //    iwform.ContractPeriod = "10";
+                //    iwform.dlpPeriod = "10";
+                //    iwform.finalAmt = "";
+                //    iwform.sitePhy = "";
+                //    formIWList.Add(iwform);
+                //}
 
-                result.PageResult = formIWList;
+                result.PageResult = filteredRecords;
 
                 result.PageNo = filterOptions.StartPageNo;
                 result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;

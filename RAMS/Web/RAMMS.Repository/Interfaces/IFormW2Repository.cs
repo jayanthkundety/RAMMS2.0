@@ -24,7 +24,7 @@ namespace RAMMS.Repository.Interfaces
 
         Task<RmIwFormW1> GetFormW1ByRoadCode(string roadCode);
 
-        Task<List<RmIwFormW1>> GetFilteredRecordList(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
+        Task<List<FormIWResponseDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
 
         Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
 

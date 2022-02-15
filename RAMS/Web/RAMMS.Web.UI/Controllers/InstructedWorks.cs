@@ -268,7 +268,7 @@ namespace RAMMS.Web.UI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> EditFormW2(int id)
+        public async Task<IActionResult> EditFormW2(int id , string view)
         {
             _formW2Model = new FormW2Model();
 
@@ -279,7 +279,7 @@ namespace RAMMS.Web.UI.Controllers
                 var res = (List<CSelectListItem>)ViewData["RD_Code"];
                 res.Find(c => c.Value == result.RoadCode).Selected = true;
                 var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
-
+                if (view == "1") _formW2Model.View = "1"; 
                 _formW2Model.SaveFormW2Model = result;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1RefNoNavigation;
                 _formW2Model.Fcem = resultFCEM != null ? resultFCEM : new FormW2FCEMResponseDTO();

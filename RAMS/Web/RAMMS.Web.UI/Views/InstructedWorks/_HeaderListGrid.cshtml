@@ -47,10 +47,10 @@
     var table_columns = [];
     var chkRefNoCol = {
         data: null, name: "chkBox", title: "", autoWidth: true, sortable: false, render: function (data) {
-            return "<input type='checkbox' class='chkbox' value='" + data.referenceNo + "' />";
+            return "<input type='checkbox' class='chkbox' value='" + data.w1RefNo + "' w1='" + data.w1RefNo + "'  w2='" + data.w2RefNo + "'  wc='" + data.wcRefNo + "'  wg='" + data.wgRefNo + "'  wd='" + data.wdRefNo + "'  wn='" + data.wnRefNo + "' />";
         }
     };
-    var refNoCol = { data: "referenceNo", name: "ProjectTitle", title: "Title", autoWidth: true, sortable: false, visible: false };
+    var w1RefNoCol = { data: "w1RefNo", name: "w1RefNo", title: "Title", autoWidth: true, sortable: true, visible:false };
     var projectTitleCol = { data: "projectTitle", name: "ProjectTitle", title: "Title", autoWidth: true, sortable: true };
     var iniProposedDtCol = { data: "initialPropDt", name: "InitialProposedDate", title: "Initial Proposed Date", autoWidth: false, width: 150, sortable: true };
     var recommDECol = { data: "recommdDE", name: "RecommendDE", title: "Recommendation by DE(Yes/No)", autoWidth: false, width: 50, sortable: true, class:"text-center" };
@@ -138,11 +138,13 @@
     var finalAmountCol = { data: "finalAmt", name: "FinalAmount", title: "Final Amount (RM)", autoWidth: true, sortable: true, class: "text-right" };
     var sitePhysicalCol = { data: "sitePhy", name: "SitePhysical", title: "Site Physical Progress(%) (A/P)", autoWidth: true, sortable: true, class: "text-center" };
 
-
-
-
     table_columns.push(chkRefNoCol);
-    table_columns.push(refNoCol);
+    table_columns.push(w1RefNoCol);
+    //table_columns.push(w2RefNoCol);
+    //table_columns.push(wcRefNoCol);
+    //table_columns.push(wgRefNoCol);
+    //table_columns.push(wdRefNoCol);
+    //table_columns.push(wnRefNoCol);
     table_columns.push(projectTitleCol);
     table_columns.push(iniProposedDtCol);
     table_columns.push(recommDECol);
