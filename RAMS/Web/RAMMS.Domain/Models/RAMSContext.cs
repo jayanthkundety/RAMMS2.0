@@ -9660,7 +9660,9 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FW1_FORMH_RefNo")
                     .HasMaxLength(200);
 
-                entity.Property(e => e.Fw1FrmCh).HasColumnName("FW1_FRM_CH");
+                entity.Property(e => e.Fw1FrmChKm).HasColumnName("FW1_FRM_CH_KM");
+
+                entity.Property(e => e.Fw1FrmChM).HasColumnName("FW1_FRM_CH_M");
 
                 entity.Property(e => e.Fw1GenPrelims).HasColumnName("FW1_Gen_Prelims");
 
@@ -9758,6 +9760,30 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FW1_Road_Name")
                     .HasMaxLength(250);
 
+                entity.Property(e => e.Fw1ServAddress1)
+                    .HasColumnName("FW1_Serv_Address1")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ServAddress2)
+                    .HasColumnName("FW1_Serv_Address2")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ServAddress3)
+                    .HasColumnName("FW1_Serv_Address3")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ServFax)
+                    .HasColumnName("FW1_Serv_Fax")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ServOffice)
+                    .HasColumnName("FW1_Serv_Office")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ServPhone)
+                    .HasColumnName("FW1_Serv_Phone")
+                    .HasMaxLength(50);
+
                 entity.Property(e => e.Fw1ServPropName)
                     .HasColumnName("FW1_Serv_Prop_Name")
                     .HasMaxLength(50);
@@ -9788,7 +9814,9 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FW1_TECM_Status")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Fw1ToCh).HasColumnName("FW1_To_CH");
+                entity.Property(e => e.Fw1ToChKm).HasColumnName("FW1_TO_CH_KM");
+
+                entity.Property(e => e.Fw1ToChM).HasColumnName("FW1_TO_CH_M");
 
                 entity.Property(e => e.Fw1VerifiedBy).HasColumnName("FW1_Verified_By");
 

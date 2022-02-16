@@ -12,6 +12,12 @@ namespace RAMMS.DTO.ResponseBO
         public string FormhRefNo { get; set; }
         public string ServPropRefNo { get; set; }
         public string ServPropName { get; set; }
+        public string ServOffice { get; set; }
+        public string ServAddress1 { get; set; }
+        public string ServAddress2 { get; set; }
+        public string ServAddress3 { get; set; }
+        public string ServPhone { get; set; }
+        public string ServFax { get; set; }
         public string ReferenceNo { get; set; }
         public string Division { get; set; }
         public string Rmu { get; set; }
@@ -28,8 +34,10 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? RmuDate { get; set; }
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
-        public int? FrmCh { get; set; }
-        public int? ToCh { get; set; }
+        public int? FrmChKm { get; set; }
+        public int? FrmChM { get; set; }
+        public int? ToChKm { get; set; }
+        public int? ToChM { get; set; }
         public string ChainageApprovedIwref { get; set; }
         public string DetailsOfWork { get; set; }
         public decimal? PropDesignDuration { get; set; }

@@ -9658,7 +9658,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW1_FORMH_RefNo")
                     .HasMaxLength(200);
 
-                entity.Property(e => e.Fw1FrmCh).HasColumnName("FW1_FRM_CH");
+                entity.Property(e => e.Fw1FrmChKm).HasColumnName("FW1_FRM_CH");
 
                 entity.Property(e => e.Fw1GenPrelims).HasColumnName("FW1_Gen_Prelims");
 
@@ -9750,7 +9750,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW1_TECM_Status")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Fw1ToCh).HasColumnName("FW1_To_CH");
+                entity.Property(e => e.Fw1ToChM).HasColumnName("FW1_To_CH");
 
                 entity.Property(e => e.Fw1VerifiedBy).HasColumnName("FW1_Verified_By");
 
