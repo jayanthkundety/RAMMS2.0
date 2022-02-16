@@ -113,14 +113,14 @@
                     PROPOSED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" data-target="#formW1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Add')">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" data-target="#formW1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal"  onclick="OpenFormW1('Edit')">
                         <span class="edit-icon"></span>Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" data-target="#formW1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal"  onclick="OpenFormW1('View')">
                         <span class="view-icon"></span> View
                     </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -140,7 +140,7 @@
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal"data-target="#formW2" onclick="OpenFormW2('View',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
                         <span class="view-icon"></span> View
                     </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -265,9 +265,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Modal Header</h4>
+                <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"  id="formW1Content">
 
             </div>
             <div class="modal-footer">
@@ -317,7 +317,40 @@
         return value;
     }
 
-    function OpenFormW2(mode,view) {
+    function OpenFormW1(mode) {
+       
+        var SelectedIWGridId = 0;
+        
+        if (mode == "Add") {
+            url = "/InstructedWorks/AddFormW1";
+        }
+        else if (mode == "Edit") {
+           
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+        }
+        else if (mode == "View") {
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+        }
+        InitAjaxLoading();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formW1").modal('show');
+                $("#formW1Content").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
+    }
+
+    function OpenFormW2(mode, view) {
         InitAjaxLoading();
         var url = '', id;
         if (mode == 'Add') {
