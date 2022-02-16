@@ -15,6 +15,12 @@ namespace RAMMS.Domain.Models
         public string Fw1FormhRefNo { get; set; }
         public string Fw1ServPropRefNo { get; set; }
         public string Fw1ServPropName { get; set; }
+        public string Fw1ServOffice { get; set; }
+        public string Fw1ServAddress1 { get; set; }
+        public string Fw1ServAddress2 { get; set; }
+        public string Fw1ServAddress3 { get; set; }
+        public string Fw1ServPhone { get; set; }
+        public string Fw1ServFax { get; set; }
         public string Fw1ReferenceNo { get; set; }
         public string Fw1Division { get; set; }
         public string Fw1Rmu { get; set; }
@@ -26,8 +32,10 @@ namespace RAMMS.Domain.Models
         public DateTime? Fw1RmuDate { get; set; }
         public string Fw1RoadCode { get; set; }
         public string Fw1RoadName { get; set; }
-        public int? Fw1FrmCh { get; set; }
-        public int? Fw1ToCh { get; set; }
+        public int? Fw1FrmChKm { get; set; }
+        public int? Fw1FrmChM { get; set; }
+        public int? Fw1ToChKm { get; set; }
+        public int? Fw1ToChM { get; set; }
         public string Fw1ChainageApprovedIwref { get; set; }
         public string Fw1DetailsOfWork { get; set; }
         public double? Fw1PropDesignDuration { get; set; }
