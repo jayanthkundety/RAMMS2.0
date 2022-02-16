@@ -57,6 +57,9 @@
         $("#FormW1_VerifiedDate").prop("readonly", false);
         $('#ddlVerifiedBy').trigger('chosen:updated');
     }
+    else {
+        $('#ddlVerifiedBy').prop("disabled", true);
+    }
 
     CalculateCost();
 
@@ -111,7 +114,8 @@ function Save() {
     //if (submit) {
     //    $("#div-addformd .svalidate").addClass("validate");
     //}
-    if (ValidatePage('#page')) {
+    
+    if (ValidatePage('#FormW1page')) {
         InitAjaxLoading();
         $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
             HideAjaxLoading();
