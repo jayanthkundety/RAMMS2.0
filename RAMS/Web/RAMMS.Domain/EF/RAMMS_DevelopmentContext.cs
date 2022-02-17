@@ -9648,6 +9648,10 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW1_CR_DT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Fw1Date)
+                    .HasColumnName("FW1_Date")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Fw1DetailsOfWork).HasColumnName("FW1_Details_Of_Work");
 
                 entity.Property(e => e.Fw1Division)
@@ -9665,6 +9669,10 @@ namespace RAMMS.Domain.EF
                 entity.Property(e => e.Fw1FrmChM).HasColumnName("FW1_FRM_CH_M");
 
                 entity.Property(e => e.Fw1GenPrelims).HasColumnName("FW1_Gen_Prelims");
+
+                entity.Property(e => e.Fw1InitialProposedDate)
+                    .HasColumnName("FW1_Initial_Proposed_Date")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Fw1IsBq).HasColumnName("FW1_IsBQ");
 
@@ -9747,10 +9755,6 @@ namespace RAMMS.Domain.EF
                 entity.Property(e => e.Fw1Rmu)
                     .HasColumnName("FW1_RMU")
                     .HasMaxLength(50);
-
-                entity.Property(e => e.Fw1RmuDate)
-                    .HasColumnName("FW1_RMU_Date")
-                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Fw1RoadCode)
                     .HasColumnName("FW1_Road_Code")
@@ -9954,7 +9958,9 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Divison_Name")
                     .HasMaxLength(100);
 
-                entity.Property(e => e.Fw2FrmCh).HasColumnName("FW2_FRM_CH");
+                entity.Property(e => e.Fw2FrmChKm).HasColumnName("FW2_FRM_CH_KM");
+
+                entity.Property(e => e.Fw2FrmChM).HasColumnName("FW2_FRM_CH_M");
 
                 entity.Property(e => e.Fw2Fw1IwRefNo)
                     .HasColumnName("FW2_FW1_IW_Ref_No")
@@ -10046,7 +10052,9 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Title_OF_Instruct_Work")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw2ToCh).HasColumnName("FW2_To_CH");
+                entity.Property(e => e.Fw2ToChKm).HasColumnName("FW2_TO_CH_KM");
+
+                entity.Property(e => e.Fw2ToChM).HasColumnName("FW2_TO_CH_M");
 
                 entity.HasOne(d => d.Fw2Fw1RefNoNavigation)
                     .WithMany(p => p.RmIwFormW2)

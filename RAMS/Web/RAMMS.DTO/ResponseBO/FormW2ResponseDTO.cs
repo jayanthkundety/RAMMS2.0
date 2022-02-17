@@ -27,8 +27,9 @@ namespace RAMMS.DTO.ResponseBO
         public string Cc { get; set; }
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
-        public int? FrmCh { get; set; }
-        public int? ToCh { get; set; }
+        public int? ChKm { get; set; }
+      
+        public int? ChM { get; set; }
         public string TitleOfInstructWork { get; set; }
         [DisplayFormat(DataFormatString = "{​​​​​0:yyyy-MM-dd}​​​​​", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]

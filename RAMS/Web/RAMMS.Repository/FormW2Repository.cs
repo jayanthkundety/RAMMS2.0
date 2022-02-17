@@ -328,7 +328,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 3)
                     query = query.OrderBy(s => s.x.Fw1ProjectTitle);
                 if (filterOptions.ColumnIndex == 4)
-                    query = query.OrderBy(s => s.x.Fw1RmuDate);
+                    query = query.OrderBy(s => s.x.Fw1Date);
                 if (filterOptions.ColumnIndex == 5)
                     query = query.OrderBy(s => s.x.Fw1RecommendedByDe);
                 if (filterOptions.ColumnIndex == 6)
@@ -356,7 +356,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 3)
                     query = query.OrderByDescending(s => s.x.Fw1ProjectTitle);
                 if (filterOptions.ColumnIndex == 4)
-                    query = query.OrderByDescending(s => s.x.Fw1RmuDate);
+                    query = query.OrderByDescending(s => s.x.Fw1Date);
                 if (filterOptions.ColumnIndex == 5)
                     query = query.OrderByDescending(s => s.x.Fw1RecommendedByDe);
                 if (filterOptions.ColumnIndex == 6)
@@ -389,9 +389,9 @@ namespace RAMMS.Repository
                                 WDRefNo = "0",
                                 WNRefNo = "0",
                                 projectTitle = w1Form.Fw1ProjectTitle,
-                                initialPropDt = Convert.ToString(w1Form.Fw1RmuDate),
+                                initialPropDt = Convert.ToString(w1Form.Fw1InitialProposedDate),
                                 recommdDE = w1Form.Fw1RecommendedByDe,
-                                w1dt = Convert.ToString(w1Form.Fw1RmuDate),
+                                w1dt = Convert.ToString(w1Form.Fw1Date),
                                 status = "-",
                                 technicalDt = "",
                                 financeDt = "",

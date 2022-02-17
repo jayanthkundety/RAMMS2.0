@@ -25,11 +25,12 @@ namespace RAMMS.Domain.EF
         public string Fw1Division { get; set; }
         public string Fw1Rmu { get; set; }
         public string Fw1ProjectTitle { get; set; }
+        public DateTime? Fw1InitialProposedDate { get; set; }
         public DateTime? Fw1TecmDate { get; set; }
         public string Fw1TecmStatus { get; set; }
         public bool? Fw1IsBq { get; set; }
         public bool? Fw1IsDrawing { get; set; }
-        public DateTime? Fw1RmuDate { get; set; }
+        public DateTime? Fw1Date { get; set; }
         public string Fw1RoadCode { get; set; }
         public string Fw1RoadName { get; set; }
         public int? Fw1FrmChKm { get; set; }

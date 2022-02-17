@@ -255,9 +255,9 @@
                                                                                     CH From
                                                                                 </label>
                                                                                 <div class="row">
-                                                                                    <div class="col-5 pl-3 pr-0"><input type="text" class="form-control" value="CH28"></div>
+                                                                                    <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.SaveFormW2Model.ChKm, new { @id= "formW2Fromchkm", @class = "form-control" })</div>
                                                                                     <div class="col-1 text-center pt-2"> + </div>
-                                                                                    <div class="col-5 pl-1 pr-0"><input type="text" value="970" class="form-control"></div>
+                                                                                    
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
@@ -265,9 +265,9 @@
                                                                                     CH To
                                                                                 </label>
                                                                                 <div class="row">
-                                                                                    <div class="col-5 pl-3 pr-0"><input type="text" class="form-control" value="CH28"></div>
+                                                                                    
                                                                                     <div class="col-1 text-center pt-2"> + </div>
-                                                                                    <div class="col-5 pl-1 pr-0"><input type="text" value="970" class="form-control"></div>
+                                                                                    <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2Tochm", @class = "form-control" })</div>
                                                                                 </div>
                                                                             </div>
                                                                            
@@ -490,7 +490,7 @@
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Date", "Date")
-                                                                @Html.TextBoxFor(x => x.FormW1.RmuDate, new { @disabled = "true", @class = "form-control" })
+                                                                @Html.TextBoxFor(x => x.FormW1.Date, new { @disabled = "true", @class = "form-control" })
                                                             </div>
 
                                                         </div>
@@ -515,9 +515,9 @@
                                                                     <div class="form-group col-lg-4">
                                                                         @Html.Label("Chainage Location", "Chainage Location")
                                                                         <div class="row">
-                                                                            <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.FormW1.FrmChKm, new { @disabled = "true", @class = "form-control" })</div>
+                                                                            <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.FormW1.ChKm, new { @disabled = "true", @class = "form-control" })</div>
                                                                             <div class="col-1 text-center pt-2"> + </div>
-                                                                            <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.FormW1.ToChM, new { @disabled = "true", @class = "form-control" })</div>
+                                                                            <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.FormW1.ChM, new { @disabled = "true", @class = "form-control" })</div>
                                                                         </div>
                                                                     </div>
                                                                     @*<div class="form-group col-lg-3 pl-2 pr-2">

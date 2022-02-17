@@ -25,17 +25,16 @@ namespace RAMMS.Domain.Models
         public string Fw1Division { get; set; }
         public string Fw1Rmu { get; set; }
         public string Fw1ProjectTitle { get; set; }
+        public DateTime? Fw1InitialProposedDate { get; set; }
         public DateTime? Fw1TecmDate { get; set; }
         public string Fw1TecmStatus { get; set; }
         public bool? Fw1IsBq { get; set; }
         public bool? Fw1IsDrawing { get; set; }
-        public DateTime? Fw1RmuDate { get; set; }
+        public DateTime? Fw1Date { get; set; }
         public string Fw1RoadCode { get; set; }
         public string Fw1RoadName { get; set; }
-        public int? Fw1FrmChKm { get; set; }
-        public int? Fw1FrmChM { get; set; }
-        public int? Fw1ToChKm { get; set; }
-        public int? Fw1ToChM { get; set; }
+        public int? Fw1ChKm { get; set; }
+        public int? Fw1ChM { get; set; }
         public string Fw1ChainageApprovedIwref { get; set; }
         public string Fw1DetailsOfWork { get; set; }
         public double? Fw1PropDesignDuration { get; set; }

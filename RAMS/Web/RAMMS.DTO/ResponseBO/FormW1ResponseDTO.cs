@@ -22,6 +22,11 @@ namespace RAMMS.DTO.ResponseBO
         public string Division { get; set; }
         public string Rmu { get; set; }
         public string ProjectTitle { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        public DateTime? InitialProposedDate { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime? TecmDate { get; set; }
@@ -31,13 +36,12 @@ namespace RAMMS.DTO.ResponseBO
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
-        public DateTime? RmuDate { get; set; }
+        public DateTime? Date { get; set; }
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
-        public int? FrmChKm { get; set; }
-        public int? FrmChM { get; set; }
-        public int? ToChKm { get; set; }
-        public int? ToChM { get; set; }
+        public int? ChKm { get; set; }
+      
+        public int? ChM { get; set; }
         public string ChainageApprovedIwref { get; set; }
         public string DetailsOfWork { get; set; }
         public decimal? PropDesignDuration { get; set; }
