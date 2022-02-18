@@ -127,7 +127,7 @@
                                                                             <label>
                                                                                 Date
                                                                             </label>
-                                                                            @Html.EditorFor(m => m.FormW1.RmuDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control validate {required,Date}", @type = "date" } })
+                                                                            @Html.EditorFor(m => m.FormW1.Date, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control validate {required,Date}", @type = "date" } })
                                                                         </div>
 
                                                                     </div>
@@ -156,9 +156,9 @@
                                                                                         CH From
                                                                                     </label>
                                                                                     <div class="row">
-                                                                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(m => m.FormW1.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}" })</div>
+                                                                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(m => m.FormW1.ChKm, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}" })</div>
                                                                                         <div class="col-1 text-center pt-2"> + </div>
-                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.FrmCh, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage M from}" })</div>
+                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.ChKm, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage M from}" })</div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group col-lg-3">
@@ -167,9 +167,9 @@
                                                                                     </label>
                                                                                     <div class="row">
  
-                                                                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(m => m.FormW1.ToCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM to}" })</div>
+                                                                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(m => m.FormW1.ChM, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM to}" })</div>
                                                                                         <div class="col-1 text-center pt-2"> + </div>
-                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.ToCh, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage M to}" })</div>
+                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.ChM, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage M to}" })</div>
                                                                                     </div>
                                                                                 </div>
                                                                                 @*<div class="form-group col-lg-4">

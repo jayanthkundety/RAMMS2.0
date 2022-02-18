@@ -15,61 +15,59 @@ namespace RAMMS.Domain.Models
         public string Fw1FormhRefNo { get; set; }
         public string Fw1ServPropRefNo { get; set; }
         public string Fw1ServPropName { get; set; }
-        public string Fw1ServOffice { get; set; }
         public string Fw1ServAddress1 { get; set; }
         public string Fw1ServAddress2 { get; set; }
         public string Fw1ServAddress3 { get; set; }
         public string Fw1ServPhone { get; set; }
         public string Fw1ServFax { get; set; }
-        public string Fw1ReferenceNo { get; set; }
-        public string Fw1Division { get; set; }
-        public string Fw1Rmu { get; set; }
+        public string Fw1IwRefNo { get; set; }
+        public string Fw1DivnCode { get; set; }
+        public string Fw1RmuCode { get; set; }
         public string Fw1ProjectTitle { get; set; }
         public DateTime? Fw1InitialProposedDate { get; set; }
-        public DateTime? Fw1TecmDate { get; set; }
+        public DateTime? Fw1TecmDt { get; set; }
         public string Fw1TecmStatus { get; set; }
         public bool? Fw1IsBq { get; set; }
         public bool? Fw1IsDrawing { get; set; }
-        public DateTime? Fw1Date { get; set; }
+        public DateTime? Fw1Dt { get; set; }
         public string Fw1RoadCode { get; set; }
         public string Fw1RoadName { get; set; }
         public int? Fw1ChKm { get; set; }
         public int? Fw1ChM { get; set; }
-        public string Fw1ChainageApprovedIwref { get; set; }
         public string Fw1DetailsOfWork { get; set; }
         public double? Fw1PropDesignDuration { get; set; }
         public double? Fw1PropCompletionPeriod { get; set; }
-        public string Fw1RecommendedInstructedWork { get; set; }
-        public string Fw1RecommendedByDe { get; set; }
-        public string Fw1RecommendedStatus { get; set; }
-        public double? Fw1PhyWorks { get; set; }
-        public double? Fw1GenPrelims { get; set; }
+        public string Fw1RecomdYn { get; set; }
+        public string Fw1RecomdBydeYn { get; set; }
+        public string Fw1RecomdStatus { get; set; }
+        public double? Fw1PhyWorksAmt { get; set; }
+        public double? Fw1GenPrelimsAmt { get; set; }
         public double? Fw1ConsulTaxPercent { get; set; }
-        public double? Fw1ConsulFee { get; set; }
+        public double? Fw1ConsulFeeAmt { get; set; }
         public double? Fw1SurvyWorksPercent { get; set; }
-        public double? Fw1SurvyWorks { get; set; }
+        public double? Fw1SurvyWorksAmt { get; set; }
         public double? Fw1SiteInvestPercent { get; set; }
-        public double? Fw1SiteInvest { get; set; }
+        public double? Fw1SiteInvestAmt { get; set; }
         public string Fw1OtherCostLabel { get; set; }
-        public double? Fw1OtherCost { get; set; }
-        public double? Fw1EstimTotalCost { get; set; }
-        public int? Fw1ReportedBy { get; set; }
-        public string Fw1ReportedName { get; set; }
-        public string Fw1ReportedDesig { get; set; }
-        public bool? Fw1ReportedSign { get; set; }
-        public DateTime? Fw1ReportedDate { get; set; }
-        public int? Fw1RequestedBy { get; set; }
-        public bool? Fw1RequestedBySign { get; set; }
-        public string Fw1RequestedByName { get; set; }
-        public string Fw1RequestedByDesig { get; set; }
-        public string Fw1RequestedByOffice { get; set; }
-        public DateTime? Fw1RequestedByDate { get; set; }
-        public int? Fw1VerifiedBy { get; set; }
-        public bool? Fw1VerifiedSign { get; set; }
-        public string Fw1VerifiedName { get; set; }
-        public string Fw1VerifiedDesig { get; set; }
-        public string Fw1VerifiedOffice { get; set; }
-        public DateTime? Fw1VerifiedDate { get; set; }
+        public double? Fw1OtherCostAmt { get; set; }
+        public double? Fw1EstimTotalCostAmt { get; set; }
+        public int? Fw1UseridRep { get; set; }
+        public string Fw1UsernameRep { get; set; }
+        public string Fw1DesignationRep { get; set; }
+        public bool? Fw1SignRep { get; set; }
+        public DateTime? Fw1DtRep { get; set; }
+        public int? Fw1UseridReq { get; set; }
+        public bool? Fw1SignReq { get; set; }
+        public string Fw1UsernameReq { get; set; }
+        public string Fw1DesignationReq { get; set; }
+        public string Fw1OfficeReq { get; set; }
+        public DateTime? Fw1DtReq { get; set; }
+        public int? Fw1UseridVer { get; set; }
+        public bool? Fw1SignVer { get; set; }
+        public string Fw1UsernameVer { get; set; }
+        public string Fw1DesignationVer { get; set; }
+        public string Fw1OfficeVer { get; set; }
+        public DateTime? Fw1DtVer { get; set; }
         public int? Fw1ModBy { get; set; }
         public DateTime? Fw1ModDt { get; set; }
         public int? Fw1CrBy { get; set; }
