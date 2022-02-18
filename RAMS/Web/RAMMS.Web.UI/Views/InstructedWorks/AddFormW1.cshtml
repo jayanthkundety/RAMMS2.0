@@ -118,18 +118,41 @@
                                                                             @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @class = "form-control validate {required,Service Provider's Proposal Ref No}" })
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
-
                                                                             @Html.Label("Service Provider Name", "Service Provider Name")
-                                                                            @Html.TextBoxFor(m => m.FormW1.ProjectTitle, new { @class = "form-control validate {required,Service Provider Name}" })
-
+                                                                            @Html.TextBoxFor(m => m.FormW1.ServPropName, new { @class = "form-control validate {required,Service Provider Name}" })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label for="Designation"> Address 1 </label>
+                                                                            <input type="text" placeholder="address 1" class="form-control " />
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label for="Designation"> Address 2 </label>
+                                                                            <input type="text" placeholder="address 2" class="form-control " />
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label for="Designation"> Address 3 </label>
+                                                                            <input type="text" placeholder="address 3" class="form-control " />
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label for="Designation">Phone NO </label>
+                                                                            <input type="text" placeholder="Phone No" class="form-control " />
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label for="Designation"> Fax </label>
+                                                                            <input type="text" placeholder="fax" class="form-control " />
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
                                                                             <label>
-                                                                                Date
+                                                                                Intial Proposed Date
                                                                             </label>
-                                                                            @Html.EditorFor(m => m.FormW1.RmuDate, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control validate {required,Date}", @type = "date" } })
+                                                                            <input type="date" class="form-control" />
                                                                         </div>
-
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label>
+                                                                                Form W1 Date
+                                                                            </label>
+                                                                            <input class="form-control" type="date" placeholder="Date" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12">
@@ -146,44 +169,30 @@
                                                                                     @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @class = "form-control validate {required,Road Code}", @onchange = "OnRoadChange(this);" })
 
                                                                                 </div>
-                                                                                <div class="form-group col-lg-3">
+                                                                                <div class="form-group col-lg-4">
                                                                                     @Html.Label("Road Name", "Road Name")
                                                                                     @Html.TextBoxFor(m => m.FormW1.RoadName, new { @readonly = true, @class = "form-control" })
 
                                                                                 </div>
-                                                                                <div class="form-group col-lg-3">
+                                                                                <div class="form-group col-lg-2 p-0">
                                                                                     <label for="RoadCode">
-                                                                                        CH From
+                                                                                        Chainage 'KM' Location
                                                                                     </label>
-                                                                                    <div class="row">
-                                                                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(m => m.FormW1.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}" })</div>
-                                                                                        <div class="col-1 text-center pt-2"> + </div>
-                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.FrmCh, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage M from}" })</div>
-                                                                                    </div>
+                                                                                    @Html.TextBoxFor(m => m.FormW1.FrmChKm, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}" })
+
+
                                                                                 </div>
-                                                                                <div class="form-group col-lg-3">
+                                                                                <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
+                                                                                    +
+                                                                                </div>
+                                                                                <div class="form-group col-lg-2 p-0">
                                                                                     <label for="RoadCode">
-                                                                                        CH To
+                                                                                        Chainage 'M' Location
                                                                                     </label>
-                                                                                    <div class="row">
- 
-                                                                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(m => m.FormW1.ToCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM to}" })</div>
-                                                                                        <div class="col-1 text-center pt-2"> + </div>
-                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.ToCh, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage M to}" })</div>
-                                                                                    </div>
+                                                                                    @Html.TextBoxFor(m => m.FormW1.FrmChKm, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}" })
+
                                                                                 </div>
-                                                                                @*<div class="form-group col-lg-4">
-                                                                                    <label for="RoadCode">  Chainage Location:</label>
-                                                                                    <div class="row">
-                                                                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(m => m.FormW1.FrmCh, new { @class = "form-control" })</div>
-                                                                                        <div class="col-1 text-center pt-2"> + </div>
-                                                                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(m => m.FormW1.ToCh, new { @class = "form-control" })</div>
-                                                                                    </div>
-                                                                                </div>*@
-                                                                                @*<div class="form-group col-lg-3 pl-2 pr-2">
-                                                                                        <label for="RoadCode">Approved IW Ref. (to be given by S.O)</label>
-                                                                                        <input type="text" class="form-control" disabled value=" ">
-                                                                                    </div>*@
+
                                                                             </div>
 
 
@@ -390,8 +399,8 @@
                                                                         <div class="form-group col-lg-3 p-0">
                                                                             <label for="Designation"> Designation</label>
                                                                             @Html.TextBoxFor(model => model.FormW1.ReportedDesig, new { @readonly = true, @class = "form-control" })
-
                                                                         </div>
+
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
                                                                             @Html.EditorFor(m => m.FormW1.ReportedDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
