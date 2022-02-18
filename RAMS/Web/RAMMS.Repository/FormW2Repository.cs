@@ -79,6 +79,13 @@ namespace RAMMS.Repository
             return await _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true && x.Fw1RoadCode == roadCode).FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<RmRoadMaster>> GetRoadCodesByRMU(string rmu)
+        {
+            if (rmu == "" || rmu == null)
+                return await _context.RmRoadMaster.Where(x => x.RdmActiveYn == true).ToListAsync();
+            else
+                return await _context.RmRoadMaster.Where(x => x.RdmActiveYn == true && x.RdmRmuCode == rmu).ToListAsync();
+        }
 
         public async Task<List<FormIWResponseDTO>> GetFilteredFormIWGrid(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
         {

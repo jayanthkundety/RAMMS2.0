@@ -76,11 +76,11 @@
             </ul>
             <div class="d-flex py-2 mb-2 position-absolute" style="right: 0px;width: 40%; top:0px;">
                 <div class="form-group mb-0 px-2" style="margin-top: -14px;">
-                    @Html.Label("IW Ref No:", "IW Ref No:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1IwRefNo, new { @id = "fw1RefNo", @class = "form-control  validate {required, IW Reference No.}", @disabled = "true" })
-                    @Html.HiddenFor(m => m.SaveFormW2Model.Fw1RefNo, new { @Id = "fw1PKRefNo" })
+                    @Html.Label("IW Ref No:", "IW Ref No:")  @Html.DropDownListFor(m => m.SaveFormW2Model.Fw1RefNo, (IEnumerable<SelectListItem>)ViewData["IWRefNo"], "Select FormW1", new { @id = "fw1PKRefNo", @class = "form-control  validate {required, IW Reference No.}", @onchange = "GetW1Details(this)" })
+                    @Html.HiddenFor(m => m.SaveFormW2Model.Fw1RefNo, new { @Id = "fw1PKRefNo1" })
                 </div>
                 <div class="form-group mb-0" style="margin-top: -14px;">
-                    @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.FormW1.ProjectTitle , new { @id = "fw1ProjectTitle", @class = "form-control  validate {required, Project Title }", @disabled = "true" })
+                    @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.FormW1.ProjectTitle, new { @id = "fw1ProjectTitle", @class = "form-control  validate {required, Project Title }", @disabled = "true" })
                 </div>
             </div>
         </div>
@@ -194,7 +194,7 @@
                                                                     @Html.Label("Date of Initiation (DD-MM-YYYY)", "Date of Initiation (DD-MM-YYYY)")
                                                                     <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2InitiationDate" name="SaveFormW2Model.DateOfInitation" value="@_InitationDate" />
                                                                 </div>
-                                                                <div class="form-group col-lg-4">
+                                                                <div class="form-group col-lg-5">
                                                                     <div class="row">
                                                                         <div class="col-6">
                                                                             @Html.Label("Service Provider's Ref", "Service Provider's Ref")
@@ -210,6 +210,26 @@
                                                                         </div>
                                                                     </div>
 
+                                                                </div>
+                                                                <div class="form-group col-lg-3 pr-lg-0">
+                                                                    <label for="Designation"> Address 1 </label>
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @class = "form-control",  @readonly="true" })
+                                                                </div>
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Designation"> Address 2 </label>
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2, new { @class = "form-control" ,@readonly = "true" })
+                                                                </div>
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Designation"> Address 3 </label>
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3, new { @class = "form-control", @readonly = "true" })
+                                                                </div>
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Designation">Phone NO </label>
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone, new { @class = "form-control", @readonly = "true" })
+                                                                </div>
+                                                                <div class="form-group col-lg-2">
+                                                                    <label for="Designation"> Fax </label>
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @class = "form-control", @readonly = "true" })
                                                                 </div>
                                                                 <div class="form-group col-lg-2 pr-lg-0">
                                                                     @Html.Label("Attn", "Attn")
@@ -236,11 +256,11 @@
                                                                 <div class="col-12">
                                                                     <div class="border-top px-2 pb-1 float-left w-100">
                                                                         <div class="row pt-3">
-                                                                            <div class="form-group col-lg-6 ">
+                                                                            <div class="form-group col-lg-7 ">
                                                                                 <div class="row">
                                                                                     <div class="col-6">
                                                                                         @Html.Label("Road Code", "Road Code")
-                                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @class = "form-control  validate {required, Road Code}", @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
+                                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id="frmW2RoadCodeDD", @class = "form-control  validate {required, Road Code}", @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
                                                                                         @Html.HiddenFor(m => m.SaveFormW2Model.RoadCode, new { id = "frmW2RoadCode" })
                                                                                     </div>
                                                                                     <div class="col-6">
@@ -250,7 +270,24 @@
                                                                                 </div>
 
                                                                             </div>
-                                                                            <div class="form-group col-lg-3">
+                                                                            <div class="form-group col-lg-2 p-0">
+                                                                                <label for="RoadCode">
+                                                                                    Chainage 'KM' Location
+                                                                                </label>
+                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChKm, new { @id = "formW2chkm", @class = "form-control" })
+
+                                                                            </div>
+                                                                            <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
+                                                                                +
+                                                                            </div>
+
+                                                                            <div class="form-group col-lg-2 p-0">
+                                                                                <label for="RoadCode">
+                                                                                    Chainage 'M' Location
+                                                                                </label>
+                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2chm", @class = "form-control" })
+                                                                            </div>
+                                                                            @*<div class="form-group col-lg-3">
                                                                                 <label for="RoadCode">
                                                                                     CH From
                                                                                 </label>
@@ -260,9 +297,9 @@
                                                                                     <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2chm", @class = "form-control" })</div>
 
                                                                                 </div>
-                                                                            </div>
-                                                                           
-                                                                           
+                                                                            </div>*@
+
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -360,7 +397,7 @@
 
                                                                         }
                                                                     }
-                                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridIssu, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Issued By", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}", @disabled=@issuedByEnable })
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridIssu, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Issued By", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}", @disabled = @issuedByEnable })
 
                                                                 </div>
                                                                 <div class="form-group col-lg-4">
