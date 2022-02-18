@@ -302,6 +302,8 @@ namespace RAMMS.Web.UI.Controllers
             return Json(refNo);
         }
 
+
+        //Image Print
         public async Task<IActionResult> PrintWarForm(int id, string form, string filename)
         {
             try

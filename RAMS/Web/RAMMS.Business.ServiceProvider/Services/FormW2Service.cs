@@ -225,7 +225,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         public async Task<IEnumerable<CSelectListItem>> GetFormW1DDL()
         {
-            return await _repoUnit.FormW1Repository.FindAsync(m => m.Fw1ActiveYn == true , x => new CSelectListItem() { Text = x.Fw1ReferenceNo, Value = x.Fw1PkRefNo.ToString() });
+            return await _repoUnit.FormW1Repository.FindAsync(m => m.Fw1ActiveYn == true , x => new CSelectListItem() { Text = x.Fw1IwRefNo, Value = x.Fw1PkRefNo.ToString() });
         }
 
         public async Task<List<FormW1ResponseDTO>> GetFormW1List()

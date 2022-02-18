@@ -29,8 +29,10 @@ namespace RAMMS.Domain.EF
         public string Fw2Cc { get; set; }
         public string Fw2RoadCode { get; set; }
         public string Fw2RoadName { get; set; }
-        public int? Fw2FrmCh { get; set; }
-        public int? Fw2ToCh { get; set; }
+        public int? Fw2FrmChKm { get; set; }
+        public int? Fw2FrmChM { get; set; }
+        public int? Fw2ToChKm { get; set; }
+        public int? Fw2ToChM { get; set; }
         public string Fw2TitleOfInstructWork { get; set; }
         public DateTime? Fw2DateOfCommencement { get; set; }
         public DateTime? Fw2DateOfCompletion { get; set; }

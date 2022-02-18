@@ -422,8 +422,10 @@ function OnRoadChange(tis) {
 
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#formW2roadDesc").val(ctrl.find("option:selected").attr("Item1"));
-        $("#formW2Fromch").val(ctrl.find("option:selected").attr("fromm"));
-        $("#formW2Toch").val(ctrl.find("option:selected").attr("tom"));
+        $("#formW2chkm").val(ctrl.find("option:selected").attr("fromkm"));
+        $("#formW2chm").val(ctrl.find("option:selected").attr("fromm"));
+
+
         $("#frmW2RoadCode").val(ctrl.val());
         var roadCode = ctrl.val();
         InitAjaxLoading();

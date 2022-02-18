@@ -9692,7 +9692,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW1_RMU")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.Fw1RmuDate)
+                entity.Property(e => e.Fw1Date)
                     .HasColumnName("FW1_RMU_Date")
                     .HasColumnType("datetime");
 
@@ -9875,7 +9875,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Division")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw2FrmCh).HasColumnName("FW2_FRM_CH");
+                entity.Property(e => e.Fw2FrmChKm).HasColumnName("FW2_FRM_CH");
 
                 entity.Property(e => e.Fw2Fw1RefNo).HasColumnName("FW2_FW1_Ref_No");
 
@@ -9953,7 +9953,7 @@ namespace RAMMS.Domain.EF
                     .HasColumnName("FW2_Title_OF_Instruct_Work")
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Fw2ToCh).HasColumnName("FW2_To_CH");
+                entity.Property(e => e.Fw2ToChM).HasColumnName("FW2_To_CH");
 
                 entity.HasOne(d => d.Fw2Fw1RefNoNavigation)
                     .WithMany(p => p.RmIwFormW2)

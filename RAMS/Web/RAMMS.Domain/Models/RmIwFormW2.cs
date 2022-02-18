@@ -14,11 +14,10 @@ namespace RAMMS.Domain.Models
         public int Fw2PkRefNo { get; set; }
         public string Fw2Fw1IwRefNo { get; set; }
         public int? Fw2Fw1RefNo { get; set; }
-        public string Fw2Fw1ProjectTitle { get; set; }
         public string Fw2JkrRefNo { get; set; }
         public string Fw2SerProviderRefNo { get; set; }
         public string Fw2ServiceProvider { get; set; }
-        public DateTime? Fw2DateOfInitation { get; set; }
+        public DateTime? Fw2DtInitation { get; set; }
         public string Fw2Region { get; set; }
         public string Fw2RegionName { get; set; }
         public string Fw2Division { get; set; }
@@ -29,23 +28,23 @@ namespace RAMMS.Domain.Models
         public string Fw2Cc { get; set; }
         public string Fw2RoadCode { get; set; }
         public string Fw2RoadName { get; set; }
-        public int? Fw2FrmCh { get; set; }
-        public int? Fw2ToCh { get; set; }
+        public int? Fw2ChKm { get; set; }
+        public int? Fw2ChM { get; set; }
         public string Fw2TitleOfInstructWork { get; set; }
-        public DateTime? Fw2DateOfCommencement { get; set; }
-        public DateTime? Fw2DateOfCompletion { get; set; }
-        public double? Fw2InstructWorkDuration { get; set; }
+        public DateTime? Fw2DtCommence { get; set; }
+        public DateTime? Fw2DtCompl { get; set; }
+        public double? Fw2IwDuration { get; set; }
         public string Fw2Remarks { get; set; }
         public string Fw2DetailsOfWorks { get; set; }
         public double? Fw2CeilingEstCost { get; set; }
-        public int? Fw2IssuedBy { get; set; }
-        public bool? Fw2IssuedSign { get; set; }
-        public string Fw2IssuedName { get; set; }
-        public DateTime? Fw2IssuedDate { get; set; }
-        public bool? Fw2RequestedSign { get; set; }
-        public int? Fw2RequestedBy { get; set; }
-        public string Fw2RequestedName { get; set; }
-        public DateTime? Fw2RequestedDate { get; set; }
+        public int? Fw2UseridIssu { get; set; }
+        public bool? Fw2SignIssu { get; set; }
+        public string Fw2UsernameIssu { get; set; }
+        public DateTime? Fw2DtIssu { get; set; }
+        public bool? Fw2SignReq { get; set; }
+        public int? Fw2UseridReq { get; set; }
+        public string Fw2UsernameReq { get; set; }
+        public DateTime? Fw2DtReq { get; set; }
         public int? Fw2ModBy { get; set; }
         public DateTime? Fw2ModDt { get; set; }
         public int? Fw2CrBy { get; set; }
