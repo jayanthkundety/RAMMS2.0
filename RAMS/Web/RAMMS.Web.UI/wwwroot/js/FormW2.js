@@ -241,8 +241,8 @@ function Save(submit) {
 
     saveObj.PkRefNo = $("#FW2HRef_No").val();
 
-    saveObj.Fw1IwRefNo = $("#fw1RefNo").val();
-    saveObj.Fw1RefNo = $("#fw1PKRefNo").val();
+    saveObj.Fw1IwRefNo = $("#fw1PKRefNo").find(":selected").text();
+    saveObj.Fw1RefNo = $("#fw1PKRefNo").find(":selected").val();
     saveObj.Fw1ProjectTitle = $("#fw1ProjectTitle").val()
     saveObj.Region = $("#formW2Region").val();
     saveObj.RegionName = $("#formW2RegionName").val();
@@ -411,44 +411,73 @@ function changeRMU(obj) {
         var name = ctrl.find("option:selected").text();
         name = name.split('-')[1];
         $("#formW2RMUName").val(name);
+
+        $.ajax({
+            url: '/InstructedWorks/GetRoadCodeByRMU',
+            dataType: 'JSON',
+            data: { rmu: ctrl.val() },
+            type: 'Post',
+            success: function (data) {
+                if (data != null) {
+                    $('#frmW2RoadCodeDD').empty();
+                    $('#frmW2RoadCodeDD')
+                        .append($("<option></option>")
+                            .attr("value", "")
+                            .text("Select Road Code"));
+                    $.each(data, function (key, value) {
+                        $('#frmW2RoadCodeDD')
+                            .append($("<option></option>")
+                                .attr("value", value.value)
+                                .text(value.text));
+                    });
+                    $("#frmW2RoadCodeDD").val($('#frmW2RoadCode').val());
+                    $('#frmW2RoadCodeDD').trigger("chosen:updated")
+                    $("#frmW2RoadCodeDD").trigger("change");
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
     }
     else {
         $("#formW2RMUName").val('');
     }
 }
 
+function GetW1Details(obj) {
+    var w1PkRefNo = $(obj).val();
+    InitAjaxLoading();
+    $.ajax({
+        url: '/InstructedWorks/GetW1Details',
+        dataType: 'JSON',
+        data: { w1PkRefNo },
+        type: 'Post',
+        success: function (data) {
+            if (data != null) {
+                $("#fw1RefNo").val(data.referenceNo);
+                $("#fw1PKRefNo").val(data.pkRefNo);
+                $("#fw1ProjectTitle").val(data.projectTitle);
+                $("#formW2TitleOfInstructWork").val(data.detailsOfWork);
+                $("#formW2EstCost").val(data.estimTotalCost);
+            }
+            HideAjaxLoading();
+        },
+        error: function (data) {
+            console.error(data);
+        }
+    });
+}
+
 function OnRoadChange(tis) {
     var ctrl = $(tis);
-
+    debugger;
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#formW2roadDesc").val(ctrl.find("option:selected").attr("Item1"));
         $("#formW2chkm").val(ctrl.find("option:selected").attr("fromkm"));
         $("#formW2chm").val(ctrl.find("option:selected").attr("fromm"));
-
-
         $("#frmW2RoadCode").val(ctrl.val());
-        var roadCode = ctrl.val();
-        InitAjaxLoading();
-        $.ajax({
-            url: '/InstructedWorks/GetW1Details',
-            dataType: 'JSON',
-            data: { roadCode },
-            type: 'Post',
-            success: function (data) {
-                if (data != null) {
-                    $("#fw1RefNo").val(data.referenceNo);
-                    $("#fw1PKRefNo").val(data.pkRefNo);
-                    $("#fw1ProjectTitle").val(data.projectTitle);
-                    $("#formW2TitleOfInstructWork").val(data.detailsOfWork);
-                    $("#formW2EstCost").val(data.estimTotalCost);
-                }
-                HideAjaxLoading();
-            },
-            error: function (data) {
-                console.error(data);
-            }
-        });
-
     }
     else {
         $("#formW2roadDesc").val('');

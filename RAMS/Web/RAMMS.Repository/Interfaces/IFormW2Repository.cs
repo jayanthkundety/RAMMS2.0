@@ -28,5 +28,7 @@ namespace RAMMS.Repository.Interfaces
 
         Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
 
+        Task<IEnumerable<RmRoadMaster>> GetRoadCodesByRMU(string rmu);
+
     }
 }

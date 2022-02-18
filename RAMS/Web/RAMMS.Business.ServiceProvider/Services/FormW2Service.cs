@@ -258,6 +258,38 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
 
+
+        public async Task<IEnumerable<CSelectListItem>> GetRoadCodesByRMU(string rmu)
+        {
+            try
+            {
+                var codes = await _repoUnit.FormW2Repository.GetRoadCodesByRMU(rmu);
+
+                return codes.OrderBy(s => s.RdmPkRefNo).Select(x => new CSelectListItem
+                {
+                    Value = x.RdmRdCode.ToString(),
+                    Text = x.RdmRdCode + "-" + x.RdmRdName.ToString(),
+                    CValue = x.RdmRmuCode,
+                    Item1 = x.RdmRdName,
+                    PKId = x.RdmPkRefNo,
+                    Code = x.RdmRdCode,
+                    Item2 = x.RdmSecCode.ToString(),
+                    Item3 = (x.RdmLengthPaved + x.RdmLengthUnpaved).ToString(),
+                    FromKm = (int)x.RdmFrmCh,
+                    FromM = x.RdmFrmChDeci.ToString(),
+                    ToKm = (int)x.RdmToCh,
+                    ToM = x.RdmToChDeci.ToString()
+                }).ToArray();
+            }
+            catch (Exception Ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw Ex;
+            }
+
+        }
+
+
         public async Task<PagingResult<FormIWResponseDTO>> GetFilteredFormIWGrid(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
         {
             PagingResult<FormIWResponseDTO> result = new PagingResult<FormIWResponseDTO>();

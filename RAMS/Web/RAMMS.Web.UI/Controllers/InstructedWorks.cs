@@ -238,6 +238,10 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "SP";
             ViewData["Service Provider"] = await _ddLookupService.GetDdLookup(ddLookup);
 
+
+            ViewData["IWRefNo"] = await _formW2Service.GetFormW1DDL();
+
+
             LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status");
 
             ddLookup.Type = "Month";
@@ -559,10 +563,22 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-        public async Task<IActionResult> GetW1Details(string roadCode)
+        public async Task<IActionResult> GetW1DetailsByRoadCode(string roadCode)
         {
             FormW1ResponseDTO formW1 = await _formW2Service.GetFormW1ByRoadCode(roadCode);
             return Json(formW1);
+        }
+
+        public async Task<IActionResult> GetW1Details(int w1PkRefNo)
+        {
+            FormW1ResponseDTO formW1 = await _formW2Service.GetFormW1ById(w1PkRefNo);
+            return Json(formW1);
+        }
+
+        public async Task<IActionResult> GetRoadCodeByRMU(string rmu)
+        {
+            var obj = await _formW2Service.GetRoadCodesByRMU(rmu);
+            return Json(obj);
         }
 
 
