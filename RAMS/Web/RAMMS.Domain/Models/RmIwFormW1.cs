@@ -7,8 +7,9 @@ namespace RAMMS.Domain.Models
     {
         public RmIwFormW1()
         {
-            RmIwFormW1Image = new HashSet<RmIwFormW1Image>();
             RmIwFormW2 = new HashSet<RmIwFormW2>();
+            RmIwFormWc = new HashSet<RmIwFormWc>();
+            RmIwformImage = new HashSet<RmIwformImage>();
         }
 
         public int Fw1PkRefNo { get; set; }
@@ -23,23 +24,23 @@ namespace RAMMS.Domain.Models
         public string Fw1IwRefNo { get; set; }
         public string Fw1DivnCode { get; set; }
         public string Fw1RmuCode { get; set; }
+        public string Fw1SecCode { get; set; }
         public string Fw1ProjectTitle { get; set; }
         public DateTime? Fw1InitialProposedDate { get; set; }
         public DateTime? Fw1TecmDt { get; set; }
-        public string Fw1TecmStatus { get; set; }
         public bool? Fw1IsBq { get; set; }
         public bool? Fw1IsDrawing { get; set; }
         public DateTime? Fw1Dt { get; set; }
         public string Fw1RoadCode { get; set; }
         public string Fw1RoadName { get; set; }
-        public int? Fw1ChKm { get; set; }
-        public int? Fw1ChM { get; set; }
+        public int? Fw1Ch { get; set; }
+        public int? Fw1ChDeci { get; set; }
         public string Fw1DetailsOfWork { get; set; }
         public double? Fw1PropDesignDuration { get; set; }
         public double? Fw1PropCompletionPeriod { get; set; }
-        public string Fw1RecomdYn { get; set; }
-        public string Fw1RecomdBydeYn { get; set; }
-        public string Fw1RecomdStatus { get; set; }
+        public bool? Fw1RecomdYn { get; set; }
+        public bool? Fw1RecomdBydeYn { get; set; }
+        public short? Fw1RecomdType { get; set; }
         public double? Fw1PhyWorksAmt { get; set; }
         public double? Fw1GenPrelimsAmt { get; set; }
         public double? Fw1ConsulTaxPercent { get; set; }
@@ -73,11 +74,12 @@ namespace RAMMS.Domain.Models
         public int? Fw1CrBy { get; set; }
         public DateTime? Fw1CrDt { get; set; }
         public bool Fw1SubmitSts { get; set; }
-        public bool? Fw1ActiveYn { get; set; }
+        public bool Fw1ActiveYn { get; set; }
         public string Fw1Status { get; set; }
         public string Fw1AuditLog { get; set; }
 
-        public virtual ICollection<RmIwFormW1Image> RmIwFormW1Image { get; set; }
         public virtual ICollection<RmIwFormW2> RmIwFormW2 { get; set; }
+        public virtual ICollection<RmIwFormWc> RmIwFormWc { get; set; }
+        public virtual ICollection<RmIwformImage> RmIwformImage { get; set; }
     }
 }

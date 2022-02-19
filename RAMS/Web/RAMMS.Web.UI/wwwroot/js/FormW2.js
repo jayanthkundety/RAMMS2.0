@@ -418,6 +418,7 @@ function changeRMU(obj) {
             data: { rmu: ctrl.val() },
             type: 'Post',
             success: function (data) {
+                debugger;
                 if (data != null) {
                     $('#frmW2RoadCodeDD').empty();
                     $('#frmW2RoadCodeDD')
@@ -427,6 +428,9 @@ function changeRMU(obj) {
                     $.each(data, function (key, value) {
                         $('#frmW2RoadCodeDD')
                             .append($("<option></option>")
+                                .attr("item1", value.item1)
+                                .attr("fromkm", value.fromKm)
+                                .attr("fromm", value.fromM)
                                 .attr("value", value.value)
                                 .text(value.text));
                     });
@@ -461,6 +465,17 @@ function GetW1Details(obj) {
                 $("#fw1ProjectTitle").val(data.projectTitle);
                 $("#formW2TitleOfInstructWork").val(data.detailsOfWork);
                 $("#formW2EstCost").val(data.estimTotalCost);
+                $("#formW2RMU").val("MIRI");
+
+                //$("#formW2RMUName").val();
+                $("#fw2SerProviderRef").val(data.servPropRefNo);
+                $("#formW2ServiceProvider").val();
+                $("#address1").val(data.servAddress1);
+                $("#address2").val(data.servAddress2);
+                $("#address3").val(data.servAddress3);
+                $("#phone").val(data.servPhone);
+                $("#fax").val(data.servFax);
+                $("#frmW2RoadCodeDD").val(data.roadCode);
             }
             HideAjaxLoading();
         },
@@ -481,6 +496,8 @@ function OnRoadChange(tis) {
     }
     else {
         $("#formW2roadDesc").val('');
+        $("#formW2chkm").val('');
+        $("#formW2chm").val('');
     }
 
 }

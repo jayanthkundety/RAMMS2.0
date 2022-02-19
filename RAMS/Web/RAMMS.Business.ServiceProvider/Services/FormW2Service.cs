@@ -347,8 +347,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             FormW2FCEMResponseDTO formW2Response;
             try
             {
-                var domainModelFcem = _mapper.Map<RmIwFormW2Fcem>(formW2BO);
-                domainModelFcem.FcemPkRefNo = 0;
+                var domainModelFcem = _mapper.Map<RmIwFormW2Fecm>(formW2BO);
+                domainModelFcem.FecmPkRefNo = 0;
                 var entity = _repoUnit.FormW2FcemRepository.CreateReturnEntity(domainModelFcem);
                 formW2Response = _mapper.Map<FormW2FCEMResponseDTO>(entity);
                 return formW2Response.PkRefNo;
@@ -366,9 +366,9 @@ namespace RAMMS.Business.ServiceProvider.Services
             int rowsAffected;
             try
             {
-                var domainModelformW2 = _mapper.Map<RmIwFormW2Fcem>(formW2Bo);
-                domainModelformW2.FcemPkRefNo = formW2Bo.PkRefNo;
-                domainModelformW2.FcemActiveYn = true;
+                var domainModelformW2 = _mapper.Map<RmIwFormW2Fecm>(formW2Bo);
+                domainModelformW2.FecmPkRefNo = formW2Bo.PkRefNo;
+                domainModelformW2.FecmActiveYn = true;
                 //domainModelformW2 = UpdateStatus(domainModelformW2);
                 _repoUnit.FormW2FcemRepository.Update(domainModelformW2);
                 rowsAffected = await _repoUnit.CommitAsync();
@@ -384,13 +384,13 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         public async Task<FormW2FCEMResponseDTO> FindFCEM2ByW2ID(int Id)
         {
-            RmIwFormW2Fcem formW2 = await _repoFCEM.FindFCEM2ByW2ID(Id);
+            RmIwFormW2Fecm formW2 = await _repoFCEM.FindFCEM2ByW2ID(Id);
             return _mapper.Map<FormW2FCEMResponseDTO>(formW2);
         }
 
         public async Task<FormW2FCEMResponseDTO> FindFCEM2ByID(int Id)
         {
-            RmIwFormW2Fcem formW2 = await _repoFCEM.FindFCEM2ByID(Id);
+            RmIwFormW2Fecm formW2 = await _repoFCEM.FindFCEM2ByID(Id);
             return _mapper.Map<FormW2FCEMResponseDTO>(formW2);
         }
 

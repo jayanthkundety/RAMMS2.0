@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace RAMMS.Repository.Interfaces
 {
-    public interface IFormW2FcemRepository : IRepositoryBase<RmIwFormW2Fcem>
+    public interface IFormW2FcemRepository : IRepositoryBase<RmIwFormW2Fecm>
     {
-        Task<RmIwFormW2Fcem> FindFCEM2ByW2ID(int Id);
+        Task<RmIwFormW2Fecm> FindFCEM2ByW2ID(int Id);
 
-        Task<RmIwFormW2Fcem> FindFCEM2ByID(int Id);
+        Task<RmIwFormW2Fecm> FindFCEM2ByID(int Id);
 
     }
 }

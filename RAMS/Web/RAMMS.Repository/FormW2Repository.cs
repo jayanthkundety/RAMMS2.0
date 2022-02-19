@@ -34,7 +34,7 @@ namespace RAMMS.Repository
 
         public async Task<RmIwFormW2> FindW2ByID(int Id)
         {
-            return await _context.RmIwFormW2.Include(x => x.Fw2Fw1RefNoNavigation).Where(x => x.Fw2PkRefNo == Id && x.Fw2ActiveYn == true && x.Fw2Fw1RefNoNavigation.Fw1PkRefNo == x.Fw2Fw1RefNo).FirstOrDefaultAsync();
+            return await _context.RmIwFormW2.Include(x => x.Fw2Fw1PkRefNoNavigation).Where(x => x.Fw2PkRefNo == Id && x.Fw2ActiveYn == true && x.Fw2Fw1PkRefNoNavigation.Fw1PkRefNo == x.Fw2Fw1PkRefNo).FirstOrDefaultAsync();
         }
 
         public void SaveImage(IEnumerable<RmIwFormW2Image> image)
@@ -120,7 +120,7 @@ namespace RAMMS.Repository
         {
             var query = (from x in _context.RmIwFormW1
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
-                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1RefNo == x.Fw1PkRefNo)
+                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
                          select new { rmu, x, w2Form });
 
 
@@ -202,7 +202,7 @@ namespace RAMMS.Repository
 
                                     || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.w2Form.Fw2DtInitation.HasValue ? (x.w2Form.Fw2DtInitation.Value.Year == dt.Year && x.w2Form.Fw2DtInitation.Value.Month == dt.Month && x.w2Form.Fw2DtInitation.Value.Day == dt.Day) : true)
+                                    || (x.w2Form.Fw2DateOfInitation.HasValue ? (x.w2Form.Fw2DateOfInitation.Value.Year == dt.Year && x.w2Form.Fw2DateOfInitation.Value.Month == dt.Month && x.w2Form.Fw2DateOfInitation.Value.Day == dt.Day) : true)
                                     || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
                 }
                 else
@@ -230,7 +230,7 @@ namespace RAMMS.Repository
             List<FormIWResponseDTO> result = new List<FormIWResponseDTO>();
             var query = (from x in _context.RmIwFormW1
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
-                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1RefNo == x.Fw1PkRefNo)
+                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
                          select new { rmu, w2Form, x });
 
 
@@ -310,7 +310,7 @@ namespace RAMMS.Repository
 
                                     || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.w2Form.Fw2DtInitation.HasValue ? (x.w2Form.Fw2DtInitation.Value.Year == dt.Year && x.w2Form.Fw2DtInitation.Value.Month == dt.Month && x.w2Form.Fw2DtInitation.Value.Day == dt.Day) : true)
+                                    || (x.w2Form.Fw2DateOfInitation.HasValue ? (x.w2Form.Fw2DateOfInitation.Value.Year == dt.Year && x.w2Form.Fw2DateOfInitation.Value.Month == dt.Month && x.w2Form.Fw2DateOfInitation.Value.Day == dt.Day) : true)
                                     || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
                 }
                 else
@@ -397,7 +397,7 @@ namespace RAMMS.Repository
                                 WNRefNo = "0",
                                 projectTitle = w1Form.Fw1ProjectTitle,
                                 initialPropDt = Convert.ToString(w1Form.Fw1InitialProposedDate),
-                                recommdDE = w1Form.Fw1RecomdBydeYn,
+                                recommdDE = w1Form.Fw1RecomdBydeYn != null ? "Yes" : "No",
                                 w1dt = Convert.ToString(w1Form.Fw1Dt),
                                 status = "-",
                                 technicalDt = "",

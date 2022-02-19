@@ -94,11 +94,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             int rowsAffected;
             try
             {
-                var domainModelFormW1 = new List<RmIwFormW1Image>();
+                var domainModelFormW1 = new List<RmIwformImage>();
 
                 foreach (var list in image)
                 {
-                    domainModelFormW1.Add(_mapper.Map<RmIwFormW1Image>(list));
+                    domainModelFormW1.Add(_mapper.Map<RmIwformImage>(list));
                 }
                 _repoUnit.FormW1Repository.SaveImage(domainModelFormW1);
                 rowsAffected = await _repoUnit.CommitAsync();
