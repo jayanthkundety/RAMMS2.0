@@ -5,7 +5,7 @@
     ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
     Layout = null;
 
-    var vd = Model.SaveFormW2Model.DtInitation;
+    var vd = Model.SaveFormW2Model.DateOfInitation;
     string _InitationDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
     vd = Model.SaveFormW2Model.DtCommence;
@@ -76,8 +76,8 @@
             </ul>
             <div class="d-flex py-2 mb-2 position-absolute" style="right: 0px;width: 40%; top:0px;">
                 <div class="form-group mb-0 px-2" style="margin-top: -14px;">
-                    @Html.Label("IW Ref No:", "IW Ref No:")  @Html.DropDownListFor(m => m.SaveFormW2Model.Fw1RefNo, (IEnumerable<SelectListItem>)ViewData["IWRefNo"], "Select FormW1", new { @id = "fw1PKRefNo", @class = "form-control  validate {required, IW Reference No.}", @onchange = "GetW1Details(this)" })
-                    @Html.HiddenFor(m => m.SaveFormW2Model.Fw1RefNo, new { @Id = "fw1PKRefNo1" })
+                    @Html.Label("IW Ref No:", "IW Ref No:")  @Html.DropDownListFor(m => m.SaveFormW2Model.Fw1PkRefNo, (IEnumerable<SelectListItem>)ViewData["IWRefNo"], "Select FormW1", new { @id = "fw1PKRefNo", @class = "form-control  validate {required, IW Reference No.}", @onchange = "GetW1Details(this)" })
+                    @Html.HiddenFor(m => m.SaveFormW2Model.Fw1PkRefNo, new { @Id = "fw1PKRefNo1" })
                 </div>
                 <div class="form-group mb-0" style="margin-top: -14px;">
                     @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.FormW1.ProjectTitle, new { @id = "fw1ProjectTitle", @class = "form-control  validate {required, Project Title }", @disabled = "true" })
@@ -152,7 +152,7 @@
                                                                 <div class="row">
                                                                     <div class="col-6 pr-lg-0">
                                                                         @Html.Label("Region", "Region")
-                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.Region, new { @Id = "formW2Region", @class = "form-control  svalidate {required, Region}" })
+                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.RegionText, new { @Id = "formW2Region", @class = "form-control  svalidate {required, Region}" })
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @Html.Label("Region Name", "Region Name")
@@ -164,7 +164,7 @@
                                                                 <div class="row">
                                                                     <div class="col-6 pr-lg-0">
                                                                         @Html.Label("Division", "Division")
-                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.Division, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formW2DivisionCode", @class = "form-control ", @onchange = "changeDivision(this)" })
+                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.DivCode, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formW2DivisionCode", @class = "form-control ", @onchange = "changeDivision(this)" })
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <label for="Division_Code">Division Name</label>
@@ -177,7 +177,7 @@
                                                                 <div class="row">
                                                                     <div class="col-6 pr-lg-0">
                                                                         @Html.Label("RMU", "RMU")
-                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.Rmu, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
+                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.RmuCode, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
                                                                     </div>
                                                                     <div class="col-6">
                                                                         @Html.Label("Name", "Name")@Html.TextBoxFor(m => m.SaveFormW2Model.RmuName, new { @Id = "formW2RMUName", @class = "form-control  validate {required, RMU Name}", @disabled = true })
@@ -198,15 +198,15 @@
                                                                     <div class="row">
                                                                         <div class="col-6">
                                                                             @Html.Label("Service Provider's Ref", "Service Provider's Ref")
-                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.SerProviderRefNo, new { @Id = "fw2SerProviderRef", @class = "form-control  svalidate {required, Service Provider's Ref}" })
+                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.SerProvRefNo, new { @Id = "fw2SerProviderRef", @class = "form-control  svalidate {required, Service Provider's Ref}" })
                                                                         </div>
                                                                         <div class="col-6">
                                                                             @Html.Label("Service Provider", "Service Provider")
                                                                             @{
-                                                                                Model.SaveFormW2Model.ServiceProvider = string.IsNullOrEmpty(Model.SaveFormW2Model.ServiceProvider) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormW2Model.ServiceProvider;
+                                                                                Model.SaveFormW2Model.ServProvName = string.IsNullOrEmpty(Model.SaveFormW2Model.ServProvName) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormW2Model.ServProvName;
                                                                             }
                                                                             @*@Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ServiceProvider, (IEnumerable<SelectListItem>)ViewData["Service Provider"], "Select Service Provider", new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}", @disabled = true })*@
-                                                                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormW2Model.ServiceProvider, new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}" })
+                                                                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormW2Model.ServProvName, new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}" })
                                                                         </div>
                                                                     </div>
 
@@ -274,7 +274,7 @@
                                                                                 <label for="RoadCode">
                                                                                     Chainage 'KM' Location
                                                                                 </label>
-                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChKm, new { @id = "formW2chkm", @class = "form-control allow_numeric", @maxlength = "3" })
+                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.Ch, new { @id = "formW2chkm", @class = "form-control allow_numeric", @maxlength = "3" })
 
                                                                             </div>
                                                                             <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
@@ -285,7 +285,7 @@
                                                                                 <label for="RoadCode">
                                                                                     Chainage 'M' Location
                                                                                 </label>
-                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2chm", @class = "form-control  allow_numeric", @maxlength="3"  })
+                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChDeci, new { @id = "formW2chm", @class = "form-control  allow_numeric", @maxlength="3"  })
                                                                             </div>
                                                                             @*<div class="form-group col-lg-3">
                                                                                 <label for="RoadCode">
@@ -385,7 +385,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text">RM</span>
                                                                         </div>
-                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.CeilingEstCost, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required,number, Estimated Cost}" })
+                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required,number, Estimated Cost}" })
                                                                     </div>
                                                                 </div>
                                                                 <div class="clear-b mb-3"></div>
@@ -508,9 +508,9 @@
                                                                     <div class="col-6 pr-0">
                                                                         @*@Html.Label("Service Provider", "Service Provider")*@
                                                                         @{
-                                                                            Model.SaveFormW2Model.ServiceProvider = string.IsNullOrEmpty(Model.SaveFormW2Model.ServiceProvider) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormW2Model.ServiceProvider;
+                                                                            Model.SaveFormW2Model.ServProvName = string.IsNullOrEmpty(Model.SaveFormW2Model.ServProvName) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormW2Model.ServProvName;
                                                                         }
-                                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ServiceProvider, (IEnumerable
+                                                                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ServProvName, (IEnumerable
 <SelectListItem>)ViewData["Service Provider"], "Select Service Provider", new { @class = "form-control  svalidate {required, Service Provider}", @disabled = "true" })
 
                                                                     </div>

@@ -19,7 +19,7 @@ namespace RAMMS.Web.UI.Models
 
         public string View { get; set; }
         public List<string> ImageTypeList { get; set; }
-        public IEnumerable<FormW1ImageResponseDTO> ImageList { get; set; }
+        public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; }
         public IEnumerable<SelectListItem> PhotoType { get; set; }
         public FormW1ResponseDTO FormW1 { get; set; }
 

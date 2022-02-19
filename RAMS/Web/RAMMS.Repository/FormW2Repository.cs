@@ -48,9 +48,9 @@ namespace RAMMS.Repository
             _context.Entry(image).State = EntityState.Modified;
         }
 
-        public Task<List<RmIwFormW2Image>> GetImagelist(int formW2Id)
+        public Task<List<RmIwformImage>> GetImagelist(int formW2Id)
         {
-            return _context.RmIwFormW2Image.Where(x => x.Fw2iFw2RefNo == formW2Id && x.Fw2iActiveYn == true).ToListAsync();
+            return _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW2Id && x.FiwiActiveYn == true).ToListAsync();
         }
 
         public Task<RmIwFormW2Image> GetImageById(int imageId)
