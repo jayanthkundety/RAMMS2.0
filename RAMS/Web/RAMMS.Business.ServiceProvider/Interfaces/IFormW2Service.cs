@@ -7,6 +7,7 @@ using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +51,6 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<FormW2FCEMResponseDTO> FindFCEM2ByID(int Id);
 
-        Task<IEnumerable<CSelectListItem>> GetRoadCodesByRMU(string rmu);
+        Task<IEnumerable> GetRoadCodesByRMU(string rmu);
     }
 }

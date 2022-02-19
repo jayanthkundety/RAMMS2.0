@@ -40,20 +40,20 @@ namespace RAMMS.Repository
             return await _context.RmIwFormW1.Where(x => x.Fw1PkRefNo == Id && x.Fw1ActiveYn == true).FirstOrDefaultAsync();
         }
 
-        public Task<List<RmIwFormW1Image>> GetImagelist(int formW1Id)
+        public Task<List<RmIwformImage>> GetImagelist(int formW1Id)
         {
-            return _context.RmIwFormW1Image.Where(x => x.Fw1iFw1RefNo == formW1Id && x.Fw1iActiveYn == true).ToListAsync();
+            return _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW1Id && x.FiwiActiveYn == true).ToListAsync();
         }
 
         public async Task<int> GetImageId(int formW1Id, string type)
         {
-            int? result = await _context.RmIwFormW1Image.Where(x => x.Fw1iFw1RefNo == formW1Id && x.Fw1iImageTypeCode == type).Select(x => x.Fw1iImageSrno).MaxAsync();
+            int? result = await _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW1Id && x.FiwiImageTypeCode == type).Select(x => x.FiwiImageSrno).MaxAsync();
             return result.HasValue ? result.Value : 0;
         }
 
-        public void SaveImage(IEnumerable<RmIwFormW1Image> image)
+        public void SaveImage(IEnumerable<RmIwformImage> image)
         {
-            _context.RmIwFormW1Image.AddRange(image);
+            _context.RmIwformImage.AddRange(image);
         }
 
         //public async Task<RmDivRmuSecMaster> GetDDl()

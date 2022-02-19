@@ -212,24 +212,24 @@
 
                                                                 </div>
                                                                 <div class="form-group col-lg-3 pr-lg-0">
-                                                                    <label for="Designation"> Address 1 </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @class = "form-control",  @readonly="true" })
+                                                                    <label for="Address 1"> Address 1 </label>
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @id="address1", @class = "form-control",  @readonly="true" })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     <label for="Designation"> Address 2 </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2, new { @class = "form-control" ,@readonly = "true" })
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2, new { @id = "address2", @class = "form-control" ,@readonly = "true" })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     <label for="Designation"> Address 3 </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3, new { @class = "form-control", @readonly = "true" })
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3, new { @id = "address3", @class = "form-control", @readonly = "true" })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
-                                                                    <label for="Designation">Phone NO </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone, new { @class = "form-control", @readonly = "true" })
+                                                                    <label for="Designation">Phone No </label>
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone, new { @id = "phone", @class = "form-control", @readonly = "true" })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     <label for="Designation"> Fax </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @class = "form-control", @readonly = "true" })
+                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @id = "fax", @class = "form-control", @readonly = "true" })
                                                                 </div>
                                                                 <div class="form-group col-lg-2 pr-lg-0">
                                                                     @Html.Label("Attn", "Attn")
@@ -274,7 +274,7 @@
                                                                                 <label for="RoadCode">
                                                                                     Chainage 'KM' Location
                                                                                 </label>
-                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChKm, new { @id = "formW2chkm", @class = "form-control" })
+                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChKm, new { @id = "formW2chkm", @class = "form-control allow_numeric", @maxlength = "3" })
 
                                                                             </div>
                                                                             <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
@@ -285,7 +285,7 @@
                                                                                 <label for="RoadCode">
                                                                                     Chainage 'M' Location
                                                                                 </label>
-                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2chm", @class = "form-control" })
+                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2chm", @class = "form-control  allow_numeric", @maxlength="3"  })
                                                                             </div>
                                                                             @*<div class="form-group col-lg-3">
                                                                                 <label for="RoadCode">

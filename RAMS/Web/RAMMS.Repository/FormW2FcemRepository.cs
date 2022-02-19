@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace RAMMS.Repository
 {
-    public class FormW2FcemRepository : RepositoryBase<RmIwFormW2Fcem>, IFormW2FcemRepository
+    public class FormW2FcemRepository : RepositoryBase<RmIwFormW2Fecm>, IFormW2FcemRepository
     {
         public FormW2FcemRepository(RAMMSContext context) : base(context)
         {
@@ -28,15 +28,15 @@ namespace RAMMS.Repository
         }
 
 
-        public async Task<RmIwFormW2Fcem> FindFCEM2ByW2ID(int Id)
+        public async Task<RmIwFormW2Fecm> FindFCEM2ByW2ID(int Id)
         {
-            return await _context.RmIwFormW2Fcem.Where(x => x.FcemFw2PkRefNo == Id && x.FcemActiveYn == true).FirstOrDefaultAsync();
+            return await _context.RmIwFormW2Fecm.Where(x => x.FecmFw2PkRefNo == Id && x.FecmActiveYn == true).FirstOrDefaultAsync();
         }
 
 
-        public async Task<RmIwFormW2Fcem> FindFCEM2ByID(int Id)
+        public async Task<RmIwFormW2Fecm> FindFCEM2ByID(int Id)
         {
-            return await _context.RmIwFormW2Fcem.Where(x => x.FcemPkRefNo == Id && x.FcemActiveYn == true).FirstOrDefaultAsync();
+            return await _context.RmIwFormW2Fecm.Where(x => x.FecmPkRefNo == Id && x.FecmActiveYn == true).FirstOrDefaultAsync();
         }
     }
 }
