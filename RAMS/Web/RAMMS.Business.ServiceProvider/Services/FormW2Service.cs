@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -259,13 +260,13 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-        public async Task<IEnumerable<CSelectListItem>> GetRoadCodesByRMU(string rmu)
+        public async Task<IEnumerable> GetRoadCodesByRMU(string rmu)
         {
             try
             {
                 var codes = await _repoUnit.FormW2Repository.GetRoadCodesByRMU(rmu);
 
-                return codes.OrderBy(s => s.RdmPkRefNo).Select(x => new CSelectListItem
+                return codes.OrderBy(s => s.RdmPkRefNo).Select(x => new 
                 {
                     Value = x.RdmRdCode.ToString(),
                     Text = x.RdmRdCode + "-" + x.RdmRdName.ToString(),

@@ -361,26 +361,26 @@
                                                                             @Html.Label("Recommonded Instructed Work", "Recommonded Instructed Work")
                                                                             <br />
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , "Critical")&nbsp;	Critical&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , 2)&nbsp;	Critical&nbsp;
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , "Urgent")&nbsp;	Urgent&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , 1)&nbsp;	Urgent&nbsp;
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , "None")&nbsp;	None&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , 0)&nbsp;	None&nbsp;
                                                                             </label>
                                                                         </div>
                                                                         <div class="col-lg-4">
                                                                             @Html.Label("Recommendation by DE", "Recommendation by DE")
                                                                             <br />
-                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdBydeYn, "Yes")&nbsp;Yes&nbsp;</label>
-                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdBydeYn, "No")&nbsp;No&nbsp;</label>
+                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdBydeYn, true)&nbsp;Yes&nbsp;</label>
+                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdBydeYn, false)&nbsp;No&nbsp;</label>
                                                                         </div>
                                                                         <div class="col-lg-4">
                                                                             <label>Recommendation</label>
                                                                             <br />
-                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdYn, "Yes")&nbsp;Yes&nbsp;</label>
-                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdYn, "No")&nbsp;No&nbsp;</label>
+                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdYn, true)&nbsp;Yes&nbsp;</label>
+                                                                            <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdYn, false)&nbsp;No&nbsp;</label>
                                                                         </div>
                                                                     </div>
                                                                 </div>

@@ -150,6 +150,40 @@ function OnRMUChange(tis) {
     $('#FormW1_RmuCode').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#FormW1_DivnCode").val(ctrl.find("option:selected").attr("Item1"));
+
+        // to get value for RoadCode
+
+            $.ajax({
+                url: '/InstructedWorks/GetRoadCodeByRMU',
+                dataType: 'JSON',
+                data: { rmu: ctrl.val() },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                         debugger
+                        $('#ddlRoadCode').empty();
+                        $('#ddlRoadCode')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("Select Road Code"));
+                        $.each(data, function (key, value) {
+                            $('#ddlRoadCode')
+                                .append($("<option></option>")
+                                    .attr("value", value.value)
+                                    .attr("Item1", value.item1)
+                                    .text(value.text));
+                        });
+                        $("#ddlRoadCode").val($('#FormW1_RoadCode').val());
+                        $('#ddlRoadCode').trigger("chosen:updated")
+                        $("#ddlRoadCode").trigger("change");
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+       
     }
     else {
         $("#FormW1_DivnCode").val('');
@@ -256,5 +290,6 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+ 
 
 

@@ -39,9 +39,9 @@ namespace RAMMS.DTO.ResponseBO
         public string DetailsOfWork { get; set; }
         public double? PropDesignDuration { get; set; }
         public double? PropCompletionPeriod { get; set; }
-        public string RecomdYn { get; set; }
-        public string RecomdBydeYn { get; set; }
-        public string RecomdStatus { get; set; }
+        public bool RecomdYn { get; set; }
+        public bool RecomdBydeYn { get; set; }
+        public int RecomdStatus { get; set; }
         public double? PhyWorksAmt { get; set; }
         public double? GenPrelimsAmt { get; set; }
         public double? ConsulTaxPercent { get; set; }

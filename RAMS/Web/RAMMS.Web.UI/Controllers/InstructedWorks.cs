@@ -69,13 +69,12 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
-            model.FormW1.RecomdStatus = "None";
+            model.FormW1.RecomdStatus = 0;
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
             LoadLookupService("RMU", "Division", "RD_Code", "User", "TECM_Status");
-
             GetRMUWithDivision("RMU_Division");
 
 
