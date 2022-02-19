@@ -32,81 +32,93 @@
 
 
 
-    $('input[type=radio][id=FormW1_RecommendedInstructedWork]').change(function () {
+    $('input[type=radio][id=FormW1_RecomdStatus]').change(function () {
 
         if (this.value == 'Critical' || this.value == 'Urgent') {
-            $('#ddlVerifiedBy').prop("disabled", false);
-            $('#ddlVerifiedBy').trigger('chosen:updated');
-            $("#FormW1_VerifiedDate").prop("readonly", false);
-            $("#FormW1_VerifiedSign").prop("disabled", false);
+            $('#ddlUseridVer').prop("disabled", false);
+            $('#ddlUseridVer').trigger('chosen:updated');
+            $("#FormW1_DtVer").prop("readonly", false);
+            $("#FormW1_SignVer").prop("disabled", false);
         }
         else {
-            $('#ddlVerifiedBy').prop("disabled", true);
-            $('#ddlVerifiedBy').val(0);
-            $('#ddlVerifiedBy').trigger('chosen:updated');
-            $("#FormW1_VerifiedName").val('');
-            $("#FormW1_VerifiedDesig").val('');
-            $("#FormW1_VerifiedDate").val('');
-            $("#FormW1_VerifiedDate").prop("readonly", true);
-            $("#FormW1_VerifiedSign").prop("disabled", true);
+            $('#ddlUseridVer').prop("disabled", true);
+            $('#ddlUseridVer').val(0);
+            $('#ddlUseridVer').trigger('chosen:updated');
+            $("#FormW1_UsernameVer").val('');
+            $("#FormW1_DesignationVer").val('');
+            $("#FormW1_DtVer").val('');
+            $("#FormW1_DtVer").prop("readonly", true);
+            $("#FormW1_SignVer").prop("disabled", true);
         }
     });
 
     if (RecommondedInstrctedWorkValue != "None") {
-        $('#ddlVerifiedBy').prop("disabled", false);
-        $("#FormW1_VerifiedDate").prop("readonly", false);
-        $('#ddlVerifiedBy').trigger('chosen:updated');
+        $('#ddlUseridVer').prop("disabled", false);
+        $("#FormW1_DtVer").prop("readonly", false);
+        $('#ddlUseridVer').trigger('chosen:updated');
     }
     else {
-        $('#ddlVerifiedBy').prop("disabled", true);
+        $('#ddlUseridVer').prop("disabled", true);
     }
 
     CalculateCost();
+
+    $("#FormW1_Dt").change(function () {
+        var value = $(this).val();
+        var commDate = new Date(formatDate(value));
+        var minDate = new Date(2020, 0, 1);
+        if (commDate < minDate) {
+            app.ShowErrorMessage("Commencement date should not be less than 01-01-2020");
+            $(this).val('');
+            return;
+        }
+
+    });
 
 });
 
 function CalculateCost() {
 
-    var PhyWorks = 0, GenPrelims = 0, SurvyWorks = 0, SiteInvest = 0, ConsulFee = 0, OtherCost = 0;
-    if ($("#FormW1_PhyWorks").val() != "") {
-        PhyWorks = $("#FormW1_PhyWorks").val();
+    var PhyWorksAmtAmt = 0, GenPrelimsAmt = 0, SurvyWorksAmt = 0, SiteInvestAmt = 0, ConsulFeeAmt = 0, OtherCostAmt = 0;
+    if ($("#FormW1_PhyWorksAmt").val() != "") {
+        PhyWorksAmt = $("#FormW1_PhyWorksAmt").val();
     }
     else {
-        PhyWorks = 0;
+        PhyWorksAmt = 0;
     }
-    if ($("#FormW1_GenPrelims").val() != "") {
-        GenPrelims = $("#FormW1_GenPrelims").val();
+    if ($("#FormW1_GenPrelimsAmt").val() != "") {
+        GenPrelimsAmt = $("#FormW1_GenPrelimsAmt").val();
     }
     else {
-        GenPrelims = 0;
+        GenPrelimsAmt = 0;
     }
 
-    if ($("#FormW1_SurvyWorks").val() != "") {
-        SurvyWorks = $("#FormW1_SurvyWorks").val();
+    if ($("#FormW1_SurvyWorksAmt").val() != "") {
+        SurvyWorksAmt = $("#FormW1_SurvyWorksAmt").val();
     }
     else {
-        SurvyWorks = 0;
+        SurvyWorksAmt = 0;
     }
-    if ($("#FormW1_SiteInvest").val() != "") {
-        SiteInvest = $("#FormW1_SiteInvest").val();
-    }
-    else {
-        SiteInvest = 0;
-    }
-    if ($("#FormW1_ConsulFee").val() != "") {
-        ConsulFee = $("#FormW1_ConsulFee").val();
+    if ($("#FormW1_SiteInvestAmt").val() != "") {
+        SiteInvestAmt = $("#FormW1_SiteInvestAmt").val();
     }
     else {
-        ConsulFee = 0;
+        SiteInvestAmt = 0;
+    }
+    if ($("#FormW1_ConsulFeeAmt").val() != "") {
+        ConsulFeeAmt = $("#FormW1_ConsulFeeAmt").val();
+    }
+    else {
+        ConsulFeeAmt = 0;
     }
 
-    if ($("#FormW1_OtherCost").val() != "") {
-        OtherCost = $("#FormW1_OtherCost").val();
+    if ($("#FormW1_OtherCostAmt").val() != "") {
+        OtherCostAmt = $("#FormW1_OtherCostAmt").val();
     }
     else {
-        OtherCost = 0;
+        OtherCostAmt = 0;
     }
-    $("#FormW1_EstimTotalCost").val(parseInt(PhyWorks) + parseInt(GenPrelims) + parseInt(SurvyWorks) + parseInt(SiteInvest) + parseInt(ConsulFee) + parseInt(OtherCost));
+    $("#FormW1_EstimTotalCostAmt").val(parseInt(PhyWorksAmt) + parseInt(GenPrelimsAmt) + parseInt(SurvyWorksAmt) + parseInt(SiteInvestAmt) + parseInt(ConsulFeeAmt) + parseInt(OtherCostAmt));
 }
 
 
@@ -135,12 +147,46 @@ function Save() {
 function OnRMUChange(tis) {
 
     var ctrl = $(tis);
-    $('#FormW1_Rmu').val(ctrl.val());
+    $('#FormW1_RmuCode').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
-        $("#FormW1_Division").val(ctrl.find("option:selected").attr("Item1"));
+        $("#FormW1_DivnCode").val(ctrl.find("option:selected").attr("Item1"));
+
+        // to get value for RoadCode
+
+            $.ajax({
+                url: '/InstructedWorks/GetRoadCodeByRMU',
+                dataType: 'JSON',
+                data: { rmu: ctrl.val() },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                         debugger
+                        $('#ddlRoadCode').empty();
+                        $('#ddlRoadCode')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("Select Road Code"));
+                        $.each(data, function (key, value) {
+                            $('#ddlRoadCode')
+                                .append($("<option></option>")
+                                    .attr("value", value.value)
+                                    .attr("Item1", value.item1)
+                                    .text(value.text));
+                        });
+                        $("#ddlRoadCode").val($('#FormW1_RoadCode').val());
+                        $('#ddlRoadCode').trigger("chosen:updated")
+                        $("#ddlRoadCode").trigger("change");
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+       
     }
     else {
-        $("#FormW1_Division").val('');
+        $("#FormW1_DivnCode").val('');
     }
 
 }
@@ -158,34 +204,34 @@ function OnRoadChange(tis) {
 
 }
 
-function OnReportedByUserChange(tis) {
+function OnUseridRepUserChange(tis) {
 
 
     var ctrl = $(tis);
-    $('#FormW1_ReportedBy').val(ctrl.val());
+    $('#FormW1_UseridRep').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
-        $("#FormW1_ReportedName").val(ctrl.find("option:selected").attr("Item1"));
-        $("#FormW1_ReportedDesig").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormW1_UsernameRep").val(ctrl.find("option:selected").attr("Item1"));
+        $("#FormW1_DesignationRep").val(ctrl.find("option:selected").attr("Item2"));
     }
     else {
-        $("#FormW1_ReportedName").val('');
-        $("#FormW1_ReportedDesig").val('');
+        $("#FormW1_UsernameRep").val('');
+        $("#FormW1_DesignationRep").val('');
     }
 
 }
 
 
-function OnRequestedByUserChange(tis) {
+function OnUseridReqUserChange(tis) {
 
     var ctrl = $(tis);
-    $('#FormW1_RequestedBy').val(ctrl.val());
+    $('#FormW1_UseridReq').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
-        $("#FormW1_RequestedByName").val(ctrl.find("option:selected").attr("Item1"));
-        $("#FormW1_RequestedByDesig").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormW1_UsernameReq").val(ctrl.find("option:selected").attr("Item1"));
+        $("#FormW1_DesignationReq").val(ctrl.find("option:selected").attr("Item2"));
     }
     else {
-        $("#FormW1_RequestedByName").val('');
-        $("#FormW1_RequestedByDesig").val('');
+        $("#FormW1_UsernameReq").val('');
+        $("#FormW1_DesignationReq").val('');
     }
 
 }
@@ -193,14 +239,14 @@ function OnRequestedByUserChange(tis) {
 function OnVerifyUserChange(tis) {
 
     var ctrl = $(tis);
-    $('#FormW1_VerifiedBy').val(ctrl.val());
+    $('#FormW1_UseridVer').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
-        $("#FormW1_VerifiedName").val(ctrl.find("option:selected").attr("Item1"));
-        $("#FormW1_VerifiedDesig").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormW1_UsernameVer").val(ctrl.find("option:selected").attr("Item1"));
+        $("#FormW1_DesignationVer").val(ctrl.find("option:selected").attr("Item2"));
     }
     else {
-        $("#FormW1_VerifiedName").val('');
-        $("#FormW1_VerifiedDesig").val('');
+        $("#FormW1_UsernameVer").val('');
+        $("#FormW1_DesignationVer").val('');
 
     }
 }
@@ -232,6 +278,18 @@ function GetImageList(id) {
     });
 }
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+ 
 
 
