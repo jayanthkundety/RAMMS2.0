@@ -24,9 +24,9 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<int> Update(FormW2ResponseDTO formW2DTO);
 
-        Task<int> SaveImage(List<FormW2ImageResponseDTO> image);
+        Task<int> SaveImage(List<FormIWImageResponseDTO> image);
 
-        Task<List<FormW2ImageResponseDTO>> GetImageList(int formW2Id);
+        Task<List<FormIWImageResponseDTO>> GetImageList(int formW2Id);
 
         Task<int> UpdateFormW2Signature(FormW2ResponseDTO formW2DTO);
 

@@ -16,7 +16,7 @@ namespace RAMMS.Repository.Interfaces
         public Task<RmIwFormW2> FindW2ByID(int Id);
         void SaveImage(IEnumerable<RmIwFormW2Image> image);
         void UpdateImage(RmIwFormW2Image image);
-        Task<List<RmIwFormW2Image>> GetImagelist(int formW2Id);
+        Task<List<RmIwformImage>> GetImagelist(int formW2Id);
         Task<RmIwFormW2Image> GetImageById(int imageId);
         Task<int> GetImageId(int formW2Id, string type);
         Task<List<RmIwFormW1>> GetFormW1List();

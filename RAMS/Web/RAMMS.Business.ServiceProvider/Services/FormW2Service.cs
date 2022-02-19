@@ -69,15 +69,15 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormW2ResponseDTO>(formW2);
         }
 
-        public async Task<List<FormW2ImageResponseDTO>> GetImageList(int formW2Id)
+        public async Task<List<FormIWImageResponseDTO>> GetImageList(int formW2Id)
         {
-            List<FormW2ImageResponseDTO> images = new List<FormW2ImageResponseDTO>();
+            List<FormIWImageResponseDTO> images = new List<FormIWImageResponseDTO>();
             try
             {
                 var getList = await _repoUnit.FormW2Repository.GetImagelist(formW2Id);
                 foreach (var listItem in getList)
                 {
-                    images.Add(_mapper.Map<FormW2ImageResponseDTO>(listItem));
+                    images.Add(_mapper.Map<FormIWImageResponseDTO>(listItem));
                 }
             }
             catch (Exception ex)
@@ -113,7 +113,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public async Task<int> SaveImage(List<FormW2ImageResponseDTO> image)
+        public async Task<int> SaveImage(List<FormIWImageResponseDTO> image)
         {
             int rowsAffected;
             try

@@ -128,7 +128,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             FormW1Model assetsModel = new FormW1Model();
-            assetsModel.ImageList = new List<FormW1ImageResponseDTO>();
+            assetsModel.ImageList = new List<FormIWImageResponseDTO>();
             assetsModel.ImageTypeList = new List<string>();
             ddLookup.Type = "Photo Type";
             assetsModel.PhotoType = await _ddLookupService.GetDdLookup(ddLookup);
@@ -159,8 +159,8 @@ namespace RAMMS.Web.UI.Controllers
                 int j = 0;
                 foreach (IFormFile postedFile in formFile)
                 {
-                    List<FormW1ImageResponseDTO> uploadedFiles = new List<FormW1ImageResponseDTO>();
-                    FormW1ImageResponseDTO _rmAssetImageDtl = new FormW1ImageResponseDTO();
+                    List<FormIWImageResponseDTO> uploadedFiles = new List<FormIWImageResponseDTO>();
+                    FormIWImageResponseDTO _rmAssetImageDtl = new FormIWImageResponseDTO();
                     string photo_Type = Regex.Replace(photoType[j], @"[^a-zA-Z]", "");
                     string subPath = Path.Combine(@"Uploads/FormW1/", _id, photo_Type);
                     string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormW1\", _id, photo_Type));
@@ -174,7 +174,7 @@ namespace RAMMS.Web.UI.Controllers
                     }
                     using (FileStream stream = new FileStream(Path.Combine(path, fileRename), FileMode.Create))
                     {
-                        _rmAssetImageDtl.Fw1RefNo = int.Parse(id);
+                        _rmAssetImageDtl.Fw1PkRefNo = int.Parse(id);
                         _rmAssetImageDtl.ImageTypeCode = photoType[j];
                         _rmAssetImageDtl.ImageUserFilePath = postedFile.FileName;
                         _rmAssetImageDtl.ImageSrno = i;
@@ -284,7 +284,7 @@ namespace RAMMS.Web.UI.Controllers
                 var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
                 if (view == "1") _formW2Model.View = "1"; 
                 _formW2Model.SaveFormW2Model = result;
-                _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1RefNoNavigation;
+                _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
                 _formW2Model.Fcem = resultFCEM != null ? resultFCEM : new FormW2FCEMResponseDTO();
             }
 
@@ -322,8 +322,8 @@ namespace RAMMS.Web.UI.Controllers
                 string _filename = filename + DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString();
                 string cachefile = templatePath + _filename + ".xlsx";
                 var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                var imageDetailsW1 = new List<FormW1ImageResponseDTO>();
-                var imageDetails = new List<FormW2ImageResponseDTO>();
+                var imageDetailsW1 = new List<FormIWImageResponseDTO>();
+                var imageDetails = new List<FormIWImageResponseDTO>();
                 #endregion Get File and renaming
 
                 //Copying File
@@ -467,7 +467,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             FormW2Model assetsModel = new FormW2Model();
-            assetsModel.ImageList = new List<FormW2ImageResponseDTO>();
+            assetsModel.ImageList = new List<FormIWImageResponseDTO>();
             assetsModel.ImageTypeList = new List<string>();
             ddLookup.Type = "Photo Type";
             ddLookup.TypeCode = "IW";
@@ -499,8 +499,8 @@ namespace RAMMS.Web.UI.Controllers
                 int j = 0;
                 foreach (IFormFile postedFile in formFile)
                 {
-                    List<FormW2ImageResponseDTO> uploadedFiles = new List<FormW2ImageResponseDTO>();
-                    FormW2ImageResponseDTO _rmAssetImageDtl = new FormW2ImageResponseDTO();
+                    List<FormIWImageResponseDTO> uploadedFiles = new List<FormIWImageResponseDTO>();
+                    FormIWImageResponseDTO _rmAssetImageDtl = new FormIWImageResponseDTO();
                     string photo_Type = Regex.Replace(photoType[j], @"[^a-zA-Z]", "");
                     string subPath = Path.Combine(@"Uploads/FormW2/", _id, photo_Type);
                     string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormW2\", _id, photo_Type));
@@ -514,7 +514,7 @@ namespace RAMMS.Web.UI.Controllers
                     }
                     using (FileStream stream = new FileStream(Path.Combine(path, fileRename), FileMode.Create))
                     {
-                        _rmAssetImageDtl.Fw2RefNo = int.Parse(id);
+                        _rmAssetImageDtl.Fw1PkRefNo = int.Parse(id);
                         _rmAssetImageDtl.ImageTypeCode = photoType[j];
                         _rmAssetImageDtl.ImageUserFilePath = postedFile.FileName;
                         _rmAssetImageDtl.ImageSrno = i;
