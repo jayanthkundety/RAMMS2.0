@@ -250,19 +250,31 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["Users"] = _userService.GetUserSelectList(null);
         }
 
-        public async Task<IActionResult> AddFormW2()
+        public async Task<IActionResult> AddFormW2(int id)
         {
             _formW2Model = new FormW2Model();
-            _formW2Model.SaveFormW2Model = new DTO.ResponseBO.FormW2ResponseDTO();
+            await LoadN2DropDown();
+            _formW2Model.FormW1 = await _formW2Service.GetFormW1ById(id);
             _formW2Model.Fcem = new FormW2FCEMResponseDTO();
-
-            //_formW2Model.SaveFormW2Model.Fw1IwRefNo ="
-            //_formW2Model.SaveFormW2Model.Fw1RefNo = _formW1Model.PkRefNo;
-            //_formW2Model.SaveFormW2Model.TitleOfInstructWork = _formW1Model.ProjectTitle;
-            //_formW2Model.SaveFormW2Model.CeilingEstCost = _formW1Model.EstimTotalCost;
+            var defaultData = new DTO.ResponseBO.FormW2ResponseDTO();
+            defaultData.Fw1IwRefNo = _formW2Model.FormW1.IwRefNo;
+            defaultData.Fw1PkRefNo = _formW2Model.FormW1.PkRefNo;
+            defaultData.Fw1ProjectTitle = _formW2Model.FormW1.ProjectTitle;
+            defaultData.RmuCode = _formW2Model.FormW1.RmuCode ;
+            defaultData.RmuName = "";
+            defaultData.DivCode = _formW2Model.FormW1.DivnCode;
+            defaultData.DivisonName = "";
+            var res = (List<CSelectListItem>)ViewData["RD_Code"];
+            res.Find(c => c.Value == _formW2Model.FormW1.RoadCode).Selected = true;
+            defaultData.RoadCode = _formW2Model.FormW1.RoadCode;
+            defaultData.RoadName = _formW2Model.FormW1.RoadName;
+            defaultData.SerProvRefNo = _formW2Model.FormW1.ServPropRefNo;
+            defaultData.ServProvName = _formW2Model.FormW1.ServPropName;
+            defaultData.EstCostAmt = _formW2Model.FormW1.EstimTotalCostAmt;
+            _formW2Model.SaveFormW2Model = defaultData;
             _formW2Model.FormW1 = new FormW1ResponseDTO();
 
-            await LoadN2DropDown();
+            
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
         }
 

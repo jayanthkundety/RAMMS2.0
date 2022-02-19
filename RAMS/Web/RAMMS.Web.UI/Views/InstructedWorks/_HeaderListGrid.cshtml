@@ -1,5 +1,9 @@
 ﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
-
+<style>
+    tr.selected {
+        background-color: #C8E1FF !important;
+    }
+</style>
 <div class="main-container" id="container">
     <div class="content" >
         <table id="FormIWGridView" class="table w-100 nowrap dataTable table-bordered">
@@ -46,8 +50,8 @@
 
     var table_columns = [];
     var chkRefNoCol = {
-        data: null, name: "chkBox", title: "", autoWidth: true, sortable: false, render: function (data) {
-            return "<input type='checkbox' class='chkbox' value='" + data.w1RefNo + "' w1='" + data.w1RefNo + "'  w2='" + data.w2RefNo + "'  wc='" + data.wcRefNo + "'  wg='" + data.wgRefNo + "'  wd='" + data.wdRefNo + "'  wn='" + data.wnRefNo + "' />";
+        data: null, name: "chkBox", title: "", autoWidth: false, width: 1, sortable: false, render: function (data) {
+            return "<input type='hidden' value='" + data.w1RefNo + "' w1='" + data.w1RefNo + "'  w2='" + data.w2RefNo + "'  wc='" + data.wcRefNo + "'  wg='" + data.wgRefNo + "'  wd='" + data.wdRefNo + "'  wn='" + data.wnRefNo + "' />";
         }
     };
     var w1RefNoCol = { data: "w1RefNo", name: "w1RefNo", title: "Title", autoWidth: true, sortable: true, visible:false };
@@ -196,13 +200,24 @@
     }
 
     $(document).ready(function () {
-        debugger;
+       
         InitializeGrid();
 
         $('#btnSearch').click(function () {
             FormIWGridRefresh();
         });
 
+        var table = $('#FormIWGridView').DataTable();
+
+        $('#FormIWGridView tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
     });
 
 

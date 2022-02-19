@@ -116,11 +116,11 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Add')">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal"  onclick="OpenFormW1('Edit')">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Edit')">
                         <span class="edit-icon"></span>Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal"  onclick="OpenFormW1('View')">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('View')">
                         <span class="view-icon"></span> View
                     </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -267,7 +267,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body"  id="formW1Content">
+            <div class="modal-body" id="formW1Content">
 
             </div>
             <div class="modal-footer">
@@ -305,10 +305,26 @@
     function GetFormIDByName(formName) {
         var value = 0;
         var table = $('#FormIWGridView').DataTable();
-        var checkedcollection = table.$(".chkbox:checked", { "page": "all" });
-        if (checkedcollection.length == 1) {
-            // data - target="#formW2"
-            value = checkedcollection.attr(formName);
+        var selectedIndex = table.$(".selected", { "page": "all" });
+        var daa = table.row(selectedIndex).data();
+        if (daa == null) return;
+
+        switch(formName) {
+            case "w1":
+                value = daa.w1RefNo;
+                break;
+            case "w2":
+                value = daa.w2RefNo;
+                break;
+            case "wc":
+                value = daa.wcRefNo;
+                break;
+
+            default:
+                value = daa.w1RefNo;
+        }
+        if (formName == "w1") {
+            value = daa.w1RefNo;
         }
         else {
             app.ShowErrorMessage("Kindly select one row to open the " + formName + " Form");
@@ -318,14 +334,14 @@
     }
 
     function OpenFormW1(mode) {
-       
+
         var SelectedIWGridId = 0;
-        
+
         if (mode == "Add") {
             url = "/InstructedWorks/AddFormW1";
         }
         else if (mode == "Edit") {
-           
+
             SelectedIWGridId = GetFormIDByName("w1");
             url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
         }
@@ -352,9 +368,12 @@
 
     function OpenFormW2(mode, view) {
         InitAjaxLoading();
-        var url = '', id;
+        var url = '';
+        var id = "";
+
         if (mode == 'Add') {
-            url = '/InstructedWorks/AddFormW2';
+            id = GetFormIDByName("w1");
+            url = '/InstructedWorks/AddFormW2?id=' + id;
         }
         else {
             id = GetFormIDByName("w2");
