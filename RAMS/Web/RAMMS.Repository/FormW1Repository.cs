@@ -40,9 +40,9 @@ namespace RAMMS.Repository
             return await _context.RmIwFormW1.Where(x => x.Fw1PkRefNo == Id && x.Fw1ActiveYn == true).FirstOrDefaultAsync();
         }
 
-        public Task<List<RmIwformImage>> GetImagelist(int formW1Id)
+        public Task<List<RmIwformImage>> GetImagelist(string IwRefNo)
         {
-            return _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW1Id && x.FiwiActiveYn == true).ToListAsync();
+            return _context.RmIwformImage.Where(x => x.FiwiFw1IwRefNo == IwRefNo && x.FiwiActiveYn == true).ToListAsync();
         }
 
         public async Task<int> GetImageId(int formW1Id, string type)

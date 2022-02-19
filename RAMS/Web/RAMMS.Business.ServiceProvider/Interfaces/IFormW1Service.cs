@@ -8,8 +8,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 {
     public interface IFormW1Service
     {
-
-        Task<List<FormIWImageResponseDTO>> GetImageList(int formW1Id);
+        
+        Task<List<FormIWImageResponseDTO>> GetImageList(string IwRefNo);
         Task<int> LastInsertedIMAGENO(int hederId, string type);
         Task<FormW1ResponseDTO> FindFormW1ByID(int id);
         Task<int> SaveFormW1(FormW1ResponseDTO FormW1);

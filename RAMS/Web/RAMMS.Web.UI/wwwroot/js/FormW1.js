@@ -255,21 +255,13 @@ function OnVerifyUserChange(tis) {
 function GetImageList(id) {
 
     var group = $("#FormADetAssetGrpCode option:selected").val();
-    var FormType = "FormW2"
-    if (id && id > 0) {
-        $("#FW2HRef_No").val(id);
-    }
-    else {
-        id = $("#FW2HRef_No").val();
-    }
-
+     
     $.ajax({
-        url: '/InstructedWorks/GetW1ImageList',
-        data: { formW1Id: id, assetgroup: group },
+        url: '/InstructedWorks/GetIWImageList',
+        data: { Id: id, assetgroup: group },
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);
-            $("#FW2HRef_No").val(id);
         },
         error: function (data) {
             alert(data.responseText);
