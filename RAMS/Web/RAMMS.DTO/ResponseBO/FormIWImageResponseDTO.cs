@@ -9,7 +9,7 @@ namespace RAMMS.DTO.ResponseBO
     public class FormIWImageResponseDTO
     {
         public int PkRefNo { get; set; }
-        public int? Fw1PkRefNo { get; set; }
+ 
         public string Fw1IwRefNo { get; set; }
         public string ImgRefId { get; set; }
         public string ImageTypeCode { get; set; }

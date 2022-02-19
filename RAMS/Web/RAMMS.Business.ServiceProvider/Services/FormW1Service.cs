@@ -69,12 +69,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public async Task<List<FormIWImageResponseDTO>> GetImageList(int formW1Id)
+        public async Task<List<FormIWImageResponseDTO>> GetImageList(string IwRefNo)
         {
             List<FormIWImageResponseDTO> images = new List<FormIWImageResponseDTO>();
             try
             {
-                var getList = await _repoUnit.FormW1Repository.GetImagelist(formW1Id);
+                var getList = await _repoUnit.FormW1Repository.GetImagelist(IwRefNo);
                 foreach (var listItem in getList)
                 {
                     images.Add(_mapper.Map<FormIWImageResponseDTO>(listItem));

@@ -32,9 +32,9 @@
 
 
 
-    $('input[type=radio][id=FormW1_RecomdStatus]').change(function () {
+    $('input[type=radio][id=FormW1_RecomdType]').change(function () {
 
-        if (this.value == 'Critical' || this.value == 'Urgent') {
+        if (this.value == '1' || this.value == '2') {
             $('#ddlUseridVer').prop("disabled", false);
             $('#ddlUseridVer').trigger('chosen:updated');
             $("#FormW1_DtVer").prop("readonly", false);
@@ -255,21 +255,13 @@ function OnVerifyUserChange(tis) {
 function GetImageList(id) {
 
     var group = $("#FormADetAssetGrpCode option:selected").val();
-    var FormType = "FormW2"
-    if (id && id > 0) {
-        $("#FW2HRef_No").val(id);
-    }
-    else {
-        id = $("#FW2HRef_No").val();
-    }
-
+     
     $.ajax({
-        url: '/InstructedWorks/GetW1ImageList',
-        data: { formW1Id: id, assetgroup: group },
+        url: '/InstructedWorks/GetIWImageList',
+        data: { Id: id, assetgroup: group },
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);
-            $("#FW2HRef_No").val(id);
         },
         error: function (data) {
             alert(data.responseText);

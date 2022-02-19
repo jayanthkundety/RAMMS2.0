@@ -17,10 +17,7 @@ namespace RAMMS.Web.UI.Models
             FormW1 = new FormW1ResponseDTO();
         }
 
-        public string View { get; set; }
-        public List<string> ImageTypeList { get; set; }
         public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; }
-        public IEnumerable<SelectListItem> PhotoType { get; set; }
         public FormW1ResponseDTO FormW1 { get; set; }
 
 
