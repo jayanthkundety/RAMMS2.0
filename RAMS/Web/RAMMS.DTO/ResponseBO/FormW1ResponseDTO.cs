@@ -6,7 +6,7 @@ using System.Text;
 namespace RAMMS.DTO.ResponseBO
 {
     public class FormW1ResponseDTO
-    {
+    { 
         public int PkRefNo { get; set; }
         public string FormhRefNo { get; set; }
         public string ServPropRefNo { get; set; }
@@ -19,6 +19,7 @@ namespace RAMMS.DTO.ResponseBO
         public string IwRefNo { get; set; }
         public string DivnCode { get; set; }
         public string RmuCode { get; set; }
+        public string SecCode { get; set; }
         public string ProjectTitle { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -26,7 +27,6 @@ namespace RAMMS.DTO.ResponseBO
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? TecmDt { get; set; }
-        public string TecmStatus { get; set; }
         public bool? IsBq { get; set; }
         public bool? IsDrawing { get; set; }
         [DataType(DataType.Date)]
@@ -34,14 +34,14 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? Dt { get; set; }
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
-        public int? ChKm { get; set; }
-        public int? ChM { get; set; }
+        public int? Ch { get; set; }
+        public int? ChDeci { get; set; }
         public string DetailsOfWork { get; set; }
         public double? PropDesignDuration { get; set; }
         public double? PropCompletionPeriod { get; set; }
         public bool RecomdYn { get; set; }
         public bool RecomdBydeYn { get; set; }
-        public int RecomdStatus { get; set; }
+        public short? RecomdType { get; set; }
         public double? PhyWorksAmt { get; set; }
         public double? GenPrelimsAmt { get; set; }
         public double? ConsulTaxPercent { get; set; }
@@ -85,7 +85,7 @@ namespace RAMMS.DTO.ResponseBO
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? CrDt { get; set; }
         public bool SubmitSts { get; set; }
-        public bool? ActiveYn { get; set; }
+        public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
 

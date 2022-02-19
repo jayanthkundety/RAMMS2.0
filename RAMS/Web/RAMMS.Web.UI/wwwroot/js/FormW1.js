@@ -32,9 +32,9 @@
 
 
 
-    $('input[type=radio][id=FormW1_RecomdStatus]').change(function () {
+    $('input[type=radio][id=FormW1_RecomdType]').change(function () {
 
-        if (this.value == 'Critical' || this.value == 'Urgent') {
+        if (this.value == '1' || this.value == '2') {
             $('#ddlUseridVer').prop("disabled", false);
             $('#ddlUseridVer').trigger('chosen:updated');
             $("#FormW1_DtVer").prop("readonly", false);

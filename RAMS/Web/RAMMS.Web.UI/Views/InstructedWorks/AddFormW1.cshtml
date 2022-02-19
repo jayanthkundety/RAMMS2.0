@@ -178,7 +178,7 @@
                                                                                     <label for="RoadCode">
                                                                                         Chainage 'KM' Location
                                                                                     </label>
-                                                                                    @Html.TextBoxFor(m => m.FormW1.ChKm, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}" })
+                                                                                    @Html.TextBoxFor(m => m.FormW1.Ch, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}" })
 
 
                                                                                 </div>
@@ -189,7 +189,7 @@
                                                                                     <label for="RoadCode">
                                                                                         Chainage 'M' Location
                                                                                     </label>
-                                                                                    @Html.TextBoxFor(m => m.FormW1.ChM, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage KM from}" })
+                                                                                    @Html.TextBoxFor(m => m.FormW1.ChDeci, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage KM from}" })
 
                                                                                 </div>
 
@@ -361,13 +361,13 @@
                                                                             @Html.Label("Recommonded Instructed Work", "Recommonded Instructed Work")
                                                                             <br />
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , 2)&nbsp;	Critical&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdType , 2)&nbsp;	Critical&nbsp;
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , 1)&nbsp;	Urgent&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdType, 1)&nbsp;	Urgent&nbsp;
                                                                             </label>
                                                                             <label class="radio-inline">
-                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdStatus , 0)&nbsp;	None&nbsp;
+                                                                                @Html.RadioButtonFor(x => x.FormW1.RecomdType, 0)&nbsp;	None&nbsp;
                                                                             </label>
                                                                         </div>
                                                                         <div class="col-lg-4">
@@ -548,7 +548,7 @@
 
 <script>
 
-    var RecommondedInstrctedWorkValue = "@Model.FormW1.RecomdStatus";
+    var RecommondedInstrctedWorkValue = "@Model.FormW1.RecomdType";
     var ImageTypeBQ = "@ImageTypeBQ";
     var ImageTypeDrawing = "@ImageTypeDrawing";
 

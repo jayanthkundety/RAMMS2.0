@@ -69,7 +69,7 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
-            model.FormW1.RecomdStatus = 0;
+            model.FormW1.RecomdType = 0;
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
