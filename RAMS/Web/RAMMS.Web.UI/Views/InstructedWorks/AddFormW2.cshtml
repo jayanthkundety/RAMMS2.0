@@ -43,17 +43,18 @@
     <div class="col-md-12" id="divPage">
         <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
             <ul class="nav nav-tabs tabbed round">
+                
                 <li class="nav-item">
-                    <a href="#page" id="lnkPage" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openW2()">
+                    <a href="#list" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openFCEM()">
                         <span class="">
-                            Form W2
+                            FECM
                         </span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#list" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:openFCEM()">
+                    <a href="#page" id="lnkPage" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:openW2()">
                         <span class="">
-                            FECM
+                            Form W2
                         </span>
                     </a>
                 </li>
@@ -87,7 +88,150 @@
         <div class="row bg-white py-3">
             <div class="col-lg-12">
                 <div class="tab-content mh-250">
-                    <div class="tab-pane show " id="list">
+                    <div class="tab-pane show active" id="list">
+                        <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
+                                <div class="p-4">
+
+                                    <div class="row">
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="RMU">TECM Date</label>
+                                            <input class="form-control" type="date" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label>
+                                                FECM Date
+                                            </label>
+                                            <input class="form-control" type="date" />
+                                        </div>
+                                        <div class="form-group col-lg-2 mb-0">
+                                            <label for="RMU">Agreed Nego Price Letter</label>
+                                            <br class="mb-3" />
+                                            <label class="checkbox-inline py-3 px-2"><input type="checkbox" disabled value=""> Yes</label>
+                                            <label class="checkbox-inline"><input type="checkbox" disabled value=""> No</label>
+
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="RMU">Agreed Nego  Rate Date</label>
+                                            <input class="form-control" type="date" />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label for="Division_Code">Status </label>
+                                            <select class="form-control">
+                                                <option value="">Select Status</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <label>
+                                                Status Remarks
+                                            </label>
+                                            <textarea class="form-control" style="height:36px;"> </textarea>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            <label for="RMU">PROGRESS %</label>
+                                            <input class="form-control" type="text" />
+                                        </div>
+
+                                        <div class="form-group col-lg-3 px-4">
+                                            <div class="row mt-4">
+                                                <div class="col-6 ">
+                                                    <label class="checkbox-inline"><input type="checkbox" disabled value=""> BQ</label>
+                                                </div>
+                                                <div class="col-6">
+                                                    <label class="checkbox-inline"><input type="checkbox" disabled value=""> Drawing</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="form-group col-lg-12">
+                                            <label for="RMU"> Remarks</label>
+                                            <textarea class="form-control" style="height:37px;"> </textarea>
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                    @*<div class="row">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label>
+                            FECM Date
+                        </label>
+                        <input class="form-control" type="date" />
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="Division_Code">Status </label>
+                        <select class="form-control">
+                            <option value="">Select Status</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="form-group col-lg-4 mb-0">
+                                <label for="RMU">Agreed Nego Price Letter</label>
+                                <br class="mb-3" />
+                                <label class="checkbox-inline py-3 px-2"><input type="checkbox" disabled value=""> Yes</label>
+                                <label class="checkbox-inline"><input type="checkbox" disabled value=""> No</label>
+
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label for="RMU">Agreed Nego  Rate Date</label>
+                                <input class="form-control" type="date" />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="RMU">PROGRESS %</label>
+                                <input class="form-control" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group col-lg-12">
+                    <label>
+                        FECM Status Remarks
+                    </label>
+                    <textarea class="form-control" style="height:118px;"> </textarea>
+                </div>
+            </div>
+
+
+
+
+            <div class="form-group col-lg-3">
+                <label for="RMU">TECM Date</label>
+                <input class="form-control" type="date" />
+            </div>
+            <div class="form-group col-lg-6">
+                <label for="RMU"> Remarks</label>
+                <textarea class="form-control" style="height:37px;"> </textarea>
+            </div>
+            <div class="form-group col-lg-3 px-4">
+                <div class="row mt-4">
+                    <div class="col-6 ">
+                        <label class="checkbox-inline"><input type="checkbox" disabled value=""> BQ</label>
+                    </div>
+                    <div class="col-6">
+                        <label class="checkbox-inline"><input type="checkbox" disabled value=""> Drawing</label>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>*@
+                                </div>
+                            </div>
                         <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
                             <div class="p-4">
                                 <div class="row">
@@ -138,7 +282,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane show active" id="page">
+                    <div class="tab-pane show " id="page">
                         <div class="col-md-12" id="divpage">
                             <div class="row" id="div-addformd">
                                 <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">

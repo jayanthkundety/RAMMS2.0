@@ -56,11 +56,11 @@
                                     <label for="IW_Reference">IW Reference No.</label>
                                     <input class="form-control" type="text" id="txtIWRefNo">
                                 </div>
-                                <div class="form-group  col-lg-2">
+                                <div class="form-group">
                                     <label for="C_Date">Commencement Date From</label>
                                     <input class="form-control" type="date" id="txtCommenceDtFrom">
                                 </div>
-                                <div class="form-group  col-lg-2">
+                                <div class="form-group">
                                     <label for="C_Date">Commencement Date To</label>
                                     <input class="form-control" type="date" id="txtCommenceDtTo">
                                 </div>
@@ -72,32 +72,29 @@
                                     <label for="C_Date">Status</label>
                                     @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["TECM_Status"], "Status", "Select Status", new { @id = "txtStatus", @class = "form-control" })
                                 </div>
-                                <div class="form-group col-lg-1">
-                                    <label for="status_percentage">Status % From</label>
+                                <div class="form-group  col-lg-2">
+                                    <label for="status_percentage">Status Percentage From</label>
                                     <input class="form-control allow_numeric" type="number" id="txtStPercFrom">
                                 </div>
 
-                                <div class="form-group col-lg-1">
-                                    <label for="status_percentage">Status % To</label>
+                                <div class="form-group  col-lg-2">
+                                    <label for="status_percentage">Status Percentage To</label>
                                     <input class="form-control allow_numeric" type="number" id="txtStPercTo">
                                 </div>
-                                <div class="form-group col-lg-1">
-                                    <label for="month">Month</label>
-                                    <input class="form-control allow_numeric" type="number" id="txtMonth">
-                                </div>
+                               
                                 <div class="form-group  col-lg-2">
                                     @Html.Label("RMU", "RMU")
                                     @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RMU", "Select RMU", new { @id = "txtRmu", @class = "form-control", @onchange = "changeRMU(this)" })
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-2">
                                     @Html.Label("RMU Name", "RMU Name")
                                     <input type="text" class="form-control" id="txtRmuName" disabled />
                                 </div>
-                                <div class="form-group  col-lg-2">
+                                <div class="form-group col-lg-2">
                                     @Html.Label("Road Code", "Road Code")
                                     @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "txtRoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-2">
                                     @Html.Label("Road Name", "Road Name")
                                     <input type="text" class="form-control" id="txtRoadName" disabled />
                                 </div>
@@ -112,9 +109,9 @@
 </div>
     
 <!-- Main Container -->
-<div class="row p-0">
+<div class="row">
     <div class="col-12">
-        <div class="col-12 text-right">
+        <div class="text-right">
             <div class="btn-group dropbottom" id="actiondropdown">
                 <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
                     PROPOSED IW
@@ -130,9 +127,9 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                    </button>
+                    </button>*@
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
@@ -150,9 +147,9 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                    </button>
+                    </button>*@
                 </div>
             </div>
             @*<div class="btn-group dropbottom" id="actiondropdown">
@@ -190,9 +187,9 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                    </button>
+                    </button>*@
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
@@ -210,9 +207,9 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                    </button>
+                    </button>*@
                 </div>
             </div>
             <div class="panel with-nav-tabs panel-default">
@@ -228,7 +225,7 @@
                             <div class="w-100 float-left position-relative">
                                 <div class="w-100 dt-tbl-section">
                                     <div class="main-container">
-                                        <div class="table-responsive">
+                                        <div >
                                             <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                                                 <div class="top p-1">
                                                     @*Pagination will come here*@
