@@ -99,6 +99,28 @@ $(document).ready(function () {
         $('#formW2RMU').trigger("chosen:updated");
     }
 
+    if ($("#hdnView").val() == "1") {
+        $("#list *").prop("disabled", true);
+        $("#page *").prop("disabled", true);
+        $("#formW2DivisionCode").chosen('destroy');
+        $("#formW2DivisionCode").prop("disabled", true);
+        $("#formW2RMU").chosen('destroy');
+        $("formW2RMU").prop("disabled", true);
+        $("#frmW2RoadCodeDD").chosen('destroy');
+        $("frmW2RoadCodeDD").prop("disabled", true);
+        $("#formw2RequestedBy").chosen('destroy');
+        $("formw2RequestedBy").prop("disabled", true);
+
+        $("#fcemStatus").chosen('destroy');
+        $("#fcemStatus").prop("disabled", true);
+
+        $("#saveFCEMBtn").hide();
+        $("#submitFCEMBtn").hide();
+        $("#saveFormW2Btn").hide();
+        $("#submitFormW2Btn").hide();
+
+       
+    }
 
 });
 
@@ -194,6 +216,8 @@ function SaveFCEM(submit) {
 }
 
 function openW1() {
+
+    if ($("#hdnView").val() == "1") return;
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
 
@@ -202,6 +226,7 @@ function openW1() {
 }
 
 function openFCEM() {
+    if ($("#hdnView").val() == "1") return;
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
 
@@ -223,7 +248,7 @@ function checkW2Exist() {
 }
 
 function openW2() {
-
+    if ($("#hdnView").val() == "1") return;
     $("#saveFormW2Btn").show();
     $("#submitFormW2Btn").show();
 
@@ -387,6 +412,8 @@ function GetImageList(id) {
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);
+            if ($("#hdnView").val() == "1") 
+                $("div.img-btns *").prop("disabled", true);
             //$("#FW2HRef_No").val(id);
         },
         error: function (data) {
@@ -397,19 +424,6 @@ function GetImageList(id) {
 
     return true;
 }
-
-//function changeRegion(obj) {
-//    var ctrl = $(obj);
-
-//    if (ctrl.val() != null && ctrl.val() != "") {
-//        var name = ctrl.find("option:selected").text();
-//        name = name.split('-').length > 1 ? name.split('-')[1] : name;
-//        $("#formW2RegionName").val(name);
-//    }
-//    else {
-//        $("#formW2RegionName").val('');
-//    }
-//}
 
 function changeDivision(obj) {
     var ctrl = $(obj);

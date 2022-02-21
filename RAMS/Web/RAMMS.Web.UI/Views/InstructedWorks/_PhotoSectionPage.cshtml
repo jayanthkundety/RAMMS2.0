@@ -326,6 +326,8 @@
     });
 
     function FormAddImage() {
+
+        if ($("#hdnView").val() == "1") return; 
         if (ValidatePage("#tab1")) {
             if ($("#IwRefNo").val() != "0") {
                 $("#myModal").modal('show');
