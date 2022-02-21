@@ -86,6 +86,19 @@ $(document).ready(function () {
     });
 
 
+    if ($("#FW2HRef_No").val() == "0") {
+
+        $("#formW2DivisionCode").trigger("chosen:updated")
+        $("#formW2DivisionCode").trigger("change");
+
+        $('#formW2RMU').trigger("chosen:updated")
+        $("#formW2RMU").trigger("change");
+    }
+    else {
+        $("#formW2DivisionCode").trigger("chosen:updated");
+        $('#formW2RMU').trigger("chosen:updated");
+    }
+
 
 });
 
@@ -241,12 +254,13 @@ function Save(submit) {
 
     saveObj.PkRefNo = $("#FW2HRef_No").val();
 
-    saveObj.Fw1IwRefNo = $("#fw1PKRefNo").find(":selected").text();
-    saveObj.Fw1RefNo = $("#fw1PKRefNo").find(":selected").val();
+    saveObj.Fw1IwRefNo = $("#fw1IWRefNo").val();
+    saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
     saveObj.Fw1ProjectTitle = $("#fw1ProjectTitle").val()
-    saveObj.Region = $("#formW2Region").val();
+    saveObj.RegionText = $("#formW2Region").val();
     saveObj.RegionName = $("#formW2RegionName").val();
-    saveObj.Division = $("#formW2DivisionCode").find(":selected").val();
+    saveObj
+    saveObj.DivCode = $("#formW2DivisionCode").find(":selected").val();
     saveObj.DivisonName = $("#formW2DivisonName").val();
 
     saveObj.Rmu = $("#formW2RMU").find(":selected").val();
@@ -254,39 +268,43 @@ function Save(submit) {
 
     saveObj.JkrRefNo = $("#fw2JkrRefNo").val();
     saveObj.DateOfInitation = $("#formW2InitiationDate").val();
-    saveObj.SerProviderRefNo = $("#fw2SerProviderRef").val();
-    saveObj.ServiceProvider = $("#formW2ServiceProvider").find(":selected").val();
+    saveObj.SerProvRefNo = $("#fw2SerProviderRef").val();
+    saveObj.ServProvName = $("#formW2ServiceProvider").find(":selected").val();
     saveObj.Attn = $("#fw2Attn").val();
     saveObj.Cc = $("#fw2cc").val();
     saveObj.RoadCode = $("#frmW2RoadCode").val().split("-")[0];
     saveObj.RoadName = $("#formW2roadDesc").val();
 
-    if ($("#formW2Fromch").val() != "") saveObj.FrmCh = $("#formW2Fromch").val();
-    if ($("#formW2Toch").val() != "") saveObj.ToCh = $("#formW2Toch").val();
-    saveObj.TitleOfInstructWork = $("#formW2TitleOfInstructWork").val();
-    if ($("#formW2CommencementDate").val() != "dd/mm/yyyy" && $("#formW2CommencementDate").val() != "") saveObj.DateOfCommencement = $("#formW2CommencementDate").val();
-    if ($("#formW2CompletionDate").val() != "dd/mm/yyyy" && $("#formW2CompletionDate").val() != "") saveObj.DateOfCompletion = $("#formW2CompletionDate").val();
-    if ($("#fw2InstructWorkDuration").val() != "") saveObj.InstructWorkDuration = $("#fw2InstructWorkDuration").val();
+    if ($("#formW2chkm").val() != "") saveObj.Ch = $("#formW2chkm").val();
+    if ($("#formW2chm").val() != "") saveObj.ChDeci = $("#formW2chm").val();
+    //saveObj.TitleOfInstructWork = $("#formW2TitleOfInstructWork").val();
+    if ($("#formW2CommencementDate").val() != "dd/mm/yyyy" && $("#formW2CommencementDate").val() != "") saveObj.DtCommence = $("#formW2CommencementDate").val();
+    if ($("#formW2CompletionDate").val() != "dd/mm/yyyy" && $("#formW2CompletionDate").val() != "") saveObj.DtCompl = $("#formW2CompletionDate").val();
+    if ($("#fw2InstructWorkDuration").val() != "") saveObj.IwDuration = $("#fw2InstructWorkDuration").val();
     saveObj.Remarks = $("#formW2Remarks").val();
     saveObj.DetailsOfWorks = $("#formW2DetailsOfWorks").val();
-    saveObj.CeilingEstCost = $("#formW2EstCost").val();
+    saveObj.EstCostAmt = $("#formW2EstCost").val();
 
-    if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.IssuedBy = $("#formW2IssuedBy option:selected").val();
-    if ($("#formW2IssuedName").val() != "") saveObj.IssuedName = $("#formW2IssuedName").val();
-    if ($("#formW2IssuedDate").val() != "dd/mm/yyyy" && $("#formW2IssuedDate").val() != "") saveObj.IssuedDate = $("#formW2IssuedDate").val();
-    saveObj.IssuedSign = $("#formW2IssuedSignture").prop("checked");
+    if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.UseridIssu = $("#formW2IssuedBy option:selected").val();
+    if ($("#formW2IssuedName").val() != "") saveObj.UsernameIssu = $("#formW2IssuedName").val();
+    if ($("#formW2IssuedDate").val() != "dd/mm/yyyy" && $("#formW2IssuedDate").val() != "") saveObj.DtIssu = $("#formW2IssuedDate").val();
+    saveObj.DesignationIssu = "";
+    saveObj.OfficeIssu = "";
+    saveObj.SignIssu = $("#formW2IssuedSignture").prop("checked");
 
-    if ($("#formw2RequestedBy").find(":selected").val() != "") saveObj.RequestedBy = $("#formw2RequestedBy option:selected").val();
-    if ($("#formW2RequestedName").val() != "") saveObj.RequestedName = $("#formW2RequestedName").val();
-    if ($("#formW2RequestedDate").val() != "dd/mm/yyyy" && $("#formW2RequestedDate").val() != "") saveObj.RequestedDate = $("#formW2RequestedDate").val();
-    saveObj.RequestedSign = $("#formW2RequestedSign").prop("checked");
+    if ($("#formw2RequestedBy").find(":selected").val() != "") saveObj.UseridReq = $("#formw2RequestedBy option:selected").val();
+    if ($("#formW2RequestedName").val() != "") saveObj.UsernameReq = $("#formW2RequestedName").val();
+    if ($("#formW2RequestedDate").val() != "dd/mm/yyyy" && $("#formW2RequestedDate").val() != "") saveObj.DtReq = $("#formW2RequestedDate").val();
+    saveObj.DesignationReq = "";
+    saveObj.OfficeReq = "";
+    saveObj.SignReq = $("#formW2RequestedSign").prop("checked");
 
     //Created by
 
     if ($("#formw2RequestedBy").find(":selected").val() != "") saveObj.ModBy = $("#formw2RequestedBy").find(":selected").val();
-    if ($("#FW2HRef_No").val() != "") saveObj.ModDt = output
+    if ($("#FW2HRef_No").val() != "0") saveObj.ModDt = output
     if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.CrBy = $("#formW2IssuedBy").find(":selected").val();
-    if ($("#FW2HRef_No").val() == "") saveObj.CrDt = output;
+    if ($("#FW2HRef_No").val() == "0") saveObj.CrDt = output;
 
     saveObj.ActiveYn = true;
     saveObj.SubmitSts = submit;
@@ -357,19 +375,19 @@ function GetImageList(id) {
     $("#submitFCEMBtn").hide();
 
     if (id && id > 0) {
-        $("#FW2HRef_No").val(id);
+        $("#fw1IWRefNo").val(id);
     }
     else {
-        id = $("#FW2HRef_No").val();
+        id = $("#fw1IWRefNo").val();
     }
 
     $.ajax({
-        url: '/InstructedWorks/GetW2ImageList',
-        data: { formW2Id: id, assetgroup: group },
+        url: '/InstructedWorks/GetIWImageList',
+        data: { id, assetgroup: group },
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);
-            $("#FW2HRef_No").val(id);
+            //$("#FW2HRef_No").val(id);
         },
         error: function (data) {
             alert(data.responseText);
@@ -534,7 +552,7 @@ function ChangeRUser(obj) {
 }
 
 function GoBack() {
-    if ($("#hdnView").val() == "0") {
+    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "") {
         if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";

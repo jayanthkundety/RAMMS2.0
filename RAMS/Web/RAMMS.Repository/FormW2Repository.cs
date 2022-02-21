@@ -121,133 +121,16 @@ namespace RAMMS.Repository
             var query = (from x in _context.RmIwFormW1
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
                          let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
-                         select new { rmu, x, w2Form });
+                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo)
+                         select new { rmu, w2Form, fecm, x });
 
 
 
             query = query.Where(x => x.x.Fw1ActiveYn == true).OrderByDescending(x => x.x.Fw1ModDt);
 
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
+            if (!string.IsNullOrEmpty(filterOptions.Filters.IWRefNo))
             {
-                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
-            }
-
-
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
-            {
-                query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
-
-            }
-
-
-            if (filterOptions.Filters.CommencementFrom != null && filterOptions.Filters.CommencementTo != null)
-            {
-                DateTime dt;
-                if (DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
-                {
-                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? (x.w2Form.Fw2DtCommence.Value.Year == dt.Year && x.w2Form.Fw2DtCommence.Value.Month == dt.Month && x.w2Form.Fw2DtCommence.Value.Day == dt.Day) : false);
-                }
-            }
-
-            if (filterOptions.Filters.CommencementTo != null)
-            {
-                DateTime dt;
-                if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
-                {
-                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? (x.w2Form.Fw2DtCommence.Value.Year == dt.Year && x.w2Form.Fw2DtCommence.Value.Month == dt.Month && x.w2Form.Fw2DtCommence.Value.Day == dt.Day) : false);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
-            {
-                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
-            }
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.ProjectTitle))
-            {
-                query = query.Where(x => x.x.Fw1ProjectTitle.Contains(filterOptions.Filters.ProjectTitle));
-            }
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.Status))
-            {
-                query = query.Where(x => x.x.Fw1Status == filterOptions.Filters.Status);
-            }
-
-            if (filterOptions.Filters.Percentage.HasValue)
-            {
-                query = query.Where(x => x.x.Fw1SurvyWorksPercent >= filterOptions.Filters.Percentage && x.x.Fw1SurvyWorksPercent <= filterOptions.Filters.Percentage);
-            }
-
-            if (filterOptions.Filters.Months.HasValue)
-            {
-                query = query.Where(x => x.x.Fw1PropDesignDuration >= filterOptions.Filters.Months && x.x.Fw1PropDesignDuration <= filterOptions.Filters.Months);
-            }
-
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
-            {
-
-                DateTime dt;
-                if (DateTime.TryParseExact(filterOptions.Filters.SmartInputValue, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
-                {
-                    query = query.Where(x =>
-                                   (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
-                                    || (x.x.Fw1IwRefNo ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1ProjectTitle ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1RmuCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1RoadCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1UsernameRep ?? "").Contains(filterOptions.Filters.SmartInputValue)
-
-                                    || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.w2Form.Fw2DateOfInitation.HasValue ? (x.w2Form.Fw2DateOfInitation.Value.Year == dt.Year && x.w2Form.Fw2DateOfInitation.Value.Month == dt.Month && x.w2Form.Fw2DateOfInitation.Value.Day == dt.Day) : true)
-                                    || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
-                }
-                else
-                {
-                    query = query.Where(x =>
-                                    (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
-                                    || (x.x.Fw1IwRefNo ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1ProjectTitle ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1RmuCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1RoadCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1UsernameRep ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
-                                    || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
-                }
-            }
-
-
-
-            return await query.CountAsync().ConfigureAwait(false);
-        }
-
-        public async Task<List<FormIWResponseDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
-        {
-            List<FormIWResponseDTO> result = new List<FormIWResponseDTO>();
-            var query = (from x in _context.RmIwFormW1
-                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
-                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
-                         select new { rmu, w2Form, x });
-
-
-
-            query = query.Where(x => x.x.Fw1ActiveYn == true).OrderByDescending(x => x.x.Fw1ModDt);
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
-            {
-                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
-            }
-
-
-
-            if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
-            {
-                query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
-
+                query = query.Where(x => x.x.Fw1IwRefNo == filterOptions.Filters.IWRefNo);
             }
 
 
@@ -269,11 +152,6 @@ namespace RAMMS.Repository
                 }
             }
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
-            {
-                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
-            }
-
             if (!string.IsNullOrEmpty(filterOptions.Filters.ProjectTitle))
             {
                 query = query.Where(x => x.x.Fw1ProjectTitle.Contains(filterOptions.Filters.ProjectTitle));
@@ -281,17 +159,181 @@ namespace RAMMS.Repository
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.Status))
             {
-                // query = query.Where(x => x.x.Fw1Status == filterOptions.Filters.Status);
+                query = query.Where(x => x.x.Fw1Sts.Contains(filterOptions.Filters.Status) || x.x.Fw1StsRemarks.Contains(filterOptions.Filters.Status));
             }
 
-            if (filterOptions.Filters.Percentage.HasValue)
+            if (filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
             {
-                query = query.Where(x => x.x.Fw1SurvyWorksPercent >= filterOptions.Filters.Percentage && x.x.Fw1SurvyWorksPercent <= filterOptions.Filters.Percentage);
+                query = query.Where(x => x.fecm.FecmProgressPerc >= filterOptions.Filters.PercentageFrom && x.fecm.FecmProgressPerc <= filterOptions.Filters.PercentageTo);
+            }
+
+            if (filterOptions.Filters.PercentageFrom.HasValue && !filterOptions.Filters.PercentageTo.HasValue)
+            {
+                query = query.Where(x => x.fecm.FecmProgressPerc >= filterOptions.Filters.PercentageFrom && x.fecm.FecmProgressPerc <= filterOptions.Filters.PercentageFrom);
+            }
+
+            if (!filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
+            {
+                query = query.Where(x => x.fecm.FecmProgressPerc >= filterOptions.Filters.PercentageTo && x.fecm.FecmProgressPerc <= filterOptions.Filters.PercentageTo);
             }
 
             if (filterOptions.Filters.Months.HasValue)
             {
-                query = query.Where(x => x.x.Fw1PropDesignDuration >= filterOptions.Filters.Months && x.x.Fw1PropDesignDuration <= filterOptions.Filters.Months);
+                query = query.Where(x => (x.x.Fw1PropDesignDuration >= filterOptions.Filters.Months && x.x.Fw1PropDesignDuration <= filterOptions.Filters.Months)
+                || (x.x.Fw1PropCompletionPeriod >= filterOptions.Filters.Months && x.x.Fw1PropCompletionPeriod <= filterOptions.Filters.Months));
+            }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
+            {
+                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
+            }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+            {
+                query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+            }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
+            {
+                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
+            }
+
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+            {
+
+                DateTime dt;
+                if (DateTime.TryParseExact(filterOptions.Filters.SmartInputValue, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                {
+                    query = query.Where(x =>
+                                   (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                    || (x.x.Fw1IwRefNo ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1ProjectTitle ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1RmuCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1RoadCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1Sts ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1StsRemarks ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1UsernameRep ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.fecm.FecmProgressPerc.HasValue ? x.fecm.FecmProgressPerc.ToString() : "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.w2Form.Fw2DateOfInitation.HasValue ? (x.w2Form.Fw2DateOfInitation.Value.Year == dt.Year && x.w2Form.Fw2DateOfInitation.Value.Month == dt.Month && x.w2Form.Fw2DateOfInitation.Value.Day == dt.Day) : true)
+                                    || (x.x.Fw1Dt.HasValue ? (x.x.Fw1Dt.Value.Year == dt.Year && x.x.Fw1Dt.Value.Month == dt.Month && x.x.Fw1Dt.Value.Day == dt.Day) : true)
+                                    || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
+                }
+                else
+                {
+                    query = query.Where(x =>
+                                    (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                    || (x.x.Fw1IwRefNo ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1ProjectTitle ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1RmuCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1RoadCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1Sts ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1StsRemarks ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1UsernameRep ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.fecm.FecmProgressPerc.HasValue ? x.fecm.FecmProgressPerc.ToString() : "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
+                }
+            }
+
+
+
+            return await query.CountAsync().ConfigureAwait(false);
+        }
+
+        public async Task<List<FormIWResponseDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
+        {
+            List<FormIWResponseDTO> result = new List<FormIWResponseDTO>();
+            var query = (from x in _context.RmIwFormW1
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
+                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
+                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo)
+                         select new { rmu, w2Form, fecm, x });
+
+
+
+            query = query.Where(x => x.x.Fw1ActiveYn == true).OrderByDescending(x => x.x.Fw1ModDt);
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.IWRefNo))
+            {
+                query = query.Where(x => x.x.Fw1IwRefNo.Contains(filterOptions.Filters.IWRefNo));
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.PrjTitle))
+            {
+                query = query.Where(x => x.x.Fw1ProjectTitle.Contains(filterOptions.Filters.PrjTitle));
+            }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
+            {
+                DateTime dt;
+                if (DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                {
+                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? (x.w2Form.Fw2DtCommence.Value.Year == dt.Year && x.w2Form.Fw2DtCommence.Value.Month == dt.Month && x.w2Form.Fw2DtCommence.Value.Day == dt.Day) : false);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
+            {
+                DateTime dt;
+                if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                {
+                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? (x.w2Form.Fw2DtCommence.Value.Year == dt.Year && x.w2Form.Fw2DtCommence.Value.Month == dt.Month && x.w2Form.Fw2DtCommence.Value.Day == dt.Day) : false);
+                }
+            }
+
+           
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.Status))
+            {
+                query = query.Where(x => x.x.Fw1Sts.Contains(filterOptions.Filters.Status) || x.x.Fw1StsRemarks.Contains(filterOptions.Filters.Status));
+            }
+
+            if (filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
+            {
+                query = query.Where(x => x.fecm.FecmProgressPerc >= filterOptions.Filters.PercentageFrom && x.fecm.FecmProgressPerc <= filterOptions.Filters.PercentageTo);
+            }
+
+            if (filterOptions.Filters.PercentageFrom.HasValue && !filterOptions.Filters.PercentageTo.HasValue)
+            {
+                query = query.Where(x => x.fecm.FecmProgressPerc >= filterOptions.Filters.PercentageFrom && x.fecm.FecmProgressPerc <= filterOptions.Filters.PercentageFrom);
+            }
+
+            if (!filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
+            {
+                query = query.Where(x => x.fecm.FecmProgressPerc >= filterOptions.Filters.PercentageTo && x.fecm.FecmProgressPerc <= filterOptions.Filters.PercentageTo);
+            }
+
+            if (filterOptions.Filters.Months.HasValue)
+            {
+                query = query.Where(x => (x.x.Fw1PropDesignDuration >= filterOptions.Filters.Months && x.x.Fw1PropDesignDuration <= filterOptions.Filters.Months)
+                || (x.x.Fw1PropCompletionPeriod >= filterOptions.Filters.Months && x.x.Fw1PropCompletionPeriod <= filterOptions.Filters.Months));
+            }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
+            {
+                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
+            }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+            {
+                query = query.Where(x => x.x.Fw1RmuCode == filterOptions.Filters.RMU || x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.RMU));
+            }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
+            {
+                query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
             }
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
@@ -306,11 +348,14 @@ namespace RAMMS.Repository
                                     || (x.x.Fw1ProjectTitle ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1RmuCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1RoadCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1Sts ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1StsRemarks ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameRep ?? "").Contains(filterOptions.Filters.SmartInputValue)
-
+                                    || (x.fecm.FecmProgressPerc.HasValue ? x.fecm.FecmProgressPerc.ToString() : "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.w2Form.Fw2DateOfInitation.HasValue ? (x.w2Form.Fw2DateOfInitation.Value.Year == dt.Year && x.w2Form.Fw2DateOfInitation.Value.Month == dt.Month && x.w2Form.Fw2DateOfInitation.Value.Day == dt.Day) : true)
+                                    || (x.x.Fw1Dt.HasValue ? (x.x.Fw1Dt.Value.Year == dt.Year && x.x.Fw1Dt.Value.Month == dt.Month && x.x.Fw1Dt.Value.Day == dt.Day) : true)
                                     || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
                 }
                 else
@@ -321,7 +366,10 @@ namespace RAMMS.Repository
                                     || (x.x.Fw1ProjectTitle ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1RmuCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1RoadCode ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1Sts ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.x.Fw1StsRemarks ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameRep ?? "").Contains(filterOptions.Filters.SmartInputValue)
+                                    || (x.fecm.FecmProgressPerc.HasValue ? x.fecm.FecmProgressPerc.ToString() : "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameReq ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1UsernameVer ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                     || (x.x.Fw1SubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue));
@@ -331,23 +379,23 @@ namespace RAMMS.Repository
             if (filterOptions.sortOrder == SortOrder.Ascending)
             {
                 if (filterOptions.ColumnIndex == 2)
-                    query = query.OrderBy(s => s.x.Fw1IwRefNo);
-                if (filterOptions.ColumnIndex == 3)
                     query = query.OrderBy(s => s.x.Fw1ProjectTitle);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(s => s.x.Fw1InitialProposedDate);
                 if (filterOptions.ColumnIndex == 4)
-                    query = query.OrderBy(s => s.x.Fw1Dt);
-                if (filterOptions.ColumnIndex == 5)
                     query = query.OrderBy(s => s.x.Fw1RecomdBydeYn);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(s => s.x.Fw1Dt);
                 if (filterOptions.ColumnIndex == 6)
-                    query = query.OrderBy(s => s.x.Fw1TecmDt);
+                    query = query.OrderBy(s => s.x.Fw1RecomdYn);
                 if (filterOptions.ColumnIndex == 7)
-                    query = query.OrderBy(s => s.x.Fw1Status);
-                //if (filterOptions.ColumnIndex == 8)
-                //    query = query.OrderBy(s => s.x.Fw1InspDt);
-                //if (filterOptions.ColumnIndex == 9)
-                //    query = query.OrderBy(s => s.x.Fw1AssetGroupCode);
-                //if (filterOptions.ColumnIndex == 10)
-                //    query = query.OrderBy(s => s.x.Fw1SubmitSts);
+                    query = query.OrderBy(s => s.w2Form.Fw2EstCostAmt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(s => s.fecm.FecmDtTecm);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderBy(s => s.fecm.FecmDt);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderBy(s => s.fecm.FecmAgreedNegoLetrYn);
                 //if (filterOptions.ColumnIndex == 11)
                 //    query = query.OrderBy(s => s.x.Fw1UsernameVer);
                 //if (filterOptions.ColumnIndex == 12)
@@ -359,23 +407,23 @@ namespace RAMMS.Repository
             else if (filterOptions.sortOrder == SortOrder.Descending)
             {
                 if (filterOptions.ColumnIndex == 2)
-                    query = query.OrderByDescending(s => s.x.Fw1IwRefNo);
-                if (filterOptions.ColumnIndex == 3)
                     query = query.OrderByDescending(s => s.x.Fw1ProjectTitle);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(s => s.x.Fw1InitialProposedDate);
                 if (filterOptions.ColumnIndex == 4)
-                    query = query.OrderByDescending(s => s.x.Fw1Dt );
-                if (filterOptions.ColumnIndex == 5)
                     query = query.OrderByDescending(s => s.x.Fw1RecomdBydeYn);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(s => s.x.Fw1Dt);
                 if (filterOptions.ColumnIndex == 6)
-                    query = query.OrderByDescending(s => s.x.Fw1TecmDt);
+                    query = query.OrderByDescending(s => s.x.Fw1RecomdYn);
                 if (filterOptions.ColumnIndex == 7)
-                    query = query.OrderByDescending(s => s.x.Fw1Status);
-                //if (filterOptions.ColumnIndex == 8)
-                //    query = query.OrderByDescending(s => s.x.Fw1InspDt);
-                //if (filterOptions.ColumnIndex == 9)
-                //    query = query.OrderByDescending(s => s.x.Fw1AssetGroupCode);
-                //if (filterOptions.ColumnIndex == 10)
-                //    query = query.OrderByDescending(s => s.x.Fw1SubmitSts);
+                    query = query.OrderByDescending(s => s.w2Form.Fw2EstCostAmt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(s => s.fecm.FecmDtTecm);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderByDescending(s => s.fecm.FecmDt);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderByDescending(s => s.fecm.FecmAgreedNegoLetrYn);
                 //if (filterOptions.ColumnIndex == 11)
                 //    query = query.OrderByDescending(s => s.x.Fw1UsernameVer);
                 //if (filterOptions.ColumnIndex == 12)
@@ -387,6 +435,7 @@ namespace RAMMS.Repository
             result = await (from form in query
                             let w1Form = form.x
                             let w2Form = form.w2Form
+                            let fecm = form.fecm
                             select new FormIWResponseDTO
                             {
                                 W1RefNo = w1Form.Fw1PkRefNo.ToString(),
@@ -395,21 +444,23 @@ namespace RAMMS.Repository
                                 WGRefNo = "0",
                                 WDRefNo = "0",
                                 WNRefNo = "0",
+                                iWReferenceNo = w1Form.Fw1IwRefNo,
                                 projectTitle = w1Form.Fw1ProjectTitle,
-                                initialPropDt = Convert.ToString(w1Form.Fw1InitialProposedDate),
-                                recommdDE = w1Form.Fw1RecomdBydeYn != null ? "Yes" : "No",
-                                w1dt = Convert.ToString(w1Form.Fw1Dt),
-                                status = "-",
-                                technicalDt = "",
-                                financeDt = "",
-                                agreedNego = "-",
+                                initialPropDt = w1Form.Fw1InitialProposedDate != null ? DateTime.Parse(Convert.ToString(w1Form.Fw1InitialProposedDate)).ToString("dd/MM/yyyy") : "-",
+                                recommdDEYN = w1Form.Fw1RecomdBydeYn != null && w1Form.Fw1RecomdBydeYn == true ? "Yes" : "No",
+                                w1dt = w1Form.Fw1Dt != null ?  DateTime.Parse(Convert.ToString(w1Form.Fw1Dt)).ToString("dd/MM/yyyy") : "-",
+                                recommdYN = w1Form.Fw1RecomdYn != null && w1Form.Fw1RecomdYn == true ? "Yes" : "No",
+                                estimatedCost =  w2Form.Fw2EstCostAmt.HasValue  ? String.Format("{0:N}",w2Form.Fw2EstCostAmt): "0.00",
+                                technicalDt = fecm.FecmDtTecm != null ?  DateTime.Parse(Convert.ToString(fecm.FecmDtTecm)).ToString("dd/MM/yyyy") : "-",
+                                financeDt = fecm.FecmDt != null ?  DateTime.Parse(Convert.ToString(fecm.FecmDt)).ToString("dd/MM/yyyy") : "-",
+                                agreedNego = fecm.FecmAgreedNegoLetrYn != null && fecm.FecmAgreedNegoLetrYn == true ? "Yes" : "No",
                                 issueW2Ref = "-",
-                                commenDt = "01/01/2020",
-                                compDt = "",
-                                ContractPeriod = "10",
-                                dlpPeriod = "10",
-                                finalAmt = "",
-                                sitePhy = "",
+                                commenceDt = "-",
+                                compDt = "-",
+                                ContractPeriod = "-",
+                                dlpPeriod = "-",
+                                finalAmt = "0.00",
+                                sitePhy = "-",
 
                             }).Skip(filterOptions.StartPageNo)
                                 .Take(filterOptions.RecordsPerPage)

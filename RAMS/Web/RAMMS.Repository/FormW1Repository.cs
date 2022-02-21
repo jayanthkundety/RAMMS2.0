@@ -45,7 +45,13 @@ namespace RAMMS.Repository
             return _context.RmIwformImage.Where(x => x.FiwiFw1IwRefNo == IwRefNo && x.FiwiActiveYn == true).ToListAsync();
         }
 
-        public async Task<int> GetImageId(int formW1Id, string type)
+        public async Task<int> GetImageId(string iwRefNo, string type)
+        {
+            int? result = await _context.RmIwformImage.Where(x => x.FiwiFw1IwRefNo == iwRefNo && x.FiwiImageTypeCode == type).Select(x => x.FiwiImageSrno).MaxAsync();
+            return result.HasValue ? result.Value : 0;
+        }
+
+        public async Task<int> GetImageIdByW1Id(int formW1Id, string type)
         {
             int? result = await _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW1Id && x.FiwiImageTypeCode == type).Select(x => x.FiwiImageSrno).MaxAsync();
             return result.HasValue ? result.Value : 0;

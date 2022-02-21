@@ -17,7 +17,7 @@ namespace RAMMS.DTO.Profiles
             this.CreateMap<FormW1ResponseDTO, RmIwFormW1>().ReverseMap();
             this.CreateMap<FormW2ResponseDTO, RmIwFormW2>().ReverseMap();
             this.CreateMap<FormIWImageResponseDTO, RmIwformImage>().ReverseMap();
-            this.CreateMap<FormW2FCEMResponseDTO, RmIwFormW2Fcem>().ReverseMap();
+            this.CreateMap<FormW2FECMResponseDTO, RmIwFormW2Fecm>().ReverseMap();
         }
     }
 }

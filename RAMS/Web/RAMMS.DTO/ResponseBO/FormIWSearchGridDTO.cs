@@ -51,9 +51,17 @@ namespace RAMMS.DTO.ResponseBO
 
         public string CommencementTo { get; set; }
 
-        public int? Percentage { get; set; }
+        public int? PercentageFrom { get; set; }
+
+        public int? PercentageTo { get; set; }
 
         public int? Months { get; set; }
+
+        public string IWRefNo { get; set; }
+
+        public string PrjTitle { get; set; }
+
+        public string TECMStatus { get; set; }
 
         public string SmartInputValue { get; set; }
         public string sortOrder { get; set; }

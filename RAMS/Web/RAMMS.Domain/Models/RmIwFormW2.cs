@@ -39,7 +39,7 @@ namespace RAMMS.Domain.Models
         public decimal? Fw2IwDuration { get; set; }
         public string Fw2Remarks { get; set; }
         public string Fw2DetailsOfWorks { get; set; }
-        public double? Fw2EstCostAmt { get; set; }
+        public decimal? Fw2EstCostAmt { get; set; }
         public int? Fw2UseridIssu { get; set; }
         public bool? Fw2SignIssu { get; set; }
         public string Fw2UsernameIssu { get; set; }

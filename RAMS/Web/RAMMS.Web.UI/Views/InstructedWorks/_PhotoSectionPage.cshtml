@@ -1,5 +1,24 @@
-﻿@model RAMMS.Web.UI.Models.FormW2Model;
+﻿@model RAMMS.Web.UI.Models.FormIWImageModel
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security
+
+@{
+    bool ImageTypeBQ = false;
+    bool ImageTypeDrawing = false;
+    if (Model.ImageList != null && Model.ImageList.Count() > 0)
+    {
+        foreach (var item in Model.ImageList)
+        {
+            if (item.ImageTypeCode == "BQ")
+            {
+                ImageTypeBQ = true;
+            }
+            if (item.ImageTypeCode == "Drawing")
+            {
+                ImageTypeDrawing = true;
+            }
+        }
+    }
+}
 
 <style>
 
@@ -20,7 +39,7 @@
 <div class="modal-body  mh-260">
     <div class="accordion custom-accordion" id="WarModalaccordion">
         <div class="col-3">
-            @Html.HiddenFor(m => m.SaveFormW2Model.PkRefNo, new { @class = "form-control", @id = "formW2PhotoNo" }) @*//PrimaryKey*@
+            @Html.Hidden("IwRefNo", Model.IwRefNo, new { @class = "form-control", @id = "IwRefNo" }) @*//PrimaryKey*@
 
         </div>
         <div class="card mb-0">
@@ -36,7 +55,7 @@
                         </span>
                     </a>
                     <div class="img-btns mt-1">
-                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormW2AddImage()">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
                             @*href="#myModal2">*@
                             <span class="add-icon"></span> Add Image
                         </a>
@@ -106,8 +125,8 @@
                     </a>
                     <div class="img-btns mt-1">
                         @*<a class="btn btn-sm btn-themebtn" id="printWarButton" onclick="printImage()" role="button">
-                            <span class="print-icon-white"></span> Print
-                        </a>*@
+                                <span class="print-icon-white"></span> Print
+                            </a>*@
                     </div>
                 </div>
             </div>
@@ -149,7 +168,7 @@
                                                     {
 
                                                         <img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
-                                                        <a class="warCaption" href="~/Uploads/FormD/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@item.ImageUserFilePath</a>
+                                                        <a class="warCaption" href="~/Uploads/FormW1/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@item.ImageUserFilePath</a>
 
                                                     }
                                                     else
@@ -171,11 +190,11 @@
         </div>
     </div>
 </div>
-@*<div class="modal-footer">
+<div class="modal-footer">
     <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
-</div>*@
+</div>
 
-<div class="modal hide border-10x addphoto-mdl" id="myModal2">
+<div class="modal hide border-10x addphoto-mdl" id="myModal">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -284,27 +303,41 @@
 
 
 <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
+
         $("#photoType").chosen();
         document.getElementById("files").disabled = true;
         $("#files1").addClass("disabled");
         document.getElementById("FormDBrowseBtn").disabled = true;
-        document.getElementById("btnImageUpload").disabled = true;
-    });
+            document.getElementById("btnImageUpload").disabled = true;
 
-    function FormW2AddImage() {
-        if (ValidatePage("#divpage")) {
-            if ($("#FW2HRef_No").val() != "0") {
-                $("#myModal2").modal('show');
+            if (ImageTypeBQ == "True") {
+                $('#chkBQ').prop("checked", true);
             }
             else {
-                $("#lnkPage").click();
-                app.ShowErrorMessage("Required to save the Form W2 details and then try to upload attachments");
+                $('#chkBQ').prop("checked", false);
+            }
+            if (ImageTypeDrawing == "True") {
+                $('#chkDrawing').prop("checked", true);
+            }
+            else {
+                $('#chkDrawing').prop("checked", false);
+            }
+    });
+
+    function FormAddImage() {
+        if (ValidatePage("#tab1")) {
+            if ($("#IwRefNo").val() != "0") {
+                $("#myModal").modal('show');
+            }
+            else {
+                $("#tab1").click();
+                app.ShowErrorMessage("Required to save the Form W1 details and then try to upload photo");
             }
         }
         else {
-            $("#saveFormW2Btn").click();
-            app.ShowErrorMessage("Required fields are incomplete in Form W2");
+            $("#saveFormW1Btn").click();
+            app.ShowErrorMessage("Required fields are incomplete in Form W1");
         }
     }
 
@@ -315,7 +348,7 @@
         document.getElementById("FormDBrowseBtn").disabled = true;
         document.getElementById("btnImageUpload").disabled = true;
         $("#photolist").empty();
-        $('#myModal2').modal('hide');
+        $('#myModal').modal('hide');
     }
     $("#photoType").change(function () {
          document.getElementById("files").disabled = true;
@@ -463,22 +496,22 @@
         $("#imageClear").click(function (e) {
             filesToUpload.length = 0;
             $("#photolist li").remove();
-            $("#myModal2").modal('hide');
+            $("#myModal").modal('hide');
             $("#photoType").val("").trigger("chosen:updated");
         });
 
         $("#btnclose").click(function (e) {
             filesToUpload.length = 0;
             $("#photolist li").remove();
-            $("#myModal2").modal('hide');
+            $("#myModal").modal('hide');
             $("#photoType").val("").trigger("chosen:updated");
         });
 
         $("#btnImageUpload").click(function (e) {
             var type = $("#photoType").val();
-            var id = document.getElementById("FW2HRef_No").value;
+            var id = document.getElementById("IwRefNo").value;
             var formData = new FormData();
-            formData.append("Id",id );
+            formData.append("iwRefNo",id );
             for (var i = 0, len = filesToUpload.length; i < len; i++) {
                 formData.append("FormFile", filesToUpload[i].file);
                 formData.append("PhotoType", filesToUpload[i].fileType);
@@ -486,7 +519,7 @@
             InitAjaxLoading();
             $.ajax(
                 {
-                    url: "/InstructedWorks/ImageUploadedFormW2",
+                    url: "/InstructedWorks/ImageUploadFormIw",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -496,7 +529,7 @@
                         HideAjaxLoading();
                         if (data) {
                         app.ShowSuccessMessage('Uploaded Successcully', false);
-                        $('#myModal2').modal('hide');
+                        $('#myModal').modal('hide');
                             GetImageList(id);
                     }
                     else {

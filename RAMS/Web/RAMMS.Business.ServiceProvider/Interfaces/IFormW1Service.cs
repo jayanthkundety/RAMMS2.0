@@ -10,7 +10,9 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     {
         
         Task<List<FormIWImageResponseDTO>> GetImageList(string IwRefNo);
-        Task<int> LastInsertedIMAGENO(int hederId, string type);
+        Task<int> LastInsertedIMAGENO(string hederId, string type);
+
+         Task<int> LastInsertedIMAGENO(int hederId, string type);
         Task<FormW1ResponseDTO> FindFormW1ByID(int id);
         Task<int> SaveFormW1(FormW1ResponseDTO FormW1);
         Task<int> Update(FormW1ResponseDTO FormW1);

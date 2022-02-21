@@ -9804,6 +9804,14 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FW1_Status")
                     .HasMaxLength(30);
 
+                entity.Property(e => e.Fw1Sts)
+                    .HasColumnName("FW1_STS")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fw1StsRemarks)
+                    .HasColumnName("FW1_STS_Remarks")
+                    .HasMaxLength(250);
+
                 entity.Property(e => e.Fw1SubmitSts).HasColumnName("FW1_SUBMIT_STS");
 
                 entity.Property(e => e.Fw1SurvyWorksAmt).HasColumnName("FW1_Survy_Works_AMT");
@@ -9911,7 +9919,9 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FW2_DT_REQ")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fw2EstCostAmt).HasColumnName("FW2_EST_COST_AMT");
+                entity.Property(e => e.Fw2EstCostAmt)
+                    .HasColumnName("FW2_EST_COST_AMT")
+                    .HasColumnType("decimal(12, 2)");
 
                 entity.Property(e => e.Fw2Fw1IwRefNo)
                     .HasColumnName("FW2_FW1_IW_Ref_No")
@@ -9925,7 +9935,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw2IwDuration)
                     .HasColumnName("FW2_IW_Duration")
-                    .HasColumnType("numeric(3, 2)");
+                    .HasColumnType("decimal(3, 2)");
 
                 entity.Property(e => e.Fw2JkrRefNo)
                     .HasColumnName("FW2_JKR_RefNo")
@@ -9979,8 +9989,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw2SecCode)
                     .HasColumnName("FW2_Sec_Code")
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Fw2SerProvRefNo)
                     .HasColumnName("FW2_Ser_Prov_RefNo")
@@ -10664,11 +10673,6 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16);
 
                 entity.Property(e => e.FiwiSubmitSts).HasColumnName("FIWI_SUBMIT_STS");
-
-                entity.HasOne(d => d.FiwiFw1PkRefNoNavigation)
-                    .WithMany(p => p.RmIwformImage)
-                    .HasForeignKey(d => d.FiwiFw1PkRefNo)
-                    .HasConstraintName("FK_RM_IW_FormW1_Image_RM_IW_ FormW1");
             });
 
             modelBuilder.Entity<RmModule>(entity =>

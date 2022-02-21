@@ -9,7 +9,6 @@ namespace RAMMS.Domain.Models
         {
             RmIwFormW2 = new HashSet<RmIwFormW2>();
             RmIwFormWc = new HashSet<RmIwFormWc>();
-            RmIwformImage = new HashSet<RmIwformImage>();
         }
 
         public int Fw1PkRefNo { get; set; }
@@ -30,6 +29,8 @@ namespace RAMMS.Domain.Models
         public DateTime? Fw1TecmDt { get; set; }
         public bool? Fw1IsBq { get; set; }
         public bool? Fw1IsDrawing { get; set; }
+        public string Fw1Sts { get; set; }
+        public string Fw1StsRemarks { get; set; }
         public DateTime? Fw1Dt { get; set; }
         public string Fw1RoadCode { get; set; }
         public string Fw1RoadName { get; set; }
@@ -80,6 +81,5 @@ namespace RAMMS.Domain.Models
 
         public virtual ICollection<RmIwFormW2> RmIwFormW2 { get; set; }
         public virtual ICollection<RmIwFormWc> RmIwFormWc { get; set; }
-        public virtual ICollection<RmIwformImage> RmIwformImage { get; set; }
     }
 }

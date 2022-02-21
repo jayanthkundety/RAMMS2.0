@@ -143,6 +143,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelformW2 = _mapper.Map<RmIwFormW2>(formW2Bo);
+                domainModelformW2.Fw2PkRefNo = formW2Bo.PkRefNo;
                 domainModelformW2.Fw2ActiveYn = true;
                 //domainModelformW2 = UpdateStatus(domainModelformW2);
                 _repoUnit.FormW2Repository.Update(domainModelformW2);
@@ -303,29 +304,6 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 result.TotalRecords = await _repoUnit.FormW2Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
 
-                //foreach (var listData in filteredRecords)
-                //{
-                //    var iwform = new FormIWResponseDTO();
-                //    iwform.ReferenceNo = listData.Fw1PkRefNo.ToString();
-                //    iwform.projectTitle = listData.Fw1ProjectTitle;
-                //    iwform.initialPropDt = Convert.ToString(listData.Fw1ReportedDate);
-                //    iwform.recommdDE = listData.Fw1RecommendedByDe;
-                //    iwform.w1dt = Convert.ToString(listData.Fw1RmuDate);
-                //    iwform.recommd = listData.Fw1RecommendedStatus;
-                //    iwform.status = "-";
-                //    iwform.technicalDt = "";
-                //    iwform.financeDt = "";
-                //    iwform.agreedNego = "-";
-                //    iwform.issueW2Ref = "-";
-                //    iwform.commenDt = "01/01/2020";
-                //    iwform.compDt = "";
-                //    iwform.ContractPeriod = "10";
-                //    iwform.dlpPeriod = "10";
-                //    iwform.finalAmt = "";
-                //    iwform.sitePhy = "";
-                //    formIWList.Add(iwform);
-                //}
-
                 result.PageResult = filteredRecords;
 
                 result.PageNo = filterOptions.StartPageNo;
@@ -342,15 +320,15 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         #region FCEM
 
-        public async Task<int> SaveFCEM(FormW2FCEMResponseDTO formW2BO)
+        public async Task<int> SaveFCEM(FormW2FECMResponseDTO formW2BO)
         {
-            FormW2FCEMResponseDTO formW2Response;
+            FormW2FECMResponseDTO formW2Response;
             try
             {
                 var domainModelFcem = _mapper.Map<RmIwFormW2Fecm>(formW2BO);
                 domainModelFcem.FecmPkRefNo = 0;
                 var entity = _repoUnit.FormW2FcemRepository.CreateReturnEntity(domainModelFcem);
-                formW2Response = _mapper.Map<FormW2FCEMResponseDTO>(entity);
+                formW2Response = _mapper.Map<FormW2FECMResponseDTO>(entity);
                 return formW2Response.PkRefNo;
 
             }
@@ -361,7 +339,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public async Task<int> UpdateFCEM(FormW2FCEMResponseDTO formW2Bo)
+        public async Task<int> UpdateFCEM(FormW2FECMResponseDTO formW2Bo)
         {
             int rowsAffected;
             try
@@ -382,16 +360,16 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
-        public async Task<FormW2FCEMResponseDTO> FindFCEM2ByW2ID(int Id)
+        public async Task<FormW2FECMResponseDTO> FindFCEM2ByW2ID(int Id)
         {
             RmIwFormW2Fecm formW2 = await _repoFCEM.FindFCEM2ByW2ID(Id);
-            return _mapper.Map<FormW2FCEMResponseDTO>(formW2);
+            return _mapper.Map<FormW2FECMResponseDTO>(formW2);
         }
 
-        public async Task<FormW2FCEMResponseDTO> FindFCEM2ByID(int Id)
+        public async Task<FormW2FECMResponseDTO> FindFCEM2ByID(int Id)
         {
             RmIwFormW2Fecm formW2 = await _repoFCEM.FindFCEM2ByID(Id);
-            return _mapper.Map<FormW2FCEMResponseDTO>(formW2);
+            return _mapper.Map<FormW2FECMResponseDTO>(formW2);
         }
 
 

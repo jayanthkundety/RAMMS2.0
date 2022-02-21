@@ -13,17 +13,21 @@ namespace RAMMS.DTO.ResponseBO
         public string WGRefNo { get; set; }
         public string WDRefNo { get; set; }
         public string WNRefNo { get; set; }
+
+        public string iWReferenceNo { get; set; }
         public string projectTitle { get; set; }
 
         public string initialPropDt { get; set; }
 
-        public string recommdDE { get; set; }
+        public string recommdDEYN { get; set; }
 
         public string w1dt { get; set; }
 
-        public string recommd { get; set; }
+        public string recommdYN { get; set; }
 
-        public string status { get; set; }
+        public string estimatedCost { get; set; }
+
+        //public string status { get; set; }
 
         public string technicalDt { get; set; }
 
@@ -34,7 +38,7 @@ namespace RAMMS.DTO.ResponseBO
         public string issueW2Ref { get; set; }
 
 
-        public string commenDt { get; set; }
+        public string commenceDt { get; set; }
 
         public string compDt { get; set; }
 

@@ -45,11 +45,19 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
 
-        public async Task<int> LastInsertedIMAGENO(int hederId, string type)
+        public async Task<int> LastInsertedIMAGENO(string hederId, string type)
         {
             int imageCt = await _repoUnit.FormW1Repository.GetImageId(hederId, type);
             return imageCt;
         }
+
+        public async Task<int> LastInsertedIMAGENO(int hederId, string type)
+        {
+            int imageCt = await _repoUnit.FormW1Repository.GetImageIdByW1Id(hederId, type);
+            return imageCt;
+        }
+
+
         public async Task<int> SaveFormW1(FormW1ResponseDTO FormW1)
         {
             FormW1ResponseDTO formW1Response;

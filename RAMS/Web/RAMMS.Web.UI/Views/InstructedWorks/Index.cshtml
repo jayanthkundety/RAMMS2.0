@@ -1,4 +1,5 @@
 ﻿@model FormW2Model
+@using RAMMS.Business.ServiceProvider;
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 @{
@@ -36,7 +37,7 @@
             <div class="justify-content-center mb-1">
                 <div class="search-content">
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "txtSmartSearch", placeholder = "Search...", @class = "form-control" })
+                        @Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "txtSmartSearch", @autocomplete = "off", placeholder = "Search...", @class = "form-control", @value = "", @spellcheck = "false", @readonly = "true", @onfocus = "this.removeAttribute('readonly')" })
                         <div class="input-group-append">
                             <div class="btn-group">
                                 <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
@@ -55,12 +56,12 @@
                                     <label for="IW_Reference">IW Reference No.</label>
                                     <input class="form-control" type="text" id="txtIWRefNo">
                                 </div>
-                                <div class="form-group">
-                                    <label for="C_Date">Commence Date From</label>
+                                <div class="form-group  col-lg-2">
+                                    <label for="C_Date">Commencement Date From</label>
                                     <input class="form-control" type="date" id="txtCommenceDtFrom">
                                 </div>
-                                <div class="form-group">
-                                    <label for="C_Date">Commence Date To</label>
+                                <div class="form-group  col-lg-2">
+                                    <label for="C_Date">Commencement Date To</label>
                                     <input class="form-control" type="date" id="txtCommenceDtTo">
                                 </div>
                                 <div class="form-group">
@@ -69,34 +70,39 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="C_Date">Status</label>
-                                    <select class="form-control" id="txtStatus">
-                                        <option value=""> Select Status</option>
-                                    </select>
-                                </div> <div class="form-group">
-                                    <label for="status_percentage">Status Percentage</label>
-                                    <input class="form-control" type="number" id="txtStPerc">
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["TECM_Status"], "Status", "Select Status", new { @id = "txtStatus", @class = "form-control" })
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-1">
+                                    <label for="status_percentage">Status % From</label>
+                                    <input class="form-control allow_numeric" type="number" id="txtStPercFrom">
+                                </div>
+
+                                <div class="form-group col-lg-1">
+                                    <label for="status_percentage">Status % To</label>
+                                    <input class="form-control allow_numeric" type="number" id="txtStPercTo">
+                                </div>
+                                <div class="form-group col-lg-1">
                                     <label for="month">Month</label>
-                                    <input class="form-control" type="number" id="txtMonth">
+                                    <input class="form-control allow_numeric" type="number" id="txtMonth">
+                                </div>
+                                <div class="form-group  col-lg-2">
+                                    @Html.Label("RMU", "RMU")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RMU", "Select RMU", new { @id = "txtRmu", @class = "form-control", @onchange = "changeRMU(this)" })
                                 </div>
                                 <div class="form-group">
-                                    <label for="month">RUM</label>
-                                    <input class="form-control" type="text" id="txtRmu">
+                                    @Html.Label("RMU Name", "RMU Name")
+                                    <input type="text" class="form-control" id="txtRmuName" disabled />
+                                </div>
+                                <div class="form-group  col-lg-2">
+                                    @Html.Label("Road Code", "Road Code")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "txtRoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
                                 </div>
                                 <div class="form-group">
-                                    <label for="month">RUM Name</label>
-                                    <input class="form-control" type="text" disabled>
-                                </div>
-                                <div class="form-group">
-                                    <label for="month">Road Code</label>
-                                    <input class="form-control" type="text" id="txtRoadCode">
-                                </div>
-                                <div class="form-group">
-                                    <label for="month">Road Name</label>
-                                    <input class="form-control" type="text" disabled>
+                                    @Html.Label("Road Name", "Road Name")
+                                    <input type="text" class="form-control" id="txtRoadName" disabled />
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -104,6 +110,7 @@
         </div>
     </div>
 </div>
+    
 <!-- Main Container -->
 <div class="row p-0">
     <div class="col-12">
@@ -148,26 +155,26 @@
                     </button>
                 </div>
             </div>
-            <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
-                    IW IN PROGRESS
-                </button>
-                <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                        <span class="add-icon"></span> Add
+            @*<div class="btn-group dropbottom" id="actiondropdown">
+                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                        IW IN PROGRESS
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                        <span class="edit-icon"></span>   Edit
-                    </button>
+                    <div class="dropdown-menu">
+                        <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                            <span class="add-icon"></span> Add
+                        </button>
+                        <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                            <span class="edit-icon"></span>   Edit
+                        </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                        <span class="view-icon"></span> View
-                    </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1">
-                        <span class="print-icon"></span> Print
-                    </button>
-                </div>
-            </div>
+                        <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                            <span class="view-icon"></span> View
+                        </button>
+                        <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                            <span class="print-icon"></span> Print
+                        </button>
+                    </div>
+                </div>*@
             <div class="btn-group dropbottom" id="actiondropdown">
                 <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
                     EOT / LAD
@@ -292,8 +299,91 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+
+    });
+    function changeRMU(obj) {
+        var ctrl = $(obj);
+        if (ctrl.val() != null && ctrl.val() != "") {
+            var name = ctrl.find("option:selected").text();
+            name = name.split('-')[1];
+            $("#txtRmuName").val(name);
+
+            $.ajax({
+                url: '/InstructedWorks/GetRoadCodeByRMU',
+                dataType: 'JSON',
+                data: { rmu: ctrl.val() },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $('#txtRoadCode').empty();
+                        $('#txtRoadCode')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("Select Road Code"));
+                        $.each(data, function (key, value) {
+                            $('#txtRoadCode')
+                                .append($("<option></option>")
+                                    .attr("item1", value.item1)
+                                    //.attr("fromkm", value.fromKm)
+                                    //.attr("fromm", value.fromM)
+                                    .attr("value", value.value)
+                                    .text(value.text));
+                        });
+                        $("#txtRoadCode").val($('#frmW2RoadCode').val());
+                        $('#txtRoadCode').trigger("chosen:updated")
+                        $("#txtRoadCode").trigger("change");
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        }
+        else {
+            $("#txtRmuName").val('');
+        }
+    }
+
+    function OnRoadChange(tis) {
+        var ctrl = $(tis);
+        if (ctrl.val() != null && ctrl.val() != "") {
+            $("#txtRoadName").val(ctrl.find("option:selected").attr("Item1"));
+        }
+        else {
+            $("#txtRoadName").val('');
+        }
+
+    }
+
     $(document).ready(function () {
         $("#txtSmartSearch").on("keypress", function (e) {
             if (e.which == 13) {
@@ -303,13 +393,16 @@
     });
 
     function GetFormIDByName(formName) {
-        var value = 0;
+        var value = -1;
         var table = $('#FormIWGridView').DataTable();
         var selectedIndex = table.$(".selected", { "page": "all" });
         var daa = table.row(selectedIndex).data();
-        if (daa == null) return;
+        if (daa == null || typeof daa == "undefined") {
+            app.ShowErrorMessage("Kindly select a row to open the " + formName.toUpperCase() + " Form");
+            return value;
+        }
 
-        switch(formName) {
+        switch (formName) {
             case "w1":
                 value = daa.w1RefNo;
                 break;
@@ -322,13 +415,6 @@
 
             default:
                 value = daa.w1RefNo;
-        }
-        if (formName == "w1") {
-            value = daa.w1RefNo;
-        }
-        else {
-            app.ShowErrorMessage("Kindly select one row to open the " + formName + " Form");
-            value = -1;
         }
         return value;
     }
@@ -373,7 +459,10 @@
 
         if (mode == 'Add') {
             id = GetFormIDByName("w1");
-            url = '/InstructedWorks/AddFormW2?id=' + id;
+            if (id > 0 && id != null) {
+                url = '/InstructedWorks/AddFormW2?id=' + id;
+            }
+           
         }
         else {
             id = GetFormIDByName("w2");
@@ -382,9 +471,10 @@
         }
 
         if (url == '') {
-            app.ShowErrorMessage('Form W2 was not intiated');
-            url = '/InstructedWorks/AddFormW2';
+            HideAjaxLoading();
+            return;
         }
+
         $.ajax({
             url: url,
             type: 'POST',
@@ -402,4 +492,5 @@
 
         return true;
     }
+
 </script>

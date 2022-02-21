@@ -43,13 +43,13 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<PagingResult<FormIWResponseDTO>> GetFilteredFormIWGrid(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions);
 
-        Task<int> SaveFCEM(FormW2FCEMResponseDTO formW2BO);
+        Task<int> SaveFCEM(FormW2FECMResponseDTO formW2BO);
 
-        Task<int> UpdateFCEM(FormW2FCEMResponseDTO formW2Bo);
+        Task<int> UpdateFCEM(FormW2FECMResponseDTO formW2Bo);
 
-        Task<FormW2FCEMResponseDTO> FindFCEM2ByW2ID(int Id);
+        Task<FormW2FECMResponseDTO> FindFCEM2ByW2ID(int Id);
 
-        Task<FormW2FCEMResponseDTO> FindFCEM2ByID(int Id);
+        Task<FormW2FECMResponseDTO> FindFCEM2ByID(int Id);
 
         Task<IEnumerable> GetRoadCodesByRMU(string rmu);
     }

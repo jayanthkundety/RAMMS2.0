@@ -60,12 +60,15 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
+        #region IW
+
         public IActionResult Index()
         {
+            LoadLookupService("RMU", "RD_Code", "TECM_Status");
             return View();
         }
 
-        #region IW
+
         [HttpPost]
         public async Task<IActionResult> GetIWImageList(string Id, string assetgroup)
         {
@@ -74,6 +77,7 @@ namespace RAMMS.Web.UI.Controllers
             assetsModel.ImageList = new List<FormIWImageResponseDTO>();
             assetsModel.ImageTypeList = new List<string>();
             ddLookup.Type = "Photo Type";
+            ddLookup.TypeCode = "IW";
             assetsModel.PhotoType = await _ddLookupService.GetDdLookup(ddLookup);
             if (assetsModel.PhotoType.Count() == 0)
             {
@@ -87,18 +91,18 @@ namespace RAMMS.Web.UI.Controllers
             assetsModel.ImageList = await _formW1Service.GetImageList(Id);
             assetsModel.IwRefNo = Id;
             assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
-            return PartialView("~/Views/InstructedWorks/_PhotoSectionPageW1.cshtml", assetsModel);
+            return PartialView("~/Views/InstructedWorks/_PhotoSectionPage.cshtml", assetsModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ImageUploadFormIw(IList<IFormFile> formFile, string id, List<string> photoType, string Source = "ALL")
+        public async Task<IActionResult> ImageUploadFormIw(IList<IFormFile> formFile, string iwRefNo, List<string> photoType, string Source = "ALL")
         {
             try
             {
                 bool successFullyUploaded = false;
                 string wwwPath = this._webHostEnvironment.WebRootPath;
                 string contentPath = this._webHostEnvironment.ContentRootPath;
-                string _id = Regex.Replace(id, @"[^0-9a-zA-Z]+", "");
+                string _id = Regex.Replace(iwRefNo, @"[^0-9a-zA-Z]+", "");
 
                 int j = 0;
                 foreach (IFormFile postedFile in formFile)
@@ -110,7 +114,7 @@ namespace RAMMS.Web.UI.Controllers
                     string photo_Type = Regex.Replace(photoType[j], @"[^a-zA-Z]", "");
                     string subPath = Path.Combine(@"Uploads/FormW1/", _id, photo_Type);
                     string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormW1\", _id, photo_Type));
-                    int i = await _formW1Service.LastInsertedIMAGENO(int.Parse(id), photo_Type);
+                    int i = await _formW1Service.LastInsertedIMAGENO(iwRefNo, photo_Type);
                     i++;
                     string fileName = Path.GetFileName(postedFile.FileName);
                     string fileRename = i + "_" + photo_Type + "_" + fileName;
@@ -120,7 +124,7 @@ namespace RAMMS.Web.UI.Controllers
                     }
                     using (FileStream stream = new FileStream(Path.Combine(path, fileRename), FileMode.Create))
                     {
-                        _rmAssetImageDtl.Fw1IwRefNo = id;
+                        _rmAssetImageDtl.Fw1IwRefNo = iwRefNo;
                         _rmAssetImageDtl.ImageTypeCode = photoType[j];
                         _rmAssetImageDtl.ImageUserFilePath = postedFile.FileName;
                         _rmAssetImageDtl.ImageSrno = i;
@@ -229,10 +233,6 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-
-
-
-
         #endregion
 
 
@@ -265,26 +265,35 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Model = new FormW2Model();
             await LoadN2DropDown();
             _formW2Model.FormW1 = await _formW2Service.GetFormW1ById(id);
-            _formW2Model.Fcem = new FormW2FCEMResponseDTO();
+            _formW2Model.Fcem = new FormW2FECMResponseDTO();
             var defaultData = new DTO.ResponseBO.FormW2ResponseDTO();
             defaultData.Fw1IwRefNo = _formW2Model.FormW1.IwRefNo;
             defaultData.Fw1PkRefNo = _formW2Model.FormW1.PkRefNo;
             defaultData.Fw1ProjectTitle = _formW2Model.FormW1.ProjectTitle;
-            defaultData.RmuCode = _formW2Model.FormW1.RmuCode ;
+
+            defaultData.RmuCode = _formW2Model.FormW1.RmuCode;
             defaultData.RmuName = "";
+
+
             defaultData.DivCode = _formW2Model.FormW1.DivnCode;
             defaultData.DivisonName = "";
-            var res = (List<CSelectListItem>)ViewData["RD_Code"];
-            res.Find(c => c.Value == _formW2Model.FormW1.RoadCode).Selected = true;
-            defaultData.RoadCode = _formW2Model.FormW1.RoadCode;
-            defaultData.RoadName = _formW2Model.FormW1.RoadName;
+
+            if (_formW2Model.FormW1.RoadCode != null)
+            {
+                var res = (List<CSelectListItem>)ViewData["RD_Code"];
+                var resRd = res.Find(c => c.Value == _formW2Model.FormW1.RoadCode);
+                if (resRd != null) resRd.Selected = true;
+                defaultData.RoadCode = _formW2Model.FormW1.RoadCode;
+                defaultData.RoadName = _formW2Model.FormW1.RoadName;
+            }
+
             defaultData.SerProvRefNo = _formW2Model.FormW1.ServPropRefNo;
             defaultData.ServProvName = _formW2Model.FormW1.ServPropName;
             defaultData.EstCostAmt = _formW2Model.FormW1.EstimTotalCostAmt;
             _formW2Model.SaveFormW2Model = defaultData;
-            _formW2Model.FormW1 = new FormW1ResponseDTO();
+            //_formW2Model.FormW1 = new FormW1ResponseDTO();
 
-            
+
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
         }
 
@@ -307,7 +316,7 @@ namespace RAMMS.Web.UI.Controllers
                 if (view == "1") _formW2Model.View = "1";
                 _formW2Model.SaveFormW2Model = result;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
-                _formW2Model.Fcem = resultFCEM != null ? resultFCEM : new FormW2FCEMResponseDTO();
+                _formW2Model.Fcem = resultFCEM != null ? resultFCEM : new FormW2FECMResponseDTO();
             }
 
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
@@ -326,7 +335,6 @@ namespace RAMMS.Web.UI.Controllers
 
             return Json(refNo);
         }
-
 
         //Image Print
         public async Task<IActionResult> PrintWarForm(int id, string form, string filename)
@@ -484,31 +492,31 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetW2ImageList(int formW2Id, string assetgroup)
-        {
-            DDLookUpDTO ddLookup = new DDLookUpDTO();
-            FormW2Model assetsModel = new FormW2Model();
-            assetsModel.ImageList = new List<FormIWImageResponseDTO>();
-            assetsModel.ImageTypeList = new List<string>();
-            ddLookup.Type = "Photo Type";
-            ddLookup.TypeCode = "IW";
-            assetsModel.PhotoType = await _ddLookupService.GetDdLookup(ddLookup);
-            if (assetsModel.PhotoType.Count() == 0)
-            {
-                assetsModel.PhotoType = new[]{ new SelectListItem
-                {
-                    Text = "Others",
-                    Value = "Others"
-                }};
-            }
-            ViewBag.PhotoTypeList = await _ddLookupService.GetDdLookup(ddLookup);
-            assetsModel.ImageList = await _formW2Service.GetImageList(formW2Id);
-            assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
-            return PartialView("~/Views/InstructedWorks/_PhotoSectionPage.cshtml", assetsModel);
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> GetW2ImageList(int formW2Id, string assetgroup)
+        //{
+        //    DDLookUpDTO ddLookup = new DDLookUpDTO();
+        //    FormW2Model assetsModel = new FormW2Model();
+        //    assetsModel.ImageList = new List<FormIWImageResponseDTO>();
+        //    assetsModel.ImageTypeList = new List<string>();
+        //    ddLookup.Type = "Photo Type";
+        //    ddLookup.TypeCode = "IW";
+        //    assetsModel.PhotoType = await _ddLookupService.GetDdLookup(ddLookup);
+        //    if (assetsModel.PhotoType.Count() == 0)
+        //    {
+        //        assetsModel.PhotoType = new[]{ new SelectListItem
+        //        {
+        //            Text = "Others",
+        //            Value = "Others"
+        //        }};
+        //    }
+        //    ViewBag.PhotoTypeList = await _ddLookupService.GetDdLookup(ddLookup);
+        //    assetsModel.ImageList = await _formW2Service.GetImageList(formW2Id);
+        //    assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
+        //    return PartialView("~/Views/InstructedWorks/_PhotoSectionPage.cshtml", assetsModel);
+        //}
 
-       
+
         public async Task<IActionResult> GetW1DetailsByRoadCode(string roadCode)
         {
             FormW1ResponseDTO formW1 = await _formW2Service.GetFormW1ByRoadCode(roadCode);
@@ -527,7 +535,6 @@ namespace RAMMS.Web.UI.Controllers
             return Json(obj);
         }
 
-
         public async Task<IActionResult> LoadFormIWList(DataTableAjaxPostModel<FormIWSearchGridDTO> searchData)
         {
             if (Request.Form.ContainsKey("columns[0][search][value]"))
@@ -536,7 +543,7 @@ namespace RAMMS.Web.UI.Controllers
             }
             if (Request.Form.ContainsKey("columns[1][search][value]"))
             {
-                searchData.filterData.IssueW2Ref = Request.Form["columns[1][search][value]"].ToString();
+                searchData.filterData.IWRefNo = Request.Form["columns[1][search][value]"].ToString();
             }
             if (Request.Form.ContainsKey("columns[2][search][value]"))
             {
@@ -548,39 +555,47 @@ namespace RAMMS.Web.UI.Controllers
             }
             if (Request.Form.ContainsKey("columns[4][search][value]"))
             {
-                searchData.filterData.ProjectTitle = Request.Form["columns[4][search][value]"].ToString();
+                searchData.filterData.PrjTitle = Request.Form["columns[4][search][value]"].ToString();
             }
 
             if (Request.Form.ContainsKey("columns[5][search][value]"))
             {
-                searchData.filterData.Status = Request.Form["columns[4][search][value]"].ToString();
+                searchData.filterData.TECMStatus = Request.Form["columns[4][search][value]"].ToString();
             }
 
             if (Request.Form.ContainsKey("columns[6][search][value]"))
             {
                 if (!string.IsNullOrEmpty(Request.Form["columns[6][search][value]"].ToString()))
                 {
-                    searchData.filterData.Percentage = Convert.ToInt32(Request.Form["columns[6][search][value]"].ToString());
+                    searchData.filterData.PercentageFrom = Convert.ToInt32(Request.Form["columns[6][search][value]"].ToString());
                 }
             }
-
 
             if (Request.Form.ContainsKey("columns[7][search][value]"))
             {
                 if (!string.IsNullOrEmpty(Request.Form["columns[7][search][value]"].ToString()))
                 {
-                    searchData.filterData.Months = Convert.ToInt32(Request.Form["columns[7][search][value]"].ToString());
+                    searchData.filterData.PercentageTo = Convert.ToInt32(Request.Form["columns[7][search][value]"].ToString());
                 }
             }
 
+
             if (Request.Form.ContainsKey("columns[8][search][value]"))
             {
-                searchData.filterData.RMU = Request.Form["columns[8][search][value]"].ToString();
+                if (!string.IsNullOrEmpty(Request.Form["columns[8][search][value]"].ToString()))
+                {
+                    searchData.filterData.Months = Convert.ToInt32(Request.Form["columns[8][search][value]"].ToString());
+                }
             }
 
             if (Request.Form.ContainsKey("columns[9][search][value]"))
             {
-                searchData.filterData.RoadCode = Request.Form["columns[9][search][value]"].ToString();
+                searchData.filterData.RMU = Request.Form["columns[9][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[10][search][value]"))
+            {
+                searchData.filterData.RoadCode = Request.Form["columns[10][search][value]"].ToString();
             }
 
             FilteredPagingDefinition<FormIWSearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormIWSearchGridDTO>();
@@ -669,11 +684,10 @@ namespace RAMMS.Web.UI.Controllers
 
 
         #region FCEM
-
-        public async Task<JsonResult> SaveFCEM(FormW2FCEMResponseDTO formW2)
+        public async Task<JsonResult> SaveFCEM(FormW2FECMResponseDTO formW2)
         {
             int refNo = 0;
-            FormW2FCEMResponseDTO saveRequestObj = new FormW2FCEMResponseDTO();
+            FormW2FECMResponseDTO saveRequestObj = new FormW2FECMResponseDTO();
             saveRequestObj = formW2;
             if (saveRequestObj.PkRefNo == 0)
                 refNo = await _formW2Service.SaveFCEM(formW2);

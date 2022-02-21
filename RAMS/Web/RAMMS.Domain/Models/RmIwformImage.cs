@@ -21,7 +21,5 @@ namespace RAMMS.Domain.Models
         public bool FiwiSubmitSts { get; set; }
         public bool FiwiActiveYn { get; set; }
         public string FiwiSource { get; set; }
-
-        public virtual RmIwFormW1 FiwiFw1PkRefNoNavigation { get; set; }
     }
 }

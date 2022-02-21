@@ -20,7 +20,7 @@
     vd = Model.SaveFormW2Model.DtReq;
     string _RequestedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
-    vd = Model.Fcem != null ? Model.Fcem.Date : null;
+    vd = Model.Fcem != null ? Model.Fcem.Dt  : null;
     string _FCEMDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
 }
@@ -76,8 +76,8 @@
             </ul>
             <div class="d-flex py-2 mb-2 position-absolute" style="right: 0px;width: 40%; top:0px;">
                 <div class="form-group mb-0 px-2" style="margin-top: -14px;">
-                    @Html.Label("IW Ref No:", "IW Ref No:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1IwRefNo, new { @id = "fw1IWRefNo", @class = "form-control  validate {required, IW Reference No.}" })
-                    @Html.HiddenFor(m => m.SaveFormW2Model.Fw1PkRefNo, new { @Id = "fw1PKRefNo" })
+                    @Html.Label("IW Ref No:", "IW Ref No:")  @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @id = "fw1IWRefNo", @class = "form-control  validate {required, IW Reference No.}" })
+                    @Html.HiddenFor(m => m.FormW1.PkRefNo, new { @Id = "fw1PKRefNo" })
                 </div>
                 <div class="form-group mb-0" style="margin-top: -14px;">
                     @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @id = "fw1ProjectTitle", @class = "form-control  validate {required, Project Title }", @disabled = "true" })
@@ -99,11 +99,11 @@
                                             </div>
                                             <div class="form-group col-lg-6">
                                                 @Html.Label("Status", "Status")
-                                                @Html.DropDownListFor(m => m.Fcem.Sstatus, (IEnumerable<SelectListItem>)ViewData["TECM_Status"], "Select Status", new { @id = "fcemStatus", @class = "form-control svalidate {required, Status}" })
+                                                @Html.DropDownListFor(m => m.Fcem.Sts, (IEnumerable<SelectListItem>)ViewData["TECM_Status"], "Select Status", new { @id = "fcemStatus", @class = "form-control svalidate {required, Status}" })
                                             </div>
                                             <div class="form-group col-lg-6">
                                                 <label for="RMU">PROGRESS %</label>
-                                                @Html.TextBoxFor(m => m.Fcem.Progress, new { @id = "fcemProgress", @class = "form-control  svalidate {required, PROGRESS % }" })
+                                                @Html.TextBoxFor(m => m.Fcem.ProgressPerc, new { @id = "fcemProgress", @class = "form-control  svalidate {required, PROGRESS % }" })
                                             </div>
                                             <div class="form-group col-lg-6 px-4">
                                                 <div class="row mt-4">
@@ -497,7 +497,7 @@
                                                             </div>
                                                             <div class="form-group col-lg-3">
                                                                 @Html.Label("TECM Status", "TECM Status")
-                                                                @Html.TextBoxFor(x => x.FormW1.TecmStatus, new { @disabled = "true", @class = "form-control" })
+                                                                @Html.TextBoxFor(x => x.FormW1.Status , new { @disabled = "true", @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-4">
                                                                 @Html.Label("Service Provider's Proposal Ref", "Service Provider's Proposal Ref")
@@ -544,9 +544,9 @@
                                                                     <div class="form-group col-lg-4">
                                                                         @Html.Label("Chainage Location", "Chainage Location")
                                                                         <div class="row">
-                                                                            <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.FormW1.ChKm, new { @disabled = "true", @class = "form-control" })</div>
+                                                                            <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.FormW1.Ch, new { @disabled = "true", @class = "form-control" })</div>
                                                                             <div class="col-1 text-center pt-2"> + </div>
-                                                                            <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.FormW1.ChM, new { @disabled = "true", @class = "form-control" })</div>
+                                                                            <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.FormW1.ChDeci, new { @disabled = "true", @class = "form-control" })</div>
                                                                         </div>
                                                                     </div>
                                                                     @*<div class="form-group col-lg-3 pl-2 pr-2">
@@ -720,13 +720,13 @@
                                                                 @Html.Label("Recommended Instructed Work", "Recommended Instructed Work")
                                                                 <br />
                                                                 <label class="radio-inline">
-                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdStatus, "Critical")&nbsp;	Critical&nbsp;
+                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdType, "Critical")&nbsp;	Critical&nbsp;
                                                                 </label>
                                                                 <label class="radio-inline">
-                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdStatus, "Urgent")&nbsp;	Urgent&nbsp;
+                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdType, "Urgent")&nbsp;	Urgent&nbsp;
                                                                 </label>
                                                                 <label class="radio-inline">
-                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdStatus, "None")&nbsp;	None&nbsp;
+                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdType, "None")&nbsp;	None&nbsp;
                                                                 </label>
                                                             </div>
                                                         </div>
