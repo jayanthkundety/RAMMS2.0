@@ -120,14 +120,14 @@
                     PROPOSED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Add')">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Edit')">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Edit',0)">
                         <span class="edit-icon"></span>Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('View')">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('View',1)">
                         <span class="view-icon"></span> View
                     </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -419,7 +419,7 @@
         return value;
     }
 
-    function OpenFormW1(mode) {
+    function OpenFormW1(mode, view) {
 
         var SelectedIWGridId = 0;
 
@@ -433,7 +433,7 @@
         }
         else if (mode == "View") {
             SelectedIWGridId = GetFormIDByName("w1");
-            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
         }
         InitAjaxLoading();
         $.ajax({

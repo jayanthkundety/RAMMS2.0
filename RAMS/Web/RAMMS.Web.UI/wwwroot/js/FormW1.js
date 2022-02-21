@@ -1,4 +1,26 @@
 ﻿$(document).ready(function () {
+    debugger;
+
+    if ($("#hdnView").val() == "1") {
+        $("#FormW1page *").prop("disabled", true);
+        $("#ddlRMU").chosen('destroy');
+        $("#ddlRMU").prop("disabled", true);
+        $("#ddlRoadCode").chosen('destroy');
+        $("#ddlRoadCode").prop("disabled", true);
+        $("#ddlUseridRep").chosen('destroy');
+        $("#ddlUseridRep").prop("disabled", true);
+        $("#ddlUseridVer").chosen('destroy');
+        $("#ddlUseridVer").prop("disabled", true);
+        $("#ddlUseridRep").chosen('destroy');
+        $("#ddlUseridRep").prop("disabled", true);
+        $("#ddlUseridReq").chosen('destroy');
+        $("#ddlUseridReq").prop("disabled", true);
+        $("#FormW1_Status").chosen('destroy');
+        $("#FormW1_Status").prop("disabled", true);
+        $("#btnSave").hide();
+        $("#btnSubmit").hide();
+
+    }
 
     $('.allow_numeric').keypress(function (event) {
         var $this = $(this);
@@ -110,7 +132,7 @@ function CalculateCost() {
     }
     else {
         ConsulFeeAmt = 0;
-    }
+    } 
 
     if ($("#FormW1_OtherCostAmt").val() != "") {
         OtherCostAmt = $("#FormW1_OtherCostAmt").val();
@@ -122,10 +144,10 @@ function CalculateCost() {
 }
 
 
-function Save() {
-    //if (submit) {
-    //    $("#div-addformd .svalidate").addClass("validate");
-    //}
+function Save(submit) {
+    if (submit) {
+        $("#FormW1page .svalidate").addClass("validate");
+    }
     
     if (ValidatePage('#FormW1page')) {
         InitAjaxLoading();
@@ -282,6 +304,18 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+
+function GoBack() {
+    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "") {
+        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+            if (e) {
+                location.href = "/InstructedWorks/Index";
+            }
+        }));
+    }
+    else
+        location.href = "/InstructedWorks/Index";
+}
  
 
 

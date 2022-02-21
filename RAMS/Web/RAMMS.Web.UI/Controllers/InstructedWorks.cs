@@ -180,6 +180,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             FormW1Model model = new FormW1Model();
             model.FormW1.RecomdType = 0;
+            model.View = 0;
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
@@ -191,7 +192,7 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 
-        public async Task<IActionResult> EditFormW1(int id)
+        public async Task<IActionResult> EditFormW1(int id, int View)
         {
             var _formW1Model = new FormW1ResponseDTO();
 
@@ -207,6 +208,7 @@ namespace RAMMS.Web.UI.Controllers
             }
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;
+            model.View = View;
 
             GetRMUWithDivision("RMU_Division");
             FormW1Model assetsModel = new FormW1Model();
