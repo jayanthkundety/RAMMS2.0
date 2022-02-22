@@ -284,10 +284,10 @@ function Save(submit) {
     saveObj.Fw1ProjectTitle = $("#fw1ProjectTitle").val()
     saveObj.RegionText = $("#formW2Region").val();
     saveObj.RegionName = $("#formW2RegionName").val();
-    saveObj
+    saveObj.DivText = $("#formW2DivText").val() ;
     saveObj.DivCode = $("#formW2DivisionCode").find(":selected").val();
     saveObj.DivisonName = $("#formW2DivisonName").val();
-
+    saveObj.RmuText = $("#formW2RmuText").val();
     saveObj.Rmu = $("#formW2RMU").find(":selected").val();
     saveObj.RmuName = $("#formW2RMUName").val();
 
@@ -313,15 +313,15 @@ function Save(submit) {
     if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.UseridIssu = $("#formW2IssuedBy option:selected").val();
     if ($("#formW2IssuedName").val() != "") saveObj.UsernameIssu = $("#formW2IssuedName").val();
     if ($("#formW2IssuedDate").val() != "dd/mm/yyyy" && $("#formW2IssuedDate").val() != "") saveObj.DtIssu = $("#formW2IssuedDate").val();
-    saveObj.DesignationIssu = "";
-    saveObj.OfficeIssu = "";
+    saveObj.DesignationIssu = $("#formW2IssuedOffice").val();
+    saveObj.OfficeIssu = $("#formW2IssuedOffice").val();
     saveObj.SignIssu = $("#formW2IssuedSignture").prop("checked");
 
     if ($("#formw2RequestedBy").find(":selected").val() != "") saveObj.UseridReq = $("#formw2RequestedBy option:selected").val();
     if ($("#formW2RequestedName").val() != "") saveObj.UsernameReq = $("#formW2RequestedName").val();
     if ($("#formW2RequestedDate").val() != "dd/mm/yyyy" && $("#formW2RequestedDate").val() != "") saveObj.DtReq = $("#formW2RequestedDate").val();
-    saveObj.DesignationReq = "";
-    saveObj.OfficeReq = "";
+    saveObj.DesignationReq = $("#formW2RequestedDesig").val();
+    saveObj.OfficeReq = $("#formW2RequestedOffice").val();
     saveObj.SignReq = $("#formW2RequestedSign").prop("checked");
 
     //Created by
