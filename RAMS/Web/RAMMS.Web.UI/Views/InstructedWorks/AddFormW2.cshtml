@@ -23,6 +23,12 @@
     vd = Model.Fcem != null ? Model.Fcem.Dt  : null;
     string _FCEMDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
+    vd = Model.Fcem != null ? Model.Fcem.DtTecm : null;
+    string _TCEMDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.Fcem != null ? Model.Fcem.DtAgreedNego : null;
+    string _AgrdNegoDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
 }
 
 <script src="~/js/FormW2.js" type="text/javascript"></script>
@@ -96,13 +102,13 @@
 
                                         <div class="form-group col-lg-3">
                                             <label for="RMU">TECM Date</label>
-                                            <input class="form-control" type="date" />
+                                            <input type="date" class="datepicker form-control  svalidate {required, TECM date}" id="tcemDate" value="@_TCEMDate" />
                                         </div>
                                         <div class="form-group col-lg-3">
                                             <label>
                                                 FECM Date
                                             </label>
-                                            <input class="form-control" type="date" />
+                                            <input type="date" class="datepicker form-control  svalidate {required, FECM date}" id="fcemDate" value="@_FCEMDate" />
                                         </div>
                                         <div class="form-group col-lg-2 mb-0">
                                             <label for="RMU">Agreed Nego Price Letter</label>
@@ -114,13 +120,12 @@
 
                                         <div class="form-group col-lg-3">
                                             <label for="RMU">Agreed Nego  Rate Date</label>
-                                            <input class="form-control" type="date" />
+                                            <input type="date" class="datepicker form-control  svalidate {required, FECM date}" id="fcemDate" value="@_AgrdNegoDate" />
                                         </div>
                                         <div class="form-group col-lg-3">
-                                            <label for="Division_Code">Status </label>
-                                            <select class="form-control">
-                                                <option value="">Select Status</option>
-                                            </select>
+                                             @Html.Label("Status", "Status")
+                                                @Html.DropDownListFor(m => m.Fcem.Sts, (IEnumerable<SelectListItem>)ViewData["TECM_Status"], "Select Status", new { @id = "fcemStatus", @class = "form-control svalidate {required, Status}" })
+                                            
                                         </div>
                                         <div class="form-group col-lg-3">
                                             <label>
@@ -131,126 +136,11 @@
 
                                         <div class="form-group col-lg-3">
                                             <label for="RMU">PROGRESS %</label>
-                                            <input class="form-control" type="text" />
+                                             @Html.TextBoxFor(m => m.Fcem.ProgressPerc, new { @id = "fcemProgress", @class = "form-control  svalidate {required, PROGRESS % }" })
                                         </div>
 
                                         <div class="form-group col-lg-3 px-4">
-                                            <div class="row mt-4">
-                                                <div class="col-6 ">
-                                                    <label class="checkbox-inline"><input type="checkbox" disabled value=""> BQ</label>
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="checkbox-inline"><input type="checkbox" disabled value=""> Drawing</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-                                        <div class="form-group col-lg-12">
-                                            <label for="RMU"> Remarks</label>
-                                            <textarea class="form-control" style="height:37px;"> </textarea>
-                                        </div>
-
-
-
-
-
-                                    </div>
-                                    @*<div class="row">
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="form-group col-lg-6">
-                        <label>
-                            FECM Date
-                        </label>
-                        <input class="form-control" type="date" />
-                    </div>
-                    <div class="form-group col-lg-6">
-                        <label for="Division_Code">Status </label>
-                        <select class="form-control">
-                            <option value="">Select Status</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="row">
-                            <div class="form-group col-lg-4 mb-0">
-                                <label for="RMU">Agreed Nego Price Letter</label>
-                                <br class="mb-3" />
-                                <label class="checkbox-inline py-3 px-2"><input type="checkbox" disabled value=""> Yes</label>
-                                <label class="checkbox-inline"><input type="checkbox" disabled value=""> No</label>
-
-                            </div>
-
-                            <div class="form-group col-lg-4">
-                                <label for="RMU">Agreed Nego  Rate Date</label>
-                                <input class="form-control" type="date" />
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <label for="RMU">PROGRESS %</label>
-                                <input class="form-control" type="text" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group col-lg-12">
-                    <label>
-                        FECM Status Remarks
-                    </label>
-                    <textarea class="form-control" style="height:118px;"> </textarea>
-                </div>
-            </div>
-
-
-
-
-            <div class="form-group col-lg-3">
-                <label for="RMU">TECM Date</label>
-                <input class="form-control" type="date" />
-            </div>
-            <div class="form-group col-lg-6">
-                <label for="RMU"> Remarks</label>
-                <textarea class="form-control" style="height:37px;"> </textarea>
-            </div>
-            <div class="form-group col-lg-3 px-4">
-                <div class="row mt-4">
-                    <div class="col-6 ">
-                        <label class="checkbox-inline"><input type="checkbox" disabled value=""> BQ</label>
-                    </div>
-                    <div class="col-6">
-                        <label class="checkbox-inline"><input type="checkbox" disabled value=""> Drawing</label>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-        </div>*@
-                                </div>
-                            </div>
-                        <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
-                            <div class="p-4">
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <div class="row">
-                                            <div class="form-group col-lg-6">
-                                                @Html.Label("FCEM (DD-MM-YYYY)", "FCEM (DD-MM-YYYY)")
-                                                <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="fcemDate" value="@_FCEMDate" />
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                @Html.Label("Status", "Status")
-                                                @Html.DropDownListFor(m => m.Fcem.Sts, (IEnumerable<SelectListItem>)ViewData["TECM_Status"], "Select Status", new { @id = "fcemStatus", @class = "form-control svalidate {required, Status}" })
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label for="RMU">PROGRESS %</label>
-                                                @Html.TextBoxFor(m => m.Fcem.ProgressPerc, new { @id = "fcemProgress", @class = "form-control  svalidate {required, PROGRESS % }" })
-                                            </div>
-                                            <div class="form-group col-lg-6 px-4">
-                                                <div class="row mt-4">
+                                             <div class="row mt-4">
                                                     @{
                                                         var _BQ = Model.Fcem.IsBq == null || Model.Fcem.IsBq == false ? false : true;
 
@@ -267,6 +157,42 @@
                                                         <label class="checkbox-inline"><input type="checkbox" id="fcemDrawing" checked="@_Drawing"> Drawing</label>
                                                     </div>
                                                 </div>
+                                        </div>
+
+
+
+
+                                        <div class="form-group col-lg-12">
+                                            <label for="RMU"> Remarks</label>
+                                            @Html.TextAreaFor(m => m.Fcem.Remark, new { @id = "fcemRemark", @class = "form-control  svalidate {required, Remark }" })
+                                        </div>
+
+
+
+
+
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                        @*<div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
+                            <div class="p-4">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="form-group col-lg-6">
+                                                @Html.Label("FCEM (DD-MM-YYYY)", "FCEM (DD-MM-YYYY)")
+                                                <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="fcemDate" value="@_FCEMDate" />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                               
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label for="RMU">PROGRESS %</label>
+                                               
+                                            </div>
+                                            <div class="form-group col-lg-6 px-4">
+                                               
                                             </div>
                                         </div>
 
@@ -276,11 +202,11 @@
                                         <label>
                                             Remarks
                                         </label>
-                                        @Html.TextAreaFor(m => m.Fcem.Remark, new { @id = "fcemRemark", @class = "form-control  svalidate {required, Remark }" })
+                                       
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                     <div class="tab-pane show " id="page">
                         <div class="col-md-12" id="divpage">
@@ -294,6 +220,42 @@
                                                         <div class="row">
                                                             <div class="form-group col-lg-4 pr-lg-0">
                                                                 <div class="row">
+
+                                                                     <div class="col-4 pr-lg-0">
+                                                                        
+                                                                         @Html.Label("RMU", "RMU")
+                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.RmuText, new { @Id = "formW2RmuText", @class = "form-control  validate {required, RMU Text}" })
+                                                                    </div>
+                                                                    <div class="col-4 pr-lg-0">
+                                                                        <label for=""> &nbsp;  &nbsp; &nbsp;</label>
+                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.RmuCode, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
+                                                                    </div>
+                                                                    <div class="col-4">
+                                                                        @Html.Label("Name", "Name")@Html.TextBoxFor(m => m.SaveFormW2Model.RmuName, new { @Id = "formW2RMUName", @class = "form-control  validate {required, RMU Name}", @disabled = true })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-lg-4 pr-lg-0">
+                                                                <div class="row">
+                                                                    <div class="col-4 pr-lg-0">
+                                                                        
+                                                                        @Html.Label("Division", "Division")
+                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.DivText, new { @Id = "formW2DivText", @class = "form-control  svalidate {required, Division Text}"})
+                                                                    </div>
+                                                                    <div class="col-4 pr-lg-0">
+                                                                        <label for=""> &nbsp;  &nbsp; &nbsp;</label>
+                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.DivCode, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formW2DivisionCode", @class = "form-control ", @onchange = "changeDivision(this)" })
+                                                                    </div>
+                                                                    
+                                                                    <div class="col-4">
+                                                                        <label for="Division_Code">Division Name</label>
+                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.DivisonName, new {  @Id = "formW2DivisonName", @class = "form-control  svalidate {required, Division Name}", @disabled = true })
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="form-group col-lg-4 pr-lg-0">
+                                                                <div class="row">
                                                                     <div class="col-6 pr-lg-0">
                                                                         @Html.Label("Region", "Region")
                                                                         @Html.TextBoxFor(m => m.SaveFormW2Model.RegionText, new { @Id = "formW2Region", @class = "form-control  svalidate {required, Region}" })
@@ -304,297 +266,307 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group col-lg-4 pr-lg-0">
-                                                                <div class="row">
-                                                                    <div class="col-6 pr-lg-0">
-                                                                        @Html.Label("Division", "Division")
-                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.DivCode, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formW2DivisionCode", @class = "form-control ", @onchange = "changeDivision(this)" })
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <label for="Division_Code">Division Name</label>
-                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.DivisonName, new { @name = "SaveFormW2Model.DivisonName", @Id = "formW2DivisonName", @class = "form-control  svalidate {required, Division Name}", @disabled = true })
-                                                                    </div>
-                                                                </div>
 
-                                                            </div>
-                                                            <div class="form-group col-lg-4">
-                                                                <div class="row">
-                                                                    <div class="col-6 pr-lg-0">
-                                                                        @Html.Label("RMU", "RMU")
-                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.RmuCode, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        @Html.Label("Name", "Name")@Html.TextBoxFor(m => m.SaveFormW2Model.RmuName, new { @Id = "formW2RMUName", @class = "form-control  validate {required, RMU Name}", @disabled = true })
-                                                                    </div>
-                                                                </div>
-                                                            </div>
 
-                                                            <div class="col-12 mt-2">
-                                                                <div class="form-group col-lg-2 pl-lg-0">
-                                                                    @Html.Label("JKR Ref", "JKR Ref")
-                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.JkrRefNo, new { @Id = "fw2JkrRefNo", @class = "form-control  svalidate {required, JkrRefNo}" })
-                                                                </div>
-                                                                <div class="form-group col-lg-2 ">
-                                                                    @Html.Label("Date of Initiation (DD-MM-YYYY)", "Date of Initiation (DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2InitiationDate" name="SaveFormW2Model.DateOfInitation" value="@_InitationDate" />
-                                                                </div>
-                                                                <div class="form-group col-lg-5">
+                                                            <div class="col-lg-12">
+                                                                <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
                                                                     <div class="row">
-                                                                        <div class="col-6">
-                                                                            @Html.Label("Service Provider's Ref", "Service Provider's Ref")
-                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.SerProvRefNo, new { @Id = "fw2SerProviderRef", @class = "form-control  svalidate {required, Service Provider's Ref}" })
+                                                                        <div class="col-lg-12 py-2 px-4">
+                                                                            <span class="font-14 font-weight-bold"> PART A: LOCATION (to be completed by S.O. or his representative)</span>
                                                                         </div>
-                                                                        <div class="col-6">
-                                                                            @Html.Label("Service Provider", "Service Provider")
-                                                                            @{
-                                                                                Model.SaveFormW2Model.ServProvName = string.IsNullOrEmpty(Model.SaveFormW2Model.ServProvName) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormW2Model.ServProvName;
-                                                                            }
-                                                                            @*@Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ServiceProvider, (IEnumerable<SelectListItem>)ViewData["Service Provider"], "Select Service Provider", new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}", @disabled = true })*@
-                                                                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormW2Model.ServProvName, new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}" })
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                                <div class="form-group col-lg-3 pr-lg-0">
-                                                                    <label for="Address 1"> Address 1 </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @id="address1", @class = "form-control",  @readonly="true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-2">
-                                                                    <label for="Designation"> Address 2 </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2, new { @id = "address2", @class = "form-control" ,@readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-2">
-                                                                    <label for="Designation"> Address 3 </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3, new { @id = "address3", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-2">
-                                                                    <label for="Designation">Phone No </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone, new { @id = "phone", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-2">
-                                                                    <label for="Designation"> Fax </label>
-                                                                    @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @id = "fax", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-2 pr-lg-0">
-                                                                    @Html.Label("Attn", "Attn")
-                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.Attn, new { @id = "fw2Attn", @class = "form-control  svalidate {required, Attention}" })
-                                                                </div>
-                                                                <div class="form-group col-lg-2">
-                                                                    @Html.Label("CC", "CC")
-                                                                    @Html.TextBoxFor(m => m.SaveFormW2Model.Cc, new { @id = "fw2cc", @class = "form-control  svalidate {required, CC}" })
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
-                                                            <div class="row">
-                                                                <div class="col-lg-12 py-2 px-4">
-                                                                    <span class="font-14 font-weight-bold"> PART A: LOCATION (to be completed by S.O. or his representative)</span>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="border-top px-2 pb-1 float-left w-100">
-                                                                        <div class="row pt-3">
-                                                                            <div class="form-group col-lg-7 ">
-                                                                                <div class="row">
-                                                                                    <div class="col-6">
-                                                                                        @Html.Label("Road Code", "Road Code")
-                                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id="frmW2RoadCodeDD", @class = "form-control  validate {required, Road Code}", @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
-                                                                                        @Html.HiddenFor(m => m.SaveFormW2Model.RoadCode, new { id = "frmW2RoadCode" })
-                                                                                    </div>
-                                                                                    <div class="col-6">
-                                                                                        @Html.Label("Road Name", "Road Name")
-                                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.RoadName, new { @Id = "formW2roadDesc", @readonly = "readonly", @class = "form-control validate {required, Road Name} " })
-                                                                                    </div>
-                                                                                </div>
-
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2 p-0">
-                                                                                <label for="RoadCode">
-                                                                                    Chainage 'KM' Location
-                                                                                </label>
-                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.Ch, new { @id = "formW2chkm", @class = "form-control allow_numeric", @maxlength = "3" })
-
-                                                                            </div>
-                                                                            <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
-                                                                                +
-                                                                            </div>
-
-                                                                            <div class="form-group col-lg-2 p-0">
-                                                                                <label for="RoadCode">
-                                                                                    Chainage 'M' Location
-                                                                                </label>
-                                                                                @Html.TextBoxFor(x => x.SaveFormW2Model.ChDeci, new { @id = "formW2chm", @class = "form-control  allow_numeric", @maxlength="3"  })
-                                                                            </div>
-                                                                            @*<div class="form-group col-lg-3">
-                                                                                <label for="RoadCode">
-                                                                                    CH From
-                                                                                </label>
-                                                                                <div class="row">
-                                                                                    <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.SaveFormW2Model.ChKm, new { @id = "formW2chkm", @class = "form-control" })</div>
-                                                                                    <div class="col-1 text-center pt-2"> + </div>
-                                                                                    <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2chm", @class = "form-control" })</div>
-
-                                                                                </div>
-                                                                            </div>*@
-
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
-                                                            <div class="row">
-                                                                <div class="col-lg-12 py-2 px-4">
-                                                                    <span class="font-14 font-weight-bold">PART B: PARTICULARS OF INSTRUCTED WORK (to be completed by S.O. or his representative)</span>
-                                                                </div>
-                                                                <div class="col-12">
-                                                                    <div class="border-top px-2 pb-1 float-left w-100">
-                                                                        <div class="row pt-3">
-                                                                            <div class="form-group col-lg-12">
-                                                                                @Html.Label("Title of Instructed Work:", "Title of Instructed Work:")
-                                                                                @Html.TextAreaFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @style = "height:70px", @Id = "formW2TitleOfInstructWork", @class = "form-control validate {required, Title of Instructed Work}", @disabled = true })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-12">
-                                                                                <div class="row">
-                                                                                    <div class="col-lg-4">
+                                                                        <div class="col-12">
+                                                                            <div class="border-top px-2 pb-1 float-left w-100">
+                                                                                <div class="row pt-3">
+                                                                                    <div class="form-group col-lg-7 ">
                                                                                         <div class="row">
-                                                                                            <div class="mb-2 col-lg-12">
-                                                                                                @Html.Label("Date of commencement (DD-MM-YYYY)", "Date of commencement (DD-MM-YYYY)")
-                                                                                                <input type="date" class="datepicker form-control  svalidate {required, Commencement date}" id="formW2CommencementDate" name="SaveFormW2Model.DateOfCommencement" value="@_CommencementDate" />
+                                                                                            <div class="col-6">
+                                                                                                @Html.Label("Road Code", "Road Code")
+                                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "frmW2RoadCodeDD", @class = "form-control  validate {required, Road Code}", @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
+                                                                                                @Html.HiddenFor(m => m.SaveFormW2Model.RoadCode, new { id = "frmW2RoadCode" })
                                                                                             </div>
-                                                                                            <div class="mb-2 col-lg-12">
-                                                                                                @Html.Label("Date of Completion (DD-MM-YYYY)", "Date of Completion (DD-MM-YYYY)")
-                                                                                                <input type="date" class="datepicker form-control  svalidate {required, Completion date}" id="formW2CompletionDate" name="SaveFormW2Model.DateOfCompletion" value="@_CompletionDate" />
-                                                                                            </div>
-                                                                                            <div class="mb-2 col-lg-12">
-                                                                                                @Html.Label("Instructed Work duration(Months)", "Instructed Work duration(Months)")
-                                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.IwDuration, new { @id = "fw2InstructWorkDuration", @type = "numeric", @class = "form-control svalidate {required, Instructed Work duration}" })
+                                                                                            <div class="col-6">
+                                                                                                @Html.Label("Road Name", "Road Name")
+                                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.RoadName, new { @Id = "formW2roadDesc", @readonly = "readonly", @class = "form-control validate {required, Road Name} " })
                                                                                             </div>
                                                                                         </div>
+
                                                                                     </div>
-                                                                                    <div class="form-group col-lg-8">
-                                                                                        @Html.Label("Remarks", "Remarks")
-                                                                                        @Html.TextAreaFor(m => m.SaveFormW2Model.Remarks, new { @style = "height:166px", @Id = "formW2Remarks", @class = "form-control svalidate {required, Description Of NC}" })`
+                                                                                    <div class="col-lg-2 p-0">
+                                                                                        <label for="RoadCode" class="mb-1">
+                                                                                            Chainage 'KM' Location
+                                                                                        </label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="input-group-prepend">
+                                                                                                <span class="input-group-text">CH</span>
+                                                                                            </div>
+                                                                                            @Html.TextBoxFor(x => x.SaveFormW2Model.Ch, new { @id = "formW2chkm", @class = "form-control allow_numeric", @maxlength = "3" })
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
+                                                                                        +
+                                                                                    </div>
+
+                                                                                    <div class="form-group col-lg-2 p-0">
+                                                                                        <label for="RoadCode">
+                                                                                            Chainage 'M' Location
+                                                                                        </label>
+                                                                                        @Html.TextBoxFor(x => x.SaveFormW2Model.ChDeci, new { @id = "formW2chm", @class = "form-control  allow_numeric", @maxlength = "3" })
+                                                                                    </div>
+                                                                                    @*<div class="form-group col-lg-3">
+                                    <label for="RoadCode">
+                                        CH From
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.SaveFormW2Model.ChKm, new { @id = "formW2chkm", @class = "form-control" })</div>
+                                        <div class="col-1 text-center pt-2"> + </div>
+                                        <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.SaveFormW2Model.ChM, new { @id = "formW2chm", @class = "form-control" })</div>
+
+                                    </div>
+                                </div>*@
+
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12">
+
+                                                                <div class="bg-white rounded landing-division w-100 float-left mb-3 border p-3">
+                                                                    <div class="row">
+                                                                        <div class="col-12 mt-2">
+                                                                            <div class="form-group col-lg-3 pl-lg-0">
+                                                                                @Html.Label("JKR Ref", "JKR Ref")
+                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.JkrRefNo, new { @Id = "fw2JkrRefNo", @class = "form-control  svalidate {required, JkrRefNo}" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3 ">
+                                                                                @Html.Label("Date of Initiation (DD-MM-YYYY)", "Date of Initiation (DD-MM-YYYY)")
+                                                                                <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2InitiationDate" name="SaveFormW2Model.DateOfInitation" value="@_InitationDate" />
+                                                                            </div>
+                                                                            <div class="form-group col-lg-6">
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        @Html.Label("Service Provider's Ref", "Service Provider's Ref")
+                                                                                        @Html.TextBoxFor(m => m.SaveFormW2Model.SerProvRefNo, new { @Id = "fw2SerProviderRef", @class = "form-control  svalidate {required, Service Provider's Ref}" })
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        @Html.Label("Service Provider", "Service Provider")
+                                                                                        @{
+                                                                                            Model.SaveFormW2Model.ServProvName = string.IsNullOrEmpty(Model.SaveFormW2Model.ServProvName) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormW2Model.ServProvName;
+                                                                                        }
+                                                                                        @*@Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.ServiceProvider, (IEnumerable<SelectListItem>)ViewData["Service Provider"], "Select Service Provider", new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}", @disabled = true })*@
+                                                                                        @Html.TextBoxFor(Ahdr => Ahdr.SaveFormW2Model.ServProvName, new { @Id = "formW2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}" })
                                                                                     </div>
                                                                                 </div>
 
                                                                             </div>
 
+                                                                            <div class="form-group col-lg-4 pr-lg-0">
+                                                                                <label for="Address 1"> Address 1 </label>
+                                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @id = "address1", @class = "form-control", @readonly = "true" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-4">
+                                                                                <label for="Designation"> Address 2 </label>
+                                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2, new { @id = "address2", @class = "form-control", @readonly = "true" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-4">
+                                                                                <label for="Designation"> Address 3 </label>
+                                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3, new { @id = "address3", @class = "form-control", @readonly = "true" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation">Phone No </label>
+                                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone, new { @id = "phone", @class = "form-control", @readonly = "true" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation"> Fax </label>
+                                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @id = "fax", @class = "form-control", @readonly = "true" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3 pr-lg-0">
+                                                                                @Html.Label("Attn", "Attn")
+                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.Attn, new { @id = "fw2Attn", @class = "form-control  svalidate {required, Attention}" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                @Html.Label("CC", "CC")
+                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.Cc, new { @id = "fw2cc", @class = "form-control  svalidate {required, CC}" })
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
 
+                                                                        
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row">
+                                                                <div class="col-12">
+
+
+                                                                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border ">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12 py-2 px-4">
+                                                                                <span class="font-14 font-weight-bold">PART B: PARTICULARS OF INSTRUCTED WORK (to be completed by S.O. or his representative)</span>
+                                                                            </div>
+                                                                            <div class="col-12">
+                                                                                <div class="border-top px-2 pb-1 float-left w-100">
+                                                                                    <div class="row pt-3">
+                                                                                        @*<div class="form-group col-lg-12">
+                                                                                            @Html.Label("Title of Instructed Work:", "Title of Instructed Work:")
+                                                                                            @Html.TextAreaFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @style = "height:70px", @Id = "formW2TitleOfInstructWork", @class = "form-control validate {required, Title of Instructed Work}", @disabled = true })
+                                                                                        </div>*@
+                                                                                        <div class="form-group col-lg-12">
+                                                                                            <div class="row">
+                                                                                                <div class="col-lg-4">
+                                                                                                    <div class="row">
+                                                                                                        <div class="mb-2 col-lg-12">
+                                                                                                            @Html.Label("Date of commencement (DD-MM-YYYY)", "Date of commencement (DD-MM-YYYY)")
+                                                                                                            <input type="date" class="datepicker form-control  svalidate {required, Commencement date}" id="formW2CommencementDate" name="SaveFormW2Model.DateOfCommencement" value="@_CommencementDate" />
+                                                                                                        </div>
+                                                                                                        <div class="mb-2 col-lg-12">
+                                                                                                            @Html.Label("Date of Completion (DD-MM-YYYY)", "Date of Completion (DD-MM-YYYY)")
+                                                                                                            <input type="date" class="datepicker form-control  svalidate {required, Completion date}" id="formW2CompletionDate" name="SaveFormW2Model.DateOfCompletion" value="@_CompletionDate" />
+                                                                                                        </div>
+                                                                                                        <div class="mb-2 col-lg-12">
+                                                                                                            @Html.Label("Instructed Work duration(Months)", "Instructed Work duration(Months)")
+                                                                                                            @Html.TextBoxFor(m => m.SaveFormW2Model.IwDuration, new { @id = "fw2InstructWorkDuration", @type = "numeric", @class = "form-control svalidate {required, Instructed Work duration}" })
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group col-lg-8">
+                                                                                                    @Html.Label("Remarks", "Remarks")
+                                                                                                    @Html.TextAreaFor(m => m.SaveFormW2Model.Remarks, new { @style = "height:166px", @Id = "formW2Remarks", @class = "form-control svalidate {required, Description Of NC}" })`
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12 py-2 px-4">
+                                                                                <span class="font-14 font-weight-bold">PART C: DETAILS OF WORK (to be completed by S.O. or his representative)</span>
+                                                                            </div>
+                                                                            <div class="col-12">
+
+                                                                                <div class="border-top px-2 pb-1 float-left w-100">
+                                                                                    <div class="row">
+                                                                                        <div class="form-group col-lg-12">
+                                                                                            @Html.TextAreaFor(m => m.SaveFormW2Model.DetailsOfWorks, new { @style = "height:105px", @Id = "formW2DetailsOfWorks", @class = "form-control mt-3 validate {required, Details Of Work}" })
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                                                             <div class="row">
-                                                                <div class="col-lg-12 py-2 px-4">
-                                                                    <span class="font-14 font-weight-bold">PART C: DETAILS OF WORK (to be completed by S.O. or his representative)</span>
-                                                                </div>
-                                                                <div class="col-12">
+                                                                <div class="col-lg-12">
+                                                                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                                                                        <div class="col-lg-12 py-2 px-2">
+                                                                            <span class="font-14 font-weight-bold">
+                                                                                PART D: CEILING ESTIMATED COST
+                                                                            </span>
+                                                                        </div>
 
-                                                                    <div class="border-top px-2 pb-1 float-left w-100">
-                                                                        <div class="row">
-                                                                            <div class="form-group col-lg-12">
-                                                                                @Html.TextAreaFor(m => m.SaveFormW2Model.DetailsOfWorks, new { @style = "height:105px", @Id = "formW2DetailsOfWorks", @class = "form-control border-left border-top-0 border-left-0 border-right-0 validate {required, Details Of Work}" })
+                                                                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                                                            <div class="col-lg-4 px-0 float-left">
+                                                                                @Html.Label("Estimated Cost (RM)", "Estimated Cost (RM)")
+                                                                                <div class="input-group">
+                                                                                    <div class="input-group-prepend">
+                                                                                        <span class="input-group-text">RM</span>
+                                                                                    </div>
+                                                                                    @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required,number, Estimated Cost}" })
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="clear-b mb-3"></div>
+                                                                            <div class="form-group col-lg-2 px-0">
+                                                                                @Html.Label("Issued By", "Issued By")
+                                                                                @{ var issuedByEnable = true;
+                                                                                    if (Model.SaveFormW2Model.UseridIssu == 0)
+                                                                                    {
+
+                                                                                    }
+                                                                                }
+                                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridIssu, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Issued By", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}", @disabled = @issuedByEnable })
+
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("Name", "Name")
+                                                                                @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameIssu, new { @id = "formW2IssuedName", @class = "form-control svalidate  {required, Attention To Name}", @disabled = true })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("Designation", "Designation")
+                                                                                @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameIssu, new { @id = "formW2IssuedName", @class = "form-control svalidate  {required, Attention To Name}", @disabled = true })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("Office", "Office")
+                                                                                @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameIssu, new { @id = "formW2IssuedName", @class = "form-control svalidate  {required, Attention To Name}", @disabled = true })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                                                                                <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" value="@_IssuedDate" disabled />
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2 text-center">
+                                                                                @Html.Label("Signature", "Signature")
+                                                                                @{
+                                                                                    var _issued = Model.SaveFormW2Model.SignIssu == null || Model.SaveFormW2Model.SignIssu == false ? false : true;
+
+                                                                                }
+                                                                                <div class="clear-b mt-2">
+                                                                                    <input type="checkbox" id="formW2IssuedSignture" class="disableinput" checked="@_issued" style="height: 20px;">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+
+                                                                            <div class="form-group col-lg-2 px-0">
+                                                                                @Html.Label("Requested by", "Requested by")
+
+                                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridReq, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Requested By", new { @Id = "formw2RequestedBy", @class = "form-control  svalidate {required, Requested By}", @onchange = "ChangeRUser(this);" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("Name", "Name")
+                                                                                @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Requested by Name}", @disabled = true })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("Designation", "Designation")
+                                                                                @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameIssu, new { @id = "formW2IssuedName", @class = "form-control svalidate  {required, Attention To Name}", @disabled = true })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("Office", "Office")
+                                                                                @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameIssu, new { @id = "formW2IssuedName", @class = "form-control svalidate  {required, Attention To Name}", @disabled = true })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2">
+                                                                                @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                                                                                <input type="date" class="datepicker form-control  svalidate {required, Requested by date}" id="formW2RequestedDate" value="@_RequestedDate" disabled />
+                                                                            </div>
+                                                                            <div class="form-group col-lg-2 text-center">
+                                                                                @Html.Label("Signature", "Signature")
+                                                                                @{
+                                                                                    var _Requested = Model.SaveFormW2Model.SignReq == null || Model.SaveFormW2Model.SignReq == false ? false : true;
+
+                                                                                }
+                                                                                <div class="clear-b mt-2">
+                                                                                    <input type="checkbox" id="formW2RequestedSign" class="disableinput" checked="@_Requested" style="height: 20px;">
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                                            <div class="col-lg-12 py-2 px-2">
-                                                                <span class="font-14 font-weight-bold">
-                                                                    PART D: CEILING ESTIMATED COST
-                                                                </span>
-                                                            </div>
-
-                                                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
-                                                                <div class="col-lg-4 px-0 float-left">
-                                                                    @Html.Label("Estimated Cost (RM)", "Estimated Cost (RM)")
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">RM</span>
-                                                                        </div>
-                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required,number, Estimated Cost}" })
-                                                                    </div>
-                                                                </div>
-                                                                <div class="clear-b mb-3"></div>
-                                                                <div class="form-group col-lg-3 px-0">
-                                                                    @Html.Label("Issued By", "Issued By")
-                                                                    @{ var issuedByEnable = true;
-                                                                        if (Model.SaveFormW2Model.UseridIssu == 0)
-                                                                        {
-
-                                                                        }
-                                                                    }
-                                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridIssu, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Issued By", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}", @disabled = @issuedByEnable })
-
-                                                                </div>
-                                                                <div class="form-group col-lg-4">
-                                                                    @Html.Label("Name", "Name")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameIssu, new { @id = "formW2IssuedName", @class = "form-control svalidate  {required, Attention To Name}", @disabled = true })
-                                                                </div>
-
-                                                                <div class="form-group col-lg-3">
-                                                                    @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" value="@_IssuedDate" disabled />
-                                                                </div>
-                                                                <div class="form-group col-lg-2 text-center">
-                                                                    @Html.Label("Signature", "Signature")
-                                                                    @{
-                                                                        var _issued = Model.SaveFormW2Model.SignIssu == null || Model.SaveFormW2Model.SignIssu == false ? false : true;
-
-                                                                    }
-                                                                    <div class="clear-b mt-2">
-                                                                        <input type="checkbox" id="formW2IssuedSignture" class="disableinput" checked="@_issued" style="height: 20px;">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
-
-                                                                <div class="form-group col-lg-3 px-0">
-                                                                    @Html.Label("Requested by", "Requested by")
-
-                                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridReq, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Requested By", new { @Id = "formw2RequestedBy", @class = "form-control  svalidate {required, Requested By}", @onchange = "ChangeRUser(this);" })
-                                                                </div>
-                                                                <div class="form-group col-lg-4">
-                                                                    @Html.Label("Name", "Name")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Requested by Name}", @disabled = true })
-                                                                </div>
-
-                                                                <div class="form-group col-lg-3">
-                                                                    @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Requested by date}" id="formW2RequestedDate" value="@_RequestedDate" disabled />
-                                                                </div>
-                                                                <div class="form-group col-lg-2 text-center">
-                                                                    @Html.Label("Signature", "Signature")
-                                                                    @{
-                                                                        var _Requested = Model.SaveFormW2Model.SignReq == null || Model.SaveFormW2Model.SignReq == false ? false : true;
-
-                                                                    }
-                                                                    <div class="clear-b mt-2">
-                                                                        <input type="checkbox" id="formW2RequestedSign" class="disableinput" checked="@_Requested" style="height: 20px;">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

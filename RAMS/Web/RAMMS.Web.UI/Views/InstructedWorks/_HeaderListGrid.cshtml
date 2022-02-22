@@ -108,7 +108,7 @@
         filterData.Status = $("#txtStatus option:selected").val();
         filterData.StatusPercForm = $("#txtStPercFrom").val();
         filterData.StatusPercTo = $("#txtStPercTo").val();
-        filterData.Month = $("#txtMonth").val();
+        //filterData.Month = $("#txtMonth").val();
         filterData.Rmu = $("#txtRmu option:selected").val();
         filterData.RoadCode = $("#txtRoadCode option:selected").val();
 
@@ -165,7 +165,7 @@
 
         oTable.columns(6).search($("#txtStPercFrom").val().trim());
         oTable.columns(7).search($("#txtStPercTo").val().trim());
-        oTable.columns(8).search($("#txtMonth").val().trim());
+        oTable.columns(8).search("");
         var rmuCode = $("#txtRmu option:selected").val(); //text().split("-")[0];
         if (rmuCode != "") {
             oTable.columns(9).search(rmuCode);
@@ -199,7 +199,7 @@
         $("#txtProjectTitle").val("");
         $("#txtStPercFrom").val("");
         $("#txtStPercTo").val("");
-        $("#txtMonth").val("");
+        //$("#txtMonth").val("");
         $("#txtRmuName").val("");
         $("#txtRoadName").val("");
 
