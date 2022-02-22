@@ -48,9 +48,9 @@
 
     });
 
-    $('[data-toggle="tooltip"]').tooltip();
-
-
+    //$("#ddlSectionCode").val($('#FormW1_SecCode').val());
+    //$('#ddlSectionCode').trigger("chosen:updated")
+    //$("#ddlSectionCode").trigger("change");
 
 
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
@@ -334,7 +334,7 @@ function getNameByCode(obj) {
         type: 'Post',
         success: function (data) {
             if (obj.Type == "Section Code") {
-                $("#FormW1_SecName").val(data);
+                $("#SecName").val(data);
             }
             else if (obj.Type == "RD_Code") {
                 $("#FormW1_RoadName").val(data);

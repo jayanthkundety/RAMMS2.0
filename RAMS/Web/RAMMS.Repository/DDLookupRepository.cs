@@ -63,7 +63,7 @@ namespace RAMS.Repository
         {
             //return await _context.RmDivRmuSecMaster.Where(x => x.RdsmActiveYn == true ) .ToListAsync();
 
-           return await (from x in _context.RmDivRmuSecMaster
+           return await (from x in _context.RmDivRmuSecMaster 
                           select new  RoadMasterResponseDTO
                           {
                               CategoryName = x.RdsmDivision,

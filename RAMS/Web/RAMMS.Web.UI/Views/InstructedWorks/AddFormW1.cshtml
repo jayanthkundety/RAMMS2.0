@@ -28,12 +28,12 @@
 @using (Html.BeginForm())
 {
     <div class="row" id="FormW1page">
-        <div class="col-12 mt-3">
+        <div class="col-12 ">
             <div class="container-fluid">
                 <div class="row">
 
                     <div class="col-md-12">
-                        <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
+                        <div class="w-100 position-relative float-left d-flex justify-content-center">
                             <ul class="nav nav-tabs tabbed round">
                                 <li class="nav-item">
                                     <a href="#tab1" data-toggle="tab" aria-expanded="false" class="nav-link active">
@@ -52,7 +52,7 @@
                             </ul>
                         </div>
 
-                        <div class="row bg-white py-4" id="FormW1datapage">
+                        <div class="row bg-white " id="FormW1datapage">
                             <div class="col-lg-12">
                                 <div class="tab-content">
                                     <div class="tab-pane show active" id="tab1">
@@ -83,7 +83,7 @@
                                                                         </div>
                                                                         <div class="form-group col-lg-2">
                                                                             @Html.Label("Section Name", "Section Name")
-                                                                            @Html.TextBoxFor(m => m.FormW1.SecCode, new { @readonly = true, @class = "form-control" })
+                                                                            <input type="text" id="SecName" readonly class="form-control" />
                                                                         </div>
 
 
@@ -106,11 +106,11 @@
                                                                             @Html.EditorFor(m => m.FormW1.TecmDt, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                                                                         </div>
                                                                         @*<div class="form-group col-lg-3">
-                                                                            @Html.Label("Status", "Status")
-                                                                            @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
-                                                                 <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
+                                                                                       @Html.Label("Status", "Status")
+                                                                                       @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
+                                                                            <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
 
-                                                                        </div>*@
+                                                                                   </div>*@
                                                                         <div class="form-group col-lg-2">
                                                                             <div class="row mt-4">
                                                                                 <div class="col-6 pt-1">
@@ -445,7 +445,7 @@
                                                                         </div>
                                                                         <div class="form-group col-lg-2">
                                                                             <label for="Designation"> Office</label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationRep, new { @readonly = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.OfficeReq, new { @readonly = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
@@ -474,12 +474,12 @@
 
                                                                         <div class="form-group col-lg-2">
                                                                             <label for="Designation"> Designation</label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationRep, new { @readonly = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationVer, new { @readonly = true, @class = "form-control" })
                                                                         </div>
 
                                                                         <div class="form-group col-lg-2">
                                                                             <label for="Designation"> Office</label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationRep, new { @readonly = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.OfficeVer, new { @readonly = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             <label>Date (DD-MM-YYYY)</label>
@@ -597,7 +597,7 @@
         $('#ddlRMU').val("@Model.FormW1.RmuCode");
         $('#ddlRMU').trigger('chosen:updated');
 
-       
+
 
         $('#ddlRoadCode').val("@Model.FormW1.RoadCode");
         $('#ddlRoadCode').trigger('chosen:updated');
