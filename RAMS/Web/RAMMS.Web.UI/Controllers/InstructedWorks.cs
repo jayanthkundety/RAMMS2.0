@@ -68,7 +68,6 @@ namespace RAMMS.Web.UI.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> GetIWImageList(string Id, string assetgroup)
         {
@@ -699,5 +698,47 @@ namespace RAMMS.Web.UI.Controllers
             return Json(refNo);
         }
         #endregion
+
+        #region WCWG
+
+        public IActionResult OpenWCWG()
+        {
+            return View("~/Views/InstructedWorks/FormWCWG.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWC()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWC.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWG()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWG.cshtml");
+        }
+        #endregion
+
+        #region WDWN
+
+        public IActionResult OpenWDWN()
+        {
+            return View("~/Views/InstructedWorks/FormWDWN.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWD()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWD.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWN()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWN.cshtml");
+        }
+
+        #endregion
+
     }
 }
