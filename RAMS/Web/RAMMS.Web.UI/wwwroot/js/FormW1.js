@@ -1,6 +1,5 @@
 ﻿$(document).ready(function () {
-    debugger;
-
+    
     if ($("#hdnView").val() == "1") {
         $("#FormW1page *").prop("disabled", true);
         $("#ddlRMU").chosen('destroy');
@@ -49,9 +48,9 @@
 
     });
 
-    $('[data-toggle="tooltip"]').tooltip();
-
-
+    //$("#ddlSectionCode").val($('#FormW1_SecCode').val());
+    //$('#ddlSectionCode').trigger("chosen:updated")
+    //$("#ddlSectionCode").trigger("change");
 
 
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
@@ -74,13 +73,16 @@
         }
     });
 
-    if (RecommondedInstrctedWorkValue != "None") {
+    if (RecommondedInstrctedWorkValue != "0") {
         $('#ddlUseridVer').prop("disabled", false);
         $("#FormW1_DtVer").prop("readonly", false);
+        $("#FormW1_SignVer").prop("disabled", false);
         $('#ddlUseridVer').trigger('chosen:updated');
     }
     else {
         $('#ddlUseridVer').prop("disabled", true);
+        $("#FormW1_DtVer").prop("readonly", true);
+        $("#FormW1_SignVer").prop("disabled", true);
     }
 
     CalculateCost();
@@ -96,6 +98,12 @@
         }
 
     });
+
+
+
+
+
+
 
 });
 
@@ -172,39 +180,44 @@ function OnRMUChange(tis) {
     $('#FormW1_RmuCode').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#FormW1_DivnCode").val(ctrl.find("option:selected").attr("Item1"));
-
+         
+         // to get value for Section code ddl
+        var obj = new Object();
+        obj.RMU = ctrl.val();
+        searchList(obj);
+        
         // to get value for RoadCode
 
-            $.ajax({
-                url: '/InstructedWorks/GetRoadCodeByRMU',
-                dataType: 'JSON',
-                data: { rmu: ctrl.val() },
-                type: 'Post',
-                success: function (data) {
-                    if (data != null) {
-                         debugger
-                        $('#ddlRoadCode').empty();
-                        $('#ddlRoadCode')
-                            .append($("<option></option>")
-                                .attr("value", "")
-                                .text("Select Road Code"));
-                        $.each(data, function (key, value) {
-                            $('#ddlRoadCode')
-                                .append($("<option></option>")
-                                    .attr("value", value.value)
-                                    .attr("Item1", value.item1)
-                                    .text(value.text));
-                        });
-                        $("#ddlRoadCode").val($('#FormW1_RoadCode').val());
-                        $('#ddlRoadCode').trigger("chosen:updated")
-                        $("#ddlRoadCode").trigger("change");
-                    }
-                },
-                error: function (data) {
+            //$.ajax({
+            //    url: '/InstructedWorks/GetRoadCodeByRMU',
+            //    dataType: 'JSON',
+            //    data: { rmu: ctrl.val() },
+            //    type: 'Post',
+            //    success: function (data) {
+            //        if (data != null) {
+                          
+            //            $('#ddlRoadCode').empty();
+            //            $('#ddlRoadCode')
+            //                .append($("<option></option>")
+            //                    .attr("value", "")
+            //                    .text("Select Road Code"));
+            //            $.each(data, function (key, value) {
+            //                $('#ddlRoadCode')
+            //                    .append($("<option></option>")
+            //                        .attr("value", value.value)
+            //                        .attr("Item1", value.item1)
+            //                        .text(value.text));
+            //            });
+            //            $("#ddlRoadCode").val($('#FormW1_RoadCode').val());
+            //            $('#ddlRoadCode').trigger("chosen:updated")
+            //            $("#ddlRoadCode").trigger("change");
+            //        }
+            //    },
+            //    error: function (data) {
 
-                    console.error(data);
-                }
-            });
+            //        console.error(data);
+            //    }
+            //});
        
     }
     else {
@@ -213,18 +226,124 @@ function OnRMUChange(tis) {
 
 }
 
-function OnRoadChange(tis) {
+function OnSectionChange(tis) {
 
-    var ctrl = $(tis);
-    $('#FormW1_RoadCode').val(ctrl.val());
+    var ctrl = $("#ddlSectionCode");
+    $('#FormW1_SecCode').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
-        $("#FormW1_RoadName").val(ctrl.find("option:selected").attr("Item1"));
+        
+        // to get value for road code ddl
+        var obj = new Object();
+        obj.RMU = $("#ddlRMU").val();
+        obj.SectionCode = ctrl.val();
+        searchList(obj);
+
+        //to get section name
+        var obj = new Object();
+        var arrsec = $("#ddlSectionCode").find(":selected").text().split('-');
+        if (arrsec.length > 0) {
+            obj.TypeCode = arrsec[0];
+        }
+        else {
+            obj.TypeCode = 0;
+        }
+        obj.Type = "Section Code"
+        getNameByCode(obj)
+
     }
     else {
-        $("#FormW1_RoadName").val('');
+        $("#FormW1_SectionCode").val('');
     }
 
 }
+
+function OnRoadChange(tis) {
+
+    //var ctrl = $(tis);
+    //$('#FormW1_RoadCode').val(ctrl.val());
+    //if (ctrl.val() != null && ctrl.val() != "") {
+    //    $("#FormW1_RoadName").val(ctrl.find("option:selected").attr("Item1"));
+    //}
+    //else {
+    //    $("#FormW1_RoadName").val('');
+    //}
+
+    var ctrl = $(tis);
+    $('#FormW1_RoadCode').val(ctrl.val());
+    
+    var obj = new Object();
+    obj.TypeCode = ctrl.val();
+    obj.Type = "RD_Code";
+    getNameByCode(obj)
+
+}
+
+
+
+function searchList(obj) {
+    $.ajax({
+        url: '/InstructedWorks/detailSearchDdList',
+        data: obj,
+        type: 'Post',
+        success: function (data) {
+
+            debugger
+
+            if (obj.RdCode == "" || obj.RdCode == null || obj.RdCode == 0) {
+
+                $('#ddlRoadCode').empty();
+                $("#ddlRoadCode").append($('<option>').val(null).text("Select Road Code"));
+
+                $.each(data.rdCode, function (index, value) {
+                    $("#ddlRoadCode").append($('<option>').val(value.value).html(value.text));
+                    $("#ddlRoadCode").trigger("chosen:updated");
+
+                })
+                $("#ddlRoadCode").val($('#FormW1_RoadCode').val());
+                $('#ddlRoadCode').trigger("chosen:updated")
+                $("#ddlRoadCode").trigger("change");
+                $("#FormW1_RoadName").val(null);
+            }
+
+
+            if (obj.SectionCode == "" || obj.SectionCode == null || obj.SectionCode == 0) {
+
+                $('#ddlSectionCode option').empty();
+                $('#ddlSectionCode').append($('<option>').val(null).text('Select Section Code'))
+
+                $.each(data.section, function (index, value) {
+                    $('#ddlSectionCode').append($('<option>').val(value.value).text(value.text))
+                    $('#ddlSectionCode').trigger("chosen:updated");
+                })
+                $("#ddlSectionCode").val($('#FormW1_SecCode').val());
+                $('#ddlSectionCode').trigger("chosen:updated")
+                $("#ddlSectionCode").trigger("change");
+                $("#SecName").val(null)
+            }
+
+        }
+
+
+    });
+}
+
+function getNameByCode(obj) {
+    $.ajax({
+        url: '/InstructedWorks/GetNameByCode',
+        data: obj,
+        type: 'Post',
+        success: function (data) {
+            if (obj.Type == "Section Code") {
+                $("#SecName").val(data);
+            }
+            else if (obj.Type == "RD_Code") {
+                $("#FormW1_RoadName").val(data);
+            }
+        }
+    })
+}
+
+
 
 function OnUseridRepUserChange(tis) {
 
@@ -316,6 +435,10 @@ function GoBack() {
     else
         location.href = "/InstructedWorks/Index";
 }
+
+
+ 
+
  
 
 

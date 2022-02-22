@@ -30,6 +30,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormW1Service _formW1Service;
         private readonly IFormW2Service _formW2Service;
         private readonly IDDLookUpService _ddLookupService;
+        private readonly IRoadMasterService _roadMasterService;
         private IHostingEnvironment Environment;
         //  private readonly ILogger _logger;
         private readonly ISecurity _security;
@@ -41,11 +42,12 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IMapper _mapper;
         FormIWModel _formIWModel = new FormIWModel();
 
-        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
+        public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService, IRoadMasterService roadMasterService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
         {
 
 
             _ddLookupService = ddLookupService;
+            _roadMasterService = roadMasterService;
             Environment = _environment;
             _webHostEnvironment = webhostenvironment;
 
@@ -172,9 +174,52 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> detailSearchDdList(AssetDDLRequestDTO assetDDLRequestDTO)
+        {
+            AssetDDLResponseDTO assetDDLResponseDTO = new AssetDDLResponseDTO();
+            assetDDLResponseDTO = await _roadMasterService.GetAssetDDL(assetDDLRequestDTO);
+            return Json(assetDDLResponseDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetNameByCode(DDLookUpDTO dDLookUpDTO)
+        {
+            string name = "";
+            if (dDLookUpDTO.Type == "Section Code")
+            {
+                name = await _ddLookupService.GetDDLValueforTypeAndDesc(dDLookUpDTO);
+            }
+            else if (dDLookUpDTO.Type == "RD_Code")
+            {
+                RoadMasterRequestDTO roadMasterRequestDTO = new RoadMasterRequestDTO();
+                RoadMasterResponseDTO roadMasterResponseDTO = new RoadMasterResponseDTO();
+                roadMasterRequestDTO.RoadCode = dDLookUpDTO.TypeCode;
+                if (roadMasterRequestDTO.RoadCode != null)
+                {
+                    roadMasterResponseDTO = await _roadMasterService.GetAllRoadCodeData(roadMasterRequestDTO);
+                    name = roadMasterResponseDTO.RoadName;
+                }
+                else
+                {
+                    name = "";
+                }
+            }
+            return Json(name);
+        }
+
+
         #endregion
 
         #region FormW1
+
+        public async Task LoadDropDownsSectionCode()
+        {
+            AssetDDLRequestDTO assetDDLRequestDTO = new AssetDDLRequestDTO();
+            var assetDDLResponseDTO = await _roadMasterService.GetAssetDDL(assetDDLRequestDTO);
+            ViewBag.SectionCodeList = from d in assetDDLResponseDTO.Section select new SelectListItem { Text = d.Text, Value = d.Value };
+        }
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
@@ -185,6 +230,7 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.Type = "Month";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
             LoadLookupService("RMU", "Division", "RD_Code", "User", "TECM_Status");
+            await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
 
 
@@ -208,7 +254,7 @@ namespace RAMMS.Web.UI.Controllers
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;
             model.View = View;
-
+            await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
             FormW1Model assetsModel = new FormW1Model();
             model.ImageList = await _formW1Service.GetImageList(_formW1Model.IwRefNo);
