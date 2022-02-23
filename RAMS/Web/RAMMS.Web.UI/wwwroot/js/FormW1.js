@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    
+
     if ($("#hdnView").val() == "1") {
         $("#FormW1page *").prop("disabled", true);
         $("#ddlRMU").chosen('destroy');
@@ -54,48 +54,61 @@
 
     debugger
     //to get section name
-    var obj = new Object();
-    var arrsec = $("#ddlSectionCode").find(":selected").text().split('-');
-    if (arrsec.length > 0) {
-        obj.TypeCode = arrsec[0];
-    }
-    else {
-        obj.TypeCode = 0;
-    }
-    obj.Type = "Section Code"
-    getNameByCode(obj);
+    //var TypeCodeSec;
+    //var arrsection = $("#ddlSectionCode").find(":selected").text().split('-');
+    //if (arrsec.length > 0) {
+    //    TypeCodeSec = arrsection[0];
+    //}
+    //else {
+    //    TypeCodeSec = 0;
+    //}
+    //GetNames(TypeCodeSec, "Section Code");
+
+    ////to get road name
+    //var TypeCodeSec;
+    //var arrsection = $("#ddlSectionCode").find(":selected").text().split('-');
+    //if (arrsec.length > 0) {
+    //    TypeCodeSec = arrsection[0];
+    //}
+    //else {
+    //    TypeCodeSec = 0;
+    //}
+
+   
+
+    
 
 
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
 
         if (this.value == '1' || this.value == '2') {
-            $('#ddlUseridVer').prop("disabled", false);
-            $('#ddlUseridVer').trigger('chosen:updated');
-            $("#FormW1_DtVer").prop("readonly", false);
-            $("#FormW1_SignVer").prop("disabled", false);
+            $('#ddlUseridRep').prop("disabled", false);
+            $('#ddlUseridRep').trigger('chosen:updated');
+            $("#FormW1_DtRep").prop("readonly", false);
+            $("#FormW1_SignRep").prop("disabled", false);
         }
         else {
-            $('#ddlUseridVer').prop("disabled", true);
-            $('#ddlUseridVer').val(0);
-            $('#ddlUseridVer').trigger('chosen:updated');
-            $("#FormW1_UsernameVer").val('');
-            $("#FormW1_DesignationVer").val('');
-            $("#FormW1_DtVer").val('');
-            $("#FormW1_DtVer").prop("readonly", true);
-            $("#FormW1_SignVer").prop("disabled", true);
+            $('#ddlUseridRep').prop("disabled", true);
+            $('#ddlUseridRep').val(0);
+            $('#ddlUseridRep').trigger('chosen:updated');
+            $("#FormW1_UsernameRep").val('');
+            $("#FormW1_DesignationRep").val('');
+            $("#FormW1_DtRep").val('');
+            $("#FormW1_DtRep").prop("readonly", true);
+            $("#FormW1_SignRep").prop("disabled", true);
         }
     });
 
     if (RecommondedInstrctedWorkValue != "0") {
-        $('#ddlUseridVer').prop("disabled", false);
-        $("#FormW1_DtVer").prop("readonly", false);
-        $("#FormW1_SignVer").prop("disabled", false);
-        $('#ddlUseridVer').trigger('chosen:updated');
+        $('#ddlUseridRep').prop("disabled", false);
+        $("#FormW1_DtRep").prop("readonly", false);
+        $("#FormW1_SignRep").prop("disabled", false);
+        $('#ddlUseridRep').trigger('chosen:updated');
     }
     else {
-        $('#ddlUseridVer').prop("disabled", true);
-        $("#FormW1_DtVer").prop("readonly", true);
-        $("#FormW1_SignVer").prop("disabled", true);
+        $('#ddlUseridRep').prop("disabled", true);
+        $("#FormW1_DtRep").prop("readonly", true);
+        $("#FormW1_SignRep").prop("disabled", true);
     }
 
     CalculateCost();
@@ -153,7 +166,7 @@ function CalculateCost() {
     }
     else {
         ConsulFeeAmt = 0;
-    } 
+    }
 
     if ($("#FormW1_OtherCostAmt").val() != "") {
         OtherCostAmt = $("#FormW1_OtherCostAmt").val();
@@ -169,7 +182,7 @@ function Save(submit) {
     if (submit) {
         $("#FormW1page .svalidate").addClass("validate");
     }
-    
+
     if (ValidatePage('#FormW1page')) {
         InitAjaxLoading();
         $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
@@ -193,45 +206,45 @@ function OnRMUChange(tis) {
     $('#FormW1_RmuCode').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#FormW1_DivnCode").val(ctrl.find("option:selected").attr("Item1"));
-         
-         // to get value for Section code ddl
+
+        // to get value for Section code ddl
         var obj = new Object();
         obj.RMU = ctrl.val();
         searchList(obj);
-        
+
         // to get value for RoadCode
 
-            //$.ajax({
-            //    url: '/InstructedWorks/GetRoadCodeByRMU',
-            //    dataType: 'JSON',
-            //    data: { rmu: ctrl.val() },
-            //    type: 'Post',
-            //    success: function (data) {
-            //        if (data != null) {
-                          
-            //            $('#ddlRoadCode').empty();
-            //            $('#ddlRoadCode')
-            //                .append($("<option></option>")
-            //                    .attr("value", "")
-            //                    .text("Select Road Code"));
-            //            $.each(data, function (key, value) {
-            //                $('#ddlRoadCode')
-            //                    .append($("<option></option>")
-            //                        .attr("value", value.value)
-            //                        .attr("Item1", value.item1)
-            //                        .text(value.text));
-            //            });
-            //            $("#ddlRoadCode").val($('#FormW1_RoadCode').val());
-            //            $('#ddlRoadCode').trigger("chosen:updated")
-            //            $("#ddlRoadCode").trigger("change");
-            //        }
-            //    },
-            //    error: function (data) {
+        //$.ajax({
+        //    url: '/InstructedWorks/GetRoadCodeByRMU',
+        //    dataType: 'JSON',
+        //    data: { rmu: ctrl.val() },
+        //    type: 'Post',
+        //    success: function (data) {
+        //        if (data != null) {
 
-            //        console.error(data);
-            //    }
-            //});
-       
+        //            $('#ddlRoadCode').empty();
+        //            $('#ddlRoadCode')
+        //                .append($("<option></option>")
+        //                    .attr("value", "")
+        //                    .text("Select Road Code"));
+        //            $.each(data, function (key, value) {
+        //                $('#ddlRoadCode')
+        //                    .append($("<option></option>")
+        //                        .attr("value", value.value)
+        //                        .attr("Item1", value.item1)
+        //                        .text(value.text));
+        //            });
+        //            $("#ddlRoadCode").val($('#FormW1_RoadCode').val());
+        //            $('#ddlRoadCode').trigger("chosen:updated")
+        //            $("#ddlRoadCode").trigger("change");
+        //        }
+        //    },
+        //    error: function (data) {
+
+        //        console.error(data);
+        //    }
+        //});
+
     }
     else {
         $("#FormW1_DivnCode").val('');
@@ -244,7 +257,7 @@ function OnSectionChange(tis) {
     var ctrl = $("#ddlSectionCode");
     $('#FormW1_SecCode').val(ctrl.val());
     if (ctrl.val() != null && ctrl.val() != "") {
-        
+
         // to get value for road code ddl
         var obj = new Object();
         obj.RMU = $("#ddlRMU").val();
@@ -252,17 +265,15 @@ function OnSectionChange(tis) {
         searchList(obj);
 
         //to get section name
-        var obj = new Object();
+        var TypeCode;
         var arrsec = $("#ddlSectionCode").find(":selected").text().split('-');
         if (arrsec.length > 0) {
-            obj.TypeCode = arrsec[0];
+            TypeCode = arrsec[0];
         }
         else {
-            obj.TypeCode = 0;
+            TypeCode = 0;
         }
-        obj.Type = "Section Code"
-        getNameByCode(obj)
-
+        GetNames(TypeCode, "Section Code");
     }
     else {
         $("#FormW1_SectionCode").val('');
@@ -270,7 +281,11 @@ function OnSectionChange(tis) {
 
 }
 
-function GetNames() {
+function GetNames(TypeCode, Type) {
+    var obj = new Object();
+    obj.TypeCode = TypeCode;
+    obj.Type = Type;
+    getNameByCode(obj);
 }
 
 function OnRoadChange(tis) {
@@ -284,9 +299,9 @@ function OnRoadChange(tis) {
     //    $("#FormW1_RoadName").val('');
     //}
 
-    var ctrl = $(tis);
+    var ctrl = $("#ddlRoadCode");
     $('#FormW1_RoadCode').val(ctrl.val());
-    
+
     var obj = new Object();
     obj.TypeCode = ctrl.val();
     obj.Type = "RD_Code";
@@ -369,10 +384,12 @@ function OnUseridRepUserChange(tis) {
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#FormW1_UsernameRep").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationRep").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormW1_OfficeRep").val(ctrl.find("option:selected").attr("Item3"));
     }
     else {
         $("#FormW1_UsernameRep").val('');
         $("#FormW1_DesignationRep").val('');
+        $("#FormW1_OfficeRep").val('');
     }
 
 }
@@ -385,10 +402,12 @@ function OnUseridReqUserChange(tis) {
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#FormW1_UsernameReq").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationReq").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormW1_OfficeReq").val(ctrl.find("option:selected").attr("Item3"));
     }
     else {
         $("#FormW1_UsernameReq").val('');
         $("#FormW1_DesignationReq").val('');
+        $("#FormW1_OfficeReq").val('');
     }
 
 }
@@ -400,10 +419,12 @@ function OnVerifyUserChange(tis) {
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#FormW1_UsernameVer").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationVer").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormW1_OfficeVer").val(ctrl.find("option:selected").attr("Item3"));
     }
     else {
         $("#FormW1_UsernameVer").val('');
         $("#FormW1_DesignationVer").val('');
+        $("#FormW1_OfficeVer").val('');
 
     }
 }
@@ -412,7 +433,7 @@ function OnVerifyUserChange(tis) {
 function GetImageList(id) {
 
     var group = $("#FormADetAssetGrpCode option:selected").val();
-     
+
     $.ajax({
         url: '/InstructedWorks/GetIWImageList',
         data: { Id: id, assetgroup: group },
@@ -453,8 +474,8 @@ function GoBack() {
 }
 
 
- 
 
- 
+
+
 
 

@@ -112,7 +112,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             //var result = new List<SelectListItem>();
             try
             {
-                return await _repoUnit.UserRepository.FindAsync(null, x => new CSelectListItem() { Text = x.UsrPkId + "-" + x.UsrUserName, Value = x.UsrPkId.ToString(), CValue = x.UsrPkId.ToString(), Item1 = x.UsrUserName, Item2 = x.UsrPosition });
+                return await _repoUnit.UserRepository.FindAsync(null, x => new CSelectListItem() { Text = x.UsrPkId + "-" + x.UsrUserName, Value = x.UsrPkId.ToString(), CValue = x.UsrPkId.ToString(), Item1 = x.UsrUserName, Item2 = x.UsrPosition,Item3 = x.UsrCompanyName });
             }
             catch (Exception ex)
             {

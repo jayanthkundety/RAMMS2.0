@@ -132,25 +132,25 @@
                                                                             @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "ServPropName", "Select ServPropName", new { id = "ddlServPropName", @class = "form-control svalidate {required,Road Code}" })
                                                                         </div>
                                                                         @*<div class="form-group col-lg-4">
-                                                                            <label for="Designation"> Address 1 </label>
-                                                                            @Html.TextBoxFor(m => m.FormW1.ServAddress1, new { @class = "form-control" })
-                                                                        </div>
-                                                                        <div class="form-group col-lg-4">
-                                                                            <label for="Designation"> Address 2 </label>
-                                                                            @Html.TextBoxFor(m => m.FormW1.ServAddress2, new { @class = "form-control" })
-                                                                        </div>
-                                                                        <div class="form-group col-lg-4">
-                                                                            <label for="Designation"> Address 3 </label>
-                                                                            @Html.TextBoxFor(m => m.FormW1.ServAddress3, new { @class = "form-control" })
-                                                                        </div>
-                                                                        <div class="form-group col-lg-3">
-                                                                            <label for="Designation">Phone NO </label>
-                                                                            @Html.TextBoxFor(m => m.FormW1.ServPhone, new { @class = "form-control" })
-                                                                        </div>
-                                                                        <div class="form-group col-lg-3">
-                                                                            <label for="Designation"> Fax </label>
-                                                                            @Html.TextBoxFor(m => m.FormW1.ServFax, new { @class = "form-control" })
-                                                                        </div>*@
+                                                                                <label for="Designation"> Address 1 </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress1, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-4">
+                                                                                <label for="Designation"> Address 2 </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress2, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-4">
+                                                                                <label for="Designation"> Address 3 </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress3, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation">Phone NO </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServPhone, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation"> Fax </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServFax, new { @class = "form-control" })
+                                                                            </div>*@
                                                                         <div class="form-group col-lg-3">
                                                                             <label>
                                                                                 Intial Proposed Date
@@ -390,30 +390,39 @@
                                                                 <div class="col-lg-12 mt-3">
                                                                     <div class="row py-1">
                                                                         <div class="form-group col-lg-2">
-                                                                            @Html.Label("Reported by", "Reported by")
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @class = "form-control", @onchange = "OnUseridRepUserChange(this);" })
-
+                                                                            <label for="Designation">
+                                                                                Requested by
+                                                                            </label>
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridReq", "Select Users", new { Id = "ddlUseridReq", @class = "form-control", @onchange = "OnUseridReqUserChange(this);" })
                                                                         </div>
-                                                                        <div class="form-group col-lg-3">
+                                                                        <div class="form-group col-lg-2">
                                                                             @Html.Label("Name", "Name")
-                                                                            @Html.TextBoxFor(model => model.FormW1.UsernameRep, new { @readonly = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.UsernameReq, new { @readonly = true, @class = "form-control" })
 
                                                                         </div>
-                                                                        <div class="form-group col-lg-3">
+                                                                        <div class="form-group col-lg-2">
                                                                             <label for="Designation"> Designation</label>
-                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationVer, new { @readonly = true, @class = "form-control" })
+                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationReq, new { @readonly = true, @class = "form-control" })
+
+                                                                        </div>
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label for="Designation"> Office</label>
+                                                                            @Html.TextBoxFor(model => model.FormW1.OfficeReq, new { @readonly = true, @class = "form-control" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2 pr-0">
                                                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                                                            @Html.EditorFor(m => m.FormW1.DtRep, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                            @Html.EditorFor(m => m.FormW1.DtReq, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+
                                                                         </div>
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.CheckBoxFor(model => model.FormW1.SignRep)
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignReq)
                                                                             </div>
 
                                                                         </div>
+
+                                                                       
                                                                     </div>
 
                                                                     <div class="row pt-3 pb-1">
@@ -434,81 +443,74 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                       
-                                                                            <div class="form-group col-lg-2">
-                                                                                <label for="Designation">
-                                                                                    Requested by
-                                                                                </label>
-                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridReq", "Select Users", new { Id = "ddlUseridReq", @class = "form-control", @onchange = "OnUseridReqUserChange(this);" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2">
-                                                                                @Html.Label("Name", "Name")
-                                                                                @Html.TextBoxFor(model => model.FormW1.UsernameReq, new { @readonly = true, @class = "form-control" })
 
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2">
-                                                                                <label for="Designation"> Designation</label>
-                                                                                @Html.TextBoxFor(model => model.FormW1.DesignationReq, new { @readonly = true, @class = "form-control" })
+                                                                        <div class="form-group col-lg-2">
+                                                                            @Html.Label("Reported by", "Reported by")
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @class = "form-control", @onchange = "OnUseridRepUserChange(this);" })
 
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2">
-                                                                                <label for="Designation"> Office</label>
-                                                                                @Html.TextBoxFor(model => model.FormW1.OfficeReq, new { @readonly = true, @class = "form-control" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2 pr-0">
-                                                                                @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                                                                @Html.EditorFor(m => m.FormW1.DtReq, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            @Html.Label("Name", "Name")
+                                                                            @Html.TextBoxFor(model => model.FormW1.UsernameRep, new { @readonly = true, @class = "form-control" })
 
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2 text-center">
-                                                                                @Html.Label("Signature", "Signature")
-                                                                                <div class="clear-b mt-2">
-                                                                                    @Html.CheckBoxFor(model => model.FormW1.SignReq)
-                                                                                </div>
-
-                                                                            </div>
-                                                                        
-                                                                       
-                                                                            <div class="form-group col-lg-2">
-                                                                                <label for="Designation">
-                                                                                    Verified By
-                                                                                </label>
-                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @class = "form-control", @onchange = "OnVerifyUserChange(this);" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2">
-                                                                                <label for="Designation"> Name </label>
-                                                                                @Html.TextBoxFor(model => model.FormW1.UsernameVer, new { @readonly = true, @class = "form-control" })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-3">
+                                                                            <label for="Designation"> Designation</label>
+                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationRep, new { @readonly = true, @class = "form-control" })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-2 pr-0">
+                                                                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                                                            @Html.EditorFor(m => m.FormW1.DtRep, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-2 text-center">
+                                                                            @Html.Label("Signature", "Signature")
+                                                                            <div class="clear-b mt-2">
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignRep)
                                                                             </div>
 
-                                                                            <div class="form-group col-lg-2">
-                                                                                <label for="Designation"> Designation</label>
-                                                                                @Html.TextBoxFor(model => model.FormW1.DesignationVer, new { @readonly = true, @class = "form-control" })
+                                                                        </div>
+
+
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label for="Designation">
+                                                                                Verified By
+                                                                            </label>
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @class = "form-control", @onchange = "OnVerifyUserChange(this);" })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label for="Designation"> Name </label>
+                                                                            @Html.TextBoxFor(model => model.FormW1.UsernameVer, new { @readonly = true, @class = "form-control" })
+                                                                        </div>
+
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label for="Designation"> Designation</label>
+                                                                            @Html.TextBoxFor(model => model.FormW1.DesignationVer, new { @readonly = true, @class = "form-control" })
+                                                                        </div>
+
+                                                                        <div class="form-group col-lg-2">
+                                                                            <label for="Designation"> Office</label>
+                                                                            @Html.TextBoxFor(model => model.FormW1.OfficeVer, new { @readonly = true, @class = "form-control" })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-2 pr-0">
+                                                                            <label>Date (DD-MM-YYYY)</label>
+                                                                            @Html.EditorFor(m => m.FormW1.DtVer, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                        </div>
+                                                                        <div class="form-group col-lg-2 text-center">
+                                                                            <label>Signature</label>
+                                                                            <div class="clear-b mt-2">
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignVer)
                                                                             </div>
 
-                                                                            <div class="form-group col-lg-2">
-                                                                                <label for="Designation"> Office</label>
-                                                                                @Html.TextBoxFor(model => model.FormW1.OfficeVer, new { @readonly = true, @class = "form-control" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2 pr-0">
-                                                                                <label>Date (DD-MM-YYYY)</label>
-                                                                                @Html.EditorFor(m => m.FormW1.DtVer, new { type = "date", htmlAttributes = new { @readonly = true, @class = "form-control" } })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-2 text-center">
-                                                                                <label>Signature</label>
-                                                                                <div class="clear-b mt-2">
-                                                                                    @Html.CheckBoxFor(model => model.FormW1.SignVer)
-                                                                                </div>
+                                                                        </div>
 
-                                                                            </div>
-                                                                        
                                                                     </div>
-                                                                    
 
 
 
 
-                                                                    
-                                                                    
+
+
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -596,5 +598,9 @@
 
         $('#ddlUseridRep').val("@Model.FormW1.UseridRep");
         $('#ddlUseridRep').trigger('chosen:updated');
+
+        GetNames($("#ddlSectionCode").val() == "" ? "0" : $("#ddlSectionCode").val(), "Section Code");
+        //if ($("#ddlRoadCode").val() != "")
+        //     GetNames($("#ddlRoadCode").val() , "RD_Code");
     });
 </script>

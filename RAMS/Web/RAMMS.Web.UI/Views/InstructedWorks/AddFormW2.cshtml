@@ -41,7 +41,7 @@
             <ul class="nav nav-tabs tabbed round">
 
                 <li class="nav-item">
-                    <a href="#list" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openFCEM()">
+                    <a href="#divFecm" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openFCEM()">
                         <span class="">
                             FECM
                         </span>
@@ -71,13 +71,13 @@
                     </a>
                 </li>
             </ul>
-            <div class="d-flex py-2 mb-2 position-absolute" style="right: 0px;width: 40%; top:0px;">
+            <div class="d-flex py-2 mb-2 position-absolute" style="right: 0px;width: 43%; top:0px;">
                 <div class="form-group mb-0 px-2" style="margin-top: -14px;">
                     @Html.Label("IW Ref No:", "IW Ref No:")  @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @id = "fw1IWRefNo", @class = "form-control  validate {required, IW Reference No.}" })
                     @Html.HiddenFor(m => m.FormW1.PkRefNo, new { @Id = "fw1PKRefNo" })
                 </div>
                 <div class="form-group mb-0" style="margin-top: -14px;">
-                    @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @id = "fw1ProjectTitle", @class = "form-control  validate {required, Project Title }", @disabled = "true" })
+                    @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @id = "fw1ProjectTitle", @class = "form-control  validate {required, Project Title }",@style="width:290px", @disabled = "true" })
                 </div>
             </div>
         </div>
@@ -181,7 +181,7 @@
 
                                                             </div>
 
-                                                            <div class="form-group col-lg-4 pr-lg-0">
+                                                            @*<div class="form-group col-lg-4 pr-lg-0">
                                                                 <label for="Address 1"> Address 1 </label>
                                                                 @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @id = "address1", @class = "form-control", @readonly = "true" })
                                                             </div>
@@ -200,7 +200,7 @@
                                                             <div class="form-group col-lg-3">
                                                                 <label for="Designation"> Fax </label>
                                                                 @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @id = "fax", @class = "form-control", @readonly = "true" })
-                                                            </div>
+                                                            </div>*@
                                                             <div class="form-group col-lg-3 pr-lg-0">
                                                                 @Html.Label("Attn", "Attn")
                                                                 @Html.TextBoxFor(m => m.SaveFormW2Model.Attn, new { @id = "fw2Attn", @class = "form-control  svalidate {required, Attention}" })
@@ -296,7 +296,7 @@
                                                                         <div class="row pt-3">
                                                                             <div class="form-group col-lg-12 pt-3">
                                                                                 @Html.Label("Title of Instructed Work:", "Title of Instructed Work:")
-                                                                                @Html.TextAreaFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new { @style = "height:70px", @Id = "formW2TitleOfInstructWork", @class = "form-control validate {required, Title of Instructed Work}", @disabled = true })
+                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.Fw1ProjectTitle, new {  @Id = "formW2TitleOfInstructWork", @class = "form-control validate {required, Title of Instructed Work}", @disabled = true })
                                                                             </div>
                                                                             <div class="form-group col-lg-12">
                                                                                 <div class="row">

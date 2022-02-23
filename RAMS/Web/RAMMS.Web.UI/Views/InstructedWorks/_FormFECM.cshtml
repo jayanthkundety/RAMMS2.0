@@ -9,6 +9,7 @@
 
     vd = Model.W1Date;
     string _TCEMDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+    Layout = null;
 
 }
 
@@ -19,11 +20,11 @@
     <div class="row">
         @Html.HiddenFor(m => m.FECM.Fw2PkRefNo, new { @id = "FW2PkRefNo", @class = "form-control" })
         @Html.HiddenFor(m => m.FECM.PkRefNo, new { @id = "fcemPkRefNo", @class = "form-control" })
-        <div class="form-group col-lg-3">
+        <div class="form-group col-lg-2">
             <label for="RMU">TECM Date</label>
             <input type="date" class="datepicker form-control  svalidate {required, TECM date}" id="tcemDate" value="@_TCEMDate" />
         </div>
-        <div class="form-group col-lg-3">
+        <div class="form-group col-lg-2">
             <label>
                 FECM Date
             </label>
@@ -43,11 +44,11 @@
 
         </div>
 
-        <div class="form-group col-lg-3">
+        <div class="form-group col-lg-2">
             <label for="RMU">Agreed Nego  Rate Date</label>
             <input type="date" class="datepicker form-control  svalidate {required, FECM date}" id="fecmNegoDate" value="@_AgrdNegoDate" />
         </div>
-        <div class="form-group col-lg-3">
+        @*<div class="form-group col-lg-3">
             @Html.Label("Status", "Status")
             @Html.DropDownListFor(m => m.FECM.Sts, (IEnumerable<SelectListItem>)ViewData["TECM_Status"], "Select Status", new { @id = "fecmStatus", @class = "form-control svalidate {required, Status}" })
         </div>
@@ -56,14 +57,14 @@
                 Status Remarks
             </label>
             @Html.TextAreaFor(m => m.FECM.StsRemarks, new { @id = "fecmStsRemark", @class = "form-control  svalidate {required, Remark }" })
-        </div>
+        </div>*@
 
-        <div class="form-group col-lg-3">
+        <div class="form-group col-lg-2">
             <label for="RMU">PROGRESS %</label>
             @Html.TextBoxFor(m => m.FECM.ProgressPerc, new { @id = "fecmProgress", @class = "form-control  svalidate {required, PROGRESS % }" })
         </div>
 
-        <div class="form-group col-lg-3 px-4">
+        <div class="form-group col-lg-2 px-4">
             <div class="row mt-4">
                 @{
                     var _BQ = Model.FECM.IsBq == null || Model.FECM.IsBq == false ? false : true;
