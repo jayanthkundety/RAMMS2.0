@@ -52,6 +52,19 @@
     //$('#ddlSectionCode').trigger("chosen:updated")
     //$("#ddlSectionCode").trigger("change");
 
+    debugger
+    //to get section name
+    var obj = new Object();
+    var arrsec = $("#ddlSectionCode").find(":selected").text().split('-');
+    if (arrsec.length > 0) {
+        obj.TypeCode = arrsec[0];
+    }
+    else {
+        obj.TypeCode = 0;
+    }
+    obj.Type = "Section Code"
+    getNameByCode(obj);
+
 
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
 
@@ -255,6 +268,9 @@ function OnSectionChange(tis) {
         $("#FormW1_SectionCode").val('');
     }
 
+}
+
+function GetNames() {
 }
 
 function OnRoadChange(tis) {
