@@ -3,8 +3,8 @@
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 @{
-    ViewBag.TabTitle = "Form W1 - Request for Instructed Work";
-    ViewData["Title"] = "Form W1 - Request for Instructed Work";
+    ViewBag.TabTitle = "IW - Instructed Work";
+    ViewData["Title"] = "IW - Instructed Work";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
     var isModifyPerm = security.IsPCModify(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
@@ -177,14 +177,14 @@
                     EOT / LAD
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  onclick="OpenFormWDWN('Add',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"   onclick="OpenFormWDWN('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Edit',0)"> 
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"   onclick="OpenFormWDWN('Veiw',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Veiw',1)"> 
                         <span class="view-icon"></span> View
                     </button>
                     @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -197,14 +197,14 @@
                     COMPLETED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"   onclick="OpenFormWCWG('Add',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  onclick="OpenFormWCWG('Add',0)"> 
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  onclick="OpenFormWCWG('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Edit',0)"> 
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  onclick="OpenFormWCWG('View',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('View',1)"> 
                         <span class="view-icon"></span> View
                     </button>
                     @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -355,6 +355,12 @@
             }
         });
 
+        $("#txtSmartSearch").on("keypress", function (e) {
+            if (e.which == 13) {
+                $("#btnSearch").click();
+            }
+        });
+
     });
     function changeRMU(obj) {
         var ctrl = $(obj);
@@ -410,14 +416,6 @@
         }
 
     }
-
-    $(document).ready(function () {
-        $("#txtSmartSearch").on("keypress", function (e) {
-            if (e.which == 13) {
-                $("#btnSearch").click();
-            }
-        });
-    });
 
     function GetFormIDByName(formName) {
         var value = -1;
@@ -480,6 +478,7 @@
     }
 
     function OpenFormW2(mode, view) {
+        debugger;
         InitAjaxLoading();
         var url = '';
         var id = "";
