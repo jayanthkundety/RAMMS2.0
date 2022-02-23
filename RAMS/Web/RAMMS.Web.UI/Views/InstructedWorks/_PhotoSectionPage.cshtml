@@ -51,13 +51,13 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                         </span>
                         <span class="float-left" style="padding: 4px 8px;">
-                            Image List
+                            Attachment List
                         </span>
                     </a>
                     <div class="img-btns mt-1">
                         <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
                             @*href="#myModal2">*@
-                            <span class="add-icon"></span> Add Image
+                            <span class="add-icon"></span> Add Attachment
                         </a>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                                 <thead>
                                     <tr>
                                         <th>S.NO</th>
-                                        <th>Image Type</th>
+                                        <th>Attachment Type</th>
                                         <th>FileName</th>
                                         @if (security.IsPCDelete(ModuleNameList.Instructed_Works))
                                         {
@@ -120,7 +120,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                         </span>
                         <span class="float-left" style="padding: 4px 8px;">
-                            Image View
+                            Attachment View
                         </span>
                     </a>
                     <div class="img-btns mt-1">
@@ -198,7 +198,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Image Upload</h4>
+                <h4 class="modal-title">Attachment Upload</h4>
                 <button type="button" id="btnclose" class="close">×</button>
             </div><div class="container"></div>
             <div class="modal-body">

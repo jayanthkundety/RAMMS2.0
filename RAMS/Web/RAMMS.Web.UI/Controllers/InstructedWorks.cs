@@ -70,7 +70,6 @@ namespace RAMMS.Web.UI.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> GetIWImageList(string Id, string assetgroup)
         {
@@ -313,7 +312,9 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Model = new FormW2Model();
             await LoadN2DropDown();
             _formW2Model.FormW1 = await _formW2Service.GetFormW1ById(id);
-            _formW2Model.Fcem = new FormW2FECMResponseDTO();
+            _formW2Model.FECM = new FormFECMModel();
+            _formW2Model.FECM.FECM = new FormW2FECMResponseDTO();
+
             var defaultData = new DTO.ResponseBO.FormW2ResponseDTO();
             defaultData.Fw1IwRefNo = _formW2Model.FormW1.IwRefNo;
             defaultData.Fw1PkRefNo = _formW2Model.FormW1.PkRefNo;
@@ -364,7 +365,9 @@ namespace RAMMS.Web.UI.Controllers
                 if (view == "1") _formW2Model.View = "1";
                 _formW2Model.SaveFormW2Model = result;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
-                _formW2Model.Fcem = resultFCEM != null ? resultFCEM : new FormW2FECMResponseDTO();
+                _formW2Model.FECM = new FormFECMModel();
+                _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
+                _formW2Model.FECM.FECM = resultFCEM != null ? resultFCEM : new FormW2FECMResponseDTO();
             }
 
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
@@ -745,5 +748,60 @@ namespace RAMMS.Web.UI.Controllers
             return Json(refNo);
         }
         #endregion
+
+        #region WCWG
+
+        public IActionResult OpenWCWG()
+        {
+
+            var _formWCWGModel = new FormWCWGModel();
+            LoadLookupService("TECM_Status");
+            _formWCWGModel.FormWC = new FormWCResponseDTO();
+            _formWCWGModel.FormWG = new FormWGResponseDTO();
+            _formWCWGModel.FECM = new FormFECMModel();
+            _formWCWGModel.FECM.FECM = new FormW2FECMResponseDTO();
+            return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWC()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWC.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWG()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWG.cshtml");
+        }
+        #endregion
+
+        #region WDWN
+
+        public IActionResult OpenWDWN()
+        {
+            var _formWDWNModel = new FormWDWNModel();
+            LoadLookupService("TECM_Status");
+            _formWDWNModel.FECM = new FormFECMModel();
+            _formWDWNModel.FECM.FECM = new FormW2FECMResponseDTO();
+            _formWDWNModel.FormWD = new FormWDResponseDTO();
+            _formWDWNModel.FormWN = new FormWNResponseDTO();
+            return View("~/Views/InstructedWorks/FormWDWN.cshtml",_formWDWNModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWD()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWD.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> OpenWN()
+        {
+            return PartialView("~/Views/InstructedWorks/_FormWN.cshtml");
+        }
+
+        #endregion
+
     }
 }

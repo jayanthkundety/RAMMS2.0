@@ -7,20 +7,23 @@ using RAMMS.DTO.ResponseBO;
 
 namespace RAMMS.Web.UI.Models
 {
-    public class FormW2Model
+    public class FormWDWNModel
     {
-        public FormW2ResponseDTO SaveFormW2Model { get; set; }
 
-        public FormIWSearchGridDTO SearchObj { get; set; }
+        public FormFECMModel FECM { get; set; }
+
+        public FormWDResponseDTO FormWD { get; set; }
+
+        public FormWNResponseDTO FormWN { get; set; }
+
+        public FormWDDtlResponseDTO FormWDDtl { get; set; }
 
         public string View { get; set; }
 
         public List<string> ImageTypeList { get; set; }
-        public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; } 
+        public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; }
         public IEnumerable<SelectListItem> PhotoType { get; set; }
 
-        public FormW1ResponseDTO FormW1 { get; set; }
 
-        public FormFECMModel FECM { get; set; }
     }
 }

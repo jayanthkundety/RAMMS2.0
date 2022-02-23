@@ -3,8 +3,8 @@
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 @{
-    ViewBag.TabTitle = "Form W1 - Request for Instructed Work";
-    ViewData["Title"] = "Form W1 - Request for Instructed Work";
+    ViewBag.TabTitle = "IW - Instructed Work";
+    ViewData["Title"] = "IW - Instructed Work";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
     var isModifyPerm = security.IsPCModify(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
@@ -177,14 +177,14 @@
                     EOT / LAD
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Edit',0)"> 
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Veiw',1)"> 
                         <span class="view-icon"></span> View
                     </button>
                     @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -197,14 +197,14 @@
                     COMPLETED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  onclick="OpenFormWCWG('Add',0)"> 
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Edit',0)"> 
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('View',1)"> 
                         <span class="view-icon"></span> View
                     </button>
                     @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
@@ -296,6 +296,36 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="formWCWG" role="dialog">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" id="formWCWGContent">
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="formWDWN" role="dialog">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" id="formWDWNContent">
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -322,6 +352,12 @@
                 (event.which != 0 && event.which != 8) &&
                 ($(this)[0].selectionStart >= text.length - 3)) {
                 event.preventDefault();
+            }
+        });
+
+        $("#txtSmartSearch").on("keypress", function (e) {
+            if (e.which == 13) {
+                $("#btnSearch").click();
             }
         });
 
@@ -380,14 +416,6 @@
         }
 
     }
-
-    $(document).ready(function () {
-        $("#txtSmartSearch").on("keypress", function (e) {
-            if (e.which == 13) {
-                $("#btnSearch").click();
-            }
-        });
-    });
 
     function GetFormIDByName(formName) {
         var value = -1;
@@ -450,6 +478,7 @@
     }
 
     function OpenFormW2(mode, view) {
+        debugger;
         InitAjaxLoading();
         var url = '';
         var id = "";
@@ -488,6 +517,70 @@
         });
 
         return true;
+    }
+
+    function OpenFormWDWN(mode, view) {
+        var SelectedIWGridId = 0;
+
+        if (mode == "Add") {
+            url = "/InstructedWorks/OpenWDWN";
+        }
+        else if (mode == "Edit") {
+
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+        }
+        else if (mode == "View") {
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
+        }
+        InitAjaxLoading();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formWDWN").modal('show');
+                $("#formWDWNContent").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
+    }
+
+    function OpenFormWCWG(mode, view) {
+        var SelectedIWGridId = 0;
+
+        if (mode == "Add") {
+            url = "/InstructedWorks/OpenWCWG";
+        }
+        else if (mode == "Edit") {
+
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+        }
+        else if (mode == "View") {
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
+        }
+        InitAjaxLoading();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formWCWG").modal('show');
+                $("#formWCWGContent").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
     }
 
 </script>
