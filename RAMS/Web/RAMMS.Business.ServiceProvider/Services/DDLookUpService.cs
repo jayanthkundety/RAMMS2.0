@@ -25,23 +25,32 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-     
+
 
         public async Task<IEnumerable<CSelectListItem>> GetRMUwithDivisionDetails()
         {
-         //  return _lookupRepo.GetRMUwithDivisionDetails().Result;
+            //  return _lookupRepo.GetRMUwithDivisionDetails().Result;
 
             return _lookupRepo.GetRMUwithDivisionDetails().Result.Select(x => new CSelectListItem()
             {
                 Text = x.RmuCode + "-" + x.RmuName,
-                Value = x.RmuCode ,
+                Value = x.RmuCode,
                 CValue = x.DivisionCode,
                 Item1 = x.CategoryName //division name
             }).Distinct();
 
-          
- 
         }
+
+        public async Task<IEnumerable<SelectListItem>> LoadServiceProviderName()
+        {
+            return _lookupRepo.LoadServiceProviderName().Result.Select(x => new SelectListItem()
+            {
+                Text = x.FiwSrvProviderName,
+                Value = x.FiwSrvProviderCode,
+            }).Distinct();
+        }
+
+
 
 
         public async Task<IEnumerable<CSelectListItem>> GetDdLookup(params string[] type)

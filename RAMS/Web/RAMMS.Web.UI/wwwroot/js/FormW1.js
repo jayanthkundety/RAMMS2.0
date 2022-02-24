@@ -52,31 +52,15 @@
     //$('#ddlSectionCode').trigger("chosen:updated")
     //$("#ddlSectionCode").trigger("change");
 
-    debugger
-    //to get section name
-    //var TypeCodeSec;
-    //var arrsection = $("#ddlSectionCode").find(":selected").text().split('-');
-    //if (arrsec.length > 0) {
-    //    TypeCodeSec = arrsection[0];
-    //}
-    //else {
-    //    TypeCodeSec = 0;
-    //}
-    //GetNames(TypeCodeSec, "Section Code");
 
-    ////to get road name
-    //var TypeCodeSec;
-    //var arrsection = $("#ddlSectionCode").find(":selected").text().split('-');
-    //if (arrsec.length > 0) {
-    //    TypeCodeSec = arrsection[0];
-    //}
-    //else {
-    //    TypeCodeSec = 0;
-    //}
+    if ($("#FormW1_Status").val() == "Submitted") {
 
-   
+        $(".approvesection").css("display", "flex");
+    }
+    else {
 
-    
+        $(".approvesection").css("display", "none");
+    }
 
 
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
@@ -174,31 +158,11 @@ function CalculateCost() {
     else {
         OtherCostAmt = 0;
     }
-    $("#FormW1_EstimTotalCostAmt").val(parseInt(PhyWorksAmt) + parseInt(GenPrelimsAmt) + parseInt(SurvyWorksAmt) + parseInt(SiteInvestAmt) + parseInt(ConsulFeeAmt) + parseInt(OtherCostAmt));
+    debugger
+
+    $("#FormW1_EstimTotalCostAmt").val(parseFloat(PhyWorksAmt) + parseFloat(GenPrelimsAmt) + parseFloat(SurvyWorksAmt) + parseFloat(SiteInvestAmt) + parseFloat(ConsulFeeAmt) + parseFloat(OtherCostAmt));
 }
 
-
-function Save(submit) {
-    if (submit) {
-        $("#FormW1page .svalidate").addClass("validate");
-    }
-
-    if (ValidatePage('#FormW1page')) {
-        InitAjaxLoading();
-        $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
-            HideAjaxLoading();
-            if (data == -1) {
-                app.ShowErrorMessage(data.errorMessage);
-
-            }
-            else {
-                $("#FW2HRef_No").val(data.pkRefNo);
-                app.ShowSuccessMessage('Successfully Saved', false);
-                // location.href = "/InstructedWorks/AddFormW2";
-            }
-        });
-    }
-}
 
 function OnRMUChange(tis) {
 
@@ -317,8 +281,6 @@ function searchList(obj) {
         data: obj,
         type: 'Post',
         success: function (data) {
-
-            debugger
 
             if (obj.RdCode == "" || obj.RdCode == null || obj.RdCode == 0) {
 
@@ -473,6 +435,57 @@ function GoBack() {
         location.href = "/InstructedWorks/Index";
 }
 
+
+function Save(GroupName,SubmitType) {
+    if (SubmitType !="") {
+
+        $("#FormW1page .svalidate").addClass("validate");
+
+
+        if (($("#FormW1_Status").val() == "") || ($("#FormW1_Status").val() == "0") || ($("#FormW1_Status").val() == "1") || ($("#FormW1_Status").val() == "2")) {
+            $("#ddlUseridReq").addClass("validate");
+        }
+        else {
+            $("#ddlUseridReq").removeClass("validate");
+        }
+
+        if (($("#FormW1_Status").val() == "1") || ($("#FormW1_Status").val() == "2")) {
+            $("#ddlUseridRep").addClass("validate");
+        }
+        else {
+            $("#ddlUseridRep").removeClass("validate");
+        }
+
+        if (($("#FormW1_Status").val() == "2")) {
+            $("#ddlUseridVer").addClass("validate");
+        }
+        else {
+            $("#ddlUseridVer").removeClass("validate");
+        }
+
+    }
+    else {
+        $("#ddlUseridReq").removeClass("validate");
+    }
+
+    if (ValidatePage('#FormW1page')) {
+        InitAjaxLoading();
+        $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
+            HideAjaxLoading();
+            if (data == -1) {
+                app.ShowErrorMessage(data.errorMessage);
+
+            }
+            else {
+                $("#FormW1_pkRefNo").val(data.pkRefNo);
+                app.ShowSuccessMessage('Successfully Saved', false);
+            }
+        });
+    }
+    else {
+        process.ShowApprove(GroupName, SubmitType);
+    }
+}
 
 
 

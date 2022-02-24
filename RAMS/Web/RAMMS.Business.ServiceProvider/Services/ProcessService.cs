@@ -76,6 +76,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormX":
                     iResult = await SaveFormX(process);
                     break;
+                case "FormW1":
+                    iResult = await SaveFormW1(process);
+                    break;
+
             }
             return iResult;
         }
@@ -137,6 +141,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                     break;
                 case "FormS2":
                     logs = this.context.RmFormS2Hdr.Where(x => x.FsiihPkRefNo == RefId).Select(x => x.FsiihAuditLog).FirstOrDefault();
+                    break;
+                case "FormW1":
+                    logs = this.context.RmIwFormW1.Where(x => x.Fw1PkRefNo == RefId).Select(x => x.Fw1AuditLog).FirstOrDefault();
                     break;
             }
             return Utility.ProcessLog(logs);
@@ -457,6 +464,59 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             return await context.SaveChangesAsync();
         }
+
+
+
+
+        private async Task<int> SaveFormW1(DTO.RequestBO.ProcessDTO process)
+        {
+            var form = context.RmIwFormW1.Where(x => x.Fw1PkRefNo == process.RefId).FirstOrDefault();
+            if (form != null)
+            {
+                string strTitle = "";
+                string strNotURL = "";
+                string strNotMsg = "";
+                string strNotGroupName = "";
+                string strNotUserID = "";
+
+                if (process.Stage == Common.StatusList.FormW1Submitted)
+                {
+                    strNotGroupName =  GroupNames.Supervisor;
+                    strTitle = "Submitted";
+                }
+                else if (process.Stage == Common.StatusList.FormW1Verified)
+                {
+                    strNotGroupName = process.IsApprove ? "" : GroupNames.Supervisor;
+                    strTitle = "Agreed";
+
+                    if (process.IsApprove)
+                    {
+                        List<int> lstNotUserId = new List<int>();
+                        if (form.Fw1UseridReq.HasValue)
+                            lstNotUserId.Add(form.Fw1UseridReq.Value);
+                        if (form.Fw1UseridVer.HasValue)
+                            lstNotUserId.Add(form.Fw1UseridVer.Value);
+                       
+                        strNotUserID = string.Join(",", lstNotUserId.Distinct());
+                    }
+                }
+                
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form W1 (" + form.Fw1PkRefNo + ")";
+                strNotURL = "/InstructedWorks/EditFormW1?id=" + form.Fw1PkRefNo.ToString() +"&View=0";
+                SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = security.UserName,
+                    RmNotGroup = strNotGroupName,
+                    RmNotMessage = strNotMsg,
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = strNotURL,
+                    RmNotUserId = strNotUserID,
+                    RmNotViewed = ""
+                }, false);
+            }
+            return await context.SaveChangesAsync();
+        }
+
         private async Task<int> SaveFormX(DTO.RequestBO.ProcessDTO process)
         {
             var form = context.RmFormXHdr.Where(x => x.FxhPkRefNo == process.RefId).FirstOrDefault();
@@ -888,20 +948,20 @@ namespace RAMMS.Business.ServiceProvider.Services
                     if (process.IsApprove)
                     {
                         List<int> lstNotUserId = new List<int>();
-                      
+
                         if (form.FcvihSerProviderUserId.HasValue)
                             lstNotUserId.Add(form.FcvihSerProviderUserId.Value);
-                        
+
                         if (form.FcvihUserIdAud.HasValue)
                             lstNotUserId.Add(form.FcvihUserIdAud.Value);
-                        
+
                         strNotUserID = string.Join(",", lstNotUserId.Distinct());
                     }
                 }
                 form.FcvihAuditLog = Utility.ProcessLog(form.FcvihAuditLog, strTitle, process.IsApprove ? "Approved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
                 string strNotMsg = (process.IsApprove ? "Approved - " : "Rejected - ") + strTitle + ":" + process.UserName + " - Form C1C2 (" + form.FcvihCInspRefNo + ")";
                 string strNotURL = "/FormC1C2/View/" + form.FcvihPkRefNo.ToString();
-                
+
                 SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = security.UserName,

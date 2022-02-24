@@ -11,6 +11,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     public interface IDDLookUpService
     {
         Task<IEnumerable<CSelectListItem>> GetRMUwithDivisionDetails();
+        Task<IEnumerable<SelectListItem>> LoadServiceProviderName();
         Task<IEnumerable<SelectListItem>> GetDdLookup(DDLookUpDTO DdLookUp);
         Task<IEnumerable<SelectListItem>> GetDdTempLookup(DDLookUpDTO DdLookUp);
         Task<IEnumerable<SelectListItem>> GetLookUpCodeDesc(DDLookUpDTO DdLookUp);

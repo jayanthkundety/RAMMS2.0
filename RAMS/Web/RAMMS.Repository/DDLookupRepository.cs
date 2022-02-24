@@ -58,21 +58,32 @@ namespace RAMS.Repository
             }
         }
 
-         
+
+
+        public async Task<IEnumerable<RmIwSrvProviderMasterDTO>> LoadServiceProviderName()
+        {
+            return await (from x in _context.RmIwSrvProviderMaster
+                          select new RmIwSrvProviderMasterDTO
+                          {
+                              FiwSrvProviderCode = x.FiwSrvProviderCode,
+                              FiwSrvProviderName = x.FiwSrvProviderName,
+                          }).Distinct().ToListAsync();
+        }
+
         public async Task<IEnumerable<RoadMasterResponseDTO>> GetRMUwithDivisionDetails()
         {
             //return await _context.RmDivRmuSecMaster.Where(x => x.RdsmActiveYn == true ) .ToListAsync();
 
-           return await (from x in _context.RmDivRmuSecMaster 
-                          select new  RoadMasterResponseDTO
+            return await (from x in _context.RmDivRmuSecMaster
+                          select new RoadMasterResponseDTO
                           {
                               CategoryName = x.RdsmDivision,
                               DivisionCode = x.RdsmDivCode,
-                              RmuCode = x.RdsmRmuCode ,
+                              RmuCode = x.RdsmRmuCode,
                               RmuName = x.RdsmRmuName
                           }).Distinct().ToListAsync();
 
-        
+
 
             //return await (from x in _context.RmDivRmuSecMaster
             //              select new RmDivRmuSecMaster

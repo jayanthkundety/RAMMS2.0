@@ -1,4 +1,5 @@
-﻿using RAMMS.DTO.ResponseBO;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using RAMMS.DTO.ResponseBO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<int> SaveFormW1(FormW1ResponseDTO FormW1);
         Task<int> Update(FormW1ResponseDTO FormW1);
         Task<int> SaveImage(List<FormIWImageResponseDTO> image);
+        
 
 
     }

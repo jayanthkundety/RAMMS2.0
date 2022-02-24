@@ -225,6 +225,10 @@ namespace RAMMS.Web.UI.Controllers
             FormW1Model model = new FormW1Model();
             model.FormW1.RecomdType = 0;
             model.View = 0;
+            model.FormW1.UseridRep = _security.UserID;
+            model.FormW1.UseridReq = _security.UserID;
+            model.FormW1.UseridVer = _security.UserID;
+          
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
@@ -232,7 +236,7 @@ namespace RAMMS.Web.UI.Controllers
             LoadLookupService("RMU", "Division", "RD_Code", "User", "TECM_Status");
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
-
+            ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
 
             return View("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
@@ -254,11 +258,13 @@ namespace RAMMS.Web.UI.Controllers
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;
             model.View = View;
+            model.FormW1.Status = model.FormW1.Status =="" ? "Draft" : model.FormW1.Status;
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
+            ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
+
             FormW1Model assetsModel = new FormW1Model();
             model.ImageList = await _formW1Service.GetImageList(_formW1Model.IwRefNo);
-
             return PartialView("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 
