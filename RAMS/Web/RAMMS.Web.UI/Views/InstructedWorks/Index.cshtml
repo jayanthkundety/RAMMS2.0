@@ -113,43 +113,43 @@
     <div class="col-12">
         <div class="text-right">
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false"  onclick="checkAction('w1')">
                     PROPOSED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Add',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w1Add"  data-toggle="modal" onclick="OpenFormW1('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w1Edit"  data-toggle="modal" onclick="OpenFormW1('Edit',0)">
                         <span class="edit-icon"></span>Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW1('View',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w1View"  data-toggle="modal" onclick="OpenFormW1('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1"  id="w1Print"   onclick="PrintFormW1()">
                         <span class="print-icon"></span> Print
-                    </button>*@
+                    </button>
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('w2')">
                     IW TECM & FECM
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW2('Add',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2Add" data-toggle="modal" onclick="OpenFormW2('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" onclick="OpenFormW2('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w2Edit"  data-toggle="modal" onclick="OpenFormW2('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2View" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1"  id="w2Print" onclick="PrintFormW2()">
                         <span class="print-icon"></span> Print
-                    </button>*@
+                    </button>
                 </div>
             </div>
             @*<div class="btn-group dropbottom" id="actiondropdown">
@@ -478,7 +478,7 @@
     }
 
     function OpenFormW2(mode, view) {
-        debugger;
+
         InitAjaxLoading();
         var url = '';
         var id = "";
@@ -551,6 +551,15 @@
         });
     }
 
+    function checkAction(form){
+        if (form == 'w2'){
+            var id = GetFormIDByName("w2");
+            if (id != null){
+                $("#w2Add").hide();
+            }
+        }
+    }
+
     function OpenFormWCWG(mode, view) {
         var SelectedIWGridId = 0;
 
@@ -581,6 +590,18 @@
             }
 
         });
+    }
+
+
+    function PrintFormW1() {
+        var id = GetFormIDByName("w1");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW1";
+    }
+
+
+    function PrintFormW2() {
+        var id = GetFormIDByName("w2");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW2";
     }
 
 </script>

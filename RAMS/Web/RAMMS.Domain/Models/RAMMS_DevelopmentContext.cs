@@ -15,7 +15,6 @@ namespace RAMMS.Domain.Models
         {
         }
 
-
         public virtual DbSet<AssetFieldDtl> AssetFieldDtl { get; set; }
         public virtual DbSet<AssetImport> AssetImport { get; set; }
         public virtual DbSet<ImportAssetUse> ImportAssetUse { get; set; }
@@ -103,6 +102,8 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmIwFormWdDtl> RmIwFormWdDtl { get; set; }
         public virtual DbSet<RmIwFormWg> RmIwFormWg { get; set; }
         public virtual DbSet<RmIwFormWn> RmIwFormWn { get; set; }
+        public virtual DbSet<RmIwSrvProviderMaster> RmIwSrvProviderMaster { get; set; }
+        public virtual DbSet<RmIwWorksDeptMaster> RmIwWorksDeptMaster { get; set; }
         public virtual DbSet<RmIwformImage> RmIwformImage { get; set; }
         public virtual DbSet<RmModule> RmModule { get; set; }
         public virtual DbSet<RmModuleGroupFieldRights> RmModuleGroupFieldRights { get; set; }
@@ -9935,7 +9936,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw2IwDuration)
                     .HasColumnName("FW2_IW_Duration")
-                    .HasColumnType("decimal(3, 2)");
+                    .HasColumnType("decimal(6, 2)");
 
                 entity.Property(e => e.Fw2JkrRefNo)
                     .HasColumnName("FW2_JKR_RefNo")
@@ -10614,6 +10615,116 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwnUsernameIssu)
                     .HasColumnName("FWN_USERNAME_ISSU")
                     .HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<RmIwSrvProviderMaster>(entity =>
+            {
+                entity.HasKey(e => e.FiwSrvProviderId);
+
+                entity.ToTable("RM_IW_SRV_Provider_Master");
+
+                entity.Property(e => e.FiwSrvProviderId).HasColumnName("FIW_SRV_Provider_ID");
+
+                entity.Property(e => e.FiwSrvProviderActiveYn).HasColumnName("FIW_SRV_Provider_Active_YN");
+
+                entity.Property(e => e.FiwSrvProviderAddress1)
+                    .HasColumnName("FIW_SRV_Provider_Address1")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwSrvProviderAddress2)
+                    .HasColumnName("FIW_SRV_Provider_Address2")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwSrvProviderAddress3)
+                    .HasColumnName("FIW_SRV_Provider_Address3")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwSrvProviderCode)
+                    .HasColumnName("FIW_SRV_Provider_Code")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FiwSrvProviderCrBy).HasColumnName("FIW_SRV_Provider_CR_By");
+
+                entity.Property(e => e.FiwSrvProviderCrDt)
+                    .HasColumnName("FIW_SRV_Provider_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FiwSrvProviderFaxNo)
+                    .HasColumnName("FIW_SRV_Provider_FAX_No")
+                    .HasColumnType("numeric(10, 0)");
+
+                entity.Property(e => e.FiwSrvProviderModBy).HasColumnName("FIW_SRV_Provider_Mod_By");
+
+                entity.Property(e => e.FiwSrvProviderModDt)
+                    .HasColumnName("FIW_SRV_Provider_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FiwSrvProviderName)
+                    .HasColumnName("FIW_SRV_Provider_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwSrvProviderPhoneNo)
+                    .HasColumnName("FIW_SRV_Provider_Phone_No")
+                    .HasColumnType("numeric(10, 0)");
+
+                entity.Property(e => e.FiwSrvProviderZipcode)
+                    .HasColumnName("FIW_SRV_Provider_ZIPCODE")
+                    .HasColumnType("numeric(10, 0)");
+            });
+
+            modelBuilder.Entity<RmIwWorksDeptMaster>(entity =>
+            {
+                entity.HasKey(e => e.FiwWrksDeptId);
+
+                entity.ToTable("RM_IW_Works_Dept_Master");
+
+                entity.Property(e => e.FiwWrksDeptId).HasColumnName("FIW_WRKS_Dept_ID");
+
+                entity.Property(e => e.FiwWrksDeptActiveYn).HasColumnName("FIW_WRKS_Dept_Active_YN");
+
+                entity.Property(e => e.FiwWrksDeptAddress1)
+                    .HasColumnName("FIW_WRKS_Dept_Address1")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwWrksDeptAddress2)
+                    .HasColumnName("FIW_WRKS_Dept_Address2")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwWrksDeptAddress3)
+                    .HasColumnName("FIW_WRKS_Dept_Address3")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwWrksDeptCode)
+                    .HasColumnName("FIW_WRKS_Dept_Code")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FiwWrksDeptCrBy).HasColumnName("FIW_WRKS_Dept_CR_By");
+
+                entity.Property(e => e.FiwWrksDeptCrDt)
+                    .HasColumnName("FIW_WRKS_Dept_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FiwWrksDeptFaxNo)
+                    .HasColumnName("FIW_WRKS_Dept_FAX_No")
+                    .HasColumnType("numeric(10, 0)");
+
+                entity.Property(e => e.FiwWrksDeptModBy).HasColumnName("FIW_WRKS_Dept_Mod_By");
+
+                entity.Property(e => e.FiwWrksDeptModDt)
+                    .HasColumnName("FIW_WRKS_Dept_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FiwWrksDeptName)
+                    .HasColumnName("FIW_WRKS_Dept_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.FiwWrksDeptPhoneNo)
+                    .HasColumnName("FIW_WRKS_Dept_Phone_No")
+                    .HasColumnType("numeric(10, 0)");
+
+                entity.Property(e => e.FiwWrksDeptZipcode)
+                    .HasColumnName("FIW_WRKS_Dept_ZIPCODE")
+                    .HasColumnType("numeric(10, 0)");
             });
 
             modelBuilder.Entity<RmIwformImage>(entity =>
