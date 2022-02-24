@@ -81,7 +81,7 @@
                                     <label for="status_percentage">Status Percentage To</label>
                                     <input class="form-control allow_numeric" type="number" id="txtStPercTo">
                                 </div>
-                               
+
                                 <div class="form-group  col-lg-2">
                                     @Html.Label("RMU", "RMU")
                                     @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RMU", "Select RMU", new { @id = "txtRmu", @class = "form-control", @onchange = "changeRMU(this)" })
@@ -107,27 +107,27 @@
         </div>
     </div>
 </div>
-    
+
 <!-- Main Container -->
 <div class="row">
     <div class="col-12">
         <div class="text-right">
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false"  onclick="checkAction('w1')">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('w1')">
                     PROPOSED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w1Add"  data-toggle="modal" onclick="OpenFormW1('Add',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1Add" data-toggle="modal" onclick="OpenFormW1('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w1Edit"  data-toggle="modal" onclick="OpenFormW1('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1Edit" data-toggle="modal" onclick="OpenFormW1('Edit',0)">
                         <span class="edit-icon"></span>Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w1View"  data-toggle="modal" onclick="OpenFormW1('View',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1View" data-toggle="modal" onclick="OpenFormW1('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1"  id="w1Print"   onclick="PrintFormW1()">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w1Print" onclick="PrintFormW1()">
                         <span class="print-icon"></span> Print
                     </button>
                 </div>
@@ -140,37 +140,37 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2Add" data-toggle="modal" onclick="OpenFormW2('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  id="w2Edit"  data-toggle="modal" onclick="OpenFormW2('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2Edit" data-toggle="modal" onclick="OpenFormW2('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2View" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1"  id="w2Print" onclick="PrintFormW2()">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w2Print" onclick="PrintFormW2()">
                         <span class="print-icon"></span> Print
                     </button>
                 </div>
             </div>
             @*<div class="btn-group dropbottom" id="actiondropdown">
-                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
-                        IW IN PROGRESS
-                    </button>
-                    <div class="dropdown-menu">
-                        <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                            <span class="add-icon"></span> Add
-                        </button>
-                        <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                            <span class="edit-icon"></span>   Edit
-                        </button>
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                IW IN PROGRESS
+                </button>
+                <div class="dropdown-menu">
+                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                <span class="add-icon"></span> Add
+                </button>
+                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                <span class="edit-icon"></span>   Edit
+                </button>
 
-                        <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                            <span class="view-icon"></span> View
-                        </button>
-                        <button type="button" class="dropdown-item editdel-btns py-1 px-1">
-                            <span class="print-icon"></span> Print
-                        </button>
-                    </div>
+                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                <span class="view-icon"></span> View
+                </button>
+                <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                <span class="print-icon"></span> Print
+                </button>
+                </div>
                 </div>*@
             <div class="btn-group dropbottom" id="actiondropdown">
                 <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
@@ -180,16 +180,16 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Edit',0)"> 
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Veiw',1)"> 
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Veiw',1)">
                         <span class="view-icon"></span> View
                     </button>
                     @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                    </button>*@
+                        </button>*@
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
@@ -197,24 +197,23 @@
                     COMPLETED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1"  onclick="OpenFormWCWG('Add',0)"> 
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Edit',0)"> 
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('View',1)"> 
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('View',1)">
                         <span class="view-icon"></span> View
                     </button>
                     @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                    </button>*@
+                        </button>*@
                 </div>
             </div>
             <div class="panel with-nav-tabs panel-default">
                 <div class="panel-heading float-right mb-2">
-
                 </div>
                 <div class="panel-body">
                     <div class="tab-content">
@@ -225,7 +224,7 @@
                             <div class="w-100 float-left position-relative">
                                 <div class="w-100 dt-tbl-section">
                                     <div class="main-container">
-                                        <div >
+                                        <div>
                                             <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                                                 <div class="top p-1">
                                                     @*Pagination will come here*@
@@ -272,7 +271,6 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" id="formW1Content">
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -289,7 +287,6 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" id="formW2Content">
-
             </div>
             <div class="modal-footer">
             </div>
@@ -304,7 +301,6 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" id="formWCWGContent">
-
             </div>
             <div class="modal-footer">
             </div>
@@ -319,7 +315,6 @@
                 <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body" id="formWDWNContent">
-
             </div>
             <div class="modal-footer">
             </div>
@@ -417,11 +412,15 @@
 
     }
 
-    function GetFormIDByName(formName) {
-        var value = -1;
+    function getGridSelectedData(){
         var table = $('#FormIWGridView').DataTable();
         var selectedIndex = table.$(".selected", { "page": "all" });
-        var daa = table.row(selectedIndex).data();
+       return table.row(selectedIndex).data();
+    }
+
+    function GetFormIDByName(formName) {
+        var value = -1;
+        var daa = getGridSelectedData();
         if (daa == null || typeof daa == "undefined") {
             app.ShowErrorMessage("Kindly select a row to open the " + formName.toUpperCase() + " Form");
             return value;
@@ -488,7 +487,7 @@
             if (id > 0 && id != null) {
                 url = '/InstructedWorks/AddFormW2?id=' + id;
             }
-           
+
         }
         else {
             id = GetFormIDByName("w2");
@@ -552,11 +551,51 @@
     }
 
     function checkAction(form){
+
+        var si = getGridSelectedData();
         if (form == 'w2'){
-            var id = GetFormIDByName("w2");
-            if (id != null){
-                $("#w2Add").hide();
+
+            if (si == null)
+            {
+                 $("#w2Add").hide();
+                 $("#w2Edit").hide();
+                 $("#w2View").hide();
+                 $("#w2Print").hide();
+                 app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
+                 return;
             }
+            var id = GetFormIDByName("w2");
+
+             if (id == "-1" || id == null)
+            {
+                $("#w2Add").show();
+                $("#w2Edit").hide();
+                $("#w2View").hide();
+                $("#w2Print").hide();
+            }         
+            else if (id != "-1")
+            {
+                 $("#w2Add").hide();
+                 $("#w2Edit").show();
+                 $("#w2View").show();
+                 $("#w2Print").show();
+            }
+
+        }
+        else if (form == 'w1')
+        {
+            if (si == null)
+            {
+                 $("#w1Add").show();
+                 $("#w1Edit").hide();
+                 $("#w1View").hide();
+                 $("#w1Print").hide();
+                 return;
+            }
+                 $("#w1Add").hide();
+                 $("#w1Edit").show();
+                 $("#w1View").show();
+                 $("#w1Print").show();
         }
     }
 
