@@ -257,6 +257,8 @@ function OnRoadChange(tis) {
     var ctrl = $("#ddlRoadCode");
     $('#FormW1_RoadCode').val(ctrl.val());
 
+    fromkm
+
     var obj = new Object();
     obj.TypeCode = ctrl.val();
     obj.Type = "RD_Code";
@@ -451,7 +453,7 @@ function Save(GroupName, SubmitType) {
                 $("#ddlUseridRep").addClass("validate");
             }
         }
-
+    }
 
         if (ValidatePage('#FormW1page')) {
             InitAjaxLoading();
@@ -475,7 +477,7 @@ function Save(GroupName, SubmitType) {
             });
         }
 
-    }
+    
 
 }
 
