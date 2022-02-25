@@ -35,6 +35,7 @@
     this.Rejected = function () { this.Save(false); }
     this.Approved = function () { this.Save(true); }
     this.Save = function (IsApproved) {
+        debugger
         if (ValidatePage("#ApprovalModal", "", "")) {
             var post = {};
             post.Form = this.Form;

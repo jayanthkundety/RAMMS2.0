@@ -22,7 +22,7 @@
         }
     }
 
-   
+
 }
 
 
@@ -46,7 +46,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#photoGallery" onclick="javascript:GetImageList(@Model.FormW1.PkRefNo);" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                    <a href="#photoGallery" onclick="javascript:GetImageList(@Model.FormW1.IwRefNo);" data-toggle="tab" aria-expanded="false" class="nav-link">
                                         <span class="">
                                             Attachments
                                         </span>
@@ -109,11 +109,11 @@
                                                                             @Html.EditorFor(m => m.FormW1.TecmDt, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                                                                         </div>
                                                                         @*<div class="form-group col-lg-3">
-                                   @Html.Label("Status", "Status")
-                                   @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
-                        <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
+                                                                                       @Html.Label("Status", "Status")
+                                                                                       @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
+                                                                            <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
 
-                               </div>*@
+                                                                                   </div>*@
                                                                         <div class="form-group col-lg-2">
                                                                             <div class="row mt-4">
                                                                                 <div class="col-6 pt-1">
@@ -132,28 +132,28 @@
                                                                         <div class="form-group col-lg-3">
                                                                             @Html.Label("Service Provider Name", "Service Provider Name")
                                                                             @*@Html.TextBoxFor(m => m.FormW1.ServPropName, new { @class = "form-control svalidate {required,Service Provider Name}" })*@
-                                                                            @Html.DropDownListFor(m => m.FormW1.ServPropName,(IEnumerable<SelectListItem>)ViewData["ServiceProviderName"],  "Select ServPropName", new {  @class = "form-control svalidate {required, Service Provider Name}" })
+                                                                            @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @class = "form-control svalidate {required, Service Provider Name}" })
                                                                         </div>
                                                                         @*<div class="form-group col-lg-4">
-                            <label for="Designation"> Address 1 </label>
-                            @Html.TextBoxFor(m => m.FormW1.ServAddress1, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="Designation"> Address 2 </label>
-                            @Html.TextBoxFor(m => m.FormW1.ServAddress2, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="Designation"> Address 3 </label>
-                            @Html.TextBoxFor(m => m.FormW1.ServAddress3, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="Designation">Phone NO </label>
-                            @Html.TextBoxFor(m => m.FormW1.ServPhone, new { @class = "form-control" })
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="Designation"> Fax </label>
-                            @Html.TextBoxFor(m => m.FormW1.ServFax, new { @class = "form-control" })
-                        </div>*@
+                                                                                <label for="Designation"> Address 1 </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress1, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-4">
+                                                                                <label for="Designation"> Address 2 </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress2, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-4">
+                                                                                <label for="Designation"> Address 3 </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress3, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation">Phone NO </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServPhone, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Designation"> Fax </label>
+                                                                                @Html.TextBoxFor(m => m.FormW1.ServFax, new { @class = "form-control" })
+                                                                            </div>*@
                                                                         <div class="form-group col-lg-3">
                                                                             <label>
                                                                                 Intial Proposed Date
@@ -396,7 +396,7 @@
                                                                             <label for="Designation">
                                                                                 Requested by
                                                                             </label>
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridReq", "Select Users", new { Id = "ddlUseridReq", @class = "form-control", @onchange = "OnUseridReqUserChange(this);" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridReq", "Select Users", new { Id = "ddlUseridReq", @class = "form-control svalidate {required,  Requested by}", @onchange = "OnUseridReqUserChange(this); " })
                                                                         </div>
                                                                         <div class="form-group col-lg-2">
                                                                             @Html.Label("Name", "Name")
@@ -449,7 +449,7 @@
 
                                                                         <div class="form-group col-lg-2">
                                                                             @Html.Label("Reported by", "Reported by")
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @class = "form-control", @onchange = "OnUseridRepUserChange(this);" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @class = "form-control svalidate {required,  Reported by}", @onchange = "OnUseridRepUserChange(this); " })
 
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
@@ -478,7 +478,7 @@
                                                                             <label for="Designation">
                                                                                 Verified By
                                                                             </label>
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @class = "form-control", @onchange = "OnVerifyUserChange(this);" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @class = "form-control svalidate {required, Verified By}", @onchange = "OnVerifyUserChange(this);" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2">
                                                                             <label for="Designation"> Name </label>
@@ -544,20 +544,21 @@
                                         </div>
                                     </div>
                                 </div>
-                             
+
                             </div>
                         </div> <div class="col-md-12 mb-2 float-right text-right custom-footer">
                             <button type="button" id="btnBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-                            <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save(false)">Save</button>
+
                             @if (string.IsNullOrEmpty(Model.FormW1.Status) || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
                             {
+                                <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Submitted');">Submit</button>
                             }
                             else if (security.IsJKRSSuperiorOfficer && Model.FormW1.Status == RAMMS.Common.StatusList.FormW1Submitted)
                             {
+                                <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Verified'); ">Approved / Verified</button>
                             }
-
                         </div>
 
                     </div>
@@ -590,7 +591,7 @@
 
     $(document).ready(function () {
 
-           process.Init("FormD", "@Model.FormW1.Status", @Model.FormW1.PkRefNo);
+           process.Init("FormW1", "@Model.FormW1.Status", @Model.FormW1.PkRefNo);
 
         if (ImageTypeBQ == "True") {
             $('#chkBQ').prop("checked", true);
@@ -622,12 +623,11 @@
         $('#ddlUseridVer').trigger('chosen:updated');
         $("#ddlUseridVer").trigger("change");
 
-        $('#ddlUseridRep').val("@Model.FormW1.UseridRep");
+        @*$('#ddlUseridRep').val("@Model.FormW1.UseridRep");
         $('#ddlUseridRep').trigger('chosen:updated');
-        $("#ddlUseridRep").trigger("change");
+        $("#ddlUseridRep").trigger("change");*@
 
         GetNames($("#ddlSectionCode").val() == "" ? "0" : $("#ddlSectionCode").val(), "Section Code");
-        //if ($("#ddlRoadCode").val() != "")
-        //     GetNames($("#ddlRoadCode").val() , "RD_Code");
+
     });
 </script>

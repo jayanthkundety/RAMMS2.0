@@ -479,15 +479,11 @@ namespace RAMMS.Business.ServiceProvider.Services
                 string strNotGroupName = "";
                 string strNotUserID = "";
 
-                if (process.Stage == Common.StatusList.FormW1Submitted)
+                if (process.Stage == Common.StatusList.FormW1Verified)
                 {
-                    strNotGroupName =  GroupNames.Supervisor;
-                    strTitle = "Submitted";
-                }
-                else if (process.Stage == Common.StatusList.FormW1Verified)
-                {
-                    strNotGroupName = process.IsApprove ? "" : GroupNames.Supervisor;
-                    strTitle = "Agreed";
+                    strNotGroupName = process.IsApprove ? "" : GroupNames.OperationsExecutive;
+                    strTitle = "Verified";
+                    form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Verified : StatusList.S2Submitted;
 
                     if (process.IsApprove)
                     {
@@ -496,13 +492,13 @@ namespace RAMMS.Business.ServiceProvider.Services
                             lstNotUserId.Add(form.Fw1UseridReq.Value);
                         if (form.Fw1UseridVer.HasValue)
                             lstNotUserId.Add(form.Fw1UseridVer.Value);
-                       
+
                         strNotUserID = string.Join(",", lstNotUserId.Distinct());
                     }
                 }
-                
+                form.Fw1AuditLog = Utility.ProcessLog(form.Fw1AuditLog, strTitle, process.IsApprove ? "Approved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
                 strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form W1 (" + form.Fw1PkRefNo + ")";
-                strNotURL = "/InstructedWorks/EditFormW1?id=" + form.Fw1PkRefNo.ToString() +"&View=0";
+                strNotURL = "/InstructedWorks/EditFormW1?id=" + form.Fw1PkRefNo.ToString() + "&View=0";
                 SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = security.UserName,
