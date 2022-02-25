@@ -1,4 +1,5 @@
 ﻿@model RAMMS.Web.UI.Models.FormFECMModel;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 @{
     var vd = Model.FECM != null ? Model.FECM.DtAgreedNego : null;
@@ -14,15 +15,16 @@
 }
 
 <script src="~/js/FormW2.js" type="text/javascript"></script>
-
-<div class="p-4">
+ <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
+                            <div id="div_fecmload">
+                                <div class="p-4">
 
     <div class="row">
         @Html.HiddenFor(m => m.FECM.Fw2PkRefNo, new { @id = "FW2PkRefNo", @class = "form-control" })
         @Html.HiddenFor(m => m.FECM.PkRefNo, new { @id = "fcemPkRefNo", @class = "form-control" })
         <div class="form-group col-lg-2">
             <label for="RMU">TECM Date</label>
-            <input type="date" class="datepicker form-control  svalidate {required, TECM date}" id="tcemDate" value="@_TCEMDate" />
+            <input type="date" class="datepicker form-control  svalidate {required, TECM date}" id="tcemDate" value="@_TCEMDate" disabled />
         </div>
         <div class="form-group col-lg-2">
             <label>
@@ -34,13 +36,13 @@
             <label for="RMU">Agreed Nego Price Letter</label>
             <br class="mb-3" />
             @{
-                var _AgreedNegoLetrY = Model.FECM.AgreedNegoLetrYn == null || Model.FECM.AgreedNegoLetrYn == false ? "": "checked";
+                var _AgreedNegoLetrY = Model.FECM.AgreedNegoLetrYn == null || Model.FECM.AgreedNegoLetrYn == false ? "" : "checked";
                 var _AgreedNegoLetrN = Model.FECM.AgreedNegoLetrYn == null || Model.FECM.AgreedNegoLetrYn == false ? "checked" : "";
 
             }
 
-            <label class="checkbox-inline py-3 px-2"><input type="checkbox" id="fecmAgrY" onclick="toggleAgr()" value="Yes"  @_AgreedNegoLetrY> Yes</label>
-            <label class="checkbox-inline"><input type="checkbox" id="fecmAgrN"  onclick="toggleAgr()" value="No" @_AgreedNegoLetrN> No</label>
+            <label class="checkbox-inline py-3 px-2"><input type="checkbox" id="fecmAgrY" onclick="toggleAgr()" value="Yes" @_AgreedNegoLetrY> Yes</label>
+            <label class="checkbox-inline"><input type="checkbox" id="fecmAgrN" onclick="toggleAgr()" value="No" @_AgreedNegoLetrN> No</label>
 
         </div>
 
@@ -51,13 +53,13 @@
         @*<div class="form-group col-lg-3">
             @Html.Label("Status", "Status")
             @Html.DropDownListFor(m => m.FECM.Sts, (IEnumerable<SelectListItem>)ViewData["TECM_Status"], "Select Status", new { @id = "fecmStatus", @class = "form-control svalidate {required, Status}" })
-        </div>
-        <div class="form-group col-lg-3">
+            </div>
+            <div class="form-group col-lg-3">
             <label>
-                Status Remarks
+            Status Remarks
             </label>
             @Html.TextAreaFor(m => m.FECM.StsRemarks, new { @id = "fecmStsRemark", @class = "form-control  svalidate {required, Remark }" })
-        </div>*@
+            </div>*@
 
         <div class="form-group col-lg-2">
             <label for="RMU">PROGRESS %</label>
@@ -89,9 +91,140 @@
         </div>
     </div>
 </div>
-<div class="col-md-12 mb-2 float-right text-right custom-footer">
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="ClearFCEM()">Clear</button>
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="checkW2Exist()">Save</button>
+                                </div></div>
+                                <div class="" style="position:relative; width:100%;">
+@Html.HiddenFor(m => m.FECM.Fw2PkRefNo , new { @id="fcemw2id" })
+<div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
+    left: auto;
+    bottom: 0px;
+    right: 0;
+    /* top: 0; */
+    background:#fff;
+    width: 96%;
+    height: 45px;">
+    @*<button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>*@
+        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+    <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="return checkW2Exist()">Save</button>
     <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn">Submit</button>
 </div>
+</div>
+<script type="text/javascript">
+    $(document).on("click", "#saveFCEMBtn", function () {
+        SaveFCEM(false);
+    });
+
+    function checkW2Exist() {
+        if ($("#FW2HRef_No").length != 0){
+            if (ValidatePage("#divpage")) {
+                if ($("#FW2HRef_No").val() == "0" || $("#FW2HRef_No").val() == "") {
+                    $("#lnkPage").click();
+                    app.ShowErrorMessage("Required to save the Form W2 details and then try to create FCEM");
+                }
+            }
+            else {
+                $("#saveFormW2Btn").click();
+                app.ShowErrorMessage("Required fields are incomplete in Form W2");
+            }
+        }
+        else {
+            if ($("#fcemw2id").val() == "0") {
+                 app.ShowErrorMessage("Required to save the Form W2 details and then try to create FCEM");
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+        function SaveFCEM(submit) {
+            if (submit) {
+                $("#divFecm .svalidate").addClass("validate");
+            }
+            InitAjaxLoading();
+
+            var d = new Date();
+
+            var month = d.getMonth() + 1;
+            var day = d.getDate();
+
+            var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
+                (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
+
+            var saveObj = new Object;
+
+            saveObj.PkRefNo = $("#fcemPkRefNo").val();
+            saveObj.Fw2PkRefNo = $("#FW2PkRefNo").val();
+            saveObj.DtTecm = $("#tcemDate").val();
+            saveObj.Dt = $("#fecmDate").val();
+            saveObj.AgreedNegoLetrYn = $("#fecmAgrY").prop("checked");
+            saveObj.DtAgreedNego = $("#fecmNegoDate").val();
+            saveObj.Sts = $("#fecmStatus").find(":selected").val();
+            saveObj.StsRemarks = $("#fecmStsRemark").val();
+            saveObj.ProgressPerc = $("#fecmProgress").val();
+            saveObj.IsBq = $("#femcBQ").prop("checked");
+            saveObj.IsDrawing = $("#fecmDrawing").prop("checked");
+            saveObj.Remark = $("#fecmRemark").val();
+
+            //Created by
+
+            if ($("#fcemPkRefNo").val() != "0") {
+                saveObj.ModBy = @security.UserID;
+                saveObj.ModDt = output;
+            }
+
+
+
+            if ($("#fcemPkRefNo").val() == "0") {
+                saveObj.CrBy =  @security.UserID;
+                saveObj.CrDt = output;
+            }
+
+            saveObj.ActiveYn = true;
+            saveObj.SubmitSts = submit;
+            console.log(saveObj);
+            $.ajax({
+                url: '/InstructedWorks/SaveFCEM',
+                data: saveObj,
+                type: 'POST',
+                success: function (data) {
+                    HideAjaxLoading();
+                    if (data == -1) {
+                        app.ShowErrorMessage("Reference id already Exist");
+                    }
+                    else {
+                        $("#FW2HRef_No").val(data);
+                        if (submit) {
+                            $("#saveFCEMBtn").hide();
+                            $("#submitFCEMBtn").hide();
+                            app.ShowSuccessMessage('Successfully Submitted', false);
+                        }
+                        else {
+                            $("#saveFCEMBtn").show();
+                            $("#submitFCEMBtn").show();
+                            app.ShowSuccessMessage('Successfully Saved', false);
+                        }
+                    }
+                },
+                error: function (data) {
+                    HideAjaxLoading();
+                    app.ShowErrorMessage(data.responseText);
+                }
+
+            });
+
+    }
+
+
+    function ClearFCEM() {
+        $("#fecmDate").val('');
+        $("#fecmAgrY").prop("checked",false);
+        $("#fecmAgrN").prop("checked",false);
+        $("#fecmProgress").val('');
+        $("#fecmNegoDate").val('');
+        $("#femcBQ").prop("checked",false)
+        $("#fecmDrawing").prop("checked",false)
+        $("#fecmRemark").val('');
+        return false;
+    }
+
+</script>

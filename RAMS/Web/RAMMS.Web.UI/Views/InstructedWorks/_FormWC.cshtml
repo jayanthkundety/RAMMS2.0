@@ -296,9 +296,16 @@
         </div>
     </div>
 </div>
-<div class="col-md-12 mb-2 float-right text-right custom-footer">
-    <button type="button" class="btn btn-sm btn-outline-theme">Clear</button>
-    <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn">Save</button>
-    <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
+<div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
+    left: auto;
+    bottom: 0px;
+    right: 0;
+    /* top: 0; */
+    background:#fff;
+    width: 96%;
+    height: 45px;">
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
+        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+    <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="return checkW2Exist()">Save</button>
+    <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn">Submit</button>
 </div>

@@ -134,10 +134,7 @@ $(document).on("click", "#submitFormW2Btn", function () {
     Save(true);
 });
 
-$(document).on("click", "#saveFCEMBtn", function () {
 
-    SaveFCEM(false);
-});
 
 $(document).on("click", "#submitFCEMBtn", function () {
     SaveFCEM(true);
@@ -152,6 +149,7 @@ function openW1() {
 
     $("#saveFCEMBtn").hide();
     $("#submitFCEMBtn").hide();
+    $("#closeFormW2Btn").show();
 }
 
 function openFCEM() {
@@ -165,11 +163,12 @@ function openFCEM() {
 
 function openW2() {
     if ($("#hdnView").val() == "1") return;
-    $("#saveFormW2Btn").hide();
-    $("#submitFormW2Btn").hide();
+    $("#saveFormW2Btn").show();
+    $("#submitFormW2Btn").show();
 
-    $("#saveFCEMBtn").show();
-    $("#submitFCEMBtn").show();
+    $("#saveFCEMBtn").hide();
+    $("#submitFCEMBtn").hide();
+    $("#closeFormW2Btn").show();
 }
 
 function Save(submit) {
@@ -314,7 +313,7 @@ function GetImageList(id) {
     $("#submitFormW2Btn").hide();
     $("#saveFCEMBtn").hide();
     $("#submitFCEMBtn").hide();
-
+    $("#closeFormW2Btn").show();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
     }
@@ -507,104 +506,6 @@ function formatDate(date) {
 
 
 //FECM
-
-function ClearFCEM() {
-
-}
-
-function checkW2Exist() {
-    if (ValidatePage("#divpage")) {
-        if ($("#FW2HRef_No").val() == "0" || $("#FW2HRef_No").val() == "") {
-            $("#lnkPage").click();
-            app.ShowErrorMessage("Required to save the Form W2 details and then try to create FCEM");
-        }
-    }
-    else {
-        $("#saveFormW2Btn").click();
-        app.ShowErrorMessage("Required fields are incomplete in Form W2");
-    }
-}
-
-
-
-function SaveFCEM(submit) {
-    if (submit) {
-        $("#divFecm .svalidate").addClass("validate");
-
-        if (!ValidatePage('#divPage')) {
-            return false;
-        }
-    }
-
-   
-
-    InitAjaxLoading();
-
-    var d = new Date();
-
-    var month = d.getMonth() + 1;
-    var day = d.getDate();
-
-    var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
-        (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
-
-    var saveObj = new Object;
-
-    saveObj.PkRefNo = $("#fcemPkRefNo").val();
-    saveObj.Fw2PkRefNo = $("#FW2PkRefNo").val();
-    saveObj.DtTecm = $("#tcemDate").val();
-    saveObj.Dt = $("#fecmDate").val();
-    saveObj.AgreedNegoLetrYn = $("#fecmAgrY").prop("checked");
-    saveObj.DtAgreedNego = $("#fecmNegoDate").val();
-    saveObj.Sts = $("#fecmStatus").find(":selected").val();
-    saveObj.StsRemarks = $("#fecmStsRemark").val();
-    saveObj.ProgressPerc = $("#fecmProgress").val();
-    saveObj.IsBq = $("#femcBQ").prop("checked");
-    saveObj.IsDrawing = $("#fecmDrawing").prop("checked");
-    saveObj.Remark = $("#fecmRemark").val();
-
-    //Created by
-    saveObj.ModBy = 0
-    if ($("#fcemPkRefNo").val() != "0") saveObj.ModDt = output
-    saveObj.CrBy = 0
-    if ($("#fcemPkRefNo").val() == "0") saveObj.CrDt = output;
-
-    saveObj.ActiveYn = true;
-    saveObj.SubmitSts = submit;
-    console.log(saveObj);
-    $.ajax({
-        url: '/InstructedWorks/SaveFCEM',
-        data: saveObj,
-        type: 'POST',
-        success: function (data) {
-            HideAjaxLoading();
-            if (data == -1) {
-                app.ShowErrorMessage("Reference id already Exist");
-            }
-            else {
-                $("#FW2HRef_No").val(data);
-                if (submit) {
-                    $("#saveFCEMBtn").hide();
-                    $("#submitFCEMBtn").hide();
-                    app.ShowSuccessMessage('Successfully Submitted', false);
-                    location.href = "/InstructedWorks";
-                }
-                else {
-                    $("#saveFCEMBtn").show();
-                    $("#submitFCEMBtn").show();
-                    app.ShowSuccessMessage('Successfully Saved', false);
-                }
-            }
-        },
-        error: function (data) {
-            HideAjaxLoading();
-            app.ShowErrorMessage(data.responseText);
-        }
-
-    });
-
-}
-
 
 function toggleAgr() {
     if ($("#fecmAgrY").prop("checked")) {

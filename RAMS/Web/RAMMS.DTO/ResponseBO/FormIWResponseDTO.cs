@@ -14,10 +14,12 @@ namespace RAMMS.DTO.ResponseBO
         public string WDRefNo { get; set; }
         public string WNRefNo { get; set; }
 
+        //FormW1
         public string iWReferenceNo { get; set; }
         public string projectTitle { get; set; }
 
         public string initialPropDt { get; set; }
+        public string overAllStatus { get; set; }
 
         public string recommdDEYN { get; set; }
 
@@ -27,28 +29,50 @@ namespace RAMMS.DTO.ResponseBO
 
         public string estimatedCost { get; set; }
 
-        //public string status { get; set; }
+        //FormW2
 
-        public string technicalDt { get; set; }
+        public string w2dt { get; set; }
 
-        public string financeDt { get; set; }
+        //FormW2-FECM
+        public string tecmDt { get; set; }
 
-        public string agreedNego { get; set; }
+        public string fecmDt { get; set; }
 
+        public string agreedNegoYN { get; set; }
+
+        public string agreedNegoPriceDt { get; set; }
+        //FormW2
         public string issueW2Ref { get; set; }
-
 
         public string commenceDt { get; set; }
 
         public string compDt { get; set; }
 
+        //FormWD
+
+        public string wdDt { get; set; }
+
+        public string newCompDt { get; set; }
+
+        //FormWN
+
+        public string wnDt { get; set; }
+
+        //FormW2
         public string ContractPeriod { get; set; }
+
+        //FormWC
+
+        public string wcDt { get; set; }
 
         public string dlpPeriod { get; set; }
 
         public string finalAmt { get; set; }
 
+        //FormW2 - FECM
         public string sitePhy { get; set; }
+
+        public string wgDate { get; set; }
 
         public string RMU { get; set; }
 
