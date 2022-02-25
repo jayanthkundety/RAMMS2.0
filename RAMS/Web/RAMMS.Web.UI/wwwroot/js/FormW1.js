@@ -478,12 +478,17 @@ function Save(GroupName,SubmitType) {
             }
             else {
                 $("#FormW1_pkRefNo").val(data.pkRefNo);
-                app.ShowSuccessMessage('Successfully Saved', false);
+                if (SubmitType != "") {
+                    app.ShowSuccessMessage('Successfully Saved', false);
+                }
+                else {
+                    process.ShowApprove(GroupName, SubmitType);
+                }
             }
         });
     }
     else {
-        process.ShowApprove(GroupName, SubmitType);
+      
     }
 }
 

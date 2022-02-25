@@ -258,7 +258,7 @@ namespace RAMMS.Web.UI.Controllers
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;
             model.View = View;
-            model.FormW1.Status = model.FormW1.Status =="" ? "Draft" : model.FormW1.Status;
+            
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
@@ -275,6 +275,7 @@ namespace RAMMS.Web.UI.Controllers
             frm.FormW1.ActiveYn = true;
             if (frm.FormW1.PkRefNo == 0)
             {
+                frm.FormW1.Status = "Draft";
                 refNo = await _formW1Service.SaveFormW1(frm.FormW1);
             }
             else
