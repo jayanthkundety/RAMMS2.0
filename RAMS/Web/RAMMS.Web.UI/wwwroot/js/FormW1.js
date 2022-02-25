@@ -48,12 +48,8 @@
 
     });
 
-    //$("#ddlSectionCode").val($('#FormW1_SecCode').val());
-    //$('#ddlSectionCode').trigger("chosen:updated")
-    //$("#ddlSectionCode").trigger("change");
 
-
-    if ($("#FormW1_Status").val() == "Submitted") {
+    if ($("#FormW1_Status").val() == "Submitted" || $("#FormW1_Status").val() == "Verified") {
 
         $(".approvesection").css("display", "flex");
     }
@@ -108,11 +104,6 @@
         }
 
     });
-
-
-
-
-
 
 
 });
@@ -424,7 +415,7 @@ function formatDate(date) {
 
 
 function GoBack() {
-    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "") {
+    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val("") || $("#FormW1_Status").val("Draft")) {
         if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";
@@ -436,64 +427,57 @@ function GoBack() {
 }
 
 
-function Save(GroupName,SubmitType) {
-    if (SubmitType !="") {
+function Save(GroupName, SubmitType) {
+
+    debugger
+
+    $("#ddlUseridReq").removeClass("validate");
+    $("#ddlUseridVer").removeClass("validate");
+    $("#ddlUseridRep").removeClass("validate");
+
+    if (SubmitType != "") {
 
         $("#FormW1page .svalidate").addClass("validate");
 
-
-        if (($("#FormW1_Status").val() == "") || ($("#FormW1_Status").val() == "0") || ($("#FormW1_Status").val() == "1") || ($("#FormW1_Status").val() == "2")) {
+        if (SubmitType == "Submitted") {
+            $("#FormW1_Status").val("Submitted");
             $("#ddlUseridReq").addClass("validate");
         }
-        else {
-            $("#ddlUseridReq").removeClass("validate");
-        }
-
-        if (($("#FormW1_Status").val() == "1") || ($("#FormW1_Status").val() == "2")) {
-            $("#ddlUseridRep").addClass("validate");
-        }
-        else {
-            $("#ddlUseridRep").removeClass("validate");
-        }
-
-        if (($("#FormW1_Status").val() == "2")) {
+        else if (SubmitType == "Verified") {
+            $("#ddlUseridReq").addClass("validate");
             $("#ddlUseridVer").addClass("validate");
-        }
-        else {
-            $("#ddlUseridVer").removeClass("validate");
-        }
 
-    }
-    else {
-        $("#ddlUseridReq").removeClass("validate");
-    }
-
-    if (ValidatePage('#FormW1page')) {
-        InitAjaxLoading();
-        $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
-            HideAjaxLoading();
-            if (data == -1) {
-                app.ShowErrorMessage(data.errorMessage);
-
+            if ($("#FormW1_RecomdType").val() == 1 || $("#FormW1_RecomdType").val() == 2) {
+                $("#ddlUseridRep").addClass("validate");
             }
-            else {
-                $("#FormW1_pkRefNo").val(data.pkRefNo);
-                if (SubmitType != "") {
-                    app.ShowSuccessMessage('Successfully Saved', false);
+        }
+
+
+        if (ValidatePage('#FormW1page')) {
+            InitAjaxLoading();
+            $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
+                HideAjaxLoading();
+                if (data == -1) {
+                    app.ShowErrorMessage(data.errorMessage);
                 }
                 else {
-                    process.ShowApprove(GroupName, SubmitType);
+                    debugger
+                    //  $("#FormW1_PkRefNo").val(data.pkRefNo);
+
+                    if (SubmitType == "" || SubmitType == "Submitted") {
+                        app.ShowSuccessMessage('Submitted Successfully', false);
+                        location.href = "/InstructedWorks/Index";
+                    }
+                    else if (SubmitType == "Verified") {
+                        process.ShowApprove(GroupName, SubmitType);
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
-    else {
-      
-    }
+
 }
-
-
-
 
 
 

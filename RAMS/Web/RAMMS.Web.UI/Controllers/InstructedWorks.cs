@@ -226,9 +226,14 @@ namespace RAMMS.Web.UI.Controllers
             model.FormW1.RecomdType = 0;
             model.View = 0;
             model.FormW1.UseridRep = _security.UserID;
-            model.FormW1.UseridReq = _security.UserID;
+          //model.FormW1.UseridReq = _security.UserID;
             model.FormW1.UseridVer = _security.UserID;
-          
+            model.FormW1.InitialProposedDate = DateTime.Today;
+            model.FormW1.InitialProposedDate = DateTime.Today;
+            model.FormW1.Dt = DateTime.Today;
+            model.FormW1.DtReq = DateTime.Today;
+            model.FormW1.DtVer = DateTime.Today;
+
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Month";
