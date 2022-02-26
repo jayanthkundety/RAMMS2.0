@@ -436,7 +436,15 @@
             case "wc":
                 value = daa.wcRefNo;
                 break;
-
+            case "w1Status":
+                value = daa.w1Status;
+                break;
+            case "w2Status":
+                value = daa.w1Status;
+                break;
+            case "w2SubStatus":
+                value = daa.w2SubStatus;
+                break;
             default:
                 value = daa.w1RefNo;
         }
@@ -565,20 +573,35 @@
                  return;
             }
             var id = GetFormIDByName("w2");
-
-             if (id == "-1" || id == null)
+            var w1status = GetFormIDByName("w1Status");
+            var w2substatus = GetFormIDByName("w2SubStatus");
+            if ((id == "-1" || id == null))// && (w1status == "Verified" || w1status == "Completed"))
             {
                 $("#w2Add").show();
                 $("#w2Edit").hide();
                 $("#w2View").hide();
                 $("#w2Print").hide();
-            }         
-            else if (id != "-1")
+            }
+            else if (id != "-1" && id != null)
             {
+                if (w2substatus)
+                {
+                     $("#w2Add").hide();
+                     $("#w2Edit").hide();
+                     $("#w2View").show();
+                     $("#w2Print").show();
+                     return;
+                }
                  $("#w2Add").hide();
                  $("#w2Edit").show();
                  $("#w2View").show();
                  $("#w2Print").show();
+            }
+            else {
+                $("#w2Add").hide();
+                 $("#w2Edit").hide();
+                 $("#w2View").hide();
+                 $("#w2Print").hide();
             }
 
         }
@@ -592,10 +615,10 @@
                  $("#w1Print").hide();
                  return;
             }
-                 //$("#w1Add").hide();
-                 $("#w1Edit").show();
-                 $("#w1View").show();
-                 $("#w1Print").show();
+            //$("#w1Add").hide();
+            $("#w1Edit").show();
+            $("#w1View").show();
+            $("#w1Print").show();
         }
     }
 
@@ -631,16 +654,13 @@
         });
     }
 
-
     function PrintFormW1() {
         var id = GetFormIDByName("w1");
         window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW1";
     }
 
-
     function PrintFormW2() {
         var id = GetFormIDByName("w2");
         window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW2";
     }
-
 </script>

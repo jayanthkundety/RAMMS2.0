@@ -18,8 +18,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<int> SaveFormW1(FormW1ResponseDTO FormW1);
         Task<int> Update(FormW1ResponseDTO FormW1);
         Task<int> SaveImage(List<FormIWImageResponseDTO> image);
-        
 
+        Task<int> DeActivateImage(int imageId);
 
     }
 }

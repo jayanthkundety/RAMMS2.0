@@ -41,7 +41,9 @@ namespace RAMMS.Common
         
         public const string FormW1Submitted = "Submitted";
         public const string FormW1Verified = "Verified";
-  
+
+        public const string FormW2Submitted = "Submitted";
+        public const string FormW2Issued = "Issued";
 
         public const string FormXInit = "Initialize";
         public const string FormXWorkCompleted = "Work Completed";

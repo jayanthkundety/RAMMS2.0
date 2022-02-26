@@ -257,16 +257,12 @@ function OnRoadChange(tis) {
     var ctrl = $("#ddlRoadCode");
     $('#FormW1_RoadCode').val(ctrl.val());
 
-    fromkm
-
     var obj = new Object();
     obj.TypeCode = ctrl.val();
     obj.Type = "RD_Code";
     getNameByCode(obj)
 
 }
-
-
 
 function searchList(obj) {
     $.ajax({
@@ -328,8 +324,6 @@ function getNameByCode(obj) {
         }
     })
 }
-
-
 
 function OnUseridRepUserChange(tis) {
 

@@ -54,7 +54,7 @@
                             Attachment List
                         </span>
                     </a>
-                    <div class="img-btns mt-1">
+                    <div class="img-btns mt-1" id="addAttachment">
                         <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
                             @*href="#myModal2">*@
                             <span class="add-icon"></span> Add Attachment
@@ -303,30 +303,33 @@
 
 
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
 
         $("#photoType").chosen();
         document.getElementById("files").disabled = true;
         $("#files1").addClass("disabled");
         document.getElementById("FormDBrowseBtn").disabled = true;
-            document.getElementById("btnImageUpload").disabled = true;
+        document.getElementById("btnImageUpload").disabled = true;
 
-            if (ImageTypeBQ == "True") {
-                $('#chkBQ').prop("checked", true);
-            }
-            else {
-                $('#chkBQ').prop("checked", false);
-            }
-            if (ImageTypeDrawing == "True") {
-                $('#chkDrawing').prop("checked", true);
-            }
-            else {
-                $('#chkDrawing').prop("checked", false);
-            }
+        if ($("#hdnView").val() == "1") {
+            $("#addAttachment").hide();
+        }
+
+        if (ImageTypeBQ == "True") {
+            $('#chkBQ').prop("checked", true);
+        }
+        else {
+            $('#chkBQ').prop("checked", false);
+        }
+        if (ImageTypeDrawing == "True") {
+            $('#chkDrawing').prop("checked", true);
+        }
+        else {
+            $('#chkDrawing').prop("checked", false);
+        }
     });
 
     function FormAddImage() {
-
         if ($("#hdnView").val() == "1") return; 
         if (ValidatePage("#tab1")) {
             if ($("#IwRefNo").val() != "0") {
@@ -352,6 +355,7 @@
         $("#photolist").empty();
         $('#myModal').modal('hide');
     }
+
     $("#photoType").change(function () {
          document.getElementById("files").disabled = true;
         $("#files1").addClass("disabled");
@@ -560,6 +564,33 @@
                 row.deleteCell(imagedelete);
             }
         });
+    }
+
+      function DeleteImage(pkId) {
+
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/InstructedWorks/IwDeleteImage',
+                    data: { pkId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            HideAjaxLoading();
+                            app.ShowSuccessMessage("Successfully Deleted")
+                            GetImageList();
+                        }
+                        else {
+                            HideAjaxLoading();
+                            alert("Error in Deleted. Kindly retry later.");
+
+                        }
+
+                    }
+                });
+            }
+        }));
     }
 
 </script>

@@ -14,6 +14,10 @@ namespace RAMMS.Repository.Interfaces
         Task<int> GetImageId(string iwRefNo, string type);
 
         Task<int> GetImageIdByW1Id(int formW1Id, string type);
+
+        Task<RmIwformImage> GetImageById(int imageId);
         void SaveImage(IEnumerable<RmIwformImage> image);
+
+        void UpdateImage(RmIwformImage image);
     }
 }

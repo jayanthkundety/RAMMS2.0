@@ -33,11 +33,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             _security = security;
             processService = process;
             _repo = repo;
-        }
-
-        
-
-         
+        }         
 
         public async Task<FormW1ResponseDTO> FindFormW1ByID(int id)
         {
@@ -111,6 +107,26 @@ namespace RAMMS.Business.ServiceProvider.Services
                 _repoUnit.FormW1Repository.SaveImage(domainModelFormW1);
                 rowsAffected = await _repoUnit.CommitAsync();
 
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+        public async Task<int> DeActivateImage(int imageId)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelIw = await _repoUnit.FormW1Repository.GetImageById(imageId);
+                domainModelIw.FiwiActiveYn = false;
+                _repoUnit.FormW1Repository.UpdateImage(domainModelIw);
+
+                rowsAffected = await _repoUnit.CommitAsync();
             }
             catch (Exception ex)
             {

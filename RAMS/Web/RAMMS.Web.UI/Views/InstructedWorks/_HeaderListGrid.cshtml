@@ -59,8 +59,8 @@
 
     var table_columns = [];
     var chkRefNoCol = {
-        data: null, name: "chkBox", title: "", autoWidth: false, width: 1,  visible:false, sortable: false, render: function (data) {
-            return "<span id='indicateSel'></span>";
+        data: null, name: "chkBox", title: "", autoWidth: false, width: 125,  visible:true, sortable: false, render: function (data) {
+            return "<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
         }
     };
     var w1RefNoCol = { data: "iWReferenceNo", name: "iWReferenceNo", title: "IW Ref No.", autoWidth: true, sortable: true, visible:true };
@@ -160,10 +160,15 @@
         $('#FormIWGridView tbody').on('click', 'tr', function () {
             if ($(this).hasClass('selected')) {
                 $(this).removeClass('selected');
+                
             }
             else {
-                table.$('tr.selected').removeClass('selected');
+                var selObj = table.$('tr.selected');
+                selObj.children('td:first').find("span").html('');
+                selObj.removeClass('selected');
+                
                 $(this).addClass('selected');
+                $(this).children('td:first').find("span").html("<b>>></b>");
             }
         });
     });

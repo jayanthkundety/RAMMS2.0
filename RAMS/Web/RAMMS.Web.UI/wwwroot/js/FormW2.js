@@ -1,5 +1,6 @@
 ﻿var currentDate = new Date();
-$(document).ready(function () {
+$(document).ready(function ()
+{
     currentDate = formatDate(currentDate);
 
     $('.allow_numeric').keypress(function (event) {
@@ -29,33 +30,31 @@ $(document).ready(function () {
 
     $("#formW2IssuedBy").on("change", function () {
         var id = $("#formW2IssuedBy option:selected").val();
+        var ctrl = $(this);
         if (id != "99999999" && id != "") {
-            $.ajax({
-                url: '/ERT/GetUserById',
-                dataType: 'JSON',
-                data: { id },
-                type: 'Post',
-                success: function (data) {
-                    $("#formW2IssuedName").val(data.userName);
-                    $("#formW2IssuedName").prop("disabled", true);
-                },
-                error: function (data) {
-                    console.error(data);
-                }
-            });
+            $("#formW2IssuedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formW2IssuedDesig").val(ctrl.find("option:selected").attr("Item2"));
+            $("#formW2IssuedOffice").val(ctrl.find("option:selected").attr("Item3"));
         }
         else if (id == "99999999") {
             $("#formW2IssuedName").prop("disabled", false);
             $("#formW2IssuedName").val('');
+            $("#formW2IssuedDesig").prop("disabled", false);
+            $("#formW2IssuedDesig").val('');
+            $("#formW2IssuedOffice").prop("disabled", false);
+            $("#formW2IssuedOffice").val('');
         }
         else {
             $("#formW2IssuedName").prop("disabled", true);
             $("#formW2IssuedName").val('');
+            $("#formW2IssuedDesig").prop("disabled", true);
+            $("#formW2IssuedDesig").val('');
+            $("#formW2IssuedOffice").prop("disabled", true);
+            $("#formW2IssuedOffice").val('');
         }
         $("#formW2IssuedDate").val(currentDate);
         return false;
     });
-
 
     $("#formW2CommencementDate").change(function () {
         var value = $(this).val();
@@ -68,7 +67,6 @@ $(document).ready(function () {
         }
 
     });
-
 
     $("#formW2CompletionDate").change(function () {
         var value = $(this).val();
@@ -90,10 +88,13 @@ $(document).ready(function () {
         return false;
     });
 
-   
+    $("#submitFormW2Btn").on("click", function () {
+        Save(true);
+        return false;
+    });
+
 
     if ($("#FW2HRef_No").val() == "0") {
-
         $("#formW2DivisionCode").trigger("chosen:updated")
         $("#formW2DivisionCode").trigger("change");
 
@@ -106,7 +107,6 @@ $(document).ready(function () {
     }
 
     if ($("#hdnView").val() == "1") {
-        //debugger;
         $("#list *").prop("disabled", true);
         $("#page *").prop("disabled", true);
         $("#formW2DivisionCode").chosen('destroy');
@@ -117,18 +117,17 @@ $(document).ready(function () {
         $("frmW2RoadCodeDD").prop("disabled", true);
         $("#formw2RequestedBy").chosen('destroy');
         $("formw2RequestedBy").prop("disabled", true);
-        $("#divSaveRow").hide();        
         $("#closeFormW2Btn").hide();
         $("#saveFormW2Btn").hide();
-        $("#submitFormW2Btn").hide();       
+        $("#submitFormW2Btn").hide();
     }
 
+   
+    $("#divSaveRow").hide();
 });
 
 
-
 function openW1() {
-
     if ($("#hdnView").val() == "1") return;
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
@@ -141,7 +140,7 @@ function openW1() {
 
 function openFCEM() {
     $("#divSaveRow").hide();
-    if ($("#hdnView").val() == "1") return;
+    if ($("#hdnFecmView").val() == "1") return;
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
     //$("#closeFormW2Btn").hide();
@@ -157,7 +156,7 @@ function openW2() {
     $("#submitFormW2Btn").show();
     $("#saveFCEMBtn").hide();
     $("#submitFCEMBtn").hide();
-    
+
 }
 
 function Save(submit) {
@@ -188,7 +187,7 @@ function Save(submit) {
     saveObj.Fw1ProjectTitle = $("#fw1ProjectTitle").val()
     saveObj.RegionText = $("#formW2Region").val();
     saveObj.RegionName = $("#formW2RegionName").val();
-    saveObj.DivText = $("#formW2DivText").val() ;
+    saveObj.DivText = $("#formW2DivText").val();
     saveObj.DivCode = $("#formW2DivisionCode").find(":selected").val();
     saveObj.DivisonName = $("#formW2DivisonName").val();
     saveObj.RmuText = $("#formW2RmuText").val();
@@ -217,9 +216,9 @@ function Save(submit) {
     if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.UseridIssu = $("#formW2IssuedBy option:selected").val();
     if ($("#formW2IssuedName").val() != "") saveObj.UsernameIssu = $("#formW2IssuedName").val();
     if ($("#formW2IssuedDate").val() != "dd/mm/yyyy" && $("#formW2IssuedDate").val() != "") saveObj.DtIssu = $("#formW2IssuedDate").val();
-    saveObj.DesignationIssu = $("#formW2IssuedOffice").val();
+    saveObj.DesignationIssu = $("#formW2IssuedDesig").val();
     saveObj.OfficeIssu = $("#formW2IssuedOffice").val();
-    saveObj.SignIssu = $("#formW2IssuedSignture").prop("checked");
+    saveObj.SignIssu = $("#formW2IssuedSig").prop("checked");
 
     if ($("#formw2RequestedBy").find(":selected").val() != "") saveObj.UseridReq = $("#formw2RequestedBy option:selected").val();
     if ($("#formW2RequestedName").val() != "") saveObj.UsernameReq = $("#formW2RequestedName").val();
@@ -234,7 +233,7 @@ function Save(submit) {
     if ($("#FW2HRef_No").val() != "0") saveObj.ModDt = output
     if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.CrBy = $("#formW2IssuedBy").find(":selected").val();
     if ($("#FW2HRef_No").val() == "0") saveObj.CrDt = output;
-
+    if (submit) saveObj.Status = "Submitted";
     saveObj.ActiveYn = true;
     saveObj.SubmitSts = submit;
     console.log(saveObj);
@@ -248,7 +247,10 @@ function Save(submit) {
                 app.ShowErrorMessage("Reference id already Exist");
             }
             else {
-                if ($("#FW2HRef_No").val() == "0") $("#FW2HRef_No").val(data);
+                if ($("#FW2HRef_No").val() == "0") {
+                    $("#FW2HRef_No").val(data);
+                    $("#FW2PkRefNo").val(data);
+                }
                 if (submit) {
                     $("#saveFormW2Btn").hide();
                     $("#submitFormW2Btn").hide();
@@ -297,7 +299,6 @@ function Delete(id) {
 
 function GetImageList(id) {
     var group = $("#FormADetAssetGrpCode option:selected").val();
-
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
     $("#saveFCEMBtn").hide();
@@ -317,7 +318,7 @@ function GetImageList(id) {
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);
-            if ($("#hdnView").val() == "1") 
+            if ($("#hdnView").val() == "1")
                 $("div.img-btns *").prop("disabled", true);
             //$("#FW2HRef_No").val(id);
         },
@@ -355,7 +356,7 @@ function changeRMU(obj) {
             data: { rmu: ctrl.val() },
             type: 'Post',
             success: function (data) {
-              //  debugger;
+                //  debugger;
                 if (data != null) {
                     $('#frmW2RoadCodeDD').empty();
                     $('#frmW2RoadCodeDD')
@@ -441,30 +442,28 @@ function OnRoadChange(tis) {
 
 function ChangeRUser(obj) {
     var id = $(obj).find("option:selected").val();
+    var ctrl = $(obj);
     if (id != "99999999" && id != "") {
-        $.ajax({
-            url: '/ERT/GetUserById',
-            dataType: 'JSON',
-            data: { id },
-            type: 'Post',
-            success: function (data) {
-                if (data != null) {
-                    $("#formW2RequestedName").val(data.userName);
-                    $("#formW2RequestedName").prop("disabled", true);
-                }
-            },
-            error: function (data) {
-                console.error(data);
-            }
-        });
+        $("#formW2RequestedName").val(ctrl.find("option:selected").attr("Item1"));
+        $("#formW2RequestedDesig").val(ctrl.find("option:selected").attr("Item2"));
+        $("#formW2RequestedOffice").val(ctrl.find("option:selected").attr("Item3"));
     }
     else if (id == "99999999") {
         $("#formW2RequestedName").prop("disabled", false);
         $("#formW2RequestedName").val('');
+        $("#formW2RequestedDesig").prop("disabled", false);
+        $("#formW2RequestedDesig").val('');
+        $("#formW2RequestedOffice").prop("disabled", false);
+        $("#formW2RequestedOffice").val('');
+
     }
     else {
         $("#formW2RequestedName").prop("disabled", true);
         $("#formW2RequestedName").val('');
+        $("#formW2RequestedDesig").prop("disabled", true);
+        $("#formW2RequestedDesig").val('');
+        $("#formW2RequestedOffice").prop("disabled", true);
+        $("#formW2RequestedOffice").val('');
     }
     $("#formW2RequestedDate").val(currentDate);
     return false;
@@ -493,6 +492,3 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
-
-
-//FECM
