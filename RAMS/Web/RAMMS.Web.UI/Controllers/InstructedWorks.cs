@@ -225,9 +225,7 @@ namespace RAMMS.Web.UI.Controllers
             FormW1Model model = new FormW1Model();
             model.FormW1.RecomdType = 0;
             model.View = 0;
-            model.FormW1.UseridRep = _security.UserID;
-          //model.FormW1.UseridReq = _security.UserID;
-            model.FormW1.UseridVer = _security.UserID;
+            model.FormW1.UseridReq = _security.UserID;
             model.FormW1.InitialProposedDate = DateTime.Today;
             model.FormW1.InitialProposedDate = DateTime.Today;
             model.FormW1.Dt = DateTime.Today;

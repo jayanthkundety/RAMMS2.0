@@ -449,7 +449,7 @@
 
                                                                         <div class="form-group col-lg-2">
                                                                             @Html.Label("Reported by", "Reported by")
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @class = "form-control svalidate {required,  Reported by}", @onchange = "OnUseridRepUserChange(this); " })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @class = "form-control   {required,  Reported by}", @onchange = "OnUseridRepUserChange(this); " })
 
                                                                         </div>
                                                                         <div class="form-group col-lg-3">
@@ -478,7 +478,7 @@
                                                                             <label for="Designation">
                                                                                 Verified By
                                                                             </label>
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @class = "form-control svalidate {required, Verified By}", @onchange = "OnVerifyUserChange(this);" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @class = "form-control  {required, Verified By}", @onchange = "OnVerifyUserChange(this);" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2">
                                                                             <label for="Designation"> Name </label>
