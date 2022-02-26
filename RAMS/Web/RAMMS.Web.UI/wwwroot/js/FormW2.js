@@ -85,6 +85,12 @@ $(document).ready(function () {
 
     });
 
+    $("#saveFormW2Btn").on("click", function () {
+        Save(false);
+        return false;
+    });
+
+   
 
     if ($("#FW2HRef_No").val() == "0") {
 
@@ -111,34 +117,14 @@ $(document).ready(function () {
         $("frmW2RoadCodeDD").prop("disabled", true);
         $("#formw2RequestedBy").chosen('destroy');
         $("formw2RequestedBy").prop("disabled", true);
-
-        $("#fcemStatus").chosen('destroy');
-        $("#fcemStatus").prop("disabled", true);
-
-        $("#saveFCEMBtn").hide();
-        $("#submitFCEMBtn").hide();
+        $("#divSaveRow").hide();        
+        $("#closeFormW2Btn").hide();
         $("#saveFormW2Btn").hide();
-        $("#submitFormW2Btn").hide();
-
-       
+        $("#submitFormW2Btn").hide();       
     }
 
 });
 
-$(document).on("click", "#saveFormW2Btn", function () {
-
-    Save(false);
-});
-
-$(document).on("click", "#submitFormW2Btn", function () {
-    Save(true);
-});
-
-
-
-$(document).on("click", "#submitFCEMBtn", function () {
-    SaveFCEM(true);
-});
 
 
 function openW1() {
@@ -146,29 +132,32 @@ function openW1() {
     if ($("#hdnView").val() == "1") return;
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
-
+    $("#divSaveRow").show();
+    $("#closeFormW2Btn").show();
     $("#saveFCEMBtn").hide();
     $("#submitFCEMBtn").hide();
     $("#closeFormW2Btn").show();
 }
 
 function openFCEM() {
+    $("#divSaveRow").hide();
     if ($("#hdnView").val() == "1") return;
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
-
+    //$("#closeFormW2Btn").hide();
     $("#saveFCEMBtn").show();
     $("#submitFCEMBtn").show();
 }
 
 function openW2() {
+    $("#closeFormW2Btn").show();
+    $("#divSaveRow").show();
     if ($("#hdnView").val() == "1") return;
     $("#saveFormW2Btn").show();
     $("#submitFormW2Btn").show();
-
     $("#saveFCEMBtn").hide();
     $("#submitFCEMBtn").hide();
-    $("#closeFormW2Btn").show();
+    
 }
 
 function Save(submit) {
@@ -179,7 +168,7 @@ function Save(submit) {
     if (!ValidatePage('#divPage')) {
         return false;
     }
-
+    debugger;
     InitAjaxLoading();
 
     var d = new Date();
@@ -203,7 +192,7 @@ function Save(submit) {
     saveObj.DivCode = $("#formW2DivisionCode").find(":selected").val();
     saveObj.DivisonName = $("#formW2DivisonName").val();
     saveObj.RmuText = $("#formW2RmuText").val();
-    saveObj.Rmu = $("#formW2RMU").find(":selected").val();
+    saveObj.RmuCode = $("#formW2RMU").find(":selected").val();
     saveObj.RmuName = $("#formW2RMUName").val();
 
     saveObj.JkrRefNo = $("#fw2JkrRefNo").val();
@@ -259,7 +248,7 @@ function Save(submit) {
                 app.ShowErrorMessage("Reference id already Exist");
             }
             else {
-                $("#FW2HRef_No").val(data);
+                if ($("#FW2HRef_No").val() == "0") $("#FW2HRef_No").val(data);
                 if (submit) {
                     $("#saveFormW2Btn").hide();
                     $("#submitFormW2Btn").hide();
@@ -314,6 +303,7 @@ function GetImageList(id) {
     $("#saveFCEMBtn").hide();
     $("#submitFCEMBtn").hide();
     $("#closeFormW2Btn").show();
+    $("#divSaveRow").show();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
     }
@@ -365,7 +355,7 @@ function changeRMU(obj) {
             data: { rmu: ctrl.val() },
             type: 'Post',
             success: function (data) {
-                debugger;
+              //  debugger;
                 if (data != null) {
                     $('#frmW2RoadCodeDD').empty();
                     $('#frmW2RoadCodeDD')
@@ -434,7 +424,7 @@ function GetW1Details(obj) {
 
 function OnRoadChange(tis) {
     var ctrl = $(tis);
-    debugger;
+    //debugger;
     if (ctrl.val() != null && ctrl.val() != "") {
         $("#formW2roadDesc").val(ctrl.find("option:selected").attr("Item1"));
         $("#formW2chkm").val(ctrl.find("option:selected").attr("fromkm"));
@@ -506,12 +496,3 @@ function formatDate(date) {
 
 
 //FECM
-
-function toggleAgr() {
-    if ($("#fecmAgrY").prop("checked")) {
-        $("#fecmAgrN").removeAttr("checked");
-    }
-    if ($("#fecmAgrN").prop("checked")) {
-        $("#fecmAgrY").removeAttr("checked")
-    }
-}

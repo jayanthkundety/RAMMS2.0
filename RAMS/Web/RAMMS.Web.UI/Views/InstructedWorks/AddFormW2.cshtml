@@ -35,6 +35,7 @@
 
      $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
+    $("#divSaveRow").hide();
 
     $("#saveFCEMBtn").show();
     $("#submitFCEMBtn").show();
@@ -346,7 +347,7 @@
                                                                     <div class="border-top px-2 pb-1 float-left w-100">
                                                                         <div class="row">
                                                                             <div class="form-group col-lg-12">
-                                                                                @Html.TextAreaFor(m => m.SaveFormW2Model.DetailsOfWorks, new { @style = "height:105px", @Id = "formW2DetailsOfWorks", @class = "form-control mt-3 validate {required, Details Of Work}" })
+                                                                                @Html.TextAreaFor(m => m.SaveFormW2Model.DetailsOfWorks, new { @style = "height:105px", @Id = "formW2DetailsOfWorks", @class = "form-control mt-3 svalidate {required, Details Of Work}" })
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -378,13 +379,13 @@
                                                                 <div class="form-group col-lg-2 px-0">
                                                                     @Html.Label("Issued By", "Issued By")
                                                                     @{
-                                                                        var issuedByEnable = true;
+                                                                        var issuedByEnable = false;
                                                                         if (Model.SaveFormW2Model.UseridIssu == 0)
                                                                         {
 
                                                                         }
                                                                     }
-                                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridIssu, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Issued By", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}", @disabled = @issuedByEnable })
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormW2Model.UseridIssu, (IEnumerable<SelectListItem>)ViewData["Users"], "Select Issued By", new { @Id = "formW2IssuedBy", @class = "form-control  svalidate {required, IssuedBy}" })
 
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
@@ -856,7 +857,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 mb-2 float-right text-right custom-footer">
+                <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
                     <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>

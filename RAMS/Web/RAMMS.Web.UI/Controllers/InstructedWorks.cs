@@ -370,14 +370,17 @@ namespace RAMMS.Web.UI.Controllers
             if (id > 0)
             {
                 await LoadN2DropDown();
+                _formW2Model.FECM = new FormFECMModel();
                 var result = await _formW2Service.FindW2ByID(id);
                 var res = (List<CSelectListItem>)ViewData["RD_Code"];
                 res.Find(c => c.Value == result.RoadCode).Selected = true;
                 var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
-                if (view == "1") _formW2Model.View = "1";
+                if (view == "1") { _formW2Model.View = "1";
+                    _formW2Model.FECM.View = "1";
+                }
                 _formW2Model.SaveFormW2Model = result;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
-                _formW2Model.FECM = new FormFECMModel();
+                
                 _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
                 _formW2Model.FECM.FECM = resultFCEM != null ? resultFCEM : new FormW2FECMResponseDTO();
             }

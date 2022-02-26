@@ -100,6 +100,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormW2 = _mapper.Map<RmIwFormW2>(formW2BO);
+                domainModelFormW2.Fw2PkRefNo = 0;
+                domainModelFormW2.Fw2ActiveYn = true;
                 //domainModelFormW2 = UpdateStatus(domainModelFormW2);
                 var entity = _repoUnit.FormW2Repository.CreateReturnEntity(domainModelFormW2);
                 formW2Response = _mapper.Map<FormW2ResponseDTO>(entity);
