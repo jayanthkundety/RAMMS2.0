@@ -445,6 +445,7 @@ namespace RAMMS.Repository
                                 WDRefNo = "0",
                                 WNRefNo = "0",
                                 W1Status = w1Form.Fw1Status,
+                                W1SubStatus = w1Form.Fw1SubmitSts,
                                 W2Status = w2Form.Fw2Status,
                                 W2SubStatus = w2Form.Fw2SubmitSts ,
                                 iWReferenceNo = w1Form.Fw1IwRefNo,
@@ -479,5 +480,16 @@ namespace RAMMS.Repository
             return result;
         }
 
+        //private async Task<string> GetOverAllStatus(IQueryable query)
+        //{
+        //    var result = await (from form in query
+        //                        let w1Form = form.x
+        //                        let w2Form = form.w2Form
+        //                        let fecm = form.fecm);
+        //    var result1 = "";
+
+        //    return result1;
+            
+        //}
     }
 }

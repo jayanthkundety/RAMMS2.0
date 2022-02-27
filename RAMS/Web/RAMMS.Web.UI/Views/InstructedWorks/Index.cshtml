@@ -439,6 +439,9 @@
             case "w1Status":
                 value = daa.w1Status;
                 break;
+            case "w1SubStatus":
+                value = daa.w1SubStatus;
+                break;
             case "w2Status":
                 value = daa.w1Status;
                 break;
@@ -575,7 +578,7 @@
             var id = GetFormIDByName("w2");
             var w1status = GetFormIDByName("w1Status");
             var w2substatus = GetFormIDByName("w2SubStatus");
-            if ((id == "-1" || id == null))// && (w1status == "Verified" || w1status == "Completed"))
+            if ((id == "-1" || id == null) &&   (w1status == "Verified"))
             {
                 $("#w2Add").show();
                 $("#w2Edit").hide();
@@ -609,13 +612,23 @@
         {
             if (si == null)
             {
-                 //$("#w1Add").show();
                  $("#w1Edit").hide();
                  $("#w1View").hide();
                  $("#w1Print").hide();
                  return;
             }
-            //$("#w1Add").hide();
+            var id = GetFormIDByName("w1");
+            var w1status = GetFormIDByName("w1Status");
+            if (id != "-1" && id != null)
+            {
+                if (w1status == "Verified" )
+                {
+                    $("#w1Edit").hide();
+                    $("#w1View").show();
+                    $("#w1Print").show();
+                    return;
+                }
+            }
             $("#w1Edit").show();
             $("#w1View").show();
             $("#w1Print").show();
