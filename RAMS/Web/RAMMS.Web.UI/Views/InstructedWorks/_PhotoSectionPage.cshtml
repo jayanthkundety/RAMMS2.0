@@ -567,7 +567,7 @@
     }
 
       function DeleteImage(pkId) {
-
+          if ($("#hdnView").val() == "1") return; 
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 InitAjaxLoading();

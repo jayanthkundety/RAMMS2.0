@@ -233,7 +233,7 @@ function Save(submit) {
     if ($("#FW2HRef_No").val() != "0") saveObj.ModDt = output
     if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.CrBy = $("#formW2IssuedBy").find(":selected").val();
     if ($("#FW2HRef_No").val() == "0") saveObj.CrDt = output;
-    if (submit) saveObj.Status = "Submitted";
+    if (submit) saveObj.Status = "Submitted"; else saveObj.Status = "Issued";
     saveObj.ActiveYn = true;
     saveObj.SubmitSts = submit;
     console.log(saveObj);
