@@ -480,7 +480,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 string strNotGroupName = "";
                 string strNotUserID = "";
 
-                if (process.Stage == Common.StatusList.FormW1Verified)
+                if (process.Stage == Common.StatusList.FormW1Submitted)
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.OperationsExecutive;
                     strTitle = "Verified";

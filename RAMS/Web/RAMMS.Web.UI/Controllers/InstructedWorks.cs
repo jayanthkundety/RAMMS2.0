@@ -257,7 +257,6 @@ namespace RAMMS.Web.UI.Controllers
         {
             var _formW1Model = new FormW1ResponseDTO();
 
-
             if (id > 0)
             {
                 DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -270,7 +269,12 @@ namespace RAMMS.Web.UI.Controllers
             FormW1Model model = new FormW1Model();
             model.FormW1 = _formW1Model;
             model.View = View;
-            
+
+            if (model.FormW1.Status == "Verified")
+            {
+                model.View = 1;
+            }
+ 
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;

@@ -16,9 +16,14 @@
         $("#ddlUseridReq").prop("disabled", true);
         $("#FormW1_Status").chosen('destroy');
         $("#FormW1_Status").prop("disabled", true);
+        $("#ddlSectionCode").chosen('destroy');
+        $("#ddlSectionCode").prop("disabled", true);
+        $("#FormW1_ServPropName").chosen('destroy');
+        $("#FormW1_ServPropName").prop("disabled", true);
         $("#btnSave").hide();
         $("#btnSubmit").hide();
-
+        $("#addAttachment").hide();
+        
     }
 
     $('.allow_numeric').keypress(function (event) {
@@ -152,7 +157,7 @@ function CalculateCost() {
     else {
         OtherCostAmt = 0;
     }
-    debugger
+    
 
     $("#FormW1_EstimTotalCostAmt").val(parseFloat(PhyWorksAmt) + parseFloat(GenPrelimsAmt) + parseFloat(SurvyWorksAmt) + parseFloat(SiteInvestAmt) + parseFloat(ConsulFeeAmt) + parseFloat(OtherCostAmt));
 }
@@ -286,7 +291,7 @@ function searchList(obj) {
         type: 'Post',
         success: function (data) {
 
-            debugger
+            
 
             if (obj.RdCode == "" || obj.RdCode == null || obj.RdCode == 0) {
 
@@ -485,11 +490,13 @@ function GoBack() {
 
 function Save(GroupName, SubmitType) {
 
-    debugger
+    
 
     $("#ddlUseridReq").removeClass("validate");
     $("#ddlUseridVer").removeClass("validate");
     $("#ddlUseridRep").removeClass("validate");
+    $("#ddlRMU").removeClass("validate");
+    $("#FormW1_IwRefNo").removeClass("validate");
 
     if (SubmitType != "") {
 
@@ -502,6 +509,10 @@ function Save(GroupName, SubmitType) {
         else if (SubmitType == "Verified") {
             $("#ddlUseridReq").addClass("validate");
             $("#ddlUseridVer").addClass("validate");
+            $("#ddlRMU").addClass("validate");
+            $("#ddlRMU").addClass("validate");
+            $("#FormW1_IwRefNo").addClass("validate");
+            
 
             if ($("#hdnRecommondedValue").val() == 1 || $("#hdnRecommondedValue").val() == 2) {
                 $("#ddlUseridRep").addClass("validate");
@@ -517,10 +528,12 @@ function Save(GroupName, SubmitType) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
-                debugger
-                //  $("#FormW1_PkRefNo").val(data.pkRefNo);
-
-                if (SubmitType == "" || SubmitType == "Submitted") {
+                
+                 $("#FormW1_PkRefNo").val(data);
+                if (SubmitType == "" || SubmitType == "Draft") {
+                    app.ShowSuccessMessage('Submitted Successfully', false);
+                }
+                else if (SubmitType == "" || SubmitType == "Submitted") {
                     app.ShowSuccessMessage('Submitted Successfully', false);
                     location.href = "/InstructedWorks/Index";
                 }
