@@ -11,5 +11,7 @@ namespace RAMMS.Web.UI.Models
         public FormW2FECMResponseDTO FECM { get; set; }
 
         public DateTime? W1Date { get; set; }
+
+        public string View { get; set; }
     }
 }

@@ -21,6 +21,7 @@
     <Content Remove="Views\ERT\FormX\FormX - Copy.cshtml" />
     <Content Remove="Views\ERT\FormX\_AddFormX - Copy.cshtml" />
     <Content Remove="Views\InstructedWorks\_AddFormW2.cshtml" />
+    <Content Remove="Views\InstructedWorks\_PhotoSectionPageW1.cshtml" />
     <Content Remove="wwwroot\js\jquery.mast.min.js" />
   </ItemGroup>
 

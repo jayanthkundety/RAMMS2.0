@@ -79,7 +79,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormW1":
                     iResult = await SaveFormW1(process);
                     break;
-
+                case "FormW2":
+                    iResult = await SaveFormW2(process);
+                    break;
             }
             return iResult;
         }
@@ -144,6 +146,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                     break;
                 case "FormW1":
                     logs = this.context.RmIwFormW1.Where(x => x.Fw1PkRefNo == RefId).Select(x => x.Fw1AuditLog).FirstOrDefault();
+                    break;
+                case "FormW2":
+                    logs = this.context.RmIwFormW2.Where(x => x.Fw2PkRefNo == RefId).Select(x => x.Fw2AuditLog).FirstOrDefault();
                     break;
             }
             return Utility.ProcessLog(logs);
@@ -464,10 +469,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             return await context.SaveChangesAsync();
         }
-
-
-
-
         private async Task<int> SaveFormW1(DTO.RequestBO.ProcessDTO process)
         {
             var form = context.RmIwFormW1.Where(x => x.Fw1PkRefNo == process.RefId).FirstOrDefault();
@@ -512,7 +513,50 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             return await context.SaveChangesAsync();
         }
+        private async Task<int> SaveFormW2(DTO.RequestBO.ProcessDTO process)
+        {
+            var form = context.RmIwFormW2.Where(x => x.Fw2PkRefNo == process.RefId).FirstOrDefault();
+            if (form != null)
+            {
+                string strTitle = "";
+                string strNotURL = "";
+                string strNotMsg = "";
+                string strNotGroupName = "";
+                string strNotUserID = "";
 
+                if (process.Stage == Common.StatusList.FormW2Submitted)
+                {
+                    strNotGroupName = process.IsApprove ? "" : GroupNames.JKRSSuperiorOfficerSO;
+                    strTitle = "Submitted";
+                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Issued  : StatusList.FormW2Submitted;
+
+                    if (process.IsApprove)
+                    {
+                        List<int> lstNotUserId = new List<int>();
+                        if (form.Fw2UseridIssu.HasValue)
+                            lstNotUserId.Add(form.Fw2UseridIssu.Value);
+                        if (form.Fw2UseridReq.HasValue)
+                            lstNotUserId.Add(form.Fw2UseridReq.Value);
+
+                        strNotUserID = string.Join(",", lstNotUserId.Distinct());
+                    }
+                }
+                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, strTitle, process.IsApprove ? "Approved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form W2 (" + form.Fw2PkRefNo + ")";
+                strNotURL = "/InstructedWorks/EditFormW2?id=" + form.Fw2PkRefNo.ToString() + "&View=0";
+                SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = security.UserName,
+                    RmNotGroup = strNotGroupName,
+                    RmNotMessage = strNotMsg,
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = strNotURL,
+                    RmNotUserId = strNotUserID,
+                    RmNotViewed = ""
+                }, false);
+            }
+            return await context.SaveChangesAsync();
+        }
         private async Task<int> SaveFormX(DTO.RequestBO.ProcessDTO process)
         {
             var form = context.RmFormXHdr.Where(x => x.FxhPkRefNo == process.RefId).FirstOrDefault();

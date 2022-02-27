@@ -69,6 +69,16 @@ namespace RAMMS.Repository
         //}
 
 
+        public Task<RmIwformImage> GetImageById(int imageId)
+        {
+            return _context.RmIwformImage.Where(x => x.FiwiPkRefNo == imageId).FirstOrDefaultAsync();
+        }
+
+        public void UpdateImage(RmIwformImage image)
+        {
+            _context.Set<RmIwformImage>().Attach(image);
+            _context.Entry(image).State = EntityState.Modified;
+        }
 
     }
 }

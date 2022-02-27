@@ -100,6 +100,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormW2 = _mapper.Map<RmIwFormW2>(formW2BO);
+                domainModelFormW2.Fw2PkRefNo = 0;
+                domainModelFormW2.Fw2ActiveYn = true;
                 //domainModelFormW2 = UpdateStatus(domainModelFormW2);
                 var entity = _repoUnit.FormW2Repository.CreateReturnEntity(domainModelFormW2);
                 formW2Response = _mapper.Map<FormW2ResponseDTO>(entity);
@@ -223,13 +225,12 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return rowsAffected;
         }
-
-
+        
         public async Task<IEnumerable<CSelectListItem>> GetFormW1DDL()
         {
             return await _repoUnit.FormW1Repository.FindAsync(m => m.Fw1ActiveYn == true , x => new CSelectListItem() { Text = x.Fw1IwRefNo, Value = x.Fw1PkRefNo.ToString() });
         }
-
+        
         public async Task<List<FormW1ResponseDTO>> GetFormW1List()
         {
             List<FormW1ResponseDTO> images = new List<FormW1ResponseDTO>();
@@ -259,7 +260,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             RmIwFormW1 formW1 = await _repo.GetFormW1ByRoadCode(roadCode);
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
-
 
         public async Task<IEnumerable> GetRoadCodesByRMU(string rmu)
         {
@@ -291,7 +291,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         }
 
-
+        #region Landing Page IW Grid
         public async Task<PagingResult<FormIWResponseDTO>> GetFilteredFormIWGrid(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
         {
             PagingResult<FormIWResponseDTO> result = new PagingResult<FormIWResponseDTO>();
@@ -317,6 +317,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return result;
         }
+        #endregion
 
         #region FCEM
 

@@ -14,6 +14,12 @@ namespace RAMMS.DTO.ResponseBO
         public string WDRefNo { get; set; }
         public string WNRefNo { get; set; }
 
+        public string W1Status { get; set; }
+        public string W2Status { get; set; }
+
+        public bool W2SubStatus { get; set; }
+
+
         //FormW1
         public string iWReferenceNo { get; set; }
         public string projectTitle { get; set; }

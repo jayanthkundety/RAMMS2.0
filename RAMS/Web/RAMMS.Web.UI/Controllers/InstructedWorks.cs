@@ -209,6 +209,14 @@ namespace RAMMS.Web.UI.Controllers
             return Json(name);
         }
 
+       [HttpPost]
+        public async Task<IActionResult> IwDeleteImage(int pkId)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formW1Service.DeActivateImage(pkId);
+            return Json(rowsAffected);
+        }
+
 
         #endregion
 
@@ -293,7 +301,6 @@ namespace RAMMS.Web.UI.Controllers
 
         #endregion
 
-
         #region FormW2
         private async Task LoadN2DropDown()
         {
@@ -309,13 +316,12 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["IWRefNo"] = await _formW2Service.GetFormW1DDL();
 
 
-            LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status");
-
+            LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status" , "User");
+            
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
-            ViewData["Users"] = _userService.GetUserSelectList(null);
         }
 
         public async Task<IActionResult> AddFormW2(int id)
@@ -325,12 +331,14 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Model.FormW1 = await _formW2Service.GetFormW1ById(id);
             _formW2Model.FECM = new FormFECMModel();
             _formW2Model.FECM.FECM = new FormW2FECMResponseDTO();
+            _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
+            _formW2Model.FECM.FECM.Dt = DateTime.Today;
 
             var defaultData = new DTO.ResponseBO.FormW2ResponseDTO();
             defaultData.Fw1IwRefNo = _formW2Model.FormW1.IwRefNo;
             defaultData.Fw1PkRefNo = _formW2Model.FormW1.PkRefNo;
             defaultData.Fw1ProjectTitle = _formW2Model.FormW1.ProjectTitle;
-
+            defaultData.DateOfInitation = DateTime.Today;
             defaultData.RmuCode = _formW2Model.FormW1.RmuCode;
             defaultData.RmuName = "";
 
@@ -369,16 +377,24 @@ namespace RAMMS.Web.UI.Controllers
             if (id > 0)
             {
                 await LoadN2DropDown();
-                var result = await _formW2Service.FindW2ByID(id);
-                var res = (List<CSelectListItem>)ViewData["RD_Code"];
-                res.Find(c => c.Value == result.RoadCode).Selected = true;
-                var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
-                if (view == "1") _formW2Model.View = "1";
-                _formW2Model.SaveFormW2Model = result;
-                _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
                 _formW2Model.FECM = new FormFECMModel();
+                var resultFormW2 = await _formW2Service.FindW2ByID(id);
+                var res = (List<CSelectListItem>)ViewData["RD_Code"];
+                res.Find(c => c.Value == resultFormW2.RoadCode).Selected = true;
+                var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
+                if (resultFCEM == null) resultFCEM = new FormW2FECMResponseDTO();
+                _formW2Model.FECM.FECM = resultFCEM;
+
+                if (resultFCEM.SubmitSts || view == "1") _formW2Model.FECM.View = "1";
+
+                if (resultFormW2.SubmitSts || view == "1") _formW2Model.View = "1";
+
+                _formW2Model.SaveFormW2Model = resultFormW2;
+                _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
+
+                _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;
                 _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
-                _formW2Model.FECM.FECM = resultFCEM != null ? resultFCEM : new FormW2FECMResponseDTO();
+                
             }
 
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
@@ -743,7 +759,6 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         #endregion
-
 
         #region FCEM
         public async Task<JsonResult> SaveFCEM(FormW2FECMResponseDTO formW2)
