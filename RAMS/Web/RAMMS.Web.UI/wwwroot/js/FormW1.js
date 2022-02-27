@@ -358,6 +358,15 @@ function OnUseridRepUserChange(tis) {
         $("#FormW1_UsernameRep").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationRep").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormW1_OfficeRep").val(ctrl.find("option:selected").attr("Item3"));
+        if (ctrl.val() == "99999999") {
+            $("#FormW1_UsernameRep").removeAttr("readonly");
+            $("#FormW1_DesignationRep").removeAttr("readonly");
+            $("#FormW1_OfficeRep").removeAttr("readonly");
+        } else {
+            $("#FormW1_UsernameRep").attr("readonly", "true");
+            $("#FormW1_DesignationRep").attr("readonly", "true");
+            $("#FormW1_OfficeRep").attr("readonly", "true");
+        }
     }
     else {
         $("#FormW1_UsernameRep").val('');
@@ -405,6 +414,15 @@ function OnVerifyUserChange(tis) {
         $("#FormW1_UsernameVer").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationVer").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormW1_OfficeVer").val(ctrl.find("option:selected").attr("Item3"));
+        if (ctrl.val() == "99999999") {
+            $("#FormW1_UsernameVer").removeAttr("readonly");
+            $("#FormW1_DesignationVer").removeAttr("readonly");
+            $("#FormW1_OfficeVer").removeAttr("readonly");
+        } else {
+            $("#FormW1_UsernameVer").attr("readonly", "true");
+            $("#FormW1_DesignationVer").attr("readonly", "true");
+            $("#FormW1_OfficeVer").attr("readonly", "true");
+        }
     }
     else {
         $("#FormW1_UsernameVer").val('');
