@@ -23,7 +23,7 @@
         $("#btnSave").hide();
         $("#btnSubmit").hide();
         $("#addAttachment").hide();
-        
+        $("#btnBack").removeAttr("disabled");
     }
 
     $('.allow_numeric').keypress(function (event) {
@@ -476,7 +476,8 @@ function RecommondedValue(e) {
 
 
 function GoBack() {
-    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val("") || $("#FormW1_Status").val("Draft")) {
+     
+    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val() == "" || $("#FormW1_Status").val() == "Draft") {
         if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";
@@ -489,8 +490,7 @@ function GoBack() {
 
 
 function Save(GroupName, SubmitType) {
-
-    
+     
 
     $("#ddlUseridReq").removeClass("validate");
     $("#ddlUseridVer").removeClass("validate");
@@ -502,8 +502,11 @@ function Save(GroupName, SubmitType) {
 
         $("#FormW1page .svalidate").addClass("validate");
 
+
+
         if (SubmitType == "Submitted") {
             $("#FormW1_Status").val("Submitted");
+            $("#FormW1_SubmitSts").val(true);
             $("#ddlUseridReq").addClass("validate");
         }
         else if (SubmitType == "Verified") {
@@ -512,12 +515,14 @@ function Save(GroupName, SubmitType) {
             $("#ddlRMU").addClass("validate");
             $("#ddlRMU").addClass("validate");
             $("#FormW1_IwRefNo").addClass("validate");
-            
 
             if ($("#hdnRecommondedValue").val() == 1 || $("#hdnRecommondedValue").val() == 2) {
                 $("#ddlUseridRep").addClass("validate");
             }
         }
+    }
+    else {
+        $("#FormW1_Status").val("Draft");
     }
 
     if (ValidatePage('#FormW1page')) {
