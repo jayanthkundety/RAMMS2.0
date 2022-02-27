@@ -435,13 +435,13 @@
                                                                                     @Html.Label("Recommonded Instructed Work", "Recommonded Instructed Work")
                                                                                     <br />
                                                                                     <label class="radio-inline">
-                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomdType, 2)&nbsp;	Critical&nbsp;
+                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomdType, 2, new { @onclick = "RecommondedValue(this)" })&nbsp;	Critical&nbsp;
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomdType, 1)&nbsp;	Urgent&nbsp;
+                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomdType, 1, new { @onclick = "RecommondedValue(this)" })&nbsp;	Urgent&nbsp;
                                                                                     </label>
                                                                                     <label class="radio-inline">
-                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomdType, 0)&nbsp;	None&nbsp;
+                                                                                        @Html.RadioButtonFor(x => x.FormW1.RecomdType, 0, new { @onclick = "RecommondedValue(this)" })&nbsp;	None&nbsp;
                                                                                     </label>
                                                                                 </div>
                                                                             </div>
@@ -550,7 +550,7 @@
                         </div> <div class="col-md-12 mb-2 float-right text-right custom-footer">
                             <button type="button" id="btnBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
 
-                            @if (string.IsNullOrEmpty(Model.FormW1.Status)|| Model.FormW1.Status == "Draft" || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            @if (string.IsNullOrEmpty(Model.FormW1.Status) || Model.FormW1.Status == "Draft" || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Submitted');">Submit</button>
@@ -576,6 +576,8 @@
     @Html.HiddenFor(m => m.FormW1.UseridRep);
     @Html.HiddenFor(m => m.FormW1.Status);
     <input type="hidden" id="hdnView" value="@Model.View" />
+    <input type="hidden" id="hdnRecommondedValue" value="@Model.FormW1.RecomdType" />
+    
 
 }
 
@@ -585,7 +587,7 @@
 
 
 
-    var RecommondedInstrctedWorkValue = "@Model.FormW1.RecomdType";
+   
     var ImageTypeBQ = "@ImageTypeBQ";
     var ImageTypeDrawing = "@ImageTypeDrawing";
 

@@ -79,14 +79,17 @@
         }
     });
 
-    if (RecommondedInstrctedWorkValue != "0") {
+
+    if ($("#hdnRecommondedValue").val() != "0") {
         $('#ddlUseridRep').prop("disabled", false);
+        $('#ddlUseridRep').trigger('chosen:updated');
         $("#FormW1_DtRep").prop("readonly", false);
         $("#FormW1_SignRep").prop("disabled", false);
-        $('#ddlUseridRep').trigger('chosen:updated');
+
     }
     else {
         $('#ddlUseridRep').prop("disabled", true);
+        $('#ddlUseridRep').trigger('chosen:updated');
         $("#FormW1_DtRep").prop("readonly", true);
         $("#FormW1_SignRep").prop("disabled", true);
     }
@@ -373,12 +376,24 @@ function OnUseridReqUserChange(tis) {
         $("#FormW1_UsernameReq").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationReq").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormW1_OfficeReq").val(ctrl.find("option:selected").attr("Item3"));
+        if (ctrl.val() == "99999999") {
+            $("#FormW1_UsernameReq").removeAttr("readonly");
+            $("#FormW1_DesignationReq").removeAttr("readonly");
+            $("#FormW1_OfficeReq").removeAttr("readonly");
+        } else {
+            $("#FormW1_UsernameReq").attr("readonly", "true");
+            $("#FormW1_DesignationReq").attr("readonly", "true");
+            $("#FormW1_OfficeReq").attr("readonly", "true");
+        }
+
     }
     else {
         $("#FormW1_UsernameReq").val('');
         $("#FormW1_DesignationReq").val('');
         $("#FormW1_OfficeReq").val('');
     }
+
+
 
 }
 
@@ -430,6 +445,12 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+function RecommondedValue(e) {
+
+    $("#hdnRecommondedValue").val(e.value);
+
+}
+
 
 function GoBack() {
     if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val("") || $("#FormW1_Status").val("Draft")) {
@@ -464,7 +485,7 @@ function Save(GroupName, SubmitType) {
             $("#ddlUseridReq").addClass("validate");
             $("#ddlUseridVer").addClass("validate");
 
-            if ($("#FormW1_RecomdType").val() == 1 || $("#FormW1_RecomdType").val() == 2) {
+            if ($("#hdnRecommondedValue").val() == 1 || $("#hdnRecommondedValue").val() == 2) {
                 $("#ddlUseridRep").addClass("validate");
             }
         }
