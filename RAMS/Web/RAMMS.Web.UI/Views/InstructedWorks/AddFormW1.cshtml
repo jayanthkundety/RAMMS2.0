@@ -519,12 +519,13 @@
                                                         </div>
 
                                                         @{
-                                                            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                                            {
-                                                                Form = "FormW1",
-                                                                RefId = Model.FormW1.PkRefNo,
-                                                                Stage = Model.FormW1.Status
-                                                            });
+                                                            if (Model.FormW1.Status != "" && Model.FormW1.Status != "Draft")
+                                                                Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                                                                {
+                                                                    Form = "FormW1",
+                                                                    RefId = Model.FormW1.PkRefNo,
+                                                                    Stage = Model.FormW1.Status
+                                                                });
                                                         }
 
                                                         <!--gallery start-->
@@ -549,7 +550,7 @@
                         </div> <div class="col-md-12 mb-2 float-right text-right custom-footer">
                             <button type="button" id="btnBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
 
-                            @if (string.IsNullOrEmpty(Model.FormW1.Status) || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            @if (string.IsNullOrEmpty(Model.FormW1.Status)|| Model.FormW1.Status == "Draft" || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Submitted');">Submit</button>

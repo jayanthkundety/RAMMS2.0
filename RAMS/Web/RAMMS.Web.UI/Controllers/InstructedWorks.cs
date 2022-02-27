@@ -226,6 +226,7 @@ namespace RAMMS.Web.UI.Controllers
             model.FormW1.RecomdType = 0;
             model.View = 0;
             model.FormW1.UseridReq = _security.UserID;
+            model.FormW1.TecmDt = DateTime.Today;
             model.FormW1.InitialProposedDate = DateTime.Today;
             model.FormW1.InitialProposedDate = DateTime.Today;
             model.FormW1.Dt = DateTime.Today;

@@ -257,7 +257,15 @@ function OnRoadChange(tis) {
     var ctrl = $("#ddlRoadCode");
     $('#FormW1_RoadCode').val(ctrl.val());
 
-    fromkm
+    if (ctrl.find("option:selected").attr("fromkm") != undefined)
+        $("#FormW1_Ch").val(ctrl.find("option:selected").attr("fromkm"));
+    else
+        $("#FormW1_Ch").val(ctrl.find("option:selected").attr("Item1"));
+
+    if (ctrl.find("option:selected").attr("fromm") != undefined)
+        $("#FormW1_ChDeci").val(ctrl.find("option:selected").attr("fromm"));
+    else
+        $("#FormW1_ChDeci").val(ctrl.find("option:selected").attr("Item2"));
 
     var obj = new Object();
     obj.TypeCode = ctrl.val();
@@ -275,13 +283,20 @@ function searchList(obj) {
         type: 'Post',
         success: function (data) {
 
+            debugger
+
             if (obj.RdCode == "" || obj.RdCode == null || obj.RdCode == 0) {
 
                 $('#ddlRoadCode').empty();
                 $("#ddlRoadCode").append($('<option>').val(null).text("Select Road Code"));
 
                 $.each(data.rdCode, function (index, value) {
-                    $("#ddlRoadCode").append($('<option>').val(value.value).html(value.text));
+                    $("#ddlRoadCode")
+                        .append($("<option></option>")
+                            .attr("value", value.value)
+                            .attr("item1", value.item1)
+                            .attr("item2", value.item2)
+                            .text(value.text));
                     $("#ddlRoadCode").trigger("chosen:updated");
 
                 })
@@ -455,29 +470,29 @@ function Save(GroupName, SubmitType) {
         }
     }
 
-        if (ValidatePage('#FormW1page')) {
-            InitAjaxLoading();
-            $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
-                HideAjaxLoading();
-                if (data == -1) {
-                    app.ShowErrorMessage(data.errorMessage);
-                }
-                else {
-                    debugger
-                    //  $("#FormW1_PkRefNo").val(data.pkRefNo);
+    if (ValidatePage('#FormW1page')) {
+        InitAjaxLoading();
+        $.post('/InstructedWorks/SaveFormW1', $("form").serialize(), function (data) {
+            HideAjaxLoading();
+            if (data == -1) {
+                app.ShowErrorMessage(data.errorMessage);
+            }
+            else {
+                debugger
+                //  $("#FormW1_PkRefNo").val(data.pkRefNo);
 
-                    if (SubmitType == "" || SubmitType == "Submitted") {
-                        app.ShowSuccessMessage('Submitted Successfully', false);
-                        location.href = "/InstructedWorks/Index";
-                    }
-                    else if (SubmitType == "Verified") {
-                        process.ShowApprove(GroupName, SubmitType);
-                    }
+                if (SubmitType == "" || SubmitType == "Submitted") {
+                    app.ShowSuccessMessage('Submitted Successfully', false);
+                    location.href = "/InstructedWorks/Index";
                 }
-            });
-        }
+                else if (SubmitType == "Verified") {
+                    process.ShowApprove(GroupName, SubmitType);
+                }
+            }
+        });
+    }
 
-    
+
 
 }
 
