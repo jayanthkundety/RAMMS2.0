@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     if ($("#hdnView").val() == "1") {
-        $("#FormW1page *").prop("disabled", true);
+        $("#FormW1datapage *").prop("disabled", true);
         $("#ddlRMU").chosen('destroy');
         $("#ddlRMU").prop("disabled", true);
         $("#ddlRoadCode").chosen('destroy');
