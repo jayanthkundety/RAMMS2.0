@@ -37,11 +37,14 @@ namespace RAMMS.DTO.ResponseBO
         public int? Ch { get; set; }
         public int? ChDeci { get; set; }
         public string DetailsOfWork { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
         public double? PropDesignDuration { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n2}", ApplyFormatInEditMode = true)]
         public double? PropCompletionPeriod { get; set; }
         public bool RecomdYn { get; set; }
         public bool RecomdBydeYn { get; set; }
         public short? RecomdType { get; set; }
+        [DataType(DataType.Currency)]
         public double? PhyWorksAmt { get; set; }
         public double? GenPrelimsAmt { get; set; }
         public double? ConsulTaxPercent { get; set; }
