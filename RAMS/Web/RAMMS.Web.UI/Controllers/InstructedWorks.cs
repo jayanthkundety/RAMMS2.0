@@ -335,6 +335,7 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Model.FormW1 = await _formW2Service.GetFormW1ById(id);
             _formW2Model.FECM = new FormFECMModel();
             _formW2Model.FECM.FECM = new FormW2FECMResponseDTO();
+            _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
             _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
             _formW2Model.FECM.FECM.Dt = DateTime.Today;
 
@@ -357,6 +358,8 @@ namespace RAMMS.Web.UI.Controllers
                 if (resRd != null) resRd.Selected = true;
                 defaultData.RoadCode = _formW2Model.FormW1.RoadCode;
                 defaultData.RoadName = _formW2Model.FormW1.RoadName;
+                defaultData.Ch = _formW2Model.FormW1.Ch;
+                defaultData.ChDeci = _formW2Model.FormW1.ChDeci;
             }
 
             defaultData.SerProvRefNo = _formW2Model.FormW1.ServPropRefNo;
@@ -388,14 +391,14 @@ namespace RAMMS.Web.UI.Controllers
                 var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
                 if (resultFCEM == null) resultFCEM = new FormW2FECMResponseDTO();
                 _formW2Model.FECM.FECM = resultFCEM;
-
+                
                 if (resultFCEM.SubmitSts || view == "1") _formW2Model.FECM.View = "1";
 
                 if (resultFormW2.SubmitSts || view == "1") _formW2Model.View = "1";
 
                 _formW2Model.SaveFormW2Model = resultFormW2;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
-
+                _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
                 _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;
                 _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
                 

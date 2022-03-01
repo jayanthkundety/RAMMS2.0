@@ -39,14 +39,14 @@
 
                     }
 
-                    <label class="checkbox-inline py-3 px-2"><input type="checkbox" id="fecmAgrY" onclick="toggleAgr(1)" value="Yes" @_AgreedNegoLetrY> Yes</label>
-                    <label class="checkbox-inline"><input type="checkbox" id="fecmAgrN" onclick="toggleAgr(0)" value="No" @_AgreedNegoLetrN> No</label>
+                    <label class="checkbox-inline py-3 px-2"><input type="checkbox" class="disabled dvalidate {required, Agreed Nego Letter Yes }" id="fecmAgrY" onclick="toggleAgr(1)" value="Yes" @_AgreedNegoLetrY> Yes</label>
+                    <label class="checkbox-inline"><input type="checkbox"  class="disabled dvalidate {required, Agreed Nego Letter No }" id="fecmAgrN" onclick="toggleAgr(0)" value="No" @_AgreedNegoLetrN> No</label>
 
                 </div>
 
                 <div class="form-group col-lg-2">
                     <label for="RMU">Agreed Nego  Rate Date</label>
-                    <input type="date" class="datepicker form-control  svalidate {required, Agreed Nego  Rate Date}" id="fecmNegoDate" value="@_AgrdNegoDate" />
+                    <input type="date" class="datepicker form-control  svalidate {required, Agreed Nego Rate Date}" id="fecmNegoDate" value="@_AgrdNegoDate" />
                 </div>
                 @*<div class="form-group col-lg-3">
                     @Html.Label("Status", "Status")
@@ -67,19 +67,19 @@
                 <div class="form-group col-lg-2 px-4">
                     <div class="row mt-4">
                         @{
-                            var _BQ = Model.FECM.IsBq == null || Model.FECM.IsBq == false ? false : true;
+                            var _BQ = Model.FormW1.IsBq == null || (Model.FormW1.IsBq != null && Model.FormW1.IsBq == false) ? false : true;
 
                         }
                         <div class="col-6 ">
-                            <label class="checkbox-inline"><input type="checkbox" id="femcBQ" checked="@_BQ"> BQ</label>
+                            <label class="checkbox-inline"><input type="checkbox" class="cvalidate {required, IsBq }" id="femcBQ" checked="@_BQ"> BQ</label>
                         </div>
 
                         @{
-                            var _Drawing = Model.FECM.IsDrawing == null || Model.FECM.IsDrawing == false ? false : true;
+                            var _Drawing = Model.FormW1.IsDrawing == null || (Model.FormW1.IsDrawing != null && Model.FormW1.IsDrawing == false) ? false : true;
 
                         }
                         <div class="col-6">
-                            <label class="checkbox-inline"><input type="checkbox" id="fecmDrawing" checked="@_Drawing"> Drawing</label>
+                            <label class="checkbox-inline"><input type="checkbox" class="cvalidate {required, IsDrawing }" id="fecmDrawing" checked="@_Drawing"> Drawing</label>
                         </div>
                     </div>
                 </div>
@@ -91,25 +91,11 @@
         </div>
     </div>
 </div>
-@* @{
-                                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                    {
-                                        Form = "FormFECM",
-                                        RefId = Model.FECM.PkRefNo,
-                                        Stage = Model.FECM.Status
-                                    });
-                             }*@
+
 @Html.HiddenFor(m => m.View, new { @id = "hdnFecmView", @class = "form-control", @value = "0" })
 <div class="" style="position:relative; width:100%;">
 
-    <div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
-    left: auto;
-    bottom: 0px;
-    right: 0;
-    /* top: 0; */
-    background:#fff;
-    width: 96%;
-    height: 45px;">
+    <div class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;left: auto;bottom: 0px;right: 2%;background: #fff;width: calc(100vw - 8.3%);height: 45px;">
         @*<button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>*@
         <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
         <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="javascript:saveFECM(false)">Save</button>
@@ -137,7 +123,7 @@
 
     function toggleAgr(m) {
         if (m==1) {
-            $("#fecmAgrN").removeAttr("checked");
+              $("#fecmAgrN").removeAttr("checked");
         } else {
             $("#fecmAgrY").removeAttr("checked")
         }
@@ -172,13 +158,34 @@
         debugger;
         if (!checkW2Exist()) return;
 
-        if (submit) 
+        if (submit) {
             $("#divFecm .svalidate").addClass("validate");
-        
 
-        if (!ValidatePage('#divFecm')) 
+            if ($("#femcBQ").prop("checked") == false && $("#fecmDrawing").prop("checked") ==  false ){
+                $("#divFecm .cvalidate").addClass("validate");
+            } else if ($("#femcBQ").prop("checked") == true || $("#fecmDrawing").prop("checked") ==  true )
+            {
+                 $("#femcBQ .validate").addClass("cvalidate");
+                 $("#femcBQ").removeClass("validate");
+                 $("fecmDrawing .validate").addClass("cvalidate");
+                 $("#fecmDrawing").removeClass("validate");
+            }
+
+            if ($("#fecmAgrY").prop("checked") == false && $("#fecmAgrN").prop("checked") ==  false ){
+                $("#divFecm .dvalidate").addClass("validate");
+            } else if ($("#fecmAgrY").prop("checked") == true || $("#fecmAgrN").prop("checked") ==  true )
+            {
+                 $("#fecmAgrY .validate").addClass("dvalidate");
+                 $("#fecmAgrY").removeClass("validate");
+                 $("fecmAgrN .validate").addClass("dvalidate");
+                 $("#fecmAgrN").removeClass("validate");
+            }
+            
+        }
+
+        if (!ValidatePage('#divFecm'))
             return false;
-        
+
 
         InitAjaxLoading();
 

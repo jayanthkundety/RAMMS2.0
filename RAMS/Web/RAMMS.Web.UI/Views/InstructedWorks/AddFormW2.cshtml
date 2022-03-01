@@ -75,7 +75,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList('@Model.FormW1.IwRefNo');">
+                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList('@Model.FormW1.PkRefNo');">
                         <span class="">
                             Attachment
                         </span>
@@ -240,7 +240,7 @@
                                                                                         <div class="row">
                                                                                             <div class="col-6">
                                                                                                 @Html.Label("Road Code", "Road Code")
-                                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "frmW2RoadCodeDD", @class = "form-control  validate {required, Road Code}", @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
+                                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "frmW2RoadCodeDD", @class = "form-control  validate {required, Road Code}", @disabled= true, @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
                                                                                                 @Html.HiddenFor(m => m.SaveFormW2Model.RoadCode, new { id = "frmW2RoadCode" })
                                                                                             </div>
                                                                                             <div class="col-6">
@@ -258,7 +258,7 @@
                                                                                             <div class="input-group-prepend">
                                                                                                 <span class="input-group-text" style="height: 35px;">CH</span>
                                                                                             </div>
-                                                                                            @Html.TextBoxFor(x => x.SaveFormW2Model.Ch, new { @id = "formW2chkm", @class = "form-control allow_numeric", @maxlength = "3", @style = "height:35px" })
+                                                                                            @Html.TextBoxFor(x => x.SaveFormW2Model.Ch, new { @id = "formW2chkm", @class = "form-control allow_numeric",@disabled= true, @maxlength = "3", @style = "height:35px" })
                                                                                         </div>
 
                                                                                     </div>
@@ -270,7 +270,7 @@
                                                                                         <label for="RoadCode">
                                                                                             Chainage 'M' Location
                                                                                         </label>
-                                                                                        @Html.TextBoxFor(x => x.SaveFormW2Model.ChDeci, new { @id = "formW2chm", @class = "form-control  allow_numeric", @maxlength = "3" })
+                                                                                        @Html.TextBoxFor(x => x.SaveFormW2Model.ChDeci, new { @id = "formW2chm", @class = "form-control  allow_numeric", @disabled= true, @maxlength = "3"  })
                                                                                     </div>
                                                                                     @*<div class="form-group col-lg-3">
                                                                                         <label for="RoadCode">
@@ -465,8 +465,10 @@
                                     </div>
                                 </div>
                             </div>
-                            @Html.HiddenFor(m => m.SaveFormW2Model.PkRefNo, new { @id = "FW2HRef_No", @class = "form-control" })
-                            @Html.HiddenFor(m => m.View, new { @id = "hdnView", @class = "form-control", @value = "0" })
+                            @Html.HiddenFor(m => m.SaveFormW2Model.PkRefNo, new { @id = "FW2HRef_No"})
+                            @Html.HiddenFor(m => m.FormW1.PkRefNo, new { @id="hdnPkRefNo"} )
+                            @Html.HiddenFor(m => m.View, new { @id = "hdnView", @value = "0" })
+                            <input id="hdnForm" value="FormW2" />
                             @{
                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
                                 {

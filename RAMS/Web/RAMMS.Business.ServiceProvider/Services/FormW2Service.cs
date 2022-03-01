@@ -102,7 +102,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelFormW2 = _mapper.Map<RmIwFormW2>(formW2BO);
                 domainModelFormW2.Fw2PkRefNo = 0;
                 domainModelFormW2.Fw2ActiveYn = true;
-                //domainModelFormW2 = UpdateStatus(domainModelFormW2);
+                domainModelFormW2 = UpdateStatus(domainModelFormW2);
                 var entity = _repoUnit.FormW2Repository.CreateReturnEntity(domainModelFormW2);
                 formW2Response = _mapper.Map<FormW2ResponseDTO>(entity);
                 return formW2Response.PkRefNo;
@@ -147,7 +147,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelformW2 = _mapper.Map<RmIwFormW2>(formW2Bo);
                 domainModelformW2.Fw2PkRefNo = formW2Bo.PkRefNo;
                 domainModelformW2.Fw2ActiveYn = true;
-                //domainModelformW2 = UpdateStatus(domainModelformW2);
+                domainModelformW2 = UpdateStatus(domainModelformW2);
                 _repoUnit.FormW2Repository.Update(domainModelformW2);
                 rowsAffected = await _repoUnit.CommitAsync();
             }
@@ -289,6 +289,39 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw Ex;
             }
 
+        }
+
+        public RmIwFormW2 UpdateStatus(RmIwFormW2 form)
+        {
+            if (form.Fw2PkRefNo > 0)
+            {
+                var existsObj = _repoUnit.FormW2Repository._context.RmIwFormW2.Where(x => x.Fw2PkRefNo == form.Fw2PkRefNo).Select(x => new { Status = x.Fw2Status, Log = x.Fw2AuditLog }).FirstOrDefault();
+                if (existsObj != null)
+                {
+                    form.Fw2AuditLog = existsObj.Log;
+                    form.Fw2Status = existsObj.Status;
+                }
+
+            }
+            if (form.Fw2SubmitSts && (string.IsNullOrEmpty(form.Fw2Status) || form.Fw2Status == Common.StatusList.FormW2Issued))
+            {
+                form.Fw2Status = Common.StatusList.FormW2Submitted;
+                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, "Recorded By", "Approved", form.Fw2UsernameIssu, string.Empty, form.Fw2DtIssu, _security.UserName);
+                processService.SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = _security.UserName,
+                    RmNotGroup = GroupNames.OperationsExecutive,
+                    RmNotMessage = "Recorded By:" + form.Fw2UsernameIssu + " - Form W2 (" + form.Fw2Fw1PkRefNo + ")",
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = "/InstructedWorks/EditFormW2?id=" + form.Fw2PkRefNo.ToString() + "&view=1",
+                    RmNotUserId = "",
+                    RmNotViewed = ""
+                }, true);
+            }
+            else if (string.IsNullOrEmpty(form.Fw2Status))
+                form.Fw2Status = Common.StatusList.FormW2Issued;
+
+            return form;
         }
 
         #region Landing Page IW Grid

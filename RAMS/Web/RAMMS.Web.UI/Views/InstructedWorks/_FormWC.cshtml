@@ -1,4 +1,7 @@
-﻿<div class="container-fluid">
+﻿@using RAMMS.Business.ServiceProvider
+@model RAMMS.Web.UI.Models.FormWCWGModel;
+
+<div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
@@ -50,26 +53,26 @@
                         <input type="text" placeholder="Road name" value="PWD/HO/B130/2019"  disabled class="form-control" />
                     </div>-->
         @*<div class="form-group col-lg-3">
-                <label for="Your Ref">
-                    Service Provider's Proposal Ref No
-                </label>
-                <input type="text" placeholder="" class="form-control" />
+            <label for="Your Ref">
+            Service Provider's Proposal Ref No
+            </label>
+            <input type="text" placeholder="" class="form-control" />
             </div>
             <div class="form-group col-lg-3">
-                <label for="Your Ref">
-                    Service Provider Name
-                </label>
-                <input type="text" placeholder="" class="form-control" />
+            <label for="Your Ref">
+            Service Provider Name
+            </label>
+            <input type="text" placeholder="" class="form-control" />
             </div>*@
         @*<div class="form-group col-lg-2">
-                <div class="row mt-4">
-                    <div class="col-6 pt-1">
-                        <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> BQ</label>
-                    </div>
-                    <div class="col-6 pt-1">
-                        <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> Drawing</label>
-                    </div>
-                </div>
+            <div class="row mt-4">
+            <div class="col-6 pt-1">
+            <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> BQ</label>
+            </div>
+            <div class="col-6 pt-1">
+            <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> Drawing</label>
+            </div>
+            </div>
             </div>*@
         <!--</div>
             </div>
@@ -85,67 +88,52 @@
                     <div class="row">
                         <div class="form-group col-lg-3">
                             <label for="OurRef">Our Ref / Contract No</label>
-                            <input type="text" placeholder="" value="PWM/HO/B130/2019(124)" class="form-control">
+                            @Html.TextBoxFor(m => m.FormWC.OurRefNo , new { @id="formWcOurRef", @class="form-control svalidate { required, ' Our Ref/Contract No.' }"})
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Date">
                                 Date
                             </label>
-                            <input type="date" placeholder="" class="form-control">
+                            @Html.TextBoxFor(m => m.FormWC.DtWc  , new { @id="formWcDate", @type="date", @class="form-control svalidate { required, Date }"})
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Your Ref">
                                 Your Ref
                             </label>
-                            <input type="text" placeholder="" class="form-control">
+                            @Html.TextBoxFor(m => m.FormWC.IwRefNo , new { @id="formWcYourRef", @type="date", @class="form-control svalidate { required, Your Ref }"})
                         </div>
                         <div class="form-group  col-lg-3">
-                            <label for="Your Ref">
-                                Service Provider Name
-                            </label>
-                            <input type="text" placeholder="" class="form-control" />
+                            @Html.Label("Service Provider Name", "Service Provider Name")
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServPropName , new { @Id = "formWCServiceProvider", @class = "form-control" })
                         </div>
-                        @*<div class="row">
-                                <div class="form-group col-lg-6">
-                                    <label for="Your Ref">
-                                        Service Provider's Proposal Ref No
-                                    </label>
-                                    <input type="text" placeholder="" class="form-control" />
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label for="Your Ref">
-                                        Service Provider Name
-                                    </label>
-                                    <input type="text" placeholder="" class="form-control" />
-                                </div>
-                            </div>*@
+
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 1
                             </label>
-                            <input type="text" placeholder="" class="form-control">
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServAddress1 , new { @Id = "formWCAdd1", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 2
                             </label>
-                            <input type="text" placeholder="" class="form-control">
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServAddress2 , new { @Id = "formWCAdd2", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 3
                             </label>
-                            <input type="text" placeholder="" class="form-control">
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServAddress3 , new { @Id = "formWCAdd3", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Phone">Phone Number</label>
-                            <input type="text" placeholder="" value="085-431273" class="form-control">
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServPhone , new { @Id = "formWCPhone", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Fax">
                                 Fax Number
                             </label>
-                            <input type="text" placeholder="" value=" 085-438647" class="form-control">
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServFax , new { @Id = "formWCFax", @class = "form-control" })
                         </div>
 
                     </div>
@@ -156,49 +144,46 @@
             </div>
 
         </div>
-        <div class="col-lg-12" style="display:none">
+       @* <div class="col-lg-12" style="display:none">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                 <div class="px-3 pt-3 pb-1 float-left w-100">
 
                     <div class="row">
                         <div class="form-group col-lg-4">
                             <label for="RoadCode"> Road Name:</label>
-                            <input type="text" placeholder="Road name" class="form-control" disabled />
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.RoadName , new { @Id = "formWCRoadName", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Division_Code">Status </label>
-                            <select class="form-control">
-                                <option value="">Select Status</option>
-                            </select>
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Status   , new { @Id = "formWCStatus", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="RMU">PROGRESS %</label>
-                            <input class="form-control" type="text" />
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ProjectTitle   , new { @Id = "formWCRoadCode", @class = "form-control" })
                         </div>
-                        <div class="form-group col-lg-2">
+                        <div class="form-group col-lg-2 px-4">
                             <div class="row mt-4">
+                                @{
+                                    var _BQ = Model.FECM.FECM.IsBq == null || Model.FECM.FECM.IsBq == false ? false : true;
+
+                                }
                                 <div class="col-6 ">
-                                    <label class="checkbox-inline"><input type="checkbox" disabled value=""> BQ</label>
+                                    <label class="checkbox-inline"><input type="checkbox" id="femcBQ" checked="@_BQ"> BQ</label>
                                 </div>
+
+                                @{
+                                    var _Drawing = Model.FECM.FECM.IsDrawing == null || Model.FECM.FECM.IsDrawing == false ? false : true;
+
+                                }
                                 <div class="col-6">
-                                    <label class="checkbox-inline"><input type="checkbox" disabled value=""> Drawing</label>
+                                    <label class="checkbox-inline"><input type="checkbox" id="fecmDrawing" checked="@_Drawing"> Drawing</label>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    @*<div class="form-group col-lg-3 pl-2 pr-2">
-                            <label for="RoadCode">Approved IW Ref. (to be given by S.O)</label>
-                            <input type="text" class="form-control" disabled value=" ">
-                        </div>*@
+                    </div>                    
                 </div>
             </div>
-        </div>
-
-
-
-
-
+        </div>*@
         <div class="col-lg-12 d-none">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                 <div class="col-lg-12 py-2 px-4">
@@ -215,28 +200,15 @@
                                         <label class="mb-0" for=" PhysicalWorks">
                                             S.O.'s Instruction No.
                                         </label>
-                                        <input class="form-control" disabled="" type="text" value="JKR/IW/MR/20/07">
+                                          @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServPropRefNo , new { @Id = "formWCServPropRefNo", @class = "form-control" })
                                     </div>
-                                    @*<div class="col-lg-12 mb-3">
-                                            <label class="mb-0" for="PhysicalWorks">
-                                                Date of Commencement
-                                            </label>
-                                            <input type="date" class="form-control">
-                                        </div>
-                                        <div class="col-lg-12 mb-3">
-                                            <label class="mb-0" for="PhysicalWorks">
-                                                Date of Completion
-                                            </label>
-                                            <input type="date" class="form-control">
-                                        </div>*@
-
                                 </div>
                             </div>
                             <div class="col-lg-8">
                                 <label class="mb-0" for="PhysicalWorks">
                                     Instructed Work Title
                                 </label>
-                                <textarea class="form-control" type="text" style="height:40px;"></textarea>
+                               @Html.TextAreaFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ProjectTitle  , new { @Id = "formWCProjectTitle", @class = "form-control" })
                             </div>
                         </div>
 
@@ -251,13 +223,15 @@
                         In accordance with <b class="" style="padding:0px 2px;font-size:20px;">Clause 8.9 </b> of the Agreement, it is hereby certified that the Instructed Work achieved Practical Completion on
                     </span>
                     <span class="float-left">
-                        <input type="date" class="form-control border-left border-top-0 border-left-0 border-right-0 float-left" style="width:180px;font-weight:bold">
+                         @Html.TextBoxFor(m => m.FormWC.DtCompl , new { @id="formWcDtCompl", @type="date", @style="width:180px;font-weight:bold", @class="form-control border-left border-top-0 border-left-0 border-right-0 float-left svalidate { required, Date }"})
                         <span class="float-left" style="line-height:50px">And that the Defects Liability Period in respect of the said Instructed Work began on the same day and </span>
                     </span>
 
                     <span class="float-left">
                         <span class="float-left" style="line-height:47px;">will end on</span>
-                        <span class="float-left"><input type="date" class="form-control border-left border-top-0 border-left-0 border-right-0" style="width: 180px; font-weight: bold"></span>
+                        <span class="float-left">
+                            @Html.TextBoxFor(m => m.FormWC.DtDlpExtn , new { @id="formWcDtDlpExtn", @type="date", @style="width:180px;font-weight:bold", @class="form-control border-left border-top-0 border-left-0 border-right-0 float-left svalidate { required, Date }"})
+                            </span>
                     </span>
                 </p>
             </div>
@@ -266,37 +240,43 @@
             <div class="row pt-3 pb-1">
                 <div class="form-group col-lg-2">
                     <label for="Designation"> User ID </label>
-                    <select class="form-control">
-                        <option> select ID</option>
-                    </select>
+                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWCIssuedBy", "Select Users", new { Id = "formW2IssuedBy", @class = "form-control   {required,  Issued by} " })
                 </div>
                 <div class="form-group col-lg-3">
-                    <label for="Designation"> Name </label>
-                    <input class="form-control" type="text" value="Mohd. Riduan Osman">
+                     @Html.Label("Name", "Name")
+                     @Html.TextBoxFor(w => w.FormWC.UsernameIssu, new { @id = "formWCIssuedName", @class = "form-control svalidate  {required,  Requested by Name}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 ">
-                    <label for="Designation"> Designation</label>
-                    <input class="form-control " type="text" value=" Regional Manager">
+                     @Html.Label("Designation", "Designation")
+                     @Html.TextBoxFor(w => w.FormWC.DesignationIssu, new { @id = "formWCIssuedDesig", @class = "form-control svalidate  {required,  Requested by Designation}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2">
-                    <label for="Designation"> Office</label>
-                    <input class="form-control " type="text">
+                    @Html.Label("Office", "Office")
+                    @Html.TextBoxFor(w => w.FormWC.OfficeIssu, new { @id = "formWCIssuedOffice", @class = "form-control svalidate  {required,  Requested by Office}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 pr-0">
-                    <label>Date (DD-MM-YYYY)</label>
-                    <input type="date" class="datepicker form-control disableinput ">
+                    @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                    @{
+                        var vd = Model.FormWC.DtIssu;
+                        string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                    }
+                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formWCIssuedDate" value="@_IssuedDate" disabled />
                 </div>
                 <div class="form-group col-lg-1 text-center">
-                    <label>Signature</label>
+                   @Html.Label("Signature", "Signature")
+                    @{
+                        var _issued = Model.FormWC.SignIssu == null || Model.FormWC.SignIssu == false ? false : true;
+
+                    }
                     <div class="clear-b mt-2">
-                        <input type="checkbox">
+                        <input type="checkbox" id="formW2IssuedSig" class="disableinput" checked="@_issued" style="height: 20px;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
+<div class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;
     left: auto;
     bottom: 0px;
     right: 0;
@@ -305,7 +285,7 @@
     width: 96%;
     height: 45px;">
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
-        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
     <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="return checkW2Exist()">Save</button>
     <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn">Submit</button>
 </div>

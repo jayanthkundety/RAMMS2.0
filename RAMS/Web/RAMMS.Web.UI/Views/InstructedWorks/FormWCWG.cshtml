@@ -47,10 +47,11 @@
             </ul>
             <div class="d-flex py-2 position-absolute" style="right: 0px;width: 40%; top:0px;">
                 <div class="form-group mb-0 px-2" style="margin-top: -9px;">
-                    IW Ref No: <input type="text" placeholder="" disabled class="form-control">
+                    @Html.Label("IW Ref No:", "IW Ref No:")  @Html.TextBoxFor(m => m.FormWC.Fw1PkRefNoNavigation.IwRefNo, new { @id = "fw1IWRefNo", @class = "form-control  validate {required, IW Reference No.}" })
+                    @Html.HiddenFor(m => m.FormWC.Fw1PkRefNoNavigation.PkRefNo, new { @Id = "fw1PKRefNo" })
                 </div>
                 <div class="form-group mb-0" style="margin-top: -9px;">
-                    Project Title<input type="text" class="form-control" disabled>
+                    @Html.Label("Project Title:", "Project Title:")  @Html.TextBoxFor(m => m.FormWC.Fw1PkRefNoNavigation.ProjectTitle, new { @id = "fw1ProjectTitle", @class = "form-control  validate {required, Project Title }",@style="width:290px", @disabled = "true" })
                 </div>
             </div>
         </div>

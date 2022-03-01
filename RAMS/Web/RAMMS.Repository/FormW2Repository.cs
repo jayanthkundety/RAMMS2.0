@@ -1,12 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using RAMMS.Common;
-using RAMMS.Common.Extensions;
-using RAMMS.Common.RefNumber;
+﻿using Microsoft.EntityFrameworkCore;
 using RAMMS.Domain.Models;
-using RAMMS.DTO;
-using RAMMS.DTO.Report;
-using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
 using RAMMS.Repository;
@@ -15,7 +8,6 @@ using RAMS.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RAMMS.Repository
@@ -432,7 +424,7 @@ namespace RAMMS.Repository
                 //    query = query.OrderByDescending(s => s.x.Fw1UsernameVetAuth);
 
             }
-            result = await (from form in query
+            result = await (from form in query.OrderByDescending(o => o.x.Fw1PkRefNo)
                             let w1Form = form.x
                             let w2Form = form.w2Form
                             let fecm = form.fecm
