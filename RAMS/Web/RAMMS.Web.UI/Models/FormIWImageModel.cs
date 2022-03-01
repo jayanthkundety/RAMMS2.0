@@ -14,5 +14,7 @@ namespace RAMMS.Web.UI.Models
         public List<string> ImageTypeList { get; set; }
         public IEnumerable<SelectListItem> PhotoType { get; set; }
         public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; }
+
+        public FormIWImageResponseDTO IWFormImage { get; set; }
     }
 }

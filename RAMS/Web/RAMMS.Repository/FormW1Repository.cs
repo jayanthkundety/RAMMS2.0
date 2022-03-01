@@ -51,6 +51,7 @@ namespace RAMMS.Repository
             return result.HasValue ? result.Value : 0;
         }
 
+
         public async Task<int> GetImageIdByW1Id(int formW1Id, string type)
         {
             int? result = await _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW1Id && x.FiwiImageTypeCode == type).Select(x => x.FiwiImageSrno).MaxAsync();

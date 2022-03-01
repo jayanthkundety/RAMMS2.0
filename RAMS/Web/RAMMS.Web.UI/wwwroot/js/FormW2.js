@@ -254,13 +254,14 @@ function Save(submit) {
                 if (submit) {
                     $("#saveFormW2Btn").hide();
                     $("#submitFormW2Btn").hide();
-                    app.ShowSuccessMessage('Successfully Submitted', false);
+                    app.ShowSuccessMessage('Form is Submitted', false);
                     location.href = "/InstructedWorks";
                 }
                 else {
                     $("#saveFormW2Btn").show();
                     $("#submitFormW2Btn").show();
-                    app.ShowSuccessMessage('Successfully Saved', false);
+                    app.ShowSuccessMessage('Form is Saved', false);
+                    location.href = "/InstructedWorks";
                 }
             }
         },

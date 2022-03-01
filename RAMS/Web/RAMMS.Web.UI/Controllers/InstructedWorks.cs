@@ -67,6 +67,13 @@ namespace RAMMS.Web.UI.Controllers
         public IActionResult Index()
         {
             LoadLookupService("RMU", "RD_Code", "TECM_Status");
+            var res = ((IEnumerable<CSelectListItem>)ViewData["TECM_Status"]).ToList();
+            res.Insert(0, new CSelectListItem()
+            {
+                Value = "All",
+                Text = "All"
+            }) ;
+
             return View();
         }
 
@@ -306,6 +313,8 @@ namespace RAMMS.Web.UI.Controllers
         #endregion
 
         #region FormW2
+
+      
         private async Task LoadN2DropDown()
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();
