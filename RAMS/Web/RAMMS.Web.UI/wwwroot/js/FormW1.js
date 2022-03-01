@@ -573,3 +573,11 @@ function DurationChange(ctrl, message) {
     }
 }
 
+function PercentChange(ctrl, message) {
+     
+    if (parseFloat($(ctrl).val()) > 100) {
+        app.ShowErrorMessage(message);
+        $(ctrl).val('');
+    }
+}
+
