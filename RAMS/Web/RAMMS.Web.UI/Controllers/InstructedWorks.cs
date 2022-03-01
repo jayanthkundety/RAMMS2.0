@@ -96,14 +96,14 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ImageUploadFormIw(IList<IFormFile> formFile, string iwRefNo, List<string> photoType, string Source = "ALL")
+        public async Task<IActionResult> ImageUploadFormIw(IList<IFormFile> formFile, string PkRefNo, List<string> photoType, string Source = "ALL")
         {
             try
             {
                 bool successFullyUploaded = false;
                 string wwwPath = this._webHostEnvironment.WebRootPath;
                 string contentPath = this._webHostEnvironment.ContentRootPath;
-                string _id = Regex.Replace(iwRefNo, @"[^0-9a-zA-Z]+", "");
+                string _id = Regex.Replace(PkRefNo, @"[^0-9a-zA-Z]+", "");
 
                 int j = 0;
                 foreach (IFormFile postedFile in formFile)
@@ -115,7 +115,7 @@ namespace RAMMS.Web.UI.Controllers
                     string photo_Type = Regex.Replace(photoType[j], @"[^a-zA-Z]", "");
                     string subPath = Path.Combine(@"Uploads/FormW1/", _id, photo_Type);
                     string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormW1\", _id, photo_Type));
-                    int i = await _formW1Service.LastInsertedIMAGENO(iwRefNo, photo_Type);
+                    int i = await _formW1Service.LastInsertedIMAGENO(PkRefNo, photo_Type);
                     i++;
                     string fileName = Path.GetFileName(postedFile.FileName);
                     string fileRename = i + "_" + photo_Type + "_" + fileName;
@@ -125,7 +125,7 @@ namespace RAMMS.Web.UI.Controllers
                     }
                     using (FileStream stream = new FileStream(Path.Combine(path, fileRename), FileMode.Create))
                     {
-                        _rmAssetImageDtl.Fw1IwRefNo = iwRefNo;
+                        _rmAssetImageDtl.Fw1IwRefNo = PkRefNo;
                         _rmAssetImageDtl.ImageTypeCode = photoType[j];
                         _rmAssetImageDtl.ImageUserFilePath = postedFile.FileName;
                         _rmAssetImageDtl.ImageSrno = i;
@@ -280,7 +280,7 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
 
             FormW1Model assetsModel = new FormW1Model();
-            model.ImageList = await _formW1Service.GetImageList(_formW1Model.IwRefNo);
+            model.ImageList = await _formW1Service.GetImageList(_formW1Model.PkRefNo.ToString());
             return PartialView("~/Views/InstructedWorks/AddFormW1.cshtml", model);
         }
 

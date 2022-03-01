@@ -45,7 +45,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             return _lookupRepo.LoadServiceProviderName().Result.Select(x => new SelectListItem()
             {
-                Text = x.FiwSrvProviderCode + " - " + x.FiwSrvProviderName,
+                Text =  x.FiwSrvProviderName,
                 Value = x.FiwSrvProviderCode,
             }).Distinct();
         }

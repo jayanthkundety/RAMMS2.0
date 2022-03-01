@@ -75,6 +75,7 @@
                                         <th>S.NO</th>
                                         <th>Attachment Type</th>
                                         <th>FileName</th>
+                                        <th>Source</th>
                                         @if (security.IsPCDelete(ModuleNameList.Instructed_Works))
                                         {
                                             <th style="text-align:center">Delete</th>
@@ -94,6 +95,7 @@
                                                     <td>@i</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageUserFilePath)</td>
+                                                    <td>@Html.DisplayFor(modelItem => item.Source)</td>
                                                     @if (security.IsPCDelete(ModuleNameList.Instructed_Works))
                                                     {
                                                         <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
@@ -194,8 +196,8 @@
     </div>
 </div>
 @*<div class="modal-footer">
-    <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
-</div>*@
+        <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
+    </div>*@
 
 <div class="modal hide border-10x addphoto-mdl" id="myModal">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -333,8 +335,12 @@
 
 
 <script>
-    $(document).ready(function () {
 
+        ImageTypeBQ = "@ImageTypeBQ";
+        ImageTypeDrawing = "@ImageTypeDrawing";
+
+    $(document).ready(function () {
+        debugger
         $("#photoType").chosen();
         document.getElementById("files").disabled = true;
         $("#files1").addClass("disabled");
@@ -360,9 +366,11 @@
     });
 
     function FormAddImage() {
-        if ($("#hdnView").val() == "1") return; 
+        debugger
+
+        if ($("#hdnView").val() == "1") return;
         if (ValidatePage("#tab1")) {
-            if ($("#IwRefNo").val() != "0") {
+            if ($("#hdnPkRefNo").val() != "0") {
                 $("#myModal").modal('show');
             }
             else {
@@ -545,13 +553,14 @@
 
         $("#btnImageUpload").click(function (e) {
             var type = $("#photoType").val();
-            var id = document.getElementById("IwRefNo").value;
+            var id = $("#hdnPkRefNo").val();
             var formData = new FormData();
-            formData.append("iwRefNo",id );
+            formData.append("PkRefNo",id );
             for (var i = 0, len = filesToUpload.length; i < len; i++) {
                 formData.append("FormFile", filesToUpload[i].file);
                 formData.append("PhotoType", filesToUpload[i].fileType);
             }
+            formData.append("Source", $("#hdnForm").val());
             InitAjaxLoading();
             $.ajax(
                 {
@@ -609,7 +618,7 @@
                         if (data > 0) {
                             HideAjaxLoading();
                             app.ShowSuccessMessage("Successfully Deleted")
-                            GetImageList();
+                            GetImageList( $("#hdnPkRefNo").val());
                         }
                         else {
                             HideAjaxLoading();

@@ -46,7 +46,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#photoGallery" onclick="javascript:GetImageList('@Model.FormW1.IwRefNo');" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                    <a href="#photoGallery" onclick="javascript: GetImageList('@Model.FormW1.PkRefNo');" data-toggle="tab" aria-expanded="false" class="nav-link">
                                         <span class="">
                                             Attachments
                                         </span>
@@ -117,10 +117,10 @@
                                                                         <div class="form-group col-lg-2">
                                                                             <div class="row mt-4">
                                                                                 <div class="col-6 pt-1">
-                                                                                    <label class="checkbox-inline"><input id="chkBQ" type="checkbox" disabled value=""> BQ</label>
+                                                                                    <label class="checkbox-inline"><input id="chkBQ" class="{required,BQ}" type="checkbox" disabled value=""> BQ</label>
                                                                                 </div>
                                                                                 <div class="col-6 pt-1">
-                                                                                    <label class="checkbox-inline"><input id="chkDrawing" type="checkbox" disabled value=""> Drawing</label>
+                                                                                    <label class="checkbox-inline  "><input id="chkDrawing" class="{required,Drawing}" type="checkbox" disabled value=""> Drawing</label>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -232,11 +232,11 @@
                                                                                 </div>
                                                                                 <div class="form-group col-lg-3">
                                                                                     @Html.Label("Proposed Design Duration (Months)", "Proposed Design Duration (Months)")
-                                                                                    @Html.TextBoxFor(m => m.FormW1.PropDesignDuration, new { @maxlength = "2", @class = "form-control" })
+                                                                                    @Html.TextBoxFor(m => m.FormW1.PropDesignDuration, new { @maxlength = "5", @class = "form-control allow_numeric", @onchange = "DurationChange(this,'Proposed Design Duration invalid')" })
                                                                                 </div>
                                                                                 <div class="form-group col-lg-3">
                                                                                     @Html.Label("Proposed Completion of IW Period (Months)", "Proposed Completion of IW Period (Months)")
-                                                                                    @Html.TextBoxFor(m => m.FormW1.PropCompletionPeriod, new { @maxlength = "2", @class = "form-control" })
+                                                                                    @Html.TextBoxFor(m => m.FormW1.PropCompletionPeriod, new { @maxlength = "5", @class = "form-control allow_numeric", @onchange = "DurationChange(this,'Proposed Completion of IW Period invalid')" })
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -264,7 +264,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(m => m.FormW1.PhyWorksAmt, new { @class = "form-control allow_numeric", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(m => m.FormW1.PhyWorksAmt, new { @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -279,7 +279,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(m => m.FormW1.GenPrelimsAmt, new { @class = "form-control allow_numeric", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(m => m.FormW1.GenPrelimsAmt, new { @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -287,7 +287,7 @@
                                                                                             <div class="col-8">
                                                                                                 <label for="Consultancy Fees" class="pt-1 mb-0">
                                                                                                     <b class="lh30 mb-0">
-                                                                                                        <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.ConsulTaxPercent, new { @maxlength = "2", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left", @style = "width:100px;" }) <b class="float-right">%</b></span><span class="float-left">(If any)</span>
+                                                                                                        <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.ConsulTaxPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'ConsulTaxPercent invalid')", @style = "width:100px;" }) <b class="float-right">%</b></span><span class="float-left">(If any)</span>
                                                                                                     </b>
                                                                                                 </label>
                                                                                             </div>
@@ -296,7 +296,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.ConsulFeeAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.ConsulFeeAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -304,7 +304,7 @@
                                                                                         <div class="row py-1  pt-2 border-bottom">
                                                                                             <div class="col-8">
                                                                                                 <label for="Surveyworks" class="pt-1 mb-0">
-                                                                                                    <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left pr-3" style="width:135px;"> @Html.TextBoxFor(model => model.FormW1.SurvyWorksPercent, new { @maxlength = "2", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
+                                                                                                    <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left pr-3" style="width:135px;"> @Html.TextBoxFor(model => model.FormW1.SurvyWorksPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Survey Works + Government Tax invalid')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
@@ -312,14 +312,14 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.SurvyWorksAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.SurvyWorksAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="row py-1 pt-2 border-bottom">
                                                                                             <div class="col-8">
                                                                                                 <label for="SiteInvestigation" class="pt-1 mb-0">
-                                                                                                    <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Tax</span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.SiteInvestPercent, new { @maxlength = "2", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
+                                                                                                    <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Tax</span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.SiteInvestPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Site Investigation + Government Tax')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
@@ -327,7 +327,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.SiteInvestAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.SiteInvestAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -343,7 +343,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.OtherCostAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.OtherCostAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -360,7 +360,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.EstimTotalCostAmt, new { @maxlength = "9", @class = "form-control numeric", @readonly = true })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.EstimTotalCostAmt, new { @maxlength = "9", @class = "form-control numeric text-right", @readonly = true })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -420,7 +420,7 @@
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.CheckBoxFor(model => model.FormW1.SignReq)
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignReq, new { @disabled = "disabled" })
                                                                             </div>
 
                                                                         </div>
@@ -468,7 +468,7 @@
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.CheckBoxFor(model => model.FormW1.SignRep)
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignRep, new { @disabled = "disabled" })
                                                                             </div>
 
                                                                         </div>
@@ -501,7 +501,7 @@
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             <label>Signature</label>
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.CheckBoxFor(model => model.FormW1.SignVer)
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignVer, new { @disabled = "disabled" })
                                                                             </div>
 
                                                                         </div>
@@ -576,6 +576,8 @@
     @Html.HiddenFor(m => m.FormW1.UseridRep);
     @Html.HiddenFor(m => m.FormW1.Status);
     @Html.HiddenFor(m => m.FormW1.SubmitSts);
+    <input type="hidden" id="hdnForm" value="FormW1" />
+    <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
     <input type="hidden" id="hdnRecommondedValue" value="@Model.FormW1.RecomdType" />
 

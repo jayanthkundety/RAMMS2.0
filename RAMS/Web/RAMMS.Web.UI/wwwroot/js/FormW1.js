@@ -157,7 +157,7 @@ function CalculateCost() {
     else {
         OtherCostAmt = 0;
     }
-    
+
 
     $("#FormW1_EstimTotalCostAmt").val(parseFloat(PhyWorksAmt) + parseFloat(GenPrelimsAmt) + parseFloat(SurvyWorksAmt) + parseFloat(SiteInvestAmt) + parseFloat(ConsulFeeAmt) + parseFloat(OtherCostAmt));
 }
@@ -291,7 +291,7 @@ function searchList(obj) {
         type: 'Post',
         success: function (data) {
 
-            
+
 
             if (obj.RdCode == "" || obj.RdCode == null || obj.RdCode == 0) {
 
@@ -372,11 +372,14 @@ function OnUseridRepUserChange(tis) {
             $("#FormW1_DesignationRep").attr("readonly", "true");
             $("#FormW1_OfficeRep").attr("readonly", "true");
         }
+
+        $('#FormW1_SignRep').prop('checked', true);
     }
     else {
         $("#FormW1_UsernameRep").val('');
         $("#FormW1_DesignationRep").val('');
         $("#FormW1_OfficeRep").val('');
+        $('#FormW1_SignRep').prop('checked', false);
     }
 
 }
@@ -399,12 +402,13 @@ function OnUseridReqUserChange(tis) {
             $("#FormW1_DesignationReq").attr("readonly", "true");
             $("#FormW1_OfficeReq").attr("readonly", "true");
         }
-
+        $('#FormW1_SignReq').prop('checked', true);
     }
     else {
         $("#FormW1_UsernameReq").val('');
         $("#FormW1_DesignationReq").val('');
         $("#FormW1_OfficeReq").val('');
+        $('#FormW1_SignReq').prop('checked', false);
     }
 
 
@@ -428,11 +432,13 @@ function OnVerifyUserChange(tis) {
             $("#FormW1_DesignationVer").attr("readonly", "true");
             $("#FormW1_OfficeVer").attr("readonly", "true");
         }
+        $('#FormW1_SignVer').prop('checked', true);
     }
     else {
         $("#FormW1_UsernameVer").val('');
         $("#FormW1_DesignationVer").val('');
         $("#FormW1_OfficeVer").val('');
+        $('#FormW1_SignVer').prop('checked', false);
 
     }
 }
@@ -476,7 +482,7 @@ function RecommondedValue(e) {
 
 
 function GoBack() {
-     
+
     if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val() == "" || $("#FormW1_Status").val() == "Draft") {
         if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
             if (e) {
@@ -490,24 +496,31 @@ function GoBack() {
 
 
 function Save(GroupName, SubmitType) {
-     
+
 
     $("#ddlUseridReq").removeClass("validate");
     $("#ddlUseridVer").removeClass("validate");
     $("#ddlUseridRep").removeClass("validate");
     $("#ddlRMU").removeClass("validate");
     $("#FormW1_IwRefNo").removeClass("validate");
+    $("#chkBQ").removeClass("validate");
+    $("#chkDrawing").removeClass("validate");
 
     if (SubmitType != "") {
 
         $("#FormW1page .svalidate").addClass("validate");
 
-
+        debugger
 
         if (SubmitType == "Submitted") {
             $("#FormW1_Status").val("Submitted");
             $("#FormW1_SubmitSts").val(true);
             $("#ddlUseridReq").addClass("validate");
+
+            if ($("#chkBQ").prop('checked') == false && $("#chkDrawing").prop('checked') == false ) {
+                $("#chkBQ").addClass("validate");
+                $("#chkDrawing").addClass("validate");
+            }
         }
         else if (SubmitType == "Verified") {
             $("#ddlUseridReq").addClass("validate");
@@ -533,8 +546,8 @@ function Save(GroupName, SubmitType) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
-                
-                 $("#FormW1_PkRefNo").val(data);
+
+                $("#FormW1_PkRefNo").val(data);
                 if (SubmitType == "" || SubmitType == "Draft") {
                     app.ShowSuccessMessage('Submitted Successfully', false);
                 }
@@ -553,5 +566,18 @@ function Save(GroupName, SubmitType) {
 
 }
 
+function DurationChange(ctrl, message) {
+    if (parseFloat($(ctrl).val()) > 12) {
+        app.ShowErrorMessage(message);
+        $(ctrl).val('');
+    }
+}
 
+function PercentChange(ctrl, message) {
+     
+    if (parseFloat($(ctrl).val()) > 100) {
+        app.ShowErrorMessage(message);
+        $(ctrl).val('');
+    }
+}
 
