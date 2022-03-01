@@ -216,7 +216,7 @@ namespace RAMMS.Web.UI.Controllers
             return Json(name);
         }
 
-       [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> IwDeleteImage(int pkId)
         {
             int rowsAffected = 0;
@@ -281,7 +281,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 model.View = 1;
             }
- 
+
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
@@ -329,8 +329,8 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["IWRefNo"] = await _formW2Service.GetFormW1DDL();
 
 
-            LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status" , "User");
-            
+            LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status", "User");
+
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
@@ -410,7 +410,7 @@ namespace RAMMS.Web.UI.Controllers
                 _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
                 _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;
                 _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
-                
+
             }
 
             return View("~/Views/InstructedWorks/AddFormW2.cshtml", _formW2Model);
@@ -820,15 +820,15 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WDWN
 
-        public IActionResult OpenWDWN()
+        public async Task<IActionResult> OpenWDWN(int PkRefNo)
         {
             var _formWDWNModel = new FormWDWNModel();
             LoadLookupService("TECM_Status");
-            _formWDWNModel.FECM = new FormFECMModel();
-            _formWDWNModel.FECM.FECM = new FormW2FECMResponseDTO();
+
+            _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(PkRefNo);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
-            return View("~/Views/InstructedWorks/FormWDWN.cshtml",_formWDWNModel);
+            return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
         [HttpPost]
