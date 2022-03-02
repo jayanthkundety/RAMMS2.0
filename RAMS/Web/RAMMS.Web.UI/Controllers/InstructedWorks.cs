@@ -834,8 +834,8 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> OpenWDWN(int PkRefNo)
         {
             var _formWDWNModel = new FormWDWNModel();
-            LoadLookupService("TECM_Status");
-
+            LoadLookupService("TECM_Status","User");
+            ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(PkRefNo);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
@@ -845,6 +845,7 @@ namespace RAMMS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> OpenWD()
         {
+            LoadLookupService("User");
             return PartialView("~/Views/InstructedWorks/_FormWD.cshtml");
         }
 
