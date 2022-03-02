@@ -17,27 +17,39 @@
                             <div class="w-100 dt-tbl-section">
 
                                 <div class="row">
-                                    <div class="form-group col-lg-4">
-                                        <label for="OurRef">
-                                            Name of Division
-                                        </label>
-                                        @*<input type="text" placeholder="" class="form-control">*@
-                                        <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="OurRef">
-                                            Divisional Address 1
-                                        </label>
-                                        @*<input type="text" placeholder="" class="form-control">*@
-                                        <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <label for="OurRef">
-                                            Divisional Address 2
-                                        </label>
-                                        @*<input type="text" placeholder="" class="form-control">*@
-                                        <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
-                                    </div>
+                                     @for (var i = 0; i < @Model.Division.Divisions.Count; i++)
+                                       {
+                                        var div = Model.Division.Divisions[i];
+                                        if (i == 1)
+                                        {
+                                             <div class="form-group col-lg-4">
+                                        <label for="OurRef">Name of Division</label>
+                                        <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
+                                            </div>
+                                        }
+
+                                        if (i == 2)
+                                        {
+                                            <div class="form-group col-lg-4">
+                                                <label for="OurRef">
+                                                    Divisional Address 1
+                                                </label>
+                                                @*<input type="text" placeholder="" class="form-control">*@
+                                                <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
+                                            </div>
+                                        }
+
+                                        if (i == 3)
+                                        {
+                                            <div class="form-group col-lg-4">
+                                                <label for="OurRef">
+                                                    Divisional Address 2
+                                                </label>
+                                                @*<input type="text" placeholder="" class="form-control">*@
+                                                <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
+                                            </div>
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -104,36 +116,36 @@
                         </div>
                         <div class="form-group  col-lg-3">
                             @Html.Label("Service Provider Name", "Service Provider Name")
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServPropName , new { @Id = "formWCServiceProvider", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropName , new { @Id = "formWCServiceProvider", @class = "form-control" })
                         </div>
 
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 1
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServAddress1 , new { @Id = "formWCAdd1", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1 , new { @Id = "formWCAdd1", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 2
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServAddress2 , new { @Id = "formWCAdd2", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2 , new { @Id = "formWCAdd2", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 3
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServAddress3 , new { @Id = "formWCAdd3", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3 , new { @Id = "formWCAdd3", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Phone">Phone Number</label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServPhone , new { @Id = "formWCPhone", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone , new { @Id = "formWCPhone", @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Fax">
                                 Fax Number
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServFax , new { @Id = "formWCFax", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax , new { @Id = "formWCFax", @class = "form-control" })
                         </div>
 
                     </div>

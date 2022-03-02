@@ -66,7 +66,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             PagingResult<DivRmuSectionRequestDTO> result = new PagingResult<DivRmuSectionRequestDTO>();
             result.PageResult = await _repoUnit.DivRmuSectionRepository.GetFilteredRecordList(filterOptions);
-            result.TotalRecords = await _repoUnit.DivRmuSectionRepository.GetFilteredRecordCount(filterOptions); 
+            result.TotalRecords = await _repoUnit.DivRmuSectionRepository.GetFilteredRecordCount(filterOptions);
             return result;
         }
 
@@ -75,13 +75,14 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var form = _mapper.Map<Domain.Models.RmDivRmuSecMaster>(model);
-                
+
                 if (form.RdsmPkRefNo != 0)
                 {
                     _repoUnit.DivRmuSectionRepository.Update(form);
                 }
-                else { 
-                    _repoUnit.DivRmuSectionRepository.Create(form); 
+                else
+                {
+                    _repoUnit.DivRmuSectionRepository.Create(form);
                 }
                 await _repoUnit.CommitAsync(); return form.RdsmPkRefNo;
             }
@@ -92,6 +93,16 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             var model = await _repoUnit.DivRmuSectionRepository.FindAsync(s => s.RdsmPkRefNo == id); if (model == null) { return null; }
             return _mapper.Map<Domain.Models.RmDivRmuSecMaster, DivRmuSectionRequestDTO>(model);
+        }
+
+        public async Task<DivisionRequestDTO> GetDivisions()
+        {
+            return await _repoUnit.DivisonRepository.GetDivisions();
+        }
+
+        public async Task<DivisionRequestDTO> GetServiceProviders()
+        {
+            return await _repoUnit.DivisonRepository.GetServiceProviders();
         }
     }
 }

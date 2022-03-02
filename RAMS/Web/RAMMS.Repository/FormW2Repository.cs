@@ -266,14 +266,25 @@ namespace RAMMS.Repository
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
+                DateTime dtFrom, dtTo;
+                DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+                
+                {
+                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? x.w2Form.Fw2DtCommence >= dtFrom && x.w2Form.Fw2DtCommence <= dtTo : false);
+                }
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
+            {
                 DateTime dt;
-                if (DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
                 {
                     query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? (x.w2Form.Fw2DtCommence.Value.Year == dt.Year && x.w2Form.Fw2DtCommence.Value.Month == dt.Month && x.w2Form.Fw2DtCommence.Value.Day == dt.Day) : false);
                 }
             }
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
+             if (string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
                 DateTime dt;
                 if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
@@ -284,9 +295,9 @@ namespace RAMMS.Repository
 
            
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.Status))
+            if (!string.IsNullOrEmpty(filterOptions.Filters.Status) &&  filterOptions.Filters.Status != "All" )
             {
-                query = query.Where(x => x.x.Fw1Sts.Contains(filterOptions.Filters.Status) || x.x.Fw1StsRemarks.Contains(filterOptions.Filters.Status));
+                query = query.Where(x => x.x.Fw1Status.Contains(filterOptions.Filters.Status) || x.x.Fw1StsRemarks.Contains(filterOptions.Filters.Status));
             }
 
             if (filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)

@@ -16,5 +16,7 @@ namespace RAMMS.Web.UI.Models
         public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; }
 
         public FormIWImageResponseDTO IWFormImage { get; set; }
+
+        public string FormName { get; set; }
     }
 }

@@ -197,7 +197,7 @@ function Save(submit) {
     saveObj.JkrRefNo = $("#fw2JkrRefNo").val();
     saveObj.DateOfInitation = $("#formW2InitiationDate").val();
     saveObj.SerProvRefNo = $("#fw2SerProviderRef").val();
-    saveObj.ServProvName = $("#formW2ServiceProvider").find(":selected").val();
+    saveObj.ServProvName = $("#formW2ServiceProvider").val();
     saveObj.Attn = $("#fw2Attn").val();
     saveObj.Cc = $("#fw2cc").val();
     saveObj.RoadCode = $("#frmW2RoadCode").val().split("-")[0];
@@ -298,7 +298,8 @@ function Delete(id) {
     });
 }
 
-function GetImageList(id) {
+function GetImageList(id, form) {
+    debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
@@ -315,7 +316,7 @@ function GetImageList(id) {
 
     $.ajax({
         url: '/InstructedWorks/GetIWImageList',
-        data: { id, assetgroup: group },
+        data: { id, assetgroup: group , form },
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);
@@ -473,7 +474,7 @@ function ChangeRUser(obj) {
 
 function GoBack() {
     if ($("#hdnView").val() == "0" || $("#hdnView").val() == "") {
-        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+        if (app.Confirm("Are you sure you want to close the form?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";
             }

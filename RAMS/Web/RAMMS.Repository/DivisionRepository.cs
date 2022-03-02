@@ -57,6 +57,54 @@ namespace RAMMS.Repository
             }).ToList();
         }
 
-       
+        public async Task<DivisionRequestDTO> GetDivisions()
+        {
+            var divDTO = new DivisionRequestDTO();
+            divDTO.Divisions = new List<Division>();
+
+            var divList = await _context.RmIwWorksDeptMaster.ToListAsync();
+
+            foreach (var dpt in divList)
+            {
+                var div = new Division();
+                div.Name = dpt.FiwWrksDeptName;
+                div.Adress1 = dpt.FiwWrksDeptAddress1;
+                div.Adress2 = dpt.FiwWrksDeptAddress2;
+                div.Adress3 = dpt.FiwWrksDeptAddress3;
+                div.Phone = dpt.FiwWrksDeptPhoneNo.ToString();
+                div.Fax = dpt.FiwWrksDeptFaxNo.ToString();
+                div.ZipCode = dpt.FiwWrksDeptZipcode.ToString();
+                divDTO.Divisions.Add(div);
+            }
+
+            return divDTO;
+
+        }
+
+        public async Task<DivisionRequestDTO> GetServiceProviders()
+        {
+            var proDTO = new DivisionRequestDTO();
+            proDTO.ServiceProviders = new List<ServiceProvider>();
+
+            var proList = await _context.RmIwSrvProviderMaster.ToListAsync();
+
+            foreach (var prov in proList)
+            {
+                var div = new Division();
+                div.Name = prov.FiwSrvProviderName;
+                div.Adress1 = prov.FiwSrvProviderAddress1;
+                div.Adress2 = prov.FiwSrvProviderAddress2;
+                div.Adress3 = prov.FiwSrvProviderAddress3;
+                div.Phone = prov.FiwSrvProviderPhoneNo.ToString();
+                div.Fax = prov.FiwSrvProviderFaxNo.ToString();
+                div.ZipCode = prov.FiwSrvProviderZipcode.ToString();
+                proDTO.Divisions.Add(div);
+            }
+
+            return proDTO;
+
+        }
+
+
     }
 }
