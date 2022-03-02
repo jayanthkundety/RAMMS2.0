@@ -72,7 +72,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 Value = "All",
                 Text = "All"
-            }) ;
+            });
 
             return View();
         }
@@ -314,7 +314,7 @@ namespace RAMMS.Web.UI.Controllers
 
         #region FormW2
 
-      
+
         private async Task LoadN2DropDown()
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -400,7 +400,7 @@ namespace RAMMS.Web.UI.Controllers
                 var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
                 if (resultFCEM == null) resultFCEM = new FormW2FECMResponseDTO();
                 _formW2Model.FECM.FECM = resultFCEM;
-                
+
                 if (resultFCEM.SubmitSts || view == "1") _formW2Model.FECM.View = "1";
 
                 if (resultFormW2.SubmitSts || view == "1") _formW2Model.View = "1";
@@ -823,8 +823,8 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> OpenWDWN(int PkRefNo)
         {
             var _formWDWNModel = new FormWDWNModel();
-            LoadLookupService("TECM_Status");
-
+            LoadLookupService("TECM_Status","User");
+            ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(PkRefNo);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
@@ -834,6 +834,7 @@ namespace RAMMS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> OpenWD()
         {
+            LoadLookupService("User");
             return PartialView("~/Views/InstructedWorks/_FormWD.cshtml");
         }
 

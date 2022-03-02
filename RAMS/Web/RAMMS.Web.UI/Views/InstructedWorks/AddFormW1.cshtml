@@ -46,7 +46,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#photoGallery" onclick="javascript: GetImageList('@Model.FormW1.PkRefNo');" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                    <a href="#photoGallery" onclick="javascript: GetImageList('@Model.FormW1.PkRefNo','FormW1');" data-toggle="tab" aria-expanded="false" class="nav-link">
                                         <span class="">
                                             Attachments
                                         </span>
@@ -264,7 +264,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(m => m.FormW1.PhyWorksAmt, new { @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(m => m.FormW1.PhyWorksAmt, new { @maxlength = "12", @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -279,7 +279,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(m => m.FormW1.GenPrelimsAmt, new { @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(m => m.FormW1.GenPrelimsAmt, new { @maxlength = "12", @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -296,7 +296,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.ConsulFeeAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.ConsulFeeAmt, new { @maxlength = "12", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -312,7 +312,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.SurvyWorksAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.SurvyWorksAmt, new { @maxlength = "12", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -327,7 +327,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.SiteInvestAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.SiteInvestAmt, new { @maxlength = "12", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -343,7 +343,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.OtherCostAmt, new { @maxlength = "9", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.OtherCostAmt, new { @maxlength = "12", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -360,7 +360,7 @@
                                                                                                     <div class="input-group-prepend">
                                                                                                         <span class="input-group-text">RM</span>
                                                                                                     </div>
-                                                                                                    @Html.TextBoxFor(model => model.FormW1.EstimTotalCostAmt, new { @maxlength = "9", @class = "form-control numeric text-right", @readonly = true })
+                                                                                                    @Html.TextBoxFor(model => model.FormW1.EstimTotalCostAmt, new { @maxlength = "12", @class = "form-control numeric text-right", @readonly = true })
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -576,6 +576,8 @@
     @Html.HiddenFor(m => m.FormW1.UseridRep);
     @Html.HiddenFor(m => m.FormW1.Status);
     @Html.HiddenFor(m => m.FormW1.SubmitSts);
+    @Html.HiddenFor(m => m.FormW1.IsBq);
+    @Html.HiddenFor(m => m.FormW1.IsDrawing);
     <input type="hidden" id="hdnForm" value="FormW1" />
     <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />

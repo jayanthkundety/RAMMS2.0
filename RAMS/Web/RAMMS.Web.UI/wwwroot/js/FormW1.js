@@ -120,13 +120,23 @@ function CalculateCost() {
 
     var PhyWorksAmtAmt = 0, GenPrelimsAmt = 0, SurvyWorksAmt = 0, SiteInvestAmt = 0, ConsulFeeAmt = 0, OtherCostAmt = 0;
     if ($("#FormW1_PhyWorksAmt").val() != "") {
+
         PhyWorksAmt = $("#FormW1_PhyWorksAmt").val();
+
+        if (PhyWorksAmt > 999999999) {
+            $("#FormW1_PhyWorksAmt").val("")
+            app.ShowErrorMessage("Physical Works Invalid");
+        }
     }
     else {
         PhyWorksAmt = 0;
     }
     if ($("#FormW1_GenPrelimsAmt").val() != "") {
         GenPrelimsAmt = $("#FormW1_GenPrelimsAmt").val();
+        if (GenPrelimsAmt > 999999999) {
+            $("#FormW1_GenPrelimsAmt").val("")
+            app.ShowErrorMessage("General and Preliminaries");
+        }
     }
     else {
         GenPrelimsAmt = 0;
@@ -134,18 +144,30 @@ function CalculateCost() {
 
     if ($("#FormW1_SurvyWorksAmt").val() != "") {
         SurvyWorksAmt = $("#FormW1_SurvyWorksAmt").val();
+        if (SurvyWorksAmt > 999999999) {
+            $("#FormW1_SurvyWorksAmt").val("")
+            app.ShowErrorMessage("Survey Works ");
+        }
     }
     else {
         SurvyWorksAmt = 0;
     }
     if ($("#FormW1_SiteInvestAmt").val() != "") {
         SiteInvestAmt = $("#FormW1_SiteInvestAmt").val();
+        if (SiteInvestAmt > 999999999) {
+            $("#FormW1_SiteInvestAmt").val("")
+            app.ShowErrorMessage("Site Investigation");
+        }
     }
     else {
         SiteInvestAmt = 0;
     }
     if ($("#FormW1_ConsulFeeAmt").val() != "") {
         ConsulFeeAmt = $("#FormW1_ConsulFeeAmt").val();
+        if (ConsulFeeAmt > 999999999) {
+            $("#FormW1_ConsulFeeAmt").val("")
+            app.ShowErrorMessage("Consultancy Fees");
+        }
     }
     else {
         ConsulFeeAmt = 0;
@@ -153,11 +175,14 @@ function CalculateCost() {
 
     if ($("#FormW1_OtherCostAmt").val() != "") {
         OtherCostAmt = $("#FormW1_OtherCostAmt").val();
+        if (OtherCostAmt > 999999999) {
+            $("#FormW1_OtherCostAmt").val("")
+            app.ShowErrorMessage("Other Cost");
+        }
     }
     else {
         OtherCostAmt = 0;
     }
-
 
     $("#FormW1_EstimTotalCostAmt").val(parseFloat(PhyWorksAmt) + parseFloat(GenPrelimsAmt) + parseFloat(SurvyWorksAmt) + parseFloat(SiteInvestAmt) + parseFloat(ConsulFeeAmt) + parseFloat(OtherCostAmt));
 }
@@ -444,13 +469,13 @@ function OnVerifyUserChange(tis) {
 }
 
 
-function GetImageList(id) {
+function GetImageList(id, formName) {
 
     var group = $("#FormADetAssetGrpCode option:selected").val();
 
     $.ajax({
         url: '/InstructedWorks/GetIWImageList',
-        data: { Id: id, assetgroup: group },
+        data: { Id: id, assetgroup: group, Form: formName },
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);
@@ -484,7 +509,7 @@ function RecommondedValue(e) {
 function GoBack() {
 
     if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val() == "" || $("#FormW1_Status").val() == "Draft") {
-        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+        if (app.Confirm("Are you sure you want to close the form?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";
             }
@@ -510,16 +535,34 @@ function Save(GroupName, SubmitType) {
 
         $("#FormW1page .svalidate").addClass("validate");
 
-        debugger
-
         if (SubmitType == "Submitted") {
             $("#FormW1_Status").val("Submitted");
             $("#FormW1_SubmitSts").val(true);
             $("#ddlUseridReq").addClass("validate");
 
-            if ($("#chkBQ").prop('checked') == false && $("#chkDrawing").prop('checked') == false ) {
+            if ($("#chkBQ").prop('checked') == false) {
                 $("#chkBQ").addClass("validate");
+            }
+            else {
+                if ($("#chkBQ").prop('checked') == true) {
+                    $("#FormW1_IsBq").val(true);
+                }
+                else {
+                    $("#FormW1_IsBq").val(false);
+                }
+            }
+
+            if ($("#chkDrawing").prop('checked') == false) {
                 $("#chkDrawing").addClass("validate");
+            }
+            else {
+
+                if ($("#chkDrawing").prop('checked') == true) {
+                    $("#FormW1_IsDrawing").val(true);
+                }
+                else {
+                    $("#FormW1_IsDrawing").val(false);
+                }
             }
         }
         else if (SubmitType == "Verified") {
@@ -567,14 +610,14 @@ function Save(GroupName, SubmitType) {
 }
 
 function DurationChange(ctrl, message) {
-    if (parseFloat($(ctrl).val()) > 12) {
+    if (parseFloat($(ctrl).val()) > 99) {
         app.ShowErrorMessage(message);
         $(ctrl).val('');
     }
 }
 
 function PercentChange(ctrl, message) {
-     
+
     if (parseFloat($(ctrl).val()) > 100) {
         app.ShowErrorMessage(message);
         $(ctrl).val('');
