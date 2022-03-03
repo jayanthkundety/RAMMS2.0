@@ -39,7 +39,7 @@ function AddClauseData() {
     var tbl = document.getElementById('tblClause');
 
     length = tbl.rows.length;
-    if (length > 4) {
+    if (length > 3) {
         app.ShowErrorMessage("Only three rows allowed");
         return;
     }
@@ -51,14 +51,15 @@ function AddClauseData() {
     var cell3 = rowdata.insertCell(rowdata.cells.length);
     cell3.innerHTML = $("#txtExtension").val();
     var cell4 = rowdata.insertCell(rowdata.cells.length);
-    cell4.innerHTML = " <span class='del-icon' onclick=\"Javascript:DeleteClauseRow(this," + length + ");\"></span>"; /*"<i class='fa fa-trash-alt fa-lg cursor-pointer text-danger' onclick=\"Javascript:DeleteClauseRow(this," + length  + ");\" ></i>";*/
+    cell4.innerHTML = " <span class='del-icon' onclick=\"Javascript:DeleteClauseRow(this);\"></span>"; /*"<i class='fa fa-trash-alt fa-lg cursor-pointer text-danger' onclick=\"Javascript:DeleteClauseRow(this," + length  + ");\" ></i>";*/
 
     $("#txtReason").val("");
     $("#txtClause").val("");
     $("#txtExtension").val("");
+    $("#ClauseModal").modal("hide");
 
 }
 
-function DeleteClauseRow(obj, Row) {
-
+function DeleteClauseRow(obj) {
+    $(obj).closest('tr').remove();
 }

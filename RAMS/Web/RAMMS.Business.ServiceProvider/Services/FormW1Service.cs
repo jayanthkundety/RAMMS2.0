@@ -33,7 +33,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             _security = security;
             processService = process;
             _repo = repo;
-        }         
+        }
 
         public async Task<FormW1ResponseDTO> FindFormW1ByID(int id)
         {
@@ -62,6 +62,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelFormW1 = _mapper.Map<RmIwFormW1>(FormW1);
                 // domainModelFormW1 = UpdateStatus(domainModelFormW1);
                 //  var entity = _repoUnit.FormW1Repository.SaveFormW1(domainModelFormW1);
+
                 var entity = _repoUnit.FormW1Repository.CreateReturnEntity(domainModelFormW1);
                 formW1Response = _mapper.Map<FormW1ResponseDTO>(entity);
                 return formW1Response.PkRefNo;
@@ -71,6 +72,38 @@ namespace RAMMS.Business.ServiceProvider.Services
                 await _repoUnit.RollbackAsync();
                 throw ex;
             }
+        }
+
+        public RmIwFormW1 UpdateStatus(RmIwFormW1 form)
+        {
+            if (form.Fw1PkRefNo > 0)
+            {
+                var existsObj = _repoUnit.FormW1Repository._context.RmIwFormW1.Where(x => x.Fw1PkRefNo == form.Fw1PkRefNo).Select(x => new { Status = x.Fw1Status, Log = x.Fw1AuditLog }).FirstOrDefault();
+                if (existsObj != null)
+                {
+                    form.Fw1AuditLog = existsObj.Log;
+                    form.Fw1Status = existsObj.Status;
+
+                }
+
+            }
+            if (form.Fw1SubmitSts && form.Fw1Status == "Saved")
+            {
+                form.Fw1Status = Common.StatusList.FormW2Submitted;
+                form.Fw1AuditLog = Utility.ProcessLog(form.Fw1AuditLog, "Submitted By", "Submitted", form.Fw1UsernameReq, string.Empty, form.Fw1DtReq, _security.UserName);
+                processService.SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = _security.UserName,
+                    RmNotGroup = GroupNames.OperationsExecutive,
+                    RmNotMessage = "Recorded By:" + form.Fw1UsernameReq + " - Form W1 (" + form.Fw1PkRefNo + ")",
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = "/InstructedWorks/EditFormW1?id=" + form.Fw1PkRefNo.ToString(),
+                    RmNotUserId = "",
+                    RmNotViewed = ""
+                }, true);
+            }
+
+            return form;
         }
 
         public async Task<List<FormIWImageResponseDTO>> GetImageList(string IwRefNo)
@@ -137,7 +170,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
-        
+
 
         public async Task<int> Update(FormW1ResponseDTO FormW1)
         {
@@ -146,7 +179,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 var domainModelformW1 = _mapper.Map<RmIwFormW1>(FormW1);
                 domainModelformW1.Fw1ActiveYn = true;
-                //domainModelformW2 = UpdateStatus(domainModelformW2);
+                domainModelformW1 = UpdateStatus(domainModelformW1);
                 _repoUnit.FormW1Repository.Update(domainModelformW1);
                 rowsAffected = await _repoUnit.CommitAsync();
             }
@@ -160,6 +193,6 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-      
+
     }
 }

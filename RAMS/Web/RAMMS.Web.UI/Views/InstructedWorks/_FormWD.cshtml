@@ -97,14 +97,14 @@
                                     <label for="Your Ref">
                                         Your Ref
                                     </label>
-                                    @*@Html.TextBoxFor(m => m.FormWD. , new { @readonly = true, @class = "form-control" })*@
+                                     @Html.TextBoxFor(m => m.FormW1.ServPropRefNo , new { @readonly = true, @class = "form-control" })
                                 </div>
                                 <div class="form-group  col-lg-3">
                                     <label for="Your Ref">
                                         Service Provider Name
                                     </label>
-                                  
-                                    @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @class = "form-control svalidate {required, Service Provider Name}" })
+
+                                    @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @readonly=true, @class = "form-control svalidate {required, Service Provider Name}" })
                                 </div>
 
                             </div>
@@ -260,32 +260,15 @@
                                 <div class="top">
                                     <div class="dataTables_length w-100">
                                         <div class="dataTables_scrollBody" style="min-height:auto!important">
-                                            <input data-toggle="modal" data-target="#ClauseModal" value="Add Clause"/>
+                                            <input data-toggle="modal" data-target="#ClauseModal" value="Add Clause" />
                                             <table id="tblClause" class="table w-100 nowrap dataTable table-bordered">
-                                                <thead style="text-align: left; color:#152e4d;background-color: #c8e1ff">
-                                                    <tr>
-                                                        <th> <span style="width:60%; float:left">Reason/reasons</span></th>
-                                                        <th>Clause</th>
-                                                        <th>Extension of Time</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>XXXXXXXXXXXX</td>
-                                                        <td>XXXXXXXXXXXX</td>
-                                                        <td>XXXXXXXXXXXX</td>
-                                                        <td>  <span class="del-icon"></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>XXXXXXXXXXXX</td>
-                                                        <td>XXXXXXXXXXXX</td>
-                                                        <td>XXXXXXXXXXXX</td>
-                                                        <td>
-                                                            <i class="fas fa-plus-circle pl-2" data-toggle="modal" data-target="#ClauseModal"></i>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
+                                                <tr style="text-align: left; color:#152e4d;background-color: #c8e1ff">
+                                                    <th> <span style="width:60%; float:left">Reason/reasons</span></th>
+                                                    <th>Clause</th>
+                                                    <th>Extension of Time</th>
+                                                    <th>Action</th>
+                                                </tr>
+
                                             </table>
                                         </div>
                                         <div class="modal fade" id="ClauseModal" role="dialog">

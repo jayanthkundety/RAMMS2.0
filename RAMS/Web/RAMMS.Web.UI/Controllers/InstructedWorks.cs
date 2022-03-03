@@ -298,7 +298,7 @@ namespace RAMMS.Web.UI.Controllers
             frm.FormW1.ActiveYn = true;
             if (frm.FormW1.PkRefNo == 0)
             {
-                frm.FormW1.Status = "Draft";
+                frm.FormW1.Status = "Saved";
                 refNo = await _formW1Service.SaveFormW1(frm.FormW1);
             }
             else
@@ -820,7 +820,7 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WDWN
 
-        public async Task<IActionResult> OpenWDWN(int PkRefNo)
+        public async Task<IActionResult> OpenWDWN(int PkRefNo = 15)
         {
             var _formWDWNModel = new FormWDWNModel();
             LoadLookupService("TECM_Status","User");

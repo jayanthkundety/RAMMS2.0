@@ -66,7 +66,7 @@ namespace RAMMS.Repository.Interfaces
         IModuleGroupRepository ModuleGroupRepository { get; }
         IAuditTransactionRepository AuditTransactionRepository { get; }
         IAuditActionRepository AuditActionRepository { get; }
-        IFormW1Repository FormW1Repository { get; }
+        FormW1Repository FormW1Repository { get; }
         
 
         FormW2FcemRepository FormW2FcemRepository { get; }

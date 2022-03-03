@@ -470,7 +470,7 @@ function OnVerifyUserChange(tis) {
 
 
 function GetImageList(id, formName) {
-
+ 
     var group = $("#FormADetAssetGrpCode option:selected").val();
 
     $.ajax({
@@ -508,7 +508,7 @@ function RecommondedValue(e) {
 
 function GoBack() {
 
-    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val() == "" || $("#FormW1_Status").val() == "Draft") {
+    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormW1_Status").val() == "" || $("#FormW1_Status").val() == "Saved") {
         if (app.Confirm("Are you sure you want to close the form?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";
@@ -578,7 +578,7 @@ function Save(GroupName, SubmitType) {
         }
     }
     else {
-        $("#FormW1_Status").val("Draft");
+        $("#FormW1_Status").val("Saved");
     }
 
     if (ValidatePage('#FormW1page')) {
@@ -591,10 +591,12 @@ function Save(GroupName, SubmitType) {
             else {
 
                 $("#FormW1_PkRefNo").val(data);
-                if (SubmitType == "" || SubmitType == "Draft") {
-                    app.ShowSuccessMessage('Submitted Successfully', false);
+                $("#hdnPkRefNo").val(data);
+
+                if (SubmitType == "" || SubmitType == "Saved") {
+                    app.ShowSuccessMessage('Saved Successfully', false);
                 }
-                else if (SubmitType == "" || SubmitType == "Submitted") {
+                else if (SubmitType == "Submitted") {
                     app.ShowSuccessMessage('Submitted Successfully', false);
                     location.href = "/InstructedWorks/Index";
                 }

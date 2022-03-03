@@ -38,7 +38,7 @@ namespace RAMMS.Common
         public const string S2Submitted = "Submitted";
         public const string S2Vetted = "Vetted";
 
-        
+        public const string FormW1Saved = "Saved";
         public const string FormW1Submitted = "Submitted";
         public const string FormW1Verified = "Verified";
 
