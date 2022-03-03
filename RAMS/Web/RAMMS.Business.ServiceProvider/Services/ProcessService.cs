@@ -527,8 +527,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (process.Stage == Common.StatusList.FormW2Submitted)
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.JKRSSuperiorOfficerSO;
-                    strTitle = "Submitted";
-                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Issued  : StatusList.FormW2Submitted;
+                    strTitle = "Received";
+                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Received  : StatusList.FormW2Submitted;
 
                     if (process.IsApprove)
                     {
@@ -541,7 +541,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                         strNotUserID = string.Join(",", lstNotUserId.Distinct());
                     }
                 }
-                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, strTitle, process.IsApprove ? "Approved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, strTitle, process.IsApprove ? "Recieved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
                 strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form W2 (" + form.Fw2PkRefNo + ")";
                 strNotURL = "/InstructedWorks/EditFormW2?id=" + form.Fw2PkRefNo.ToString() + "&View=0";
                 SaveNotification(new RmUserNotification()

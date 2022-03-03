@@ -24,6 +24,11 @@ namespace RAMMS.Repository
             return await _context.RmIwFormWc.Include(x => x.FwcFw1PkRefNoNavigation).Where(x => x.FwcPkRefNo == Id && x.FwcActiveYn == true && x.FwcFw1PkRefNoNavigation.Fw1PkRefNo == x.FwcFw1PkRefNo).FirstOrDefaultAsync();
         }
 
+        public async Task<RmIwFormWc> FindWCByw1ID(int Id)
+        {
+            return await _context.RmIwFormWc.Include(x => x.FwcFw1PkRefNoNavigation).Where(x => x.FwcFw1PkRefNo == Id && x.FwcActiveYn == true && x.FwcFw1PkRefNoNavigation.Fw1PkRefNo == x.FwcFw1PkRefNo).FirstOrDefaultAsync();
+        }
+
         public async Task<RmIwFormW1> GetFormW1ById(int formW1Id)
         {
             return await _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true && x.Fw1PkRefNo == formW1Id).FirstOrDefaultAsync();

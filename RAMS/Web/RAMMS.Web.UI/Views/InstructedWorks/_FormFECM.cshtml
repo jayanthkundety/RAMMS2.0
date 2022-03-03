@@ -71,7 +71,7 @@
 
                         }
                         <div class="col-6 ">
-                            <label class="checkbox-inline"><input type="checkbox" class="cvalidate {required, IsBq }" id="femcBQ" checked="@_BQ"> BQ</label>
+                            <label class="checkbox-inline"><input type="checkbox" class="cvalidate {required, IsBq }" disabled id="femcBQ" checked="@_BQ"> BQ</label>
                         </div>
 
                         @{
@@ -79,11 +79,11 @@
 
                         }
                         <div class="col-6">
-                            <label class="checkbox-inline"><input type="checkbox" class="cvalidate {required, IsDrawing }" id="fecmDrawing" checked="@_Drawing"> Drawing</label>
+                            <label class="checkbox-inline"><input type="checkbox" class="cvalidate {required, IsDrawing }" disabled id="fecmDrawing" checked="@_Drawing"> Drawing</label>
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-lg-12">
+                <div class="form-group col-lg-12">  
                     <label for="RMU"> Remarks</label>
                     @Html.TextAreaFor(m => m.FECM.Remark, new { @id = "fecmRemark", @class = "form-control  svalidate {required, Remark }" })
                 </div>
@@ -96,7 +96,7 @@
 <div class="" style="position:relative; width:100%;">
 
     <div class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;left: auto;bottom: 0px;right: 2%;background: #fff;width: calc(100vw - 8.3%);height: 45px;">
-        @*<button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>*@
+        <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
         <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
         <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="javascript:saveFECM(false)">Save</button>
         <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn" onclick="javascript:submitFECM(true)">Submit</button>

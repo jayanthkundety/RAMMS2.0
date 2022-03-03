@@ -12,6 +12,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<FormWCResponseDTO> FindWCByID(int id);
 
+        Task<FormWCResponseDTO> FindWCByW1ID(int id);
         Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id);
 
         Task<int> Update(FormWCResponseDTO formWCDTO);

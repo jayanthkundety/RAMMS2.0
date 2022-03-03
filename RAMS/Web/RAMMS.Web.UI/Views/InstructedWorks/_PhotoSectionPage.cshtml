@@ -93,9 +93,13 @@
                                                     <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageUserFilePath)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.Source)</td>
-                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works))
+                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && item.Source == Model.FormName)
                                                     {
                                                         <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
                                                     }
                                                 </tr>
                                                 i++;
@@ -312,14 +316,14 @@
         ImageTypeDrawing = "@ImageTypeDrawing";
 
     $(document).ready(function () {
-        debugger
+       // debugger
         $("#photoType").chosen();
         document.getElementById("files").disabled = true;
         $("#files1").addClass("disabled");
         document.getElementById("FormDBrowseBtn").disabled = true;
         document.getElementById("btnImageUpload").disabled = true;
 
-        if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") {
+        if ($("#hdnView").val() == "1") {
             $("#addAttachment").hide();
         }
 
@@ -338,7 +342,7 @@
     });
 
     function FormAddImage() {
-        debugger
+        //debugger;
 
         if ($("#hdnView").val() == "1") return;
         if (ValidatePage("#tab1")) {
@@ -547,7 +551,7 @@
                         if (data) {
                         app.ShowSuccessMessage('Uploaded Successcully', false);
                         $('#myModal').modal('hide');
-                            GetImageList(id);
+                            GetImageList(id, $("#hdnForm").val());
                     }
                     else {
                         app.ShowErrorMessage('Upload Failed. Kindly retry later.', false);
@@ -590,7 +594,7 @@
                         if (data > 0) {
                             HideAjaxLoading();
                             app.ShowSuccessMessage("Successfully Deleted")
-                            GetImageList( $("#hdnPkRefNo").val());
+                            GetImageList( $("#hdnPkRefNo").val(),$("#hdnForm").val());
                         }
                         else {
                             HideAjaxLoading();
