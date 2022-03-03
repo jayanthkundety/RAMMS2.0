@@ -115,7 +115,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="C_Date">Status</label>
-                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["TECM_Status"], "TecmStatus", "Select Status", new { @id = "txtStatus", @class = "form-control" })
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["TECM_Status"], "txtStatus", "Select Status", new { @id = "txtStatus", @class = "form-control" })
                                 </div>
                                 <div class="form-group  col-lg-2">
                                     <label for="status_percentage">Status Percentage From</label>
@@ -684,13 +684,13 @@
         var SelectedIWGridId = 0;
         SelectedIWGridId = GetFormIDByName("w1");
         if (mode == "Add") {
-            url = "/InstructedWorks/OpenWCWG?id=";
+            url = "/InstructedWorks/OpenWCWG?id=" + SelectedIWGridId;
         }
         else if (mode == "Edit") {
-            url = "/InstructedWorks/EditFormWC?id=" + SelectedIWGridId;
+            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId;
         }
         else if (mode == "View") {
-            url = "/InstructedWorks/EditFormWG?id=" + SelectedIWGridId + "&View=1";
+            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId + "&View=1";
         }
         InitAjaxLoading();
         $.ajax({

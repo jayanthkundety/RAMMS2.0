@@ -471,11 +471,11 @@
                             <input id="hdnForm" type="hidden" value="FormW2" />
                             @{
                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                {
-                                    Form = "FormW2",
-                                    RefId = Model.SaveFormW2Model.PkRefNo,
-                                    Stage = Model.SaveFormW2Model.Status
-                                });
+                                    {
+                                        Form = "FormW2",
+                                        RefId = Model.SaveFormW2Model.PkRefNo,
+                                        Stage = Model.SaveFormW2Model.Status
+                                    });
                             }
 
                         </div>
@@ -873,11 +873,14 @@
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                    @if (security.IsJKRSSuperiorOfficer && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Issued )
+                    @if (security.IsJKRSSuperiorOfficer   && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved)
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
                     }
-
+                    else if ((security.IsJKRSSuperiorOfficer || security.IsRegionManager)  && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
+                    {
+                        <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Received By');"> Received </button>
+                    }
 
                 </div>
             </div>

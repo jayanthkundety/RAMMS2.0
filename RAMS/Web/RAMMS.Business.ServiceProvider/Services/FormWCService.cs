@@ -47,6 +47,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormWCResponseDTO>(formWC);
         }
 
+        public async Task<FormWCResponseDTO> FindWCByW1ID(int id)
+        {
+            RmIwFormWc formWC = await _repo.FindWCByw1ID(id);
+            return _mapper.Map<FormWCResponseDTO>(formWC);
+        }
+
         public async Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id)
         {
             RmIwFormW1 formW1 = await _repo.GetFormW1ById(formW1Id);
@@ -91,7 +97,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.FwcSubmitSts && (string.IsNullOrEmpty(form.FwcStatus) || form.FwcStatus == Common.StatusList.FormWCIssued ))
+            if (form.FwcSubmitSts && (string.IsNullOrEmpty(form.FwcStatus) || form.FwcStatus == Common.StatusList.FormWCSaved ))
             {
                 form.FwcStatus = Common.StatusList.FormWCSubmitted;
                 form.FwcAuditLog = Utility.ProcessLog(form.FwcAuditLog, "Recorded By", "Approved", form.FwcUsernameIssu, string.Empty, form.FwcDtIssu , _security.UserName);
@@ -99,7 +105,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     RmNotCrBy = _security.UserName,
                     RmNotGroup = GroupNames.OperationsExecutive,
-                    RmNotMessage = "Recorded By:" + form.FwcUsernameIssu  + " - Form WC (" + form.FwcFw1PkRefNo + ")",
+                    RmNotMessage = "Recorded By:" + form.FwcUsernameIssu  + " - Form WC (" + form.FwcPkRefNo + ")",
                     RmNotOn = DateTime.Now,
                     RmNotUrl = "/InstructedWorks/EditFormWC?id=" + form.FwcPkRefNo.ToString() + "&view=1",
                     RmNotUserId = "",
@@ -107,7 +113,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }, true);
             }
             else if (string.IsNullOrEmpty(form.FwcStatus))
-                form.FwcStatus = Common.StatusList.FormWCIssued;
+                form.FwcStatus = Common.StatusList.FormWCSaved;
 
             return form;
         }

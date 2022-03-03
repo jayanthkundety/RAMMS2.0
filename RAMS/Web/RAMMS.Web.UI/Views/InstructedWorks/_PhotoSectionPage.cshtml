@@ -316,16 +316,16 @@
         ImageTypeDrawing = "@ImageTypeDrawing";
 
     $(document).ready(function () {
-        debugger
+       // debugger
         $("#photoType").chosen();
         document.getElementById("files").disabled = true;
         $("#files1").addClass("disabled");
         document.getElementById("FormDBrowseBtn").disabled = true;
         document.getElementById("btnImageUpload").disabled = true;
 
-        //if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") {
-        //    $("#addAttachment").hide();
-        //}
+        if ($("#hdnView").val() == "1") {
+            $("#addAttachment").hide();
+        }
 
         if (ImageTypeBQ == "True") {
             $('#chkBQ').prop("checked", true);
@@ -342,7 +342,7 @@
     });
 
     function FormAddImage() {
-        debugger;
+        //debugger;
 
         if ($("#hdnView").val() == "1") return;
         if (ValidatePage("#tab1")) {

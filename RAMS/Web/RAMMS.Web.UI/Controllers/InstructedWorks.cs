@@ -29,6 +29,8 @@ namespace RAMMS.Web.UI.Controllers
     {
         private readonly IFormW1Service _formW1Service;
         private readonly IFormW2Service _formW2Service;
+        private readonly IFormWCService _formWCService;
+        private readonly IFormWGService _formWGService;
         private readonly IDDLookUpService _ddLookupService;
         private readonly IRoadMasterService _roadMasterService;
 
@@ -47,7 +49,8 @@ namespace RAMMS.Web.UI.Controllers
 
         public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,
             IRoadMasterService roadMasterService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,
-            IDivisionService divisionService, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
+            IDivisionService divisionService, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper, IFormWCService formWCService,
+            IFormWGService formWGService)
         {
 
 
@@ -59,6 +62,8 @@ namespace RAMMS.Web.UI.Controllers
             _userService = userService;
             _formW1Service = formW1Service ?? throw new ArgumentNullException(nameof(formW1Service));
             _formW2Service = formW2Service ?? throw new ArgumentNullException(nameof(formW2Service));
+            _formWCService = formWCService ?? throw new ArgumentNullException(nameof(formWCService));
+            _formWGService = formWGService ?? throw new ArgumentNullException(nameof(formWGService));
             _configuration = configuration;
             _bridgeBO = bridgeBO;
             _security = security;
@@ -660,7 +665,7 @@ namespace RAMMS.Web.UI.Controllers
 
             if (Request.Form.ContainsKey("columns[5][search][value]"))
             {
-                searchData.filterData.TECMStatus = Request.Form["columns[4][search][value]"].ToString();
+                searchData.filterData.Status = Request.Form["columns[5][search][value]"].ToString();
             }
 
             if (Request.Form.ContainsKey("columns[6][search][value]"))
@@ -799,34 +804,70 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WCWG
 
-        public async Task<IActionResult> OpenWCWG(int PkRefNo)
+        public async Task<IActionResult> OpenWCWG(int id)
         {
 
             var _formWCWGModel = new FormWCWGModel();
-            LoadLookupService("TECM_Status");
-            _formWCWGModel.FormW1 = await _formW2Service.GetFormW1ById(PkRefNo);
+            LoadLookupService("TECM_Status", "User");
+            _formWCWGModel.FormW1 = await _formW2Service.GetFormW1ById(id);
+            var spList = await _divisionService.GetServiceProviders();
+            var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
+            _formWCWGModel.FormW1.ServPropName = serProv.Name;
+            _formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
+            _formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
+            _formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
+            _formWCWGModel.FormW1.ServPhone = serProv.Phone;
+            _formWCWGModel.FormW1.ServFax = serProv.Fax;
+            
             _formWCWGModel.FormWC = new FormWCResponseDTO();
             _formWCWGModel.FormWG = new FormWGResponseDTO();
             _formWCWGModel.Division = await _divisionService.GetDivisions();
+
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> OpenWC()
+        public async Task<IActionResult> EditFormWCWG(int id)
         {
+
             var _formWCWGModel = new FormWCWGModel();
-            _formWCWGModel.FormWC = new FormWCResponseDTO();
-            return PartialView("~/Views/InstructedWorks/_FormWC.cshtml", _formWCWGModel);
+            LoadLookupService("TECM_Status", "User");
+            var _formC = await _formWCService.FindWCByW1ID(id);
+            _formWCWGModel.FormWC = _formC == null ? new FormWCResponseDTO() : _formC;
+            var _formG = await _formWGService.FindWGByW1ID(id);
+
+            _formWCWGModel.FormWG = _formG == null ? new FormWGResponseDTO() : _formG;
+
+            _formWCWGModel.FormW1 = _formC != null ? _formWCWGModel.FormWC.Fw1PkRefNoNavigation : new FormW1ResponseDTO();
+
+            var spList = await _divisionService.GetServiceProviders();
+            var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
+            _formWCWGModel.FormW1.ServPropName = serProv.Name;
+            _formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
+            _formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
+            _formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
+            _formWCWGModel.FormW1.ServPhone = serProv.Phone;
+            _formWCWGModel.FormW1.ServFax = serProv.Fax;
+            _formWCWGModel.Division = await _divisionService.GetDivisions();
+
+            return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> OpenWG()
+        
+
+        public async Task<JsonResult> SaveFormWC(FormWCResponseDTO formWC)
         {
-            var _formWCWGModel = new FormWCWGModel();
-            _formWCWGModel.FormWG = new FormWGResponseDTO();
-            _formWCWGModel.Division = await _divisionService.GetDivisions();
-            return PartialView("~/Views/InstructedWorks/_FormWG.cshtml", _formWCWGModel);
+            int refNo = 0;
+            FormWCResponseDTO saveRequestObj = new FormWCResponseDTO();
+            saveRequestObj = formWC;
+            if (saveRequestObj.PkRefNo == 0)
+                refNo = await _formWCService.Save(formWC);
+            else
+                refNo = await _formWCService.Update(formWC);
+
+            return Json(refNo);
         }
+
+       
         #endregion
 
         #region WDWN
@@ -842,17 +883,17 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> OpenWD()
+        public async Task<JsonResult> SaveFormWG(FormWGResponseDTO formWG)
         {
-            LoadLookupService("User");
-            return PartialView("~/Views/InstructedWorks/_FormWD.cshtml");
-        }
+            int refNo = 0;
+            FormWGResponseDTO saveRequestObj = new FormWGResponseDTO();
+            saveRequestObj = formWG;
+            if (saveRequestObj.PkRefNo == 0)
+                refNo = await _formWGService.Save(formWG);
+            else
+                refNo = await _formWGService.Update(formWG);
 
-        [HttpPost]
-        public async Task<IActionResult> OpenWN()
-        {
-            return PartialView("~/Views/InstructedWorks/_FormWN.cshtml");
+            return Json(refNo);
         }
 
         #endregion

@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 
 namespace RAMMS.Repository.Interfaces
 {
-    public interface IFormWCRepository : IRepositoryBase<RmIwFormWc>
+    public interface IFormWGRepository : IRepositoryBase<RmIwFormWg>
     {
-        public Task<RmIwFormWc> FindWCByID(int Id);
+        public Task<RmIwFormWg> FindWGByID(int Id);
 
-        Task<RmIwFormWc> FindWCByw1ID(int Id);
+        Task<RmIwFormWg> FindWGByW1ID(int Id);
+
         Task<RmIwFormW1> GetFormW1ById(int formW1Id);
     }
 }

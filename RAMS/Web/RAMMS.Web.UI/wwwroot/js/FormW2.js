@@ -52,7 +52,7 @@ $(document).ready(function ()
             $("#formW2IssuedOffice").prop("disabled", true);
             $("#formW2IssuedOffice").val('');
         }
-        $("#formW2IssuedDate").val(currentDate);
+        $("#formW2IssuedDate").text(currentDate);
         return false;
     });
 
@@ -167,7 +167,7 @@ function Save(submit) {
     if (!ValidatePage('#divPage')) {
         return false;
     }
-    debugger;
+    //debugger;
     InitAjaxLoading();
 
     var d = new Date();
@@ -233,7 +233,7 @@ function Save(submit) {
     if ($("#FW2HRef_No").val() != "0") saveObj.ModDt = output
     if ($("#formW2IssuedBy").find(":selected").val() != "") saveObj.CrBy = $("#formW2IssuedBy").find(":selected").val();
     if ($("#FW2HRef_No").val() == "0") saveObj.CrDt = output;
-    if (submit) saveObj.Status = "Submitted"; else saveObj.Status = "Issued";
+    if (submit) saveObj.Status = "Submitted"; else saveObj.Status = "Saved";
     saveObj.ActiveYn = true;
     saveObj.SubmitSts = submit;
     console.log(saveObj);
@@ -299,7 +299,7 @@ function Delete(id) {
 }
 
 function GetImageList(id, form) {
-    debugger;
+    //debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();

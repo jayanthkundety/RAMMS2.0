@@ -27,12 +27,7 @@ namespace RAMMS.Repository
         public async Task<RmIwFormW2> FindW2ByID(int Id)
         {
             return await _context.RmIwFormW2.Include(x => x.Fw2Fw1PkRefNoNavigation).Where(x => x.Fw2PkRefNo == Id && x.Fw2ActiveYn == true && x.Fw2Fw1PkRefNoNavigation.Fw1PkRefNo == x.Fw2Fw1PkRefNo).FirstOrDefaultAsync();
-        }
-
-        public void SaveImage(IEnumerable<RmIwFormW2Image> image)
-        {
-            _context.RmIwFormW2Image.AddRange(image);
-        }
+        }       
 
         public void UpdateImage(RmIwFormW2Image image)
         {
@@ -45,16 +40,7 @@ namespace RAMMS.Repository
             return _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW2Id && x.FiwiActiveYn == true).ToListAsync();
         }
 
-        public Task<RmIwFormW2Image> GetImageById(int imageId)
-        {
-            return _context.RmIwFormW2Image.Where(x => x.Fw2iPkRefNo == imageId).FirstOrDefaultAsync();
-        }
-
-        public async Task<int> GetImageId(int formW2Id, string type)
-        {
-            int? result = await _context.RmIwFormW2Image.Where(x => x.Fw2iFw2RefNo == formW2Id && x.Fw2iImageTypeCode == type).Select(x => x.Fw2iImageSrno).MaxAsync();
-            return result.HasValue ? result.Value : 0;
-        }
+        
 
         public async Task<List<RmIwFormW1>> GetFormW1List()
         {
@@ -295,9 +281,30 @@ namespace RAMMS.Repository
 
            
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.Status) &&  filterOptions.Filters.Status != "All" )
+            if (!string.IsNullOrEmpty(filterOptions.Filters.Status) )
             {
-                query = query.Where(x => x.x.Fw1Status.Contains(filterOptions.Filters.Status) || x.x.Fw1StsRemarks.Contains(filterOptions.Filters.Status));
+                switch (filterOptions.Filters.Status)
+                {
+                    case "Received":
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(filterOptions.Filters.Status));
+                        break;
+                    case "Saved":
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(filterOptions.Filters.Status) || x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                        break;
+                    case "Submitted":
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(filterOptions.Filters.Status) || x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                        break;
+                    case "Approved":
+                        query = query.Where(x => x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                        break;
+                    case "Rejected":
+                        query = query.Where(x => x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                        break;
+                    default:
+                        break;
+                }
+
+                
             }
 
             if (filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
@@ -453,7 +460,7 @@ namespace RAMMS.Repository
                                 W2SubStatus = w2Form.Fw2SubmitSts ,
                                 iWReferenceNo = w1Form.Fw1IwRefNo,
                                 projectTitle = w1Form.Fw1ProjectTitle,
-                                overAllStatus = w1Form.Fw1Status ,
+                                overAllStatus = w2Form.Fw2Status != "" ? "W2 - " + w2Form.Fw2Status : "W1 - " + w1Form.Fw1Status ,
                                 initialPropDt = w1Form.Fw1InitialProposedDate != null ? DateTime.Parse(Convert.ToString(w1Form.Fw1InitialProposedDate)).ToString("dd/MM/yyyy") : "-",
                                 recommdDEYN = w1Form.Fw1RecomdBydeYn != null && w1Form.Fw1RecomdBydeYn == true ? "Yes" : "No",
                                 w1dt = w1Form.Fw1Dt != null ?  DateTime.Parse(Convert.ToString(w1Form.Fw1Dt)).ToString("dd/MM/yyyy") : "-",
@@ -482,17 +489,5 @@ namespace RAMMS.Repository
                                 .ToListAsync().ConfigureAwait(false);
             return result;
         }
-
-        //private async Task<string> GetOverAllStatus(IQueryable query)
-        //{
-        //    var result = await (from form in query
-        //                        let w1Form = form.x
-        //                        let w2Form = form.w2Form
-        //                        let fecm = form.fecm);
-        //    var result1 = "";
-
-        //    return result1;
-            
-        //}
     }
 }

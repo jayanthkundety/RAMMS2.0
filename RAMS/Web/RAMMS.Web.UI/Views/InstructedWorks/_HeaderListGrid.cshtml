@@ -216,8 +216,11 @@
         $("#txtSmartSearch").val("");
 
         $("#txtRmu").val("").trigger("chosen:updated");
+        $("#txtRmu").trigger("change");
         $('#txtRoadCode').val("").trigger("chosen:updated");
+        $('#txtRoadCode').trigger("change");
         $("#txtStatus").val("").trigger("chosen:updated");
+        $("#txtStatus").trigger("change");
 
         $("#txtIWRefNo").val("");
         $("#txtCommenceDtFrom").val("");

@@ -28,7 +28,8 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IMapper _mapper;
         private readonly ISecurity _security;
         private readonly IProcessService processService;
-        public FormW2Service(IRepositoryUnit repoUnit, IFormW2Repository repo, IMapper mapper, ISecurity security, IProcessService process, IFormW2FcemRepository repoFCEM)
+        public FormW2Service(IRepositoryUnit repoUnit, IFormW2Repository repo, IMapper mapper, ISecurity security, IProcessService process,
+            IFormW2FcemRepository repoFCEM)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
             _repo = repo ?? throw new ArgumentNullException(nameof(repo));
@@ -38,25 +39,25 @@ namespace RAMMS.Business.ServiceProvider.Services
             processService = process;
         }
 
-        public async Task<int> DeActivateImage(int imageId)
-        {
-            int rowsAffected;
-            try
-            {
-                var domainModelforW2 = await _repoUnit.FormW2Repository.GetImageById(imageId);
-                domainModelforW2.Fw2iActiveYn = false;
-                _repoUnit.FormW2Repository.UpdateImage(domainModelforW2);
+        //public async Task<int> DeActivateImage(int imageId)
+        //{
+        //    int rowsAffected;
+        //    try
+        //    {
+        //        var domainModelforW2 = await _repoUnit.FormW2Repository.GetImageById(imageId);
+        //        domainModelforW2.Fw2iActiveYn = false;
+        //        _repoUnit.FormW2Repository.UpdateImage(domainModelforW2);
 
-                rowsAffected = await _repoUnit.CommitAsync();
-            }
-            catch (Exception ex)
-            {
-                await _repoUnit.RollbackAsync();
-                throw ex;
-            }
+        //        rowsAffected = await _repoUnit.CommitAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await _repoUnit.RollbackAsync();
+        //        throw ex;
+        //    }
 
-            return rowsAffected;
-        }
+        //    return rowsAffected;
+        //}
 
         public int Delete(int id)
         {
@@ -88,11 +89,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             return images;
         }
 
-        public async Task<int> LastInsertedIMAGENO(int hederId, string type)
-        {
-            int imageCt = await _repoUnit.FormW2Repository.GetImageId(hederId, type);
-            return imageCt;
-        }
+        //public async Task<int> LastInsertedIMAGENO(int hederId, string type)
+        //{
+        //    int imageCt = await _repoUnit.FormW2Repository.GetImageId(hederId, type);
+        //    return imageCt;
+        //}
 
         public async Task<int> Save(FormW2ResponseDTO formW2BO)
         {
@@ -115,29 +116,29 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public async Task<int> SaveImage(List<FormIWImageResponseDTO> image)
-        {
-            int rowsAffected;
-            try
-            {
-                var domainModelFormW2 = new List<RmIwFormW2Image>();
+        //public async Task<int> SaveImage(List<FormIWImageResponseDTO> image)
+        //{
+        //    int rowsAffected;
+        //    try
+        //    {
+        //        var domainModelFormW2 = new List<RmIwFormW2Image>();
 
-                foreach (var list in image)
-                {
-                    domainModelFormW2.Add(_mapper.Map<RmIwFormW2Image>(list));
-                }
-                _repoUnit.FormW2Repository.SaveImage(domainModelFormW2);
-                rowsAffected = await _repoUnit.CommitAsync();
+        //        foreach (var list in image)
+        //        {
+        //            domainModelFormW2.Add(_mapper.Map<RmIwFormW2Image>(list));
+        //        }
+        //        _repoUnit.FormW2Repository.SaveImage(domainModelFormW2);
+        //        rowsAffected = await _repoUnit.CommitAsync();
 
-            }
-            catch (Exception ex)
-            {
-                await _repoUnit.RollbackAsync();
-                throw ex;
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await _repoUnit.RollbackAsync();
+        //        throw ex;
+        //    }
 
-            return rowsAffected;
-        }
+        //    return rowsAffected;
+        //}
 
         public async Task<int> Update(FormW2ResponseDTO formW2Bo)
         {
@@ -303,7 +304,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.Fw2SubmitSts && (string.IsNullOrEmpty(form.Fw2Status) || form.Fw2Status == Common.StatusList.FormW2Issued))
+            if (form.Fw2SubmitSts && (string.IsNullOrEmpty(form.Fw2Status) || form.Fw2Status == Common.StatusList.FormW2Saved))
             {
                 form.Fw2Status = Common.StatusList.FormW2Submitted;
                 form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, "Recorded By", "Approved", form.Fw2UsernameIssu, string.Empty, form.Fw2DtIssu, _security.UserName);
@@ -311,7 +312,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     RmNotCrBy = _security.UserName,
                     RmNotGroup = GroupNames.OperationsExecutive,
-                    RmNotMessage = "Recorded By:" + form.Fw2UsernameIssu + " - Form W2 (" + form.Fw2Fw1PkRefNo + ")",
+                    RmNotMessage = "Recorded By:" + form.Fw2UsernameIssu + " - Form W2 (" + form.Fw2PkRefNo + ")",
                     RmNotOn = DateTime.Now,
                     RmNotUrl = "/InstructedWorks/EditFormW2?id=" + form.Fw2PkRefNo.ToString() + "&view=1",
                     RmNotUserId = "",
@@ -319,7 +320,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }, true);
             }
             else if (string.IsNullOrEmpty(form.Fw2Status))
-                form.Fw2Status = Common.StatusList.FormW2Issued;
+                form.Fw2Status = Common.StatusList.FormW2Saved;
 
             return form;
         }

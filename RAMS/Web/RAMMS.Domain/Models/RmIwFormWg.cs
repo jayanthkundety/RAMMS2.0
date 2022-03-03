@@ -6,6 +6,7 @@ namespace RAMMS.Domain.Models
     public partial class RmIwFormWg
     {
         public int FwgPkRefNo { get; set; }
+        public int? FwgFw1PkRefNo { get; set; }
         public string FwgRmuCode { get; set; }
         public string FwgSecCode { get; set; }
         public string FwgRoadCode { get; set; }
@@ -32,5 +33,7 @@ namespace RAMMS.Domain.Models
         public bool FwgActiveYn { get; set; }
         public string FwgStatus { get; set; }
         public string FwgAuditLog { get; set; }
+
+        public virtual RmIwFormW1 FwgFw1PkRefNoNavigation { get; set; }
     }
 }

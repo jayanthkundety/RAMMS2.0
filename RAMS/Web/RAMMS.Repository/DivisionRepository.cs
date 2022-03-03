@@ -67,6 +67,7 @@ namespace RAMMS.Repository
             foreach (var dpt in divList)
             {
                 var div = new Division();
+                div.Code = dpt.FiwWrksDeptCode;
                 div.Name = dpt.FiwWrksDeptName;
                 div.Adress1 = dpt.FiwWrksDeptAddress1;
                 div.Adress2 = dpt.FiwWrksDeptAddress2;
@@ -90,7 +91,8 @@ namespace RAMMS.Repository
 
             foreach (var prov in proList)
             {
-                var div = new Division();
+                var div = new ServiceProvider();
+                div.Code = prov.FiwSrvProviderCode;
                 div.Name = prov.FiwSrvProviderName;
                 div.Adress1 = prov.FiwSrvProviderAddress1;
                 div.Adress2 = prov.FiwSrvProviderAddress2;
@@ -98,7 +100,7 @@ namespace RAMMS.Repository
                 div.Phone = prov.FiwSrvProviderPhoneNo.ToString();
                 div.Fax = prov.FiwSrvProviderFaxNo.ToString();
                 div.ZipCode = prov.FiwSrvProviderZipcode.ToString();
-                proDTO.Divisions.Add(div);
+                proDTO.ServiceProviders.Add(div);
             }
 
             return proDTO;

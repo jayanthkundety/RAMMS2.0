@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace RAMMS.Business.ServiceProvider.Interfaces
 {
-    public interface IFormWCService
+    public interface IFormWGService
     {
-        Task<int> Save(FormWCResponseDTO formWCHeaderBO);
+        Task<int> Save(FormWGResponseDTO formWGHeaderBO);
 
-        Task<FormWCResponseDTO> FindWCByID(int id);
+        Task<FormWGResponseDTO> FindWGByID(int id);
 
-        Task<FormWCResponseDTO> FindWCByW1ID(int id);
+        Task<FormWGResponseDTO> FindWGByW1ID(int id);
+
         Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id);
 
-        Task<int> Update(FormWCResponseDTO formWCDTO);
+        Task<int> Update(FormWGResponseDTO formWGDTO);
     }
 }

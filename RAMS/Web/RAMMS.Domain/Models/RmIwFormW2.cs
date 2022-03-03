@@ -8,7 +8,6 @@ namespace RAMMS.Domain.Models
         public RmIwFormW2()
         {
             RmIwFormW2Fecm = new HashSet<RmIwFormW2Fecm>();
-            RmIwFormW2Image = new HashSet<RmIwFormW2Image>();
         }
 
         public int Fw2PkRefNo { get; set; }
@@ -63,6 +62,5 @@ namespace RAMMS.Domain.Models
 
         public virtual RmIwFormW1 Fw2Fw1PkRefNoNavigation { get; set; }
         public virtual ICollection<RmIwFormW2Fecm> RmIwFormW2Fecm { get; set; }
-        public virtual ICollection<RmIwFormW2Image> RmIwFormW2Image { get; set; }
     }
 }

@@ -54,13 +54,21 @@ namespace RAMMS.Repository
         private FormW2Repository _formW2Repository;
         private IFormW1Repository _formW1Repository;
         private FormW2FcemRepository _formW2FcemRepository;
-        private IFormWCRepository _formWCRepository;
-        public IFormW2Repository FormW2Repository => _formW2Repository = _formW2Repository ?? new FormW2Repository(_context);
+        private FormWCRepository _formWCRepository;
+        private FormWGRepository _formWGRepository;
+       
+        
         public IFormW1Repository FormW1Repository => _formW1Repository= _formW1Repository ?? new FormW1Repository(_context);
 
-        public IFormW2FcemRepository FormW2FcemRepository => _formW2FcemRepository = _formW2FcemRepository ?? new FormW2FcemRepository(_context);
+        public FormW2FcemRepository FormW2FcemRepository => _formW2FcemRepository ?? new FormW2FcemRepository(_context);
 
-        public IFormWCRepository FormWCRepository => _formWCRepository = _formWCRepository ?? new FormWCRepository(_context);
+        public FormW2Repository FormW2Repository => _formW2Repository = _formW2Repository ?? new FormW2Repository(_context);
+
+        public FormWCRepository FormWCRepository => _formWCRepository = _formWCRepository ?? new FormWCRepository(_context);
+
+        public FormWGRepository FormWGRepository => _formWGRepository = _formWGRepository ?? new FormWGRepository(_context);
+
+
         public IFormB1B2HeaderRepository FormB1B2HeaderRepository => _formB1B2HeaderRepository = _formB1B2HeaderRepository ?? new FormB1B2HeaderRepository(_context);
         public IFormB1B2DetailRepository FormB1B2DetailRepository => _formB1B2DetailRepository = _formB1B2DetailRepository ?? new FormB1B2DetailRepository(_context);
         public IFormB1B2ImgRepository FormB1B2ImgRepository => _formB1B2ImgRepository = _formB1B2ImgRepository ?? new FormB1B2ImageRepository(_context);
@@ -129,11 +137,7 @@ namespace RAMMS.Repository
 
         public IDivRmuSectionRepository DivRmuSectionRepository => _divRmuSectionRepository ?? new DivRmuSectionRepository(_context);
 
-        FormWCRepository IRepositoryUnit.FormWCRepository => throw new NotImplementedException();
-
-        FormW2Repository IRepositoryUnit.FormW2Repository => _formW2Repository ?? new FormW2Repository(_context);
-
-        FormW2FcemRepository IRepositoryUnit.FormW2FcemRepository => _formW2FcemRepository ?? new FormW2FcemRepository(_context);
+       
 
         public RepositoryUnit(RAMMSContext context)
         {

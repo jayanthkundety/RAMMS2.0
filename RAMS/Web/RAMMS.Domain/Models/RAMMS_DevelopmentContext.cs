@@ -10101,71 +10101,6 @@ namespace RAMMS.Domain.Models
                     .HasConstraintName("FK_RM_IW_Form_W2_FECM_RM_IW_FormW2");
             });
 
-            modelBuilder.Entity<RmIwFormW2Image>(entity =>
-            {
-                entity.HasKey(e => e.Fw2iPkRefNo)
-                    .HasName("PK_RM_IWForm_W2_Image");
-
-                entity.ToTable("RM_IW_FormW2_Image");
-
-                entity.Property(e => e.Fw2iPkRefNo).HasColumnName("FW2I_PK_Ref_No");
-
-                entity.Property(e => e.Fw2iActiveYn).HasColumnName("FW2I_Active_YN");
-
-                entity.Property(e => e.Fw2iAuditLog).HasColumnName("FW2I_AuditLog");
-
-                entity.Property(e => e.Fw2iCrBy).HasColumnName("FW2I_CR_By");
-
-                entity.Property(e => e.Fw2iCrDt)
-                    .HasColumnName("FW2I_CR_DT")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fw2iFw2RefNo).HasColumnName("FW2I_FW2_Ref_No");
-
-                entity.Property(e => e.Fw2iImageFilenameSys)
-                    .HasColumnName("FW2I_Image_Filename_Sys")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fw2iImageFilenameUpload)
-                    .HasColumnName("FW2I_Image_Filename_Upload")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fw2iImageSrno).HasColumnName("FW2I_Image_SRNO");
-
-                entity.Property(e => e.Fw2iImageTypeCode)
-                    .HasColumnName("FW2I_Image_Type_Code")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fw2iImageUserFilePath)
-                    .HasColumnName("FW2I_image_user_filePath")
-                    .HasMaxLength(250);
-
-                entity.Property(e => e.Fw2iImgRefId)
-                    .HasColumnName("FW2I_Img_Ref_ID")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fw2iModBy).HasColumnName("FW2I_Mod_By");
-
-                entity.Property(e => e.Fw2iModDt)
-                    .HasColumnName("FW2I_Mod_DT")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fw2iStatus)
-                    .HasColumnName("FW2I_Status")
-                    .HasMaxLength(30);
-
-                entity.Property(e => e.Fw2iSubmitSts).HasColumnName("FW2I_SUBMIT_STS");
-
-                entity.HasOne(d => d.Fw2iFw2RefNoNavigation)
-                    .WithMany(p => p.RmIwFormW2Image)
-                    .HasForeignKey(d => d.Fw2iFw2RefNo)
-                    .HasConstraintName("FK_RM_IW_FormW2_Image_RM_IW_ FormW2");
-            });
-
             modelBuilder.Entity<RmIwFormWc>(entity =>
             {
                 entity.HasKey(e => e.FwcPkRefNo);
@@ -10423,9 +10358,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WG");
 
-                entity.Property(e => e.FwgPkRefNo)
-                    .HasColumnName("FWG_PK_Ref_no")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwgPkRefNo).HasColumnName("FWG_PK_Ref_no");
 
                 entity.Property(e => e.FwgActiveYn).HasColumnName("FWG_Active_YN");
 
@@ -10456,6 +10389,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwgDtWg)
                     .HasColumnName("FWG_DT_WG")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.FwgFw1PkRefNo).HasColumnName("FWG_FW1_PK_Ref_no");
 
                 entity.Property(e => e.FwgIwProjectTitle)
                     .HasColumnName("FWG_IW_Project_Title")
@@ -10512,6 +10447,11 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwgUsernameIssu)
                     .HasColumnName("FWG_USERNAME_ISSU")
                     .HasMaxLength(250);
+
+                entity.HasOne(d => d.FwgFw1PkRefNoNavigation)
+                    .WithMany(p => p.RmIwFormWg)
+                    .HasForeignKey(d => d.FwgFw1PkRefNo)
+                    .HasConstraintName("FK_RM_IW_Form_WG_RM_IW_FormW1");
             });
 
             modelBuilder.Entity<RmIwFormWn>(entity =>
@@ -10746,8 +10686,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FiwiFw1IwRefNo)
                     .HasColumnName("FIWI_FW1_IW_Ref_No")
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.FiwiFw1PkRefNo).HasColumnName("FIWI_FW1_PK_Ref_No");
 

@@ -20,7 +20,7 @@
                                      @for (var i = 0; i < @Model.Division.Divisions.Count; i++)
                                        {
                                         var div = Model.Division.Divisions[i];
-                                        if (i == 1)
+                                        if (i == 0)
                                         {
                                              <div class="form-group col-lg-4">
                                         <label for="OurRef">Name of Division</label>
@@ -28,7 +28,7 @@
                                             </div>
                                         }
 
-                                        if (i == 2)
+                                        if (i == 1)
                                         {
                                             <div class="form-group col-lg-4">
                                                 <label for="OurRef">
@@ -39,7 +39,7 @@
                                             </div>
                                         }
 
-                                        if (i == 3)
+                                        if (i == 2)
                                         {
                                             <div class="form-group col-lg-4">
                                                 <label for="OurRef">
@@ -112,40 +112,40 @@
                             <label for="Your Ref">
                                 Your Ref
                             </label>
-                            @Html.TextBoxFor(m => m.FormWC.IwRefNo , new { @id="formWcYourRef", @type="date", @class="form-control svalidate { required, Your Ref }"})
+                            @Html.TextBoxFor(m => m.FormW1.IwRefNo , new { @id="formWcYourRef", @class="form-control svalidate { required, Your Ref }", @disabled=true})
                         </div>
                         <div class="form-group  col-lg-3">
                             @Html.Label("Service Provider Name", "Service Provider Name")
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropName , new { @Id = "formWCServiceProvider", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropName , new { @Id = "formWcServiceProvider", @class = "form-control", @disabled=true })
                         </div>
 
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 1
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1 , new { @Id = "formWCAdd1", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1 , new { @Id = "formWCAdd1", @class = "form-control", @disabled=true })
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 2
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2 , new { @Id = "formWCAdd2", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2 , new { @Id = "formWCAdd2", @class = "form-control" , @disabled=true })
                         </div>
                         <div class="form-group col-lg-4">
                             <label for="Your Ref">
                                 Address 3
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3 , new { @Id = "formWCAdd3", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3 , new { @Id = "formWCAdd3", @class = "form-control", @disabled=true })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Phone">Phone Number</label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone , new { @Id = "formWCPhone", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone , new { @Id = "formWCPhone", @class = "form-control", @disabled=true })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Fax">
                                 Fax Number
                             </label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax , new { @Id = "formWCFax", @class = "form-control" })
+                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax , new { @Id = "formWCFax", @class = "form-control", @disabled=true })
                         </div>
 
                     </div>
@@ -209,10 +209,8 @@
                             <div class="col-lg-4">
                                 <div class="row">
                                     <div class="col-lg-12 mb-3">
-                                        <label class="mb-0" for=" PhysicalWorks">
-                                            S.O.'s Instruction No.
-                                        </label>
-                                          @Html.TextBoxFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ServPropRefNo , new { @Id = "formWCServPropRefNo", @class = "form-control" })
+                                        <label class="mb-0" for=" PhysicalWorks">S.O.'s Instruction No</label>
+                                          @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropRefNo , new { @Id = "formWcServPropRefNo", @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -220,7 +218,7 @@
                                 <label class="mb-0" for="PhysicalWorks">
                                     Instructed Work Title
                                 </label>
-                               @Html.TextAreaFor(Ahdr => Ahdr.FormWC.Fw1PkRefNoNavigation.ProjectTitle  , new { @Id = "formWCProjectTitle", @class = "form-control" })
+                               @Html.TextAreaFor(Ahdr => Ahdr.FormW1.ProjectTitle  , new { @Id = "formWcProjectTitle", @class = "form-control" })
                             </div>
                         </div>
 
@@ -235,14 +233,14 @@
                         In accordance with <b class="" style="padding:0px 2px;font-size:20px;">Clause 8.9 </b> of the Agreement, it is hereby certified that the Instructed Work achieved Practical Completion on
                     </span>
                     <span class="float-left">
-                         @Html.TextBoxFor(m => m.FormWC.DtCompl , new { @id="formWcDtCompl", @type="date", @style="width:180px;font-weight:bold", @class="form-control border-left border-top-0 border-left-0 border-right-0 float-left svalidate { required, Date }"})
+                         @Html.TextBoxFor(m => m.FormWC.DtCompl , new { @id="formWcDtCompl",@min="2020-01-01", @type="date", @style="width:180px;font-weight:bold", @class="form-control border-left border-top-0 border-left-0 border-right-0 float-left svalidate { required, Date }"})
                         <span class="float-left" style="line-height:50px">And that the Defects Liability Period in respect of the said Instructed Work began on the same day and </span>
                     </span>
 
                     <span class="float-left">
                         <span class="float-left" style="line-height:47px;">will end on</span>
                         <span class="float-left">
-                            @Html.TextBoxFor(m => m.FormWC.DtDlpExtn , new { @id="formWcDtDlpExtn", @type="date", @style="width:180px;font-weight:bold", @class="form-control border-left border-top-0 border-left-0 border-right-0 float-left svalidate { required, Date }"})
+                            @Html.TextBoxFor(m => m.FormWC.DtDlpExtn , new { @id="formWcDtDlpExtn", @min="2020-01-01", @type="date", @style="width:180px;font-weight:bold", @class="form-control border-left border-top-0 border-left-0 border-right-0 float-left svalidate { required, Date }"})
                             </span>
                     </span>
                 </p>
@@ -252,19 +250,19 @@
             <div class="row pt-3 pb-1">
                 <div class="form-group col-lg-2">
                     <label for="Designation"> User ID </label>
-                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWCIssuedBy", "Select Users", new { Id = "formW2IssuedBy", @class = "form-control   {required,  Issued by} " })
+                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWcIssuedBy", "Select Users", new { Id = "formWcIssuedBy", @class = "form-control   {required,  Issued by} " })
                 </div>
                 <div class="form-group col-lg-3">
                      @Html.Label("Name", "Name")
-                     @Html.TextBoxFor(w => w.FormWC.UsernameIssu, new { @id = "formWCIssuedName", @class = "form-control svalidate  {required,  Requested by Name}", @disabled = true })
+                     @Html.TextBoxFor(w => w.FormWC.UsernameIssu, new { @id = "formWcIssuedName", @class = "form-control svalidate  {required,  Requested by Name}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 ">
                      @Html.Label("Designation", "Designation")
-                     @Html.TextBoxFor(w => w.FormWC.DesignationIssu, new { @id = "formWCIssuedDesig", @class = "form-control svalidate  {required,  Requested by Designation}", @disabled = true })
+                     @Html.TextBoxFor(w => w.FormWC.DesignationIssu, new { @id = "formWcIssuedDesig", @class = "form-control svalidate  {required,  Requested by Designation}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2">
                     @Html.Label("Office", "Office")
-                    @Html.TextBoxFor(w => w.FormWC.OfficeIssu, new { @id = "formWCIssuedOffice", @class = "form-control svalidate  {required,  Requested by Office}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWC.OfficeIssu, new { @id = "formWcIssuedOffice", @class = "form-control svalidate  {required,  Requested by Office}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 pr-0">
                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
@@ -272,7 +270,7 @@
                         var vd = Model.FormWC.DtIssu;
                         string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                     }
-                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formWCIssuedDate" value="@_IssuedDate" disabled />
+                    <input type="text" class="datepicker form-control  svalidate {required, Issue date}" id="formWcIssuedDate" value="@_IssuedDate" disabled />
                 </div>
                 <div class="form-group col-lg-1 text-center">
                    @Html.Label("Signature", "Signature")
@@ -281,13 +279,16 @@
 
                     }
                     <div class="clear-b mt-2">
-                        <input type="checkbox" id="formW2IssuedSig" class="disableinput" checked="@_issued" style="height: 20px;">
+                        <input type="checkbox" id="formWcIssuedSig" class="disableinput" checked="@_issued" style="height: 20px;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@Html.HiddenFor(m => m.View, new { @id = "hdnWcView", @class = "form-control", @value = "0" })
+@Html.HiddenFor(m => m.FormWC.PkRefNo, new { @id = "hdnWcRefNo", @class = "form-control", @value = "0" })
+<input id="hdnForm" type="hidden" value="FormWC" />
 <div class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;
     left: auto;
     bottom: 0px;
@@ -296,8 +297,8 @@
     background:#fff;
     width: 96%;
     height: 45px;">
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
+    <button type="button" class="btn btn-sm btn-outline-theme" id="clearWCBtn" onclick="return ClearWC()">Clear</button>
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="return checkW2Exist()">Save</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn">Submit</button>
+    <button type="button" class="btn btn-sm btn-themebtn" id="saveWCBtn" onclick="return checkW2Exist()">Save</button>
+    <button type="button" class="btn btn-sm btn-themebtn" id="submitWCBtn">Submit</button>
 </div>

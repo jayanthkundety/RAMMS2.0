@@ -24,15 +24,15 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<int> Update(FormW2ResponseDTO formW2DTO);
 
-        Task<int> SaveImage(List<FormIWImageResponseDTO> image);
+        //Task<int> SaveImage(List<FormIWImageResponseDTO> image);
 
         Task<List<FormIWImageResponseDTO>> GetImageList(int formW2Id);
 
         Task<int> UpdateFormW2Signature(FormW2ResponseDTO formW2DTO);
 
-        Task<int> LastInsertedIMAGENO(int hederId, string type);
+        //Task<int> LastInsertedIMAGENO(int hederId, string type);
 
-        Task<int> DeActivateImage(int warId);
+        //Task<int> DeActivateImage(int warId);
 
         Task<List<FormW1ResponseDTO>> GetFormW1List();
         Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id);
