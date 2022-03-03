@@ -49,9 +49,9 @@ namespace RAMMS.Repository.Interfaces
         public FormWCRepository FormWCRepository { get; }
         public FormWGRepository FormWGRepository { get; }
         public FormW2FcemRepository FormW2FcemRepository { get; }
+        FormW1Repository FormW1Repository { get; }
         public FormW2Repository FormW2Repository { get; }
-        IFormW1Repository FormW1Repository { get; }
-
+       
         //End IW Forms
 
         FormS2QuarterDtlRepository FormS2QuarterDtlRepository { get; }
@@ -72,10 +72,8 @@ namespace RAMMS.Repository.Interfaces
         IModuleGroupRepository ModuleGroupRepository { get; }
         IAuditTransactionRepository AuditTransactionRepository { get; }
         IAuditActionRepository AuditActionRepository { get; }
-        FormW1Repository FormW1Repository { get; }
-        
-
-        FormW2FcemRepository FormW2FcemRepository { get; }
+      
+    
 
         
                  

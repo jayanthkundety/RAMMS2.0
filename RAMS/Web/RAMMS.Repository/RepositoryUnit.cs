@@ -58,7 +58,7 @@ namespace RAMMS.Repository
         private FormWGRepository _formWGRepository;
        
         
-        public IFormW1Repository FormW1Repository => _formW1Repository= _formW1Repository ?? new FormW1Repository(_context);
+        public FormW1Repository FormW1Repository => _formW1Repository= _formW1Repository ?? new FormW1Repository(_context);
 
         public FormW2FcemRepository FormW2FcemRepository => _formW2FcemRepository ?? new FormW2FcemRepository(_context);
 
