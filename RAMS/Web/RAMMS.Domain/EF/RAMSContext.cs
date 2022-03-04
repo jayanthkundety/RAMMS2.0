@@ -93,6 +93,10 @@ namespace RAMMS.Domain.EF
         public virtual DbSet<RmGroupUser> RmGroupUser { get; set; }
         public virtual DbSet<RmInspItemMas> RmInspItemMas { get; set; }
         public virtual DbSet<RmInspItemMasDtl> RmInspItemMasDtl { get; set; }
+        public virtual DbSet<RmIwFormW1> RmIwFormW1 { get; set; }
+        public virtual DbSet<RmIwFormW1Image> RmIwFormW1Image { get; set; }
+        public virtual DbSet<RmIwFormW2> RmIwFormW2 { get; set; }
+        public virtual DbSet<RmIwFormW2Image> RmIwFormW2Image { get; set; }
         public virtual DbSet<RmModule> RmModule { get; set; }
         public virtual DbSet<RmModuleGroupFieldRights> RmModuleGroupFieldRights { get; set; }
         public virtual DbSet<RmModuleGroupRights> RmModuleGroupRights { get; set; }
@@ -9614,6 +9618,406 @@ namespace RAMMS.Domain.EF
                     .WithMany(p => p.RmInspItemMasDtl)
                     .HasForeignKey(d => d.IimdIimPkRefNo)
                     .HasConstraintName("FK__RM_Insp_I__IIMD___7908F585");
+            });
+
+            modelBuilder.Entity<RmIwFormW1>(entity =>
+            {
+                entity.HasKey(e => e.Fw1PkRefNo);
+
+                entity.ToTable("RM_IW_ FormW1");
+
+                entity.Property(e => e.Fw1PkRefNo).HasColumnName("FW1_PK_Ref_No");
+
+                entity.Property(e => e.Fw1ActiveYn).HasColumnName("FW1_Active_YN");
+
+                entity.Property(e => e.Fw1AuditLog).HasColumnName("FW1_AuditLog");
+
+                entity.Property(e => e.Fw1ChainageApprovedIwref)
+                    .HasColumnName("FW1_Chainage_Approved_IWRef")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Fw1ConsulFee).HasColumnName("FW1_Consul_Fee");
+
+                entity.Property(e => e.Fw1ConsulTaxPercent).HasColumnName("FW1_Consul_Tax_Percent");
+
+                entity.Property(e => e.Fw1CrBy).HasColumnName("FW1_CR_By");
+
+                entity.Property(e => e.Fw1CrDt)
+                    .HasColumnName("FW1_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1DetailsOfWork).HasColumnName("FW1_Details_Of_Work");
+
+                entity.Property(e => e.Fw1Division)
+                    .HasColumnName("FW1_Division")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1EstimTotalCost).HasColumnName("FW1_Estim_Total_cost");
+
+                entity.Property(e => e.Fw1FormhRefNo)
+                    .HasColumnName("FW1_FORMH_RefNo")
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Fw1FrmChKm).HasColumnName("FW1_FRM_CH");
+
+                entity.Property(e => e.Fw1GenPrelims).HasColumnName("FW1_Gen_Prelims");
+
+                entity.Property(e => e.Fw1ReferenceNo)
+                    .HasColumnName("FW1_ReferenceNo")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ModBy).HasColumnName("FW1_Mod_By");
+
+                entity.Property(e => e.Fw1ModDt)
+                    .HasColumnName("FW1_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1OtherCost).HasColumnName("FW1_Other_Cost");
+
+                entity.Property(e => e.Fw1PhyWorks).HasColumnName("FW1_Phy_Works");
+
+                entity.Property(e => e.Fw1ProjectTitle)
+                    .HasColumnName("FW1_Project_Title")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1PropCompletionPeriod).HasColumnName("FW1_Prop_Completion_Period");
+
+                entity.Property(e => e.Fw1PropDesignDuration).HasColumnName("FW1_Prop_Design_Duration");
+
+                entity.Property(e => e.Fw1RecommendedInstructedWork)
+                    .HasColumnName("FW1_Recommended_Instrcted_Work")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1Rmu)
+                    .HasColumnName("FW1_RMU")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1Date)
+                    .HasColumnName("FW1_RMU_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1RoadCode)
+                    .HasColumnName("FW1_Road_Code")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1RoadName)
+                    .HasColumnName("FW1_Road_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1ServPropRefNo)
+                    .HasColumnName("FW1_Serv_Prop_RefNo")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1RequestedByDate)
+                    .HasColumnName("FW1_RequestedBy_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1RequestedByDesig)
+                    .HasColumnName("FW1_RequestedBy_Desig")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1RequestedByName)
+                    .HasColumnName("FW1_RequestedBy_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1RequestedByOffice)
+                    .HasColumnName("FW1_RequestedBy_Office")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1RequestedBySign)
+                    .HasColumnName("FW1_RequestedBy_Sign")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1SiteInvest).HasColumnName("FW1_Site_Invest");
+
+                entity.Property(e => e.Fw1SiteInvestPercent).HasColumnName("FW1_Site_Invest_Percent");
+
+                entity.Property(e => e.Fw1Status)
+                    .HasColumnName("FW1_Status")
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.Fw1SubmitSts).HasColumnName("FW1_SUBMIT_STS");
+
+                entity.Property(e => e.Fw1SurvyWorks).HasColumnName("FW1_Survy_Works");
+
+                entity.Property(e => e.Fw1SurvyWorksPercent).HasColumnName("FW1_Survy_Works_Percent");
+
+                entity.Property(e => e.Fw1TecmDate)
+                    .HasColumnName("FW1_TECM_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1TecmStatus)
+                    .HasColumnName("FW1_TECM_Status")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw1ToChM).HasColumnName("FW1_To_CH");
+
+                entity.Property(e => e.Fw1VerifiedBy).HasColumnName("FW1_Verified_By");
+
+                entity.Property(e => e.Fw1VerifiedDate)
+                    .HasColumnName("FW1_Verified_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1VerifiedDesig)
+                    .HasColumnName("FW1_Verified_Desig")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1VerifiedName)
+                    .HasColumnName("FW1_Verified_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1VerifiedOffice)
+                    .HasColumnName("FW1_Verified_Office")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1VerifiedSign).HasColumnName("FW1_Verified_Sign");
+            });
+
+            modelBuilder.Entity<RmIwFormW1Image>(entity =>
+            {
+                entity.HasKey(e => e.Fw1iPkRefNo)
+                    .HasName("PK_RM_IWForm_W1_Image");
+
+                entity.ToTable("RM_IW_FormW1_Image");
+
+                entity.Property(e => e.Fw1iPkRefNo).HasColumnName("FW1I_PK_Ref_No");
+
+                entity.Property(e => e.Fw1iActiveYn).HasColumnName("FW1I_Active_YN");
+
+                entity.Property(e => e.Fw1iCrBy).HasColumnName("FW1I_CR_By");
+
+                entity.Property(e => e.Fw1iCrDt)
+                    .HasColumnName("FW1I_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1iFw1RefNo).HasColumnName("FW1I_FW1_Ref_No");
+
+                entity.Property(e => e.Fw1iImageFilenameSys)
+                    .HasColumnName("FW1I_Image_Filename_Sys")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1iImageFilenameUpload)
+                    .HasColumnName("FW1I_Image_Filename_Upload")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1iImageSrno).HasColumnName("FW1I_Image_SRNO");
+
+                entity.Property(e => e.Fw1iImageTypeCode)
+                    .HasColumnName("FW1I_Image_Type_Code")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1iImageUserFilePath)
+                    .HasColumnName("FW1I_image_user_filePath")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1iImgRefId)
+                    .HasColumnName("FW1I_Img_Ref_ID")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw1iModBy).HasColumnName("FW1I_Mod_By");
+
+                entity.Property(e => e.Fw1iModDt)
+                    .HasColumnName("FW1I_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw1iSubmitSts).HasColumnName("FW1I_SUBMIT_STS");
+
+                entity.HasOne(d => d.Fw1iFw1RefNoNavigation)
+                    .WithMany(p => p.RmIwFormW1Image)
+                    .HasForeignKey(d => d.Fw1iFw1RefNo)
+                    .HasConstraintName("FK_RM_IW_FormW1_Image_RM_IW_ FormW1");
+            });
+
+            modelBuilder.Entity<RmIwFormW2>(entity =>
+            {
+                entity.HasKey(e => e.Fw2PkRefNo);
+
+                entity.ToTable("RM_IW_ FormW2");
+
+                entity.Property(e => e.Fw2PkRefNo).HasColumnName("FW2_PK_Ref_No");
+
+                entity.Property(e => e.Fw2ActiveYn)
+                    .IsRequired()
+                    .HasColumnName("FW2_Active_YN")
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Fw2Attn).HasColumnName("FW2_Attn");
+
+                entity.Property(e => e.Fw2AuditLog).HasColumnName("FW2_AuditLog");
+
+                entity.Property(e => e.Fw2Cc)
+                    .HasColumnName("FW2_CC")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2CeilingEstCost).HasColumnName("FW2_CEILING_EST_COST");
+
+                entity.Property(e => e.Fw2CrBy).HasColumnName("FW2_CR_By");
+
+                entity.Property(e => e.Fw2CrDt)
+                    .HasColumnName("FW2_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2DateOfCommencement)
+                    .HasColumnName("FW2_Date_of_Commencement")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2DateOfCompletion)
+                    .HasColumnName("FW2_Date_of_Completion")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2DateOfInitation)
+                    .HasColumnName("FW2_Date_Of_Initation")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2DetailsOfWorks).HasColumnName("FW2_DETAILS_OF_WORKS");
+
+                entity.Property(e => e.Fw2Division)
+                    .HasColumnName("FW2_Division")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2FrmChKm).HasColumnName("FW2_FRM_CH");
+
+                entity.Property(e => e.Fw2Fw1RefNo).HasColumnName("FW2_FW1_Ref_No");
+
+                entity.Property(e => e.Fw2InstructWorkDuration).HasColumnName("FW2_Instruct_Work_Duration");
+
+                entity.Property(e => e.Fw2IssuedBy).HasColumnName("FW2_Issued_By");
+
+                entity.Property(e => e.Fw2IssuedDate)
+                    .HasColumnName("FW2_Issued_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2IssuedName)
+                    .HasColumnName("FW2_Issued_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2IssuedSign).HasColumnName("FW2_Issued_Sign");
+
+                entity.Property(e => e.Fw2JkrRefNo)
+                    .HasColumnName("FW2_JKR_RefNo")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2ModBy).HasColumnName("FW2_Mod_By");
+
+                entity.Property(e => e.Fw2ModDt)
+                    .HasColumnName("FW2_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2RequestedBy).HasColumnName("FW2_Requested_By");
+
+                entity.Property(e => e.Fw2RequestedDate)
+                    .HasColumnName("FW2_Requested_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2RequestedName)
+                    .HasColumnName("FW2_Requested_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2RequestedSign).HasColumnName("FW2_Requested_Sign");
+
+                entity.Property(e => e.Fw2Region)
+                    .HasColumnName("FW2_Region")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Fw2Remarks).HasColumnName("FW2_Remarks");
+
+                entity.Property(e => e.Fw2Rmu)
+                    .HasColumnName("FW2_RMU")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2RoadCode)
+                    .HasColumnName("FW2_Road_Code")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw2RoadName)
+                    .HasColumnName("FW2_Road_Name")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2SerProviderRefNo)
+                    .HasColumnName("FW2_Ser_Provider_RefNo")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Fw2ServiceProvider)
+                    .HasColumnName("FW2_Service_Provider")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2Status)
+                    .HasColumnName("FW2_Status")
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.Fw2SubmitSts).HasColumnName("FW2_SUBMIT_STS");
+
+               
+
+                entity.Property(e => e.Fw2TitleOfInstructWork)
+                    .HasColumnName("FW2_Title_OF_Instruct_Work")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2ToChM).HasColumnName("FW2_To_CH");
+
+                entity.HasOne(d => d.Fw2Fw1RefNoNavigation)
+                    .WithMany(p => p.RmIwFormW2)
+                    .HasForeignKey(d => d.Fw2Fw1RefNo)
+                    .HasConstraintName("FK_RM_IW_ FormW2_RM_IW_ FormW1");
+            });
+
+            modelBuilder.Entity<RmIwFormW2Image>(entity =>
+            {
+                entity.HasKey(e => e.Fw2iPkRefNo)
+                    .HasName("PK_RM_IWForm_W2_Image");
+
+                entity.ToTable("RM_IW_FormW2_Image");
+
+                entity.Property(e => e.Fw2iPkRefNo).HasColumnName("FW2I_PK_Ref_No");
+
+                entity.Property(e => e.Fw2iActiveYn).HasColumnName("FW2I_Active_YN");
+
+                entity.Property(e => e.Fw2iCrBy).HasColumnName("FW2I_CR_By");
+
+                entity.Property(e => e.Fw2iCrDt)
+                    .HasColumnName("FW2I_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2iFw2RefNo).HasColumnName("FW2I_FW2_Ref_No");
+
+                entity.Property(e => e.Fw2iImageFilenameSys)
+                    .HasColumnName("FW2I_Image_Filename_Sys")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fw2iImageFilenameUpload)
+                    .HasColumnName("FW2I_Image_Filename_Upload")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fw2iImageSrno).HasColumnName("FW2I_Image_SRNO");
+
+                entity.Property(e => e.Fw2iImageTypeCode)
+                    .HasColumnName("FW2I_Image_Type_Code")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fw2iImageUserFilePath)
+                    .HasColumnName("FW2I_image_user_filePath")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fw2iImgRefId)
+                    .HasColumnName("FW2I_Img_Ref_ID")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fw2iModBy).HasColumnName("FW2I_Mod_By");
+
+                entity.Property(e => e.Fw2iModDt)
+                    .HasColumnName("FW2I_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fw2iSubmitSts).HasColumnName("FW2I_SUBMIT_STS");
+
+                entity.HasOne(d => d.Fw2iFw2RefNoNavigation)
+                    .WithMany(p => p.RmIwFormW2Image)
+                    .HasForeignKey(d => d.Fw2iFw2RefNo)
+                    .HasConstraintName("FK_RM_IW_FormW2_Image_RM_IW_ FormW2");
             });
 
             modelBuilder.Entity<RmModule>(entity =>

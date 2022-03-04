@@ -128,7 +128,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (IsPKIDValue)
                     return await _repoUnit.RoadmasterRepository.FindAsync(x => x.RdmActiveYn == true, x => new CSelectListItem() { Text = x.RdmRdCode + "-" + x.RdmRdName, Value = x.RdmPkRefNo.ToString(), CValue = x.RdmRmuCode, Item1 = x.RdmRdName, PKId = x.RdmPkRefNo, Code = x.RdmRdCode, Item2 = x.RdmSecCode.ToString(), Item3 = (x.RdmLengthPaved + x.RdmLengthUnpaved).ToString(), FromKm = (int)x.RdmFrmCh, FromM=x.RdmFrmChDeci.ToString(), ToKm=(int)x.RdmToCh, ToM=x.RdmToChDeci.ToString() });
                 else
-                    return await _repoUnit.RoadmasterRepository.FindAsync(x=>x.RdmActiveYn==true, x => new CSelectListItem() { Text = x.RdmRdCode + "-" + x.RdmRdName, Value = x.RdmRdCode, CValue = x.RdmRmuCode, Item1 = x.RdmRdName, PKId = x.RdmPkRefNo, Code = x.RdmRdCode, Item2 = x.RdmSecCode.ToString(), Item3 = (x.RdmLengthPaved + x.RdmLengthUnpaved).ToString(), FromKm = (int)x.RdmFrmCh, FromM = x.RdmFrmChDeci.ToString(), ToKm = (int)x.RdmToCh, ToM = x.RdmToChDeci.ToString() });
+                    return await _repoUnit.RoadmasterRepository.FindAsync(x => x.RdmActiveYn == true, x => new CSelectListItem() { Text = x.RdmRdCode + "-" + x.RdmRdName, Value = x.RdmRdCode, CValue = x.RdmRmuCode, Item1 = x.RdmRdName, PKId = x.RdmPkRefNo, Code = x.RdmRdCode, Item2 = x.RdmSecCode.ToString(), Item3 = (x.RdmLengthPaved + x.RdmLengthUnpaved).ToString(), FromKm = (int)x.RdmFrmCh, FromM = x.RdmFrmChDeci.ToString(), ToKm = (int)x.RdmToCh, ToM = x.RdmToChDeci.ToString() });
             }
             catch (Exception ex)
             {

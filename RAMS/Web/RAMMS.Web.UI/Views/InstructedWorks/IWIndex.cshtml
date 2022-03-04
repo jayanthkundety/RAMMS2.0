@@ -1,0 +1,899 @@
+﻿@{
+    ViewBag.TabTitle ="INSTRUCTED WORKS";
+    ViewData["Title"] = "INSTRUCTED WORKS";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">INSTRUCTED WORKS</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            <a class="link-fx" href="">INSTRUCTED WORKS</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="search-section">
+        <div class="row justify-content-center mb-1">
+            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+                <div class="input-group">
+                    <input class="form-control" id="idTestVal" name="Test.SmartInputValue" placeholder="Search..." type="text" value="">
+                    <div class="input-group-append">
+                        <div class="btn-group">
+                            <button id="assetsSearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0 btn btn-sm btn-themebtn" style="line-height: 18px;"><span class="search-icon"></span></button>
+                            <button id="assetsSearchExpBtn" type="button" onclick="detailSearch()" class="btn btn-sm btn-themebtn bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right"><span class="filter-icon"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main id="main-container">
+    <div id="content">
+        <table class="table w-100 nowrap" id="tblInstruWorks">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Description of Works</th>
+                    <th>Batch</th>
+                    <th>Priority </th>
+                    <th>Failure Reported By</th>
+                    <th>Consultant</th>
+                    <th>Instructed Work No. / Internal Memo Ref. No.</th>
+                    <th>Date of Completion</th>
+                    <th>Cost</th>
+                    <th>Current Status</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Proposed instructed works for slope repair work to Miri-Marudi Road CH11+200,Miri Division</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>JKR</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(01)</td>
+                    <td>11/1/2021 27/12/2020</td>
+                    <td>585788.88</td>
+                    <td>38.50%</td>
+                    <td>Slope trimming in progress</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Proposed instructed works for slope repair work to Miri-Marudi Road CH26+800,Miri Division</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(02)</td>
+                    <td>11/1/2021 27/12/2020</td>
+                    <td>409966.61</td>
+                    <td>44.05%</td>
+                    <td> Mobilizing piling rig on site at 30 Oct 2020</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Proposed instructed works for slope repair work to Miri-Marudi Road CH19+800,Miri Division</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(03)</td>
+                    <td>11/1/2021 27/12/2020</td>
+                    <td>335417.24</td>
+                    <td>32.96%</td>
+                    <td>Gabion work in progress</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Proposed slope repair work at KM156+000, Q2007-2C TKSB Road, Miri Division</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(04)</td>
+                    <td>12-10-20</td>
+                    <td>218540.11</td>
+                    <td>9.82%</td>
+                    <td>Materials supply in progress</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Proposed slope repair work at KM1+100, Q641 Entulang Road,Miri Division</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>JKR</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(05)</td>
+                    <td>10/12/2020 27/12/2020</td>
+                    <td>188644.14</td>
+                    <td>23.65%</td>
+                    <td>Piling work on 2nd Nov. 2020</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Proposed Sink-Hole Pavement Repair To Q2007-2C,TKSB Road CH169+260, Miri Division</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(06)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Approve by JKR HQ</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Propose culvert reconstruction at Rumah Mungkin Gudang Atas Road (KM0+800) Q692, Miri Division</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>JKR</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(07)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>JKR Miri to open service order to Endaya</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Proposed rehabilitation for concrete pavement along (Q1086) Penghulu Lawai Road, Bario, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>In house</td>
+                    <td>ECSB/SRM/JKR/IW/2020(08)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Approve by JKR HQ</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Proposed rehabilitation for concrete pavement along (Q1275) Bario Airport Road, Bario, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>In house</td>
+                    <td>ECSB/SRM/JKR/IW/2020(09)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Approve by JKR HQ</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Proposed rehabilitation for concrete pavement along (Q1278) Pa'Umor Road, (Part 1) Bario, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>In house</td>
+                    <td>ECSB/SRM/JKR/IW/2020(10)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Approve by JKR HQ</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Proposed rehabilitation for concrete pavement along (Q1278) Pa'Umor Road, (Part 2) Bario, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>In house</td>
+                    <td>ECSB/SRM/JKR/IW/2020(11)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Approve by JKR HQ</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>Proposed to supply, replace damaged signboard and install new road signages along Section 1 Jambatan Sg. Nyalau - Jambatan Sg. Niah </td>
+                    <td>7</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Teratai Termasik</td>
+                    <td>ECSB/SRM/JKR/IW/2020(12)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>To resubmit the details and DE advice to reduce the total amount of IW.</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>Proposed to replace and install new guardrail at (Q283) Batu Niah Feeder Road (10.8KM)</td>
+                    <td>7</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Teratai Termasik</td>
+                    <td>ECSB/SRM/JKR/IW/2020(13)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>To resubmit the details and DE advice to reduce the total amount of IW.</td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td>Proposed Reinstatement / Relocation 2 Nos of Existing Culvert ah CH0+200 & CH0+480 Kpg Narum Road, Marudi Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>JKR</td>
+                    <td>Jurutera Artecon</td>
+                    <td>ECSB/SRM/JKR/IW/2020(14)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Approve by JKR HQ</td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td>Propose 1.8M twin box culvert at KM2+900 Q354 Kejapil/Beraya/Bakam Road, Miri Division</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td>ECSB/SRM/JKR/IW/2020(15)</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Approve by JKR HQ</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>Proposed slope repair work at KM2+600, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td>ECSB/SRM/JKR/IW/2020(16)</td>
+                    <td></td>
+                    <td>1155764.09</td>
+                    <td></td>
+                    <td>Pending for financial meeting</td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td>Proposed slope repair work at KM29+400, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td>ECSB/SRM/JKR/IW/2020(17)</td>
+                    <td></td>
+                    <td>209271.62</td>
+                    <td></td>
+                    <td>Pending for financial meeting</td>
+                </tr>
+                <tr>
+                    <td>18</td>
+                    <td>Proposed slope repair work at KM28+800, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td>ECSB/SRM/JKR/IW/2020(18)</td>
+                    <td></td>
+                    <td>483552.80</td>
+                    <td></td>
+                    <td>Pending for financial meeting</td>
+                </tr>
+                <tr>
+                    <td>19</td>
+                    <td>Proposed slope repair work at KM11+700, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td>ECSB/SRM/JKR/IW/2020(19)</td>
+                    <td></td>
+                    <td>527929.80</td>
+                    <td></td>
+                    <td>Pending for financial meeting</td>
+                </tr>
+                <tr>
+                    <td>20</td>
+                    <td>Proposed slope repair work at KM29+500, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>3</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td>ECSB/SRM/JKR/IW/2020(20)</td>
+                    <td></td>
+                    <td>209271.62</td>
+                    <td></td>
+                    <td>Pending for financial meeting</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>Proposed replacement GI pipe culvert to new twin box 900mm culvert at Km 18+300, Q285, Beluru feeder Road.</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        KIV
+                        Completed by JKR
+                    </td>
+                </tr>
+                <tr>
+                    <td>22</td>
+                    <td>Propose slope repair at Saeh Road Sibuti,CH3+750 Miri Division</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>JKR</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Pegs Installed</td>
+                    <td>
+                        KIV
+                        Pegs installed for temporary measure
+                        Recommended by JKR Miri on 24.08.2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>23</td>
+                    <td>Propose slope repair at Entulang Road (Q641),CH0+600 Miri Division</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td></td>
+                    <td>Perunding Gargantuan</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        KIV
+                        Recommended by JKR Miri on 24.08.2020
+                    </td>
+                </tr>
+                <tr>
+                    <td>24</td>
+                    <td>Propose milling and resurfacing for bridge along Q21 Beluru/Long Teru Trunk Road (Q21-1,Q21-2,Q21-3), Miri Division </td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>JKR</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Pending design and costing</td>
+                </tr>
+                <tr>
+                    <td>25</td>
+                    <td>Propose raise up road on both side bridge approach at KM13+300, Q1231B Pujut/Tudan/Kuala Baram Link Road B, Miri Division</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>JKR</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Awaiting for survey works</td>
+                </tr>
+                <tr>
+                    <td>26</td>
+                    <td>Propose rehabilitation and premix works from CH20+300 to CH24+000 at Q281 Ulu Niah Feeder Road, Miri Division</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        JKR Miri proposed rehabilitation from CH20+300 to end chainage.
+                        To proposed raised up road level.
+                        Awaiting complete resurfacing by JKR
+                    </td>
+                </tr>
+                <tr>
+                    <td>27</td>
+                    <td>Proposed pavement correction to severe undulation and road sunken at KM161+930, Q2007-2C TKSB Road, Miri Division</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Pending for Survey works BY Geomatics</td>
+                </tr>
+                <tr>
+                    <td>28</td>
+                    <td>Propose regravel works at Q281 Ulu Niah Feeder Road, Miri Division</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Work done under AWP </td>
+                </tr>
+                <tr>
+                    <td>28</td>
+                    <td>Propose new reinforced concrete road side drain near Dewan Masyarakat Batu Niah, Q283 Batu Niah Feeder Road, Miri Division</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>JKR</td>
+                    <td>Perunding Gargantuan</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Further discussion with JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>30</td>
+                    <td>Proposed replacement of steel pipe culvert at Q1278, Pa'Umor Road KM3+280</td>
+                    <td>2</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        JKR Miri will propose under their programme
+                    </td>
+                </tr>
+                <tr>
+                    <td>31</td>
+                    <td>Proposed slope repair work at KM2+510, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        Pending design
+                        Survey work by geomatics
+                    </td>
+                </tr>
+                <tr>
+                    <td>32</td>
+                    <td>Proposed slope repair work at KM3+900, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        Pending design
+                        Survey work by geomatics
+                    </td>
+                </tr>
+                <tr>
+                    <td>33</td>
+                    <td>Proposed slope repair work at KM12+000, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        Pending design
+                        Survey work by geomatics
+                    </td>
+                </tr>
+                <tr>
+                    <td>34</td>
+                    <td>Proposed slope repair work at KM17+800, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Azra</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        Pending design
+                        Survey work by geomatics
+                    </td>
+                </tr>
+                <tr>
+                    <td>35</td>
+                    <td>Proposed slope repair work at KM18+400, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Azra</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        Pending design
+                        Survey work by geomatics
+                    </td>
+                </tr>
+                <tr>
+                    <td>36</td>
+                    <td>Proposed to reconstruct new pipe culvert at KM3+500, Q3186 Sungai Laong Road.</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Pending costing</td>
+                </tr>
+                <tr>
+                    <td>37</td>
+                    <td>Proposed to reconstruct pavement repair with repair at KM25+790, Jalan Miri Marudi (Q3187)</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Azra</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Recommended by JKR Miri on 24.08.2020</td>
+                </tr>
+                <tr>
+                    <td>38</td>
+                    <td>Proposed bund construction at KM0+600, Q1056 Kampung Padang Road Miri Division</td>
+                    <td>4</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Gargantuan</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Recommended by JKR Miri on 24.08.2020</td>
+                </tr>
+                <tr>
+                    <td>39</td>
+                    <td>Proposed Instructed works for road rehabilitation at Q676 Kampung Pasir Road</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Design stage</td>
+                </tr>
+                <tr>
+                    <td>40</td>
+                    <td>Proposed Culvert Replacement together with retaining wall at KM 9+500, Q1084, Suai No 1 Scheme Road</td>
+                    <td>6</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>41</td>
+                    <td>Propose slope repair at Km 10+600, Q281 Ulu Niah Feeder Road, Miri Division</td>
+                    <td>6</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>42</td>
+                    <td>Propose slope repair at Km 14+300, Q281 Ulu Niah Feeder Road, Miri Division</td>
+                    <td>6</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>L&P</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>43</td>
+                    <td>Propose culvert reconstruction at Q289 Marudi Ulu Linei Road (KM1+550) Marudi, Miri Division</td>
+                    <td>6</td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>44</td>
+                    <td>Proposed Emergency Reconstruction to collapsed RC drain (00M length) at KM3+750 of Jalan Saeh, Miri Division. </td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Perunding Azra</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>45</td>
+                    <td>Proposed raise up road level at KM7+800, Q289 Marudi Ulu Linei Road , Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>46</td>
+                    <td>Propose culvert reconstruction at Marudi Ulu Linei Road (KM) Q289, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>47</td>
+                    <td>Propose raise up road level at KM12+000, Q289 Marudi Ulu Linei Road , Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td>Jurutera Artecon</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>48</td>
+                    <td>Reconstruction of new culvert due to undersized existing culvert together with the road embankment and to raise up road level at Q281 Ulu Niah Feeder Road</td>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 10.11.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>49</td>
+                    <td>Proposed to milling and resurfacing at Q1231B Pujut/Tudan/Kuala Baram Link Road, Miri Division KM8+000 to KM10+300</td>
+                    <td></td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 10.11.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>50</td>
+                    <td>To reconstruct road pavement and reinstate guardrails at Q21-2 Beluru Long Teru Trunk Road</td>
+                    <td></td>
+                    <td>1</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 3.11.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>51</td>
+                    <td>Proposed R.C Roadside Drain Construction (2km) To The Existing Earth Drain at Padang Kerbau Road (Q645) Miri Division.</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Proposal submitted to JKR Miri on 23.11.2020 for recommendation </td>
+                </tr>
+                <tr>
+                    <td>52</td>
+                    <td>Propose slope repair KM5+650, Q3186 Sungai Laong Road, Miri Division</td>
+                    <td></td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>53</td>
+                    <td>Proposed Junction improvement at Q289, Marudi ulu Linei Road </td>
+                    <td></td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>54</td>
+                    <td>Proposed Roadline Thermoplastic Painting at various location,Miri Divisional</td>
+                    <td></td>
+                    <td>2</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>55</td>
+                    <td>Proposed slope repair work at KM27+000, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>56</td>
+                    <td>Proposed slope repair work at KM29+200, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>57</td>
+                    <td>Propose slope repair at , Q281 Ulu Niah Feeder Road, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>58</td>
+                    <td>Propose slope repair at KM7+800, Q281 Ulu Niah Feeder Road, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>59</td>
+                    <td>Proposed slope repair work at KM2+300, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>60</td>
+                    <td>Proposed slope repair work at KM3+000, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+                <tr>
+                    <td>61</td>
+                    <td>Proposed slope repair work at KM4+200, Q3187 Jalan Miri-Marudi, Miri Division</td>
+                    <td></td>
+                    <td>1</td>
+                    <td>ECSB</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td> To be Proposed to JKR Miri</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<script src="~/js/CDTGrid.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        initGrid();
+    });
+
+    function initGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+        $("#tblInstruWorks").DataTable({
+            serverSide: false,
+        });
+    }
+</script>

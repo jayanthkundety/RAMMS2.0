@@ -45,9 +45,11 @@ function userIdDisable() {
 
   
 }
+
 function gridAddBtnDis() {    
     $("#btnEquipAdd,#btnLabourAdd,#btnMaterialAdd,#btnFormDDtlAdd").prop("disabled", false);
 }
+
 function UserDtDisable() {
     $('#FormDDtPrcdSo').prop('disabled', true);
     $('#FormDReportedByDate').prop('disabled', true);
@@ -192,8 +194,6 @@ $(document).on("click", "#formDFindDetailsBtn", function () {
     //saveHdr(false);
 });
 
-
-
 var tempHTTP;
 function getHttp() {
     return tempHTTP;
@@ -247,8 +247,6 @@ $("#formDLabCode").on("change", function () {
     val = $(this).find(":selected").text();
     $("#formDlabDesc").val(val);
 });
-
-
 
 function saveHdr(isSubmit) {
 

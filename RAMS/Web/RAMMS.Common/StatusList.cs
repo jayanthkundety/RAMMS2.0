@@ -38,6 +38,26 @@ namespace RAMMS.Common
         public const string S2Submitted = "Submitted";
         public const string S2Vetted = "Vetted";
 
+        public const string FormW1Saved = "Saved";
+        public const string FormW1Submitted = "Submitted";
+        public const string FormW1Verified = "Verified";
+
+        public const string FormW2Submitted = "Submitted";
+        public const string FormW2Saved = "Saved";
+        public const string FormW2Received = "Received";
+
+        public const string FormWCSubmitted = "Submitted";
+        public const string FormWCSaved = "Saved";
+
+        public const string FormWGSubmitted = "Submitted";
+        public const string FormWGSaved = "Saved";
+
+        public const string FormWDSubmitted = "Submitted";
+        public const string FormWDSaved = "Saved";
+
+        public const string FormWNSubmitted = "Submitted";
+        public const string FormWNSaved = "Saved";
+
         public const string FormXInit = "Initialize";
         public const string FormXWorkCompleted = "Work Completed";
         public const string FormXVerified= "Verified";

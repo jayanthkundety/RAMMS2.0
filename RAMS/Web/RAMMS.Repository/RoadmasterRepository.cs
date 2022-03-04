@@ -102,7 +102,7 @@ namespace RAMMS.Repository
 
         public async Task<List<RmRoadMaster>> GetRMUBasedData(RoadMasterRequestDTO requestDto)
         {
-            var query = (from o in _context.RmRoadMaster where o.RdmActiveYn==true select o);
+            var query = (from o in _context.RmRoadMaster where o.RdmActiveYn == true select o);
             if (!string.IsNullOrEmpty(requestDto.DivisionCode))
                 query = query.Where(s => s.RdmDivCode == requestDto.DivisionCode);
             if (!string.IsNullOrEmpty(requestDto.RoadCode))
@@ -162,7 +162,9 @@ namespace RAMMS.Repository
                                       select new AssetDDLResponseDTO.DropDown
                                       {
                                           Value = x.RdmRdCode,
-                                          Text = x.RdmRdCode + "-" + x.RdmRdName.ToString()
+                                          Text = x.RdmRdCode + "-" + x.RdmRdName.ToString(),
+                                          Item1 = Convert.ToString(x.RdmFrmCh),
+                                          Item2 = Convert.ToString(x.RdmFrmChDeci)
                                       }).Distinct().ToListAsync();
                 result.RMU = rmu;
                 result.Section = section;
@@ -176,14 +178,16 @@ namespace RAMMS.Repository
                                       select new AssetDDLResponseDTO.DropDown
                                       {
                                           Value = x.RdmRdCode,
-                                          Text = x.RdmRdCode + "-" + x.RdmRdName.ToString()
+                                          Text = x.RdmRdCode + "-" + x.RdmRdName.ToString(),
+                                          Item1 = Convert.ToString(x.RdmFrmCh),
+                                          Item2 = Convert.ToString(x.RdmFrmChDeci)
                                       }).Distinct().ToListAsync();
                 result.RdCode = roadCode;
             }
             else if (string.IsNullOrWhiteSpace(roadMaster.RMU) && roadMaster.SectionCode > 0 && !string.IsNullOrWhiteSpace(roadMaster.RdCode))
             {
                 var rmu = await (from x in _context.RmRoadMaster
-                                 where x.RdmRdCode == roadMaster.RdCode && x.RdmSecCode == roadMaster.SectionCode && x.RdmActiveYn==true
+                                 where x.RdmRdCode == roadMaster.RdCode && x.RdmSecCode == roadMaster.SectionCode && x.RdmActiveYn == true
                                  select new AssetDDLResponseDTO.DropDown
                                  {
                                      Value = x.RdmRmuName,
@@ -217,7 +221,9 @@ namespace RAMMS.Repository
                                       select new AssetDDLResponseDTO.DropDown
                                       {
                                           Value = x.RdmRdCode,
-                                          Text = x.RdmRdCode.ToString() + "-" + x.RdmRdName.ToString()
+                                          Text = x.RdmRdCode + "-" + x.RdmRdName.ToString(),
+                                          Item1 = Convert.ToString(x.RdmFrmCh),
+                                          Item2 = Convert.ToString(x.RdmFrmChDeci)
                                       }).Distinct().ToListAsync();
                 result.Section = section;
                 result.RdCode = roadCode;
@@ -237,7 +243,9 @@ namespace RAMMS.Repository
                                       select new AssetDDLResponseDTO.DropDown
                                       {
                                           Value = x.RdmRdCode,
-                                          Text = x.RdmRdCode + "-" + x.RdmRdName.ToString()
+                                          Text = x.RdmRdCode + "-" + x.RdmRdName.ToString(),
+                                          Item1 = Convert.ToString(x.RdmFrmCh),
+                                          Item2 = Convert.ToString(x.RdmFrmChDeci)
                                       }).Distinct().ToListAsync();
                 result.RMU = rmu;
                 result.RdCode = roadCode;

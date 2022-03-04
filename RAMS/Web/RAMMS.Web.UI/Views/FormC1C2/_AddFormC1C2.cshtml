@@ -9,6 +9,7 @@
     string strAssestID = string.Empty;
     string strYear = string.Empty;
     string strRefId = string.Empty;
+    bool IsSupervisor = false;
     if (Model != null)
     {
         strAssestID = Model.AiAssetId;
@@ -22,9 +23,13 @@
     <script type="text/javascript" src="~/assets/js/Views/FormC1C2.js" asp-append-version="true"></script>
     @if (Model != null)
     {
+        IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormC1C2Init);
         <script type="text/javascript">
             frmC1C2.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
             frmC1C2.IsEdit = @(ViewBag.IsEdit ? "true" : "false");
+            $(document).ready(function () {
+             process.Init("FormC1C2", "@Model.Status", @Model.PkRefNo);
+        });
         </script>
     }
     <script type="text/javascript">
@@ -245,17 +250,6 @@
         SimpleNavigation = "Home,Condition Inspection,Form C1/C2"
     });
 }
-
-<script type="text/javascript">
-        $(document).ready(function () {
-             process.Init("FormC1C2", "@Model.Status", @Model.PkRefNo);
-        });
-</script>
-
-@{
-    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormC1C2Init);
-}
-
 <div class="row">
     <div class="w-100 bg-body" id="frmC1C2Data">
         <form id="">
@@ -374,22 +368,22 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Division", "Division")
                                                                 @*<select name="" class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input type="text" name="AiDivCode" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("RMU", "RMU")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input type="text" name="AiRmuName" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Road Code", "Road Code")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input type="text" name="AiRdCode" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-4">
@@ -399,8 +393,8 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Structure Code", "Structure Code")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input type="text" name="AiStrucCode" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
@@ -422,8 +416,8 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Culvert Material", "Culvert Material")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input name="AiMaterial" type="text" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
@@ -441,8 +435,8 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Culvert Type", "Culvert Type")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input name="AiGrpType" type="text" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
@@ -452,8 +446,8 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Pre-Cast/In-Situ", "Pre-Cast/In-Situ")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input name="AiPrecastSitu" type="text" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
@@ -487,15 +481,15 @@
                                                             <div class="form-group col-lg-4">
                                                                 @Html.Label("Inlet Structure", "Inlet Structure")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input name="AiIntelStruc" type="text" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-4">
                                                                 @Html.Label("Outlet Structure", "Outlet Structure")
                                                                 @*<select class="form-control" disabled>
-                                                                <option></option>
-                                                            </select>*@
+                                                                        <option></option>
+                                                                    </select>*@
                                                                 <input name="AiOutletStruc" type="text" class="form-control" disabled />
                                                             </div>
 
@@ -996,12 +990,15 @@
                             </div>
 
                             @{
-                                Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                                if (Model != null)
                                 {
-                                    Form = "FormC1C2",
-                                    RefId = Model.PkRefNo,
-                                    Stage = Model.Status
-                                });
+                                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                                    {
+                                        Form = "FormC1C2",
+                                        RefId = Model.PkRefNo,
+                                        Stage = Model.Status
+                                    });
+                                }
                             }
                         </div>
                     </div>
@@ -1011,7 +1008,7 @@
 
             <div class="modal-footer float-left w-100">
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmC1C2.Cancel()">Cancel</button>
-                @if (!Model.SubmitSts)
+                @if (Model != null && !Model.SubmitSts)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(false)" finddetailsdep>Save</button>
                     @if (IsSupervisor)
@@ -1019,32 +1016,32 @@
                         <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(true)" finddetailsdep>Submit</button>
                     }
                 }
-                @if (security.IsExecutive && Model.Status == RAMMS.Common.StatusList.FormC1C2Inspected)
+                @if (security.IsExecutive && Model != null && Model.Status == RAMMS.Common.StatusList.FormC1C2Inspected)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
                 }
-                else if (security.IsHeadMaintenance && Model.Status == RAMMS.Common.StatusList.FormC1C2ExecutiveApproved)
+                else if (security.IsHeadMaintenance && Model != null && Model.Status == RAMMS.Common.StatusList.FormC1C2ExecutiveApproved)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
                 }
-                else if (security.IsRegionManager && Model.Status == RAMMS.Common.StatusList.FormC1C2HeadMaintenanceApproved)
+                else if (security.IsRegionManager && Model != null && Model.Status == RAMMS.Common.StatusList.FormC1C2HeadMaintenanceApproved)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
                 }
-                else if (security.IsJKRSSuperiorOfficer && Model.Status == RAMMS.Common.StatusList.FormC1C2RegionManagerApproved)
+                else if (security.IsJKRSSuperiorOfficer && Model != null && Model.Status == RAMMS.Common.StatusList.FormC1C2RegionManagerApproved)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Audited / Reject</button>
                 }
 
             </div>
             @*<div class="col-md-12 float-right text-right custom-footer">
-               
-                @if (ViewBag.IsEdit)
-                {
-                    
-                   
-                }
-            </div>*@
+
+                    @if (ViewBag.IsEdit)
+                    {
+
+
+                    }
+                </div>*@
         </form>
     </div>
 </div>

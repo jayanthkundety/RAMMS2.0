@@ -62,10 +62,6 @@ namespace RAMMS.Repository
                 query = query.Where(x => x.x.FhhAssetGroupCode == filterOptions.Filters.AssetGroupCode);
             }
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
-            {
-                query = query.Where(x => x.x.FhhRoadCode == filterOptions.Filters.RoadCode);
-            }
 
             if (filterOptions.Filters.FromChKM.HasValue)
             {

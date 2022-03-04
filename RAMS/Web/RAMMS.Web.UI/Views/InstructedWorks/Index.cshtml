@@ -1,33 +1,150 @@
-﻿@{
-    ViewBag.TabTitle ="INSTRUCTED WORKS";
-    ViewData["Title"] = "INSTRUCTED WORKS";
+﻿@model FormW2Model
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+@{
+    ViewBag.TabTitle = "IW - Instructed Work";
+    ViewData["Title"] = "IW - Instructed Work";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
+
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
 }
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+
+    });
+
+    
+        function PercentangeChange(ctrl) {
+            if (parseFloat($(ctrl).val()) > 100) 
+            {   
+                app.ShowErrorMessage("Percentange should not be greater than 100");
+                $(ctrl).val('');
+            }
+        }
+
+    
+
+</script>
+
 <div class="row">
     <div class="body-header w-100">
         <div class="col-lg-12">
             <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
-                <span class="mb-0 font-weight-bold font-20">INSTRUCTED WORKS</span>
+                <span class="mb-0 font-weight-bold font-20">    
+                    Instructed Work
+                </span>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
                         <li class="breadcrumb-item">Home</li>
-                        <li class="breadcrumb-item" aria-current="page">
-                            <a class="link-fx" href="">INSTRUCTED WORKS</a>
+                        <li class="breadcrumb-item">
+                            Instructed Work
                         </li>
                     </ol>
                 </nav>
             </div>
         </div>
     </div>
-    <div class="search-section">
-        <div class="row justify-content-center mb-1">
-            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
-                <div class="input-group">
-                    <input class="form-control" id="idTestVal" name="Test.SmartInputValue" placeholder="Search..." type="text" value="">
-                    <div class="input-group-append">
-                        <div class="btn-group">
-                            <button id="assetsSearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0 btn btn-sm btn-themebtn" style="line-height: 18px;"><span class="search-icon"></span></button>
-                            <button id="assetsSearchExpBtn" type="button" onclick="detailSearch()" class="btn btn-sm btn-themebtn bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right"><span class="filter-icon"></span></button>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="search-section">
+            <div class="justify-content-center mb-1">
+                <div class="search-content">
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "txtSmartSearch", @autocomplete = "off", placeholder = "Search...", @class = "form-control", @value = "", @spellcheck = "false", @readonly = "true", @onfocus = "this.removeAttribute('readonly')" })
+                        <div class="input-group-append">
+                            <div class="btn-group">
+                                <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                <button id="btnAdvSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0" data-toggle="collapse" data-target="#div_advsearch"><span class="filter-icon"></span></button>
+                                <button id="btnClearSearch" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="div_advsearch" class="collapse">
+                    <div class="row">
+                        <div class="col-lg-10 offset-lg-1">
+                            <div class="bg-white rounded float-left pt-3 pb-1 px-lg-3 px-md-2 advance-search-group w-100">
+                                <div class="form-group">
+                                    <label for="IW_Reference">IW Reference No.</label>
+                                    <input class="form-control" type="text" id="txtIWRefNo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="C_Date">Commencement Date From</label>
+                                    <input class="form-control" type="date" id="txtCommenceDtFrom">
+                                </div>
+                                <div class="form-group">
+                                    <label for="C_Date">Commencement Date To</label>
+                                    <input class="form-control" type="date" id="txtCommenceDtTo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="C_Date">Project Title</label>
+                                    <input class="form-control" type="text" id="txtProjectTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label for="C_Date">Status</label>
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["TECM_Status"], "txtStatus", "Select Status", new { @id = "txtStatus", @class = "form-control" })
+                                </div>
+                                <div class="form-group  col-lg-2">
+                                    <label for="status_percentage">Status Percentage From</label>
+                                    <input class="form-control allow_numeric" type="text" id="txtStPercFrom" maxlength="6" onchange="return PercentangeChange(this)">
+                                </div>
+
+                                <div class="form-group  col-lg-2">
+                                    <label for="status_percentage">Status Percentage To</label>
+                                    <input class="form-control allow_numeric" type="text" id="txtStPercTo" maxlength="6" onchange="return PercentangeChange(this)">
+                                </div>
+
+                                <div class="form-group  col-lg-2">
+                                    @Html.Label("RMU", "RMU")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RMU", "Select RMU", new { @id = "txtRmu", @class = "form-control", @onchange = "changeRMU(this)" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("RMU Name", "RMU Name")
+                                    <input type="text" class="form-control" id="txtRmuName" disabled />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Road Code", "Road Code")
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "txtRoadCode", @class = "form-control", @onchange = "OnRoadChange(this);" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Road Name", "Road Name")
+                                    <input type="text" class="form-control" id="txtRoadName" disabled />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -36,864 +153,584 @@
     </div>
 </div>
 
-<main id="main-container">
-    <div id="content">
-        <table class="table w-100 nowrap" id="tblInstruWorks">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Description of Works</th>
-                    <th>Batch</th>
-                    <th>Priority </th>
-                    <th>Failure Reported By</th>
-                    <th>Consultant</th>
-                    <th>Instructed Work No. / Internal Memo Ref. No.</th>
-                    <th>Date of Completion</th>
-                    <th>Cost</th>
-                    <th>Current Status</th>
-                    <th>Remarks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Proposed instructed works for slope repair work to Miri-Marudi Road CH11+200,Miri Division</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>JKR</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(01)</td>
-                    <td>11/1/2021 27/12/2020</td>
-                    <td>585788.88</td>
-                    <td>38.50%</td>
-                    <td>Slope trimming in progress</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Proposed instructed works for slope repair work to Miri-Marudi Road CH26+800,Miri Division</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(02)</td>
-                    <td>11/1/2021 27/12/2020</td>
-                    <td>409966.61</td>
-                    <td>44.05%</td>
-                    <td> Mobilizing piling rig on site at 30 Oct 2020</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Proposed instructed works for slope repair work to Miri-Marudi Road CH19+800,Miri Division</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(03)</td>
-                    <td>11/1/2021 27/12/2020</td>
-                    <td>335417.24</td>
-                    <td>32.96%</td>
-                    <td>Gabion work in progress</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Proposed slope repair work at KM156+000, Q2007-2C TKSB Road, Miri Division</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(04)</td>
-                    <td>12-10-20</td>
-                    <td>218540.11</td>
-                    <td>9.82%</td>
-                    <td>Materials supply in progress</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Proposed slope repair work at KM1+100, Q641 Entulang Road,Miri Division</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>JKR</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(05)</td>
-                    <td>10/12/2020 27/12/2020</td>
-                    <td>188644.14</td>
-                    <td>23.65%</td>
-                    <td>Piling work on 2nd Nov. 2020</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Proposed Sink-Hole Pavement Repair To Q2007-2C,TKSB Road CH169+260, Miri Division</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(06)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Approve by JKR HQ</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>Propose culvert reconstruction at Rumah Mungkin Gudang Atas Road (KM0+800) Q692, Miri Division</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>JKR</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(07)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>JKR Miri to open service order to Endaya</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Proposed rehabilitation for concrete pavement along (Q1086) Penghulu Lawai Road, Bario, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>In house</td>
-                    <td>ECSB/SRM/JKR/IW/2020(08)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Approve by JKR HQ</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>Proposed rehabilitation for concrete pavement along (Q1275) Bario Airport Road, Bario, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>In house</td>
-                    <td>ECSB/SRM/JKR/IW/2020(09)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Approve by JKR HQ</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>Proposed rehabilitation for concrete pavement along (Q1278) Pa'Umor Road, (Part 1) Bario, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>In house</td>
-                    <td>ECSB/SRM/JKR/IW/2020(10)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Approve by JKR HQ</td>
-                </tr>
-                <tr>
-                    <td>11</td>
-                    <td>Proposed rehabilitation for concrete pavement along (Q1278) Pa'Umor Road, (Part 2) Bario, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>In house</td>
-                    <td>ECSB/SRM/JKR/IW/2020(11)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Approve by JKR HQ</td>
-                </tr>
-                <tr>
-                    <td>12</td>
-                    <td>Proposed to supply, replace damaged signboard and install new road signages along Section 1 Jambatan Sg. Nyalau - Jambatan Sg. Niah </td>
-                    <td>7</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Teratai Termasik</td>
-                    <td>ECSB/SRM/JKR/IW/2020(12)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>To resubmit the details and DE advice to reduce the total amount of IW.</td>
-                </tr>
-                <tr>
-                    <td>13</td>
-                    <td>Proposed to replace and install new guardrail at (Q283) Batu Niah Feeder Road (10.8KM)</td>
-                    <td>7</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Teratai Termasik</td>
-                    <td>ECSB/SRM/JKR/IW/2020(13)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>To resubmit the details and DE advice to reduce the total amount of IW.</td>
-                </tr>
-                <tr>
-                    <td>14</td>
-                    <td>Proposed Reinstatement / Relocation 2 Nos of Existing Culvert ah CH0+200 & CH0+480 Kpg Narum Road, Marudi Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>JKR</td>
-                    <td>Jurutera Artecon</td>
-                    <td>ECSB/SRM/JKR/IW/2020(14)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Approve by JKR HQ</td>
-                </tr>
-                <tr>
-                    <td>15</td>
-                    <td>Propose 1.8M twin box culvert at KM2+900 Q354 Kejapil/Beraya/Bakam Road, Miri Division</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td>ECSB/SRM/JKR/IW/2020(15)</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Approve by JKR HQ</td>
-                </tr>
-                <tr>
-                    <td>16</td>
-                    <td>Proposed slope repair work at KM2+600, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td>ECSB/SRM/JKR/IW/2020(16)</td>
-                    <td></td>
-                    <td>1155764.09</td>
-                    <td></td>
-                    <td>Pending for financial meeting</td>
-                </tr>
-                <tr>
-                    <td>17</td>
-                    <td>Proposed slope repair work at KM29+400, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td>ECSB/SRM/JKR/IW/2020(17)</td>
-                    <td></td>
-                    <td>209271.62</td>
-                    <td></td>
-                    <td>Pending for financial meeting</td>
-                </tr>
-                <tr>
-                    <td>18</td>
-                    <td>Proposed slope repair work at KM28+800, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td>ECSB/SRM/JKR/IW/2020(18)</td>
-                    <td></td>
-                    <td>483552.80</td>
-                    <td></td>
-                    <td>Pending for financial meeting</td>
-                </tr>
-                <tr>
-                    <td>19</td>
-                    <td>Proposed slope repair work at KM11+700, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td>ECSB/SRM/JKR/IW/2020(19)</td>
-                    <td></td>
-                    <td>527929.80</td>
-                    <td></td>
-                    <td>Pending for financial meeting</td>
-                </tr>
-                <tr>
-                    <td>20</td>
-                    <td>Proposed slope repair work at KM29+500, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td>ECSB/SRM/JKR/IW/2020(20)</td>
-                    <td></td>
-                    <td>209271.62</td>
-                    <td></td>
-                    <td>Pending for financial meeting</td>
-                </tr>
-                <tr>
-                    <td>21</td>
-                    <td>Proposed replacement GI pipe culvert to new twin box 900mm culvert at Km 18+300, Q285, Beluru feeder Road.</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        KIV
-                        Completed by JKR
-                    </td>
-                </tr>
-                <tr>
-                    <td>22</td>
-                    <td>Propose slope repair at Saeh Road Sibuti,CH3+750 Miri Division</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>JKR</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Pegs Installed</td>
-                    <td>
-                        KIV
-                        Pegs installed for temporary measure
-                        Recommended by JKR Miri on 24.08.2020
-                    </td>
-                </tr>
-                <tr>
-                    <td>23</td>
-                    <td>Propose slope repair at Entulang Road (Q641),CH0+600 Miri Division</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td></td>
-                    <td>Perunding Gargantuan</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        KIV
-                        Recommended by JKR Miri on 24.08.2020
-                    </td>
-                </tr>
-                <tr>
-                    <td>24</td>
-                    <td>Propose milling and resurfacing for bridge along Q21 Beluru/Long Teru Trunk Road (Q21-1,Q21-2,Q21-3), Miri Division </td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>JKR</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Pending design and costing</td>
-                </tr>
-                <tr>
-                    <td>25</td>
-                    <td>Propose raise up road on both side bridge approach at KM13+300, Q1231B Pujut/Tudan/Kuala Baram Link Road B, Miri Division</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>JKR</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Awaiting for survey works</td>
-                </tr>
-                <tr>
-                    <td>26</td>
-                    <td>Propose rehabilitation and premix works from CH20+300 to CH24+000 at Q281 Ulu Niah Feeder Road, Miri Division</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        JKR Miri proposed rehabilitation from CH20+300 to end chainage.
-                        To proposed raised up road level.
-                        Awaiting complete resurfacing by JKR
-                    </td>
-                </tr>
-                <tr>
-                    <td>27</td>
-                    <td>Proposed pavement correction to severe undulation and road sunken at KM161+930, Q2007-2C TKSB Road, Miri Division</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Pending for Survey works BY Geomatics</td>
-                </tr>
-                <tr>
-                    <td>28</td>
-                    <td>Propose regravel works at Q281 Ulu Niah Feeder Road, Miri Division</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Work done under AWP </td>
-                </tr>
-                <tr>
-                    <td>28</td>
-                    <td>Propose new reinforced concrete road side drain near Dewan Masyarakat Batu Niah, Q283 Batu Niah Feeder Road, Miri Division</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>JKR</td>
-                    <td>Perunding Gargantuan</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Further discussion with JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>30</td>
-                    <td>Proposed replacement of steel pipe culvert at Q1278, Pa'Umor Road KM3+280</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        JKR Miri will propose under their programme
-                    </td>
-                </tr>
-                <tr>
-                    <td>31</td>
-                    <td>Proposed slope repair work at KM2+510, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        Pending design
-                        Survey work by geomatics
-                    </td>
-                </tr>
-                <tr>
-                    <td>32</td>
-                    <td>Proposed slope repair work at KM3+900, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        Pending design
-                        Survey work by geomatics
-                    </td>
-                </tr>
-                <tr>
-                    <td>33</td>
-                    <td>Proposed slope repair work at KM12+000, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        Pending design
-                        Survey work by geomatics
-                    </td>
-                </tr>
-                <tr>
-                    <td>34</td>
-                    <td>Proposed slope repair work at KM17+800, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Azra</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        Pending design
-                        Survey work by geomatics
-                    </td>
-                </tr>
-                <tr>
-                    <td>35</td>
-                    <td>Proposed slope repair work at KM18+400, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Azra</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        Pending design
-                        Survey work by geomatics
-                    </td>
-                </tr>
-                <tr>
-                    <td>36</td>
-                    <td>Proposed to reconstruct new pipe culvert at KM3+500, Q3186 Sungai Laong Road.</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Pending costing</td>
-                </tr>
-                <tr>
-                    <td>37</td>
-                    <td>Proposed to reconstruct pavement repair with repair at KM25+790, Jalan Miri Marudi (Q3187)</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Azra</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Recommended by JKR Miri on 24.08.2020</td>
-                </tr>
-                <tr>
-                    <td>38</td>
-                    <td>Proposed bund construction at KM0+600, Q1056 Kampung Padang Road Miri Division</td>
-                    <td>4</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Gargantuan</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Recommended by JKR Miri on 24.08.2020</td>
-                </tr>
-                <tr>
-                    <td>39</td>
-                    <td>Proposed Instructed works for road rehabilitation at Q676 Kampung Pasir Road</td>
-                    <td>5</td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Design stage</td>
-                </tr>
-                <tr>
-                    <td>40</td>
-                    <td>Proposed Culvert Replacement together with retaining wall at KM 9+500, Q1084, Suai No 1 Scheme Road</td>
-                    <td>6</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>41</td>
-                    <td>Propose slope repair at Km 10+600, Q281 Ulu Niah Feeder Road, Miri Division</td>
-                    <td>6</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>42</td>
-                    <td>Propose slope repair at Km 14+300, Q281 Ulu Niah Feeder Road, Miri Division</td>
-                    <td>6</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>L&P</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>43</td>
-                    <td>Propose culvert reconstruction at Q289 Marudi Ulu Linei Road (KM1+550) Marudi, Miri Division</td>
-                    <td>6</td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 08.09.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>44</td>
-                    <td>Proposed Emergency Reconstruction to collapsed RC drain (00M length) at KM3+750 of Jalan Saeh, Miri Division. </td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Perunding Azra</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>45</td>
-                    <td>Proposed raise up road level at KM7+800, Q289 Marudi Ulu Linei Road , Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>46</td>
-                    <td>Propose culvert reconstruction at Marudi Ulu Linei Road (KM) Q289, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>47</td>
-                    <td>Propose raise up road level at KM12+000, Q289 Marudi Ulu Linei Road , Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td>Jurutera Artecon</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 16.10.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>48</td>
-                    <td>Reconstruction of new culvert due to undersized existing culvert together with the road embankment and to raise up road level at Q281 Ulu Niah Feeder Road</td>
-                    <td></td>
-                    <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 10.11.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>49</td>
-                    <td>Proposed to milling and resurfacing at Q1231B Pujut/Tudan/Kuala Baram Link Road, Miri Division KM8+000 to KM10+300</td>
-                    <td></td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 10.11.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>50</td>
-                    <td>To reconstruct road pavement and reinstate guardrails at Q21-2 Beluru Long Teru Trunk Road</td>
-                    <td></td>
-                    <td>1</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 3.11.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>51</td>
-                    <td>Proposed R.C Roadside Drain Construction (2km) To The Existing Earth Drain at Padang Kerbau Road (Q645) Miri Division.</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>Proposal submitted to JKR Miri on 23.11.2020 for recommendation </td>
-                </tr>
-                <tr>
-                    <td>52</td>
-                    <td>Propose slope repair KM5+650, Q3186 Sungai Laong Road, Miri Division</td>
-                    <td></td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>53</td>
-                    <td>Proposed Junction improvement at Q289, Marudi ulu Linei Road </td>
-                    <td></td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>54</td>
-                    <td>Proposed Roadline Thermoplastic Painting at various location,Miri Divisional</td>
-                    <td></td>
-                    <td>2</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>55</td>
-                    <td>Proposed slope repair work at KM27+000, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>56</td>
-                    <td>Proposed slope repair work at KM29+200, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>57</td>
-                    <td>Propose slope repair at , Q281 Ulu Niah Feeder Road, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>58</td>
-                    <td>Propose slope repair at KM7+800, Q281 Ulu Niah Feeder Road, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>59</td>
-                    <td>Proposed slope repair work at KM2+300, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>60</td>
-                    <td>Proposed slope repair work at KM3+000, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-                <tr>
-                    <td>61</td>
-                    <td>Proposed slope repair work at KM4+200, Q3187 Jalan Miri-Marudi, Miri Division</td>
-                    <td></td>
-                    <td>1</td>
-                    <td>ECSB</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td> To be Proposed to JKR Miri</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</main>
-<script src="~/js/CDTGrid.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        initGrid();
-    });
+<!-- Main Container -->
+<div class="row">
+    <div class="col-12">
+        <div class="text-right">
+            <div class="btn-group dropbottom" id="actiondropdown">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('w1')">
+                    PROPOSED IW
+                </button>
+                <div class="dropdown-menu">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1Add" data-toggle="modal" onclick="OpenFormW1('Add',0)">
+                        <span class="add-icon"></span> Add
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1Edit" data-toggle="modal" onclick="OpenFormW1('Edit',0)">
+                        <span class="edit-icon"></span>Edit
+                    </button>
 
-    function initGrid() {
-        var _currentGridSettings = new CustomGridSettings();
-        $.extend($.fn.dataTable.defaults, _currentGridSettings);
-        $("#tblInstruWorks").DataTable({
-            serverSide: false,
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1View" data-toggle="modal" onclick="OpenFormW1('View',1)">
+                        <span class="view-icon"></span> View
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w1Print" onclick="PrintFormW1()">
+                        <span class="print-icon"></span> Print
+                    </button>
+                </div>
+            </div>
+            <div class="btn-group dropbottom" id="actiondropdown">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('w2')">
+                    IW TECM & FECM
+                </button>
+                <div class="dropdown-menu">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2Add" data-toggle="modal" onclick="OpenFormW2('Add',0)">
+                        <span class="add-icon"></span> Add
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2Edit" data-toggle="modal" onclick="OpenFormW2('Edit',0)">
+                        <span class="edit-icon"></span>   Edit
+                    </button>
+
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2View" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
+                        <span class="view-icon"></span> View
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w2Print" onclick="PrintFormW2()">
+                        <span class="print-icon"></span> Print
+                    </button>
+                </div>
+            </div>
+            @*<div class="btn-group dropbottom" id="actiondropdown">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                IW IN PROGRESS
+                </button>
+                <div class="dropdown-menu">
+                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                <span class="add-icon"></span> Add
+                </button>
+                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                <span class="edit-icon"></span>   Edit
+                </button>
+
+                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                <span class="view-icon"></span> View
+                </button>
+                <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                <span class="print-icon"></span> Print
+                </button>
+                </div>
+                </div>*@
+            <div class="btn-group dropbottom" id="actiondropdown">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                    EOT / LAD
+                </button>
+                <div class="dropdown-menu">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Add',0)">
+                        <span class="add-icon"></span> Add
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Edit',0)">
+                        <span class="edit-icon"></span>   Edit
+                    </button>
+
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Veiw',1)">
+                        <span class="view-icon"></span> View
+                    </button>
+                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                        <span class="print-icon"></span> Print
+                        </button>*@
+                </div>
+            </div>
+            <div class="btn-group dropbottom" id="actiondropdown">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                    COMPLETED IW
+                </button>
+                <div class="dropdown-menu">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Add',0)">
+                        <span class="add-icon"></span> Add
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Edit',0)">
+                        <span class="edit-icon"></span>   Edit
+                    </button>
+
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('View',1)">
+                        <span class="view-icon"></span> View
+                    </button>
+                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                        <span class="print-icon"></span> Print
+                        </button>*@
+                </div>
+            </div>
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading float-right mb-2">
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+
+                        <!-- Other panes here -->
+                        <div class="py-2">
+
+                            <div class="w-100 float-left position-relative">
+                                <div class="w-100 dt-tbl-section">
+                                    <div class="main-container">
+                                        <div>
+                                            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                                <div class="top p-1">
+                                                    @*Pagination will come here*@
+                                                </div>
+                                                <main id="main-container" class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="w-100 float-left position-relative">
+                                                            @*Form IW Grid*@
+                                                            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                                                                @{
+                                                                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                                                                }
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </main>
+
+                                                <div class="bottom d-flex justify-content-md-between">
+                                                    @*Data Tables Info*@
+
+                                                </div><div class="clear"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal fade" id="formW1" role="dialog">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+        <div class="modal-content mt-5">
+            <div class="modal-header mt-5">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" id="formW1Content">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="formW2" role="dialog">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+        <div class="modal-content mt-5">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" id="formW2Content">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="formWCWG" role="dialog">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" id="formWCWGContent">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="formWDWN" role="dialog">
+    <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" id="formWDWNContent">
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+
+        $("#txtSmartSearch").on("keypress", function (e) {
+            if (e.which == 13) {
+                $("#btnSearch").click();
+            }
+        });
+
+    });
+    function changeRMU(obj) {
+        var ctrl = $(obj);
+        if (ctrl.val() != null && ctrl.val() != "") {
+            var name = ctrl.find("option:selected").text();
+            name = name.split('-')[1];
+            $("#txtRmuName").val(name);
+
+            $.ajax({
+                url: '/InstructedWorks/GetRoadCodeByRMU',
+                dataType: 'JSON',
+                data: { rmu: ctrl.val() },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $('#txtRoadCode').empty();
+                        $('#txtRoadCode')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("Select Road Code"));
+                        $.each(data, function (key, value) {
+                            $('#txtRoadCode')
+                                .append($("<option></option>")
+                                    .attr("item1", value.item1)
+                                    //.attr("fromkm", value.fromKm)
+                                    //.attr("fromm", value.fromM)
+                                    .attr("value", value.value)
+                                    .text(value.text));
+                        });
+                        $("#txtRoadCode").val($('#frmW2RoadCode').val());
+                        $('#txtRoadCode').trigger("chosen:updated")
+                        $("#txtRoadCode").trigger("change");
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        }
+        else {
+            $("#txtRmuName").val('');
+        }
+    }
+
+    function OnRoadChange(tis) {
+        var ctrl = $(tis);
+        if (ctrl.val() != null && ctrl.val() != "") {
+            $("#txtRoadName").val(ctrl.find("option:selected").attr("Item1"));
+        }
+        else {
+            $("#txtRoadName").val('');
+        }
+
+    }
+
+    function getGridSelectedData(){
+        var table = $('#FormIWGridView').DataTable();
+        var selectedIndex = table.$(".selected", { "page": "all" });
+       return table.row(selectedIndex).data();
+    }
+
+    function GetFormIDByName(formName) {
+        var value = -1;
+        var daa = getGridSelectedData();
+        if (daa == null || typeof daa == "undefined") {
+            app.ShowErrorMessage("Kindly select a row to open the " + formName.toUpperCase() + " Form");
+            return value;
+        }
+
+        switch (formName) {
+            case "w1":
+                value = daa.w1RefNo;
+                break;
+            case "w2":
+                value = daa.w2RefNo;
+                break;
+            case "wc":
+                value = daa.wcRefNo;
+                break;
+            case "w1Status":
+                value = daa.w1Status;
+                break;
+            case "w1SubStatus":
+                value = daa.w1SubStatus;
+                break;
+            case "w2Status":
+                value = daa.w1Status;
+                break;
+            case "w2SubStatus":
+                value = daa.w2SubStatus;
+                break;
+            default:
+                value = daa.w1RefNo;
+        }
+        return value;
+    }
+
+    function OpenFormW1(mode, view) {
+
+        var SelectedIWGridId = 0;
+
+        if (mode == "Add") {
+            url = "/InstructedWorks/AddFormW1";
+        }
+        else if (mode == "Edit") {
+
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+        }
+        else if (mode == "View") {
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
+        }
+        InitAjaxLoading();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formW1").modal('show');
+                $("#formW1Content").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
+            }
+
         });
     }
+
+    function OpenFormW2(mode, view) {
+
+        InitAjaxLoading();
+        var url = '';
+        var id = "";
+
+        if (mode == 'Add') {
+            id = GetFormIDByName("w1");
+            if (id > 0 && id != null) {
+                url = '/InstructedWorks/AddFormW2?id=' + id;
+            }
+
+        }
+        else {
+            id = GetFormIDByName("w2");
+            if (id > 0 && id != null)
+                url = '/InstructedWorks/EditFormW2?id=' + id + (view == 1 ? '&view=1' : '');
+        }
+
+        if (url == '') {
+            HideAjaxLoading();
+            return;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formW2").modal('show');
+                $("#formW2Content").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                app.ShowErrorMessage(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
+
+        return true;
+    }
+
+    function OpenFormWDWN(mode, view) {
+        var SelectedIWGridId = 0;
+
+        if (mode == "Add") {
+            url = "/InstructedWorks/OpenWDWN";
+        }
+        else if (mode == "Edit") {
+
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+        }
+        else if (mode == "View") {
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
+        }
+        InitAjaxLoading();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formWDWN").modal('show');
+                $("#formWDWNContent").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
+    }
+
+    function checkAction(form){
+
+        var si = getGridSelectedData();
+        if (form == 'w2'){
+
+            if (si == null)
+            {
+                 $("#w2Add").hide();
+                 $("#w2Edit").hide();
+                 $("#w2View").hide();
+                 $("#w2Print").hide();
+                 app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
+                 return;
+            }
+            var id = GetFormIDByName("w2");
+            var w1status = GetFormIDByName("w1Status");
+            var w2substatus = GetFormIDByName("w2SubStatus");
+            if ((id == "-1" || id == null) &&   (w1status == "Verified"))
+            {
+                $("#w2Add").show();
+                $("#w2Edit").hide();
+                $("#w2View").hide();
+                $("#w2Print").hide();
+            }
+            else if (id != "-1" && id != null)
+            {
+                if (w2substatus)
+                {
+                     $("#w2Add").hide();
+                     $("#w2Edit").hide();
+                     $("#w2View").show();
+                     $("#w2Print").show();
+                     return;
+                }
+                 $("#w2Add").hide();
+                 $("#w2Edit").show();
+                 $("#w2View").show();
+                 $("#w2Print").show();
+            }
+            else {
+                $("#w2Add").hide();
+                 $("#w2Edit").hide();
+                 $("#w2View").hide();
+                 $("#w2Print").hide();
+            }
+
+        }
+        else if (form == 'w1')
+        {
+            if (si == null)
+            {
+                 $("#w1Edit").hide();
+                 $("#w1View").hide();
+                 $("#w1Print").hide();
+                 return;
+            }
+            var id = GetFormIDByName("w1");
+            var w1status = GetFormIDByName("w1Status");
+            if (id != "-1" && id != null)
+            {
+                if (w1status == "Verified" )
+                {
+                    $("#w1Edit").hide();
+                    $("#w1View").show();
+                    $("#w1Print").show();
+                    return;
+                }
+            }
+            $("#w1Edit").show();
+            $("#w1View").show();
+            $("#w1Print").show();
+        }
+    }
+
+    function OpenFormWCWG(mode, view) {
+        var SelectedIWGridId = 0;
+        SelectedIWGridId = GetFormIDByName("w1");
+        if (mode == "Add") {
+            url = "/InstructedWorks/OpenWCWG?id=" + SelectedIWGridId;
+        }
+        else if (mode == "Edit") {
+            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId;
+        }
+        else if (mode == "View") {
+            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId + "&View=1";
+        }
+        InitAjaxLoading();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formWCWG").modal('show');
+                $("#formWCWGContent").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
+    }
+
+    function PrintFormW1() {
+        var id = GetFormIDByName("w1");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW1";
+    }
+
+    function PrintFormW2() {
+        var id = GetFormIDByName("w2");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW2";
+    }
+
+    function clearHeaderSearch() {
+        $("#txtSmartSearch").val('');
+        $("#txtIWRefNo").val('');
+        $("#txtCommenceDtFrom").val('');
+        $("#txtCommenceDtTo").val('')
+        $("#txtProjectTitle").val('')
+        $("#txtStPercFrom").val('');
+        $("#txtStPercTo").val('');
+        $("#txtstatus").val("").trigger("chosen:updated");
+        $("#txtRmu").val("").trigger("chosen:updated");
+        $('#txtRoadCode').val("").trigger("chosen:updated");
+        $("#btnSearch").click();
+    }
+
 </script>

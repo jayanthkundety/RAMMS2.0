@@ -284,11 +284,20 @@
                         @*Commented based on the mentioned issue https://ramms.atlassian.net/browse/RU-118*@
                         @*@if (security.IsPCView(ModuleNameList.Instructed_Works) || security.HasGroup(GroupNameList.Admin))
                             {*@
-                        <li class="nav-item">
-                            <a class="js-nav-tooltip-link nav-link" id="instructedWorks" href="@Url.Action("Index", "InstructedWorks")" data-placement="left" data-original-title="Instructed Works">
+                        <li class="navbar-vertical-aside-has-menu">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="instructedWorks" href="javascript:;" title="Instructed Works">
                                 <i class="icon-cpu nav-icon"></i>
                                 <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Instructed Works</span>
                             </a>
+
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "InstructedWorks")" class="nav-link"><span class="text-truncate">Instructed Works (IW)</span></a>
+                                </li>
+                                @*<li class="nav-item">
+                                    <a href="@Url.Action("IWIndex", "InstructedWorks")" class="nav-link"><span class="text-truncate">Instructed Works</span></a>
+                                </li>*@
+                            </ul>
                         </li>
                         @*}
                             @if (security.IsPCView(ModuleNameList.User_Management) || security.HasGroup(GroupNameList.Admin))
@@ -323,20 +332,20 @@
 
                                 <ul class="js-navbar-vertical-aside-submenu nav nav-sub" style="transition: unset; display: none;">
                                     @*<li class="nav-item">
-                                        <a href="@Url.Action("list", "Administration",new {id="division"})" class="nav-link"><span class="text-truncate">Division</span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("list", "Administration",new { id="rmu"})" class="nav-link"><span class="text-truncate">RMU</span></a>
-                                    </li>*@
+                                            <a href="@Url.Action("list", "Administration",new {id="division"})" class="nav-link"><span class="text-truncate">Division</span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("list", "Administration",new { id="rmu"})" class="nav-link"><span class="text-truncate">RMU</span></a>
+                                        </li>*@
                                     <li class="nav-item">
                                         <a href="@Url.Action("list", "Administration",new { id="division"})" class="nav-link"><span class="text-truncate">Division/RMU/Section</span></a>
                                     </li>
                                     @*<li class="nav-item">
-                                        <a href="@Url.Action("list", "Administration",new { id="assettype"})" class="nav-link"><span class="text-truncate">Asset Type</span></a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="@Url.Action("list", "Administration",new { id="defect"})" class="nav-link"><span class="text-truncate">Defect</span></a>
-                                    </li>*@
+                                            <a href="@Url.Action("list", "Administration",new { id="assettype"})" class="nav-link"><span class="text-truncate">Asset Type</span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="@Url.Action("list", "Administration",new { id="defect"})" class="nav-link"><span class="text-truncate">Defect</span></a>
+                                        </li>*@
                                     <li class="nav-item">
                                         <a href="@Url.Action("list", "Administration",new { id="road"})" class="nav-link"><span class="text-truncate">List of Road</span></a>
                                     </li>
@@ -344,13 +353,13 @@
                             </li>
                         }
                         @*<li class="nav-item">
-                            <a class="js-nav-tooltip-link nav-link svg-hover" id="" href="" data-placement="left" data-original-title="Audit Log">
-                                <svg style="width: 22px; height: 24px; margin-left: -2px;" viewBox="0 0 22 22">
-                                    <path style="width:22px;height:24px;" d="M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14M5,3H19C20.11,3 21,3.89 21,5V13.03C20.5,12.23 19.81,11.54 19,11V5H5V19H9.5C9.81,19.75 10.26,20.42 10.81,21H5C3.89,21 3,20.11 3,19V5C3,3.89 3.89,3 5,3M7,7H17V9H7V7M7,11H12.03C11.23,11.5 10.54,12.19 10,13H7V11M7,15H9.17C9.06,15.5 9,16 9,16.5V17H7V15Z" />
-                                </svg>
-                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Audit Log</span>
-                            </a>
-                        </li>*@
+                                <a class="js-nav-tooltip-link nav-link svg-hover" id="" href="" data-placement="left" data-original-title="Audit Log">
+                                    <svg style="width: 22px; height: 24px; margin-left: -2px;" viewBox="0 0 22 22">
+                                        <path style="width:22px;height:24px;" d="M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14M5,3H19C20.11,3 21,3.89 21,5V13.03C20.5,12.23 19.81,11.54 19,11V5H5V19H9.5C9.81,19.75 10.26,20.42 10.81,21H5C3.89,21 3,20.11 3,19V5C3,3.89 3.89,3 5,3M7,7H17V9H7V7M7,11H12.03C11.23,11.5 10.54,12.19 10,13H7V11M7,15H9.17C9.06,15.5 9,16 9,16.5V17H7V15Z" />
+                                    </svg>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">Audit Log</span>
+                                </a>
+                            </li>*@
                     </ul>
                 </div>
 
@@ -364,10 +373,10 @@
                 <div class="row d-flex justify-content-between">
                     <div class="col-4 al-575-l"><img src="~/assets/media/JKKR-logo.png" height="50" /></div>
                     <div class="col-4 text-center al-575-c font-26 font-bebas text-uppercase pt-1 pt-sm-0 txt-sm-white">
-                        <span class="show-only-after-1440"><img src="~/assets/media/RAMS-Logo.png" class="rams-l" width="70"/>ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM</span>
+                        <span class="show-only-after-1440"><img src="~/assets/media/RAMS-Logo.png" class="rams-l" width="70" />ROAD ASSET MANAGEMENT AND MAINTENANCE SYSTEM</span>
 
                         <span class="show-only-before-1440"><img src="~/assets/media/RAMS-Logo.png" width="70" class="rams-l" />RAMS</span>
-                        
+
                     </div>
                     <div class="col-4 al-575-r d-flex justify-content-end">
                         @*<span class="notify-group position-relative float-right d-none d-md-block">
@@ -382,24 +391,22 @@
                                         <span class="noti-icon-badge"></span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated dropdown-lg" aria-labelledby="topbar-notifydrop" notificationMenu>-->
+                                <!-- item-->
+                                <!--<div class="dropdown-item noti-title">
+                                    <h5 class="m-0">
+                                        <span class="float-right">
+                                            <a href="javascript: void(0);" class="text-dark">
+                                                <small>Clear All</small>
+                                            </a>
+                                        </span>Notification
+                                    </h5>
+                                </div>
 
-                                        <!-- item-->
-                                        <!--<div class="dropdown-item noti-title">
-                                            <h5 class="m-0">
-                                                <span class="float-right">
-                                                    <a href="javascript: void(0);" class="text-dark">
-                                                        <small>Clear All</small>
-                                                    </a>
-                                                </span>Notification
-                                            </h5>
-                                        </div>
+                                <div class="slimscroll overflow-auto" style="max-height: 230px;" notificationItem>
 
-                                        <div class="slimscroll overflow-auto" style="max-height: 230px;" notificationItem>
-
-                                        </div>-->
-
-                                        <!-- All-->
-                                        <!--<a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-footer">
+                                </div>-->
+                                <!-- All-->
+                                <!--<a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-footer">
                                             View All
                                         </a>
 

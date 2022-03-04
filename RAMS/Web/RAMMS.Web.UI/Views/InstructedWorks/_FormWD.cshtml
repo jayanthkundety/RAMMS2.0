@@ -1,0 +1,392 @@
+﻿@model RAMMS.Web.UI.Models.FormWDWNModel;
+@using RAMMS.Business.ServiceProvider;
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">
+                                JABATAN KERJA RAYA
+                            </span>
+                        </div>
+                        <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                            <div class="w-100 dt-tbl-section">
+                                <div class="pb-1 float-left w-100">
+
+                                    <div class="row">
+                                        <div class="form-group col-lg-4">
+                                            <label for="OurRef">
+                                                Name of Division
+                                            </label>
+                                            @*<input type="text" placeholder="" class="form-control">*@
+                                            <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label for="OurRef">
+                                                Divisional Address 1
+                                            </label>
+                                            @*<input type="text" placeholder="" class="form-control">*@
+                                            <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label for="OurRef">
+                                                Divisional Address 2
+                                            </label>
+                                            @*<input type="text" placeholder="" class="form-control">*@
+                                            <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-lg-12">
+                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                        <div class=" py-2">
+
+                            <div class="form-group col-lg-4">
+                                <label for="OurRef">Contract  NO</label>
+                                <input type="text" placeholder="" disabled value="PWM/HO/B130/2019(124)" class="form-control" />
+                            </div>-->
+                @*<div class="form-group col-lg-2">
+                        <div class="row mt-4">
+                            <div class="col-6 pt-1">
+                                <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> BQ</label>
+                            </div>
+                            <div class="col-6 pt-1">
+                                <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> Drawing</label>
+                            </div>
+                        </div>
+                    </div>*@
+                <!--</div>
+                    </div>
+                </div>-->
+                <div class="col-lg-12">
+                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                        <div class="px-3 pt-3 pb-1 float-left w-100">
+                            <div class="row  mt-1">
+                                <div class="col-lg-4 pt-2">
+                                    <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
+                                </div>
+                                <div class="col-lg-8">
+                                    <span class="float-left w-100 float-left">
+                                        @*@Html.TextBoxFor(m => m.FormWD., new { @readonly = true, @class = "form-control" })*@
+
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-3 pt-3 pb-1 float-left w-100">
+                            <div class="row">
+                                <div class="form-group col-lg-3">
+                                    <label for="OurRef">Our Ref / Contract  NO </label>
+                                    @Html.TextBoxFor(m => m.FormWD.OurRefNo, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <label for="Date">
+                                        Date
+                                    </label>
+                                    @Html.EditorFor(m => m.FormWD.DtWd, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <label for="Your Ref">
+                                        Your Ref
+                                    </label>
+                                     @Html.TextBoxFor(m => m.FormW1.ServPropRefNo , new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group  col-lg-3">
+                                    <label for="Your Ref">
+                                        Service Provider Name
+                                    </label>
+
+                                    @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @readonly=true, @class = "form-control svalidate {required, Service Provider Name}" })
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--<div class="col-lg-12">
+                                    <div class="bg-white rounded  w-100 float-left mb-3 border">
+
+                                        <div class="px-3 pt-3 pb-1 float-left w-100">
+                                            <div class="row">
+                                                <div class="form-group col-lg-12">
+                                                   <p class="text-center w-100 float-left mb-0">
+                    PEFORMANCE-BASED CONTRACT  FOR THE LONG-TERM MANAGEMENT AND MAINTENANCE OF STATE ROADS [JALAN RAYA NEGERI (JRN) IN SARAWAK] - PACKAGE 4 (MIRI DIVISION)
+                </p>-->
+                @*<div class="row my-2">
+                        <div class="form-group col-lg-3">
+                            <label for="OurRef">Our Ref.</label>
+                            <input type="text" placeholder="" value="PWM/HO/B130/2019(124)" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="Date">
+                                Date
+                            </label>
+                            <input type="date" placeholder="" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="Your Ref">
+                                Your Ref
+                            </label>
+                            <input type="text" placeholder="" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="Your Ref">
+                                Address 1
+                            </label>
+                            <input type="text" placeholder="" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="Your Ref">
+                                Address 2
+                            </label>
+                            <input type="text" placeholder="" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="Your Ref">
+                                Address 3
+                            </label>
+                            <input type="text" placeholder="" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="Phone">Phone Number</label>
+                            <input type="text" placeholder="" value="085-431273" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="Fax">
+                                Fax Number
+                            </label>
+                            <input type="text" placeholder="" value=" 085-438647" class="form-control">
+                        </div>
+
+                    </div>*@
+
+                <!--<div class="row mt-2">-->
+                @*<div class="col-lg-8 ">
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label for="OurRef">Our Ref.</label>
+                                    <input type="text" placeholder="" value="PWM/HO/B130/2019(124)" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="Date">
+                                        Date
+                                    </label>
+                                    <input type="date" placeholder="" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="Phone">Phone Number</label>
+                                    <input type="text" placeholder="" value="085-431273" class="form-control" />
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="Fax">
+                                        Fax Number
+                                    </label>
+                                    <input type="text" placeholder="" value=" 085-438647" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="Your Ref">
+                                Address
+                            </label>
+                            <textarea class="form-control" style="height:110px;">
+                    ENDAYA CONSSTRUCTION SDN BHD,
+                    Lot 1934,1st-3rd Floor,
+                    Marina Square, Phase 2,
+                    98000 Miri, Sarawak
+                    </textarea>
+                        </div>*@
+
+                <!--</div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="col-lg-12 d-none">
+                    <div class="bg-white rounded  w-100 float-left mb-3 border">
+                        <div class="col-lg-12 py-2 px-4">
+                            <span class="font-14 font-weight-bold">
+                                INSTRUCTED WORK
+                            </span>
+                        </div>
+
+                        <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="row">
+                                        <div class="col-lg-12 mb-3">
+                                            <label class="mb-0" for=" PhysicalWorks">
+                                                S.O.'s Instruction No.
+                                            </label>
+                                            <input class="form-control" disabled type="text" value="JKR/IW/MR/20/07">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <label class="mb-0" for="PhysicalWorks">
+                                        Instructed Work Title
+                                    </label>
+                                    <textarea class="form-control" disabled type="text" style="height:45px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2 ">
+                    <div class="px-3  py-2 float-left w-100 border">
+                        <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, <input type="date" class="float-right form-control border-left-0 border-top-0 border-right-0 border-bottom" style="width: 176px; font-weight: bolder; font-size: 17px;" /></span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
+                    </div>
+                </div>
+                <div class="col-12 mb-2 ">
+                    <div class="px-3  py-2 float-left w-100 border">
+                        <div class="table-responsive mb-2">
+                            <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="top">
+                                    <div class="dataTables_length w-100">
+                                        <div class="dataTables_scrollBody" style="min-height:auto!important">
+                                            <input data-toggle="modal" data-target="#ClauseModal" value="Add Clause" />
+                                            <table id="tblClause" class="table w-100 nowrap dataTable table-bordered">
+                                                <tr style="text-align: left; color:#152e4d;background-color: #c8e1ff">
+                                                    <th> <span style="width:60%; float:left">Reason/reasons</span></th>
+                                                    <th>Clause</th>
+                                                    <th>Extension of Time</th>
+                                                    <th>Action</th>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                        <div class="modal fade" id="ClauseModal" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row mt-0 mb-3">
+                                                            <div class="col-lg-6">
+                                                                <label>Reason/reasons</label>
+                                                                <textarea id="txtReason" class="form-control" value="Delay due to Instruction Stop of Work"></textarea>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <label> Clause</label>
+                                                                <input id="txtClause" type="text" class="form-control" value="2.1.7.12" />
+                                                            </div>
+                                                            <div class="col-lg-2">
+                                                                <label>Extension of Time</label>
+                                                                <input id="txtExtension" type="text" class="form-control" value="2months" />
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 mb-2 float-right text-right custom-footer">
+                                                        <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                                                        <button type="button" class="btn btn-sm btn-themebtn" onclick="AddClauseData();">Submit</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-2 ">
+                    <div class="px-3  py-2 float-left w-100 border">
+                        <p class="float-left mt-3" style="line-height: 30px; font-size: 17px;">
+                            <span class="float-left px-1">The Date for Completion is now therefore extended to</span>
+                            @Html.EditorFor(m => m.FormWD.DtExtn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = "width:190px" } })
+
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row pt-3 px-2 pb-1">
+                        <div class="form-group col-lg-3">
+                            <label for="Designation"> User ID </label>
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Userid", "Select Users", new { Id = "ddlUserid", @class = "form-control svalidate {required, User}", @onchange = "OnUseridChange(this); " })
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="Designation"> Name </label>
+                            @Html.TextBoxFor(model => model.FormWD.UsernameIssu, new { @readonly = true, @class = "form-control" })
+                        </div>
+                        <div class="form-group col-lg-2 p-0">
+                            <label for="Designation"> Designation</label>
+                            @Html.TextBoxFor(model => model.FormWD.DesignationIssu, new { @readonly = true, @class = "form-control" })
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="Designation"> Office</label>
+                            @Html.TextBoxFor(model => model.FormWD.OfficeIssu, new { @readonly = true, @class = "form-control" })
+                        </div>
+                        <div class="form-group col-lg-2 pr-0">
+                            <label>Date (DD-MM-YYYY)</label>
+                            @Html.EditorFor(m => m.FormWD.DtIssu, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="form-group col-lg-1 text-center">
+                            <label>Signature</label>
+                            <div class="clear-b mt-2">
+                                @Html.CheckBoxFor(model => model.FormWD.SignIssu, new { @disabled = "disabled" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="px-3 pb-1 float-left w-100 ">
+                                                    <div class="row">
+
+                                                       <div class="col-12  mt-2">
+                            <span class="float-left pt-2 pr-2">
+                                Please ensure that yoru performance security and insurances are extended to meet the requirements of the Agreement, if necessary.
+                            </span>
+                        </div>
+                    <div class="col-12">
+                        <p class="px-4 w-100 float-left m-0 py-2 text-left">
+                            Superintending
+                            <br /><input type="checkbox" />
+                        </p>
+                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>*@
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
+    left: auto;
+    bottom: 0px;
+    right: 0;
+    /* top: 0; */
+    background:#fff;
+    width: 96%;
+    height: 45px;">
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+    <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="return checkW2Exist()">Save</button>
+    <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn">Submit</button>
+</div>

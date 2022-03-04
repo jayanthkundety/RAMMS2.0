@@ -21,5 +21,9 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<int> Save(DivRmuSectionRequestDTO model);
 
         Task<DivRmuSectionRequestDTO> GetDivRmuSectionById(int id);
+
+        Task<DivisionRequestDTO> GetDivisions();
+
+        Task<DivisionRequestDTO> GetServiceProviders();
     }
 }

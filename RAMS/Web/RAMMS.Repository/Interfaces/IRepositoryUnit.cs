@@ -44,6 +44,16 @@ namespace RAMMS.Repository.Interfaces
         public FormHImgRepository FormHImgRepository { get; }
         public FormS2Repository FormS2Repository { get; }
         public FormS2DetailRepository FormS2DetailRepository { get; }
+
+        //IW Forms
+        public FormWCRepository FormWCRepository { get; }
+        public FormWGRepository FormWGRepository { get; }
+        public FormW2FcemRepository FormW2FcemRepository { get; }
+        FormW1Repository FormW1Repository { get; }
+        public FormW2Repository FormW2Repository { get; }
+       
+        //End IW Forms
+
         FormS2QuarterDtlRepository FormS2QuarterDtlRepository { get; }
         CalendarRepository CalendarRepository { get; }
         IFormF2Repository FormF2Repository { get; }
@@ -62,7 +72,11 @@ namespace RAMMS.Repository.Interfaces
         IModuleGroupRepository ModuleGroupRepository { get; }
         IAuditTransactionRepository AuditTransactionRepository { get; }
         IAuditActionRepository AuditActionRepository { get; }
+      
+    
 
+        
+                 
         int Commit();
         Task<int> CommitAsync();
         void Rollback();

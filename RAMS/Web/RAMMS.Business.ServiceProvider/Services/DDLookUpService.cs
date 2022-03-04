@@ -23,6 +23,36 @@ namespace RAMMS.Business.ServiceProvider.Services
             //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _lookupRepo = repo;
         }
+
+
+
+
+        public async Task<IEnumerable<CSelectListItem>> GetRMUwithDivisionDetails()
+        {
+            //  return _lookupRepo.GetRMUwithDivisionDetails().Result;
+
+            return _lookupRepo.GetRMUwithDivisionDetails().Result.Select(x => new CSelectListItem()
+            {
+                Text = x.RmuCode + "-" + x.RmuName,
+                Value = x.RmuCode,
+                CValue = x.DivisionCode,
+                Item1 = x.CategoryName //division name
+            }).Distinct();
+
+        }
+
+        public async Task<IEnumerable<SelectListItem>> LoadServiceProviderName()
+        {
+            return _lookupRepo.LoadServiceProviderName().Result.Select(x => new SelectListItem()
+            {
+                Text =  x.FiwSrvProviderName,
+                Value = x.FiwSrvProviderCode,
+            }).Distinct();
+        }
+
+
+
+
         public async Task<IEnumerable<CSelectListItem>> GetDdLookup(params string[] type)
         {
             string[] valueCode = new string[] { "RMU" };
@@ -53,8 +83,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     type = type.Select(x => { if (x.Contains("~")) { x = x.Split("~")[0]; } return x; }).ToArray();
                 }
-            }  
-            
+            }
+
             string[] lstType = type.Where(x => x.Contains("~")).ToArray();
             if (lstType != null && lstType.Length > 0)
             {

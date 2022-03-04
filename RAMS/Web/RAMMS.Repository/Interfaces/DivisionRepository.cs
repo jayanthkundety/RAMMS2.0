@@ -12,6 +12,9 @@ namespace RAMMS.Repository.Interfaces
         Task<long> GetFilteredRecordCount(FilteredPagingDefinition<DivisionRequestDTO> filterOptions);
         Task<List<DivisionRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<DivisionRequestDTO> filterOptions);
 
-       
+        Task<DivisionRequestDTO> GetDivisions();
+
+        Task<DivisionRequestDTO> GetServiceProviders();
+
     }
 }
