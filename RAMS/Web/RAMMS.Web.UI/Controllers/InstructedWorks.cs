@@ -29,8 +29,8 @@ namespace RAMMS.Web.UI.Controllers
     {
         private readonly IFormW1Service _formW1Service;
         private readonly IFormW2Service _formW2Service;
-        private readonly IFormWCService _formWCService;
-        private readonly IFormWGService _formWGService;
+        //private readonly IFormWCService _formWCService;
+        //private readonly IFormWGService _formWGService;
         private readonly IDDLookUpService _ddLookupService;
         private readonly IRoadMasterService _roadMasterService;
 
@@ -49,8 +49,9 @@ namespace RAMMS.Web.UI.Controllers
 
         public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,
             IRoadMasterService roadMasterService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,
-            IDivisionService divisionService, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper, IFormWCService formWCService,
-            IFormWGService formWGService)
+            IDivisionService divisionService, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper)
+            //, IFormWCService formWCService,
+            //IFormWGService formWGService)
         {
 
 
@@ -62,8 +63,8 @@ namespace RAMMS.Web.UI.Controllers
             _userService = userService;
             _formW1Service = formW1Service ?? throw new ArgumentNullException(nameof(formW1Service));
             _formW2Service = formW2Service ?? throw new ArgumentNullException(nameof(formW2Service));
-            _formWCService = formWCService ?? throw new ArgumentNullException(nameof(formWCService));
-            _formWGService = formWGService ?? throw new ArgumentNullException(nameof(formWGService));
+            //_formWCService = formWCService ?? throw new ArgumentNullException(nameof(formWCService));
+            //_formWGService = formWGService ?? throw new ArgumentNullException(nameof(formWGService));
             _configuration = configuration;
             _bridgeBO = bridgeBO;
             _security = security;
@@ -341,7 +342,7 @@ namespace RAMMS.Web.UI.Controllers
 
 
             LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status", "User");
-
+            GetRMUWithDivision("RMU_Division");
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
@@ -363,10 +364,22 @@ namespace RAMMS.Web.UI.Controllers
             defaultData.Fw1PkRefNo = _formW2Model.FormW1.PkRefNo;
             defaultData.Fw1ProjectTitle = _formW2Model.FormW1.ProjectTitle;
             defaultData.DateOfInitation = DateTime.Today;
+
+            var div = ((IEnumerable<SelectListItem>)ViewData["Division"]).ToList();
+            var divRd = div.Find(c => c.Value == _formW2Model.FormW1.DivnCode);
+            if (divRd != null) divRd.Selected = true;
+
+            defaultData.DivCode = _formW2Model.FormW1.DivnCode;
+
+            var rmu = ((IEnumerable<CSelectListItem>)ViewData["RMU"]).ToList();
+            var rmuRd = rmu.Find(c => c.Value == _formW2Model.FormW1.RmuCode);
+            if(rmuRd != null) rmuRd.Selected = true;
+
             defaultData.RmuCode = _formW2Model.FormW1.RmuCode;
             defaultData.RmuName = "";
             var ser = (List<SelectListItem>)LookupService.LoadServiceProviderName().Result.ToList();
             var serRd = ser.Find(c => c.Value == _formW2Model.FormW1.ServPropName);
+            if (serRd != null) serRd.Selected = true;
             defaultData.ServProvName = serRd.Text;
 
             defaultData.DivCode = _formW2Model.FormW1.DivnCode;
@@ -802,101 +815,7 @@ namespace RAMMS.Web.UI.Controllers
         }
         #endregion
 
-        #region WCWG
-
-        public async Task<IActionResult> OpenWCWG(int id)
-        {
-
-            var _formWCWGModel = new FormWCWGModel();
-            LoadLookupService("TECM_Status", "User");
-            _formWCWGModel.FormW1 = await _formW2Service.GetFormW1ById(id);
-            var spList = await _divisionService.GetServiceProviders();
-            var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
-            _formWCWGModel.FormW1.ServPropName = serProv.Name;
-            _formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
-            _formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
-            _formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
-            _formWCWGModel.FormW1.ServPhone = serProv.Phone;
-            _formWCWGModel.FormW1.ServFax = serProv.Fax;
-            
-            _formWCWGModel.FormWC = new FormWCResponseDTO();
-            _formWCWGModel.FormWG = new FormWGResponseDTO();
-            _formWCWGModel.Division = await _divisionService.GetDivisions();
-
-            return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
-        }
-
-        public async Task<IActionResult> EditFormWCWG(int id)
-        {
-
-            var _formWCWGModel = new FormWCWGModel();
-            LoadLookupService("TECM_Status", "User");
-            var _formC = await _formWCService.FindWCByW1ID(id);
-            _formWCWGModel.FormWC = _formC == null ? new FormWCResponseDTO() : _formC;
-            var _formG = await _formWGService.FindWGByW1ID(id);
-
-            _formWCWGModel.FormWG = _formG == null ? new FormWGResponseDTO() : _formG;
-
-            _formWCWGModel.FormW1 = _formC != null ? _formWCWGModel.FormWC.Fw1PkRefNoNavigation : new FormW1ResponseDTO();
-
-            var spList = await _divisionService.GetServiceProviders();
-            var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
-            _formWCWGModel.FormW1.ServPropName = serProv.Name;
-            _formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
-            _formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
-            _formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
-            _formWCWGModel.FormW1.ServPhone = serProv.Phone;
-            _formWCWGModel.FormW1.ServFax = serProv.Fax;
-            _formWCWGModel.Division = await _divisionService.GetDivisions();
-
-            return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
-        }
-
-        
-
-        public async Task<JsonResult> SaveFormWC(FormWCResponseDTO formWC)
-        {
-            int refNo = 0;
-            FormWCResponseDTO saveRequestObj = new FormWCResponseDTO();
-            saveRequestObj = formWC;
-            if (saveRequestObj.PkRefNo == 0)
-                refNo = await _formWCService.Save(formWC);
-            else
-                refNo = await _formWCService.Update(formWC);
-
-            return Json(refNo);
-        }
-
-       
-        #endregion
-
-        #region WDWN
-
-        public async Task<IActionResult> OpenWDWN(int PkRefNo = 15)
-        {
-            var _formWDWNModel = new FormWDWNModel();
-            LoadLookupService("TECM_Status","User");
-            ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
-            _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(PkRefNo);
-            _formWDWNModel.FormWD = new FormWDResponseDTO();
-            _formWDWNModel.FormWN = new FormWNResponseDTO();
-            return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
-        }
-
-        public async Task<JsonResult> SaveFormWG(FormWGResponseDTO formWG)
-        {
-            int refNo = 0;
-            FormWGResponseDTO saveRequestObj = new FormWGResponseDTO();
-            saveRequestObj = formWG;
-            if (saveRequestObj.PkRefNo == 0)
-                refNo = await _formWGService.Save(formWG);
-            else
-                refNo = await _formWGService.Update(formWG);
-
-            return Json(refNo);
-        }
-
-        #endregion
+     
 
     }
 }

@@ -12,9 +12,9 @@ namespace RAMMS.Web.UI.Models
     {
         public FormFECMModel FECM { get; set; }
 
-        public FormWCResponseDTO FormWC { get; set; }
+        //public FormWCResponseDTO FormWC { get; set; }
 
-        public FormWGResponseDTO FormWG { get; set; }
+        //public FormWGResponseDTO FormWG { get; set; }
 
         public FormW2ResponseDTO FormW2 { get; set; }
         public FormW1ResponseDTO FormW1 { get; set; }

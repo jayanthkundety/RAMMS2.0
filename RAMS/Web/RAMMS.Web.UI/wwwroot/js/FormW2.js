@@ -52,7 +52,7 @@ $(document).ready(function ()
             $("#formW2IssuedOffice").prop("disabled", true);
             $("#formW2IssuedOffice").val('');
         }
-        $("#formW2IssuedDate").text(currentDate);
+        $("#formW2IssuedDate").val(currentDate);
         return false;
     });
 
@@ -94,10 +94,16 @@ $(document).ready(function ()
     });
 
 
-    if ($("#FW2HRef_No").val() == "0") {
-        $("#formW2DivisionCode").trigger("chosen:updated")
-        $("#formW2DivisionCode").trigger("change");
+    $("#frmW2RoadCodeDD").trigger("chosen:updated");
+    $("#frmW2RoadCodeDD").trigger("change");
+    $("#frmW2RoadCodeDD").chosen('destroy');
+    $("#frmW2RoadCodeDD").prop("disabled", true);
 
+
+    if ($("#FW2HRef_No").val() == "0") {
+        $("#formW2DivisionCode").trigger("chosen:updated");
+        $("#formW2DivisionCode").trigger("change");
+        $("#frmW2RoadCodeDD").prop("disabled", true);
         $('#formW2RMU').trigger("chosen:updated")
         $("#formW2RMU").trigger("change");
     }
@@ -114,7 +120,7 @@ $(document).ready(function ()
         $("#formW2RMU").chosen('destroy');
         $("formW2RMU").prop("disabled", true);
         $("#frmW2RoadCodeDD").chosen('destroy');
-        $("frmW2RoadCodeDD").prop("disabled", true);
+        $("#frmW2RoadCodeDD").prop("disabled", true);
         $("#formw2RequestedBy").chosen('destroy');
         $("formw2RequestedBy").prop("disabled", true);
         $("#closeFormW2Btn").hide();
@@ -352,7 +358,7 @@ function changeRMU(obj) {
         name = name.split('-')[1];
         $("#formW2RMUName").val(name);
 
-        $.ajax({
+       /* $.ajax({
             url: '/InstructedWorks/GetRoadCodeByRMU',
             dataType: 'JSON',
             data: { rmu: ctrl.val() },
@@ -383,7 +389,7 @@ function changeRMU(obj) {
 
                 console.error(data);
             }
-        });
+        });*/
     }
     else {
         $("#formW2RMUName").val('');

@@ -162,7 +162,7 @@
                                                                     </div>
                                                                     <div class="col-4 pr-lg-0">
                                                                         <label for=""> &nbsp;  &nbsp; &nbsp;</label>
-                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.RmuCode, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
+                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.RmuCode, (IEnumerable<CSelectListItem>)ViewData["RMU_Division"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
                                                                     </div>
                                                                     <div class="col-4">
                                                                         @Html.Label("Name", "Name")@Html.TextBoxFor(m => m.SaveFormW2Model.RmuName, new { @Id = "formW2RMUName", @class = "form-control  validate {required, RMU Name}", @disabled = true })
@@ -240,7 +240,7 @@
                                                                                         <div class="row">
                                                                                             <div class="col-6">
                                                                                                 @Html.Label("Road Code", "Road Code")
-                                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "frmW2RoadCodeDD", @class = "form-control  validate {required, Road Code}", @disabled= true, @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
+                                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { @id = "frmW2RoadCodeDD", @class = "form-control  validate {required, Road Code}",  @onchange = "OnRoadChange(this);" }, Model.SaveFormW2Model.RoadCode)
                                                                                                 @Html.HiddenFor(m => m.SaveFormW2Model.RoadCode, new { id = "frmW2RoadCode" })
                                                                                             </div>
                                                                                             <div class="col-6">

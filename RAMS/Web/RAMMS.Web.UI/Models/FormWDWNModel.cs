@@ -13,11 +13,11 @@ namespace RAMMS.Web.UI.Models
         public FormFECMModel FECM { get; set; }
        
         public FormW1ResponseDTO FormW1 { get; set; }
-        public FormWDResponseDTO FormWD { get; set; }
+        //public FormWDResponseDTO FormWD { get; set; }
 
-        public FormWNResponseDTO FormWN { get; set; }
+        //public FormWNResponseDTO FormWN { get; set; }
 
-        public FormWDDtlResponseDTO FormWDDtl { get; set; }
+        //public FormWDDtlResponseDTO FormWDDtl { get; set; }
 
         public string View { get; set; }
 
