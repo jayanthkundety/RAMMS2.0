@@ -85,6 +85,8 @@ $(document).ready(function () {
         $("#clearWCBtn").hide();
         $("#saveWCBtn").hide();
         $("#submitWCBtn").hide();
+        $("#formWCDivisionCode").chosen('destroy');
+        $("#formWCDivisionCode").prop("disabled", true);
     }
 
     if ($("#hdnWgView").val() == "1") {
@@ -92,6 +94,8 @@ $(document).ready(function () {
         $("#clearWGBtn").hide();
         $("#saveWGBtn").hide();
         $("#submitWGBtn").hide();
+        $("#formWGDivisionCode").chosen('destroy');
+        $("#formWGDivisionCode").prop("disabled", true);
     }
 });
 
@@ -115,16 +119,16 @@ function SaveWC(submit) {
         (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
 
     var saveObj = new Object;
-
     saveObj.PkRefNo = $("#hdnWcRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
+    saveObj.IwWrksDeptId = $("#formWCDivisionCode option:selected").val();
     saveObj.RmuCode = ""
     saveObj.SecCode = "";
     saveObj.RoadCode = "";
     saveObj.RoadName = "";
     saveObj.Ch = "";
     saveObj.ChDeci = "";
-    saveObj.IwRefNo = $("fw1IWRefNo").val();
+    saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWcProjectTitle").val()
     saveObj.OurRefNo = $("#formWcOurRef").val();
     saveObj.ServRefNo = $("#formWcServPropRefNo").val();
@@ -196,7 +200,7 @@ function SaveWG(submit) {
     if (!ValidatePage('#Div_wg')) {
         return false;
     }
-    //debugger;
+
     InitAjaxLoading();
 
     var d = new Date();
@@ -211,18 +215,19 @@ function SaveWG(submit) {
 
     saveObj.PkRefNo = $("#hdnWgRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
+    saveObj.IwWrksDeptId = $("#formWGDivisionCode option:selected").val();
     saveObj.RmuCode = ""
     saveObj.SecCode = "";
     saveObj.RoadCode = "";
     saveObj.RoadName = "";
     saveObj.Ch = "";
     saveObj.ChDeci = "";
-    saveObj.IwRefNo = $("fw1IWRefNo").val();
+    saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWgProjectTitle").val()
     saveObj.OurRefNo = $("#formWgOurRef").val();
     saveObj.ServRefNo = $("#formWgServiceProvider").val();
     saveObj.DtWg = $("#formWgDate").val();
-    saveObj.DtDefectCompl = $("#formWgDeftDt").val();
+    saveObj.DtDefectCompl = $("#formWgDftComp").val();
 
     if ($("#formWgIssuedBy").find(":selected").val() != "") saveObj.UseridIssu = $("#formWgIssuedBy option:selected").val();
     if ($("#formWgIssuedName").val() != "") saveObj.UsernameIssu = $("#formWgIssuedName").val();
@@ -279,7 +284,7 @@ function SaveWG(submit) {
 }
 
 function GoBack() {
-    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "") {
+    if ($("#hdnWgView").val() == "" || $("#hdnWcView").val() == "") {
         if (app.Confirm("Are you sure you want to close the form?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";
@@ -301,3 +306,55 @@ function formatDate(date) {
 
     return [day, month, year].join('/');
 }
+
+function ClearWG() {
+    $("#formWGDivisionCode").val("").trigger("change").trigger("chosen:updated");
+    $("#formWgIssuedBy").val("").trigger("change").trigger("chosen:updated");
+    $("#formWgDate").val('');
+    $("#formWcDtDlpExtn").val('');
+    $("#formWcIssuedBy").val('');
+    $("#formWgIssuedDate").val('');
+}
+
+function ClearWC() {
+    $("#formWCDivisionCode").val("").trigger("change").trigger("chosen:updated");
+    $("#formWcIssuedBy").val("").trigger("change").trigger("chosen:updated");
+    $("#formWcDtCompl").val('');
+    $("#formWcDtDlpExtn").val('');
+    $("#formWcIssuedBy").val('');
+    $("#formWcIssuedDate").val('');
+}
+
+function GetImageList(id, form) {
+    //debugger;
+    var group = $("#FormADetAssetGrpCode option:selected").val();
+    if (id && id > 0) {
+        $("#fw1IWRefNo").val(id);
+    }
+    else {
+        id = $("#fw1IWRefNo").val();
+    }
+    $.ajax({
+        url: '/InstructedWorks/GetIWImageList',
+        data: { id, assetgroup: group, form },
+        type: 'POST',
+        success: function (data) {
+            $("#ViewPhoto").html(data);
+            if ($("#hdnView").val() == "1")
+                $("div.img-btns *").prop("disabled", true);
+            if (form == "FormWCWG") 
+                $("divFormType").show();
+            else if (form == "FormWDWN")
+                $("divFormType").show();
+            else
+                $("divFormType").hide();
+        },
+        error: function (data) {
+            alert(data.responseText);
+        }
+
+    });
+
+    return true;
+}
+

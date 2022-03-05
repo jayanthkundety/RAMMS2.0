@@ -82,6 +82,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormW2":
                     iResult = await SaveFormW2(process);
                     break;
+                case "FormWC":
+                    iResult = await SaveFormW1(process);
+                    break;
+                case "FormWG":
+                    iResult = await SaveFormW2(process);
+                    break;
             }
             return iResult;
         }
@@ -149,6 +155,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                     break;
                 case "FormW2":
                     logs = this.context.RmIwFormW2.Where(x => x.Fw2PkRefNo == RefId).Select(x => x.Fw2AuditLog).FirstOrDefault();
+                    break;
+                case "FormWC":
+                    logs = this.context.RmIwFormWc.Where(x => x.FwcPkRefNo == RefId).Select(x => x.FwcAuditLog).FirstOrDefault();
+                    break;
+                case "FormWG":
+                    logs = this.context.RmIwFormWg.Where(x => x.FwgPkRefNo == RefId).Select(x => x.FwgAuditLog).FirstOrDefault();
                     break;
             }
             return Utility.ProcessLog(logs);

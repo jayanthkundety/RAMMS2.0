@@ -67,6 +67,7 @@ namespace RAMMS.Repository
             foreach (var dpt in divList)
             {
                 var div = new Division();
+                div.ID = dpt.FiwWrksDeptId;
                 div.Code = dpt.FiwWrksDeptCode;
                 div.Name = dpt.FiwWrksDeptName;
                 div.Adress1 = dpt.FiwWrksDeptAddress1;
