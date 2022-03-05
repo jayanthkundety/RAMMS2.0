@@ -40,7 +40,8 @@ namespace RAMMS.Common
 
         public const string FormW1Saved = "Saved";
         public const string FormW1Submitted = "Submitted";
-        public const string FormW1Verified = "Verified";
+        public const string FormW1Rejected = "Rejected";
+        public const string FormW1Approved = "Approved";
 
         public const string FormW2Submitted = "Submitted";
         public const string FormW2Saved = "Saved";
