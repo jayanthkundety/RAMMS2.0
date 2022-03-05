@@ -96,30 +96,30 @@ function Save(GroupName, SubmitType) {
     debugger
     if (SubmitType != "") {
 
-        $("#FormWDWNpage .svalidate").addClass("validate");
+        $("#FormWDpage .svalidate").addClass("validate");
 
         if (SubmitType == "Submitted") {
-            $("#FormW1_Status").val("Submitted");
-            $("#FormW1_SubmitSts").val(true);
+            $("#FormWD_Status").val("Submitted");
+            $("#FormWD_SubmitSts").val(true);
             $("#ddlUseridReq").addClass("validate");
         }
     }
     else {
-        $("#FormW1_Status").val("Saved");
+        $("#FormWD_Status").val("Saved");
     }
 
     document.getElementById('ClauseDetails').value = JSON.stringify(GetClauseDetails());
 
     if (ValidatePage('#FormWDWNpage')) {
         InitAjaxLoading();
-        $.post('/InstructedWorks/SaveFormWDWN', $("form").serialize(), function (data) {
+        $.post('/InstructedWorks/SaveFormWD', $("form").serialize(), function (data) {
             HideAjaxLoading();
             if (data == -1) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
 
-                $("#FormW1_PkRefNo").val(data);
+                $("#FormWD_PkRefNo").val(data);
                 $("#hdnPkRefNo").val(data);
 
                 if (SubmitType == "" || SubmitType == "Saved") {

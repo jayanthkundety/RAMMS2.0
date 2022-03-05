@@ -21,7 +21,7 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? DtW2Initiation { get; set; }
         public DateTime? DtW2Compl { get; set; }
         public double? LadAmt { get; set; }
-        public bool? SignIssu { get; set; }
+        public bool SignIssu { get; set; }
         public int? UseridIssu { get; set; }
         public string UsernameIssu { get; set; }
         public string DesignationIssu { get; set; }

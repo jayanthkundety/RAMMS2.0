@@ -34,6 +34,8 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormWGService _formWGService;
         private readonly IDDLookUpService _ddLookupService;
         private readonly IRoadMasterService _roadMasterService;
+        private readonly IFormWDService _formWDService;
+        private readonly IFormWNService _formWNService;
 
         private readonly IDivisionService _divisionService;
 
@@ -51,7 +53,7 @@ namespace RAMMS.Web.UI.Controllers
         public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,
             IRoadMasterService roadMasterService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,
             IDivisionService divisionService, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper, IFormWCService formWCService,
-            IFormWGService formWGService)
+            IFormWGService formWGService, IFormWDService formWDService, IFormWNService formWNService)
         {
 
 
@@ -65,6 +67,9 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Service = formW2Service ?? throw new ArgumentNullException(nameof(formW2Service));
             _formWCService = formWCService ?? throw new ArgumentNullException(nameof(formWCService));
             _formWGService = formWGService ?? throw new ArgumentNullException(nameof(formWGService));
+            _formWDService = formWDService ?? throw new ArgumentNullException(nameof(formWDService));
+            _formWNService = formWNService ?? throw new ArgumentNullException(nameof(formWNService));
+
             _configuration = configuration;
             _bridgeBO = bridgeBO;
             _security = security;
@@ -875,7 +880,7 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WDWN
 
-        public async Task<IActionResult> OpenWDWN(int W1Id ,int W2Id)
+        public async Task<IActionResult> OpenWDWN(int W1Id, int W2Id)
         {
 
             var _formWDWNModel = new FormWDWNModel();
@@ -890,20 +895,36 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
-        public async Task<JsonResult> SaveFormWDWN(FormWDWNModel model)
+        [HttpPost]
+        public async Task<JsonResult> SaveFormWD(FormWDWNModel frm)
         {
+
             int refNo = 0;
-
-            if (model.ClauseDetails != null && model.ClauseDetails != "" && model.ClauseDetails != "undefined")
+            frm.FormWD.ActiveYn = true;
+            if (frm.FormWD.PkRefNo == 0)
             {
+                frm.FormW1.Status = "Saved";
+                refNo = await _formWDService.SaveFormWD(frm.FormWD);
 
-                var res = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<FormWDDtlResponseDTO>>(model.ClauseDetails);
+                if (frm.ClauseDetails != null && frm.ClauseDetails != "" && frm.ClauseDetails != "undefined")
+                {
+                    var res = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<FormWDDtlResponseDTO>>(frm.ClauseDetails);
+                    foreach (var item in res)
+                    {
+                        item.FwdPkRefNo = refNo;
+                        _formWDService.SaveFormWDClause(item);
+                    }
+                }
 
             }
-
-
+            else
+            {
+                refNo = await _formW1Service.Update(frm.FormW1);
+            }
             return Json(refNo);
+
         }
+
 
         #endregion
 

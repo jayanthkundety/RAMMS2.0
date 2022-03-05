@@ -1,4 +1,6 @@
-﻿<div class="container-fluid">
+﻿@model RAMMS.Web.UI.Models.FormWDWNModel;
+@using RAMMS.Business.ServiceProvider;
+<div class="container-fluid" id="FormWNpage">
     <div class="row">
         <div class="col-lg-12">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
@@ -10,55 +12,46 @@
                 <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                     <div class="w-100 dt-tbl-section">
                         <div class="row">
-                            <div class="form-group col-lg-4">
-                                <label for="OurRef">
-                                    Name of Division
-                                </label>
-                                @*<input type="text" placeholder="" class="form-control">*@
-                                <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <label for="OurRef">
-                                    Divisional Address 1
-                                </label>
-                                @*<input type="text" placeholder="" class="form-control">*@
-                                <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
-                            </div>
-                            <div class="form-group col-lg-4">
-                                <label for="OurRef">
-                                    Divisional Address 2
-                                </label>
-                                @*<input type="text" placeholder="" class="form-control">*@
-                                <p class="font-weight-bold"> Miri Division<br />Jabatan Kerja Raya Miri, Menara 2, Lot 3500<br />Kompleks Islam Sarawak, Miri, Jalan Pujut</p>
-                            </div>
+                            @for (var i = 0; i < @Model.Division.Divisions.Count; i++)
+                            {
+                                var div = Model.Division.Divisions[i];
+                                if (i == 0)
+                                {
+                                    <div class="form-group col-lg-4">
+                                        <label for="OurRef">Name of Division</label>
+                                        <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
+                                    </div>
+                                }
+
+                                if (i == 1)
+                                {
+                                    <div class="form-group col-lg-4">
+                                        <label for="OurRef">
+                                            Divisional Address 1
+                                        </label>
+                                        @*<input type="text" placeholder="" class="form-control">*@
+                                        <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
+                                    </div>
+                                }
+
+                                if (i == 2)
+                                {
+                                    <div class="form-group col-lg-4">
+                                        <label for="OurRef">
+                                            Divisional Address 2
+                                        </label>
+                                        @*<input type="text" placeholder="" class="form-control">*@
+                                        <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
+                                    </div>
+                                }
+                            }
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
-        <!--<div class="col-lg-12">
-            <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                <div class=" py-2">
 
-                    <div class="form-group col-lg-4">
-                        <label for="OurRef">Contract  NO</label>
-                        <input type="text" placeholder="" disabled value="PWM/HO/B130/2019(124)" class="form-control" />
-                    </div>-->
-        @*<div class="form-group col-lg-2">
-                <div class="row mt-4">
-                    <lable>
-                        Agreed Negotiate Rate Date</label>
-                        <div class="col-6 pt-1">
-                            <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> BQ</label>
-                        </div>
-                        <div class="col-6 pt-1">
-                            <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> Drawing</label>
-                        </div>
-                </div>
-            </div>*@
-        <!--</div>
-            </div>
-        </div>-->
         <div class="col-lg-12">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                 <div class="col-lg-12 py-2 px-4">
@@ -71,19 +64,19 @@
                     <div class="row">
                         <div class="form-group col-lg-3">
                             <label for="OurRef">Our Ref / Contract  NO</label>
-                            <input type="text" placeholder="" value="PWM/HO/B130/2019(124)" class="form-control">
+                            @Html.TextBoxFor(m => m.FormWN.OurRefNo, new { @class = "form-control" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Date">
                                 Date
                             </label>
-                            <input type="date" placeholder="" class="form-control">
+                            @Html.EditorFor(m => m.FormWN.DtWn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Your Ref">
                                 Your Ref
                             </label>
-                            <input type="text" placeholder="" disabled class="form-control">
+                            @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @readonly = true, @class = "form-control" })
                         </div>
                         <div class="form-group  col-lg-3">
                             <label for="Your Ref">
@@ -91,35 +84,7 @@
                             </label>
                             <input type="text" placeholder="" disabled class="form-control">
                         </div>
-                        <div class="form-group col-lg-4">
-                            <label for="Your Ref">
-                                Address 1
-                            </label>
-                            <input type="text" placeholder="" class="form-control">
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="Your Ref">
-                                Address 2
-                            </label>
-                            <input type="text" placeholder="" class="form-control">
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="Your Ref">
-                                Address 3
-                            </label>
-                            <input type="text" placeholder="" class="form-control">
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="Phone">Phone Number</label>
-                            <input type="text" placeholder="" value="085-431273" disabled class="form-control">
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="Fax">
-                                Fax Number
-                            </label>
-                            <input type="text" placeholder="" value=" 085-438647" disabled class="form-control">
-                        </div>
-
+                    
                     </div>
 
 
@@ -142,8 +107,8 @@
                             <label class="mb-0" for="PhysicalWorks">
                                 Instructed Work Title
                             </label>
-                            <textarea class="form-control" type="text" style="height:80px;" disabled></textarea>
-
+                            
+                            @Html.TextAreaFor(m => m.FormWN.IwProjectTitle, new { @class = "form-control  svalidate {required,Instructed Work} ", @style = "height:80px;" })
                         </div>
                     </div>
                 </div>
@@ -192,67 +157,35 @@
             </p>
         </div>
         <div class="col-lg-12">
-            <div class="border px-3 pt-3 pb-1 float-left w-100 d-none">
-                <div class="row">
-                    <div class="col-lg-3 mb-3">
-                        <label class="mb-0" for="PhysicalWorks">
-                            Date of Issuance
-                        </label>
-                        <input type="date" disabled class="form-control">
-                    </div>
-                    <div class="col-lg-3 mb-3">
-                        <label class="mb-0" for="PhysicalWorks">
-                            Date of Agreement
-                        </label>
-                        <input type="date" disabled class="form-control">
-                    </div>
-                    <div class="col-lg-3 mb-3">
-                        <label> Government calculated Rate</label>
-                        <div class="input-group">
-                            <input class="form-control" type="text">
-                        </div>
-                    </div>
-                    <div class="col-lg-3 mb-3">
-                        <label> Instructed Work</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">RM</span>
-                            </div>
-                            <input class="form-control" type="text">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div class="py-1 float-left w-100">
                 <div class="w-100 dt-tbl-section">
                     <div class="col-12">
-                        <div class="row pt-3 pb-1">
+                        <div class="row pt-3 px-2 pb-1">
                             <div class="form-group col-lg-3">
                                 <label for="Designation"> User ID </label>
-                                <select class="form-control">
-                                    <option> select ID</option>
-                                </select>
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Userid", "Select Users", new { Id = "ddlUserid", @class = "form-control svalidate {required, User}", @onchange = "OnWNUseridChange(this); " })
                             </div>
                             <div class="form-group col-lg-2">
                                 <label for="Designation"> Name </label>
-                                <input class="form-control" type="text" value="Mohd. Riduan Osman">
+                                @Html.TextBoxFor(model => model.FormWN.UsernameIssu, new { @readonly = true, @class = "form-control" })
                             </div>
                             <div class="form-group col-lg-2 p-0">
                                 <label for="Designation"> Designation</label>
-                                <input class="form-control " type="text" value=" Regional Manager">
+                                @Html.TextBoxFor(model => model.FormWN.DesignationIssu, new { @readonly = true, @class = "form-control" })
                             </div>
                             <div class="form-group col-lg-2">
                                 <label for="Designation"> Office</label>
-                                <input class="form-control " type="text">
+                                @Html.TextBoxFor(model => model.FormWN.OfficeIssu, new { @readonly = true, @class = "form-control" })
                             </div>
                             <div class="form-group col-lg-2 pr-0">
                                 <label>Date (DD-MM-YYYY)</label>
-                                <input type="date" class="datepicker form-control disableinput ">
+                                @Html.EditorFor(m => m.FormWN.DtIssu, new { type = "date", htmlAttributes = new { @class = "form-control" } })
                             </div>
                             <div class="form-group col-lg-1 text-center">
                                 <label>Signature</label>
                                 <div class="clear-b mt-2">
-                                    <input type="checkbox">
+                                    @Html.CheckBoxFor(model => model.FormWN.SignIssu, new { @disabled = "disabled" })
                                 </div>
                             </div>
                         </div>
@@ -271,7 +204,7 @@
     width: 96%;
     height: 45px;">
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
-        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
     <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="return checkW2Exist()">Save</button>
     <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn">Submit</button>
 </div>
