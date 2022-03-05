@@ -804,12 +804,13 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WCWG
 
-        public async Task<IActionResult> OpenWCWG(int id)
+        public async Task<IActionResult> OpenWCWG(int w1id, int w2id)
         {
 
             var _formWCWGModel = new FormWCWGModel();
             LoadLookupService("TECM_Status", "User");
-            _formWCWGModel.FormW1 = await _formW2Service.GetFormW1ById(id);
+            _formWCWGModel.FormW1 = await _formW2Service.GetFormW1ById(w1id);
+            _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
             _formWCWGModel.FormW1.ServPropName = serProv.Name;
@@ -820,6 +821,7 @@ namespace RAMMS.Web.UI.Controllers
             _formWCWGModel.FormW1.ServFax = serProv.Fax;
             
             _formWCWGModel.FormWC = new FormWCResponseDTO();
+            _formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             _formWCWGModel.FormWG = new FormWGResponseDTO();
             _formWCWGModel.Division = await _divisionService.GetDivisions();
 
