@@ -10320,9 +10320,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WD_Dtl");
 
-                entity.Property(e => e.FwddPkRefNo)
-                    .HasColumnName("FWDD_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwddPkRefNo).HasColumnName("FWDD_PK_Ref_No");
 
                 entity.Property(e => e.FwddClause)
                     .HasColumnName("FWDD_Clause")
