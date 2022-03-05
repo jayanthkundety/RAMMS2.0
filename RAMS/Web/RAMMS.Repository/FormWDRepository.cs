@@ -39,7 +39,7 @@ namespace RAMMS.Repository
         {
             try
             {
-                
+              
                 var res = (from r in _context.RmIwFormWdDtl where r.FwddPkRefNo == FormWDDtl.FwddPkRefNo select r).SingleOrDefault();
                 if (res != null)
                 {
@@ -47,12 +47,12 @@ namespace RAMMS.Repository
                     _context.SaveChanges();
                 }
 
-                _context.Entry<RmIwFormWdDtl>(FormWDDtl).State = FormWDDtl.FwddFwdPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
+                _context.Entry<RmIwFormWdDtl>(FormWDDtl).State = FormWDDtl.FwddPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
                 _context.SaveChanges();
 
                 return FormWDDtl.FwddFwdPkRefNo;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return 500;
 

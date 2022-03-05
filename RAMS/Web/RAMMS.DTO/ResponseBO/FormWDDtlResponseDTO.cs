@@ -6,6 +6,7 @@ namespace RAMMS.DTO.ResponseBO
 {
     public class FormWDDtlResponseDTO
     {
+       
         public int PkRefNo { get; set; }
         public int? FwdPkRefNo { get; set; }
         public string Reason { get; set; }

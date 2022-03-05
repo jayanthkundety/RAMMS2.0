@@ -483,8 +483,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (process.Stage == Common.StatusList.FormW1Submitted)
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.OperationsExecutive;
-                    strTitle = "Verified";
-                    form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Verified : StatusList.S2Submitted;
+                    strTitle = "Approved";
+                    form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Verified : StatusList.FormW1Rejected;
 
                     if (process.IsApprove)
                     {

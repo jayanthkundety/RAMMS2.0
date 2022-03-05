@@ -67,7 +67,9 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             try
             {
-                return _repo.SaveFormWDClause(_mapper.Map<RmIwFormWdDtl>(FormWDDtl));
+                var model = _mapper.Map<RmIwFormWdDtl>(FormWDDtl);
+                model.FwddPkRefNo = 0;
+                return _repo.SaveFormWDClause(model);
             }
             catch (Exception ex)
             {

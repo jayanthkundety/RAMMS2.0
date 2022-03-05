@@ -7,6 +7,7 @@ namespace RAMMS.DTO.ResponseBO
     public class FormWNResponseDTO
     {
         public int PkRefNo { get; set; }
+        public int FW1PKRefno { get; set; }
         public string RmuCode { get; set; }
         public string SecCode { get; set; }
         public string RoadCode { get; set; }
