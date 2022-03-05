@@ -10106,9 +10106,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WC");
 
-                entity.Property(e => e.FwcPkRefNo)
-                    .HasColumnName("FWC_PK_Ref_no")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwcPkRefNo).HasColumnName("FWC_PK_Ref_no");
 
                 entity.Property(e => e.FwcActiveYn).HasColumnName("FWC_Active_YN");
 
@@ -10216,9 +10214,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WD");
 
-                entity.Property(e => e.FwdPkRefNo)
-                    .HasColumnName("FWD_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwdPkRefNo).HasColumnName("FWD_PK_Ref_No");
 
                 entity.Property(e => e.FwdActiveYn).HasColumnName("FWD_Active_YN");
 
@@ -10466,9 +10462,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WN");
 
-                entity.Property(e => e.FwnPkRefNo)
-                    .HasColumnName("FWN_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwnPkRefNo).HasColumnName("FWN_PK_Ref_No");
 
                 entity.Property(e => e.FwnActiveYn).HasColumnName("FWN_Active_YN");
 
