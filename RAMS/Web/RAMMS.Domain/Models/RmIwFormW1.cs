@@ -9,7 +9,9 @@ namespace RAMMS.Domain.Models
         {
             RmIwFormW2 = new HashSet<RmIwFormW2>();
             RmIwFormWc = new HashSet<RmIwFormWc>();
+            RmIwFormWd = new HashSet<RmIwFormWd>();
             RmIwFormWg = new HashSet<RmIwFormWg>();
+            RmIwFormWn = new HashSet<RmIwFormWn>();
         }
 
         public int Fw1PkRefNo { get; set; }
@@ -82,6 +84,8 @@ namespace RAMMS.Domain.Models
 
         public virtual ICollection<RmIwFormW2> RmIwFormW2 { get; set; }
         public virtual ICollection<RmIwFormWc> RmIwFormWc { get; set; }
+        public virtual ICollection<RmIwFormWd> RmIwFormWd { get; set; }
         public virtual ICollection<RmIwFormWg> RmIwFormWg { get; set; }
+        public virtual ICollection<RmIwFormWn> RmIwFormWn { get; set; }
     }
 }

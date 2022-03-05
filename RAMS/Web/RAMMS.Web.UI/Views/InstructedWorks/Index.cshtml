@@ -43,16 +43,16 @@
 
     });
 
-    
+
         function PercentangeChange(ctrl) {
-            if (parseFloat($(ctrl).val()) > 100) 
-            {   
+            if (parseFloat($(ctrl).val()) > 100)
+            {
                 app.ShowErrorMessage("Percentange should not be greater than 100");
                 $(ctrl).val('');
             }
         }
 
-    
+
 
 </script>
 
@@ -60,7 +60,7 @@
     <div class="body-header w-100">
         <div class="col-lg-12">
             <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
-                <span class="mb-0 font-weight-bold font-20">    
+                <span class="mb-0 font-weight-bold font-20">
                     Instructed Work
                 </span>
                 <nav aria-label="breadcrumb">
@@ -218,43 +218,43 @@
                 </div>
                 </div>*@
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('wd')">
                     EOT / LAD
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Add',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Veiw',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="wdView" onclick="OpenFormWDWN('Veiw',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wdPrint" onclick="PrintFormWDWN()">
                         <span class="print-icon"></span> Print
-                        </button>*@
+                    </button>
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('wc')">
                     COMPLETED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Add',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="wcAdd" onclick="OpenFormWCWG('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Edit',0)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="wcEdit" onclick="OpenFormWCWG('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('View',1)">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="wcView" onclick="OpenFormWCWG('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wcPrint" onclick="PrintFormWCWG()">
                         <span class="print-icon"></span> Print
-                        </button>*@
+                    </button>
                 </div>
             </div>
             <div class="panel with-nav-tabs panel-default">
@@ -481,6 +481,15 @@
             case "wc":
                 value = daa.wcRefNo;
                 break;
+            case "wg":
+                value = daa.wgRefNo;
+                break;
+            case "wd":
+                value = daa.wdRefNo;
+                break;
+            case "wn":
+                value = daa.wnRefNo;
+                break;
             case "w1Status":
                 value = daa.w1Status;
                 break;
@@ -488,10 +497,34 @@
                 value = daa.w1SubStatus;
                 break;
             case "w2Status":
-                value = daa.w1Status;
+                value = daa.w2Status;
                 break;
             case "w2SubStatus":
                 value = daa.w2SubStatus;
+                break;
+            case "wcStatus":
+                value = daa.wcStatus;
+                break;
+            case "wcSubStatus":
+                value = daa.wcSubStatus;
+                break;
+            case "wgStatus":
+                value = daa.wgStatus;
+                break;
+            case "wgSubStatus":
+                value = daa.wgSubStatus;
+                break;
+            case "wdStatus":
+                value = daa.wdStatus;
+                break;
+            case "wdSubStatus":
+                value = daa.wdSubStatus;
+                break;
+            case "wnStatus":
+                value = daa.wnStatus;
+                break;
+            case "wnSubStatus":
+                value = daa.wnSubStatus;
                 break;
             default:
                 value = daa.w1RefNo;
@@ -575,9 +608,8 @@
     }
 
     function OpenFormWDWN(mode, view) {
-         var w1id = GetFormIDByName("w1");
+        var w1id = GetFormIDByName("w1");
         var w2id = GetFormIDByName("w2");
-
         if (mode == "Add") {
             url = "/InstructedWorks/OpenWDWN?w1id=" + w1id + "&w2id=" + w2id ;
         }
@@ -676,20 +708,108 @@
             $("#w1View").show();
             $("#w1Print").show();
         }
+        else if (form == 'wc')
+        {
+            if (si == null)
+            {
+                $("#wcAdd").hide();
+                 $("#wcEdit").hide();
+                 $("#wcView").hide();
+                 $("#wcPrint").hide();
+                 return;
+            }
+            var id = GetFormIDByName("wc");
+            var w2status = GetFormIDByName("w2Status"); //To Do change to wd Status
+            var wcsubstatus = GetFormIDByName("wcSubStatus");
+             if ((id == "-1" || id == null) &&   (w2status == "Received"))
+            {
+                $("#wcAdd").show();
+                $("#wcEdit").hide();
+                $("#wcView").hide();
+                $("#wcPrint").hide();
+            }
+            else if (id != "-1" && id != null)
+            {
+                if (wcsubstatus)
+                {
+                    $("#wcAdd").hide();
+                    $("#wcEdit").hide();
+                    $("#wcView").show();
+                    $("#wcPrint").show();
+                    return;
+                }
+                $("#wcAdd").hide();
+                $("#wcEdit").show();
+                $("#wcView").show();
+                $("#wcPrint").show();
+            }
+            else {
+                $("#wcAdd").hide();
+                 $("#wcEdit").hide();
+                 $("#wcView").hide();
+                 $("#wcPrint").hide();
+            }
+
+        }
+        else if (form == 'wd')
+        {
+            if (si == null)
+            {
+                $("#wdAdd").hide();
+                 $("#wdEdit").hide();
+                 $("#wdView").hide();
+                 $("#wdPrint").hide();
+                 return;
+            }
+            var id = GetFormIDByName("wd");
+            var w2status = GetFormIDByName("w2Status");
+            var wdsubstatus = GetFormIDByName("wdSubStatus");
+             if ((id == "-1" || id == null) &&   (w2status == "Received"))
+            {
+                $("#wdAdd").show();
+                $("#wdEdit").hide();
+                $("#wdView").hide();
+                $("#wdPrint").hide();
+            }
+            else if (id != "-1" && id != null)
+            {
+                if (wdsubstatus)
+                {
+                    $("#wdAdd").hide();
+                    $("#wdEdit").hide();
+                    $("#wdView").show();
+                    $("#wdPrint").show();
+                    return;
+                }
+                $("#wdAdd").hide();
+                $("#wdEdit").show();
+                $("#wdView").show();
+                $("#wdPrint").show();
+            }
+            else {
+                 $("#wdAdd").hide();
+                 $("#wdEdit").hide();
+                 $("#wdView").hide();
+                 $("#wdPrint").hide();
+            }
+
+        }       
     }
 
     function OpenFormWCWG(mode, view) {
         var w1id = GetFormIDByName("w1");
         var w2id = GetFormIDByName("w2");
+        var wcid = GetFormIDByName("wc");
+        var wgid = GetFormIDByName("wg");
 
         if (mode == "Add") {
             url = "/InstructedWorks/OpenWCWG?w1id=" + w1id + "&w2id=" + w2id;
         }
         else if (mode == "Edit") {
-            url = "/InstructedWorks/EditFormWCWG?w1id=" + w1id + "&w2id=" + w2id;
+            url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id;
         }
         else if (mode == "View") {
-            url = "/InstructedWorks/EditFormWCWG?w1id=" + w1id + "&w2id=" + w2id + "&View=1";
+            url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id + "&View=1";
         }
         InitAjaxLoading();
         $.ajax({

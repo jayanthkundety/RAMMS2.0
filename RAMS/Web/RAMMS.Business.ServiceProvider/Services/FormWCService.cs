@@ -80,9 +80,25 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public Task<int> Update(FormWCResponseDTO formWCDTO)
+        public async Task<int> Update(FormWCResponseDTO formWCDTO)
         {
-            throw new NotImplementedException();
+            int rowsAffected;
+            try
+            {
+                var domainModelformWc = _mapper.Map<RmIwFormWc>(formWCDTO);
+                domainModelformWc.FwcPkRefNo = formWCDTO.PkRefNo;
+                domainModelformWc.FwcActiveYn = true;
+                domainModelformWc = UpdateStatus(domainModelformWc);
+                _repoUnit.FormWCRepository.Update(domainModelformWc);
+                rowsAffected = await _repoUnit.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
         }
 
         public RmIwFormWc UpdateStatus(RmIwFormWc form)

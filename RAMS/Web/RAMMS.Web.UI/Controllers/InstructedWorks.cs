@@ -834,18 +834,22 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
         }
 
-        public async Task<IActionResult> EditFormWCWG(int id)
+        public async Task<IActionResult> EditFormWCWG(int wcid, int wgid, int w2id , string view)
         {
 
             var _formWCWGModel = new FormWCWGModel();
             LoadLookupService("TECM_Status", "User");
-            var _formC = await _formWCService.FindWCByW1ID(id);
+            var _formC = await _formWCService.FindWCByID(wcid);
             _formWCWGModel.FormWC = _formC == null ? new FormWCResponseDTO() : _formC;
-            var _formG = await _formWGService.FindWGByW1ID(id);
+            var _formG = await _formWGService.FindWGByID(wgid);
 
             _formWCWGModel.FormWG = _formG == null ? new FormWGResponseDTO() : _formG;
-
+            _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
             _formWCWGModel.FormW1 = _formC != null ? _formWCWGModel.FormWC.Fw1PkRefNoNavigation : new FormW1ResponseDTO();
+
+            if (_formC.SubmitSts || view == "1") _formWCWGModel.WCView = "1";
+
+            if (_formG.SubmitSts || view == "1") _formWCWGModel.WGView = "1";
 
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
