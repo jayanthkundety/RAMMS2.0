@@ -10,6 +10,8 @@ namespace RAMMS.Repository.Interfaces
     {
         int SaveFormW1(RmIwFormW1 FormW1);
         Task<RmIwFormW1> FindFormW1ByID(int Id);
+
+        Task<RmIwFormW2> FindFormW2ByPKRefNo(int PKRefNo);
         Task<List<RmIwformImage>> GetImagelist(string IwRefNo);
         Task<int> GetImageId(string iwRefNo, string type);
 

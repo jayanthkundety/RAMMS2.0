@@ -41,6 +41,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
 
+        public async Task<FormW2ResponseDTO> FindFormW2ByPKRefNo(int id)
+        {
+            RmIwFormW2 formW2 = await _repo.FindFormW2ByPKRefNo(id);
+            return _mapper.Map<FormW2ResponseDTO>(formW2);
+        }
+
         public async Task<int> LastInsertedIMAGENO(string hederId, string type)
         {
             int imageCt = await _repoUnit.FormW1Repository.GetImageId(hederId, type);
@@ -53,6 +59,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             return imageCt;
         }
 
+
+      
+
+        public string GetJKRRefNoFromW2(int PKRefNo)
+        {
+            return _repoUnit.FormW1Repository.GetJKRRefNoFromW2(PKRefNo);
+        }
 
         public async Task<int> SaveFormW1(FormW1ResponseDTO FormW1)
         {

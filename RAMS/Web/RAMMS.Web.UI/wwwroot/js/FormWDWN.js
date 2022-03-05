@@ -63,3 +63,80 @@ function AddClauseData() {
 function DeleteClauseRow(obj) {
     $(obj).closest('tr').remove();
 }
+
+var ClassDetails = [];
+
+function GetClauseDetails() {
+
+    var rows = $('#tblClause tbody >tr');
+    var columns;
+    for (var i = 0; i < rows.length; i++) {
+
+        if (i != 0) {
+            var ClassDetail = new Object();
+            columns = $(rows[i]).find('td');
+            for (var j = 0; j < columns.length; j++) {
+                if (j == 0)
+                    ClassDetail.Reason = $(columns[j]).html();
+                else if (j == 1)
+                    ClassDetail.Clause = $(columns[j]).html();
+                else if (j == 2)
+                    ClassDetail.ExtnPrd = $(columns[j]).html();
+            }
+            ClassDetails.push(ClassDetail);
+        }
+    }
+
+    return ClassDetails;
+}
+
+
+function Save(GroupName, SubmitType) {
+
+    debugger
+    if (SubmitType != "") {
+
+        $("#FormWDWNpage .svalidate").addClass("validate");
+
+        if (SubmitType == "Submitted") {
+            $("#FormW1_Status").val("Submitted");
+            $("#FormW1_SubmitSts").val(true);
+            $("#ddlUseridReq").addClass("validate");
+        }
+    }
+    else {
+        $("#FormW1_Status").val("Saved");
+    }
+
+    document.getElementById('ClauseDetails').value = JSON.stringify(GetClauseDetails());
+
+    if (ValidatePage('#FormWDWNpage')) {
+        InitAjaxLoading();
+        $.post('/InstructedWorks/SaveFormWDWN', $("form").serialize(), function (data) {
+            HideAjaxLoading();
+            if (data == -1) {
+                app.ShowErrorMessage(data.errorMessage);
+            }
+            else {
+
+                $("#FormW1_PkRefNo").val(data);
+                $("#hdnPkRefNo").val(data);
+
+                if (SubmitType == "" || SubmitType == "Saved") {
+                    app.ShowSuccessMessage('Saved Successfully', false);
+                    location.href = "/InstructedWorks/Index";
+                }
+                else if (SubmitType == "Submitted") {
+                    app.ShowSuccessMessage('Submitted Successfully', false);
+                    location.href = "/InstructedWorks/Index";
+                }
+                else if (SubmitType == "Verified") {
+                    process.ShowApprove(GroupName, SubmitType);
+                }
+            }
+        });
+    }
+
+
+
+}
