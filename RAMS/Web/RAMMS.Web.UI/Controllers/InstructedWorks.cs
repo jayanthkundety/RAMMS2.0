@@ -321,6 +321,15 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteW1(int id)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formW1Service.DeActivateFormW1(id);
+            return Json(rowsAffected);
+        }
+
         #endregion
 
         #region FormW2

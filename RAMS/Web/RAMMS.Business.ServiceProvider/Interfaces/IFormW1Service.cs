@@ -21,6 +21,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<int> DeActivateImage(int imageId);
 
+        Task<int> DeActivateFormW1(int formNo);
+
         //Task<int> GetImageIdByW1Id(int formW1Id, string type);
 
     }

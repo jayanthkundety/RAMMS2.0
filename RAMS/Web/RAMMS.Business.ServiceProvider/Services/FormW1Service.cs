@@ -171,7 +171,26 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
+        public async Task<int> DeActivateFormW1(int formNo)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormW1 = await _repoUnit.FormW1Repository.GetByIdAsync(formNo);
+                domainModelFormW1.Fw1ActiveYn = false;
+                _repoUnit.FormW1Repository.Update(domainModelFormW1);
 
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
         public async Task<int> Update(FormW1ResponseDTO FormW1)
         {
             int rowsAffected;
