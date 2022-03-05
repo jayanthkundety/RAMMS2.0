@@ -52,7 +52,7 @@ $(document).ready(function ()
             $("#formW2IssuedOffice").prop("disabled", true);
             $("#formW2IssuedOffice").val('');
         }
-        $("#formW2IssuedDate").text(currentDate);
+        $("#formW2IssuedDate").val(currentDate);
         return false;
     });
 
