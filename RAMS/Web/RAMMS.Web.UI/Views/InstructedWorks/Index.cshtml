@@ -575,19 +575,17 @@
     }
 
     function OpenFormWDWN(mode, view) {
-        var SelectedIWGridId = 0;
+         var w1id = GetFormIDByName("w1");
+        var w2id = GetFormIDByName("w2");
 
         if (mode == "Add") {
-            url = "/InstructedWorks/OpenWDWN";
+            url = "/InstructedWorks/OpenWDWN?w1id=" + w1id + "&w2id=" + w2id ;
         }
         else if (mode == "Edit") {
-
-            SelectedIWGridId = GetFormIDByName("w1");
-            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+            url = "/InstructedWorks/EditFormW1?w1id=" + w1id + "&w2id=" + w2id ;
         }
         else if (mode == "View") {
-            SelectedIWGridId = GetFormIDByName("w1");
-            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
+            url = "/InstructedWorks/EditFormW1?w1id=" + w1id + "&w2id=" + w2id + "&View=1";
         }
         InitAjaxLoading();
         $.ajax({
@@ -681,16 +679,17 @@
     }
 
     function OpenFormWCWG(mode, view) {
-        var SelectedIWGridId = 0;
-        SelectedIWGridId = GetFormIDByName("w1");
+        var w1id = GetFormIDByName("w1");
+        var w2id = GetFormIDByName("w2");
+
         if (mode == "Add") {
-            url = "/InstructedWorks/OpenWCWG?id=" + SelectedIWGridId;
+            url = "/InstructedWorks/OpenWCWG?w1id=" + w1id + "&w2id=" + w2id;
         }
         else if (mode == "Edit") {
-            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId;
+            url = "/InstructedWorks/EditFormWCWG?w1id=" + w1id + "&w2id=" + w2id;
         }
         else if (mode == "View") {
-            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId + "&View=1";
+            url = "/InstructedWorks/EditFormWCWG?w1id=" + w1id + "&w2id=" + w2id + "&View=1";
         }
         InitAjaxLoading();
         $.ajax({
