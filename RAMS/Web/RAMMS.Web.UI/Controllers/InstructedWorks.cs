@@ -421,9 +421,9 @@ namespace RAMMS.Web.UI.Controllers
                 if (resultFCEM == null) resultFCEM = new FormW2FECMResponseDTO();
                 _formW2Model.FECM.FECM = resultFCEM;
 
-                if (resultFCEM.SubmitSts || view == "1") _formW2Model.FECM.View = "1";
+                if ((resultFCEM.SubmitSts && view != null) || view == "1") _formW2Model.FECM.View = "1";
 
-                if (resultFormW2.SubmitSts || view == "1") _formW2Model.View = "1";
+                if ((resultFormW2.SubmitSts && view != null) || view == "1") _formW2Model.View = "1";
 
                 _formW2Model.SaveFormW2Model = resultFormW2;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
