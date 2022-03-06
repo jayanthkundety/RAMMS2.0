@@ -923,7 +923,16 @@ namespace RAMMS.Web.UI.Controllers
             }
             else
             {
-                refNo = await _formW1Service.Update(frm.FormW1);
+                refNo = await _formWDService.Update(frm.FormWD);
+                if (frm.ClauseDetails != null && frm.ClauseDetails != "" && frm.ClauseDetails != "undefined")
+                {
+                    var res = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<FormWDDtlResponseDTO>>(frm.ClauseDetails);
+                    foreach (var item in res)
+                    {
+                        item.FwdPkRefNo = refNo;
+                        _formWDService.SaveFormWDClause(item);
+                    }
+                }
             }
             return Json(refNo);
 
