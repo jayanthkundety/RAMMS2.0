@@ -737,6 +737,49 @@
              $("#w1View").show();
              $("#w1Print").show();
          }
+         else if (form == 'wc')
+         {
+            if (si == null)
+            {
+                $("#wcAdd").hide();
+                 $("#wcEdit").hide();
+                 $("#wcView").hide();
+                 $("#wcPrint").hide();
+                 return;
+            }
+            var id = GetFormIDByName("wc");
+            var w2status = GetFormIDByName("w2Status"); //To Do change to wd Status
+            var wcsubstatus = GetFormIDByName("wcSubStatus");
+             if ((id == "-1" || id == null) &&   (w2status == "Received"))
+            {
+                $("#wcAdd").show();
+                $("#wcEdit").hide();
+                $("#wcView").hide();
+                $("#wcPrint").hide();
+            }
+            else if (id != "-1" && id != null)
+            {
+                if (wcsubstatus)
+                {
+                    $("#wcAdd").hide();
+                    $("#wcEdit").hide();
+                    $("#wcView").show();
+                    $("#wcPrint").show();
+                    return;
+                }
+                $("#wcAdd").hide();
+                $("#wcEdit").show();
+                $("#wcView").show();
+                $("#wcPrint").show();
+            }
+            else {
+                $("#wcAdd").hide();
+                 $("#wcEdit").hide();
+                 $("#wcView").hide();
+                 $("#wcPrint").hide();
+            }
+
+        }
          else if (form == 'wd')
          {
              if (si == null)

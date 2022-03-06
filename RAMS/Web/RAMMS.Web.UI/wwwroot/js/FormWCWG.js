@@ -9,6 +9,7 @@ $(document).ready(function () {
             $("#formWgIssuedName").val(ctrl.find("option:selected").attr("Item1"));
             $("#formWgIssuedDesig").val(ctrl.find("option:selected").attr("Item2"));
             $("#formWgIssuedOffice").val(ctrl.find("option:selected").attr("Item3"));
+            $("$formWgIssuedSig").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formWgIssuedName").prop("disabled", false);
@@ -17,6 +18,7 @@ $(document).ready(function () {
             $("#formWgIssuedDesig").val('');
             $("#formWgIssuedOffice").prop("disabled", false);
             $("#formWgIssuedOffice").val('');
+            $("$formWgIssuedSig").prop("checked", true);
         }
         else {
             $("#formWgIssuedName").prop("disabled", true);
@@ -25,11 +27,11 @@ $(document).ready(function () {
             $("#formWgIssuedDesig").val('');
             $("#formWgIssuedOffice").prop("disabled", true);
             $("#formWgIssuedOffice").val('');
+            $("$formWgIssuedSig").prop("checked", true);
         }
         $("#formWgIssuedDate").val(currentDate);
         return false;
     });
-
 
     $("#formWcIssuedBy").on("change", function () {
         debugger;
@@ -39,6 +41,7 @@ $(document).ready(function () {
             $("#formWcIssuedName").val(ctrl.find("option:selected").attr("Item1"));
             $("#formWcIssuedDesig").val(ctrl.find("option:selected").attr("Item2"));
             $("#formWcIssuedOffice").val(ctrl.find("option:selected").attr("Item3"));
+            $("$formWcIssuedSig").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formWcIssuedName").prop("disabled", false);
@@ -47,6 +50,7 @@ $(document).ready(function () {
             $("#formWcIssuedDesig").val('');
             $("#formWcIssuedOffice").prop("disabled", false);
             $("#formWcIssuedOffice").val('');
+            $("$formWcIssuedSig").prop("checked", true);
         }
         else {
             $("#formWcIssuedName").prop("disabled", true);
@@ -55,6 +59,7 @@ $(document).ready(function () {
             $("#formWcIssuedDesig").val('');
             $("#formWcIssuedOffice").prop("disabled", true);
             $("#formWcIssuedOffice").val('');
+            $("$formWcIssuedSig").prop("checked", true);
         }
         $("#formWcIssuedDate").val(currentDate);
         return false;

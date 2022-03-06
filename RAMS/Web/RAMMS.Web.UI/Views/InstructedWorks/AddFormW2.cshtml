@@ -45,45 +45,44 @@
      $("#saveFormW2Btn").show();
      $("#submitFormW2Btn").show();
      $("#divSaveRow").show();
-
      $("#saveFCEMBtn").hide();
      $("#submitFCEMBtn").hide();
 
      $("#closeFormW2Btn").show();
 
      function GetImageList(id, form) {
-    //debugger;
-    var group = $("#FormADetAssetGrpCode option:selected").val();
-    $("#saveFormW2Btn").hide();
-    $("#submitFormW2Btn").hide();
-    $("#saveFCEMBtn").hide();
-    $("#submitFCEMBtn").hide();
-    $("#closeFormW2Btn").show();
-    $("#divSaveRow").show();
-    if (id && id > 0) {
-        $("#fw1IWRefNo").val(id);
-    }
-    else {
-        id = $("#fw1IWRefNo").val();
-    }
-
-    $.ajax({
-        url: '/InstructedWorks/GetIWImageList',
-        data: { id, assetgroup: group , form },
-        type: 'POST',
-        success: function (data) {
-            $("#ViewPhoto").html(data);
-            if ($("#hdnView").val() == "1")
-                $("div.img-btns *").prop("disabled", true);
-            //$("#FW2HRef_No").val(id);
-        },
-        error: function (data) {
-            alert(data.responseText);
+        //debugger;
+        var group = $("#FormADetAssetGrpCode option:selected").val();
+        $("#saveFormW2Btn").hide();
+        $("#submitFormW2Btn").hide();
+        $("#saveFCEMBtn").hide();
+        $("#submitFCEMBtn").hide();
+        $("#closeFormW2Btn").show();
+        $("#divSaveRow").show();
+        if (id && id > 0) {
+            $("#fw1IWRefNo").val(id);
+        }
+        else {
+            id = $("#fw1IWRefNo").val();
         }
 
-    });
+        $.ajax({
+            url: '/InstructedWorks/GetIWImageList',
+            data: { id, assetgroup: group , form },
+            type: 'POST',
+            success: function (data) {
+                $("#ViewPhoto").html(data);
+                if ($("#hdnView").val() == "1")
+                    $("div.img-btns *").prop("disabled", true);
+                //$("#FW2HRef_No").val(id);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
 
-    return true;
+        });
+
+        return true;
 }
 
 </script>
@@ -139,7 +138,7 @@
         <div class="row bg-white py-3">
             <div class="col-lg-12">
                 <div class="tab-content mh-250">
-                    <div class="tab-pane show active" id="divFecm">
+                    <div class="tab-pane show" id="divFecm">
 
                         @{
                             Html.RenderPartial("_FormFECM.cshtml", Model.FECM);

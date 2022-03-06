@@ -356,13 +356,12 @@
         if ($("#hdnView").val() == "1") return;
         if (ValidatePage("#tab1")) {
             if ($("#hdnPkRefNo").val() != "0") {
-                $("#myModal").modal('show');
-                if ($("#hdnFormType").val() == "FormWCWG") 
-                $("divFormType").show();
-            else if ($("#hdnFormType").val() == "FormWDWN")
-                $("divFormType").show();
-            else
-                $("divFormType").hide();
+                $("#myModal").modal('show');  
+                
+                if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN") 
+                    $("#divFormType").show();
+                else
+                    $("#divFormType").hide();
             }
             else {
                 $("#tab1").click();
@@ -551,8 +550,10 @@
                 formData.append("FormFile", filesToUpload[i].file);
                 formData.append("PhotoType", filesToUpload[i].fileType);
             }
-            if ($("#hdnFormType").val())
-            formData.append("Source", $("#hdnForm").val());
+            if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN")
+                formData.append("Source", $("#formType").val());
+            else
+                formData.append("Source", $("#hdnForm").val());
             InitAjaxLoading();
             $.ajax(
                 {
