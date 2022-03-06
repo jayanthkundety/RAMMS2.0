@@ -60,7 +60,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-      
+
 
         public string GetJKRRefNoFromW2(int PKRefNo)
         {
@@ -100,7 +100,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.Fw1SubmitSts && form.Fw1Status == "Saved")
+            if (form.Fw1SubmitSts && (form.Fw1Status == "Saved" || form.Fw1Status == "Rejected"))
             {
                 form.Fw1Status = Common.StatusList.FormW2Submitted;
                 form.Fw1AuditLog = Utility.ProcessLog(form.Fw1AuditLog, "Submitted By", "Submitted", form.Fw1UsernameReq, string.Empty, form.Fw1DtReq, _security.UserName);
