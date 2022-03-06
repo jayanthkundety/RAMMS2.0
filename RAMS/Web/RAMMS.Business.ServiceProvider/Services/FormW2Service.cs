@@ -307,7 +307,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             if (form.Fw2SubmitSts && (string.IsNullOrEmpty(form.Fw2Status) || form.Fw2Status == Common.StatusList.FormW2Saved || form.Fw2Status == Common.StatusList.FormW2Rejected))
             {
                 form.Fw2Status = Common.StatusList.FormW2Submitted;
-                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, "Submitted By", "Submitted", form.Fw2UsernameIssu, string.Empty, form.Fw2DtIssu, _security.UserName);
+                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, "Submitted", "Submitted", form.Fw2UsernameIssu, string.Empty, form.Fw2DtIssu, _security.UserName);
                 processService.SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = _security.UserName,

@@ -533,7 +533,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.JKRSSuperiorOfficerSO;
                     strTitle = "Received";
-                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Received  : StatusList.FormW2Submitted;
+                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Received  : StatusList.FormW2Rejected;
 
                     if (process.IsApprove)
                     {
@@ -544,6 +544,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                             lstNotUserId.Add(form.Fw2UseridReq.Value);
 
                         strNotUserID = string.Join(",", lstNotUserId.Distinct());
+                    }
+                    else
+                    {
+                        strTitle = StatusList.FormW2Rejected;
                     }
                 }
                 form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, strTitle, process.IsApprove ? "Recieved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
