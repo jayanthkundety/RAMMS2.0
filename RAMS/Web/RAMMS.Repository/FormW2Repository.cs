@@ -460,7 +460,7 @@ namespace RAMMS.Repository
                                 W2SubStatus = w2Form.Fw2SubmitSts ,
                                 iWReferenceNo = w1Form.Fw1IwRefNo,
                                 projectTitle = w1Form.Fw1ProjectTitle,
-                                overAllStatus = w2Form.Fw2Status != "" ? "W2 - " + w2Form.Fw2Status : "W1 - " + w1Form.Fw1Status ,
+                                overAllStatus = w2Form != null && w2Form.Fw2Status != "" ? "W2 - " + w2Form.Fw2Status : "W1 - " + w1Form.Fw1Status ,
                                 initialPropDt = w1Form.Fw1InitialProposedDate != null ? DateTime.Parse(Convert.ToString(w1Form.Fw1InitialProposedDate)).ToString("dd/MM/yyyy") : "-",
                                 recommdDEYN = w1Form.Fw1RecomdBydeYn != null && w1Form.Fw1RecomdBydeYn == true ? "Yes" : "No",
                                 w1dt = w1Form.Fw1Dt != null ?  DateTime.Parse(Convert.ToString(w1Form.Fw1Dt)).ToString("dd/MM/yyyy") : "-",
