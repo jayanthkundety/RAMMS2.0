@@ -46,6 +46,7 @@ namespace RAMMS.Common
         public const string FormW2Submitted = "Submitted";
         public const string FormW2Saved = "Saved";
         public const string FormW2Received = "Received";
+        public const string FormW2Rejected = "Rejected";
 
         public const string FormWCSubmitted = "Submitted";
         public const string FormWCSaved = "Saved";

@@ -701,9 +701,18 @@
                         else
                         $("#w1Delete").hide();
 
-                    if (w1status == "Approved" || w1status == "Rejected" )
+                    if (w1status == "Approved")
                     {
                         $("#w1Edit").hide();
+                        $("#w1View").show();
+                        $("#w1Print").show();
+
+                        return;
+                    }
+
+                    if (w1status == "Rejected" )
+                    {
+                        $("#w1Edit").show();
                         $("#w1View").show();
                         $("#w1Print").show();
 
