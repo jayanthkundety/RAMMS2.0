@@ -52,7 +52,7 @@ $(document).ready(function ()
             $("#formW2IssuedOffice").prop("disabled", true);
             $("#formW2IssuedOffice").val('');
         }
-        $("#formW2IssuedDate").text(currentDate);
+        $("#formW2IssuedDate").val(currentDate);
         return false;
     });
 
@@ -119,7 +119,7 @@ $(document).ready(function ()
         $("formw2RequestedBy").prop("disabled", true);
         $("#closeFormW2Btn").hide();
         $("#saveFormW2Btn").hide();
-        $("#submitFormW2Btn").hide();
+        //$("#submitFormW2Btn").hide();
     }
 
    
