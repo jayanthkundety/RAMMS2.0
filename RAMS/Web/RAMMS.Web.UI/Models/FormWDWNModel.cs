@@ -19,9 +19,9 @@ namespace RAMMS.Web.UI.Models
         public FormWNResponseDTO FormWN { get; set; }
 
         public string  ClauseDetails { get; set; }
-        public FormWDDtlResponseDTO FormWDDtl { get; set; }
+        public IEnumerable<FormWDDtlResponseDTO> FormWDDtl { get; set; }
 
-        public string View { get; set; }
+        public int View { get; set; }
 
         public List<string> ImageTypeList { get; set; }
         public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; }

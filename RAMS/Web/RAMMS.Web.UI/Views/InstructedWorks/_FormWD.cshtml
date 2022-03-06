@@ -27,11 +27,11 @@
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
-                                             
-                                                @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
+
+                                            @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
                                         </div>
                                     </div>
- 
+
                                 </div>
                             </div>
                         </div>
@@ -67,15 +67,15 @@
                                 </div>
                                 <div class="col-lg-8">
                                     <span class="float-left w-100 float-left">-->
-                                        @*@Html.TextBoxFor(m => m.FormWD., new { @readonly = true, @class = "form-control" })*@
-                                        <!--@Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
+                        @*@Html.TextBoxFor(m => m.FormWD., new { @readonly = true, @class = "form-control" })*@
+                        <!--@Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
                                     </span>
                                 </div>
                             </div>
                         </div>-->
                         <div class="px-3 pt-3 pb-1 float-left w-100">
                             <div class="row">
-                             
+
 
                                 <div class="form-group col-lg-3">
                                     <label for="OurRef">Our Ref / Contract  NO </label>
@@ -111,36 +111,36 @@
                 </div>
 
                 @*<div class="col-lg-12 d-none">
-                    <div class="bg-white rounded  w-100 float-left mb-3 border">
-                        <div class="col-lg-12 py-2 px-4">
-                            <span class="font-14 font-weight-bold">
-                                INSTRUCTED WORK
-                            </span>
-                        </div>
+                        <div class="bg-white rounded  w-100 float-left mb-3 border">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">
+                                    INSTRUCTED WORK
+                                </span>
+                            </div>
 
-                        <div class="border-top px-3 pt-3 pb-1 float-left w-100">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="row">
-                                        <div class="col-lg-12 mb-3">
-                                            <label class="mb-0" for=" PhysicalWorks">
-                                                S.O.'s Instruction No.
-                                            </label>
-                                            <input class="form-control" disabled type="text" value="JKR/IW/MR/20/07">
+                            <div class="border-top px-3 pt-3 pb-1 float-left w-100">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="col-lg-12 mb-3">
+                                                <label class="mb-0" for=" PhysicalWorks">
+                                                    S.O.'s Instruction No.
+                                                </label>
+                                                <input class="form-control" disabled type="text" value="JKR/IW/MR/20/07">
+                                            </div>
+
                                         </div>
-
                                     </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <label class="mb-0" for="PhysicalWorks">
-                                        Instructed Work Title
-                                    </label>
-                                    @Html.TextAreaFor(m => m.FormWD.IwProjectTitle, new { @class = "form-control  svalidate {required,Instructed Work} ", @style = "height:45px;" })
+                                    <div class="col-lg-8">
+                                        <label class="mb-0" for="PhysicalWorks">
+                                            Instructed Work Title
+                                        </label>
+                                        @Html.TextAreaFor(m => m.FormWD.IwProjectTitle, new { @class = "form-control  svalidate {required,Instructed Work} ", @style = "height:45px;" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
                 <div class="col-12 mb-2 ">
                     <div class="px-3  py-2 float-left w-100 border">
                         <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, <input type="date" class="float-right form-control border-left-0 border-top-0 border-right-0 border-bottom" style="width: 176px; font-weight: bolder; font-size: 17px;" /></span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
@@ -169,6 +169,25 @@
                                                         <th>Extension of Time</th>
                                                         <th>Action</th>
                                                     </tr>
+                                                    @{
+                                                        foreach (var item in Model.FormWDDtl)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @item.Reason
+                                                                </td>
+                                                                <td>
+                                                                    @item.Clause
+                                                                </td>
+                                                                <td>
+                                                                    @item.ExtnPrd
+                                                                </td>
+                                                                <td>
+                                                                    <span class='del-icon' onclick="Javascript:DeleteClauseRow(this);"></span>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
 
                                                 </table>
                                             </div>
@@ -289,6 +308,6 @@
     height: 45px;">
 
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" onclick="return Save()">Save</button>
+    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD()">Save</button>
     <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
 </div>

@@ -834,7 +834,7 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
         }
 
-        public async Task<IActionResult> EditFormWCWG(int wcid, int wgid, int w2id , string view)
+        public async Task<IActionResult> EditFormWCWG(int wcid, int wgid, int w2id, string view)
         {
 
             var _formWCWGModel = new FormWCWGModel();
@@ -892,12 +892,34 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.Division = await _divisionService.GetDivisions();
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
-            _formWDWNModel.FormWD = new FormWDResponseDTO();
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W1Id);
+            _formWDWNModel.FormWD = new FormWDResponseDTO();
             _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
+            _formWDWNModel.FormWD.FW1PKRefno = _formWDWNModel.FormW1.PkRefNo;
+            _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
+            _formWDWNModel.FormWN.FW1PKRefno = _formWDWNModel.FormW1.PkRefNo;
             return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
+
+
+        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int View)
+        {
+            var _formWDWNModel = new FormWDWNModel();
+            _formWDWNModel.View = View;
+            LoadLookupService("TECM_Status", "User");
+            _formWDWNModel.Division = await _divisionService.GetDivisions();
+            ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
+            _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
+            _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
+            _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
+            _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
+            _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
+            _formWDWNModel.FormWN = await _formWNService.FindFormWNByID(Wnid);
+            return PartialView("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
+        }
+
+
 
         [HttpPost]
         public async Task<JsonResult> SaveFormWD(FormWDWNModel frm)
@@ -907,35 +929,46 @@ namespace RAMMS.Web.UI.Controllers
             frm.FormWD.ActiveYn = true;
             if (frm.FormWD.PkRefNo == 0)
             {
-                frm.FormW1.Status = "Saved";
+                frm.FormWD.Status = "Saved";
                 refNo = await _formWDService.SaveFormWD(frm.FormWD);
-
-                if (frm.ClauseDetails != null && frm.ClauseDetails != "" && frm.ClauseDetails != "undefined")
-                {
-                    var res = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<FormWDDtlResponseDTO>>(frm.ClauseDetails);
-                    foreach (var item in res)
-                    {
-                        item.FwdPkRefNo = refNo;
-                        _formWDService.SaveFormWDClause(item);
-                    }
-                }
-
             }
             else
             {
                 refNo = await _formWDService.Update(frm.FormWD);
-                if (frm.ClauseDetails != null && frm.ClauseDetails != "" && frm.ClauseDetails != "undefined")
+            }
+
+            _formWDService.DeleteFormWDClause(refNo);
+
+            if (frm.ClauseDetails != null && frm.ClauseDetails != "" && frm.ClauseDetails != "undefined")
+            {
+                var res = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<FormWDDtlResponseDTO>>(frm.ClauseDetails);
+                foreach (var item in res)
                 {
-                    var res = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<FormWDDtlResponseDTO>>(frm.ClauseDetails);
-                    foreach (var item in res)
-                    {
-                        item.FwdPkRefNo = refNo;
-                        _formWDService.SaveFormWDClause(item);
-                    }
+                    item.FwdPkRefNo = refNo;
+                    _formWDService.SaveFormWDClause(item);
                 }
             }
+
             return Json(refNo);
 
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SaveFormWN(FormWDWNModel frm)
+        {
+            int refNo = 0;
+            frm.FormWN.ActiveYn = true;
+            if (frm.FormWN.PkRefNo == 0)
+            {
+                frm.FormWN.Status = "Saved";
+                refNo = await _formWNService.SaveFormWN(frm.FormWN);
+            }
+            else
+            {
+                refNo = await _formWNService.Update(frm.FormWN);
+            }
+
+            return Json(refNo);
         }
 
 

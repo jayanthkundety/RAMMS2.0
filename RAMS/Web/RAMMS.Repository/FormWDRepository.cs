@@ -35,17 +35,23 @@ namespace RAMMS.Repository
             }
         }
 
+        public int? DeleteFormWDClause(int Id)
+        {
+            var res = (from r in _context.RmIwFormWdDtl where r.FwddFwdPkRefNo == Id select r).SingleOrDefault();
+            if (res != null)
+            {
+                _context.Entry(res).State = EntityState.Deleted;
+                _context.SaveChanges();
+                return 1;
+            }
+            return 0;
+        }
+
         public int? SaveFormWDClause(RmIwFormWdDtl FormWDDtl)
         {
             try
             {
-              
-                var res = (from r in _context.RmIwFormWdDtl where r.FwddFwdPkRefNo == FormWDDtl.FwddFwdPkRefNo select r).SingleOrDefault();
-                if (res != null)
-                {
-                    _context.Entry(res).State = EntityState.Deleted;
-                    _context.SaveChanges();
-                }
+
 
                 _context.Entry<RmIwFormWdDtl>(FormWDDtl).State = FormWDDtl.FwddPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
                 _context.SaveChanges();
@@ -64,7 +70,12 @@ namespace RAMMS.Repository
             return await _context.RmIwFormWd.Where(x => x.FwdPkRefNo == Id && x.FwdActiveYn == true).FirstOrDefaultAsync();
         }
 
-     
+        public async Task<IEnumerable<RmIwFormWdDtl>> FindFormWDDtlByID(int Id)
+        {
+            return await _context.RmIwFormWdDtl.Where(x => x.FwddFwdPkRefNo == Id).ToListAsync();
+        }
+
+
 
     }
 }

@@ -12,41 +12,20 @@
                 <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                     <div class="w-100 dt-tbl-section">
                         <div class="row">
-                            @for (var i = 0; i < @Model.Division.Divisions.Count; i++)
-                            {
-                                var div = Model.Division.Divisions[i];
-                                if (i == 0)
-                                {
-                                    <div class="form-group col-lg-4">
-                                        <label for="OurRef">Name of Division</label>
-                                        <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
-                                    </div>
-                                }
+                            <div class="form-group col-lg-4">
+                                <label for="OurRef">
+                                    Name of Division
+                                </label>
+                                <select class="form-control">
+                                    <option> Select Division </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
 
-                                if (i == 1)
-                                {
-                                    <div class="form-group col-lg-4">
-                                        <label for="OurRef">
-                                            Divisional Address 1
-                                        </label>
-                                        @*<input type="text" placeholder="" class="form-control">*@
-                                        <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
-                                    </div>
-                                }
-
-                                if (i == 2)
-                                {
-                                    <div class="form-group col-lg-4">
-                                        <label for="OurRef">
-                                            Divisional Address 2
-                                        </label>
-                                        @*<input type="text" placeholder="" class="form-control">*@
-                                        <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
-                                    </div>
-                                }
-                            }
+                                @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -82,9 +61,9 @@
                             <label for="Your Ref">
                                 Service Provider Name
                             </label>
-                            <input type="text" placeholder="" disabled class="form-control">
+                            @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @readonly = true, @class = "form-control " })
                         </div>
-                    
+
                     </div>
 
 
@@ -92,100 +71,99 @@
 
             </div>
 
-        </div>
 
-        <div class="col-12 d-none">
-            <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                <div class="col-lg-12 py-2 px-4">
-                    <span class="font-14 font-weight-bold">
-                        INSTRUCTED WORK
-                    </span>
+            <div class="col-12 d-none">
+                <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">
+                            INSTRUCTED WORK
+                        </span>
+                    </div>
+                    <div class="border-top px-3 pt-3 pb-3 float-left w-100">
+                        <div class="w-100 dt-tbl-section">
+                            <div class="col-lg-12">
+                                <label class="mb-0" for="PhysicalWorks">
+                                    Instructed Work Title
+                                </label>
+
+                                @Html.TextAreaFor(m => m.FormWN.IwProjectTitle, new { @class = "form-control  svalidate {required,Instructed Work} ", @style = "height:80px;" })
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="border-top px-3 pt-3 pb-3 float-left w-100">
+            </div>
+            <div class="col-lg-12">
+                <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
+                    It is hereby certified that you have failed to complete the Instructed Work mentioned above which was issued to you by the
+                    <span class="float-left mb-2">
+                        <span class="float-left">
+                            <span class="float-left">"Date for Completion"  stated in S.O.'s Instruction No.:</span>
+                            @Html.TextBoxFor(m => m.FormW2, new { @readonly = true, @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold",@style= "width:150px; margin:0px 5px 0px 0px; border-radius:0px" })
+                            @Html.EditorFor(m => m.FormWN.DtW2Compl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
+                        </span>
+                        <span class="float-left">  , or within any extended time approved</span>
+                    </span>
+
+
+                    <span class="float-left mb-3">
+                        <span class="float-left"> under  <b style="padding:0px 2px;font-size:20px;">Clause 8.7  </b></span>
+
+                        <span class="float-left">of the Agreement, i.e. on</span>
+                        @Html.EditorFor(m => m.FormWN.DtW2Initiation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
+                        <span class="float-left">and in my opinion the said Instructed Works </span>
+                        <span class="float-right w-100 text-left">ought to have been completed.</span>
+
+                    </span>
+
+
+
+                    <span class="float-left"> </span>
+                </p>
+
+            </div>
+            <div class="col-lg-12">
+                <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
+                    <span class="float-left">  In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.11</b> of the Agreement, you are hereby informed that you are liable to pay or allow to the Government a sum </span><span class="float-left">
+                        <span class="float-left">calculated at the rate of</span>
+                        <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b>
+                    </span>
+                    <span class="float-left"> per day of the value of this Instructed Work, i.e.  <b style="padding:0px 6px;font-size:20px;"> RM</b></span>
+                    <span class="float-left">@Html.TextBoxFor(m => m.FormWN.LadAmt, new {  @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 6px; border-radius:0px" }) per day as Liquidated and
+                    </span>
+                    <span class="float-left"> Ascertained Damages for the period during which the said Instructed Work shall so remain and have remain incomplete and i shall certify for deduction such damages from any money due or which may become due to you under this Agreement.</span>
+                </p>
+            </div>
+            <div class="col-lg-12">
+
+                <div class="py-1 float-left w-100">
                     <div class="w-100 dt-tbl-section">
-                        <div class="col-lg-12">
-                            <label class="mb-0" for="PhysicalWorks">
-                                Instructed Work Title
-                            </label>
-                            
-                            @Html.TextAreaFor(m => m.FormWN.IwProjectTitle, new { @class = "form-control  svalidate {required,Instructed Work} ", @style = "height:80px;" })
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
-                It is hereby certified that you have failed to complete the Instructed Work mentioned above which was issued to you by the
-                <span class="float-left mb-2">
-                    <span class="float-left">
-                        <span class="float-left">"Date for Completion"  stated in S.O.'s Instruction No.:</span>
-                        <input type="text" disabled placeholder="" class="float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold" style="width:150px; margin:0px 5px 0px 0px; border-radius:0px" />
-
-                        <input type="date" disabled class="form-control  border-top-0 border-left-0 border-right-0 float-left font-weight-bold" style=" width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0; " />
-                    </span>
-                    <span class="float-left">  , or within any extended time approved</span>
-                </span>
-
-
-                <span class="float-left mb-3">
-                    <span class="float-left"> under  <b style="padding:0px 2px;font-size:20px;">Clause 8.7  </b></span>
-
-                    <span class="float-left">of the Agreement, i.e. on</span>
-                    <input type="date" disabled class="form-control  border-top-0 border-left-0 border-right-0 float-left font-weight-bold" style="width: 170px; margin: 0px 8px; border-radius: 0;" />
-                    <span class="float-left">and in my opinion the said Instructed Works </span>
-                    <span class="float-right w-100 text-left">ought to have been completed.</span>
-
-                </span>
-
-
-
-                <span class="float-left"> </span>
-            </p>
-
-        </div>
-        <div class="col-lg-12">
-            <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
-                <span class="float-left">  In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.11</b> of the Agreement, you are hereby informed that you are liable to pay or allow to the Government a sum </span><span class="float-left">
-                    <span class="float-left">calculated at the rate of</span>
-                    <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b>
-
-                </span>
-                <span class="float-left"> per day of the value of this Instructed Work, i.e.  <b style="padding:0px 6px;font-size:20px;"> RM</b></span>
-                <span class="float-left"> <input type="text" placeholder="" class="form-control border-top-0 border-left-0 border-right-0 float-left font-weight-bold" style="width:150px; margin:0px 6px; border-radius:0px" /> per day as Liquidated and</span>
-                <span class="float-left"> Ascertained Damages for the period during which the said Instructed Work shall so remain and have remain incomplete and i shall certify for deduction such damages from any money due or which may become due to you under this Agreement.</span>
-            </p>
-        </div>
-        <div class="col-lg-12">
-            
-            <div class="py-1 float-left w-100">
-                <div class="w-100 dt-tbl-section">
-                    <div class="col-12">
-                        <div class="row pt-3 px-2 pb-1">
-                            <div class="form-group col-lg-3">
-                                <label for="Designation"> User ID </label>
-                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Userid", "Select Users", new { Id = "ddlUserid", @class = "form-control svalidate {required, User}", @onchange = "OnWNUseridChange(this); " })
-                            </div>
-                            <div class="form-group col-lg-2">
-                                <label for="Designation"> Name </label>
-                                @Html.TextBoxFor(model => model.FormWN.UsernameIssu, new { @readonly = true, @class = "form-control" })
-                            </div>
-                            <div class="form-group col-lg-2 p-0">
-                                <label for="Designation"> Designation</label>
-                                @Html.TextBoxFor(model => model.FormWN.DesignationIssu, new { @readonly = true, @class = "form-control" })
-                            </div>
-                            <div class="form-group col-lg-2">
-                                <label for="Designation"> Office</label>
-                                @Html.TextBoxFor(model => model.FormWN.OfficeIssu, new { @readonly = true, @class = "form-control" })
-                            </div>
-                            <div class="form-group col-lg-2 pr-0">
-                                <label>Date (DD-MM-YYYY)</label>
-                                @Html.EditorFor(m => m.FormWN.DtIssu, new { type = "date", htmlAttributes = new { @class = "form-control" } })
-                            </div>
-                            <div class="form-group col-lg-1 text-center">
-                                <label>Signature</label>
-                                <div class="clear-b mt-2">
-                                    @Html.CheckBoxFor(model => model.FormWN.SignIssu, new { @disabled = "disabled" })
+                        <div class="col-12">
+                            <div class="row pt-3 px-2 pb-1">
+                                <div class="form-group col-lg-3">
+                                    <label for="Designation"> User ID </label>
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Userid", "Select Users", new { Id = "ddlUserid", @class = "form-control svalidate {required, User}", @onchange = "OnWNUseridChange(this); " })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="Designation"> Name </label>
+                                    @Html.TextBoxFor(model => model.FormWN.UsernameIssu, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2 p-0">
+                                    <label for="Designation"> Designation</label>
+                                    @Html.TextBoxFor(model => model.FormWN.DesignationIssu, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="Designation"> Office</label>
+                                    @Html.TextBoxFor(model => model.FormWN.OfficeIssu, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2 pr-0">
+                                    <label>Date (DD-MM-YYYY)</label>
+                                    @Html.EditorFor(m => m.FormWN.DtIssu, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="form-group col-lg-1 text-center">
+                                    <label>Signature</label>
+                                    <div class="clear-b mt-2">
+                                        @Html.CheckBoxFor(model => model.FormWN.SignIssu, new { @disabled = "disabled" })
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -194,8 +172,7 @@
             </div>
         </div>
     </div>
-</div>
-<div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
+    <div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
     left: auto;
     bottom: 0px;
     right: 0;
@@ -203,8 +180,8 @@
     background:#fff;
     width: 96%;
     height: 45px;">
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="return checkW2Exist()">Save</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn">Submit</button>
-</div>
+
+        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN()">Save</button>
+        <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
+    </div>

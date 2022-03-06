@@ -10,8 +10,10 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     public interface IFormWDService
     {
         Task<FormWDResponseDTO> FindFormWDByID(int id);
+        Task<IEnumerable<FormWDDtlResponseDTO>> FindFormWDDtlByID(int id);
         Task<int> SaveFormWD(FormWDResponseDTO FormW1);
         Task<int> Update(FormWDResponseDTO FormW1);
+        int? DeleteFormWDClause(int Id);
         int? SaveFormWDClause(FormWDDtlResponseDTO FormWDDtl);
 
     }

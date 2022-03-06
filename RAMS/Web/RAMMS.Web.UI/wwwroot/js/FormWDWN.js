@@ -5,6 +5,7 @@
 });
 
 
+ //FormWD Region
 function OnUseridChange(tis) {
 
     var ctrl = $(tis);
@@ -90,8 +91,7 @@ function GetClauseDetails() {
     return ClassDetails;
 }
 
-
-function Save(GroupName, SubmitType) {
+function SaveWD(GroupName, SubmitType) {
 
     debugger
     if (SubmitType != "") {
@@ -140,3 +140,86 @@ function Save(GroupName, SubmitType) {
 
 
 }
+//FormWD RegionEnd
+
+
+//FormWN Region
+function OnWNUseridChange(tis) {
+
+    var ctrl = $(tis);
+    $('#FormW1_UseridRep').val(ctrl.val());
+    if (ctrl.val() != null && ctrl.val() != "") {
+        $("#FormWN_UsernameIssu").val(ctrl.find("option:selected").attr("Item1"));
+        $("#FormWN_DesignationIssu").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormWN_OfficeIssu").val(ctrl.find("option:selected").attr("Item3"));
+        if (ctrl.val() == "99999999") {
+            $("#FormWN_UsernameIssu").removeAttr("readonly");
+            $("#FormWN_DesignationIssu").removeAttr("readonly");
+            $("#FormWN_OfficeIssu").removeAttr("readonly");
+        } else {
+            $("#FormWN_UsernameIssu").attr("readonly", "true");
+            $("#FormWN_DesignationIssu").attr("readonly", "true");
+            $("#FormWN_OfficeIssu").attr("readonly", "true");
+        }
+
+        $('#FormWN_SignIssu').prop('checked', true);
+    }
+    else {
+        $("#FormWN_UsernameIssu").val('');
+        $("#FormWN_DesignationIssu").val('');
+        $("#FormWN_OfficeIssu").val('');
+        $('#FormWN_SignIssu').prop('checked', false);
+    }
+
+}
+
+function SaveWN(GroupName, SubmitType) {
+
+     
+    if (SubmitType != "") {
+
+        $("#FormWNpage .svalidate").addClass("validate");
+
+        if (SubmitType == "Submitted") {
+            $("#FormWN_Status").val("Submitted");
+            $("#FormWN_SubmitSts").val(true);
+            $("#ddlUseridReq").addClass("validate");
+        }
+    }
+    else {
+        $("#FormWN_Status").val("Saved");
+    }
+
+    
+    if (ValidatePage('#FormWNpage')) {
+        InitAjaxLoading();
+        $.post('/InstructedWorks/SaveFormWN', $("form").serialize(), function (data) {
+            HideAjaxLoading();
+            if (data == -1) {
+                app.ShowErrorMessage(data.errorMessage);
+            }
+            else {
+
+                $("#FormWN_PkRefNo").val(data);
+                $("#hdnPkRefNo").val(data);
+
+                if (SubmitType == "" || SubmitType == "Saved") {
+                    app.ShowSuccessMessage('Saved Successfully', false);
+                    location.href = "/InstructedWorks/Index";
+                }
+                else if (SubmitType == "Submitted") {
+                    app.ShowSuccessMessage('Submitted Successfully', false);
+                    location.href = "/InstructedWorks/Index";
+                }
+                else if (SubmitType == "Verified") {
+                    process.ShowApprove(GroupName, SubmitType);
+                }
+            }
+        });
+    }
+
+
+
+}
+
+//FormWN RegionEnd

@@ -41,6 +41,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormWDResponseDTO>(formWD);
         }
 
+        public async Task<IEnumerable<FormWDDtlResponseDTO>> FindFormWDDtlByID(int id)
+        {
+            IEnumerable<RmIwFormWdDtl> formWDDtl = await _repo.FindFormWDDtlByID(id);
+            return _mapper.Map<IEnumerable<FormWDDtlResponseDTO>>(formWDDtl);
+        }
+
 
 
         public async Task<int> SaveFormWD(FormWDResponseDTO FormWD)
@@ -49,9 +55,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormWD = _mapper.Map<RmIwFormWd>(FormWD);
-                // domainModelFormWD = UpdateStatus(domainModelFormWD);
-                //  var entity = _repoUnit.FormWDRepository.SaveFormWD(domainModelFormWD);
-
+                domainModelFormWD.FwdPkRefNo = 0;
                 var entity = _repoUnit.FormWDRepository.CreateReturnEntity(domainModelFormWD);
                 formWDResponse = _mapper.Map<FormWDResponseDTO>(entity);
                 return formWDResponse.PkRefNo;
@@ -59,6 +63,20 @@ namespace RAMMS.Business.ServiceProvider.Services
             catch (Exception ex)
             {
                 await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+
+        public int? DeleteFormWDClause(int Id)
+        {
+            try
+            {
+                return _repo.DeleteFormWDClause(Id);
+            }
+            catch (Exception ex)
+            {
+                return 0;
                 throw ex;
             }
         }
@@ -84,6 +102,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelformWD = _mapper.Map<RmIwFormWd>(FormWD);
+               
                 domainModelformWD.FwdActiveYn = true;
                 domainModelformWD = UpdateStatus(domainModelformWD);
                 _repoUnit.FormWDRepository.Update(domainModelformWD);

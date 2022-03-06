@@ -10,6 +10,10 @@ namespace RAMMS.Repository.Interfaces
     {
         int SaveFormWD(RmIwFormWd FormWD);
         Task<RmIwFormWd> FindFormWDByID(int Id);
+        Task<IEnumerable<RmIwFormWdDtl>> FindFormWDDtlByID(int Id);
+        int? DeleteFormWDClause(int Id);
         int? SaveFormWDClause(RmIwFormWdDtl FormWDDtl);
+
+        
     }
 }
