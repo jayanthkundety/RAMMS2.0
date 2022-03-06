@@ -517,7 +517,7 @@
                     value = daa.w1SubStatus;
                     break;
                 case "w2Status":
-                    value = daa.w1Status;
+                    value = daa.w2Status;
                     break;
                 case "w2SubStatus":
                     value = daa.w2SubStatus;
@@ -651,6 +651,7 @@
                 }
                 var id = GetFormIDByName("w2");
                 var w1status = GetFormIDByName("w1Status");
+                var w2status = GetFormIDByName("w2Status");
                 var w2substatus = GetFormIDByName("w2SubStatus");
                 if ((id == "-1" || id == null) &&   (w1status == "Approved"))
                 {
@@ -661,7 +662,8 @@
                 }
                 else if (id != "-1" && id != null)
                 {
-                    if (w2substatus)
+                   
+                    if (w2status == "Approved" )
                     {
                          $("#w2Add").hide();
                          $("#w2Edit").hide();
@@ -669,10 +671,23 @@
                          $("#w2Print").show();
                          return;
                     }
-                     $("#w2Add").hide();
-                     $("#w2Edit").show();
-                     $("#w2View").show();
-                     $("#w2Print").show();
+                    else if (w2status == "Rejected" || w2status == "Saved" )
+                    {
+                         $("#w2Add").hide();
+                         $("#w2Edit").show();
+                         $("#w2View").show();
+                         $("#w2Print").show();
+                         return;
+                    }
+
+                     if (w2substatus)
+                    {
+                         $("#w2Add").hide();
+                         $("#w2Edit").hide();
+                         $("#w2View").show();
+                         $("#w2Print").show();
+                         return;
+                    }
                 }
                 else {
                     $("#w2Add").hide();
