@@ -483,11 +483,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (process.Stage == Common.StatusList.FormW1Submitted)
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.OperationsExecutive;
-                    strTitle = "Approved";
-                    form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Verified : StatusList.FormW1Rejected;
+                    
+                    form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Approved : StatusList.FormW1Rejected;
 
                     if (process.IsApprove)
                     {
+                        strTitle = "Approved";
                         List<int> lstNotUserId = new List<int>();
                         if (form.Fw1UseridReq.HasValue)
                             lstNotUserId.Add(form.Fw1UseridReq.Value);
@@ -495,6 +496,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                             lstNotUserId.Add(form.Fw1UseridVer.Value);
 
                         strNotUserID = string.Join(",", lstNotUserId.Distinct());
+                    }
+                    else
+                    {
+                        strTitle = "Rejected";
                     }
                 }
                 form.Fw1AuditLog = Utility.ProcessLog(form.Fw1AuditLog, strTitle, process.IsApprove ? "Approved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
