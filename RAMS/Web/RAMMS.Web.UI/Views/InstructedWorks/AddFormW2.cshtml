@@ -234,26 +234,7 @@
 
                                                             </div>
 
-                                                            @*<div class="form-group col-lg-4 pr-lg-0">
-                                                                <label for="Address 1"> Address 1 </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @id = "address1", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-4">
-                                                                <label for="Designation"> Address 2 </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2, new { @id = "address2", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-4 pr-lg-0">
-                                                                <label for="Designation"> Address 3 </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3, new { @id = "address3", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-3">
-                                                                <label for="Designation">Phone No </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone, new { @id = "phone", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-3">
-                                                                <label for="Designation"> Fax </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @id = "fax", @class = "form-control", @readonly = "true" })
-                                                                </div>*@
+
                                                             <div class="form-group col-lg-3 pr-lg-0">
                                                                 @Html.Label("Attn", "Attn")
                                                                 @Html.TextBoxFor(m => m.SaveFormW2Model.Attn, new { @id = "fw2Attn", @class = "form-control  svalidate {required, Attention}" })
@@ -365,7 +346,7 @@
                                                                                             </div>
                                                                                             <div class="mb-2 col-lg-12">
                                                                                                 @Html.Label("Instructed Work duration(Months)", "Instructed Work duration(Months)")
-                                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.IwDuration, new { @id = "fw2InstructWorkDuration", @type = "numeric", @class = "form-control svalidate {required, Instructed Work duration}" })
+                                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.IwDuration, new { @id = "fw2InstructWorkDuration", @type = "text", @maxlength="5", @class = "form-control allow_numeric svalidate {required, Instructed Work duration}" })
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -465,23 +446,23 @@
 
                                                                 <div class="form-group col-lg-2 px-0">
                                                                     @Html.Label("Received by", "Received by")
-                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formw2RequestedBy", "Select Users", new { Id = "formw2RequestedBy", @class = "form-control   {required, Requested by} ", @onchange = "ChangeRUser(this);" })
+                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formw2RequestedBy", "Select Users", new { Id = "formw2RequestedBy", @class = "form-control   {required, Received by} ", @onchange = "ChangeRUser(this);" })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Name", "Name")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Requested by Name}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Received by Name}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Designation", "Designation")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control svalidate  {required, Requested by Designation}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control svalidate  {required, Received by Designation}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Office", "Office")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control svalidate  {required, Requested by Office }", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control svalidate  {required, Received by Office }", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Requested by date}" id="formW2RequestedDate" value="@_RequestedDate" disabled />
+                                                                    <input type="date" class="datepicker form-control  svalidate {required, Received by date}" id="formW2RequestedDate" value="@_RequestedDate" disabled />
                                                                 </div>
                                                                 <div class="form-group col-lg-2 text-center">
                                                                     @Html.Label("Signature", "Signature")
@@ -909,7 +890,7 @@
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                    @if (security.IsJKRSSuperiorOfficer && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved)
+                    @if (security.IsJKRSSuperiorOfficer && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
                     }

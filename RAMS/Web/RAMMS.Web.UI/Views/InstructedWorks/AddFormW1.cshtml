@@ -432,7 +432,7 @@
                                                                         <div class="col-12">
                                                                             <div class="row">
                                                                                 <div class="col-lg-4">
-                                                                                    @Html.Label("Recommonded Instructed Work", "Recommonded Instructed Work")
+                                                                                    @Html.Label("Reinstatement (Critical/Urgent/None)", "Reinstatement (Critical/Urgent/None)")
                                                                                     <br />
                                                                                     <label class="radio-inline">
                                                                                         @Html.RadioButtonFor(x => x.FormW1.RecomdType, 2, new { @onclick = "RecommondedValue(this)" })&nbsp;	Critical&nbsp;
@@ -554,7 +554,7 @@
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                             }
-                            else if (  Model.FormW1.Status == "Saved" || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            else if (Model.FormW1.Status == "Saved" || Model.FormW1.Status == "Rejected" || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Submitted');">Submit</button>

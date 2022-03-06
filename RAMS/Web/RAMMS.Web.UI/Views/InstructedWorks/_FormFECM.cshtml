@@ -96,7 +96,7 @@
 <div class="" style="position:relative; width:100%;">
 
     <div class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;left: auto;bottom: 0px;right: 2%;background: #fff;width: calc(100vw - 8.3%);height: 45px;">
-        <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
+        <button type="button" class="btn btn-sm btn-outline-theme" id="btnFecMClear" onclick="return ClearFCEM()">Clear</button>
         <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
         <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="javascript:saveFECM(false)">Save</button>
         <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn" onclick="javascript:submitFECM(true)">Submit</button>
@@ -107,6 +107,7 @@
         if ($("#hdnFecmView").val() == "1") {
             $("#div_fecmload *").prop("disabled", true);
             $("#saveFCEMBtn").hide();
+            $("#btnFecMClear").hide();
             $("#submitFCEMBtn").hide();
         }
     });

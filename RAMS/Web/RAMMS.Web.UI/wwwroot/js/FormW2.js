@@ -119,7 +119,7 @@ $(document).ready(function ()
         $("formw2RequestedBy").prop("disabled", true);
         $("#closeFormW2Btn").hide();
         $("#saveFormW2Btn").hide();
-        $("#submitFormW2Btn").hide();
+        //$("#submitFormW2Btn").hide();
     }
 
    

@@ -595,6 +595,7 @@ function Save(GroupName, SubmitType) {
 
                 if (SubmitType == "" || SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
+                    location.href = "/InstructedWorks/Index";
                 }
                 else if (SubmitType == "Submitted") {
                     app.ShowSuccessMessage('Submitted Successfully', false);

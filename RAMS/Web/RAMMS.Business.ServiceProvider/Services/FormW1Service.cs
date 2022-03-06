@@ -87,7 +87,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.Fw1SubmitSts && form.Fw1Status == "Saved")
+            if (form.Fw1SubmitSts && (form.Fw1Status == "Saved" || form.Fw1Status == "Rejected"))
             {
                 form.Fw1Status = Common.StatusList.FormW2Submitted;
                 form.Fw1AuditLog = Utility.ProcessLog(form.Fw1AuditLog, "Submitted By", "Submitted", form.Fw1UsernameReq, string.Empty, form.Fw1DtReq, _security.UserName);
@@ -171,7 +171,26 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
+        public async Task<int> DeActivateFormW1(int formNo)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormW1 = await _repoUnit.FormW1Repository.GetByIdAsync(formNo);
+                domainModelFormW1.Fw1ActiveYn = false;
+                _repoUnit.FormW1Repository.Update(domainModelFormW1);
 
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
         public async Task<int> Update(FormW1ResponseDTO FormW1)
         {
             int rowsAffected;
