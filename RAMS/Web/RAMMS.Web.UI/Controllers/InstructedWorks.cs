@@ -859,13 +859,13 @@ namespace RAMMS.Web.UI.Controllers
 
             var _formWCWGModel = new FormWCWGModel();
             LoadLookupService("TECM_Status", "User");
-            
+
             var _formC = await _formWCService.FindWCByID(wcid);
             _formWCWGModel.FormWC = _formC == null ? new FormWCResponseDTO() : _formC;
-            
+
             var _formG = await _formWGService.FindWGByID(wgid);
             _formWCWGModel.FormWG = _formG == null ? new FormWGResponseDTO() : _formG;
-            
+
             _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
 
 
@@ -912,11 +912,12 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WDWN
 
-        public async Task<IActionResult> OpenWDWN(int W1Id, int W2Id)
+        public async Task<IActionResult> OpenWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view)
         {
 
             var _formWDWNModel = new FormWDWNModel();
             LoadLookupService("TECM_Status", "User");
+            ViewData["Division"] = await _divisionService.GetDivisionsDDL();
             _formWDWNModel.Division = await _divisionService.GetDivisions();
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
@@ -926,16 +927,17 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWD.FW1PKRefno = _formWDWNModel.FormW1.PkRefNo;
             _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
-            _formWDWNModel.FormWN.FW1PKRefno = _formWDWNModel.FormW1.PkRefNo;
+            _formWDWNModel.FormWN.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
             return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
 
-        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int View)
+        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view)
         {
             var _formWDWNModel = new FormWDWNModel();
-            _formWDWNModel.View = View;
+            _formWDWNModel.View = view;
             LoadLookupService("TECM_Status", "User");
+            ViewData["Division"] = await _divisionService.GetDivisionsDDL();
             _formWDWNModel.Division = await _divisionService.GetDivisions();
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);

@@ -1,12 +1,33 @@
 ﻿$(document).ready(function () {
 
-    $("#.FormW1_ServPropName").chosen('destroy');
-    $("#.FormW1_ServPropName").prop("disabled", true);
+
+    if ($("#hdnView").val() == "1") {
+        $("#FormWDdatapage *").prop("disabled", true);
+        $("#FormWDNdatapage *").prop("disabled", true);
+      
+        $("#ddlWDUserid").chosen('destroy');
+        $("#ddlWDUserid").prop("disabled", true);
+        $("#ddlWNUserid").chosen('destroy');
+        $("#ddlWNUserid").prop("disabled", true);
+      
+        $("#btnSave").hide();
+        $("#btnSubmit").hide();
+        $("#addAttachment").hide();
+        $("#btnBack").removeAttr("disabled");
+    }
+
+    $("#FormW1_ServPropName").chosen('destroy');
+    $("#FormW1_ServPropName").prop("disabled", true);
+
+    $("#ddlServiceProvider").chosen('destroy');
+    $("#ddlServiceProvider").prop("disabled", true);
+
+    
 });
 
 
  //FormWD Region
-function OnUseridChange(tis) {
+function OnWDUseridChange(tis) {
 
     var ctrl = $(tis);
     $('#FormW1_UseridRep').val(ctrl.val());
@@ -65,10 +86,9 @@ function DeleteClauseRow(obj) {
     $(obj).closest('tr').remove();
 }
 
-var ClassDetails = [];
-
+ 
 function GetClauseDetails() {
-
+    var ClassDetails = [];
     var rows = $('#tblClause tbody >tr');
     var columns;
     for (var i = 0; i < rows.length; i++) {
@@ -120,7 +140,7 @@ function SaveWD(GroupName, SubmitType) {
             else {
 
                 $("#FormWD_PkRefNo").val(data);
-                $("#hdnPkRefNo").val(data);
+                $("#hdnWDPkRefNo").val(data);
 
                 if (SubmitType == "" || SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
@@ -201,7 +221,7 @@ function SaveWN(GroupName, SubmitType) {
             else {
 
                 $("#FormWN_PkRefNo").val(data);
-                $("#hdnPkRefNo").val(data);
+                $("#hdnWDPkRefNo").val(data);
 
                 if (SubmitType == "" || SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);

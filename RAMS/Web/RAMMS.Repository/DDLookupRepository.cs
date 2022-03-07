@@ -74,26 +74,19 @@ namespace RAMS.Repository
         {
             //return await _context.RmDivRmuSecMaster.Where(x => x.RdsmActiveYn == true ) .ToListAsync();
 
-            return await (from x in _context.RmDivRmuSecMaster
+
+            return await (from a in _context.RmDdLookup
+                          join b in _context.RmDivRmuSecMaster on a.DdlTypeCode equals b.RdsmRmuCode
+                          where a.DdlType == "RMU"
                           select new RoadMasterResponseDTO
                           {
-                              CategoryName = x.RdsmDivision,
-                              DivisionCode = x.RdsmDivCode,
-                              RmuCode = x.RdsmRmuCode,
-                              RmuName = x.RdsmRmuName
+                              CategoryName = b.RdsmDivision,
+                              DivisionCode = b.RdsmDivCode,
+                              RmuCode = a.DdlTypeCode,
+                              RmuName = a.DdlTypeDesc
                           }).Distinct().ToListAsync();
 
-
-
-            //return await (from x in _context.RmDivRmuSecMaster
-            //              select new RmDivRmuSecMaster
-            //              {
-            //                  RdsmDivision = x.RdsmDivision,
-            //                  RdsmDivCode = x.RdsmDivCode,
-            //                  RdsmRmuCode = x.RdsmRmuCode,
-            //                  RdsmPkRefNo = x.RdsmPkRefNo,
-            //                  RdsmRmuName = x.RdsmRmuName
-            //              }).Distinct().ToListAsync();
+            
         }
 
 

@@ -608,6 +608,8 @@
     }
 
     function OpenFormWDWN(mode, view) {
+ 
+
         var W1Id = GetFormIDByName("w1");
         var W2Id = GetFormIDByName("w2");
         var Wdid = GetFormIDByName("wd");
@@ -622,7 +624,7 @@
         }
         else if (mode == "View") {
             view = 1;
-            url = "/InstructedWorks/EditFormWDWN";"
+            url = "/InstructedWorks/EditFormWDWN";
         }
         InitAjaxLoading();
         $.ajax({
