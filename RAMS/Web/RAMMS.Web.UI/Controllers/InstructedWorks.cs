@@ -115,12 +115,19 @@ namespace RAMMS.Web.UI.Controllers
                 ddLookup.Type = "IWFORMWCWG";
                 ddLookup.TypeCode = "WGWC";
                 ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+                var _formWC  = await _formWCService.FindWCByW1ID(int.Parse(Id));
+                var _formWG = await  _formWGService.FindWGByW1ID(int.Parse(Id));
+
+                assetsModel.IsSubmittedWC = _formWC.SubmitSts;
+                assetsModel.IsSubmittedWG = _formWG.SubmitSts;
             }
             else if (form == "FormWDWN")
             {
                 ddLookup.Type = "IWFORMWDWN";
                 ddLookup.TypeCode = "WDWN";
                 ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+                assetsModel.IsSubmittedWD = false;
+                assetsModel.IsSubmittedWN = false;
             }
             else
             {

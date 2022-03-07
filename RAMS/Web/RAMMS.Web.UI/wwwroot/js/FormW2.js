@@ -191,7 +191,7 @@ function Save(submit) {
     saveObj.ServProvName = $("#formW2ServiceProvider").val();
     saveObj.Attn = $("#fw2Attn").val();
     saveObj.Cc = $("#fw2cc").val();
-    saveObj.RoadCode = $("#frmW2RoadCode").val().split("-")[0];
+    saveObj.RoadCode = $("#frmW2RoadCode").val();
     saveObj.RoadName = $("#formW2roadDesc").val();
 
     if ($("#formW2chkm").val() != "") saveObj.Ch = $("#formW2chkm").val();

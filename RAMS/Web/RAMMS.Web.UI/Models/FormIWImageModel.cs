@@ -18,5 +18,20 @@ namespace RAMMS.Web.UI.Models
         public FormIWImageResponseDTO IWFormImage { get; set; }
 
         public string FormName { get; set; }
+
+        public bool IsSubmittedW1 { get; set; }
+
+        public bool IsSubmittedW2 { get; set; }
+
+        public bool IsSubmittedWD { get; set; }
+
+        public bool IsSubmittedWN { get; set; }
+
+        public bool IsSubmittedWC { get; set; }
+
+        public bool IsSubmittedWG { get; set; }
+
+
+
     }
 }
