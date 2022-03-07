@@ -423,7 +423,10 @@ namespace RAMMS.Web.UI.Controllers
                 _formW2Model.FECM = new FormFECMModel();
                 var resultFormW2 = await _formW2Service.FindW2ByID(id);
                 var res = (List<CSelectListItem>)ViewData["RD_Code"];
-                res.Find(c => c.Value == resultFormW2.RoadCode).Selected = true;
+                if (res != null) {
+                    var rd = res.Find(c => c.Value == resultFormW2.RoadCode);
+                    if (rd != null) rd.Selected = true;
+                }
                 var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
                 if (resultFCEM == null) resultFCEM = new FormW2FECMResponseDTO();
                 _formW2Model.FECM.FECM = resultFCEM;
