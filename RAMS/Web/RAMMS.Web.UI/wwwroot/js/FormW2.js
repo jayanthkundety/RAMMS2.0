@@ -167,7 +167,7 @@ function Save(submit) {
     if (!ValidatePage('#divPage')) {
         return false;
     }
-    //debugger;
+    debugger;
     InitAjaxLoading();
 
     var d = new Date();
@@ -200,8 +200,8 @@ function Save(submit) {
     saveObj.ServProvName = $("#formW2ServiceProvider").val();
     saveObj.Attn = $("#fw2Attn").val();
     saveObj.Cc = $("#fw2cc").val();
-    saveObj.RoadCode = $("#frmW2RoadCode").val().split("-")[0];
-    saveObj.RoadName = $("#formW2roadDesc").val();
+    saveObj.RoadCode = $("#frmW2RoadCode").val();
+    saveObj.RoadName = $("#formW2roadDesc").val();  
 
     if ($("#formW2chkm").val() != "") saveObj.Ch = $("#formW2chkm").val();
     if ($("#formW2chm").val() != "") saveObj.ChDeci = $("#formW2chm").val();

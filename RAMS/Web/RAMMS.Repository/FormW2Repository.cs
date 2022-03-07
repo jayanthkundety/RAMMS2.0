@@ -38,9 +38,7 @@ namespace RAMMS.Repository
         public Task<List<RmIwformImage>> GetImagelist(int formW2Id)
         {
             return _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW2Id && x.FiwiActiveYn == true).ToListAsync();
-        }
-
-        
+        }        
 
         public async Task<List<RmIwFormW1>> GetFormW1List()
         {
@@ -96,15 +94,15 @@ namespace RAMMS.Repository
 
         public async Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
         {
-            var query = (from x in _context.RmIwFormW1
-                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
-                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
-                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo)
+            var query = (from x in _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true)
+            let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
+                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo && s.Fw2ActiveYn == true)
+                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo && s.FecmActiveYn == true)
                          select new { rmu, w2Form, fecm, x });
 
 
 
-            query = query.Where(x => x.x.Fw1ActiveYn == true).OrderByDescending(x => x.x.Fw1ModDt);
+            query = query.OrderByDescending(x => x.x.Fw1ModDt);
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.IWRefNo))
             {
@@ -229,15 +227,15 @@ namespace RAMMS.Repository
         public async Task<List<FormIWResponseDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
         {
             List<FormIWResponseDTO> result = new List<FormIWResponseDTO>();
-            var query = (from x in _context.RmIwFormW1
+            var query = (from x in _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true)
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
-                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
-                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo)
+                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo && s.Fw2ActiveYn == true)
+                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo && s.FecmActiveYn == true)
                          select new { rmu, w2Form, fecm, x });
 
 
 
-            query = query.Where(x => x.x.Fw1ActiveYn == true).OrderByDescending(x => x.x.Fw1ModDt);
+            query = query.OrderByDescending(x => x.x.Fw1ModDt);
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.IWRefNo))
             {
