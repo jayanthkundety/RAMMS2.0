@@ -117,12 +117,23 @@
 });
 
 function CalculateCost() {
+ 
+    nfObject = new Intl.NumberFormat('en-US');
 
-    var PhyWorksAmtAmt = 0, GenPrelimsAmt = 0, SurvyWorksAmt = 0, SiteInvestAmt = 0, ConsulFeeAmt = 0, OtherCostAmt = 0;
+    var PhyWorksAmt = 0, GenPrelimsAmt = 0, SurvyWorksAmt = 0, SiteInvestAmt = 0, ConsulFeeAmt = 0, OtherCostAmt = 0;
     if ($("#FormW1_PhyWorksAmt").val() != "") {
 
-        PhyWorksAmt = $("#FormW1_PhyWorksAmt").val();
+       
+        PhyWorksAmt = $("#FormW1_PhyWorksAmt").val().replace(/,/g, '');
 
+        if (!$.isNumeric(PhyWorksAmt)) {
+            app.ShowErrorMessage("Invalid Physical Works");
+            return;
+        }
+
+        $("#FormW1_PhyWorksAmt").val(nfObject.format(PhyWorksAmt));
+
+       
         if (PhyWorksAmt > 999999999) {
             $("#FormW1_PhyWorksAmt").val("")
             app.ShowErrorMessage("Physical Works Invalid");
@@ -132,10 +143,19 @@ function CalculateCost() {
         PhyWorksAmt = 0;
     }
     if ($("#FormW1_GenPrelimsAmt").val() != "") {
-        GenPrelimsAmt = $("#FormW1_GenPrelimsAmt").val();
+
+        GenPrelimsAmt = $("#FormW1_GenPrelimsAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(GenPrelimsAmt)) {
+            app.ShowErrorMessage("Invalid General and Preliminaries");
+            return;
+        }
+
+        $("#FormW1_GenPrelimsAmt").val(nfObject.format(GenPrelimsAmt));
+
         if (GenPrelimsAmt > 999999999) {
             $("#FormW1_GenPrelimsAmt").val("")
-            app.ShowErrorMessage("General and Preliminaries");
+            app.ShowErrorMessage("Invalid General and Preliminaries");
         }
     }
     else {
@@ -143,30 +163,59 @@ function CalculateCost() {
     }
 
     if ($("#FormW1_SurvyWorksAmt").val() != "") {
-        SurvyWorksAmt = $("#FormW1_SurvyWorksAmt").val();
+      
+        SurvyWorksAmt = $("#FormW1_SurvyWorksAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(SurvyWorksAmt)) {
+            app.ShowErrorMessage("Invalid Survey Works");
+            return;
+        }
+
+        $("#FormW1_SurvyWorksAmt").val(nfObject.format(SurvyWorksAmt));
+
+
         if (SurvyWorksAmt > 999999999) {
             $("#FormW1_SurvyWorksAmt").val("")
-            app.ShowErrorMessage("Survey Works ");
+            app.ShowErrorMessage("Invalid Survey Works ");
         }
     }
     else {
         SurvyWorksAmt = 0;
     }
     if ($("#FormW1_SiteInvestAmt").val() != "") {
-        SiteInvestAmt = $("#FormW1_SiteInvestAmt").val();
+       
+        SiteInvestAmt = $("#FormW1_SiteInvestAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(SiteInvestAmt)) {
+            app.ShowErrorMessage("Invalid Site Investigation");
+            return;
+        }
+
+        $("#FormW1_SiteInvestAmt").val(nfObject.format(SiteInvestAmt));
+
         if (SiteInvestAmt > 999999999) {
             $("#FormW1_SiteInvestAmt").val("")
-            app.ShowErrorMessage("Site Investigation");
+            app.ShowErrorMessage("Invalid Site Investigation");
         }
     }
     else {
         SiteInvestAmt = 0;
     }
     if ($("#FormW1_ConsulFeeAmt").val() != "") {
-        ConsulFeeAmt = $("#FormW1_ConsulFeeAmt").val();
+         
+        ConsulFeeAmt = $("#FormW1_ConsulFeeAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(ConsulFeeAmt)) {
+            app.ShowErrorMessage("Invalid Consultancy Fees");
+            return;
+        }
+
+        $("#FormW1_ConsulFeeAmt").val(nfObject.format(ConsulFeeAmt));
+
+
         if (ConsulFeeAmt > 999999999) {
             $("#FormW1_ConsulFeeAmt").val("")
-            app.ShowErrorMessage("Consultancy Fees");
+            app.ShowErrorMessage("Invalid Consultancy Fees");
         }
     }
     else {
@@ -174,10 +223,20 @@ function CalculateCost() {
     }
 
     if ($("#FormW1_OtherCostAmt").val() != "") {
-        OtherCostAmt = $("#FormW1_OtherCostAmt").val();
+        
+        OtherCostAmt = $("#FormW1_OtherCostAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(OtherCostAmt)) {
+            app.ShowErrorMessage("Invalid Other Cost");
+            return;
+        }
+
+        $("#FormW1_OtherCostAmt").val(nfObject.format(OtherCostAmt));
+
+
         if (OtherCostAmt > 999999999) {
             $("#FormW1_OtherCostAmt").val("")
-            app.ShowErrorMessage("Other Cost");
+            app.ShowErrorMessage("Invalid Other Cost");
         }
     }
     else {
@@ -185,6 +244,8 @@ function CalculateCost() {
     }
 
     $("#FormW1_EstimTotalCostAmt").val(parseFloat(PhyWorksAmt) + parseFloat(GenPrelimsAmt) + parseFloat(SurvyWorksAmt) + parseFloat(SiteInvestAmt) + parseFloat(ConsulFeeAmt) + parseFloat(OtherCostAmt));
+
+    $("#FormW1_EstimTotalCostAmt").val(nfObject.format($("#FormW1_EstimTotalCostAmt").val()));
 }
 
 
@@ -470,7 +531,7 @@ function OnVerifyUserChange(tis) {
 
 
 function GetImageList(id, formName) {
- 
+
     var group = $("#FormADetAssetGrpCode option:selected").val();
 
     $.ajax({
