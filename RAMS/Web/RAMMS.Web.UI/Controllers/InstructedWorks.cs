@@ -334,6 +334,13 @@ namespace RAMMS.Web.UI.Controllers
 
         #region FormW2
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteW2(int id)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formW2Service.Delete(id);
+            return Json(rowsAffected);
+        }
 
         private async Task LoadN2DropDown()
         {
