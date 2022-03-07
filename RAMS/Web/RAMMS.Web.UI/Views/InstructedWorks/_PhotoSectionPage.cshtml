@@ -94,13 +94,22 @@
                                                     <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageUserFilePath)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.Source)</td>
-                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && item.Source == Model.FormName)
+
+                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works)  && ((Model.FormName == "FormWCWG" && (item.Source == "FormWC" || item.Source == "FormWG")) || ((Model.FormName == "FormWDWN") && (item.Source == "FormWD" || item.Source == "FormWN"))))  
                                                     {
-                                                        <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
+                                                        <td style="text-align:center">
+                                                            <button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button>
+                                                        </td>
                                                     }
-                                                    else
-                                                    {
-                                                        <td></td>
+                                                    else {
+                                                            @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && (item.Source == Model.FormName))
+                                                            {
+                                                                <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
                                                     }
                                                 </tr>
                                                 i++;
@@ -201,7 +210,7 @@
 @*<div class="modal-footer">
     <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
     </div>*@
-    <input type="hidden" id="hdnFormType" value="@Model.FormName"/>
+<input type="hidden" id="hdnFormType" value="@Model.FormName" />
 <div class="modal hide border-10x addphoto-mdl" id="myModal">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -218,13 +227,13 @@
                             @Html.DropDownList("Select Type", (IEnumerable
                             <SelectListItem>)ViewData["PhotoTypeList"], "Select Type", new { @Id = "photoType", @class = "form-control" })
                         </div>
-                       
-                            <div class="form-group col-lg-12" id="divFormType">
-                                @Html.Label("Please Select Form Type ", "Please Select Form Type: ", new { @class = "float-left" })
-                                @Html.DropDownList("Select Type", (IEnumerable
+
+                        <div class="form-group col-lg-12" id="divFormType">
+                            @Html.Label("Please Select Form Type ", "Please Select Form Type: ", new { @class = "float-left" })
+                            @Html.DropDownList("Select Type", (IEnumerable
                             <SelectListItem>)ViewData["FormType"], "Select Type", new { @Id = "formType", @class = "form-control" })
-                            </div>
-                       
+                        </div>
+
 
                     </div>
                 </div>
@@ -351,14 +360,14 @@
     });
 
     function FormAddImage() {
-        //debugger;
+        debugger;
 
         if ($("#hdnView").val() == "1") return;
         if (ValidatePage("#tab1")) {
             if ($("#hdnPkRefNo").val() != "0") {
-                $("#myModal").modal('show');  
-                
-                if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN") 
+                $("#myModal").modal('show');
+
+                if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN")
                     $("#divFormType").show();
                 else
                     $("#divFormType").hide();
@@ -568,6 +577,10 @@
                         if (data) {
                         app.ShowSuccessMessage('Uploaded Successcully', false);
                         $('#myModal').modal('hide');
+                         if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN"){
+                             GetImageList(id, $("#hdnFormType").val());
+                         }
+                         else
                             GetImageList(id, $("#hdnForm").val());
                     }
                     else {
@@ -599,7 +612,8 @@
     }
 
       function DeleteImage(pkId) {
-          if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return;
+          var id = $("#IwRefNo").val();
+          if ($("#hdnView").val() == "1") return;
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 InitAjaxLoading();
@@ -611,6 +625,10 @@
                         if (data > 0) {
                             HideAjaxLoading();
                             app.ShowSuccessMessage("Successfully Deleted")
+                            if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN"){
+                             GetImageList(id, $("#hdnFormType").val());
+                         }
+                         else
                             GetImageList( $("#hdnPkRefNo").val(),$("#hdnForm").val());
                         }
                         else {

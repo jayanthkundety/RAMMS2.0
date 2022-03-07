@@ -750,6 +750,7 @@
             var id = GetFormIDByName("wc");
             var w2status = GetFormIDByName("w2Status"); //To Do change to wd Status
             var wcsubstatus = GetFormIDByName("wcSubStatus");
+            var wgsubstatus = GetFormIDByName("wgSubStatus");
              if ((id == "-1" || id == null) &&   (w2status == "Received"))
             {
                 $("#wcAdd").show();
@@ -759,7 +760,7 @@
             }
             else if (id != "-1" && id != null)
             {
-                if (wcsubstatus)
+                if (wcsubstatus && wgsubstatus)
                 {
                     $("#wcAdd").hide();
                     $("#wcEdit").hide();

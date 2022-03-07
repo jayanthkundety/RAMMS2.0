@@ -67,7 +67,7 @@
         }
 
         $.ajax({
-            url: '/InstructedWorks/GetIWImageList',
+            url: '/InstructedWorks/GetIWImageList', 
             data: { id, assetgroup: group , form },
             type: 'POST',
             success: function (data) {
@@ -83,7 +83,11 @@
         });
 
         return true;
-}
+     }
+
+     function toCurrency(obj){
+         return obj.value.toLocaleString('en-IN')
+     }
 
 </script>
 
@@ -198,7 +202,7 @@
                                                                     </div>
                                                                     <div class="col-4 pr-lg-0">
                                                                         <label for=""> &nbsp;  &nbsp; &nbsp;</label>
-                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.RmuCode, (IEnumerable<CSelectListItem>)ViewData["RMU"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
+                                                                        @Html.DropDownListFor(m => m.SaveFormW2Model.RmuCode, (IEnumerable<CSelectListItem>)ViewData["RMU_Division"], "Select RMU", new { @id = "formW2RMU", @class = "form-control  validate {required, RMU Code}", @onchange = "changeRMU(this)" })
                                                                     </div>
                                                                     <div class="col-4">
                                                                         @Html.Label("Name", "Name")@Html.TextBoxFor(m => m.SaveFormW2Model.RmuName, new { @Id = "formW2RMUName", @class = "form-control  validate {required, RMU Name}", @disabled = true })
@@ -398,7 +402,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text">RM</span>
                                                                         </div>
-                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Estimated Cost}" })
+                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Estimated Cost}", @onchange="toCurrenty()" })
                                                                     </div>
                                                                 </div>
                                                                 <div class="clear-b mb-3"></div>
@@ -437,7 +441,7 @@
 
                                                                     }
                                                                     <div class="clear-b mt-2">
-                                                                        <input type="checkbox" id="formW2IssuedSig" class="disableinput" checked="@_issued" style="height: 20px;">
+                                                                        <input type="checkbox" id="formW2IssuedSig" class="disableinput" checked="@_issued" style="height: 20px;" disabled>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -470,7 +474,7 @@
 
                                                                     }
                                                                     <div class="clear-b mt-2">
-                                                                        <input type="checkbox" id="formW2RequestedSign" class="disableinput" checked="@_Requested" style="height: 20px;">
+                                                                        <input type="checkbox" id="formW2RequestedSign" class="disableinput" checked="@_Requested" style="height: 20px;" disabled>
                                                                     </div>
                                                                 </div>
                                                             </div>

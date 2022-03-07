@@ -20,7 +20,7 @@
 
 
 <div class="col-12">
-    <div class="row">
+    <div class="row" id="divFormWg">
         <div class="col-lg-12">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                 <div class="col-lg-12 py-2 px-4">
@@ -61,7 +61,6 @@
                             <label for="Date">
                                 Date
                             </label>
-                            @*@Html.TextBoxFor(m => m.FormWG.DtWg  , new { @id="formWgDate", @type="date", @class="form-control svalidate { required, Date }"})*@
                             @Html.EditorFor(m => m.FormWG.DtWg, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @id="formWgDate", @class = "form-control  svalidate { required,Wg Date }", @type = "date" } })
                         </div>
                         <div class="form-group col-lg-3">
@@ -74,15 +73,9 @@
                             @Html.Label("Service Provider Name", "Service Provider Name")
                             @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropName , new { @Id = "formWgServiceProvider", @class = "form-control"  ,@disabled=true})
                         </div>
-
-
                     </div>
-
-
                 </div>
-
             </div>
-
         </div>
         <div class="col-lg-12 d-none">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
@@ -129,19 +122,19 @@
             <div class="row py-2 px-3">
                 <div class="form-group col-lg-2">
                     <label for="Designation"> User ID </label>
-                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWgIssuedBy", "Select Users", new { Id = "formWgIssuedBy", @class = "form-control   {required,  Issued by} " })
+                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWgIssuedBy", "Select Users", new { Id = "formWgIssuedBy", @class = "form-control  svalidate {required,  Issued by} " })
                 </div>
                 <div class="form-group col-lg-3">
                     @Html.Label("Name", "Name")
-                    @Html.TextBoxFor(w => w.FormWG.UsernameIssu, new {@id = "formWgIssuedName", @class = "form-control svalidate  {required,  Requested by Name}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.UsernameIssu, new {@id = "formWgIssuedName", @class = "form-control svalidate  {required,  Issued by Name}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2">
                     @Html.Label("Designation", "Designation")
-                    @Html.TextBoxFor(w => w.FormWG.DesignationIssu, new { @id = "formWgIssuedDesig", @class = "form-control svalidate  {required,  Requested by Designation}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.DesignationIssu, new { @id = "formWgIssuedDesig", @class = "form-control svalidate  {required,  Issued by Designation}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 p-0">
                     @Html.Label("Office", "Office")
-                    @Html.TextBoxFor(w => w.FormWG.OfficeIssu, new { @id = "formWgIssuedOffice", @class = "form-control svalidate  {required,  Requested by Office}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.OfficeIssu, new { @id = "formWgIssuedOffice", @class = "form-control svalidate  {required,  Issued by Office}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 pr-0">
                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
@@ -149,7 +142,7 @@
                         var vd = Model.FormWG.DtIssu;
                         string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                     }
-                    <input type="text" class="form-control  svalidate {required, Issue date}" id="formWgIssuedDate" value="@_IssuedDate" disabled />
+                    <input type="text" class="form-control  svalidate {required, Issued date}" id="formWgIssuedDate" value="@_IssuedDate" disabled />
                 </div>
                 <div class="form-group col-lg-1 text-center">
                     @Html.Label("Signature", "Signature")

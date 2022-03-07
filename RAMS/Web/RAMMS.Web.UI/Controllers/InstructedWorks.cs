@@ -211,7 +211,6 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-
         [HttpPost]
         public async Task<IActionResult> detailSearchDdList(AssetDDLRequestDTO assetDDLRequestDTO)
         {
@@ -265,6 +264,7 @@ namespace RAMMS.Web.UI.Controllers
             var assetDDLResponseDTO = await _roadMasterService.GetAssetDDL(assetDDLRequestDTO);
             ViewBag.SectionCodeList = from d in assetDDLResponseDTO.Section select new SelectListItem { Text = d.Text, Value = d.Value };
         }
+ 
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
@@ -340,7 +340,6 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-
         [HttpPost]
         public async Task<IActionResult> DeleteW1(int id)
         {
@@ -352,7 +351,6 @@ namespace RAMMS.Web.UI.Controllers
         #endregion
 
         #region FormW2
-
 
         private async Task LoadN2DropDown()
         {
@@ -369,7 +367,7 @@ namespace RAMMS.Web.UI.Controllers
 
 
             LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status", "User");
-
+            GetRMUWithDivision("RMU_Division");
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
@@ -625,31 +623,6 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> GetW2ImageList(int formW2Id, string assetgroup)
-        //{
-        //    DDLookUpDTO ddLookup = new DDLookUpDTO();
-        //    FormW2Model assetsModel = new FormW2Model();
-        //    assetsModel.ImageList = new List<FormIWImageResponseDTO>();
-        //    assetsModel.ImageTypeList = new List<string>();
-        //    ddLookup.Type = "Photo Type";
-        //    ddLookup.TypeCode = "IW";
-        //    assetsModel.PhotoType = await _ddLookupService.GetDdLookup(ddLookup);
-        //    if (assetsModel.PhotoType.Count() == 0)
-        //    {
-        //        assetsModel.PhotoType = new[]{ new SelectListItem
-        //        {
-        //            Text = "Others",
-        //            Value = "Others"
-        //        }};
-        //    }
-        //    ViewBag.PhotoTypeList = await _ddLookupService.GetDdLookup(ddLookup);
-        //    assetsModel.ImageList = await _formW2Service.GetImageList(formW2Id);
-        //    assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
-        //    return PartialView("~/Views/InstructedWorks/_PhotoSectionPage.cshtml", assetsModel);
-        //}
-
-
         public async Task<IActionResult> GetW1DetailsByRoadCode(string roadCode)
         {
             FormW1ResponseDTO formW1 = await _formW2Service.GetFormW1ByRoadCode(roadCode);
@@ -841,16 +814,12 @@ namespace RAMMS.Web.UI.Controllers
             _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
-            _formWCWGModel.FormW1.ServPropName = serProv.Name;
-            //_formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
-            //_formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
-            //_formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
-            //_formWCWGModel.FormW1.ServPhone = serProv.Phone;
-            //_formWCWGModel.FormW1.ServFax = serProv.Fax;
-
+            _formWCWGModel.FormW1.ServPropName = serProv.Name;           
             _formWCWGModel.FormWC = new FormWCResponseDTO();
             _formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+            _formWCWGModel.FormWC.DtWc = DateTime.Today;
             _formWCWGModel.FormWG = new FormWGResponseDTO();
+            _formWCWGModel.FormWG.DtWg = DateTime.Today;
             _formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             _formWCWGModel.Division = await _divisionService.GetDivisions();
             ViewData["Division"] = await _divisionService.GetDivisionsDDL();
@@ -874,24 +843,31 @@ namespace RAMMS.Web.UI.Controllers
 
             _formWCWGModel.FormW1 = _formC != null ? _formWCWGModel.FormWC.Fw1PkRefNoNavigation : new FormW1ResponseDTO();
 
-            if (_formC != null && (_formC.SubmitSts && view == "1")) _formWCWGModel.WCView = "1";
+            if (_formC != null && (_formC.SubmitSts || view == "1")) _formWCWGModel.WCView = "1";
 
-            if (_formG != null && (_formG.SubmitSts && view == "1")) _formWCWGModel.WGView = "1";
+            if (_formG != null && (_formG.SubmitSts || view == "1")) _formWCWGModel.WGView = "1";
 
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
             _formWCWGModel.FormW1.ServPropName = serProv.Name;
 
             if (wgid == 0)
+            {
+                _formWCWGModel.FormWC.DtWc = DateTime.Today;
                 _formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
-            else if (wcid == 0)
+            }
+            
+            if (wcid == 0)
+            {
+                _formWCWGModel.FormWG.DtWg = DateTime.Today;
                 _formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+            }
 
-            //_formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
-            //_formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
-            //_formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
-            //_formWCWGModel.FormW1.ServPhone = serProv.Phone;
-            //_formWCWGModel.FormW1.ServFax = serProv.Fax;
+            if (_formWCWGModel.WCView == "1" && _formWCWGModel.WGView == "1")
+            {
+                _formWCWGModel.View = "1";
+            }
+
             _formWCWGModel.Division = await _divisionService.GetDivisions();
             ViewData["Division"] = await _divisionService.GetDivisionsDDL();
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);

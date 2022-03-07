@@ -24,6 +24,8 @@ namespace RAMMS.Web.UI.Models
 
         public string WGView { get; set; }
 
+        public string View { get; set; }
+
         public List<string> ImageTypeList { get; set; }
         public IEnumerable<FormIWImageResponseDTO> ImageList { get; set; }
         public IEnumerable<SelectListItem> PhotoType { get; set; }

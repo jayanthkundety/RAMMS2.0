@@ -559,7 +559,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                     }
                     else
                     {
-                        strTitle = StatusList.FormW2Rejected;
+                        strTitle = StatusList.FormW2Received;
                     }
                 }
                 form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, strTitle, process.IsApprove ? "Recieved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);

@@ -11,14 +11,15 @@
 
     });
 
-     if ($("#hdnWcView").val() == "1") {
-         $("#saveWCBtn").hide();
-         $("#submitWCBtn").hide();
-     }
+     //if ($("#hdnWcView").val() == "1") {
+     //    $("#divFormWc *").prop("disabled", true);
+     //    $("#saveWCBtn").hide();
+     //    $("#submitWCBtn").hide();
+     //}
 </script>
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row" id="divFormWc">
         <div class="col-lg-12">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                 <div class="col-lg-12 py-2 px-4">
@@ -64,7 +65,6 @@
                             <label for="Date">
                                 Date
                             </label>
-                            @*@Html.TextBoxFor(m => m.FormWC.DtWc  , new { @id="formWcDate", @type="date", @class="form-control svalidate { required, Date }"})*@
                             @Html.EditorFor(m => m.FormWC.DtWc, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @id="formWcDate", @class = "form-control  svalidate { required,Wc Date }", @type = "date" } })
                         </div>
                         <div class="form-group col-lg-3">
@@ -84,9 +84,7 @@
 
 
                 </div>
-
             </div>
-
         </div>
     
         <div class="col-lg-12 d-none">
@@ -145,19 +143,19 @@
             <div class="row pt-3 pb-1">
                 <div class="form-group col-lg-2">
                     <label for="Designation"> User ID </label>
-                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWcIssuedBy", "Select Users", new { Id = "formWcIssuedBy", @class = "form-control   {required,  Issued by} " })
+                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWcIssuedBy", "Select Users", new { Id = "formWcIssuedBy", @class = "form-control svalidate  {required,  Issued by} " })
                 </div>
                 <div class="form-group col-lg-3">
                     @Html.Label("Name", "Name")
-                    @Html.TextBoxFor(w => w.FormWC.UsernameIssu, new { @id = "formWcIssuedName", @class = "form-control svalidate  {required,  Requested by Name}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWC.UsernameIssu, new { @id = "formWcIssuedName", @class = "form-control svalidate  {required,  Issued by Name}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 ">
                     @Html.Label("Designation", "Designation")
-                    @Html.TextBoxFor(w => w.FormWC.DesignationIssu, new { @id = "formWcIssuedDesig", @class = "form-control svalidate  {required,  Requested by Designation}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWC.DesignationIssu, new { @id = "formWcIssuedDesig", @class = "form-control svalidate  {required,  Issued by Designation}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2">
                     @Html.Label("Office", "Office")
-                    @Html.TextBoxFor(w => w.FormWC.OfficeIssu, new { @id = "formWcIssuedOffice", @class = "form-control svalidate  {required,  Requested by Office}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWC.OfficeIssu, new { @id = "formWcIssuedOffice", @class = "form-control svalidate  {required,  Issued by Office}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 pr-0">
                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
@@ -165,7 +163,7 @@
                         var vd = Model.FormWC.DtIssu;
                         string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                     }
-                    <input type="text" class="datepicker form-control  svalidate {required, Issue date}" id="formWcIssuedDate" value="@_IssuedDate" disabled />
+                    <input type="text" class="datepicker form-control  svalidate {required, Issued date}" id="formWcIssuedDate" value="@_IssuedDate" disabled />
                 </div>
                 <div class="form-group col-lg-1 text-center">
                     @Html.Label("Signature", "Signature")
@@ -189,7 +187,7 @@
         });
     }
 </div>
-@Html.HiddenFor(m => m.WCView, new { @id = "hdnWcView", @class = "form-control", @value = "0" })
+@Html.HiddenFor(m => m.WCView, new { @id = "hdnWcView", @class = "form-control" })
 @Html.HiddenFor(m => m.FormWC.PkRefNo, new { @id = "hdnWcRefNo", @class = "form-control", @value = "0" })
 <input id="hdnForm" type="hidden" value="FormWC" />
 <div id="divWCButton" class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;
