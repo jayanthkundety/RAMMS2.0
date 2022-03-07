@@ -7,6 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public int FwcPkRefNo { get; set; }
         public int? FwcFw1PkRefNo { get; set; }
+        public int? FwcIwWrksDeptId { get; set; }
         public string FwcRmuCode { get; set; }
         public string FwcSecCode { get; set; }
         public string FwcRoadCode { get; set; }
@@ -37,5 +38,6 @@ namespace RAMMS.Domain.Models
         public string FwcAuditLog { get; set; }
 
         public virtual RmIwFormW1 FwcFw1PkRefNoNavigation { get; set; }
+        public virtual RmIwWorksDeptMaster FwcPkRefNoNavigation { get; set; }
     }
 }

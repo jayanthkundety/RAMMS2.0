@@ -115,6 +115,25 @@ namespace RAMMS.Web.UI.Controllers
             assetsModel.ImageList = await _formW1Service.GetImageList(Id);
             assetsModel.IwRefNo = Id;
             assetsModel.FormName = form;
+
+            if (form == "FormWCWG")
+            {
+                ddLookup.Type = "IWFORMWCWG";
+                ddLookup.TypeCode = "WGWC";
+                ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+            }
+            else if (form == "FormWDWN")
+            {
+                ddLookup.Type = "IWFORMWDWN";
+                ddLookup.TypeCode = "WDWN";
+                ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+            }
+            else
+            {
+                ddLookup.Type = "IWFORMWDWN";
+                ddLookup.TypeCode = "WDWN";
+                ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+            }
             assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
             return PartialView("~/Views/InstructedWorks/_PhotoSectionPage.cshtml", assetsModel);
         }
@@ -820,17 +839,18 @@ namespace RAMMS.Web.UI.Controllers
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
             _formWCWGModel.FormW1.ServPropName = serProv.Name;
-            _formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
-            _formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
-            _formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
-            _formWCWGModel.FormW1.ServPhone = serProv.Phone;
-            _formWCWGModel.FormW1.ServFax = serProv.Fax;
+            //_formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
+            //_formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
+            //_formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
+            //_formWCWGModel.FormW1.ServPhone = serProv.Phone;
+            //_formWCWGModel.FormW1.ServFax = serProv.Fax;
 
             _formWCWGModel.FormWC = new FormWCResponseDTO();
             _formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             _formWCWGModel.FormWG = new FormWGResponseDTO();
+            _formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             _formWCWGModel.Division = await _divisionService.GetDivisions();
-
+            ViewData["Division"] = await _divisionService.GetDivisionsDDL();
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
         }
 
@@ -839,32 +859,40 @@ namespace RAMMS.Web.UI.Controllers
 
             var _formWCWGModel = new FormWCWGModel();
             LoadLookupService("TECM_Status", "User");
+            
             var _formC = await _formWCService.FindWCByID(wcid);
             _formWCWGModel.FormWC = _formC == null ? new FormWCResponseDTO() : _formC;
+            
             var _formG = await _formWGService.FindWGByID(wgid);
-
             _formWCWGModel.FormWG = _formG == null ? new FormWGResponseDTO() : _formG;
+            
             _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
+
+
             _formWCWGModel.FormW1 = _formC != null ? _formWCWGModel.FormWC.Fw1PkRefNoNavigation : new FormW1ResponseDTO();
 
-            if (_formC.SubmitSts || view == "1") _formWCWGModel.WCView = "1";
+            if (_formC != null && (_formC.SubmitSts && view == "1")) _formWCWGModel.WCView = "1";
 
-            if (_formG.SubmitSts || view == "1") _formWCWGModel.WGView = "1";
+            if (_formG != null && (_formG.SubmitSts && view == "1")) _formWCWGModel.WGView = "1";
 
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
             _formWCWGModel.FormW1.ServPropName = serProv.Name;
-            _formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
-            _formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
-            _formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
-            _formWCWGModel.FormW1.ServPhone = serProv.Phone;
-            _formWCWGModel.FormW1.ServFax = serProv.Fax;
-            _formWCWGModel.Division = await _divisionService.GetDivisions();
 
+            if (wgid == 0)
+                _formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+            else if (wcid == 0)
+                _formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+
+            //_formWCWGModel.FormW1.ServAddress1 = serProv.Adress1;
+            //_formWCWGModel.FormW1.ServAddress2 = serProv.Adress2;
+            //_formWCWGModel.FormW1.ServAddress3 = serProv.Adress3;
+            //_formWCWGModel.FormW1.ServPhone = serProv.Phone;
+            //_formWCWGModel.FormW1.ServFax = serProv.Fax;
+            _formWCWGModel.Division = await _divisionService.GetDivisions();
+            ViewData["Division"] = await _divisionService.GetDivisionsDDL();
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
         }
-
-
 
         public async Task<JsonResult> SaveFormWC(FormWCResponseDTO formWC)
         {

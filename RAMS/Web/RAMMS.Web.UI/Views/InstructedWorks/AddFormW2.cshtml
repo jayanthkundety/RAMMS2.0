@@ -42,14 +42,50 @@
 
     });
 
-     $("#saveFormW2Btn").hide();
+     $("#saveFormW2Btn").show();
+     $("#submitFormW2Btn").show();
+     $("#divSaveRow").show();
+
+     $("#saveFCEMBtn").hide();
+     $("#submitFCEMBtn").hide();
+
+     $("#closeFormW2Btn").show();
+
+     function GetImageList(id, form) {
+    //debugger;
+    var group = $("#FormADetAssetGrpCode option:selected").val();
+    $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
-    $("#divSaveRow").hide();
-
-    $("#saveFCEMBtn").show();
-    $("#submitFCEMBtn").show();
-
+    $("#saveFCEMBtn").hide();
+    $("#submitFCEMBtn").hide();
     $("#closeFormW2Btn").show();
+    $("#divSaveRow").show();
+    if (id && id > 0) {
+        $("#fw1IWRefNo").val(id);
+    }
+    else {
+        id = $("#fw1IWRefNo").val();
+    }
+
+    $.ajax({
+        url: '/InstructedWorks/GetIWImageList',
+        data: { id, assetgroup: group , form },
+        type: 'POST',
+        success: function (data) {
+            $("#ViewPhoto").html(data);
+            if ($("#hdnView").val() == "1")
+                $("div.img-btns *").prop("disabled", true);
+            //$("#FW2HRef_No").val(id);
+        },
+        error: function (data) {
+            alert(data.responseText);
+        }
+
+    });
+
+    return true;
+}
+
 </script>
 
 
@@ -58,15 +94,9 @@
         <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
             <ul class="nav nav-tabs tabbed round">
 
+
                 <li class="nav-item">
-                    <a href="#divFecm" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openFCEM()">
-                        <span class="">
-                            FECM
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#page" id="lnkPage" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:openW2()">
+                    <a href="#page" id="lnkPage" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openW2()">
                         <span class="">
                             Form W2
                         </span>
@@ -75,7 +105,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormW2');">
+                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormW2');">
                         <span class="">
                             Attachment
                         </span>
@@ -85,6 +115,13 @@
                     <a href="#formw1" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:openW1()">
                         <span class="">
                             @Html.Label("Form W1", "Form W1")
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#divFecm" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:openFCEM()">
+                        <span class="">
+                            FECM
                         </span>
                     </a>
                 </li>
@@ -109,7 +146,7 @@
                         }
 
                     </div>
-                    <div class="tab-pane show " id="page">
+                    <div class="tab-pane show active" id="page">
                         <div class="col-md-12" id="divpage">
                             <div class="row" id="div-addformd">
                                 <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
@@ -471,16 +508,15 @@
                             <input id="hdnForm" type="hidden" value="FormW2" />
                             @{
                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                    {
-                                        Form = "FormW2",
-                                        RefId = Model.SaveFormW2Model.PkRefNo,
-                                        Stage = Model.SaveFormW2Model.Status
-                                    });
+                                {
+                                    Form = "FormW2",
+                                    RefId = Model.SaveFormW2Model.PkRefNo,
+                                    Stage = Model.SaveFormW2Model.Status
+                                });
                             }
-
                         </div>
                     </div>
-                    <div class="tab-pane show " id="formw1">
+                    <div class="tab-pane show" id="formw1">
                         <div class="p-3">
                             <div class="col-md-12">
                                 <div class="row">
@@ -865,7 +901,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane show " id="photoGallery">
+                    <div class="tab-pane show" id="photoGallery">
                         <div id="ViewPhoto">
                         </div>
                     </div>
@@ -873,11 +909,11 @@
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                    @if (security.IsJKRSSuperiorOfficer   && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved)
+                    @if (security.IsJKRSSuperiorOfficer && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved)
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
                     }
-                    else if ((security.IsJKRSSuperiorOfficer || security.IsRegionManager)  && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
+                    else if ((security.IsJKRSSuperiorOfficer || security.IsRegionManager) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
                     {
                         <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Received By');"> Received </button>
                     }

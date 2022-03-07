@@ -81,7 +81,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{ int i = 1;
+                                    @{
+                                        int i = 1;
 
                                         if (Model.ImageList != null && Model.ImageList.Count() > 0)
                                         {
@@ -131,7 +132,7 @@
                     </a>
                     <div class="img-btns mt-1">
                         @*<a class="btn btn-sm btn-themebtn" id="printWarButton" onclick="printImage()" role="button">
-                                <span class="print-icon-white"></span> Print
+                            <span class="print-icon-white"></span> Print
                             </a>*@
                     </div>
                 </div>
@@ -198,9 +199,9 @@
     </div>
 </div>
 @*<div class="modal-footer">
-        <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
+    <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
     </div>*@
-
+    <input type="hidden" id="hdnFormType" value="@Model.FormName"/>
 <div class="modal hide border-10x addphoto-mdl" id="myModal">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -215,8 +216,16 @@
                         <div class="form-group col-lg-12">
                             @Html.Label("Please Select Photo Type ", "Please Select Photo Type: ", new { @class = "float-left" })
                             @Html.DropDownList("Select Type", (IEnumerable
-                                <SelectListItem>)ViewData["PhotoTypeList"], "Select Type", new { @Id = "photoType", @class = "form-control" })
+                            <SelectListItem>)ViewData["PhotoTypeList"], "Select Type", new { @Id = "photoType", @class = "form-control" })
                         </div>
+                       
+                            <div class="form-group col-lg-12" id="divFormType">
+                                @Html.Label("Please Select Form Type ", "Please Select Form Type: ", new { @class = "float-left" })
+                                @Html.DropDownList("Select Type", (IEnumerable
+                            <SelectListItem>)ViewData["FormType"], "Select Type", new { @Id = "formType", @class = "form-control" })
+                            </div>
+                       
+
                     </div>
                 </div>
 
@@ -348,6 +357,12 @@
         if (ValidatePage("#tab1")) {
             if ($("#hdnPkRefNo").val() != "0") {
                 $("#myModal").modal('show');
+                if ($("#hdnFormType").val() == "FormWCWG") 
+                $("divFormType").show();
+            else if ($("#hdnFormType").val() == "FormWDWN")
+                $("divFormType").show();
+            else
+                $("divFormType").hide();
             }
             else {
                 $("#tab1").click();
@@ -536,6 +551,7 @@
                 formData.append("FormFile", filesToUpload[i].file);
                 formData.append("PhotoType", filesToUpload[i].fileType);
             }
+            if ($("#hdnFormType").val())
             formData.append("Source", $("#hdnForm").val());
             InitAjaxLoading();
             $.ajax(
@@ -582,7 +598,7 @@
     }
 
       function DeleteImage(pkId) {
-          if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return; 
+          if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return;
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 InitAjaxLoading();

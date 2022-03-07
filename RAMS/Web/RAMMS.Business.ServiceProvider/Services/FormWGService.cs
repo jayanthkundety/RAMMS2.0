@@ -118,7 +118,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             if (form.FwgSubmitSts && (string.IsNullOrEmpty(form.FwgStatus) || form.FwgStatus == Common.StatusList.FormWGSaved ))
             {
                 form.FwgStatus = Common.StatusList.FormWGSubmitted;
-                form.FwgAuditLog = Utility.ProcessLog(form.FwgAuditLog, "Recorded By", "Approved", form.FwgUsernameIssu, string.Empty, form.FwgDtIssu , _security.UserName);
+                form.FwgAuditLog = Utility.ProcessLog(form.FwgAuditLog, "Recorded By", "Submitted", form.FwgUsernameIssu, string.Empty, form.FwgDtIssu , _security.UserName);
                 processService.SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = _security.UserName,

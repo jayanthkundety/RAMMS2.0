@@ -10,6 +10,8 @@ namespace RAMMS.DTO.ResponseBO
         public int PkRefNo { get; set; }
 
         public int? Fw1PkRefNo { get; set; }
+
+        public int? IwWrksDeptId { get; set; }
         public string RmuCode { get; set; }
         public string SecCode { get; set; }
         public string RoadCode { get; set; }

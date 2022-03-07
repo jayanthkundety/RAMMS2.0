@@ -18,6 +18,7 @@ namespace RAMMS.DTO.RequestBO
 
     public struct Division
     {
+        public int ID;
         public string Code;
         public string Name;
         public string Adress1;
@@ -30,6 +31,7 @@ namespace RAMMS.DTO.RequestBO
 
     public struct ServiceProvider
     {
+        public int ID;
         public string Code;
         public string Name;
         public string Adress1;

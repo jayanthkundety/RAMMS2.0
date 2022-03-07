@@ -25,5 +25,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<DivisionRequestDTO> GetDivisions();
 
         Task<DivisionRequestDTO> GetServiceProviders();
+
+        Task<IEnumerable<SelectListItem>> GetDivisionsDDL();
     }
 }
