@@ -362,7 +362,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text">RM</span>
                                                                         </div>
-                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Estimated Cost}" })
+                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Estimated Cost}", @onchange="formatCurrency(this)" })
                                                                     </div>
                                                                 </div>
                                                                 <div class="clear-b mb-3"></div>

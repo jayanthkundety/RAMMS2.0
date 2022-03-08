@@ -495,3 +495,17 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
+
+function formatCurrency(obj) {
+
+    var nfObject = new Intl.NumberFormat('en-US');
+
+    var text = $(obj).val().replace(/,/g, '');
+
+    //if (!$.isNumeric(PhyWorksAmt)) {
+    //    app.ShowErrorMessage("Invalid Physical Works");
+    //    return;
+    //}
+    $(obj).val(nfObject.format(text));
+    
+}
