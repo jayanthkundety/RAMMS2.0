@@ -591,6 +591,9 @@ function Save(GroupName, SubmitType) {
     $("#FormW1_IwRefNo").removeClass("validate");
     $("#chkBQ").removeClass("validate");
     $("#chkDrawing").removeClass("validate");
+    $("#FormW1_SignReq").removeClass("validate");
+    $("#FormW1_SignVer").removeClass("validate");
+    $("#FormW1_SignRep").removeClass("validate");
 
     if (SubmitType != "") {
 
@@ -600,6 +603,8 @@ function Save(GroupName, SubmitType) {
             $("#FormW1_Status").val("Submitted");
             $("#FormW1_SubmitSts").val(true);
             $("#ddlUseridReq").addClass("validate");
+            $("#FormW1_SignReq").addClass("validate");
+            
 
             if ($("#chkBQ").prop('checked') == false) {
                 $("#chkBQ").addClass("validate");
@@ -632,9 +637,11 @@ function Save(GroupName, SubmitType) {
             $("#ddlRMU").addClass("validate");
             $("#ddlRMU").addClass("validate");
             $("#FormW1_IwRefNo").addClass("validate");
+            $("#FormW1_SignVer").removeClass("validate");
 
             if ($("#hdnRecommondedValue").val() == 1 || $("#hdnRecommondedValue").val() == 2) {
                 $("#ddlUseridRep").addClass("validate");
+                $("#FormW1_SignRep").removeClass("validate");
             }
         }
     }

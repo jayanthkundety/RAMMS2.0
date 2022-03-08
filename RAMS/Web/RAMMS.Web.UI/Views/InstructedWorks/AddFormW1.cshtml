@@ -420,7 +420,7 @@
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.CheckBoxFor(model => model.FormW1.SignReq )
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignReq, new { @class = "{required, Requested By Signature}" })
                                                                             </div>
 
                                                                         </div>
@@ -468,7 +468,7 @@
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             @Html.Label("Signature", "Signature")
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.CheckBoxFor(model => model.FormW1.SignRep, new { @disabled = "disabled" })
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignRep, new { @disabled = "disabled", @class = "{required, Reported By Signature}" })
                                                                             </div>
 
                                                                         </div>
@@ -501,7 +501,7 @@
                                                                         <div class="form-group col-lg-2 text-center">
                                                                             <label>Signature</label>
                                                                             <div class="clear-b mt-2">
-                                                                                @Html.CheckBoxFor(model => model.FormW1.SignVer )
+                                                                                @Html.CheckBoxFor(model => model.FormW1.SignVer, new { @class = "{required, Verified By Signature}" })
                                                                             </div>
 
                                                                         </div>
@@ -550,7 +550,7 @@
                         </div> <div class="col-md-12 mb-2 float-right text-right custom-footer">
                             <button type="button" id="btnBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
 
-                            @if (string.IsNullOrEmpty(Model.FormW1.Status)  || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            @if (string.IsNullOrEmpty(Model.FormW1.Status) || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                             }
