@@ -141,7 +141,7 @@
                     </div>*@
                 <div class="col-12 mb-2 ">
                     <div class="px-3  py-2 float-left w-100 border">
-                        <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, <input type="date" class="float-right form-control border-left-0 border-top-0 border-right-0 border-bottom" style="width: 176px; font-weight: bolder; font-size: 17px;" /></span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
+                        <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, @Html.EditorFor(m => m.FormWN.DtW2Initiation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-right form-control border-left-0 border-top-0 border-right-0 border-bottom",@ style = "width: 176px; font-weight: bolder; font-size: 17px;" , @type = "date" } })  </span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
                     </div>
                 </div>
                 <div class="col-12 mb-2 ">
