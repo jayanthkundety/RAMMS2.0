@@ -73,9 +73,14 @@
                                         <th>Attachment Type</th>
                                         <th>FileName</th>
                                         <th>Source</th>
+                                        
                                         @if (security.IsPCDelete(ModuleNameList.Instructed_Works))
                                         {
                                             <th style="text-align:center">Delete</th>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
                                         }
                                         <th>Download</th>
 
