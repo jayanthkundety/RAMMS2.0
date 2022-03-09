@@ -639,7 +639,9 @@
         $('#ddlUseridRep').trigger('chosen:updated');
         $("#ddlUseridRep").trigger("change");
 
-        GetNames($("#ddlSectionCode").val() == "" ? "0" : $("#ddlSectionCode").val(), "Section Code");
+        
+
+        GetNames("@Model.FormW1.SecCode" == "" ? "0" : "@Model.FormW1.SecCode", "Section Code");
 
     });
 </script>

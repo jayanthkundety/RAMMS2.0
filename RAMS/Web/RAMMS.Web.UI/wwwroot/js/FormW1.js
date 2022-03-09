@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    debugger
+ 
     if ($("#hdnView").val() == "1") {
         $("#FormW1datapage *").prop("disabled", true);
         $("#ddlRMU").chosen('destroy');
@@ -537,7 +537,7 @@ function OnUseridReqUserChange(tis) {
 }
 
 function OnVerifyUserChange(tis) {
-    debugger
+ 
     var ctrl = $(tis);
     if (ctrl.val() != null)
         $('#FormW1_UseridVer').val(ctrl.val());
