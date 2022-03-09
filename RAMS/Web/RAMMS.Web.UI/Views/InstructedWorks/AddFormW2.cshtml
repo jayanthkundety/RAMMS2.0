@@ -476,7 +476,7 @@
                                                         <div class="row">
                                                             <div class="form-group col-md-2">
                                                                 @Html.Label("RMU", "RMU")
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU_Division"], "RMU", "Select RMU", new { id = "ddlRMU", @disabled = "true", @class = "form-control {required, RMU Code} ", @onchange = "OnRMUChange(this);" }, Model.FormW1.RmuCode)
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RMU", "Select RMU", new { id = "ddlRMU", @disabled = "true", @class = "form-control {required, RMU Code} ", @onchange = "OnRMUChange(this);" }, Model.FormW1.RmuCode)
 
                                                             </div>
                                                             <div class="form-group col-lg-2">
@@ -535,8 +535,8 @@
                                                             </div>
                                                             <div class="form-group col-lg-3">
                                                                 @Html.Label("Service Provider Name", "Service Provider Name")
-                                                                @*@Html.TextBoxFor(m => m.FormW1.ServPropName, new { @class = "form-control svalidate {required,Service Provider Name}" })*@
-                                                                @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @disabled = "true", @class = "form-control svalidate {required, Service Provider Name}" })
+                                                                @Html.TextBoxFor(m => m.FormW1.ServPropName, new { @class = "form-control" })
+                                                               @* @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @disabled = "true", @class = "form-control svalidate {required, Service Provider Name}" })*@
                                                             </div>
                                                             @*<div class="form-group col-lg-4">
                                             <label for="Designation"> Address 1 </label>

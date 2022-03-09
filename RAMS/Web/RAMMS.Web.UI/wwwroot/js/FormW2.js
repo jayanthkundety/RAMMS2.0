@@ -509,3 +509,6 @@ function formatCurrency(obj) {
     $(obj).val(nfObject.format(text));
     
 }
+
+
+

@@ -361,6 +361,8 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+           await LoadDropDownsSectionCode();
         }
 
         public async Task<IActionResult> AddFormW2(int id)
@@ -401,6 +403,8 @@ namespace RAMMS.Web.UI.Controllers
 
             defaultData.SerProvRefNo = _formW2Model.FormW1.ServPropRefNo;
             defaultData.EstCostAmt = _formW2Model.FormW1.EstimTotalCostAmt;
+            defaultData.UseridIssu = _security.UserID;
+            defaultData.UseridReq = _security.UserID;
             _formW2Model.SaveFormW2Model = defaultData;
             //_formW2Model.FormW1 = new FormW1ResponseDTO();
 

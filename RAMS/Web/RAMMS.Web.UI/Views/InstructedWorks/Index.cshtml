@@ -623,6 +623,7 @@
                      $("#w2Edit").hide();
                      $("#w2View").hide();
                      $("#w2Print").hide();
+                     $("#w2Delete").hide();
                      app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
                      return;
                 }
@@ -630,18 +631,22 @@
                 var w1status = GetFormIDByName("w1Status");
                 var w2status = GetFormIDByName("w2Status");
                 var w2substatus = GetFormIDByName("w2SubStatus");
-                if ((id == "-1" || id == null) &&   (w1status == "Approved"))
+
+                if (id == "-1" || id == null ) $("#w2Delete").hide();
+
+                if ((id == "-1" || id == null ) &&  (w1status == "Approved"))
                 {
                     $("#w2Add").show();
                     $("#w2Edit").hide();
                     $("#w2View").hide();
                     $("#w2Print").hide();
+                    $("#w2Delete").hide();
                 }
                 else if (id != "-1" && id != null)
                 {
-                   if (w2status == "Saved" || w2status == "Submitted" || w2status == "Rejected")
+                    if (w2status == "Saved" || w2status == "Submitted" || w2status == "Rejected")
                         $("#w2Delete").show();
-                        else
+                    else
                         $("#w2Delete").hide();
 
                     if (w2status == "Approved" )
