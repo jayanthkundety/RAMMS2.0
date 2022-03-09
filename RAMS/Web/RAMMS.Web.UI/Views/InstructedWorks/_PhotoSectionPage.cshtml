@@ -414,8 +414,12 @@
                 var ext = file.name.split('.').pop().toLowerCase();
 
                 if (fileType != 'Others') {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
-                        app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                    //if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                    //    app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                    //    return
+                    //}
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf']) == -1) {
+                        app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
                         return
                     }
                     if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
