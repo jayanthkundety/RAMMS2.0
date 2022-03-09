@@ -478,7 +478,7 @@
                                                                             <label for="Designation">
                                                                                 Verified By
                                                                             </label>
-                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @class = "form-control  {required, Verified By}", @onchange = "OnVerifyUserChange(this);" })
+                                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { Id = "ddlUseridVer", @class = "form-control  {required, Verified By}", @onchange = "OnVerifyUserChange(this);" })
                                                                         </div>
                                                                         <div class="form-group col-lg-2">
                                                                             <label for="Designation"> Name </label>
@@ -639,7 +639,9 @@
         $('#ddlUseridRep').trigger('chosen:updated');
         $("#ddlUseridRep").trigger("change");
 
-        GetNames($("#ddlSectionCode").val() == "" ? "0" : $("#ddlSectionCode").val(), "Section Code");
+        
+
+        GetNames("@Model.FormW1.SecCode" == "" ? "0" : "@Model.FormW1.SecCode", "Section Code");
 
     });
 </script>
