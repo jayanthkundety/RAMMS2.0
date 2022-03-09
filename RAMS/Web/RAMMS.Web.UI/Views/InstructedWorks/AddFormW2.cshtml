@@ -1,6 +1,7 @@
 ﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @model RAMMS.Web.UI.Models.FormW2Model;
 @using RAMMS.Business.ServiceProvider;
+@using System.Globalization
 @{
     ViewBag.TabTitle = "Form W2 -  Initiation of Instructed Work";
     ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
@@ -27,7 +28,6 @@
 }
 
 <script src="~/js/FormW2.js" type="text/javascript"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormW2", "@Model.SaveFormW2Model.Status", @Model.SaveFormW2Model.PkRefNo);
@@ -36,9 +36,11 @@
         $('#formW2IssuedBy').trigger('chosen:updated');
         $("#formW2IssuedBy").trigger("change");
 
-        $('#formw2RequestedBy').val("@Model.SaveFormW2Model.UseridReq");
-        $('#formw2RequestedBy').trigger('chosen:updated');
-        $("#formw2RequestedBy").trigger("change");
+//        if ($("#hdnW2FormStatus").val() == "Saved"){
+              $('#formw2RequestedBy').val("@Model.SaveFormW2Model.UseridReq");
+              $('#formw2RequestedBy').trigger('chosen:updated');
+              $("#formw2RequestedBy").trigger("change");
+  //      }
 
     });
 
@@ -56,7 +58,7 @@
 
 
 <div class="row bg-white row bg-white pb-0">
-    <div class="col-md-12" id="divPage">
+    <div class="col-md-12">
         <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
             <ul class="nav nav-tabs tabbed round">
 
@@ -77,7 +79,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormW2');">
+                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList(@Model.FormW1.PkRefNo,'FormW2');">
                         <span class="">
                             Attachment
                         </span>
@@ -109,10 +111,9 @@
                         @{
                             Html.RenderPartial("_FormFECM.cshtml", Model.FECM);
                         }
-
                     </div>
                     <div class="tab-pane show " id="page">
-                        <div class="col-md-12" id="divpage">
+                        <div class="col-md-12" id="divPage">
                             <div class="row" id="div-addformd">
                                 <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
                                     <div class="p-4">
@@ -377,7 +378,7 @@
 
                                                                         }
                                                                     };
-                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formW2IssuedBy", "Select Users", new { Id = "formW2IssuedBy", @class = "form-control   {required,  Issued by} " })
+                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formW2IssuedBy", "Select Users", new { Id = "formW2IssuedBy",  @disabled=true, @class = "form-control   {required,  Issued by} "})
 
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
@@ -394,7 +395,7 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" value="@_IssuedDate" disabled />
+                                                                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" value="@_IssuedDate" />
                                                                 </div>
                                                                 <div class="form-group col-lg-2 text-center">
                                                                     @Html.Label("Signature", "Signature")
@@ -411,7 +412,7 @@
 
                                                                 <div class="form-group col-lg-2 px-0">
                                                                     @Html.Label("Received by", "Received by")
-                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formw2RequestedBy", "Select Users", new { Id = "formw2RequestedBy", @class = "form-control   {required, Received by} ", @onchange = "ChangeRUser(this);" })
+                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formw2RequestedBy", "Select Users", new { Id = "formw2RequestedBy", @disabled=true, @class = "form-control   {required, Received by} ", @onchange = "ChangeRUser(this);"})
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Name", "Name")
@@ -452,6 +453,8 @@
                             @Html.HiddenFor(m => m.FormW1.PkRefNo, new { @id="hdnPkRefNo"} )
                             @Html.HiddenFor(m => m.View, new { @id = "hdnView", @value = "0" })
                             <input id="hdnForm" type="hidden" value="FormW2" />
+                            <input id="hdnW2FormStatus" type="hidden" value="@Model.SaveFormW2Model.Status" />
+
                             @{
                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
             {
@@ -460,7 +463,6 @@
                 Stage = Model.SaveFormW2Model.Status
             });
                             }
-
                         </div>
                     </div>
                     <div class="tab-pane show " id="formw1">
@@ -501,23 +503,23 @@
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Approved IW Ref", "Approved IW Ref")
-                                                                @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @disabled = "true", @class = "form-control {required, Approved IW Ref}" })
+                                                                @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @disabled = "true", @class = "form-control" })
 
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Project Title", "Project Title")
-                                                                @Html.TextBoxFor(m => m.FormW1.ProjectTitle, new { @disabled = "true", @class = "form-control svalidate {required, Project Title}" })
+                                                                @Html.TextBoxFor(m => m.FormW1.ProjectTitle, new { @disabled = "true", @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("TECM Date", "TECM Date")
                                                                 @Html.EditorFor(m => m.FormW1.TecmDt, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @disabled = "true", @class = "form-control", @type = "date" } })
                                                             </div>
                                                             @*<div class="form-group col-lg-3">
-                                                   @Html.Label("Status", "Status")
-                                                   @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
-                                        <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
+                                                                @Html.Label("Status", "Status")
+                                                                @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
+                                                                <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
 
-                                               </div>*@
+                                                                </div>*@
                                                             <div class="form-group col-lg-2">
                                                                 <div class="row mt-4">
                                                                     <div class="col-6 pt-1">
@@ -531,33 +533,14 @@
 
                                                             <div class="form-group col-lg-3">
                                                                 @Html.Label("Service Provider's Proposal Ref No", "Service Provider's Proposal Ref No")
-                                                                @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @disabled = "true", @class = "form-control svalidate {required,Service Provider's Proposal Ref No}" })
+                                                                @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @disabled = "true", @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-3">
                                                                 @Html.Label("Service Provider Name", "Service Provider Name")
                                                                 @Html.TextBoxFor(m => m.FormW1.ServPropName, new { @class = "form-control" })
-                                                               @* @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @disabled = "true", @class = "form-control svalidate {required, Service Provider Name}" })*@
+                                                                @* @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @disabled = "true", @class = "form-control svalidate {required, Service Provider Name}" })*@
                                                             </div>
-                                                            @*<div class="form-group col-lg-4">
-                                            <label for="Designation"> Address 1 </label>
-                                            @Html.TextBoxFor(m => m.FormW1.ServAddress1, new { @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <label for="Designation"> Address 2 </label>
-                                            @Html.TextBoxFor(m => m.FormW1.ServAddress2, new { @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-4">
-                                            <label for="Designation"> Address 3 </label>
-                                            @Html.TextBoxFor(m => m.FormW1.ServAddress3, new { @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-3">
-                                            <label for="Designation">Phone NO </label>
-                                            @Html.TextBoxFor(m => m.FormW1.ServPhone, new { @class = "form-control" })
-                                        </div>
-                                        <div class="form-group col-lg-3">
-                                            <label for="Designation"> Fax </label>
-                                            @Html.TextBoxFor(m => m.FormW1.ServFax, new { @class = "form-control" })
-                                        </div>*@
+
                                                             <div class="form-group col-lg-3">
                                                                 <label>
                                                                     Intial Proposed Date
@@ -583,7 +566,7 @@
                                                                 <div class="w-100 dt-tbl-section">
                                                                     <div class="form-group col-lg-3">
                                                                         @Html.Label("Road Code", "Road Code")
-                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @disabled = "true", @class = "form-control svalidate {required,Road Code}", @onchange = "OnRoadChange(this);" })
+                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @disabled = "true", @class = "form-control", @onchange = "OnRoadChange(this);" })
 
                                                                     </div>
                                                                     <div class="form-group col-lg-4">
@@ -600,7 +583,7 @@
                                                                             <div class="input-group-prepend">
                                                                                 <span class="input-group-text" style="height: 35px;">CH</span>
                                                                             </div>
-                                                                            @Html.TextBoxFor(m => m.FormW1.Ch, new { @maxlength = "6", @disabled = "true", @class = "form-control allow_numeric svalidate {required,Chainage KM from}", style = "height:35px" })
+                                                                            @Html.TextBoxFor(m => m.FormW1.Ch, new { @maxlength = "6", @disabled = "true", @class = "form-control", style = "height:35px" })
 
                                                                         </div>
                                                                     </div>
@@ -611,7 +594,7 @@
                                                                         <label for="RoadCode">
                                                                             Chainage 'M' Location
                                                                         </label>
-                                                                        @Html.TextBoxFor(m => m.FormW1.ChDeci, new { @maxlength = "3", @disabled = "true", @class = "form-control allow_numeric svalidate {required,Chainage KM from}" })
+                                                                        @Html.TextBoxFor(m => m.FormW1.ChDeci, new { @maxlength = "3", @disabled = "true", @class = "form-control" })
 
                                                                     </div>
 
@@ -632,15 +615,15 @@
                                                             <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                                                                 <div class="row">
                                                                     <div class="form-group col-lg-12">
-                                                                        @Html.TextAreaFor(m => m.FormW1.DetailsOfWork, new { placeholder = "Details of Works", @disabled = "true", @class = "form-control  svalidate {required,Details of Work} border-left border-top-0 border-left-0 border-right-0", @style = "height:105px;" })
+                                                                        @Html.TextAreaFor(m => m.FormW1.DetailsOfWork, new { placeholder = "Details of Works", @disabled = "true", @class = "form-control border-left border-top-0 border-left-0 border-right-0", @style = "height:105px;" })
                                                                     </div>
                                                                     <div class="form-group col-lg-3">
                                                                         @Html.Label("Proposed Design Duration (Months)", "Proposed Design Duration (Months)")
-                                                                        @Html.TextBoxFor(m => m.FormW1.PropDesignDuration, new { @maxlength = "5", @disabled = "true", @class = "form-control allow_numeric", @onchange = "DurationChange(this,'Proposed Design Duration invalid')" })
+                                                                        @Html.TextBoxFor(m => m.FormW1.PropDesignDuration, new { @maxlength = "5", @disabled = "true", @class = "form-control", @onchange = "DurationChange(this,'Proposed Design Duration invalid')" })
                                                                     </div>
                                                                     <div class="form-group col-lg-3">
                                                                         @Html.Label("Proposed Completion of IW Period (Months)", "Proposed Completion of IW Period (Months)")
-                                                                        @Html.TextBoxFor(m => m.FormW1.PropCompletionPeriod, new { @maxlength = "5", @disabled = "true", @class = "form-control allow_numeric", @onchange = "DurationChange(this,'Proposed Completion of IW Period invalid')" })
+                                                                        @Html.TextBoxFor(m => m.FormW1.PropCompletionPeriod, new { @maxlength = "5", @disabled = "true", @class = "form-control", @onchange = "DurationChange(this,'Proposed Completion of IW Period invalid')" })
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -668,7 +651,10 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(m => m.FormW1.PhyWorksAmt, new { @maxlength = "12", @disabled = "true", @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                        @{
+                                                                                            var phyAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.PhyWorksAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@phyAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -683,7 +669,10 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(m => m.FormW1.GenPrelimsAmt, new { @maxlength = "12", @disabled = "true", @class = "form-control allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                        @{
+                                                                                            var preAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.GenPrelimsAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@preAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -691,7 +680,7 @@
                                                                                 <div class="col-8">
                                                                                     <label for="Consultancy Fees" class="pt-1 mb-0">
                                                                                         <b class="lh30 mb-0">
-                                                                                            <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.ConsulTaxPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'ConsulTaxPercent invalid')", @style = "width:100px;" }) <b class="float-right">%</b></span><span class="float-left">(If any)</span>
+                                                                                            <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.ConsulTaxPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'ConsulTaxPercent invalid')", @style = "width:100px;" }) <b class="float-right">%</b></span><span class="float-left">(If any)</span>
                                                                                         </b>
                                                                                     </label>
                                                                                 </div>
@@ -700,7 +689,11 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.ConsulFeeAmt, new { @maxlength = "12", @disabled = "true", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                        @{
+                                                                                            var conAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.ConsulFeeAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@conAmt" disabled class="form-control text-right" />
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -708,7 +701,7 @@
                                                                             <div class="row py-1  pt-2 border-bottom">
                                                                                 <div class="col-8">
                                                                                     <label for="Surveyworks" class="pt-1 mb-0">
-                                                                                        <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left pr-3" style="width:135px;"> @Html.TextBoxFor(model => model.FormW1.SurvyWorksPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Survey Works + Government Tax invalid')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
+                                                                                        <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left pr-3" style="width:135px;"> @Html.TextBoxFor(model => model.FormW1.SurvyWorksPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control  border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Survey Works + Government Tax invalid')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="col-4">
@@ -716,14 +709,17 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.SurvyWorksAmt, new { @maxlength = "12", @disabled = "true", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                        @{
+                                                                                            var surAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.SurvyWorksAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@surAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row py-1 pt-2 border-bottom">
                                                                                 <div class="col-8">
                                                                                     <label for="SiteInvestigation" class="pt-1 mb-0">
-                                                                                        <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Tax</span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.SiteInvestPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Site Investigation + Government Tax')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
+                                                                                        <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Tax</span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.SiteInvestPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Site Investigation + Government Tax')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="col-4">
@@ -731,13 +727,15 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.SiteInvestAmt, new { @maxlength = "12", @disabled = "true", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                        @{
+                                                                                            var siteAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.SiteInvestAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@siteAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row py-2 border-bottom">
                                                                                 <div class="col-12">
-
                                                                                 </div>
                                                                                 <div class="col-8">
                                                                                     @Html.TextAreaFor(m => m.FormW1.OtherCostLabel, new { placeholder = "Any other cost", @disabled = "true", @class = "form-control", @style = "height:37px" })
@@ -747,7 +745,10 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.OtherCostAmt, new { @maxlength = "12", @disabled = "true", @class = "form-control numeric allow_numeric text-right", @onchange = "CalculateCost()" })
+                                                                                        @{
+                                                                                            var otherAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.OtherCostAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@otherAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -764,7 +765,11 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.EstimTotalCostAmt, new { @maxlength = "12", @disabled = "true", @class = "form-control numeric text-right", @readonly = true })
+
+                                                                                        @{
+                                                                                            var estAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.EstimTotalCostAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@estAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -800,7 +805,7 @@
                                                                 <label for="Designation">
                                                                     Requested by
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridReq", "Select Users", new { Id = "ddlUseridReq", @disabled = "true", @class = "form-control svalidate {required,  Requested by}", @onchange = "OnUseridReqUserChange(this); " })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridReq", "Select Users", new { Id = "ddlUseridReq", @disabled = "true", @class = "form-control", @onchange = "OnUseridReqUserChange(this); " })
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Name", "Name")
@@ -853,7 +858,7 @@
 
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Reported by", "Reported by")
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @disabled = "true", @class = "form-control   {required,  Reported by}", @onchange = "OnUseridRepUserChange(this); " })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @disabled = "true", @class = "form-control", @onchange = "OnUseridRepUserChange(this); " })
 
                                                             </div>
                                                             <div class="form-group col-lg-3">
@@ -882,7 +887,7 @@
                                                                 <label for="Designation">
                                                                     Verified By
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @disabled = "disabled", @class = "form-control  {required, Verified By}", @onchange = "OnVerifyUserChange(this);" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @disabled = "disabled", @class = "form-control", @onchange = "OnVerifyUserChange(this);" })
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 <label for="Designation"> Name </label>

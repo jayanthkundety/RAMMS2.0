@@ -135,7 +135,58 @@ namespace RAMMS.Repository
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.Status))
             {
-                query = query.Where(x => x.x.Fw1Sts.Contains(filterOptions.Filters.Status) || x.x.Fw1StsRemarks.Contains(filterOptions.Filters.Status));
+                var _form = filterOptions.Filters.Status.Substring(0, 2);
+                var _status = filterOptions.Filters.Status.Substring(2);
+                switch (_form)
+                {
+                    case "W1":
+                        query = query.Where(x => x.x.Fw1Status.Contains(_status));
+                        break;
+                    case "W2":
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status));
+                        break;
+                    case "WD":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WN":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WC":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WG":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.FormType))
+            {
+                switch (filterOptions.Filters.FormType)
+                {
+                    case "W1":
+                        query = query.Where(x => x.x.Fw1Status.Contains("Saved"));
+                        break;
+                    case "W2":
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains("Saved"));
+                        break;
+                    case "WD":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WN":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WC":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WG":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    default:
+                        break;
+                }
             }
 
             if (filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
@@ -178,6 +229,20 @@ namespace RAMMS.Repository
             }
 
 
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RecommdDE))
+            {
+                query = query.Where(x => (bool)(x.x.Fw1RecomdBydeYn == (filterOptions.Filters.RecommdDE == "Yes" ? true : false)));
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.TECMStatus))
+            {
+                query = query.Where(x => x.x.Fw1Sts == filterOptions.Filters.TECMStatus);
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.FECMStatus))
+            {
+                query = query.Where(x => x.x.Fw1Sts == filterOptions.Filters.FECMStatus);
+            }
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
             {
@@ -277,33 +342,64 @@ namespace RAMMS.Repository
                 }
             }
 
-           
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.Status) )
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.Status))
             {
-                switch (filterOptions.Filters.Status)
+                var _form = filterOptions.Filters.Status.Substring(0, 2);
+                var _status = filterOptions.Filters.Status.Substring(2);
+                switch (_form)
                 {
-                    case "Received":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains(filterOptions.Filters.Status));
+                    case "W1":
+                        query = query.Where(x => x.x.Fw1Status.Contains(_status));
                         break;
-                    case "Saved":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains(filterOptions.Filters.Status) || x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                    case "W2":
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status));
                         break;
-                    case "Submitted":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains(filterOptions.Filters.Status) || x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                    case "WD":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
                         break;
-                    case "Approved":
-                        query = query.Where(x => x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                    case "WN":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
                         break;
-                    case "Rejected":
-                        query = query.Where(x => x.x.Fw1Status.Contains(filterOptions.Filters.Status));
+                    case "WC":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WG":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
                         break;
                     default:
                         break;
                 }
-
-                
             }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.FormType))
+            {
+                switch (filterOptions.Filters.FormType)
+                {
+                    case "W1":
+                        query = query.Where(x => x.x.Fw1Status.Contains("Saved"));
+                        break;
+                    case "W2":
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains("Saved"));
+                        break;
+                    case "WD":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WN":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WC":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    case "WG":
+                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
 
             if (filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
             {
@@ -343,6 +439,23 @@ namespace RAMMS.Repository
             {
                 query = query.Where(x => x.x.Fw1RoadCode == filterOptions.Filters.RoadCode);
             }
+
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.RecommdDE))
+            {
+                query = query.Where(x => (bool)(x.x.Fw1RecomdBydeYn ==  (filterOptions.Filters.RecommdDE == "Yes" ? true : false)));
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.TECMStatus ))
+            {
+                query = query.Where(x => x.x.Fw1Sts  == filterOptions.Filters.TECMStatus );
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.FECMStatus))
+            {
+                query = query.Where(x => x.x.Fw1Sts == filterOptions.Filters.FECMStatus);
+            }
+
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
             {

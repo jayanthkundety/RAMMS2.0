@@ -14,16 +14,16 @@ $(document).ready(function ()
         var text = $(this).val();
         if ((event.which == 46) && (text.indexOf('.') == -1)) {
             setTimeout(function () {
-                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                if ($this.val().substring($this.val().indexOf('.')).length > 2) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 2));
                 }
             }, 1);
         }
 
         if ((text.indexOf('.') != -1) &&
-            (text.substring(text.indexOf('.')).length > 3) &&
+            (text.substring(text.indexOf('.')).length > 2) &&
             (event.which != 0 && event.which != 8) &&
-            ($(this)[0].selectionStart >= text.length - 3)) {
+            ($(this)[0].selectionStart >= text.length - 2)) {
             event.preventDefault();
         }
     });
@@ -299,7 +299,7 @@ function Delete(id) {
 }
 
 function GetImageList(id, form) {
-    //debugger;
+    debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();

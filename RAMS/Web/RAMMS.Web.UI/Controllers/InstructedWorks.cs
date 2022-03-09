@@ -74,15 +74,38 @@ namespace RAMMS.Web.UI.Controllers
 
         #region IW
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            LoadLookupService("RMU", "RD_Code", "TECM_Status");
-            var res = ((IEnumerable<CSelectListItem>)ViewData["TECM_Status"]).ToList();
-            res.Insert(0, new CSelectListItem()
-            {
-                Value = "All",
-                Text = "All"
-            });
+            LoadLookupService("RMU", "RD_Code");
+
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "IWFormType";
+            ddLookup.TypeCode = "";
+            ViewData["IWFormType"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "TECM_Status";
+            ddLookup.TypeCode = "";
+            ViewData["TECM_Status"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "IWTECM";
+            ddLookup.TypeCode = "";
+            ViewData["IWTECM"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "IWFECM";
+            ddLookup.TypeCode = "";
+            ViewData["IWFECM"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "IWBYDE";
+            ddLookup.TypeCode = "";
+            ViewData["IWBYDE"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+
+            //var res = ((IEnumerable<CSelectListItem>)ViewData["TECM_Status"]).ToList();
+            //res.Insert(0, new CSelectListItem()
+            //{
+            //    Value = "All",
+            //    Text = "All"
+            //});
 
             return View();
         }
@@ -362,7 +385,7 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
-           await LoadDropDownsSectionCode();
+            await LoadDropDownsSectionCode();
         }
 
         public async Task<IActionResult> AddFormW2(int id)
@@ -403,8 +426,8 @@ namespace RAMMS.Web.UI.Controllers
 
             defaultData.SerProvRefNo = _formW2Model.FormW1.ServPropRefNo;
             defaultData.EstCostAmt = _formW2Model.FormW1.EstimTotalCostAmt;
-            defaultData.UseridIssu = _security.UserID;
-            defaultData.UseridReq = _security.UserID;
+            //defaultData.UseridReq = _security.UserID;
+            defaultData.UseridIssu  = _security.UserID;
             _formW2Model.SaveFormW2Model = defaultData;
             //_formW2Model.FormW1 = new FormW1ResponseDTO();
 
@@ -440,6 +463,7 @@ namespace RAMMS.Web.UI.Controllers
                 if ((resultFormW2.SubmitSts && view != null) || view == "1") _formW2Model.View = "1";
 
                 _formW2Model.SaveFormW2Model = resultFormW2;
+                if (_formW2Model.SaveFormW2Model.UseridReq == null || _formW2Model.SaveFormW2Model.UseridReq == 0) _formW2Model.SaveFormW2Model.UseridReq = _security.UserID;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
                 _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
                 _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;
@@ -725,6 +749,28 @@ namespace RAMMS.Web.UI.Controllers
             {
                 searchData.filterData.RoadCode = Request.Form["columns[10][search][value]"].ToString();
             }
+
+            if (Request.Form.ContainsKey("columns[11][search][value]"))
+            {
+                searchData.filterData.RecommdDE = Request.Form["columns[11][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[12][search][value]"))
+            {
+                searchData.filterData.FormType = Request.Form["columns[12][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[13][search][value]"))
+            {
+                searchData.filterData.TECMStatus = Request.Form["columns[13][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[14][search][value]"))
+            {
+                searchData.filterData.FECMStatus = Request.Form["columns[14][search][value]"].ToString();
+            }
+
+
 
             FilteredPagingDefinition<FormIWSearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormIWSearchGridDTO>();
 
