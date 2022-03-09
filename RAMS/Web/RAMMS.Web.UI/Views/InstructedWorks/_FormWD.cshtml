@@ -21,12 +21,11 @@
                                             <label for="OurRef">
                                                 Name of Division
                                             </label>
-                                            @*@Html.DropDownListFor("", (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control " })*@
+                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control " })
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
-
-                                            @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
+                                            @Html.TextBoxFor(m => m.FormWD.Extn, new { @class = "form-control" })
                                         </div>
                                     </div>
 
@@ -35,42 +34,10 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="col-lg-12">
-                    <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                        <div class=" py-2">
-
-                            <div class="form-group col-lg-4">
-                                <label for="OurRef">Contract  NO</label>
-                                <input type="text" placeholder="" disabled value="PWM/HO/B130/2019(124)" class="form-control" />
-                            </div>-->
-                @*<div class="form-group col-lg-2">
-                        <div class="row mt-4">
-                            <div class="col-6 pt-1">
-                                <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> BQ</label>
-                            </div>
-                            <div class="col-6 pt-1">
-                                <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> Drawing</label>
-                            </div>
-                        </div>
-                    </div>*@
-                <!--</div>
-                    </div>
-                </div>-->
+           
                 <div class="col-lg-12">
                     <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                        <!--<div class="px-3 pt-3 pb-1 float-left w-100">
-                            <div class="row  mt-1">
-                                <div class="col-lg-4 pt-2">
-                                    <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
-                                </div>
-                                <div class="col-lg-8">
-                                    <span class="float-left w-100 float-left">-->
-                        @*@Html.TextBoxFor(m => m.FormWD., new { @readonly = true, @class = "form-control" })*@
-                        <!--@Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
-                                    </span>
-                                </div>
-                            </div>
-                        </div>-->
+                                          
                         <div class="px-3 pt-3 pb-1 float-left w-100">
                             <div class="row">
 
@@ -89,7 +56,7 @@
                                     <label for="Your Ref">
                                         Your Ref
                                     </label>
-                                    @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @readonly = true, @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @class = "form-control" })
                                 </div>
                                 <div class="form-group  col-lg-3">
                                     <label for="Your Ref">
@@ -107,41 +74,10 @@
                     </div>
 
                 </div>
-
-                @*<div class="col-lg-12 d-none">
-                        <div class="bg-white rounded  w-100 float-left mb-3 border">
-                            <div class="col-lg-12 py-2 px-4">
-                                <span class="font-14 font-weight-bold">
-                                    INSTRUCTED WORK
-                                </span>
-                            </div>
-
-                            <div class="border-top px-3 pt-3 pb-1 float-left w-100">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="row">
-                                            <div class="col-lg-12 mb-3">
-                                                <label class="mb-0" for=" PhysicalWorks">
-                                                    S.O.'s Instruction No.
-                                                </label>
-                                                <input class="form-control" disabled type="text" value="JKR/IW/MR/20/07">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <label class="mb-0" for="PhysicalWorks">
-                                            Instructed Work Title
-                                        </label>
-                                        @Html.TextAreaFor(m => m.FormWD.IwProjectTitle, new { @class = "form-control  svalidate {required,Instructed Work} ", @style = "height:45px;" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
+                 
                 <div class="col-12 mb-2 ">
                     <div class="px-3  py-2 float-left w-100 border">
-                        <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, @Html.EditorFor(m => m.FormWN.DtW2Initiation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-right form-control border-left-0 border-top-0 border-right-0 border-bottom", @style = "width: 176px; font-weight: bolder; font-size: 17px;" , @type = "date" } })  </span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
+                        <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-right form-control border-left-0 border-top-0 border-right-0 border-bottom", @style = "width: 176px; font-weight: bolder; font-size: 17px;" , @type = "date" } })  </span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
                     </div>
                 </div>
                 <div class="col-12 mb-2 ">
