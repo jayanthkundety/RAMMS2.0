@@ -10228,11 +10228,13 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWD_PK_Ref_No")
                     .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.FwcIwWrksDeptId).HasColumnName("FWC_IW_WRKS_Dept_ID");
-
                 entity.Property(e => e.FwdActiveYn).HasColumnName("FWD_Active_YN");
 
                 entity.Property(e => e.FwdAuditLog).HasColumnName("FWD_AuditLog");
+
+                entity.Property(e => e.FwdCertificateDelay)
+                    .HasColumnName("FWD_Certificate_Delay")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.FwdCh).HasColumnName("FWD_CH");
 
@@ -10273,6 +10275,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwdIwRefNo)
                     .HasColumnName("FWD_IW_Ref_No")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.FwdIwWrksDeptId).HasColumnName("FWD_IW_WRKS_Dept_ID");
 
                 entity.Property(e => e.FwdModBy).HasColumnName("FWD_Mod_By");
 
@@ -10380,8 +10384,6 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FwgPkRefNo).HasColumnName("FWG_PK_Ref_no");
 
-                entity.Property(e => e.FwcIwWrksDeptId).HasColumnName("FWC_IW_WRKS_Dept_ID");
-
                 entity.Property(e => e.FwgActiveYn).HasColumnName("FWG_Active_YN");
 
                 entity.Property(e => e.FwgAuditLog).HasColumnName("FWG_AuditLog");
@@ -10421,6 +10423,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwgIwRefNo)
                     .HasColumnName("FWG_IW_Ref_No")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.FwgIwWrksDeptId).HasColumnName("FWG_IW_WRKS_Dept_ID");
 
                 entity.Property(e => e.FwgModBy).HasColumnName("FWG_Mod_By");
 
@@ -10470,15 +10474,15 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWG_USERNAME_ISSU")
                     .HasMaxLength(250);
 
-                entity.HasOne(d => d.FwcIwWrksDept)
-                    .WithMany(p => p.RmIwFormWg)
-                    .HasForeignKey(d => d.FwcIwWrksDeptId)
-                    .HasConstraintName("FK_RM_IW_Form_WG_RM_IW_Works_Dept_Master");
-
                 entity.HasOne(d => d.FwgFw1PkRefNoNavigation)
                     .WithMany(p => p.RmIwFormWg)
                     .HasForeignKey(d => d.FwgFw1PkRefNo)
                     .HasConstraintName("FK_RM_IW_Form_WG_RM_IW_FormW1");
+
+                entity.HasOne(d => d.FwgIwWrksDept)
+                    .WithMany(p => p.RmIwFormWg)
+                    .HasForeignKey(d => d.FwgIwWrksDeptId)
+                    .HasConstraintName("FK_RM_IW_Form_WG_RM_IW_Works_Dept_Master");
             });
 
             modelBuilder.Entity<RmIwFormWn>(entity =>
@@ -10488,8 +10492,6 @@ namespace RAMMS.Domain.Models
                 entity.ToTable("RM_IW_Form_WN");
 
                 entity.Property(e => e.FwnPkRefNo).HasColumnName("FWN_PK_Ref_No");
-
-                entity.Property(e => e.FwcIwWrksDeptId).HasColumnName("FWC_IW_WRKS_Dept_ID");
 
                 entity.Property(e => e.FwnActiveYn).HasColumnName("FWN_Active_YN");
 
@@ -10534,6 +10536,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwnIwRefNo)
                     .HasColumnName("FWN_IW_Ref_No")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.FwnIwWrksDeptId).HasColumnName("FWN_IW_WRKS_Dept_ID");
 
                 entity.Property(e => e.FwnLadAmt).HasColumnName("FWN_LAD_AMT");
 
@@ -10585,15 +10589,15 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWN_USERNAME_ISSU")
                     .HasMaxLength(250);
 
-                entity.HasOne(d => d.FwcIwWrksDept)
-                    .WithMany(p => p.RmIwFormWn)
-                    .HasForeignKey(d => d.FwcIwWrksDeptId)
-                    .HasConstraintName("FK_RM_IW_Form_WN_RM_IW_Works_Dept_Master");
-
                 entity.HasOne(d => d.FwnFw1PkRefNoNavigation)
                     .WithMany(p => p.RmIwFormWn)
                     .HasForeignKey(d => d.FwnFw1PkRefNo)
                     .HasConstraintName("FK_RM_IW_Form_WN_RM_IW_FormW1");
+
+                entity.HasOne(d => d.FwnIwWrksDept)
+                    .WithMany(p => p.RmIwFormWn)
+                    .HasForeignKey(d => d.FwnIwWrksDeptId)
+                    .HasConstraintName("FK_RM_IW_Form_WN_RM_IW_Works_Dept_Master");
             });
 
             modelBuilder.Entity<RmIwSrvProviderMaster>(entity =>
