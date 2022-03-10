@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+ 
     if ($("#hdnView").val() == "1") {
         $("#FormW1datapage *").prop("disabled", true);
         $("#ddlRMU").chosen('destroy');
@@ -8,12 +8,7 @@
         $("#ddlRoadCode").prop("disabled", true);
         $("#ddlUseridRep").chosen('destroy');
         $("#ddlUseridRep").prop("disabled", true);
-        $("#ddlUseridVer").chosen('destroy');
-        $("#ddlUseridVer").prop("disabled", true);
-        $("#ddlUseridRep").chosen('destroy');
-        $("#ddlUseridRep").prop("disabled", true);
-        $("#ddlUseridReq").chosen('destroy');
-        $("#ddlUseridReq").prop("disabled", true);
+       
         $("#FormW1_Status").chosen('destroy');
         $("#FormW1_Status").prop("disabled", true);
         $("#ddlSectionCode").chosen('destroy');
@@ -25,6 +20,11 @@
         $("#addAttachment").hide();
         $("#btnBack").removeAttr("disabled");
     }
+
+    $("#ddlUseridVer").chosen('destroy');
+    $("#ddlUseridVer").prop("disabled", true);
+    $("#ddlUseridReq").chosen('destroy');
+    $("#ddlUseridReq").prop("disabled", true);
 
     $('.allow_numeric').keypress(function (event) {
         var $this = $(this);
@@ -63,14 +63,19 @@
         $(".approvesection").css("display", "none");
     }
 
-
+    debugger;
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
 
+        debugger
         if (this.value == '1' || this.value == '2') {
-            $('#ddlUseridRep').prop("disabled", false);
+           // $('#ddlUseridRep').prop("disabled", false);
             $('#ddlUseridRep').trigger('chosen:updated');
             $("#FormW1_DtRep").prop("readonly", false);
             $("#FormW1_SignRep").prop("disabled", false);
+            $('#ddlUseridRep').val($("#hdnUserId").val());
+            $('#ddlUseridRep').trigger('chosen:updated');
+            $("#ddlUseridRep").trigger("change");
+ 
         }
         else {
             $('#ddlUseridRep').prop("disabled", true);
@@ -81,6 +86,8 @@
             $("#FormW1_DtRep").val('');
             $("#FormW1_DtRep").prop("readonly", true);
             $("#FormW1_SignRep").prop("disabled", true);
+            $('#FormW1_SignRep').prop('checked', false);
+            
         }
     });
 
@@ -114,14 +121,27 @@
     });
 
 
+
 });
 
 function CalculateCost() {
 
-    var PhyWorksAmtAmt = 0, GenPrelimsAmt = 0, SurvyWorksAmt = 0, SiteInvestAmt = 0, ConsulFeeAmt = 0, OtherCostAmt = 0;
+
+    var PhyWorksAmt = 0, GenPrelimsAmt = 0, SurvyWorksAmt = 0, SiteInvestAmt = 0, ConsulFeeAmt = 0, OtherCostAmt = 0;
     if ($("#FormW1_PhyWorksAmt").val() != "") {
 
-        PhyWorksAmt = $("#FormW1_PhyWorksAmt").val();
+        PhyWorksAmt = $("#FormW1_PhyWorksAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(PhyWorksAmt)) {
+            app.ShowErrorMessage("Invalid Physical Works");
+            return;
+        }
+
+        var val = Number(parseFloat(PhyWorksAmt).toFixed(2)).toLocaleString('en');
+        if (val.indexOf('.') == -1) {
+            val = val + ".00";
+        }
+        $("#FormW1_PhyWorksAmt").val(val);
 
         if (PhyWorksAmt > 999999999) {
             $("#FormW1_PhyWorksAmt").val("")
@@ -132,10 +152,25 @@ function CalculateCost() {
         PhyWorksAmt = 0;
     }
     if ($("#FormW1_GenPrelimsAmt").val() != "") {
-        GenPrelimsAmt = $("#FormW1_GenPrelimsAmt").val();
+
+        GenPrelimsAmt = $("#FormW1_GenPrelimsAmt").val().replace(/,/g, '');
+
+
+
+        if (!$.isNumeric(GenPrelimsAmt)) {
+            app.ShowErrorMessage("Invalid General and Preliminaries");
+            return;
+        }
+
+        var val = Number(parseFloat(GenPrelimsAmt).toFixed(2)).toLocaleString('en');
+        if (val.indexOf('.') == -1) {
+            val = val + ".00";
+        }
+        $("#FormW1_GenPrelimsAmt").val(val);
+
         if (GenPrelimsAmt > 999999999) {
             $("#FormW1_GenPrelimsAmt").val("")
-            app.ShowErrorMessage("General and Preliminaries");
+            app.ShowErrorMessage("Invalid General and Preliminaries");
         }
     }
     else {
@@ -143,30 +178,74 @@ function CalculateCost() {
     }
 
     if ($("#FormW1_SurvyWorksAmt").val() != "") {
-        SurvyWorksAmt = $("#FormW1_SurvyWorksAmt").val();
+
+        SurvyWorksAmt = $("#FormW1_SurvyWorksAmt").val().replace(/,/g, '');
+
+
+
+        if (!$.isNumeric(SurvyWorksAmt)) {
+            app.ShowErrorMessage("Invalid Survey Works");
+            return;
+        }
+
+        var val = Number(parseFloat(SurvyWorksAmt).toFixed(2)).toLocaleString('en');
+        if (val.indexOf('.') == -1) {
+            val = val + ".00";
+        }
+        $("#FormW1_SurvyWorksAmt").val(val);
+
+
         if (SurvyWorksAmt > 999999999) {
             $("#FormW1_SurvyWorksAmt").val("")
-            app.ShowErrorMessage("Survey Works ");
+            app.ShowErrorMessage("Invalid Survey Works ");
         }
     }
     else {
         SurvyWorksAmt = 0;
     }
     if ($("#FormW1_SiteInvestAmt").val() != "") {
-        SiteInvestAmt = $("#FormW1_SiteInvestAmt").val();
+
+        SiteInvestAmt = $("#FormW1_SiteInvestAmt").val().replace(/,/g, '');
+
+
+        if (!$.isNumeric(SiteInvestAmt)) {
+            app.ShowErrorMessage("Invalid Site Investigation");
+            return;
+        }
+
+        var val = Number(parseFloat(SiteInvestAmt).toFixed(2)).toLocaleString('en');
+        if (val.indexOf('.') == -1) {
+            val = val + ".00";
+        }
+        $("#FormW1_SiteInvestAmt").val(val);
+
+
         if (SiteInvestAmt > 999999999) {
             $("#FormW1_SiteInvestAmt").val("")
-            app.ShowErrorMessage("Site Investigation");
+            app.ShowErrorMessage("Invalid Site Investigation");
         }
     }
     else {
         SiteInvestAmt = 0;
     }
     if ($("#FormW1_ConsulFeeAmt").val() != "") {
-        ConsulFeeAmt = $("#FormW1_ConsulFeeAmt").val();
+
+        ConsulFeeAmt = $("#FormW1_ConsulFeeAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(ConsulFeeAmt)) {
+            app.ShowErrorMessage("Invalid Consultancy Fees");
+            return;
+        }
+
+        var val = Number(parseFloat(ConsulFeeAmt).toFixed(2)).toLocaleString('en');
+        if (val.indexOf('.') == -1) {
+            val = val + ".00";
+        }
+        $("#FormW1_ConsulFeeAmt").val(val);
+
         if (ConsulFeeAmt > 999999999) {
             $("#FormW1_ConsulFeeAmt").val("")
-            app.ShowErrorMessage("Consultancy Fees");
+            app.ShowErrorMessage("Invalid Consultancy Fees");
         }
     }
     else {
@@ -174,10 +253,25 @@ function CalculateCost() {
     }
 
     if ($("#FormW1_OtherCostAmt").val() != "") {
-        OtherCostAmt = $("#FormW1_OtherCostAmt").val();
+
+        OtherCostAmt = $("#FormW1_OtherCostAmt").val().replace(/,/g, '');
+
+
+        if (!$.isNumeric(OtherCostAmt)) {
+            app.ShowErrorMessage("Invalid Other Cost");
+            return;
+        }
+
+
+        var val = Number(parseFloat(OtherCostAmt).toFixed(2)).toLocaleString('en');
+        if (val.indexOf('.') == -1) {
+            val = val + ".00";
+        }
+        $("#FormW1_OtherCostAmt").val(val);
+
         if (OtherCostAmt > 999999999) {
             $("#FormW1_OtherCostAmt").val("")
-            app.ShowErrorMessage("Other Cost");
+            app.ShowErrorMessage("Invalid Other Cost");
         }
     }
     else {
@@ -185,6 +279,13 @@ function CalculateCost() {
     }
 
     $("#FormW1_EstimTotalCostAmt").val(parseFloat(PhyWorksAmt) + parseFloat(GenPrelimsAmt) + parseFloat(SurvyWorksAmt) + parseFloat(SiteInvestAmt) + parseFloat(ConsulFeeAmt) + parseFloat(OtherCostAmt));
+
+    var val = Number(parseFloat($("#FormW1_EstimTotalCostAmt").val()).toFixed(2)).toLocaleString('en');
+    if (val.indexOf('.') == -1) {
+        val = val + ".00";
+    }
+    $("#FormW1_EstimTotalCostAmt").val(val);
+
 }
 
 
@@ -383,12 +484,13 @@ function OnUseridRepUserChange(tis) {
 
 
     var ctrl = $(tis);
-    $('#FormW1_UseridRep').val(ctrl.val());
-    if (ctrl.val() != null && ctrl.val() != "") {
+    if (ctrl.val() != null)
+        $('#FormW1_UseridRep').val(ctrl.val());
+    if ($('#FormW1_UseridRep').val() != "") {
         $("#FormW1_UsernameRep").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationRep").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormW1_OfficeRep").val(ctrl.find("option:selected").attr("Item3"));
-        if (ctrl.val() == "99999999") {
+        if ($('#FormW1_UseridRep').val() == "99999999") {
             $("#FormW1_UsernameRep").removeAttr("readonly");
             $("#FormW1_DesignationRep").removeAttr("readonly");
             $("#FormW1_OfficeRep").removeAttr("readonly");
@@ -413,12 +515,13 @@ function OnUseridRepUserChange(tis) {
 function OnUseridReqUserChange(tis) {
 
     var ctrl = $(tis);
-    $('#FormW1_UseridReq').val(ctrl.val());
-    if (ctrl.val() != null && ctrl.val() != "") {
+    if (ctrl.val() != null)
+        $('#FormW1_UseridReq').val(ctrl.val());
+    if ($('#FormW1_UseridReq').val() != "") {
         $("#FormW1_UsernameReq").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationReq").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormW1_OfficeReq").val(ctrl.find("option:selected").attr("Item3"));
-        if (ctrl.val() == "99999999") {
+        if ($('#FormW1_UseridReq').val() == "99999999") {
             $("#FormW1_UsernameReq").removeAttr("readonly");
             $("#FormW1_DesignationReq").removeAttr("readonly");
             $("#FormW1_OfficeReq").removeAttr("readonly");
@@ -441,14 +544,15 @@ function OnUseridReqUserChange(tis) {
 }
 
 function OnVerifyUserChange(tis) {
-
+ 
     var ctrl = $(tis);
-    $('#FormW1_UseridVer').val(ctrl.val());
-    if (ctrl.val() != null && ctrl.val() != "") {
+    if (ctrl.val() != null)
+        $('#FormW1_UseridVer').val(ctrl.val());
+    if ($('#FormW1_UseridVer').val() != "") {
         $("#FormW1_UsernameVer").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormW1_DesignationVer").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormW1_OfficeVer").val(ctrl.find("option:selected").attr("Item3"));
-        if (ctrl.val() == "99999999") {
+        if ($('#FormW1_UseridVer').val() == "99999999") {
             $("#FormW1_UsernameVer").removeAttr("readonly");
             $("#FormW1_DesignationVer").removeAttr("readonly");
             $("#FormW1_OfficeVer").removeAttr("readonly");
@@ -470,7 +574,7 @@ function OnVerifyUserChange(tis) {
 
 
 function GetImageList(id, formName) {
- 
+
     var group = $("#FormADetAssetGrpCode option:selected").val();
 
     $.ajax({
@@ -530,6 +634,9 @@ function Save(GroupName, SubmitType) {
     $("#FormW1_IwRefNo").removeClass("validate");
     $("#chkBQ").removeClass("validate");
     $("#chkDrawing").removeClass("validate");
+    $("#FormW1_SignReq").removeClass("validate");
+    $("#FormW1_SignVer").removeClass("validate");
+    $("#FormW1_SignRep").removeClass("validate");
 
     if (SubmitType != "") {
 
@@ -539,6 +646,8 @@ function Save(GroupName, SubmitType) {
             $("#FormW1_Status").val("Submitted");
             $("#FormW1_SubmitSts").val(true);
             $("#ddlUseridReq").addClass("validate");
+            $("#FormW1_SignReq").addClass("validate");
+
 
             if ($("#chkBQ").prop('checked') == false) {
                 $("#chkBQ").addClass("validate");
@@ -571,9 +680,11 @@ function Save(GroupName, SubmitType) {
             $("#ddlRMU").addClass("validate");
             $("#ddlRMU").addClass("validate");
             $("#FormW1_IwRefNo").addClass("validate");
+            $("#FormW1_SignVer").removeClass("validate");
 
             if ($("#hdnRecommondedValue").val() == 1 || $("#hdnRecommondedValue").val() == 2) {
                 $("#ddlUseridRep").addClass("validate");
+                $("#FormW1_SignRep").removeClass("validate");
             }
         }
     }

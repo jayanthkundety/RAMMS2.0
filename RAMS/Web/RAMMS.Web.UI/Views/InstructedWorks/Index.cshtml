@@ -12,45 +12,14 @@
 }
 
 <script type="text/javascript">
-    $(document).ready(function ()
-    {
-        $('.allow_numeric').keypress(function (event) {
-            var $this = $(this);
 
-            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
-                ((event.which < 48 || event.which > 57) &&
-                    (event.which != 0 && event.which != 8))) {
-                event.preventDefault();
-            }
-
-            var text = $(this).val();
-
-            if ((event.which == 46) && (text.indexOf('.') == -1)) {
-                setTimeout(function () {
-                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
-                    }
-                }, 1);
-            }
-
-            if ((text.indexOf('.') != -1) &&
-                (text.substring(text.indexOf('.')).length > 3) &&
-                (event.which != 0 && event.which != 8) &&
-                ($(this)[0].selectionStart >= text.length - 3)) {
-                event.preventDefault();
-            }
-        });
-
-    });
-
-
-        function PercentangeChange(ctrl) {
-            if (parseFloat($(ctrl).val()) > 100)
-            {
-                app.ShowErrorMessage("Percentange should not be greater than 100");
-                $(ctrl).val('');
-            }
+    function PercentangeChange(ctrl) {
+        if (parseFloat($(ctrl).val()) > 100)
+        {
+            app.ShowErrorMessage("Percentange should not be greater than 100");
+            $(ctrl).val('');
         }
+    }
 
 
 
@@ -115,7 +84,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="C_Date">Status</label>
-                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["TECM_Status"], "txtStatus", "Select Status", new { @id = "txtStatus", @class = "form-control" })
+                                    @Html.DropDownList("txtStatus",(IEnumerable<SelectListItem>)ViewData["TECM_Status"],  "Select Status", new { @id = "txtStatus", @class = "form-control" })
                                 </div>
                                 <div class="form-group  col-lg-2">
                                     <label for="status_percentage">Status Percentage From</label>
@@ -142,6 +111,22 @@
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Road Name", "Road Name")
                                     <input type="text" class="form-control" id="txtRoadName" disabled />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Recommendation by DE", "Recommendation by DE")
+                                    @Html.DropDownList("IWBYDE", (IEnumerable<SelectListItem>)ViewData["IWBYDE"],  "Select Recommendation", new { @id = "txtDEYN", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Form Type", "Form Type")
+                                    @Html.DropDownList("IWFormType",(IEnumerable<SelectListItem>)ViewData["IWFormType"],  "Select Form Type", new { @id = "txtFormType", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("TECM", "TECM")
+                                    @Html.DropDownList("TECM", (IEnumerable<SelectListItem>)ViewData["IWTECM"], "Select TECM", new { @id = "txtTECM", @class = "form-control"})
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("FECM", "FECM")
+                                    @Html.DropDownList("FECM",(IEnumerable<SelectListItem>)ViewData["IWFECM"],  "Select FECM", new { @id = "txtFECM", @class = "form-control"})
                                 </div>
                             </div>
 
@@ -195,31 +180,14 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2View" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
                         <span class="view-icon"></span> View
                     </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2Delete" onclick="DeleteW2()">
+                        <span class="print-icon"></span> Delete
+                    </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w2Print" onclick="PrintFormW2()">
                         <span class="print-icon"></span> Print
                     </button>
                 </div>
             </div>
-            @*<div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
-                IW IN PROGRESS
-                </button>
-                <div class="dropdown-menu">
-                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                <span class="add-icon"></span> Add
-                </button>
-                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                <span class="edit-icon"></span>   Edit
-                </button>
-
-                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                <span class="view-icon"></span> View
-                </button>
-                <button type="button" class="dropdown-item editdel-btns py-1 px-1">
-                <span class="print-icon"></span> Print
-                </button>
-                </div>
-                </div>*@
             <div class="btn-group dropbottom" id="actiondropdown">
                 <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
                     EOT / LAD
@@ -369,96 +337,96 @@
 </div>
 <script type="text/javascript">
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            $('.allow_numeric').keypress(function (event) {
-                var $this = $(this);
-                if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
-                    ((event.which < 48 || event.which > 57) &&
-                        (event.which != 0 && event.which != 8))) {
-                    event.preventDefault();
-                }
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
 
-                var text = $(this).val();
-                if ((event.which == 46) && (text.indexOf('.') == -1)) {
-                    setTimeout(function () {
-                        if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                            $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
-                        }
-                    }, 1);
-                }
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 2) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 2));
+                    }
+                }, 1);
+            }
 
-                if ((text.indexOf('.') != -1) &&
-                    (text.substring(text.indexOf('.')).length > 3) &&
-                    (event.which != 0 && event.which != 8) &&
-                    ($(this)[0].selectionStart >= text.length - 3)) {
-                    event.preventDefault();
-                }
-            });
-
-            $("#txtSmartSearch").on("keypress", function (e) {
-                if (e.which == 13) {
-                    $("#btnSearch").click();
-                }
-            });
-
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 2) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 2)) {
+                event.preventDefault();
+            }
         });
-        function changeRMU(obj) {
-            var ctrl = $(obj);
-            if (ctrl.val() != null && ctrl.val() != "") {
-                var name = ctrl.find("option:selected").text();
-                name = name.split('-')[1];
-                $("#txtRmuName").val(name);
 
-                $.ajax({
-                    url: '/InstructedWorks/GetRoadCodeByRMU',
-                    dataType: 'JSON',
-                    data: { rmu: ctrl.val() },
-                    type: 'Post',
-                    success: function (data) {
-                        if (data != null) {
-                            $('#txtRoadCode').empty();
+        $("#txtSmartSearch").on("keypress", function (e) {
+            if (e.which == 13) {
+                $("#btnSearch").click();
+            }
+        });
+
+    });
+    function changeRMU(obj) {
+        var ctrl = $(obj);
+        if (ctrl.val() != null && ctrl.val() != "") {
+            var name = ctrl.find("option:selected").text();
+            name = name.split('-')[1];
+            $("#txtRmuName").val(name);
+
+            $.ajax({
+                url: '/InstructedWorks/GetRoadCodeByRMU',
+                dataType: 'JSON',
+                data: { rmu: ctrl.val() },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $('#txtRoadCode').empty();
+                        $('#txtRoadCode')
+                            .append($("<option></option>")
+                                .attr("value", "")
+                                .text("Select Road Code"));
+                        $.each(data, function (key, value) {
                             $('#txtRoadCode')
                                 .append($("<option></option>")
-                                    .attr("value", "")
-                                    .text("Select Road Code"));
-                            $.each(data, function (key, value) {
-                                $('#txtRoadCode')
-                                    .append($("<option></option>")
-                                        .attr("item1", value.item1)
-                                        //.attr("fromkm", value.fromKm)
-                                        //.attr("fromm", value.fromM)
-                                        .attr("value", value.value)
-                                        .text(value.text));
-                            });
-                            $("#txtRoadCode").val($('#frmW2RoadCode').val());
-                            $('#txtRoadCode').trigger("chosen:updated")
-                            $("#txtRoadCode").trigger("change");
-                        }
-                    },
-                    error: function (data) {
-
-                        console.error(data);
+                                    .attr("item1", value.item1)
+                                    //.attr("fromkm", value.fromKm)
+                                    //.attr("fromm", value.fromM)
+                                    .attr("value", value.value)
+                                    .text(value.text));
+                        });
+                        $("#txtRoadCode").val($('#frmW2RoadCode').val());
+                        $('#txtRoadCode').trigger("chosen:updated")
+                        $("#txtRoadCode").trigger("change");
                     }
-                });
-            }
-            else {
-                $("#txtRmuName").val('');
-            }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        }
+        else {
+            $("#txtRmuName").val('');
+        }
+    }
+
+    function OnRoadChange(tis) {
+        var ctrl = $(tis);
+        if (ctrl.val() != null && ctrl.val() != "") {
+            $("#txtRoadName").val(ctrl.find("option:selected").attr("Item1"));
+        }
+        else {
+            $("#txtRoadName").val('');
         }
 
-        function OnRoadChange(tis) {
-            var ctrl = $(tis);
-            if (ctrl.val() != null && ctrl.val() != "") {
-                $("#txtRoadName").val(ctrl.find("option:selected").attr("Item1"));
-            }
-            else {
-                $("#txtRoadName").val('');
-            }
+    }
 
-        }
-
-        function DeleteW1() {
+    function DeleteW1() {
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 var id = GetFormIDByName("w1");
@@ -485,312 +453,291 @@
     }
 
 
-
-        function getGridSelectedData(){
-            var table = $('#FormIWGridView').DataTable();
-            var selectedIndex = table.$(".selected", { "page": "all" });
-           return table.row(selectedIndex).data();
-        }
-
-        function GetFormIDByName(formName) {
-            var value = -1;
-            var daa = getGridSelectedData();
-            if (daa == null || typeof daa == "undefined") {
-                app.ShowErrorMessage("Kindly select a row to open the " + formName.toUpperCase() + " Form");
-                return value;
+    function DeleteW2() {
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+                var id = GetFormIDByName("w2");
+                InitAjaxLoading();
+                $.ajax({
+                    url: "/InstructedWorks/DeleteW2",
+                    data: { id },
+                    type: 'POST',
+                    success: function (data) {
+                         HideAjaxLoading();
+                        if (data > 0) {
+                            $("body").removeClass("loading");
+                            app.ShowSuccessMessage("Deleted Successfully", false);
+                            FormIWGridRefresh();
+                        }
+                        else {
+                            app.ShowWarningMessage("Please try again later.", false);
+                            $("body").removeClass("loading");
+                        }
+                    }
+                });
             }
+        }));
+    }
 
-            switch (formName) {
-                case "w1":
-                    value = daa.w1RefNo;
-                    break;
-                case "w2":
-                    value = daa.w2RefNo;
-                    break;
-                case "wc":
-                    value = daa.wcRefNo;
-                    break;
-                case "w1Status":
-                    value = daa.w1Status;
-                    break;
-                case "w1SubStatus":
-                    value = daa.w1SubStatus;
-                    break;
-                case "w2Status":
-                    value = daa.w2Status;
-                    break;
-                case "w2SubStatus":
-                    value = daa.w2SubStatus;
-                    break;
-                default:
-                    value = daa.w1RefNo;
-            }
+
+    function getGridSelectedData(){
+        var table = $('#FormIWGridView').DataTable();
+        var selectedIndex = table.$(".selected", { "page": "all" });
+       return table.row(selectedIndex).data();
+    }
+
+    function GetFormIDByName(formName) {
+        var value = -1;
+        var daa = getGridSelectedData();
+        if (daa == null || typeof daa == "undefined") {
+            app.ShowErrorMessage("Kindly select a row to open the " + formName.toUpperCase() + " Form");
             return value;
         }
 
-        function OpenFormW1(mode, view) {
-
-            var SelectedIWGridId = 0;
-
-            if (mode == "Add") {
-                url = "/InstructedWorks/AddFormW1";
-            }
-            else if (mode == "Edit") {
-
-                SelectedIWGridId = GetFormIDByName("w1");
-                url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
-            }
-            else if (mode == "View") {
-                SelectedIWGridId = GetFormIDByName("w1");
-                url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
-            }
-            InitAjaxLoading();
-            $.ajax({
-                url: url,
-                type: 'POST',
-                success: function (data) {
-                    $("#formW1").modal('show');
-                    $("#formW1Content").html(data);
-                    HideAjaxLoading();
-                },
-                error: function (data) {
-                    alert(data.responseText);
-                    HideAjaxLoading();
-                }
-
-            });
+        switch (formName) {
+            case "w1":
+                value = daa.w1RefNo;
+                break;
+            case "w2":
+                value = daa.w2RefNo;
+                break;
+            case "wc":
+                value = daa.wcRefNo;
+                break;
+            case "w1Status":
+                value = daa.w1Status;
+                break;
+            case "w1SubStatus":
+                value = daa.w1SubStatus;
+                break;
+            case "w2Status":
+                value = daa.w2Status;
+                break;
+            case "w2SubStatus":
+                value = daa.w2SubStatus;
+                break;
+            default:
+                value = daa.w1RefNo;
         }
+        return value;
+    }
 
-        function OpenFormW2(mode, view) {
+    function OpenFormW1(mode, view) {
 
-            InitAjaxLoading();
-            var url = '';
-            var id = "";
+        var SelectedIWGridId = 0;
 
-            if (mode == 'Add') {
-                id = GetFormIDByName("w1");
-                if (id > 0 && id != null) {
-                    url = '/InstructedWorks/AddFormW2?id=' + id;
-                }
+        if (mode == "Add") {
+            url = "/InstructedWorks/AddFormW1";
+        }
+        else if (mode == "Edit") {
 
-            }
-            else {
-                id = GetFormIDByName("w2");
-                if (id > 0 && id != null)
-                    url = '/InstructedWorks/EditFormW2?id=' + id + (view == 1 ? '&view=1' : '');
-            }
-
-            if (url == '') {
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
+        }
+        else if (mode == "View") {
+            SelectedIWGridId = GetFormIDByName("w1");
+            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
+        }
+        InitAjaxLoading();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formW1").modal('show');
+                $("#formW1Content").html(data);
                 HideAjaxLoading();
-                return;
+            },
+            error: function (data) {
+                alert(data.responseText);
+                HideAjaxLoading();
             }
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                success: function (data) {
-                    $("#formW2").modal('show');
-                    $("#formW2Content").html(data);
-                    HideAjaxLoading();
-                },
-                error: function (data) {
-                    app.ShowErrorMessage(data.responseText);
-                    HideAjaxLoading();
-                }
+        });
+    }
 
-            });
+    function OpenFormW2(mode, view) {
 
-            return true;
+        InitAjaxLoading();
+        var url = '';
+        var id = "";
+
+        if (mode == 'Add') {
+            id = GetFormIDByName("w1");
+            if (id > 0 && id != null) {
+                url = '/InstructedWorks/AddFormW2?id=' + id;
+            }
+
+        }
+        else {
+            id = GetFormIDByName("w2");
+            if (id > 0 && id != null)
+                url = '/InstructedWorks/EditFormW2?id=' + id + (view == 1 ? '&view=1' : '');
         }
 
-        function OpenFormWDWN(mode, view) {
-            var SelectedIWGridId = 0;
-
-            if (mode == "Add") {
-                url = "/InstructedWorks/OpenWDWN";
-            }
-            else if (mode == "Edit") {
-
-                SelectedIWGridId = GetFormIDByName("w1");
-                url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
-            }
-            else if (mode == "View") {
-                SelectedIWGridId = GetFormIDByName("w1");
-                url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
-            }
-            InitAjaxLoading();
-            $.ajax({
-                url: url,
-                type: 'POST',
-                success: function (data) {
-                    $("#formWDWN").modal('show');
-                    $("#formWDWNContent").html(data);
-                    HideAjaxLoading();
-                },
-                error: function (data) {
-                    alert(data.responseText);
-                    HideAjaxLoading();
-                }
-
-            });
+        if (url == '') {
+            HideAjaxLoading();
+            return;
         }
 
-        function checkAction(form){
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $("#formW2").modal('show');
+                $("#formW2Content").html(data);
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                app.ShowErrorMessage(data.responseText);
+                HideAjaxLoading();
+            }
 
-            var si = getGridSelectedData();
-            if (form == 'w2'){
+        });
 
-                if (si == null)
+        return true;
+    }
+
+    function checkAction(form){
+
+        var si = getGridSelectedData();
+        if (form == 'w2'){
+
+            if (si == null)
+            {
+                 $("#w2Add").hide();
+                 $("#w2Edit").hide();
+                 $("#w2View").hide();
+                 $("#w2Print").hide();
+                 $("#w2Delete").hide();
+                 app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
+                 return;
+            }
+            var id = GetFormIDByName("w2");
+            var w1status = GetFormIDByName("w1Status");
+            var w2status = GetFormIDByName("w2Status");
+            var w2substatus = GetFormIDByName("w2SubStatus");
+
+            if (id == "-1" || id == null ) $("#w2Delete").hide();
+
+            if ((id == "-1" || id == null ) &&  (w1status == "Approved"))
+            {
+                $("#w2Add").show();
+                $("#w2Edit").hide();
+                $("#w2View").hide();
+                $("#w2Print").hide();
+                $("#w2Delete").hide();
+            }
+            else if (id != "-1" && id != null)
+            {
+                if (w2status == "Saved" || w2status == "Submitted" || w2status == "Rejected")
+                    $("#w2Delete").show();
+                else
+                    $("#w2Delete").hide();
+
+                if (w2status == "Approved" )
                 {
                      $("#w2Add").hide();
                      $("#w2Edit").hide();
-                     $("#w2View").hide();
-                     $("#w2Print").hide();
-                     app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
+                     $("#w2View").show();
+                     $("#w2Print").show();
                      return;
                 }
-                var id = GetFormIDByName("w2");
-                var w1status = GetFormIDByName("w1Status");
-                var w2status = GetFormIDByName("w2Status");
-                var w2substatus = GetFormIDByName("w2SubStatus");
-                if ((id == "-1" || id == null) &&   (w1status == "Approved"))
+                else if (w2status == "Rejected" || w2status == "Saved" )
                 {
-                    $("#w2Add").show();
-                    $("#w2Edit").hide();
-                    $("#w2View").hide();
-                    $("#w2Print").hide();
+                     $("#w2Add").hide();
+                     $("#w2Edit").show();
+                     $("#w2View").show();
+                     $("#w2Print").show();
+                     return;
                 }
-                else if (id != "-1" && id != null)
-                {
-                   
-                    if (w2status == "Approved" )
-                    {
-                         $("#w2Add").hide();
-                         $("#w2Edit").hide();
-                         $("#w2View").show();
-                         $("#w2Print").show();
-                         return;
-                    }
-                    else if (w2status == "Rejected" || w2status == "Saved" )
-                    {
-                         $("#w2Add").hide();
-                         $("#w2Edit").show();
-                         $("#w2View").show();
-                         $("#w2Print").show();
-                         return;
-                    }
 
-                     if (w2substatus)
-                    {
-                         $("#w2Add").hide();
-                         $("#w2Edit").hide();
-                         $("#w2View").show();
-                         $("#w2Print").show();
-                         return;
-                    }
-                }
-                else {
-                    $("#w2Add").hide();
+                 if (w2substatus)
+                {
+                     $("#w2Add").hide();
                      $("#w2Edit").hide();
-                     $("#w2View").hide();
-                     $("#w2Print").hide();
-                }
-
-            }
-            else if (form == 'w1')
-            {
-                if (si == null)
-                {
-                     $("#w1Edit").hide();
-                     $("#w1View").hide();
-                     $("#w1Print").hide();
-                     $("#w1Delete").hide();
+                     $("#w2View").show();
+                     $("#w2Print").show();
                      return;
                 }
-                var id = GetFormIDByName("w1");
-                var w1status = GetFormIDByName("w1Status");
-                if (id != "-1" && id != null)
-                {
-                    if (w1status == "Saved")
-                        $("#w1Delete").show();
-                        else
-                        $("#w1Delete").hide();
-
-                    if (w1status == "Approved")
-                    {
-                        $("#w1Edit").hide();
-                        $("#w1View").show();
-                        $("#w1Print").show();
-
-                        return;
-                    }
-
-                    if (w1status == "Rejected" )
-                    {
-                        $("#w1Edit").show();
-                        $("#w1View").show();
-                        $("#w1Print").show();
-
-                        return;
-                    }
-                }
-                $("#w1Edit").show();
-                $("#w1View").show();
-                $("#w1Print").show();
             }
+            else {
+                $("#w2Add").hide();
+                 $("#w2Edit").hide();
+                 $("#w2View").hide();
+                 $("#w2Print").hide();
+            }
+
         }
-
-        function OpenFormWCWG(mode, view) {
-            var SelectedIWGridId = 0;
-            SelectedIWGridId = GetFormIDByName("w1");
-            if (mode == "Add") {
-                url = "/InstructedWorks/OpenWCWG?id=" + SelectedIWGridId;
+        else if (form == 'w1')
+        {
+            if (si == null)
+            {
+                 $("#w1Edit").hide();
+                 $("#w1View").hide();
+                 $("#w1Print").hide();
+                 $("#w1Delete").hide();
+                 return;
             }
-            else if (mode == "Edit") {
-                url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId;
-            }
-            else if (mode == "View") {
-                url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId + "&View=1";
-            }
-            InitAjaxLoading();
-            $.ajax({
-                url: url,
-                type: 'POST',
-                success: function (data) {
-                    $("#formWCWG").modal('show');
-                    $("#formWCWGContent").html(data);
-                    HideAjaxLoading();
-                },
-                error: function (data) {
-                    alert(data.responseText);
-                    HideAjaxLoading();
-                }
-
-            });
-        }
-
-        function PrintFormW1() {
             var id = GetFormIDByName("w1");
-            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW1";
-        }
+            var w1status = GetFormIDByName("w1Status");
+            if (id != "-1" && id != null)
+            {
+                if (w1status == "Saved" || w1status == "Submitted" || w1status == "Rejected")
+                    $("#w1Delete").show();
+                    else
+                    $("#w1Delete").hide();
 
-        function PrintFormW2() {
-            var id = GetFormIDByName("w2");
-            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW2";
-        }
+                if (w1status == "Approved")
+                {
+                    $("#w1Edit").hide();
+                    $("#w1View").show();
+                    $("#w1Print").show();
 
-        function clearHeaderSearch() {
-            $("#txtSmartSearch").val('');
-            $("#txtIWRefNo").val('');
-            $("#txtCommenceDtFrom").val('');
-            $("#txtCommenceDtTo").val('')
-            $("#txtProjectTitle").val('')
-            $("#txtStPercFrom").val('');
-            $("#txtStPercTo").val('');
-            $("#txtstatus").val("").trigger("chosen:updated");
-            $("#txtRmu").val("").trigger("chosen:updated");
-            $('#txtRoadCode').val("").trigger("chosen:updated");
-            $("#btnSearch").click();
-        }
+                    return;
+                }
 
-</script>
+                if (w1status == "Rejected" )
+                {
+                    $("#w1Edit").show();
+                    $("#w1View").show();
+                    $("#w1Print").show();
+
+                    return;
+                }
+            }
+            $("#w1Edit").show();
+            $("#w1View").show();
+            $("#w1Print").show();
+        }
+    }
+
+
+    function PrintFormW1() {
+        var id = GetFormIDByName("w1");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW1";
+    }
+
+    function PrintFormW2() {
+        var id = GetFormIDByName("w2");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW2";
+    }
+
+    function clearHeaderSearch() {
+        $("#txtSmartSearch").val('');
+        $("#txtIWRefNo").val('');
+        $("#txtCommenceDtFrom").val('');
+        $("#txtCommenceDtTo").val('');
+        $("#txtProjectTitle").val('');
+        $("#txtStPercFrom").val('');
+        $("#txtStPercTo").val('');
+        $("#txtStatus").val("").trigger("chosen:updated");
+        $("#txtRmu").val("").trigger("chosen:updated");
+        $("#txtRoadCode").val("").trigger("chosen:updated");
+        $("#txtDEYN").val("").trigger("chosen:updated");
+        $("#txtFormType").val("").trigger("chosen:updated");
+        $("#txtTECM").val("").trigger("chosen:updated");
+        $("#txtFECM").val("").trigger("chosen:updated");
+        $("#btnSearch").click();
+    }
+
+</script>   

@@ -14,16 +14,16 @@ $(document).ready(function ()
         var text = $(this).val();
         if ((event.which == 46) && (text.indexOf('.') == -1)) {
             setTimeout(function () {
-                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                if ($this.val().substring($this.val().indexOf('.')).length > 2) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 2));
                 }
             }, 1);
         }
 
         if ((text.indexOf('.') != -1) &&
-            (text.substring(text.indexOf('.')).length > 3) &&
+            (text.substring(text.indexOf('.')).length > 2) &&
             (event.which != 0 && event.which != 8) &&
-            ($(this)[0].selectionStart >= text.length - 3)) {
+            ($(this)[0].selectionStart >= text.length - 2)) {
             event.preventDefault();
         }
     });
@@ -167,7 +167,7 @@ function Save(submit) {
     if (!ValidatePage('#divPage')) {
         return false;
     }
-    //debugger;
+    debugger;
     InitAjaxLoading();
 
     var d = new Date();
@@ -200,8 +200,8 @@ function Save(submit) {
     saveObj.ServProvName = $("#formW2ServiceProvider").val();
     saveObj.Attn = $("#fw2Attn").val();
     saveObj.Cc = $("#fw2cc").val();
-    saveObj.RoadCode = $("#frmW2RoadCode").val().split("-")[0];
-    saveObj.RoadName = $("#formW2roadDesc").val();
+    saveObj.RoadCode = $("#frmW2RoadCode").val();
+    saveObj.RoadName = $("#formW2roadDesc").val();  
 
     if ($("#formW2chkm").val() != "") saveObj.Ch = $("#formW2chkm").val();
     if ($("#formW2chm").val() != "") saveObj.ChDeci = $("#formW2chm").val();
@@ -299,7 +299,6 @@ function Delete(id) {
 }
 
 function GetImageList(id, form) {
-    //debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
@@ -495,3 +494,20 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
+
+function formatCurrency(obj) {
+
+    var nfObject = new Intl.NumberFormat('en-US');
+
+    var text = $(obj).val().replace(/,/g, '');
+
+    //if (!$.isNumeric(PhyWorksAmt)) {
+    //    app.ShowErrorMessage("Invalid Physical Works");
+    //    return;
+    //}
+    $(obj).val(nfObject.format(text));
+    
+}
+
+
+
