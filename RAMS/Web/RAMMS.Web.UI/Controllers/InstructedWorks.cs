@@ -293,6 +293,12 @@ namespace RAMMS.Web.UI.Controllers
                 model.View = 1;
             }
 
+            if(model.FormW1.UseridReq == null || model.FormW1.UseridReq == 0)
+            model.FormW1.UseridReq =  _security.UserID;
+
+            if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
+                model.FormW1.UseridVer = _security.UserID;
+
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
