@@ -294,19 +294,14 @@ namespace RAMMS.Repository
             List<FormIWResponseDTO> result = new List<FormIWResponseDTO>();
             var query = (from x in _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true)
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
-                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo)
-                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo)
+                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo && s.Fw2ActiveYn == true)
+                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo && s.FecmActiveYn == true)
                          let wcForm = _context.RmIwFormWc.FirstOrDefault(s => s.FwcFw1PkRefNo == x.Fw1PkRefNo)
                          let wgForm = _context.RmIwFormWg.FirstOrDefault(s => s.FwgFw1PkRefNo == x.Fw1PkRefNo)
                          let wdForm = _context.RmIwFormWd.FirstOrDefault(s => s.FwdFw1PkRefNo == x.Fw1PkRefNo)
                          let wnForm = _context.RmIwFormWn.FirstOrDefault(s => s.FwnFw1PkRefNo == x.Fw1PkRefNo)
                          select new { rmu, w2Form, fecm, x , wcForm , wgForm , wdForm , wnForm });
-                         let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo && s.Fw2ActiveYn == true)
-                         let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo && s.FecmActiveYn == true)
-                         select new { rmu, w2Form, fecm, x });
-
-
-
+                         
             query = query.OrderByDescending(x => x.x.Fw1ModDt);
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.IWRefNo))
