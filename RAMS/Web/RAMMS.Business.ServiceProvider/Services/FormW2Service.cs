@@ -59,9 +59,25 @@ namespace RAMMS.Business.ServiceProvider.Services
         //    return rowsAffected;
         //}
 
-        public int Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            throw new NotImplementedException();
+            int rowsAffected;
+            try
+            {
+                var domainModelFormW2 = await _repoUnit.FormW2Repository.GetByIdAsync(id);
+                domainModelFormW2.Fw2ActiveYn = false;
+                _repoUnit.FormW2Repository.Update(domainModelFormW2);
+
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
         }
 
         public async Task<FormW2ResponseDTO> FindW2ByID(int id)
@@ -304,10 +320,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.Fw2SubmitSts && (string.IsNullOrEmpty(form.Fw2Status) || form.Fw2Status == Common.StatusList.FormW2Saved))
+            if (form.Fw2SubmitSts && (string.IsNullOrEmpty(form.Fw2Status) || form.Fw2Status == Common.StatusList.FormW2Saved || form.Fw2Status == Common.StatusList.FormW2Rejected))
             {
                 form.Fw2Status = Common.StatusList.FormW2Submitted;
-                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, "Recorded By", "Approved", form.Fw2UsernameIssu, string.Empty, form.Fw2DtIssu, _security.UserName);
+                form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, "Submitted", "Submitted", form.Fw2UsernameIssu, string.Empty, form.Fw2DtIssu, _security.UserName);
                 processService.SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = _security.UserName,

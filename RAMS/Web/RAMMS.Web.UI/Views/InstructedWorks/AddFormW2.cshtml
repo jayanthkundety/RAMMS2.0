@@ -1,6 +1,7 @@
 ﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @model RAMMS.Web.UI.Models.FormW2Model;
 @using RAMMS.Business.ServiceProvider;
+@using System.Globalization
 @{
     ViewBag.TabTitle = "Form W2 -  Initiation of Instructed Work";
     ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
@@ -27,7 +28,6 @@
 }
 
 <script src="~/js/FormW2.js" type="text/javascript"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormW2", "@Model.SaveFormW2Model.Status", @Model.SaveFormW2Model.PkRefNo);
@@ -36,25 +36,29 @@
         $('#formW2IssuedBy').trigger('chosen:updated');
         $("#formW2IssuedBy").trigger("change");
 
-        $('#formw2RequestedBy').val("@Model.SaveFormW2Model.UseridReq");
-        $('#formw2RequestedBy').trigger('chosen:updated');
-        $("#formw2RequestedBy").trigger("change");
+//        if ($("#hdnW2FormStatus").val() == "Saved"){
+              $('#formw2RequestedBy').val("@Model.SaveFormW2Model.UseridReq");
+              $('#formw2RequestedBy').trigger('chosen:updated');
+              $("#formw2RequestedBy").trigger("change");
+  //      }
 
     });
 
-     $("#saveFormW2Btn").hide();
-    $("#submitFormW2Btn").hide();
+    $("#saveFormW2Btn").hide();
+    //$("#submitFormW2Btn").hide();
     $("#divSaveRow").hide();
 
     $("#saveFCEMBtn").show();
     $("#submitFCEMBtn").show();
+
+    formatCurrency($("#formW2EstCost")[0])
 
     $("#closeFormW2Btn").show();
 </script>
 
 
 <div class="row bg-white row bg-white pb-0">
-    <div class="col-md-12" id="divPage">
+    <div class="col-md-12">
         <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
             <ul class="nav nav-tabs tabbed round">
 
@@ -75,7 +79,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormW2');">
+                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList(@Model.FormW1.PkRefNo,'FormW2');">
                         <span class="">
                             Attachment
                         </span>
@@ -107,10 +111,9 @@
                         @{
                             Html.RenderPartial("_FormFECM.cshtml", Model.FECM);
                         }
-
                     </div>
                     <div class="tab-pane show " id="page">
-                        <div class="col-md-12" id="divpage">
+                        <div class="col-md-12" id="divPage">
                             <div class="row" id="div-addformd">
                                 <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
                                     <div class="p-4">
@@ -197,26 +200,7 @@
 
                                                             </div>
 
-                                                            @*<div class="form-group col-lg-4 pr-lg-0">
-                                                                <label for="Address 1"> Address 1 </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1, new { @id = "address1", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-4">
-                                                                <label for="Designation"> Address 2 </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2, new { @id = "address2", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-4 pr-lg-0">
-                                                                <label for="Designation"> Address 3 </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3, new { @id = "address3", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-3">
-                                                                <label for="Designation">Phone No </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone, new { @id = "phone", @class = "form-control", @readonly = "true" })
-                                                                </div>
-                                                                <div class="form-group col-lg-3">
-                                                                <label for="Designation"> Fax </label>
-                                                                @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax, new { @id = "fax", @class = "form-control", @readonly = "true" })
-                                                                </div>*@
+
                                                             <div class="form-group col-lg-3 pr-lg-0">
                                                                 @Html.Label("Attn", "Attn")
                                                                 @Html.TextBoxFor(m => m.SaveFormW2Model.Attn, new { @id = "fw2Attn", @class = "form-control  svalidate {required, Attention}" })
@@ -328,7 +312,7 @@
                                                                                             </div>
                                                                                             <div class="mb-2 col-lg-12">
                                                                                                 @Html.Label("Instructed Work duration(Months)", "Instructed Work duration(Months)")
-                                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.IwDuration, new { @id = "fw2InstructWorkDuration", @type = "numeric", @class = "form-control svalidate {required, Instructed Work duration}" })
+                                                                                                @Html.TextBoxFor(m => m.SaveFormW2Model.IwDuration, new { @id = "fw2InstructWorkDuration", @type = "text", @maxlength="5", @class = "form-control allow_numeric svalidate {required, Instructed Work duration}" })
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -381,7 +365,7 @@
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text">RM</span>
                                                                         </div>
-                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Estimated Cost}" })
+                                                                        @Html.TextBoxFor(Adtl => Adtl.SaveFormW2Model.EstCostAmt, new { @id = "formW2EstCost", @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Estimated Cost}", @onchange="formatCurrency(this)" })
                                                                     </div>
                                                                 </div>
                                                                 <div class="clear-b mb-3"></div>
@@ -394,7 +378,7 @@
 
                                                                         }
                                                                     };
-                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formW2IssuedBy", "Select Users", new { Id = "formW2IssuedBy", @class = "form-control   {required,  Issued by} " })
+                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formW2IssuedBy", "Select Users", new { Id = "formW2IssuedBy",  @disabled=true, @class = "form-control   {required,  Issued by} "})
 
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
@@ -411,7 +395,7 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" value="@_IssuedDate" disabled />
+                                                                    <input type="date" class="datepicker form-control  svalidate {required, Issue date}" id="formW2IssuedDate" value="@_IssuedDate" />
                                                                 </div>
                                                                 <div class="form-group col-lg-2 text-center">
                                                                     @Html.Label("Signature", "Signature")
@@ -428,23 +412,23 @@
 
                                                                 <div class="form-group col-lg-2 px-0">
                                                                     @Html.Label("Received by", "Received by")
-                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formw2RequestedBy", "Select Users", new { Id = "formw2RequestedBy", @class = "form-control   {required, Requested by} ", @onchange = "ChangeRUser(this);" })
+                                                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formw2RequestedBy", "Select Users", new { Id = "formw2RequestedBy", @disabled=true, @class = "form-control   {required, Received by} ", @onchange = "ChangeRUser(this);"})
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Name", "Name")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Requested by Name}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Received by Name}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Designation", "Designation")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control svalidate  {required, Requested by Designation}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control svalidate  {required, Received by Designation}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Office", "Office")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control svalidate  {required, Requested by Office }", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control svalidate  {required, Received by Office }", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Requested by date}" id="formW2RequestedDate" value="@_RequestedDate" disabled />
+                                                                    <input type="date" class="datepicker form-control  svalidate {required, Received by date}" id="formW2RequestedDate" value="@_RequestedDate" />
                                                                 </div>
                                                                 <div class="form-group col-lg-2 text-center">
                                                                     @Html.Label("Signature", "Signature")
@@ -469,15 +453,16 @@
                             @Html.HiddenFor(m => m.FormW1.PkRefNo, new { @id="hdnPkRefNo"} )
                             @Html.HiddenFor(m => m.View, new { @id = "hdnView", @value = "0" })
                             <input id="hdnForm" type="hidden" value="FormW2" />
+                            <input id="hdnW2FormStatus" type="hidden" value="@Model.SaveFormW2Model.Status" />
+
                             @{
                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                    {
-                                        Form = "FormW2",
-                                        RefId = Model.SaveFormW2Model.PkRefNo,
-                                        Stage = Model.SaveFormW2Model.Status
-                                    });
+            {
+                Form = "FormW2",
+                RefId = Model.SaveFormW2Model.PkRefNo,
+                Stage = Model.SaveFormW2Model.Status
+            });
                             }
-
                         </div>
                     </div>
                     <div class="tab-pane show " id="formw1">
@@ -486,57 +471,88 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="bg-white py-2">
+
                                             <div class="container-fluid">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="row">
                                                             <div class="form-group col-md-2">
                                                                 @Html.Label("RMU", "RMU")
-                                                                @Html.TextBoxFor(x => x.FormW1.RmuCode, new { @disabled = "true", @class = "form-control" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RMU", "Select RMU", new { id = "ddlRMU", @disabled = "true", @class = "form-control {required, RMU Code} ", @onchange = "OnRMUChange(this);" }, Model.FormW1.RmuCode)
+
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Division Code", "Division Code")
-                                                                @Html.TextBoxFor(x => x.FormW1.DivnCode, new { @disabled = "true", @class = "form-control" })
+                                                                @Html.TextBoxFor(m => m.FormW1.DivnCode, new { @readonly = true, @disabled = "true", @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-md-2">
+                                                                @Html.Label("Section Code", "Section Code")
+                                                                @Html.DropDownListFor(m => m.FormW1.SecCode, (IEnumerable<SelectListItem>)ViewBag.SectionCodeList, "Select Section Code", new { @Id = "ddlSectionCode", @disabled = "true", @class = "form-control", @onchange = "OnSectionChange(this);" })
 
                                                             </div>
+                                                            <div class="form-group col-lg-2">
+                                                                @Html.Label("Section Name", "Section Name")
+                                                                <input type="text" id="SecName" disabled readonly class="form-control" />
+                                                            </div>
+
+
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("FormH Reference No", "FormH Reference No")
-                                                                @Html.TextBoxFor(x => x.FormW1.FormhRefNo, new { @disabled = "true", @class = "form-control" })
-                                                            </div>
-                                                            <div class="form-group col-lg-3">
-                                                                @Html.Label("IW Reference No", "IW Reference No")
-                                                                @Html.TextBoxFor(x => x.FormW1.IwRefNo, new { @disabled = "true", @class = "form-control" })
-                                                            </div>
-                                                            <div class="form-group col-lg-3">
-                                                                @Html.Label("Project Title", "Project Title")
-                                                                @Html.TextBoxFor(x => x.FormW1.ProjectTitle, new { @disabled = "true", @class = "form-control" })
-                                                            </div>
-                                                            <div class="form-group col-lg-3">
-                                                                @Html.Label("TECM Date", "TECM Date")
-                                                                @Html.TextBoxFor(x => x.FormW1.TecmDt, new { @disabled = "true", @class = "form-control" })
-                                                            </div>
-                                                            <div class="form-group col-lg-3">
-                                                                @Html.Label("TECM Status", "TECM Status")
-                                                                @Html.TextBoxFor(x => x.FormW1.Status, new { @disabled = "true", @class = "form-control" })
-                                                            </div>
-                                                            <div class="form-group col-lg-4">
-                                                                @Html.Label("Service Provider's Proposal Ref", "Service Provider's Proposal Ref")
-                                                                <div class="row">
-                                                                    <div class="col-6 pr-0">
-                                                                        @Html.TextBoxFor(x => x.FormW1.ServPropRefNo, new { @disabled = "true", @class = "form-control" })
-                                                                    </div>
-                                                                    <div class="col-6 pr-0">
-                                                                        @Html.TextBoxFor(Ahdr => Ahdr.SaveFormW2Model.ServProvName, new { @class = "form-control", @disabled = "true" })
-
-                                                                    </div>
-                                                                </div>
+                                                                @Html.TextBoxFor(m => m.FormW1.FormhRefNo, new { @disabled = "true", @class = "form-control" })
 
                                                             </div>
                                                             <div class="form-group col-lg-2">
-                                                                @Html.Label("Date", "Date")
-                                                                @Html.TextBoxFor(x => x.FormW1.Dt, new { @disabled = "true", @class = "form-control" })
+                                                                @Html.Label("Approved IW Ref", "Approved IW Ref")
+                                                                @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @disabled = "true", @class = "form-control" })
+
+                                                            </div>
+                                                            <div class="form-group col-lg-2">
+                                                                @Html.Label("Project Title", "Project Title")
+                                                                @Html.TextBoxFor(m => m.FormW1.ProjectTitle, new { @disabled = "true", @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-2">
+                                                                @Html.Label("TECM Date", "TECM Date")
+                                                                @Html.EditorFor(m => m.FormW1.TecmDt, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @disabled = "true", @class = "form-control", @type = "date" } })
+                                                            </div>
+                                                            @*<div class="form-group col-lg-3">
+                                                                @Html.Label("Status", "Status")
+                                                                @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
+                                                                <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
+
+                                                                </div>*@
+                                                            <div class="form-group col-lg-2">
+                                                                <div class="row mt-4">
+                                                                    <div class="col-6 pt-1">
+                                                                        <label class="checkbox-inline"><input id="chkBQ" class="{required,BQ}" type="checkbox" disabled value=""> BQ</label>
+                                                                    </div>
+                                                                    <div class="col-6 pt-1">
+                                                                        <label class="checkbox-inline  "><input id="chkDrawing" class="{required,Drawing}" type="checkbox" disabled value=""> Drawing</label>
+                                                                    </div>
+                                                                </div>
                                                             </div>
 
+                                                            <div class="form-group col-lg-3">
+                                                                @Html.Label("Service Provider's Proposal Ref No", "Service Provider's Proposal Ref No")
+                                                                @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @disabled = "true", @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-3">
+                                                                @Html.Label("Service Provider Name", "Service Provider Name")
+                                                                @Html.TextBoxFor(m => m.FormW1.ServPropName, new { @class = "form-control" })
+                                                                @* @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { @disabled = "true", @class = "form-control svalidate {required, Service Provider Name}" })*@
+                                                            </div>
+
+                                                            <div class="form-group col-lg-3">
+                                                                <label>
+                                                                    Intial Proposed Date
+                                                                </label>
+                                                                @Html.EditorFor(m => m.FormW1.InitialProposedDate, new { type = "date", htmlAttributes = new { @disabled = "true", @class = "form-control" } })
+                                                            </div>
+                                                            <div class="form-group col-lg-3">
+                                                                <label>
+                                                                    Form W1 Date
+                                                                </label>
+                                                                @Html.EditorFor(m => m.FormW1.Dt, new { type = "date", htmlAttributes = new { @disabled = "true", @class = "form-control" } })
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -548,26 +564,40 @@
                                                             </div>
                                                             <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                                                                 <div class="w-100 dt-tbl-section">
-                                                                    <div class="form-group col-lg-4 ">
+                                                                    <div class="form-group col-lg-3">
                                                                         @Html.Label("Road Code", "Road Code")
-                                                                        @Html.TextBoxFor(x => x.FormW1.RoadCode, new { @disabled = "true", @class = "form-control" })
+                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @disabled = "true", @class = "form-control", @onchange = "OnRoadChange(this);" })
+
                                                                     </div>
                                                                     <div class="form-group col-lg-4">
                                                                         @Html.Label("Road Name", "Road Name")
-                                                                        @Html.TextBoxFor(x => x.FormW1.RoadName, new { @disabled = "true", @class = "form-control" })
+                                                                        @Html.TextBoxFor(m => m.FormW1.RoadName, new { @disabled = "true", @readonly = true, @class = "form-control" })
+
                                                                     </div>
-                                                                    <div class="form-group col-lg-4">
-                                                                        @Html.Label("Chainage Location", "Chainage Location")
-                                                                        <div class="row">
-                                                                            <div class="col-5 pl-3 pr-0">@Html.TextBoxFor(x => x.FormW1.Ch, new { @disabled = "true", @class = "form-control" })</div>
-                                                                            <div class="col-1 text-center pt-2"> + </div>
-                                                                            <div class="col-5 pl-1 pr-0">@Html.TextBoxFor(x => x.FormW1.ChDeci, new { @disabled = "true", @class = "form-control" })</div>
+                                                                    <div class="form-group col-lg-2 p-0">
+
+                                                                        <label for="RoadCode" class="mb-1">
+                                                                            Chainage 'KM' Location
+                                                                        </label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text" style="height: 35px;">CH</span>
+                                                                            </div>
+                                                                            @Html.TextBoxFor(m => m.FormW1.Ch, new { @maxlength = "6", @disabled = "true", @class = "form-control", style = "height:35px" })
+
                                                                         </div>
                                                                     </div>
-                                                                    @*<div class="form-group col-lg-3 pl-2 pr-2">
-                                                                        <label for="RoadCode">Approved IW Ref. (to be given by S.O)</label>
-                                                                        <input type="text" class="form-control" disabled value=" ">
-                                                                        </div>*@
+                                                                    <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
+                                                                        +
+                                                                    </div>
+                                                                    <div class="form-group col-lg-2 p-0">
+                                                                        <label for="RoadCode">
+                                                                            Chainage 'M' Location
+                                                                        </label>
+                                                                        @Html.TextBoxFor(m => m.FormW1.ChDeci, new { @maxlength = "3", @disabled = "true", @class = "form-control" })
+
+                                                                    </div>
+
                                                                 </div>
 
 
@@ -585,15 +615,15 @@
                                                             <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                                                                 <div class="row">
                                                                     <div class="form-group col-lg-12">
-                                                                        @Html.TextAreaFor(m => m.FormW1.DetailsOfWork, new { @class = "form-control border-left border-top-0 border-left-0 border-right-0", @style = "height:105px;", @readonly = "true" })
+                                                                        @Html.TextAreaFor(m => m.FormW1.DetailsOfWork, new { placeholder = "Details of Works", @disabled = "true", @class = "form-control border-left border-top-0 border-left-0 border-right-0", @style = "height:105px;" })
                                                                     </div>
-                                                                    <div class="form-group col-lg-6">
-                                                                        @Html.Label("Proposed Design Duration", "Proposed Design Duration")
-                                                                        @Html.TextBoxFor(x => x.FormW1.PropDesignDuration, new { @disabled = "true", @class = "form-control" })
+                                                                    <div class="form-group col-lg-3">
+                                                                        @Html.Label("Proposed Design Duration (Months)", "Proposed Design Duration (Months)")
+                                                                        @Html.TextBoxFor(m => m.FormW1.PropDesignDuration, new { @maxlength = "5", @disabled = "true", @class = "form-control", @onchange = "DurationChange(this,'Proposed Design Duration invalid')" })
                                                                     </div>
-                                                                    <div class="form-group col-lg-6">
-                                                                        @Html.Label("Proposed Completion of IW Period", "Proposed Completion of IW Period")
-                                                                        @Html.TextBoxFor(x => x.FormW1.PropCompletionPeriod, new { @disabled = "true", @class = "form-control" })
+                                                                    <div class="form-group col-lg-3">
+                                                                        @Html.Label("Proposed Completion of IW Period (Months)", "Proposed Completion of IW Period (Months)")
+                                                                        @Html.TextBoxFor(m => m.FormW1.PropCompletionPeriod, new { @maxlength = "5", @disabled = "true", @class = "form-control", @onchange = "DurationChange(this,'Proposed Completion of IW Period invalid')" })
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -621,7 +651,10 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(m => m.FormW1.PhyWorksAmt, new { @class = "form-control", @disabled = "true" })
+                                                                                        @{
+                                                                                            var phyAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.PhyWorksAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@phyAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -636,7 +669,10 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(m => m.FormW1.GenPrelimsAmt, new { @class = "form-control", @disabled = "true" })
+                                                                                        @{
+                                                                                            var preAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.GenPrelimsAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@preAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -644,7 +680,7 @@
                                                                                 <div class="col-8">
                                                                                     <label for="Consultancy Fees" class="pt-1 mb-0">
                                                                                         <b class="lh30 mb-0">
-                                                                                            <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">(If any)</span>
+                                                                                            <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.ConsulTaxPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'ConsulTaxPercent invalid')", @style = "width:100px;" }) <b class="float-right">%</b></span><span class="float-left">(If any)</span>
                                                                                         </b>
                                                                                     </label>
                                                                                 </div>
@@ -653,7 +689,11 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.ConsulFeeAmt, new { @class = "form-control", @disabled = "true" })
+                                                                                        @{
+                                                                                            var conAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.ConsulFeeAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@conAmt" disabled class="form-control text-right" />
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -661,7 +701,7 @@
                                                                             <div class="row py-1  pt-2 border-bottom">
                                                                                 <div class="col-8">
                                                                                     <label for="Surveyworks" class="pt-1 mb-0">
-                                                                                        <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left"> (If any)</span></b>
+                                                                                        <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left pr-3" style="width:135px;"> @Html.TextBoxFor(model => model.FormW1.SurvyWorksPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control  border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Survey Works + Government Tax invalid')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="col-4">
@@ -669,14 +709,17 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.SurvyWorksAmt, new { @class = "form-control", @disabled = "true" })
+                                                                                        @{
+                                                                                            var surAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.SurvyWorksAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@surAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row py-1 pt-2 border-bottom">
                                                                                 <div class="col-8">
                                                                                     <label for="SiteInvestigation" class="pt-1 mb-0">
-                                                                                        <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Ta</span> <span class="float-left"><input type="number" class="form-control border-left border-top-0 border-left-0 border-right-0" placeholder="%" style="width:100px;" /> </span><span class="float-left">   (If any)</span></b>
+                                                                                        <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Tax</span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.SiteInvestPercent, new { @maxlength = "5", @disabled = "true", @class = "form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Site Investigation + Government Tax')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                     </label>
                                                                                 </div>
                                                                                 <div class="col-4">
@@ -684,22 +727,28 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.SiteInvestAmt, new { @class = "form-control", @disabled = "true" })
+                                                                                        @{
+                                                                                            var siteAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.SiteInvestAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@siteAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row py-2 border-bottom">
+                                                                                <div class="col-12">
+                                                                                </div>
                                                                                 <div class="col-8">
-                                                                                    <label for="Othercost " class="pt-1 mb-0">
-                                                                                        <b class="lh30 mb-0">Any other cost </b>
-                                                                                    </label>
+                                                                                    @Html.TextAreaFor(m => m.FormW1.OtherCostLabel, new { placeholder = "Any other cost", @disabled = "true", @class = "form-control", @style = "height:37px" })
                                                                                 </div>
                                                                                 <div class="col-4">
                                                                                     <div class="input-group">
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.OtherCostAmt, new { @class = "form-control", @disabled = "true" })
+                                                                                        @{
+                                                                                            var otherAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.OtherCostAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@otherAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -716,7 +765,11 @@
                                                                                         <div class="input-group-prepend">
                                                                                             <span class="input-group-text">RM</span>
                                                                                         </div>
-                                                                                        @Html.TextBoxFor(model => model.FormW1.EstimTotalCostAmt, new { @class = "form-control", @disabled = "true" })
+
+                                                                                        @{
+                                                                                            var estAmt = String.Format(new CultureInfo("en-US", false), "{0:N}", Model.FormW1.EstimTotalCostAmt);
+                                                                                        }
+                                                                                        <input type="text" value="@estAmt" disabled class="form-control text-right" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -731,18 +784,18 @@
                                                     <div class="col-12">
 
                                                         <div class="row">
+
                                                             <div class="col-lg-4">
-                                                                @Html.Label("Recommended Instructed Work", "Recommended Instructed Work")
+                                                                <label>Recommendation</label>
                                                                 <br />
-                                                                <label class="radio-inline">
-                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdType, "Critical")&nbsp;	Critical&nbsp;
-                                                                </label>
-                                                                <label class="radio-inline">
-                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdType, "Urgent")&nbsp;	Urgent&nbsp;
-                                                                </label>
-                                                                <label class="radio-inline">
-                                                                    @Html.RadioButtonFor(x => x.FormW1.RecomdType, "None")&nbsp;	None&nbsp;
-                                                                </label>
+                                                                <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdYn, true)&nbsp;Yes&nbsp;</label>
+                                                                <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdYn, false)&nbsp;No&nbsp;</label>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                @Html.Label("Recommendation by DE", "Recommendation by DE")
+                                                                <br />
+                                                                <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdBydeYn, true)&nbsp;Yes&nbsp;</label>
+                                                                <label class="radio-inline"> @Html.RadioButtonFor(x => x.FormW1.RecomdBydeYn, false)&nbsp;No&nbsp;</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -750,114 +803,131 @@
                                                         <div class="row py-1">
                                                             <div class="form-group col-lg-2">
                                                                 <label for="Designation">
-                                                                    @Html.Label("Reported by", "Reported by")
+                                                                    Requested by
                                                                 </label>
-                                                                @Html.TextBoxFor(model => model.FormW1.UseridRep, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridReq", "Select Users", new { Id = "ddlUseridReq", @disabled = "true", @class = "form-control", @onchange = "OnUseridReqUserChange(this); " })
                                                             </div>
-                                                            <div class="form-group col-lg-3">
-                                                                <label for="Designation"> Name </label>
-                                                                @Html.TextBoxFor(model => model.FormW1.UsernameRep, new { @class = "form-control", @disabled = "true" })
+                                                            <div class="form-group col-lg-2">
+                                                                @Html.Label("Name", "Name")
+                                                                @Html.TextBoxFor(model => model.FormW1.UsernameReq, new { @readonly = true, @disabled = "true", @class = "form-control" })
+
                                                             </div>
-                                                            <div class="form-group col-lg-3 p-0">
+                                                            <div class="form-group col-lg-2">
                                                                 <label for="Designation"> Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormW1.DesignationRep, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.TextBoxFor(model => model.FormW1.DesignationReq, new { @readonly = true, @disabled = "true", @class = "form-control" })
+
+                                                            </div>
+                                                            <div class="form-group col-lg-2">
+                                                                <label for="Designation"> Office</label>
+                                                                @Html.TextBoxFor(model => model.FormW1.OfficeReq, new { @readonly = true, @disabled = "true", @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 pr-0">
                                                                 @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                                                @Html.TextBoxFor(model => model.FormW1.DtRep, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.EditorFor(m => m.FormW1.DtReq, new { type = "date", htmlAttributes = new { @disabled = "true", @class = "form-control" } })
+
                                                             </div>
                                                             <div class="form-group col-lg-2 text-center">
-                                                                <label>Signature</label>
+                                                                @Html.Label("Signature", "Signature")
                                                                 <div class="clear-b mt-2">
-                                                                    <input type="checkbox" disabled>
+                                                                    @Html.CheckBoxFor(model => model.FormW1.SignReq, new { @disabled = "disabled" })
                                                                 </div>
 
                                                             </div>
+
+
                                                         </div>
-                                                        <div class="row pt-3 pb-1">
+
+                                                        <div class="row pt-3 pb-1 approvesection">
+                                                            <div class="col-12">
+                                                                <div class="row">
+                                                                    <div class="col-lg-4">
+                                                                        @Html.Label("Recommonded Instructed Work", "Recommonded Instructed Work")
+                                                                        <br />
+                                                                        <label class="radio-inline">
+                                                                            @Html.RadioButtonFor(x => x.FormW1.RecomdType, 2, new { @disabled = "true", @onclick = "RecommondedValue(this)" })&nbsp;	Critical&nbsp;
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            @Html.RadioButtonFor(x => x.FormW1.RecomdType, 1, new { @disabled = "true", @onclick = "RecommondedValue(this)" })&nbsp;	Urgent&nbsp;
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            @Html.RadioButtonFor(x => x.FormW1.RecomdType, 0, new { @disabled = "true", @onclick = "RecommondedValue(this)" })&nbsp;	None&nbsp;
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
                                                             <div class="form-group col-lg-2">
-                                                                @Html.Label("Requested by", "Requested by")
-                                                                @Html.TextBoxFor(model => model.FormW1.UseridReq, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.Label("Reported by", "Reported by")
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridRep", "Select Users", new { Id = "ddlUseridRep", @disabled = "true", @class = "form-control", @onchange = "OnUseridRepUserChange(this); " })
+
                                                             </div>
                                                             <div class="form-group col-lg-3">
-                                                                <label for="Designation"> Name </label>
-                                                                @Html.TextBoxFor(model => model.FormW1.UsernameReq, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.Label("Name", "Name")
+                                                                @Html.TextBoxFor(model => model.FormW1.UsernameRep, new { @readonly = true, @disabled = "true", @class = "form-control" })
+
                                                             </div>
-                                                            <div class="form-group col-lg-3 p-0">
+                                                            <div class="form-group col-lg-3">
                                                                 <label for="Designation"> Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormW1.DesignationReq, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.TextBoxFor(model => model.FormW1.DesignationRep, new { @readonly = true, @disabled = "true", @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 pr-0">
-                                                                <label>Date (DD-MM-YYYY)</label>
-                                                                @Html.TextBoxFor(model => model.FormW1.DtReq, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                                                @Html.EditorFor(m => m.FormW1.DtRep, new { type = "date", htmlAttributes = new { @disabled = "true", @class = "form-control" } })
                                                             </div>
                                                             <div class="form-group col-lg-2 text-center">
-                                                                <label>Signature</label>
+                                                                @Html.Label("Signature", "Signature")
                                                                 <div class="clear-b mt-2">
-                                                                    <input type="checkbox" disabled>
+                                                                    @Html.CheckBoxFor(model => model.FormW1.SignRep, new { @disabled = "disabled" })
                                                                 </div>
 
                                                             </div>
-                                                        </div>
-                                                        <div class="row pt-3 pb-1">
+
+
                                                             <div class="form-group col-lg-2">
                                                                 <label for="Designation">
                                                                     Verified By
                                                                 </label>
-                                                                @Html.TextBoxFor(model => model.FormW1.UseridVer, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridVer", "Select Users", new { @readonly = true, Id = "ddlUseridVer", @disabled = "disabled", @class = "form-control", @onchange = "OnVerifyUserChange(this);" })
                                                             </div>
-                                                            <div class="form-group col-lg-3">
+                                                            <div class="form-group col-lg-2">
                                                                 <label for="Designation"> Name </label>
-                                                                @Html.TextBoxFor(model => model.FormW1.UsernameVer, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.TextBoxFor(model => model.FormW1.UsernameVer, new { @readonly = true, @disabled = "disabled", @class = "form-control" })
                                                             </div>
-                                                            <div class="form-group col-lg-3 p-0">
+
+                                                            <div class="form-group col-lg-2">
                                                                 <label for="Designation"> Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormW1.DesignationVer, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.TextBoxFor(model => model.FormW1.DesignationVer, new { @readonly = true, @disabled = "disabled", @class = "form-control" })
+                                                            </div>
+
+                                                            <div class="form-group col-lg-2">
+                                                                <label for="Designation"> Office</label>
+                                                                @Html.TextBoxFor(model => model.FormW1.OfficeVer, new { @readonly = true, @disabled = "disabled", @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 pr-0">
                                                                 <label>Date (DD-MM-YYYY)</label>
-                                                                @Html.TextBoxFor(model => model.FormW1.DtVer, new { @class = "form-control", @disabled = "true" })
+                                                                @Html.EditorFor(m => m.FormW1.DtVer, new { type = "date", htmlAttributes = new { @disabled = "disabled", @class = "form-control" } })
                                                             </div>
                                                             <div class="form-group col-lg-2 text-center">
                                                                 <label>Signature</label>
                                                                 <div class="clear-b mt-2">
-                                                                    <input type="checkbox" disabled>
+                                                                    @Html.CheckBoxFor(model => model.FormW1.SignVer, new { @disabled = "disabled" })
                                                                 </div>
+
                                                             </div>
+
                                                         </div>
 
 
 
 
-                                                        <div class="row d-none">
-                                                            <div class="col-lg-12 p-1">
-                                                                <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                                                    <div class="col-lg-12 py-2 px-2">
-                                                                        <span class="font-14 font-weight-bold">
-                                                                            Critical / Urent
-                                                                            @*CRITICAL / URGENT*@
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="border-top px-2 py-2 pb-1 float-left w-100">
-                                                                        The reinstatement work required is considered as CRITICAL / URGENT. I hereby recommend that the work to be carried out as Instructed Works.
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row d-none">
-                                                            <div class="col-lg-12">
-                                                                <div class="form-group float-left pl-2 pr-2">
-                                                                    <label>Name for this Instructed Work Proposal: (to be given by S.O. / S.O.'s Rep.)</label>
-                                                                    <div class="clear-b">
-                                                                        <input type="checkbox">
-                                                                        PROPOSED REHABILATION FOR SLOPE AT CH28+970, Q3178 JALAN MIRI MARUDI
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+
+
+
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                     </div>
 
@@ -873,11 +943,11 @@
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                    @if (security.IsJKRSSuperiorOfficer   && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved)
+                    @if (security.IsJKRSSuperiorOfficer && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
                     }
-                    else if ((security.IsJKRSSuperiorOfficer || security.IsRegionManager)  && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
+                    else if ((security.IsJKRSSuperiorOfficer || security.IsRegionManager) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
                     {
                         <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Received By');"> Received </button>
                     }

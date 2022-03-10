@@ -12,47 +12,16 @@
 }
 
 <script type="text/javascript">
-    $(document).ready(function ()
-    {
-        $('.allow_numeric').keypress(function (event) {
-            var $this = $(this);
 
-            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
-                ((event.which < 48 || event.which > 57) &&
-                    (event.which != 0 && event.which != 8))) {
-                event.preventDefault();
-            }
-
-            var text = $(this).val();
-
-            if ((event.which == 46) && (text.indexOf('.') == -1)) {
-                setTimeout(function () {
-                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
-                    }
-                }, 1);
-            }
-
-            if ((text.indexOf('.') != -1) &&
-                (text.substring(text.indexOf('.')).length > 3) &&
-                (event.which != 0 && event.which != 8) &&
-                ($(this)[0].selectionStart >= text.length - 3)) {
-                event.preventDefault();
-            }
-        });
-
-    });
-
-    
-        function PercentangeChange(ctrl) {
-            if (parseFloat($(ctrl).val()) > 100) 
-            {   
-                app.ShowErrorMessage("Percentange should not be greater than 100");
-                $(ctrl).val('');
-            }
+    function PercentangeChange(ctrl) {
+        if (parseFloat($(ctrl).val()) > 100)
+        {
+            app.ShowErrorMessage("Percentange should not be greater than 100");
+            $(ctrl).val('');
         }
+    }
 
-    
+
 
 </script>
 
@@ -60,7 +29,7 @@
     <div class="body-header w-100">
         <div class="col-lg-12">
             <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
-                <span class="mb-0 font-weight-bold font-20">    
+                <span class="mb-0 font-weight-bold font-20">
                     Instructed Work
                 </span>
                 <nav aria-label="breadcrumb">
@@ -115,7 +84,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="C_Date">Status</label>
-                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["TECM_Status"], "txtStatus", "Select Status", new { @id = "txtStatus", @class = "form-control" })
+                                    @Html.DropDownList("txtStatus",(IEnumerable<SelectListItem>)ViewData["TECM_Status"],  "Select Status", new { @id = "txtStatus", @class = "form-control" })
                                 </div>
                                 <div class="form-group  col-lg-2">
                                     <label for="status_percentage">Status Percentage From</label>
@@ -142,6 +111,22 @@
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Road Name", "Road Name")
                                     <input type="text" class="form-control" id="txtRoadName" disabled />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Recommendation by DE", "Recommendation by DE")
+                                    @Html.DropDownList("IWBYDE", (IEnumerable<SelectListItem>)ViewData["IWBYDE"],  "Select Recommendation", new { @id = "txtDEYN", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Form Type", "Form Type")
+                                    @Html.DropDownList("IWFormType",(IEnumerable<SelectListItem>)ViewData["IWFormType"],  "Select Form Type", new { @id = "txtFormType", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("TECM", "TECM")
+                                    @Html.DropDownList("TECM", (IEnumerable<SelectListItem>)ViewData["IWTECM"], "Select TECM", new { @id = "txtTECM", @class = "form-control"})
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("FECM", "FECM")
+                                    @Html.DropDownList("FECM",(IEnumerable<SelectListItem>)ViewData["IWFECM"],  "Select FECM", new { @id = "txtFECM", @class = "form-control"})
                                 </div>
                             </div>
 
@@ -172,6 +157,9 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1View" data-toggle="modal" onclick="OpenFormW1('View',1)">
                         <span class="view-icon"></span> View
                     </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w1Delete" onclick="DeleteW1()">
+                        <span class="print-icon"></span> Delete
+                    </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w1Print" onclick="PrintFormW1()">
                         <span class="print-icon"></span> Print
                     </button>
@@ -192,22 +180,25 @@
                     <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2View" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
                         <span class="view-icon"></span> View
                     </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" id="w2Delete" onclick="DeleteW2()">
+                        <span class="print-icon"></span> Delete
+                    </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w2Print" onclick="PrintFormW2()">
                         <span class="print-icon"></span> Print
                     </button>
                 </div>
             </div>
-            @*<div class="btn-group dropbottom" id="actiondropdown">
+            <div class="btn-group dropbottom" id="actiondropdown">
                 <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
-                IW IN PROGRESS
+                    EOT / LAD
                 </button>
                 <div class="dropdown-menu">
-                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                <span class="add-icon"></span> Add
-                </button>
-                <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
-                <span class="edit-icon"></span>   Edit
-                </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                        <span class="add-icon"></span> Add
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
+                        <span class="edit-icon"></span>   Edit
+                    </button>
 
                 <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1">
                 <span class="view-icon"></span> View
@@ -222,19 +213,19 @@
                     EOT / LAD
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWDWN('Veiw',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1">
+                    @*<button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                        </button>
+                        </button>*@
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
@@ -242,19 +233,19 @@
                     COMPLETED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Add',0)">
                         <span class="add-icon"></span> Add
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('Edit',0)">
                         <span class="edit-icon"></span>   Edit
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="">
+                    <button type="button" class="dropdown-item editdel-btns border-bottom py-1 px-1" onclick="OpenFormWCWG('View',1)">
                         <span class="view-icon"></span> View
                     </button>
                     <button type="button" class="dropdown-item editdel-btns py-1 px-1">
                         <span class="print-icon"></span> Print
-                        </button>
+                        </button>*@
                 </div>
             </div>
             <div class="panel with-nav-tabs panel-default">
@@ -272,39 +263,37 @@
                                         <div>
                                             <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                                                 <div class="top p-1">
-                                                    @*Pagination will come here*@
-                                                </div>
-                                                <main id="main-container" class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="w-100 float-left position-relative">
-                                                            @*Form IW Grid*@
-                                                            <div id="headerListGrid" class="w-100 dt-tbl-section">
-                                                                @{
-                                                                    Html.RenderPartial("_HeaderListGrid.cshtml");
-                                                                }
-                                                            </div>
-
+                                                    @*Pagination will come here
                                                         </div>
+                                                        <main id="main-container" class="row">
+                                                        <div class="col-lg-12">
+                                                        <div class="w-100 float-left position-relative">
+                                                        @*Form IW Grid*@
+                                                    <div id="headerListGrid" class="w-100 dt-tbl-section">
+                                                        @{
+                                                            Html.RenderPartial("_HeaderListGrid.cshtml");
+                                                        }
                                                     </div>
-                                                </main>
 
-                                                <div class="bottom d-flex justify-content-md-between">
-                                                    @*Data Tables Info*@
-
-                                                </div><div class="clear"></div>
+                                                </div>
                                             </div>
+                                            </main>
+
+                                            <div class="bottom d-flex justify-content-md-between">
+                                                @*Data Tables Info*@
+
+                                            </div><div class="clear"></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
+
+
                 </div>
             </div>
         </div>
-
     </div>
 
 </div>
@@ -381,16 +370,16 @@
             var text = $(this).val();
             if ((event.which == 46) && (text.indexOf('.') == -1)) {
                 setTimeout(function () {
-                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    if ($this.val().substring($this.val().indexOf('.')).length > 2) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 2));
                     }
                 }, 1);
             }
 
             if ((text.indexOf('.') != -1) &&
-                (text.substring(text.indexOf('.')).length > 3) &&
+                (text.substring(text.indexOf('.')).length > 2) &&
                 (event.which != 0 && event.which != 8) &&
-                ($(this)[0].selectionStart >= text.length - 3)) {
+                ($(this)[0].selectionStart >= text.length - 2)) {
                 event.preventDefault();
             }
         });
@@ -457,6 +446,60 @@
 
     }
 
+    function DeleteW1() {
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+                var id = GetFormIDByName("w1");
+                InitAjaxLoading();
+                $.ajax({
+                    url: "/InstructedWorks/DeleteW1",
+                    data: { id },
+                    type: 'POST',
+                    success: function (data) {
+                         HideAjaxLoading();
+                        if (data > 0) {
+                            $("body").removeClass("loading");
+                            app.ShowSuccessMessage("Deleted Successfully", false);
+                            FormIWGridRefresh();
+                        }
+                        else {
+                            app.ShowWarningMessage("Please try again later.", false);
+                            $("body").removeClass("loading");
+                        }
+                    }
+                });
+            }
+        }));
+    }
+
+
+    function DeleteW2() {
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+                var id = GetFormIDByName("w2");
+                InitAjaxLoading();
+                $.ajax({
+                    url: "/InstructedWorks/DeleteW2",
+                    data: { id },
+                    type: 'POST',
+                    success: function (data) {
+                         HideAjaxLoading();
+                        if (data > 0) {
+                            $("body").removeClass("loading");
+                            app.ShowSuccessMessage("Deleted Successfully", false);
+                            FormIWGridRefresh();
+                        }
+                        else {
+                            app.ShowWarningMessage("Please try again later.", false);
+                            $("body").removeClass("loading");
+                        }
+                    }
+                });
+            }
+        }));
+    }
+
+
     function getGridSelectedData(){
         var table = $('#FormIWGridView').DataTable();
         var selectedIndex = table.$(".selected", { "page": "all" });
@@ -488,7 +531,7 @@
                 value = daa.w1SubStatus;
                 break;
             case "w2Status":
-                value = daa.w1Status;
+                value = daa.w2Status;
                 break;
             case "w2SubStatus":
                 value = daa.w2SubStatus;
@@ -574,38 +617,6 @@
         return true;
     }
 
-    function OpenFormWDWN(mode, view) {
-        var SelectedIWGridId = 0;
-
-        if (mode == "Add") {
-            url = "/InstructedWorks/OpenWDWN";
-        }
-        else if (mode == "Edit") {
-
-            SelectedIWGridId = GetFormIDByName("w1");
-            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
-        }
-        else if (mode == "View") {
-            SelectedIWGridId = GetFormIDByName("w1");
-            url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
-        }
-        InitAjaxLoading();
-        $.ajax({
-            url: url,
-            type: 'POST',
-            success: function (data) {
-                $("#formWDWN").modal('show');
-                $("#formWDWNContent").html(data);
-                HideAjaxLoading();
-            },
-            error: function (data) {
-                alert(data.responseText);
-                HideAjaxLoading();
-            }
-
-        });
-    }
-
     function checkAction(form){
 
         var si = getGridSelectedData();
@@ -617,22 +628,33 @@
                  $("#w2Edit").hide();
                  $("#w2View").hide();
                  $("#w2Print").hide();
+                 $("#w2Delete").hide();
                  app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
                  return;
             }
             var id = GetFormIDByName("w2");
             var w1status = GetFormIDByName("w1Status");
+            var w2status = GetFormIDByName("w2Status");
             var w2substatus = GetFormIDByName("w2SubStatus");
-            if ((id == "-1" || id == null) &&   (w1status == "Verified"))
+
+            if (id == "-1" || id == null ) $("#w2Delete").hide();
+
+            if ((id == "-1" || id == null ) &&  (w1status == "Approved"))
             {
                 $("#w2Add").show();
                 $("#w2Edit").hide();
                 $("#w2View").hide();
                 $("#w2Print").hide();
+                $("#w2Delete").hide();
             }
             else if (id != "-1" && id != null)
             {
-                if (w2substatus)
+                if (w2status == "Saved" || w2status == "Submitted" || w2status == "Rejected")
+                    $("#w2Delete").show();
+                else
+                    $("#w2Delete").hide();
+
+                if (w2status == "Approved" )
                 {
                      $("#w2Add").hide();
                      $("#w2Edit").hide();
@@ -640,10 +662,23 @@
                      $("#w2Print").show();
                      return;
                 }
-                 $("#w2Add").hide();
-                 $("#w2Edit").show();
-                 $("#w2View").show();
-                 $("#w2Print").show();
+                else if (w2status == "Rejected" || w2status == "Saved" )
+                {
+                     $("#w2Add").hide();
+                     $("#w2Edit").show();
+                     $("#w2View").show();
+                     $("#w2Print").show();
+                     return;
+                }
+
+                 if (w2substatus)
+                {
+                     $("#w2Add").hide();
+                     $("#w2Edit").hide();
+                     $("#w2View").show();
+                     $("#w2Print").show();
+                     return;
+                }
             }
             else {
                 $("#w2Add").hide();
@@ -660,17 +695,33 @@
                  $("#w1Edit").hide();
                  $("#w1View").hide();
                  $("#w1Print").hide();
+                 $("#w1Delete").hide();
                  return;
             }
             var id = GetFormIDByName("w1");
             var w1status = GetFormIDByName("w1Status");
             if (id != "-1" && id != null)
             {
-                if (w1status == "Verified" )
+                if (w1status == "Saved" || w1status == "Submitted" || w1status == "Rejected")
+                    $("#w1Delete").show();
+                    else
+                    $("#w1Delete").hide();
+
+                if (w1status == "Approved")
                 {
                     $("#w1Edit").hide();
                     $("#w1View").show();
                     $("#w1Print").show();
+
+                    return;
+                }
+
+                if (w1status == "Rejected" )
+                {
+                    $("#w1Edit").show();
+                    $("#w1View").show();
+                    $("#w1Print").show();
+
                     return;
                 }
             }
@@ -680,34 +731,6 @@
         }
     }
 
-    function OpenFormWCWG(mode, view) {
-        var SelectedIWGridId = 0;
-        SelectedIWGridId = GetFormIDByName("w1");
-        if (mode == "Add") {
-            url = "/InstructedWorks/OpenWCWG?id=" + SelectedIWGridId;
-        }
-        else if (mode == "Edit") {
-            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId;
-        }
-        else if (mode == "View") {
-            url = "/InstructedWorks/EditFormWCWG?id=" + SelectedIWGridId + "&View=1";
-        }
-        InitAjaxLoading();
-        $.ajax({
-            url: url,
-            type: 'POST',
-            success: function (data) {
-                $("#formWCWG").modal('show');
-                $("#formWCWGContent").html(data);
-                HideAjaxLoading();
-            },
-            error: function (data) {
-                alert(data.responseText);
-                HideAjaxLoading();
-            }
-
-        });
-    }
 
     function PrintFormW1() {
         var id = GetFormIDByName("w1");
@@ -723,14 +746,18 @@
         $("#txtSmartSearch").val('');
         $("#txtIWRefNo").val('');
         $("#txtCommenceDtFrom").val('');
-        $("#txtCommenceDtTo").val('')
-        $("#txtProjectTitle").val('')
+        $("#txtCommenceDtTo").val('');
+        $("#txtProjectTitle").val('');
         $("#txtStPercFrom").val('');
         $("#txtStPercTo").val('');
-        $("#txtstatus").val("").trigger("chosen:updated");
+        $("#txtStatus").val("").trigger("chosen:updated");
         $("#txtRmu").val("").trigger("chosen:updated");
-        $('#txtRoadCode').val("").trigger("chosen:updated");
+        $("#txtRoadCode").val("").trigger("chosen:updated");
+        $("#txtDEYN").val("").trigger("chosen:updated");
+        $("#txtFormType").val("").trigger("chosen:updated");
+        $("#txtTECM").val("").trigger("chosen:updated");
+        $("#txtFECM").val("").trigger("chosen:updated");
         $("#btnSearch").click();
     }
 
-</script>
+</script>   

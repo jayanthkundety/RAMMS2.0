@@ -133,6 +133,10 @@
         //filterData.Month = $("#txtMonth").val();
         filterData.Rmu = $("#txtRmu option:selected").val();
         filterData.RoadCode = $("#txtRoadCode option:selected").val();
+        filterData.RoadCode = $("#txtRoadCode option:selected").val();
+        filterData.RoadCode = $("#txtRoadCode option:selected").val();
+        filterData.RoadCode = $("#txtRoadCode option:selected").val();
+        filterData.RoadCode = $("#txtRoadCode option:selected").val();
 
         $('#FormIWGridView').DataTable({
             ajax: {
@@ -204,6 +208,30 @@
             oTable.columns(10).search(rdCode);
         } else {
             oTable.columns(10).search("");
+        }
+         var deYN = $("#txtDEYN option:selected").val();//text().split("-")[0];
+        if (deYN != "") {
+            oTable.columns(11).search(deYN);
+        } else {
+            oTable.columns(11).search("");
+        }
+         var FT = $("#txtFormType option:selected").val();//text().split("-")[0];
+        if (FT != "") {
+            oTable.columns(12).search(FT);
+        } else {
+            oTable.columns(12).search("");
+        }
+         var tecm = $("#txtTECM option:selected").val();//text().split("-")[0];
+        if (tecm != "") {
+            oTable.columns(13).search(tecm);
+        } else {
+            oTable.columns(13).search("");
+        }
+         var fecm = $("#txtFECM option:selected").val();//text().split("-")[0];
+        if (fecm != "") {
+            oTable.columns(14).search(fecm);
+        } else {
+            oTable.columns(14).search("");
         }
 
             oTable.data = filterData;

@@ -73,10 +73,16 @@
                                         <th>Attachment Type</th>
                                         <th>FileName</th>
                                         <th>Source</th>
+                                        
                                         @if (security.IsPCDelete(ModuleNameList.Instructed_Works))
                                         {
                                             <th style="text-align:center">Delete</th>
                                         }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                        <th>Download</th>
 
                                     </tr>
                                 </thead>
@@ -101,6 +107,7 @@
                                                     {
                                                         <td></td>
                                                     }
+                                                    <td><a class="warCaption" href="~/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">Download</a></td>
                                                 </tr>
                                                 i++;
                                             }
@@ -180,7 +187,7 @@
                                                     }
                                                     else
                                                     {
-                                                        <img src="~/Uploads/FormD/@item.ImageFilenameUpload" alt="Image_Unavailable" />
+                                                        <img src="~/Uploads/FormW1/@item.ImageFilenameUpload" alt="Image_Unavailable" />
                                                         <span class="warCaption">@item.ImageUserFilePath</span>
                                                     }
                                                 }
@@ -407,8 +414,12 @@
                 var ext = file.name.split('.').pop().toLowerCase();
 
                 if (fileType != 'Others') {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
-                        app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                    //if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                    //    app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                    //    return
+                    //}
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf','ppt','pptx']) == -1) {
+                        app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
                         return
                     }
                     if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
@@ -419,7 +430,7 @@
                 else {
 
                     //if (file.type != "image/png" && file.type != "image/jpeg" && file.type != "application/vnd.ms-excel" && file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.type != "application/msword" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.type != "application/pdf") {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf']) == -1) {
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf', 'ppt', 'pptx']) == -1) {
                         app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
                             return
                     }
@@ -581,8 +592,12 @@
         });
     }
 
-      function DeleteImage(pkId) {
-          if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return; 
+    function DeleteIWImage(pkid){
+
+    }
+
+    function DeleteImage(pkId) {
+        if ($("#hdnView").val() == "1") return; 
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 InitAjaxLoading();
