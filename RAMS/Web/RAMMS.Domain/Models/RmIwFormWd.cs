@@ -12,7 +12,7 @@ namespace RAMMS.Domain.Models
 
         public int FwdPkRefNo { get; set; }
         public int? FwdFw1PkRefNo { get; set; }
-        public int? FwcIwWrksDeptId { get; set; }
+        public int? FwdIwWrksDeptId { get; set; }
         public string FwdRmuCode { get; set; }
         public string FwdSecCode { get; set; }
         public string FwdRoadCode { get; set; }
@@ -26,6 +26,7 @@ namespace RAMMS.Domain.Models
         public DateTime? FwdDtWd { get; set; }
         public DateTime? FwdDtPervCompl { get; set; }
         public DateTime? FwdDtExtn { get; set; }
+        public string FwdCertificateDelay { get; set; }
         public bool? FwdSignIssu { get; set; }
         public int? FwdUseridIssu { get; set; }
         public string FwdUsernameIssu { get; set; }

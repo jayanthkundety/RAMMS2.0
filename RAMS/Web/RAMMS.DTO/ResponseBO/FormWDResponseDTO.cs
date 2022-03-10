@@ -32,7 +32,7 @@ namespace RAMMS.DTO.ResponseBO
         [DataType(DataType.Date)]
         public DateTime? DtExtn { get; set; }
         public string Extn { get; set; }
-        public bool? SignIssu { get; set; }
+        public bool SignIssu { get; set; }
         public int? UseridIssu { get; set; }
         public string UsernameIssu { get; set; }
         public string DesignationIssu { get; set; }
