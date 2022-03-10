@@ -18,7 +18,7 @@ namespace RAMMS.Repository
         {
             _context = context;
         }
-     
+
         public int SaveFormW1(RmIwFormW1 FormW1)
         {
             try
@@ -38,6 +38,18 @@ namespace RAMMS.Repository
         public async Task<RmIwFormW1> FindFormW1ByID(int Id)
         {
             return await _context.RmIwFormW1.Where(x => x.Fw1PkRefNo == Id && x.Fw1ActiveYn == true).FirstOrDefaultAsync();
+        }
+
+        public async Task<RmIwFormW2> FindFormW2ByPKRefNo(int PKRefNo)
+        {
+            return await _context.RmIwFormW2.Where(x => x.Fw2Fw1PkRefNo == PKRefNo).FirstOrDefaultAsync();
+        }
+
+
+        public string GetJKRRefNoFromW2(int PKRefNo)
+        {
+            string result = _context.RmIwFormW2.Where(x => x.Fw2Fw1PkRefNo == PKRefNo).Select(x => x.Fw2JkrRefNo).Single();
+            return result;
         }
 
         public Task<List<RmIwformImage>> GetImagelist(string IwRefNo)

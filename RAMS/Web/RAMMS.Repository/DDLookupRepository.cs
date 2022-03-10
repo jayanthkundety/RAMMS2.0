@@ -72,6 +72,9 @@ namespace RAMS.Repository
 
         public async Task<IEnumerable<RoadMasterResponseDTO>> GetRMUwithDivisionDetails()
         {
+            //return await _context.RmDivRmuSecMaster.Where(x => x.RdsmActiveYn == true ) .ToListAsync();
+
+
             return await (from a in _context.RmDdLookup
                           join b in _context.RmDivRmuSecMaster on a.DdlTypeCode equals b.RdsmRmuCode
                           where a.DdlType == "RMU"

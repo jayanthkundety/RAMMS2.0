@@ -89,6 +89,8 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IFormW2Service, FormW2Service>();
             services.AddTransient<IFormWCService, FormWCService>();
             services.AddTransient<IFormWGService, FormWGService>();
+            services.AddTransient<IFormWDService, FormWDService>();
+            services.AddTransient<IFormWNService, FormWNService>();
 
         }
 
@@ -141,6 +143,8 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IFormW1Repository, FormW1Repository>();
             services.AddTransient<IFormWCRepository, FormWCRepository>();
             services.AddTransient<IFormWGRepository, FormWGRepository>();
+            services.AddTransient<IFormWDRepository, FormWDRepository>();
+            services.AddTransient<IFormWNRepository, FormWNRepository>();
             //services.AddTransient<IRmAssetImgRepository, RmAssetImgDtlRepository>();
         }
 

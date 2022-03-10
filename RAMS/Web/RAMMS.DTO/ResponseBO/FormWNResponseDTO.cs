@@ -6,7 +6,12 @@ namespace RAMMS.DTO.ResponseBO
 {
     public class FormWNResponseDTO
     {
+
+
+
         public int PkRefNo { get; set; }
+        public int? Fw1PkRefNo { get; set; }
+        public int? FwcIwWrksDeptId { get; set; }
         public string RmuCode { get; set; }
         public string SecCode { get; set; }
         public string RoadCode { get; set; }
@@ -21,7 +26,7 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? DtW2Initiation { get; set; }
         public DateTime? DtW2Compl { get; set; }
         public double? LadAmt { get; set; }
-        public bool? SignIssu { get; set; }
+        public bool SignIssu { get; set; }
         public int? UseridIssu { get; set; }
         public string UsernameIssu { get; set; }
         public string DesignationIssu { get; set; }
@@ -35,5 +40,7 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+
+         
     }
 }
