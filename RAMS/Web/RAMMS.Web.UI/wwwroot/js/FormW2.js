@@ -299,7 +299,6 @@ function Delete(id) {
 }
 
 function GetImageList(id, form) {
-    debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
