@@ -15,6 +15,7 @@ namespace RAMMS.DTO.ResponseBO
 
         public string RecommdDE { get; set; }
 
+        public string FormType { get; set; }    
         public string W1dt { get; set; }
 
         public string Recommd { get; set; }
@@ -62,6 +63,8 @@ namespace RAMMS.DTO.ResponseBO
         public string PrjTitle { get; set; }
 
         public string TECMStatus { get; set; }
+
+        public string FECMStatus { get; set; }
 
         public string SmartInputValue { get; set; }
         public string sortOrder { get; set; }

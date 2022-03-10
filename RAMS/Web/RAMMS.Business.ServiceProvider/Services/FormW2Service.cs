@@ -59,9 +59,25 @@ namespace RAMMS.Business.ServiceProvider.Services
         //    return rowsAffected;
         //}
 
-        public int Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            throw new NotImplementedException();
+            int rowsAffected;
+            try
+            {
+                var domainModelFormW2 = await _repoUnit.FormW2Repository.GetByIdAsync(id);
+                domainModelFormW2.Fw2ActiveYn = false;
+                _repoUnit.FormW2Repository.Update(domainModelFormW2);
+
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
         }
 
         public async Task<FormW2ResponseDTO> FindW2ByID(int id)
