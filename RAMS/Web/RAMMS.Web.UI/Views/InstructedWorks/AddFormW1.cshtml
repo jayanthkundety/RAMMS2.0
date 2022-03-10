@@ -572,6 +572,8 @@
             </div>
         </div>
     </div>
+
+
     @Html.HiddenFor(m => m.FormW1.RmuCode);
     @Html.HiddenFor(m => m.FormW1.PkRefNo);
     @Html.HiddenFor(m => m.FormW1.RoadCode);
@@ -586,6 +588,9 @@
     <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
     <input type="hidden" id="hdnRecommondedValue" value="@Model.FormW1.RecomdType" />
+    <input type="hidden" id="hdnUserId" value="@security.UserID" />
+   
+
 
 
 }
@@ -639,7 +644,7 @@
         $('#ddlUseridRep').trigger('chosen:updated');
         $("#ddlUseridRep").trigger("change");
 
-        
+
 
         GetNames("@Model.FormW1.SecCode" == "" ? "0" : "@Model.FormW1.SecCode", "Section Code");
 

@@ -63,14 +63,19 @@
         $(".approvesection").css("display", "none");
     }
 
-
+    debugger;
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
 
+        debugger
         if (this.value == '1' || this.value == '2') {
-            $('#ddlUseridRep').prop("disabled", false);
+           // $('#ddlUseridRep').prop("disabled", false);
             $('#ddlUseridRep').trigger('chosen:updated');
             $("#FormW1_DtRep").prop("readonly", false);
             $("#FormW1_SignRep").prop("disabled", false);
+            $('#ddlUseridRep').val($("#hdnUserId").val());
+            $('#ddlUseridRep').trigger('chosen:updated');
+            $("#ddlUseridRep").trigger("change");
+ 
         }
         else {
             $('#ddlUseridRep').prop("disabled", true);
@@ -81,6 +86,8 @@
             $("#FormW1_DtRep").val('');
             $("#FormW1_DtRep").prop("readonly", true);
             $("#FormW1_SignRep").prop("disabled", true);
+            $('#FormW1_SignRep').prop('checked', false);
+            
         }
     });
 
