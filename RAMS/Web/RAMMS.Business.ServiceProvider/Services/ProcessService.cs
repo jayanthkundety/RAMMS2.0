@@ -495,7 +495,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (process.Stage == Common.StatusList.FormW1Submitted)
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.OperationsExecutive;
-                   
+                    
                     form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Approved : StatusList.FormW1Rejected;
 
                     if (process.IsApprove)

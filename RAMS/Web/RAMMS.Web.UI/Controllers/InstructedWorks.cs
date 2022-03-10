@@ -21,6 +21,7 @@ using AutoMapper;
 using RAMMS.DTO.Wrappers;
 using X.PagedList;
 using RAMMS.DTO.JQueryModel;
+using Newtonsoft.Json;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -33,6 +34,8 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormWGService _formWGService;
         private readonly IDDLookUpService _ddLookupService;
         private readonly IRoadMasterService _roadMasterService;
+        private readonly IFormWDService _formWDService;
+        private readonly IFormWNService _formWNService;
 
         private readonly IDivisionService _divisionService;
 
@@ -50,7 +53,7 @@ namespace RAMMS.Web.UI.Controllers
         public InstructedWorks(IWebHostEnvironment webhostenvironment, ISecurity security, IUserService userService, IDDLookUpService ddLookupService,
             IRoadMasterService roadMasterService, IHostingEnvironment _environment, IFormW1Service formW1Service, IFormW2Service formW2Service,
             IDivisionService divisionService, IConfiguration configuration, IBridgeBO bridgeBO, IMapper mapper, IFormWCService formWCService,
-            IFormWGService formWGService)
+            IFormWGService formWGService, IFormWDService formWDService, IFormWNService formWNService)
         {
 
 
@@ -64,6 +67,9 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Service = formW2Service ?? throw new ArgumentNullException(nameof(formW2Service));
             _formWCService = formWCService ?? throw new ArgumentNullException(nameof(formWCService));
             _formWGService = formWGService ?? throw new ArgumentNullException(nameof(formWGService));
+            _formWDService = formWDService ?? throw new ArgumentNullException(nameof(formWDService));
+            _formWNService = formWNService ?? throw new ArgumentNullException(nameof(formWNService));
+
             _configuration = configuration;
             _bridgeBO = bridgeBO;
             _security = security;
@@ -74,15 +80,38 @@ namespace RAMMS.Web.UI.Controllers
 
         #region IW
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            LoadLookupService("RMU", "RD_Code", "TECM_Status");
-            var res = ((IEnumerable<CSelectListItem>)ViewData["TECM_Status"]).ToList();
-            res.Insert(0, new CSelectListItem()
-            {
-                Value = "All",
-                Text = "All"
-            });
+            LoadLookupService("RMU", "RD_Code");
+
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "IWFormType";
+            ddLookup.TypeCode = "";
+            ViewData["IWFormType"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "TECM_Status";
+            ddLookup.TypeCode = "";
+            ViewData["TECM_Status"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "IWTECM";
+            ddLookup.TypeCode = "";
+            ViewData["IWTECM"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "IWFECM";
+            ddLookup.TypeCode = "";
+            ViewData["IWFECM"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            ddLookup.Type = "IWBYDE";
+            ddLookup.TypeCode = "";
+            ViewData["IWBYDE"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+
+            //var res = ((IEnumerable<CSelectListItem>)ViewData["TECM_Status"]).ToList();
+            //res.Insert(0, new CSelectListItem()
+            //{
+            //    Value = "All",
+            //    Text = "All"
+            //});
 
             return View();
         }
@@ -115,12 +144,19 @@ namespace RAMMS.Web.UI.Controllers
                 ddLookup.Type = "IWFORMWCWG";
                 ddLookup.TypeCode = "WGWC";
                 ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+                var _formWC  = await _formWCService.FindWCByW1ID(int.Parse(Id));
+                var _formWG = await  _formWGService.FindWGByW1ID(int.Parse(Id));
+
+                assetsModel.IsSubmittedWC = _formWC.SubmitSts;
+                assetsModel.IsSubmittedWG = _formWG.SubmitSts;
             }
             else if (form == "FormWDWN")
             {
                 ddLookup.Type = "IWFORMWDWN";
                 ddLookup.TypeCode = "WDWN";
                 ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+                assetsModel.IsSubmittedWD = false;
+                assetsModel.IsSubmittedWN = false;
             }
             else
             {
@@ -312,6 +348,12 @@ namespace RAMMS.Web.UI.Controllers
                 model.View = 1;
             }
 
+            if(model.FormW1.UseridReq == null || model.FormW1.UseridReq == 0)
+            model.FormW1.UseridReq =  _security.UserID;
+
+            if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
+                model.FormW1.UseridVer = _security.UserID;
+
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
@@ -352,6 +394,14 @@ namespace RAMMS.Web.UI.Controllers
 
         #region FormW2
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteW2(int id)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formW2Service.Delete(id);
+            return Json(rowsAffected);
+        }
+
         private async Task LoadN2DropDown()
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -367,10 +417,12 @@ namespace RAMMS.Web.UI.Controllers
 
 
             LoadLookupService("RMU", "Division", "RD_Code", "Region", "TECM_Status", "User");
-            GetRMUWithDivision("RMU_Division");
+
             ddLookup.Type = "Month";
             ddLookup.TypeCode = "";
             ViewData["Months"] = await _ddLookupService.GetDdDescValue(ddLookup);
+
+            await LoadDropDownsSectionCode();
         }
 
         public async Task<IActionResult> AddFormW2(int id)
@@ -411,6 +463,8 @@ namespace RAMMS.Web.UI.Controllers
 
             defaultData.SerProvRefNo = _formW2Model.FormW1.ServPropRefNo;
             defaultData.EstCostAmt = _formW2Model.FormW1.EstimTotalCostAmt;
+            //defaultData.UseridReq = _security.UserID;
+            defaultData.UseridIssu  = _security.UserID;
             _formW2Model.SaveFormW2Model = defaultData;
             //_formW2Model.FormW1 = new FormW1ResponseDTO();
 
@@ -433,7 +487,10 @@ namespace RAMMS.Web.UI.Controllers
                 _formW2Model.FECM = new FormFECMModel();
                 var resultFormW2 = await _formW2Service.FindW2ByID(id);
                 var res = (List<CSelectListItem>)ViewData["RD_Code"];
-                res.Find(c => c.Value == resultFormW2.RoadCode).Selected = true;
+                if (res != null) {
+                    var rd = res.Find(c => c.Value == resultFormW2.RoadCode);
+                    if (rd != null) rd.Selected = true;
+                }
                 var resultFCEM = await _formW2Service.FindFCEM2ByW2ID(id);
                 if (resultFCEM == null) resultFCEM = new FormW2FECMResponseDTO();
                 _formW2Model.FECM.FECM = resultFCEM;
@@ -443,6 +500,7 @@ namespace RAMMS.Web.UI.Controllers
                 if ((resultFormW2.SubmitSts && view != null) || view == "1") _formW2Model.View = "1";
 
                 _formW2Model.SaveFormW2Model = resultFormW2;
+                if (_formW2Model.SaveFormW2Model.UseridReq == null || _formW2Model.SaveFormW2Model.UseridReq == 0) _formW2Model.SaveFormW2Model.UseridReq = _security.UserID;
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
                 _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
                 _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;
@@ -704,6 +762,28 @@ namespace RAMMS.Web.UI.Controllers
                 searchData.filterData.RoadCode = Request.Form["columns[10][search][value]"].ToString();
             }
 
+            if (Request.Form.ContainsKey("columns[11][search][value]"))
+            {
+                searchData.filterData.RecommdDE = Request.Form["columns[11][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[12][search][value]"))
+            {
+                searchData.filterData.FormType = Request.Form["columns[12][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[13][search][value]"))
+            {
+                searchData.filterData.TECMStatus = Request.Form["columns[13][search][value]"].ToString();
+            }
+
+            if (Request.Form.ContainsKey("columns[14][search][value]"))
+            {
+                searchData.filterData.FECMStatus = Request.Form["columns[14][search][value]"].ToString();
+            }
+
+
+
             FilteredPagingDefinition<FormIWSearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormIWSearchGridDTO>();
 
             filteredPagingDefinition.Filters = searchData.filterData;
@@ -831,13 +911,13 @@ namespace RAMMS.Web.UI.Controllers
 
             var _formWCWGModel = new FormWCWGModel();
             LoadLookupService("TECM_Status", "User");
-            
+
             var _formC = await _formWCService.FindWCByID(wcid);
             _formWCWGModel.FormWC = _formC == null ? new FormWCResponseDTO() : _formC;
-            
+
             var _formG = await _formWGService.FindWGByID(wgid);
             _formWCWGModel.FormWG = _formG == null ? new FormWGResponseDTO() : _formG;
-            
+
             _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
 
 
@@ -891,29 +971,95 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WDWN
 
-        public async Task<IActionResult> OpenWDWN(int PkRefNo = 15)
+        public async Task<IActionResult> OpenWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view)
         {
+
             var _formWDWNModel = new FormWDWNModel();
             LoadLookupService("TECM_Status", "User");
+            ViewData["Division"] = await _divisionService.GetDivisionsDDL();
+            _formWDWNModel.Division = await _divisionService.GetDivisions();
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
-            _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(PkRefNo);
+            _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
+            _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W1Id);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
+            _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
+            _formWDWNModel.FormWD.FW1PKRefno = _formWDWNModel.FormW1.PkRefNo;
+            _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
+            _formWDWNModel.FormWN.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
             return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
-        public async Task<JsonResult> SaveFormWG(FormWGResponseDTO formWG)
+
+        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view)
+        {
+            var _formWDWNModel = new FormWDWNModel();
+            _formWDWNModel.View = view;
+            LoadLookupService("TECM_Status", "User");
+            ViewData["Division"] = await _divisionService.GetDivisionsDDL();
+            _formWDWNModel.Division = await _divisionService.GetDivisions();
+            ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
+            _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
+            _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
+            _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
+            _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
+            _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
+            _formWDWNModel.FormWN = await _formWNService.FindFormWNByID(Wnid);
+            return PartialView("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
+        }
+
+
+
+        [HttpPost]
+        public async Task<JsonResult> SaveFormWD(FormWDWNModel frm)
+        {
+
+            int refNo = 0;
+            frm.FormWD.ActiveYn = true;
+            if (frm.FormWD.PkRefNo == 0)
+            {
+                frm.FormWD.Status = "Saved";
+                refNo = await _formWDService.SaveFormWD(frm.FormWD);
+            }
+            else
+            {
+                refNo = await _formWDService.Update(frm.FormWD);
+            }
+
+            _formWDService.DeleteFormWDClause(refNo);
+
+            if (frm.ClauseDetails != null && frm.ClauseDetails != "" && frm.ClauseDetails != "undefined")
+            {
+                var res = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<FormWDDtlResponseDTO>>(frm.ClauseDetails);
+                foreach (var item in res)
+                {
+                    item.FwdPkRefNo = refNo;
+                    _formWDService.SaveFormWDClause(item);
+                }
+            }
+
+            return Json(refNo);
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> SaveFormWN(FormWDWNModel frm)
         {
             int refNo = 0;
-            FormWGResponseDTO saveRequestObj = new FormWGResponseDTO();
-            saveRequestObj = formWG;
-            if (saveRequestObj.PkRefNo == 0)
-                refNo = await _formWGService.Save(formWG);
+            frm.FormWN.ActiveYn = true;
+            if (frm.FormWN.PkRefNo == 0)
+            {
+                frm.FormWN.Status = "Saved";
+                refNo = await _formWNService.SaveFormWN(frm.FormWN);
+            }
             else
-                refNo = await _formWGService.Update(formWG);
+            {
+                refNo = await _formWNService.Update(frm.FormWN);
+            }
 
             return Json(refNo);
         }
+
 
         #endregion
 

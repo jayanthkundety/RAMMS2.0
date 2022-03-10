@@ -61,7 +61,7 @@
 
                 <div class="form-group col-lg-2">
                     <label for="RMU">PROGRESS %</label>
-                    @Html.TextBoxFor(m => m.FECM.ProgressPerc, new { @id = "fecmProgress", @class = "form-control  svalidate {required, PROGRESS % }" })
+                    @Html.TextBoxFor(m => m.FECM.ProgressPerc, new { @id = "fecmProgress", @maxlength=5, @class = "form-control allow_numeric  svalidate {required, PROGRESS % }" })
                 </div>
 
                 <div class="form-group col-lg-2 px-4">
@@ -98,7 +98,7 @@
     <div class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;left: auto;bottom: 0px;right: 2%;background: #fff;width: calc(100vw - 8.3%);height: 45px;">
         <button type="button" class="btn btn-sm btn-outline-theme" id="btnFecMClear" onclick="return ClearFCEM()">Clear</button>
         <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-        <button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="javascript:saveFECM(false)">Save</button>
+        @*<button type="button" class="btn btn-sm btn-themebtn" id="saveFCEMBtn" onclick="javascript:saveFECM(false)">Save</button>*@
         <button type="button" class="btn btn-sm btn-themebtn" id="submitFCEMBtn" onclick="javascript:submitFECM(true)">Submit</button>
     </div>
 </div>
@@ -156,7 +156,7 @@
     }
 
     function SaveFCEM(submit) {
-        debugger;
+        
         if (!checkW2Exist()) return;
 
         if (submit) {
@@ -267,8 +267,8 @@
         $("#fecmAgrN").prop("checked",false);
         $("#fecmProgress").val('');
         $("#fecmNegoDate").val('');
-        $("#femcBQ").prop("checked",false)
-        $("#fecmDrawing").prop("checked",false)
+        //$("#femcBQ").prop("checked",false)
+        //$("#fecmDrawing").prop("checked",false)
         $("#fecmRemark").val('');
         return false;
     }

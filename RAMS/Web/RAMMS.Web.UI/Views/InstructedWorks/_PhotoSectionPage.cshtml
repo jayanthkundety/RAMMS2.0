@@ -73,10 +73,16 @@
                                         <th>Attachment Type</th>
                                         <th>FileName</th>
                                         <th>Source</th>
+                                        
                                         @if (security.IsPCDelete(ModuleNameList.Instructed_Works))
                                         {
                                             <th style="text-align:center">Delete</th>
                                         }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                        <th>Download</th>
 
                                     </tr>
                                 </thead>
@@ -94,23 +100,15 @@
                                                     <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageUserFilePath)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.Source)</td>
-
-                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works)  && ((Model.FormName == "FormWCWG" && (item.Source == "FormWC" || item.Source == "FormWG")) || ((Model.FormName == "FormWDWN") && (item.Source == "FormWD" || item.Source == "FormWN"))))  
+                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && item.Source == Model.FormName)
                                                     {
-                                                        <td style="text-align:center">
-                                                            <button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button>
-                                                        </td>
+                                                        <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
                                                     }
-                                                    else {
-                                                            @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && (item.Source == Model.FormName))
-                                                            {
-                                                                <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
-                                                            }
-                                                            else
-                                                            {
-                                                                <td></td>
-                                                            }
+                                                    else
+                                                    {
+                                                        <td></td>
                                                     }
+                                                    <td><a class="warCaption" href="~/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">Download</a></td>
                                                 </tr>
                                                 i++;
                                             }
@@ -185,12 +183,12 @@
                                                     {
 
                                                         <img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
-                                                        <a class="warCaption" href="~/Uploads/FormW1/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@item.ImageUserFilePath</a>
+                                                        <a class="warCaption" href="~/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@item.ImageUserFilePath</a>
 
                                                     }
                                                     else
                                                     {
-                                                        <img src="~/Uploads/FormD/@item.ImageFilenameUpload" alt="Image_Unavailable" />
+                                                        <img src="~/@item.ImageFilenameUpload" alt="Image_Unavailable" />
                                                         <span class="warCaption">@item.ImageUserFilePath</span>
                                                     }
                                                 }
@@ -430,8 +428,12 @@
                 var ext = file.name.split('.').pop().toLowerCase();
 
                 if (fileType != 'Others') {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
-                        app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                    //if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
+                    //    app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                    //    return
+                    //}
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf','ppt','pptx']) == -1) {
+                        app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
                         return
                     }
                     if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
@@ -442,7 +444,7 @@
                 else {
 
                     //if (file.type != "image/png" && file.type != "image/jpeg" && file.type != "application/vnd.ms-excel" && file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.type != "application/msword" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.type != "application/pdf") {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf']) == -1) {
+                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf', 'ppt', 'pptx']) == -1) {
                         app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
                             return
                     }
@@ -612,8 +614,7 @@
     }
 
       function DeleteImage(pkId) {
-          var id = $("#IwRefNo").val();
-          if ($("#hdnView").val() == "1") return;
+          if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return; 
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 InitAjaxLoading();
