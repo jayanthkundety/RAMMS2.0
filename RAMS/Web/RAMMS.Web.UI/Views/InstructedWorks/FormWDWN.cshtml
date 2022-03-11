@@ -33,7 +33,7 @@
 
 
                     <li class="nav-item">
-                        <a href="#AccordPagegallery" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:GetImageList(0);">
+                        <a href="#AccordPagegallery" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormWDWN');">
                             <span class="">
                                 Attachment
                             </span>
@@ -85,6 +85,7 @@
     @Html.HiddenFor(m => m.ClauseDetails);
     @Html.HiddenFor(m => m.FormWD.IwRefNo);
     @Html.HiddenFor(m => m.FormWD.PkRefNo);
+    @Html.HiddenFor(m => m.FormWN.PkRefNo);
     @Html.HiddenFor(m => m.FormWD.Fw1PkRefNo);
     @Html.HiddenFor(m => m.FormWN.Fw1PkRefNo);
     @Html.HiddenFor(m => m.FormWD.Status);
@@ -98,12 +99,14 @@
     <input type="hidden" id="hdnWNPkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
     <input type="hidden" id="hdnDtPervCompl">
-
+ 
 }
 <script>
 
     $(document).ready(function () {
         debugger
+        process.Init("FormWD", "@Model.FormWD.Status", @Model.FormWD.PkRefNo);
+        process.Init("FormWN", "@Model.FormWN.Status", @Model.FormWN.PkRefNo);
 
         $('#FormWD_IwRefNo').val("@Model.FormW1.IwRefNo")
         $('#FormWD_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")

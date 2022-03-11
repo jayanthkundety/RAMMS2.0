@@ -88,6 +88,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormWG":
                     iResult = await SaveFormW2(process);
                     break;
+               
             }
             return iResult;
         }
@@ -161,6 +162,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                     break;
                 case "FormWG":
                     logs = this.context.RmIwFormWg.Where(x => x.FwgPkRefNo == RefId).Select(x => x.FwgAuditLog).FirstOrDefault();
+                    break;
+                case "FormWD":
+                    logs = this.context.RmIwFormWd.Where(x => x.FwdPkRefNo == RefId).Select(x => x.FwdAuditLog).FirstOrDefault();
+                    break;
+                case "FormWN":
+                    logs = this.context.RmIwFormWn.Where(x => x.FwnPkRefNo == RefId).Select(x => x.FwnAuditLog).FirstOrDefault();
                     break;
             }
             return Utility.ProcessLog(logs);
