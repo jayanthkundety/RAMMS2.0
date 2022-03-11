@@ -10190,10 +10190,6 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWC_Sec_Code")
                     .HasMaxLength(16);
 
-                entity.Property(e => e.FwcServRefNo)
-                    .HasColumnName("FWC_Serv_Ref_No")
-                    .HasMaxLength(100);
-
                 entity.Property(e => e.FwcSignIssu).HasColumnName("FWC_Sign_ISSU");
 
                 entity.Property(e => e.FwcStatus)
@@ -10207,6 +10203,10 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwcUsernameIssu)
                     .HasColumnName("FWC_USERNAME_ISSU")
                     .HasMaxLength(250);
+
+                entity.Property(e => e.FwcYourRefNo)
+                    .HasColumnName("FWC_Your_Ref_No")
+                    .HasMaxLength(100);
 
                 entity.HasOne(d => d.FwcFw1PkRefNoNavigation)
                     .WithMany(p => p.RmIwFormWc)
@@ -10462,10 +10462,6 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWG_Sec_Code")
                     .HasMaxLength(16);
 
-                entity.Property(e => e.FwgServRefNo)
-                    .HasColumnName("FWG_Serv_Ref_No")
-                    .HasMaxLength(100);
-
                 entity.Property(e => e.FwgSignIssu).HasColumnName("FWG_Sign_ISSU");
 
                 entity.Property(e => e.FwgStatus)
@@ -10479,6 +10475,10 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwgUsernameIssu)
                     .HasColumnName("FWG_USERNAME_ISSU")
                     .HasMaxLength(250);
+
+                entity.Property(e => e.FwgYourRefNo)
+                    .HasColumnName("FWG_Your_Ref_No")
+                    .HasMaxLength(100);
 
                 entity.HasOne(d => d.FwgFw1PkRefNoNavigation)
                     .WithMany(p => p.RmIwFormWg)

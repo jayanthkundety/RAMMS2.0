@@ -17,7 +17,7 @@ namespace RAMMS.Domain.Models
         public string FwgIwRefNo { get; set; }
         public string FwgIwProjectTitle { get; set; }
         public string FwgOurRefNo { get; set; }
-        public string FwgServRefNo { get; set; }
+        public string FwgYourRefNo { get; set; }
         public DateTime? FwgDtWg { get; set; }
         public DateTime? FwgDtDefectCompl { get; set; }
         public bool? FwgSignIssu { get; set; }

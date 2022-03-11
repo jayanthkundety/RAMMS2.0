@@ -363,8 +363,8 @@
                     $("#btnSearch").click();
                 }
             });
-
         });
+       
         function changeRMU(obj) {
             var ctrl = $(obj);
             if (ctrl.val() != null && ctrl.val() != "") {
@@ -421,32 +421,30 @@
         }
 
         function DeleteW1() {
-        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
-            if (e) {
-                var id = GetFormIDByName("w1");
-                InitAjaxLoading();
-                $.ajax({
-                    url: "/InstructedWorks/DeleteW1",
-                    data: { id },
-                    type: 'POST',
-                    success: function (data) {
-                         HideAjaxLoading();
-                        if (data > 0) {
-                            $("body").removeClass("loading");
-                            app.ShowSuccessMessage("Deleted Successfully", false);
-                            FormIWGridRefresh();
+            if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+                if (e) {
+                    var id = GetFormIDByName("w1");
+                    InitAjaxLoading();
+                    $.ajax({
+                        url: "/InstructedWorks/DeleteW1",
+                        data: { id },
+                        type: 'POST',
+                        success: function (data) {
+                             HideAjaxLoading();
+                            if (data > 0) {
+                                $("body").removeClass("loading");
+                                app.ShowSuccessMessage("Deleted Successfully", false);
+                                FormIWGridRefresh();
+                            }
+                            else {
+                                app.ShowWarningMessage("Please try again later.", false);
+                                $("body").removeClass("loading");
+                            }
                         }
-                        else {
-                            app.ShowWarningMessage("Please try again later.", false);
-                            $("body").removeClass("loading");
-                        }
-                    }
-                });
-            }
-        }));
-    }
-
-
+                    });
+                }
+            }));
+        }
 
         function getGridSelectedData(){
             var table = $('#FormIWGridView').DataTable();

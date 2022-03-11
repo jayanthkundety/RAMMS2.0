@@ -17,7 +17,7 @@ namespace RAMMS.Domain.Models
         public string FwcIwRefNo { get; set; }
         public string FwcIwProjectTitle { get; set; }
         public string FwcOurRefNo { get; set; }
-        public string FwcServRefNo { get; set; }
+        public string FwcYourRefNo { get; set; }
         public DateTime? FwcDtWc { get; set; }
         public DateTime? FwcDtCompl { get; set; }
         public DateTime? FwcDtDlpExtn { get; set; }
