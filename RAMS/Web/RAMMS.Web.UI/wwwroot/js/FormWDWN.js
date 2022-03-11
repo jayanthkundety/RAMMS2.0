@@ -1,20 +1,48 @@
 ﻿$(document).ready(function () {
 
 
-    if ($("#hdnView").val() == "1") {
-        $("#FormWDdatapage *").prop("disabled", true);
-        $("#FormWDNdatapage *").prop("disabled", true);
-      
-        $("#ddlWDUserid").chosen('destroy');
-        $("#ddlWDUserid").prop("disabled", true);
-        $("#ddlWNUserid").chosen('destroy');
-        $("#ddlWNUserid").prop("disabled", true);
-      
-        $("#btnSave").hide();
-        $("#btnSubmit").hide();
-        $("#addAttachment").hide();
-        $("#btnBack").removeAttr("disabled");
-    }
+    //if ($("#hdnView").val() == "1") {
+    //    $("#FormWDdatapage *").prop("disabled", true);
+    //    $("#FormWDNdatapage *").prop("disabled", true);
+
+    //    $("#ddlWDUserid").chosen('destroy');
+    //    $("#ddlWDUserid").prop("disabled", true);
+    //    $("#ddlWNUserid").chosen('destroy');
+    //    $("#ddlWNUserid").prop("disabled", true);
+
+    //    $("#btnSave").hide();
+    //    $("#btnSubmit").hide();
+    //    $("#addAttachment").hide();
+    //    $("#btnBack").removeAttr("disabled");
+    //}
+
+    $('.allow_numeric').keypress(function (event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+            ((event.which < 48 || event.which > 57) &&
+                (event.which != 0 && event.which != 8))) {
+            event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') == -1)) {
+            setTimeout(function () {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+
+        if ((text.indexOf('.') != -1) &&
+            (text.substring(text.indexOf('.')).length > 3) &&
+            (event.which != 0 && event.which != 8) &&
+            ($(this)[0].selectionStart >= text.length - 3)) {
+            event.preventDefault();
+        }
+
+
+    });
+
 
     $("#FormW1_ServPropName").chosen('destroy');
     $("#FormW1_ServPropName").prop("disabled", true);
@@ -22,20 +50,23 @@
     $("#ddlServiceProvider").chosen('destroy');
     $("#ddlServiceProvider").prop("disabled", true);
 
-    
+
 });
 
 
- //FormWD Region
+//FormWD Region
 function OnWDUseridChange(tis) {
 
     var ctrl = $(tis);
-    $('#FormW1_UseridRep').val(ctrl.val());
-    if (ctrl.val() != null && ctrl.val() != "") {
+    if (ctrl.val() != null)
+        $('#ddlWDUserid').val(ctrl.val());
+    $('#FormWD_UseridIssu').val($('#ddlWDUserid').val());
+
+    if ($('#ddlWDUserid').val() != null && $('#ddlWDUserid').val() != "") {
         $("#FormWD_UsernameIssu").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormWD_DesignationIssu").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormWD_OfficeIssu").val(ctrl.find("option:selected").attr("Item3"));
-        if (ctrl.val() == "99999999") {
+        if ($('#ddlWDUserid').val() == "99999999") {
             $("#FormWD_UsernameIssu").removeAttr("readonly");
             $("#FormWD_DesignationIssu").removeAttr("readonly");
             $("#FormWD_OfficeIssu").removeAttr("readonly");
@@ -58,27 +89,29 @@ function OnWDUseridChange(tis) {
 
 function AddClauseData() {
 
-    var tbl = document.getElementById('tblClause');
+    if (ValidatePage('#divClause')) {
+        var tbl = document.getElementById('tblClause');
 
-    length = tbl.rows.length;
-    if (length > 3) {
-        app.ShowErrorMessage("Only three rows allowed");
-        return;
+        length = tbl.rows.length;
+        if (length > 3) {
+            app.ShowErrorMessage("Only three rows allowed");
+            return;
+        }
+        var rowdata = tbl.insertRow(length);
+        var cell1 = rowdata.insertCell(rowdata.cells.length);
+        cell1.innerHTML = $("#txtReason").val();
+        var cell2 = rowdata.insertCell(rowdata.cells.length);
+        cell2.innerHTML = $("#txtClause").val();
+        var cell3 = rowdata.insertCell(rowdata.cells.length);
+        cell3.innerHTML = $("#txtExtension").val();
+        var cell4 = rowdata.insertCell(rowdata.cells.length);
+        cell4.innerHTML = " <span class='del-icon' onclick=\"Javascript:DeleteClauseRow(this);\"></span>"; /*"<i class='fa fa-trash-alt fa-lg cursor-pointer text-danger' onclick=\"Javascript:DeleteClauseRow(this," + length  + ");\" ></i>";*/
+
+        $("#txtReason").val("");
+        $("#txtClause").val("");
+        $("#txtExtension").val("");
+        $("#ClauseModal").modal("hide");
     }
-    var rowdata = tbl.insertRow(length);
-    var cell1 = rowdata.insertCell(rowdata.cells.length);
-    cell1.innerHTML = $("#txtReason").val();
-    var cell2 = rowdata.insertCell(rowdata.cells.length);
-    cell2.innerHTML = $("#txtClause").val();
-    var cell3 = rowdata.insertCell(rowdata.cells.length);
-    cell3.innerHTML = $("#txtExtension").val();
-    var cell4 = rowdata.insertCell(rowdata.cells.length);
-    cell4.innerHTML = " <span class='del-icon' onclick=\"Javascript:DeleteClauseRow(this);\"></span>"; /*"<i class='fa fa-trash-alt fa-lg cursor-pointer text-danger' onclick=\"Javascript:DeleteClauseRow(this," + length  + ");\" ></i>";*/
-
-    $("#txtReason").val("");
-    $("#txtClause").val("");
-    $("#txtExtension").val("");
-    $("#ClauseModal").modal("hide");
 
 }
 
@@ -86,7 +119,7 @@ function DeleteClauseRow(obj) {
     $(obj).closest('tr').remove();
 }
 
- 
+
 function GetClauseDetails() {
     var ClassDetails = [];
     var rows = $('#tblClause tbody >tr');
@@ -121,7 +154,7 @@ function SaveWD(GroupName, SubmitType) {
         if (SubmitType == "Submitted") {
             $("#FormWD_Status").val("Submitted");
             $("#FormWD_SubmitSts").val(true);
-            $("#ddlUseridReq").addClass("validate");
+            $("#ddlWDUserid").addClass("validate");
         }
     }
     else {
@@ -138,9 +171,10 @@ function SaveWD(GroupName, SubmitType) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
-
-                $("#FormWD_PkRefNo").val(data);
-                $("#hdnWDPkRefNo").val(data);
+                if ($("#FormWD_PkRefNo").val() == 0 || $("#FormWD_PkRefNo").val() == "") {
+                    $("#FormWD_PkRefNo").val(data);
+                    $("#hdnWDPkRefNo").val(data);
+                }
 
                 if (SubmitType == "" || SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
@@ -150,9 +184,7 @@ function SaveWD(GroupName, SubmitType) {
                     app.ShowSuccessMessage('Submitted Successfully', false);
                     location.href = "/InstructedWorks/Index";
                 }
-                else if (SubmitType == "Verified") {
-                    process.ShowApprove(GroupName, SubmitType);
-                }
+
             }
         });
     }
@@ -160,6 +192,19 @@ function SaveWD(GroupName, SubmitType) {
 
 
 }
+
+function PrevCompDtValidation() {
+    var value = $(this).val();
+    var PrevDate = new Date(formatDate($("#hdnDtPervCompl").val()));
+
+    if (value < PrevDate) {
+        app.ShowErrorMessage("Completion date should not be less previous completion date of w2");
+        $(this).val('');
+        return;
+    }
+}
+
+
 //FormWD RegionEnd
 
 
@@ -167,12 +212,15 @@ function SaveWD(GroupName, SubmitType) {
 function OnWNUseridChange(tis) {
 
     var ctrl = $(tis);
-    $('#FormW1_UseridRep').val(ctrl.val());
-    if (ctrl.val() != null && ctrl.val() != "") {
+    if (ctrl.val() != null)
+        $('#ddlWNUserid').val(ctrl.val());
+    $('#FormWN_UseridIssu').val($('#ddlWNUserid').val());
+
+    if ($('#ddlWNUserid').val() != null && $('#ddlWNUserid').val() != "") {
         $("#FormWN_UsernameIssu").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormWN_DesignationIssu").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormWN_OfficeIssu").val(ctrl.find("option:selected").attr("Item3"));
-        if (ctrl.val() == "99999999") {
+        if ($('#ddlWNUserid').val() == "99999999") {
             $("#FormWN_UsernameIssu").removeAttr("readonly");
             $("#FormWN_DesignationIssu").removeAttr("readonly");
             $("#FormWN_OfficeIssu").removeAttr("readonly");
@@ -195,7 +243,7 @@ function OnWNUseridChange(tis) {
 
 function SaveWN(GroupName, SubmitType) {
 
-     
+
     if (SubmitType != "") {
 
         $("#FormWNpage .svalidate").addClass("validate");
@@ -210,7 +258,7 @@ function SaveWN(GroupName, SubmitType) {
         $("#FormWN_Status").val("Saved");
     }
 
-    
+
     if (ValidatePage('#FormWNpage')) {
         InitAjaxLoading();
         $.post('/InstructedWorks/SaveFormWN', $("form").serialize(), function (data) {
@@ -219,9 +267,10 @@ function SaveWN(GroupName, SubmitType) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
-
-                $("#FormWN_PkRefNo").val(data);
-                $("#hdnWDPkRefNo").val(data);
+                if ($("#FormWN_PkRefNo").val() == 0 || $("#FormWN_PkRefNo").val() == "") {
+                    $("#FormWN_PkRefNo").val(data);
+                    $("#hdnWNPkRefNo").val(data);
+                }
 
                 if (SubmitType == "" || SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
@@ -231,9 +280,7 @@ function SaveWN(GroupName, SubmitType) {
                     app.ShowSuccessMessage('Submitted Successfully', false);
                     location.href = "/InstructedWorks/Index";
                 }
-                else if (SubmitType == "Verified") {
-                    process.ShowApprove(GroupName, SubmitType);
-                }
+
             }
         });
     }
@@ -243,3 +290,50 @@ function SaveWN(GroupName, SubmitType) {
 }
 
 //FormWN RegionEnd
+
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+
+//Image
+
+function GetImageList(id, form) {
+    debugger;
+    var group = $("#FormADetAssetGrpCode option:selected").val();
+    if (id && id > 0) {
+        $("#fw1IWRefNo").val(id);
+    }
+    else {
+        id = $("#fw1IWRefNo").val();
+    }
+    $.ajax({
+        url: '/InstructedWorks/GetIWImageList',
+        data: { id, assetgroup: group, form },
+        type: 'POST',
+        success: function (data) {
+            $("#ViewPhoto").html(data);
+            if ($("#hdnView").val() == "1")
+                $("div.img-btns *").prop("disabled", true);
+            if (form == "FormWDWN")
+                $("#divFormType").show();
+            else
+                $("#divFormType").hide();
+        },
+        error: function (data) {
+            alert(data.responseText);
+        }
+
+    });
+
+    return true;
+}

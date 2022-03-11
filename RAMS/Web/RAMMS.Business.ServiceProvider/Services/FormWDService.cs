@@ -35,6 +35,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             _repo = repo;
         }
 
+        public async Task<FormWDResponseDTO> FindWDByW1ID(int id)
+        {
+            RmIwFormWd formWC = await _repo.FindWDByw1ID(id);
+            return _mapper.Map<FormWDResponseDTO>(formWC);
+        }
+
         public async Task<FormWDResponseDTO> FindFormWDByID(int id)
         {
             RmIwFormWd formWD = await _repo.FindFormWDByID(id);
@@ -101,8 +107,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             int rowsAffected;
             try
             {
-                var domainModelformWD = _mapper.Map<RmIwFormWd>(FormWD);
+                int PkRefNo = FormWD.PkRefNo;
+                int? Fw1PkRefNo = FormWD.Fw1PkRefNo;
                
+                var domainModelformWD = _mapper.Map<RmIwFormWd>(FormWD);
+                domainModelformWD.FwdPkRefNo = PkRefNo;
+                domainModelformWD.FwdFw1PkRefNo = Fw1PkRefNo;
+ 
                 domainModelformWD.FwdActiveYn = true;
                 domainModelformWD = UpdateStatus(domainModelformWD);
                 _repoUnit.FormWDRepository.Update(domainModelformWD);

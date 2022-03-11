@@ -16,15 +16,9 @@
                                 <label for="OurRef">
                                     Name of Division
                                 </label>
-                                <select class="form-control">
-                                    <option> Select Division </option>
-                                </select>
+                                @Html.DropDownListFor(m => m.FormWN.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control svalidate {required, Name of Division}" })
                             </div>
-                            <div class="form-group col-lg-4">
-                                <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
 
-                                @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,26 +36,21 @@
                 <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                     <div class="row">
                         <div class="form-group col-lg-3">
-                            <label for="OurRef">Our Ref / Contract  NO</label>
-                            @Html.TextBoxFor(m => m.FormWN.OurRefNo, new { @class = "form-control" })
+                            <label for="OurRef">Our Ref / Contract NO</label>
+                            @Html.TextBoxFor(m => m.FormWN.OurRefNo, new { @class = "form-control svalidate {required, Our Ref / Contract NO}" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Date">
                                 Date
                             </label>
-                            @Html.EditorFor(m => m.FormWN.DtWn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                            @Html.EditorFor(m => m.FormWN.DtWn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control svalidate {required, Date}", @type = "date" } })
                         </div>
-                        <div class="form-group col-lg-3">
-                            <label for="Your Ref">
-                                Your Ref
-                            </label>
-                            @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @readonly = true, @class = "form-control" })
-                        </div>
+
                         <div class="form-group  col-lg-3">
                             <label for="Your Ref">
                                 Service Provider Name
                             </label>
-                            @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { Id="ddlServiceProvider", @class = "form-control " })
+                            @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select ServPropName", new { Id = "ddlServiceProvider", @class = "form-control " })
                         </div>
 
                     </div>
@@ -71,7 +60,7 @@
 
             </div>
 
- 
+
             <div class="col-lg-12">
                 <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
                     It is hereby certified that you have failed to complete the Instructed Work mentioned above which was issued to you by the
@@ -79,13 +68,14 @@
                         <span class="float-left">
                             <span class="float-left">"Date for Completion"  stated in S.O.'s Instruction No.:</span>
                             <span class="float-left">
-                                @Html.TextBoxFor(m => m.FormW2, new { @readonly = true, @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 5px 0px 0px; border-radius:0px" })
-                                @Html.EditorFor(m => m.FormWN.DtW2Compl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
+                                @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @readonly = true, @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 5px 0px 0px; border-radius:0px" })
+                                @Html.EditorFor(m => m.FormW2.DateOfInitation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
                                 , or within any extended
                             </span>
-                        <span class="float-left"> time approved</span>  </span> 
+                            <span class="float-left"> time approved</span>
+                        </span>
                     </span>
-                       
+
                     <span class="float-left mb-3">
                         <span class="float-left"> under  <b style="padding:0px 2px;font-size:20px;">Clause 8.7  </b></span>
                         <span class="float-left">of the Agreement, i.e. on</span>
@@ -102,12 +92,17 @@
             </div>
             <div class="col-lg-12">
                 <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
-                    <span class="float-left">  In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.11</b> of the Agreement, you are hereby informed that you are liable to pay or allow to the Government</span><span class="float-left">
-    <span class="float-left"> a sum calculated at the rate of</span>
-    <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b> <b style="padding:0px 6px;font-size:20px;"> RM</b>@Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 6px; border-radius:0px" })
-    per day of the value of this Instructed Work, i.e.
-</span>
-                    
+                    <span class="float-left">  In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.11</b> of the Agreement, you are hereby informed that you are liable to pay or allow to the Government</span>
+                    <span class="float-left">
+                        <span class="float-left">
+                            a sum calculated at the rate of <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b>
+                            per day of the value of this Instructed Work, i.e.
+                        </span>
+                        <span class="float-left">
+                            <b style="padding:0px 6px;font-size:20px; float:left"> RM</b>
+                            @Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold allow_numeric svalidate {required, Date}", @style = "width:150px; margin:0px 6px; border-radius:0px" })
+                        </span>
+                    </span>
                     <span class="float-left">  per day as Liquidated and Ascertained Damages for the period during which the said Instructed Work shall so remain and have remain incomplete and i shall certify for deduction such damages from any money due or which may become due to you under this Agreement.</span>
                 </p>
             </div>
@@ -140,7 +135,7 @@
                                 <div class="form-group col-lg-1 text-center">
                                     <label>Signature</label>
                                     <div class="clear-b mt-2">
-                                        @Html.CheckBoxFor(model => model.FormWN.SignIssu, new { @disabled = "disabled" })
+                                        @Html.CheckBoxFor(model => model.FormWN.SignIssu, new { @class = "{required,Signature}" })
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +145,17 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
+</div>
+@{
+    if (Model.FormWN.Status != "")
+        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+        {
+            Form = "FormWN",
+            RefId = Model.FormWN.PkRefNo,
+            Stage = Model.FormWN.Status
+        });
+}
+<div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
     left: auto;
     bottom: 0px;
     right: 0;
@@ -159,7 +164,7 @@
     width: 96%;
     height: 45px;">
 
-        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN()">Save</button>
-        <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
-    </div>
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','')">Save</button>
+    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
+</div>

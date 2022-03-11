@@ -22,11 +22,11 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                                             <label for="OurRef">
                                                 Name of Division
                                             </label>
-                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control " })
+                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control svalidate {required, Name of Division}" })
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
-                                            @Html.TextBoxFor(m => m.FormWD.Extn, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.FormWD.CertificateDelay, new { @class = "form-control svalidate {required, Certificate of Delay and Extension of Time No}" })
                                         </div>
                                     </div>
 
@@ -35,29 +35,29 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                         </div>
                     </div>
                 </div>
-           
+
                 <div class="col-lg-12">
                     <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
-                                          
+
                         <div class="px-3 pt-3 pb-1 float-left w-100">
                             <div class="row">
 
 
                                 <div class="form-group col-lg-3">
                                     <label for="OurRef">Our Ref / Contract  NO </label>
-                                    @Html.TextBoxFor(m => m.FormWD.OurRefNo, new { @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.FormWD.OurRefNo, new { @class = "form-control svalidate {required, Our Ref / Contract  NO}" })
                                 </div>
                                 <div class="form-group col-lg-3">
                                     <label for="Date">
                                         Date
                                     </label>
-                                    @Html.EditorFor(m => m.FormWD.DtWd, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                    @Html.EditorFor(m => m.FormWD.DtWd, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control svalidate {required, Date}", @type = "date" } })
                                 </div>
                                 <div class="form-group col-lg-3">
                                     <label for="Your Ref">
                                         Your Ref
                                     </label>
-                                    @Html.TextBoxFor(m => m.FormW1.ServPropRefNo, new { @class = "form-control" })
+                                    @Html.TextBoxFor(m => m.FormWD.YourRefNo, new { @class = "form-control" })
                                 </div>
                                 <div class="form-group  col-lg-3">
                                     <label for="Your Ref">
@@ -75,10 +75,10 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                     </div>
 
                 </div>
-                 
+
                 <div class="col-12 mb-2 ">
                     <div class="px-3  py-2 float-left w-100 border">
-                        <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-right form-control border-left-0 border-top-0 border-right-0 border-bottom", @style = "width: 176px; font-weight: bolder; font-size: 17px;" , @type = "date" } })  </span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
+                        <p class="float-left mb-0" style="line-height: 30px; font-size: 17px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.7</b> <span>of the Agreement, I hereby grant you extension of time for delay beyond the date of completion <span class="float-left px-1" style="line-height: 46px;"> extended date for completion previously approved, @Html.EditorFor(m => m.FormWD.DtPervCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-right form-control border-left-0 border-top-0 border-right-0 border-bottom svalidate {required, Previously Approved Date }", @style = "width: 176px; font-weight: bolder; font-size: 17px;", @type = "date", @onchange = "PrevCompDtValidation()" } })  </span></span> <span class="float-left" style="line-height:50px">due to the following reasons:-</span> </p>
                     </div>
                 </div>
                 <div class="col-12 mb-2 ">
@@ -134,19 +134,19 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                                                         </div>
-                                                        <div class="modal-body">
+                                                        <div id="divClause" class="modal-body">
                                                             <div class="row mt-0 mb-3">
                                                                 <div class="col-lg-12">
                                                                     <label>Reason/reasons</label>
-                                                                    <textarea id="txtReason" class="form-control"></textarea>
+                                                                    <textarea id="txtReason" class="form-control allow_numeric validate {required,Reason}"></textarea>
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label> Clause</label>
-                                                                    <input id="txtClause" type="text" class="form-control" value="" />
+                                                                    <input id="txtClause" type="text" class="form-control allow_numeric validate {required,Clause}" value="" />
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label>Extension of Time</label>
-                                                                    <input id="txtExtension" type="text" class="form-control" value=" " />
+                                                                    <input id="txtExtension" type="number" class="form-control allow_numeric validate {required,Extension of Time}" value=" " />
                                                                 </div>
 
                                                             </div>
@@ -170,7 +170,7 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                     <div class="px-3  py-2 float-left w-100 border">
                         <p class="float-left mt-3" style="line-height: 30px; font-size: 17px;">
                             <span class="float-left px-1">The Date for Completion is now therefore extended to</span>
-                            @Html.EditorFor(m => m.FormWD.DtExtn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = "width:190px" } })
+                            @Html.EditorFor(m => m.FormWD.DtExtn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold svalidate {required,Date of Completion}", @type = "date", @style = "width:190px" } })
 
                         </p>
                     </div>
@@ -200,31 +200,11 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                         <div class="form-group col-lg-1 text-center">
                             <label>Signature</label>
                             <div class="clear-b mt-2">
-                                @Html.CheckBoxFor(model => model.FormWD.SignIssu, new { @disabled = "disabled" })
+                                @Html.CheckBoxFor(model => model.FormWD.SignIssu, new { @class = "{required,Signature}" })
                             </div>
                         </div>
                     </div>
                 </div>
-                @*<div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="px-3 pb-1 float-left w-100 ">
-                                                    <div class="row">
-
-                                                       <div class="col-12  mt-2">
-                            <span class="float-left pt-2 pr-2">
-                                Please ensure that yoru performance security and insurances are extended to meet the requirements of the Agreement, if necessary.
-                            </span>
-                        </div>
-                    <div class="col-12">
-                        <p class="px-4 w-100 float-left m-0 py-2 text-left">
-                            Superintending
-                            <br /><input type="checkbox" />
-                        </p>
-                    </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>*@
 
 
 
@@ -233,6 +213,15 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
 
     </div>
 </div>
+@{
+    if (Model.FormWD.Status != "" && Model.FormWD.Status != "Draft")
+        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+        {
+            Form = "FormWD",
+            RefId = Model.FormWD.PkRefNo,
+            Stage = Model.FormWD.Status
+        });
+}
 <div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
     left: auto;
     bottom: 0px;
@@ -243,6 +232,7 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
     height: 45px;">
 
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD()">Save</button>
-    <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
+    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','')">Save</button>
+    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
 </div>
+

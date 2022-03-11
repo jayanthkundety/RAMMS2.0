@@ -8,7 +8,6 @@ namespace RAMMS.DTO.ResponseBO
     public class FormWDResponseDTO
     {
 
-
         public int PkRefNo { get; set; }
         public int? Fw1PkRefNo { get; set; }
         public int? IwWrksDeptId { get; set; }
@@ -21,6 +20,8 @@ namespace RAMMS.DTO.ResponseBO
         public string IwRefNo { get; set; }
         public string IwProjectTitle { get; set; }
         public string OurRefNo { get; set; }
+        public string YourRefNo { get; set; }
+       
         public string ServRefNo { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
@@ -31,11 +32,12 @@ namespace RAMMS.DTO.ResponseBO
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime? DtExtn { get; set; }
-        public string Extn { get; set; }
+        public string CertificateDelay { get; set; }
         public bool SignIssu { get; set; }
         public int? UseridIssu { get; set; }
         public string UsernameIssu { get; set; }
         public string DesignationIssu { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime? DtIssu { get; set; }
@@ -48,6 +50,7 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+         
  
 
     }

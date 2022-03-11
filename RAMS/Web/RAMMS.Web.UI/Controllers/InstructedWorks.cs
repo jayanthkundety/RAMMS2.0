@@ -166,15 +166,24 @@ namespace RAMMS.Web.UI.Controllers
             }
             else if (form == "FormWDWN")
             {
-                assetsModel.FormName = form;
-                //ddLookup.Type = "IWFORMWDWN";
-                //ddLookup.TypeCode = "WDWN";
-                newDdl.Add(new SelectListItem("Form WD", "Form WN"));
-                newDdl.Add(new SelectListItem("Form WN", "Form WN"));
-                ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
+                assetsModel.FormName = "Form";
+                //var items = await _ddLookupService.GetDdLookup(ddLookup);
+                var _formWD = await  _formWDService.FindWDByW1ID(int.Parse(Id));
+                var _formWN = await _formWNService.FindWNByW1ID(int.Parse(Id));
 
-                assetsModel.IsSubmittedWD = false;
-                assetsModel.IsSubmittedWN = false;
+                if (!_formWD.SubmitSts)
+                {
+                    newDdl.Add(new SelectListItem("Form WD", "Form WD"));
+                    assetsModel.FormName = assetsModel.FormName + "WD";
+                }
+                if (!_formWN.SubmitSts)
+                {
+                    newDdl.Add(new SelectListItem("Form WN", "Form WN"));
+                    assetsModel.FormName = assetsModel.FormName + "WN";
+                }
+                ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
+                assetsModel.IsSubmittedWD = _formWD.SubmitSts;
+                assetsModel.IsSubmittedWN = _formWN.SubmitSts;
             }
             else
             {
@@ -1017,8 +1026,9 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W1Id);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
-            _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
+           // _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
             _formWDWNModel.FormWD.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
+            _formWDWNModel.FormWD.DtPervCompl = _formWDWNModel.FormW2.DtCompl;
             _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
             _formWDWNModel.FormWN.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
@@ -1037,9 +1047,8 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
             _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
-            _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
-            _formWDWNModel.FormWN = await _formWNService.FindFormWNByID(Wnid);
+            _formWDWNModel.FormWN =   Wnid == 0 ? new FormWNResponseDTO(): await _formWNService.FindFormWNByID(Wnid);
             return PartialView("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
