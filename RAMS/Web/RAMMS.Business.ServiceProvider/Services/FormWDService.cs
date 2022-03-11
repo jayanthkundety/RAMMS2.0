@@ -101,8 +101,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             int rowsAffected;
             try
             {
-                var domainModelformWD = _mapper.Map<RmIwFormWd>(FormWD);
+                int PkRefNo = FormWD.PkRefNo;
+                int? Fw1PkRefNo = FormWD.Fw1PkRefNo;
                
+                var domainModelformWD = _mapper.Map<RmIwFormWd>(FormWD);
+                domainModelformWD.FwdPkRefNo = PkRefNo;
+                domainModelformWD.FwdFw1PkRefNo = Fw1PkRefNo;
+ 
                 domainModelformWD.FwdActiveYn = true;
                 domainModelformWD = UpdateStatus(domainModelformWD);
                 _repoUnit.FormWDRepository.Update(domainModelformWD);

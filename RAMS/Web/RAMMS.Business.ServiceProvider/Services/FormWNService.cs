@@ -41,7 +41,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormWNResponseDTO>(formWN);
         }
 
-     
+
 
         public async Task<int> SaveFormWN(FormWNResponseDTO FormWN)
         {
@@ -49,7 +49,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormWN = _mapper.Map<RmIwFormWn>(FormWN);
-               
+                domainModelFormWN.FwnPkRefNo = 0;
+
                 var entity = _repoUnit.FormWNRepository.CreateReturnEntity(domainModelFormWN);
                 formWNResponse = _mapper.Map<FormWNResponseDTO>(entity);
                 return formWNResponse.PkRefNo;
@@ -67,7 +68,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             int rowsAffected;
             try
             {
+                int PkRefNo = FormWN.PkRefNo;
+                int? Fw1PkRefNo = FormWN.Fw1PkRefNo;
                 var domainModelformWN = _mapper.Map<RmIwFormWn>(FormWN);
+                domainModelformWN.FwnPkRefNo = PkRefNo;
+                domainModelformWN.FwnFw1PkRefNo = Fw1PkRefNo;
                 domainModelformWN.FwnActiveYn = true;
                 domainModelformWN = UpdateStatus(domainModelformWN);
                 _repoUnit.FormWNRepository.Update(domainModelformWN);
@@ -116,7 +121,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             return form;
         }
 
-       
+
 
     }
 }

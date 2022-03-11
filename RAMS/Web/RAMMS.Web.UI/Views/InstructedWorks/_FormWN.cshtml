@@ -96,12 +96,16 @@
             </div>
             <div class="col-lg-12">
                 <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
-                    <span class="float-left">  In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.11</b> of the Agreement, you are hereby informed that you are liable to pay or allow to the Government</span><span class="float-left">
-    <span class="float-left"> a sum calculated at the rate of</span>
-    <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b> <b style="padding:0px 6px;font-size:20px;"> RM</b>@Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold svalidate {required, Date}", @style = "width:150px; margin:0px 6px; border-radius:0px" })
-    per day of the value of this Instructed Work, i.e.
-</span>
-                    
+                    <span class="float-left">  In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.11</b> of the Agreement, you are hereby informed that you are liable to pay or allow to the Government</span>
+                    <span class="float-left">
+                        <span class="float-left">
+                            a sum calculated at the rate of <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b>
+                            per day of the value of this Instructed Work, i.e.
+                        </span>
+                        <span class="float-left"><b style="padding:0px 6px;font-size:20px; float:left"> RM</b>
+                            @Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold svalidate {required, Date}", @style = "width:150px; margin:0px 6px; border-radius:0px" })
+                        </span>
+                    </span>
                     <span class="float-left">  per day as Liquidated and Ascertained Damages for the period during which the said Instructed Work shall so remain and have remain incomplete and i shall certify for deduction such damages from any money due or which may become due to you under this Agreement.</span>
                 </p>
             </div>
@@ -154,6 +158,6 @@
     height: 45px;">
 
         <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN()">Save</button>
-        <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','')">Save</button>
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
     </div>
