@@ -143,10 +143,21 @@ namespace RAMMS.Web.UI.Controllers
             {
                 ddLookup.Type = "IWFORMWCWG";
                 ddLookup.TypeCode = "WGWC";
-                ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+                //var items = await _ddLookupService.GetDdLookup(ddLookup);
                 var _formWC  = await _formWCService.FindWCByW1ID(int.Parse(Id));
                 var _formWG = await  _formWGService.FindWGByW1ID(int.Parse(Id));
 
+                List<SelectListItem> newDdl = new List<SelectListItem>();
+
+                    if (!_formWC.SubmitSts)
+                    {
+                        newDdl.Add(new SelectListItem("Form WC", "Form WC"));
+                    }
+                    if (!_formWG.SubmitSts)
+                    {
+                        newDdl.Add(new SelectListItem("Form WG", "Form WG"));
+                    }
+                ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
                 assetsModel.IsSubmittedWC = _formWC.SubmitSts;
                 assetsModel.IsSubmittedWG = _formWG.SubmitSts;
             }
@@ -155,6 +166,9 @@ namespace RAMMS.Web.UI.Controllers
                 ddLookup.Type = "IWFORMWDWN";
                 ddLookup.TypeCode = "WDWN";
                 ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+
+                //var ft = ((IEnumerable<SelectListItem>)ViewData["FormType"]).ToList();
+                
                 assetsModel.IsSubmittedWD = false;
                 assetsModel.IsSubmittedWN = false;
             }

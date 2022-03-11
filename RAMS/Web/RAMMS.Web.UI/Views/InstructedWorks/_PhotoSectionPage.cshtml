@@ -89,18 +89,21 @@
                                 <tbody>
                                     @{
                                         int i = 1;
+                                        var formtype = Model.FormName;
+                                        var _disabled = false;
 
                                         if (Model.ImageList != null && Model.ImageList.Count() > 0)
                                         {
 
                                             foreach (var item in Model.ImageList)
                                             {
+                                                var form = item.Source.Substring(4).Trim();
                                                 <tr>
                                                     <td>@i</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageUserFilePath)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.Source)</td>
-                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && item.Source == Model.FormName)
+                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && (item.Source == Model.FormName || formtype.IndexOf(form) >= 0))
                                                     {
                                                         <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
                                                     }
