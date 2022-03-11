@@ -21,7 +21,7 @@ namespace RAMMS.DTO.ResponseBO
         public string IwRefNo { get; set; }
         public string IwProjectTitle { get; set; }
         public string OurRefNo { get; set; }
-        public string ServRefNo { get; set; }
+        public string YourRefNo { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

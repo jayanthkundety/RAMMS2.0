@@ -137,46 +137,50 @@ namespace RAMMS.Web.UI.Controllers
             ViewBag.PhotoTypeList = await _ddLookupService.GetDdLookup(ddLookup);
             assetsModel.ImageList = await _formW1Service.GetImageList(Id);
             assetsModel.IwRefNo = Id;
-            assetsModel.FormName = form;
 
+
+            List<SelectListItem> newDdl = new List<SelectListItem>();
             if (form == "FormWCWG")
             {
-                ddLookup.Type = "IWFORMWCWG";
-                ddLookup.TypeCode = "WGWC";
+
+                //ddLookup.Type = "IWFORMWCWG";
+                //ddLookup.TypeCode = "WGWC";
+                assetsModel.FormName = "Form";
                 //var items = await _ddLookupService.GetDdLookup(ddLookup);
-                var _formWC  = await _formWCService.FindWCByW1ID(int.Parse(Id));
-                var _formWG = await  _formWGService.FindWGByW1ID(int.Parse(Id));
+                var _formWC = await _formWCService.FindWCByW1ID(int.Parse(Id));
+                var _formWG = await _formWGService.FindWGByW1ID(int.Parse(Id));
 
-                List<SelectListItem> newDdl = new List<SelectListItem>();
-
-                    if (!_formWC.SubmitSts)
-                    {
-                        newDdl.Add(new SelectListItem("Form WC", "Form WC"));
-                    }
-                    if (!_formWG.SubmitSts)
-                    {
-                        newDdl.Add(new SelectListItem("Form WG", "Form WG"));
-                    }
+                if (!_formWC.SubmitSts)
+                {
+                    newDdl.Add(new SelectListItem("Form WC", "Form WC"));
+                    assetsModel.FormName = assetsModel.FormName + "WC";
+                }
+                if (!_formWG.SubmitSts)
+                {
+                    newDdl.Add(new SelectListItem("Form WG", "Form WG"));
+                    assetsModel.FormName = assetsModel.FormName + "WG";
+                }
                 ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
                 assetsModel.IsSubmittedWC = _formWC.SubmitSts;
                 assetsModel.IsSubmittedWG = _formWG.SubmitSts;
             }
             else if (form == "FormWDWN")
             {
-                ddLookup.Type = "IWFORMWDWN";
-                ddLookup.TypeCode = "WDWN";
-                ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+                assetsModel.FormName = form;
+                //ddLookup.Type = "IWFORMWDWN";
+                //ddLookup.TypeCode = "WDWN";
+                newDdl.Add(new SelectListItem("Form WD", "Form WN"));
+                newDdl.Add(new SelectListItem("Form WN", "Form WN"));
+                ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
 
-                //var ft = ((IEnumerable<SelectListItem>)ViewData["FormType"]).ToList();
-                
                 assetsModel.IsSubmittedWD = false;
                 assetsModel.IsSubmittedWN = false;
             }
             else
             {
-                ddLookup.Type = "IWFORMWDWN";
-                ddLookup.TypeCode = "WDWN";
-                ViewData["FormType"] = await _ddLookupService.GetDdLookup(ddLookup);
+                assetsModel.FormName = form;
+
+                ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
             }
             assetsModel.ImageTypeList = assetsModel.ImageList.Select(c => c.ImageTypeCode).Distinct().ToList();
             return PartialView("~/Views/InstructedWorks/_PhotoSectionPage.cshtml", assetsModel);
@@ -314,7 +318,7 @@ namespace RAMMS.Web.UI.Controllers
             var assetDDLResponseDTO = await _roadMasterService.GetAssetDDL(assetDDLRequestDTO);
             ViewBag.SectionCodeList = from d in assetDDLResponseDTO.Section select new SelectListItem { Text = d.Text, Value = d.Value };
         }
- 
+
         public async Task<IActionResult> AddFormW1()
         {
             FormW1Model model = new FormW1Model();
@@ -362,8 +366,8 @@ namespace RAMMS.Web.UI.Controllers
                 model.View = 1;
             }
 
-            if(model.FormW1.UseridReq == null || model.FormW1.UseridReq == 0)
-            model.FormW1.UseridReq =  _security.UserID;
+            if (model.FormW1.UseridReq == null || model.FormW1.UseridReq == 0)
+                model.FormW1.UseridReq = _security.UserID;
 
             if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
                 model.FormW1.UseridVer = _security.UserID;
@@ -478,7 +482,7 @@ namespace RAMMS.Web.UI.Controllers
             defaultData.SerProvRefNo = _formW2Model.FormW1.ServPropRefNo;
             defaultData.EstCostAmt = _formW2Model.FormW1.EstimTotalCostAmt;
             //defaultData.UseridReq = _security.UserID;
-            defaultData.UseridIssu  = _security.UserID;
+            defaultData.UseridIssu = _security.UserID;
             _formW2Model.SaveFormW2Model = defaultData;
             //_formW2Model.FormW1 = new FormW1ResponseDTO();
 
@@ -501,7 +505,8 @@ namespace RAMMS.Web.UI.Controllers
                 _formW2Model.FECM = new FormFECMModel();
                 var resultFormW2 = await _formW2Service.FindW2ByID(id);
                 var res = (List<CSelectListItem>)ViewData["RD_Code"];
-                if (res != null) {
+                if (res != null)
+                {
                     var rd = res.Find(c => c.Value == resultFormW2.RoadCode);
                     if (rd != null) rd.Selected = true;
                 }
@@ -908,13 +913,15 @@ namespace RAMMS.Web.UI.Controllers
             _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
-            _formWCWGModel.FormW1.ServPropName = serProv.Name;           
+            _formWCWGModel.FormW1.ServPropName = serProv.Name;
             _formWCWGModel.FormWC = new FormWCResponseDTO();
-            _formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+            _formWCWGModel.FormWC.UseridIssu = _security.UserID;
+            //_formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             _formWCWGModel.FormWC.DtWc = DateTime.Today;
             _formWCWGModel.FormWG = new FormWGResponseDTO();
             _formWCWGModel.FormWG.DtWg = DateTime.Today;
-            _formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+            _formWCWGModel.FormWG.UseridIssu = _security.UserID;
+            //_formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             _formWCWGModel.Division = await _divisionService.GetDivisions();
             ViewData["Division"] = await _divisionService.GetDivisionsDDL();
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
@@ -947,14 +954,16 @@ namespace RAMMS.Web.UI.Controllers
 
             if (wgid == 0)
             {
-                _formWCWGModel.FormWC.DtWc = DateTime.Today;
-                _formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+                _formWCWGModel.FormWG.DtWg = DateTime.Today;
+                _formWCWGModel.FormWG.UseridIssu = _security.UserID;
+                //_formWCWGModel.FormWG.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             }
-            
+
             if (wcid == 0)
             {
-                _formWCWGModel.FormWG.DtWg = DateTime.Today;
-                _formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
+                _formWCWGModel.FormWC.DtWc = DateTime.Today;
+                _formWCWGModel.FormWC.UseridIssu = _security.UserID;
+                //_formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             }
 
             if (_formWCWGModel.WCView == "1" && _formWCWGModel.WGView == "1")
@@ -980,6 +989,18 @@ namespace RAMMS.Web.UI.Controllers
             return Json(refNo);
         }
 
+        public async Task<JsonResult> SaveFormWG(FormWGResponseDTO formWG)
+        {
+            int refNo = 0;
+            FormWGResponseDTO saveRequestObj = new FormWGResponseDTO();
+            saveRequestObj = formWG;
+            if (saveRequestObj.PkRefNo == 0)
+                refNo = await _formWGService.Save(formWG);
+            else
+                refNo = await _formWGService.Update(formWG);
+
+            return Json(refNo);
+        }
 
         #endregion
 

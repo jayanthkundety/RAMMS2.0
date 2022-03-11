@@ -134,7 +134,7 @@ function SaveWC(submit) {
     saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWcProjectTitle").val()
     saveObj.OurRefNo = $("#formWcOurRef").val();
-    saveObj.ServRefNo = $("#formWcServPropRefNo").val();
+    saveObj.YourRefNo = $("#formWcYourRef").val();
     saveObj.DtWc = $("#formWcDate").val();
     saveObj.DtCompl = $("#formWcDtCompl").val();
     saveObj.DtDlpExtn = $("#formWcDtDlpExtn").val();
@@ -228,7 +228,7 @@ function SaveWG(submit) {
     saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWgProjectTitle").val()
     saveObj.OurRefNo = $("#formWgOurRef").val();
-    saveObj.ServRefNo = $("#formWgServiceProvider").val();
+    saveObj.YourRefNo = $("#formWgYourRef").val();
     saveObj.DtWg = $("#formWgDate").val();
     saveObj.DtDefectCompl = $("#formWgDftComp").val();
 
@@ -326,6 +326,8 @@ function ClearWC() {
     $("#formWcDtDlpExtn").val('');
     $("#formWcIssuedBy").val('');
     $("#formWcIssuedDate").val('');
+    $("#formWcOurRef").val('');
+    $("#formWcYourRef").val('');
 }
 
 function GetImageList(id, form) {
