@@ -16,15 +16,9 @@
                                 <label for="OurRef">
                                     Name of Division
                                 </label>
-                                <select class="form-control">
-                                    <option> Select Division </option>
-                                </select>
+                                @Html.DropDownListFor(m => m.FormWN.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control svalidate {required, Name of Division}" })
                             </div>
-                            <div class="form-group col-lg-4">
-                                <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
-
-                                @Html.EditorFor(m => m.FormW2.DtCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "form-control", @type = "date" } })
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -42,14 +36,14 @@
                 <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                     <div class="row">
                         <div class="form-group col-lg-3">
-                            <label for="OurRef">Our Ref / Contract  NO</label>
-                            @Html.TextBoxFor(m => m.FormWN.OurRefNo, new { @class = "form-control" })
+                            <label for="OurRef">Our Ref / Contract NO</label>
+                            @Html.TextBoxFor(m => m.FormWN.OurRefNo, new { @class = "form-control svalidate {required, Our Ref / Contract NO}" })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Date">
                                 Date
                             </label>
-                            @Html.EditorFor(m => m.FormWN.DtWn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                            @Html.EditorFor(m => m.FormWN.DtWn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control svalidate {required, Date}", @type = "date" } })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Your Ref">
@@ -79,8 +73,8 @@
                         <span class="float-left">
                             <span class="float-left">"Date for Completion"  stated in S.O.'s Instruction No.:</span>
                             <span class="float-left">
-                                @Html.TextBoxFor(m => m.FormW2, new { @readonly = true, @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 5px 0px 0px; border-radius:0px" })
-                                @Html.EditorFor(m => m.FormWN.DtW2Compl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
+                                @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @readonly = true, @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 5px 0px 0px; border-radius:0px" })
+                                @Html.EditorFor(m => m.FormW2.DateOfInitation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
                                 , or within any extended
                             </span>
                         <span class="float-left"> time approved</span>  </span> 
@@ -104,7 +98,7 @@
                 <p style="line-height: 38px; font-size: 17px;" class="mb-3 border mb-3 border w-100 px-4 pt-2 float-left">
                     <span class="float-left">  In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.11</b> of the Agreement, you are hereby informed that you are liable to pay or allow to the Government</span><span class="float-left">
     <span class="float-left"> a sum calculated at the rate of</span>
-    <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b> <b style="padding:0px 6px;font-size:20px;"> RM</b>@Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 6px; border-radius:0px" })
+    <b style="padding:0px 6px;font-size:20px;"> 0.0219%</b> <b style="padding:0px 6px;font-size:20px;"> RM</b>@Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold svalidate {required, Date}", @style = "width:150px; margin:0px 6px; border-radius:0px" })
     per day of the value of this Instructed Work, i.e.
 </span>
                     
@@ -140,7 +134,7 @@
                                 <div class="form-group col-lg-1 text-center">
                                     <label>Signature</label>
                                     <div class="clear-b mt-2">
-                                        @Html.CheckBoxFor(model => model.FormWN.SignIssu, new { @disabled = "disabled" })
+                                        @Html.CheckBoxFor(model => model.FormWN.SignIssu, new { @disabled = "disabled", @class = "{required,Signature}" })
                                     </div>
                                 </div>
                             </div>

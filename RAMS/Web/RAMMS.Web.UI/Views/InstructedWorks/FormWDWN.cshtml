@@ -83,6 +83,8 @@
     </div>
 
     @Html.HiddenFor(m => m.ClauseDetails);
+    @Html.HiddenFor(m => m.FormWD.IwRefNo);
+    @Html.HiddenFor(m => m.FormWD.PkRefNo);
     @Html.HiddenFor(m => m.FormWD.Fw1PkRefNo);
     @Html.HiddenFor(m => m.FormWN.Fw1PkRefNo);
     @Html.HiddenFor(m => m.FormWD.UseridIssu);
@@ -91,12 +93,17 @@
     <input type="hidden" id="hdnWDPkRefNo" />
     <input type="hidden" id="hdnWNPkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
-
+    <input type="hidden" id="hdnDtPervCompl">
 
 }
 <script>
 
     $(document).ready(function () {
+        debugger
+
+        $('#FormWD_IwRefNo').val("@Model.FormW1.IwRefNo")
+        $('#FormWD_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
+        $('#FormWN_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
 
         $('#ddlWDUserid').val("@Model.FormWD.UseridIssu");
         $('#ddlWDUserid').trigger('chosen:updated');
@@ -107,5 +114,7 @@
         $("#ddlWNUserid").trigger("change");
     });
 
+    $("#hdnDtPervCompl").val("@Model.FormWD.DtPervCompl");
 
 </script>
+

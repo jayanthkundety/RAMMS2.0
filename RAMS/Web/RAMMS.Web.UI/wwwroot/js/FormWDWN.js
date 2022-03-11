@@ -4,12 +4,12 @@
     if ($("#hdnView").val() == "1") {
         $("#FormWDdatapage *").prop("disabled", true);
         $("#FormWDNdatapage *").prop("disabled", true);
-      
+
         $("#ddlWDUserid").chosen('destroy');
         $("#ddlWDUserid").prop("disabled", true);
         $("#ddlWNUserid").chosen('destroy');
         $("#ddlWNUserid").prop("disabled", true);
-      
+
         $("#btnSave").hide();
         $("#btnSubmit").hide();
         $("#addAttachment").hide();
@@ -22,20 +22,24 @@
     $("#ddlServiceProvider").chosen('destroy');
     $("#ddlServiceProvider").prop("disabled", true);
 
-    
+
 });
 
 
- //FormWD Region
+//FormWD Region
 function OnWDUseridChange(tis) {
 
+    debugger
     var ctrl = $(tis);
-    $('#FormW1_UseridRep').val(ctrl.val());
-    if (ctrl.val() != null && ctrl.val() != "") {
+    if (ctrl.val() != null)
+        $('#ddlWDUserid').val(ctrl.val());
+    $('#FormWD_UseridIssu').val($('#ddlWDUserid').val());
+
+    if ($('#ddlWDUserid').val() != null && $('#ddlWDUserid').val() != "") {
         $("#FormWD_UsernameIssu").val(ctrl.find("option:selected").attr("Item1"));
         $("#FormWD_DesignationIssu").val(ctrl.find("option:selected").attr("Item2"));
         $("#FormWD_OfficeIssu").val(ctrl.find("option:selected").attr("Item3"));
-        if (ctrl.val() == "99999999") {
+        if ($('#ddlWDUserid').val() == "99999999") {
             $("#FormWD_UsernameIssu").removeAttr("readonly");
             $("#FormWD_DesignationIssu").removeAttr("readonly");
             $("#FormWD_OfficeIssu").removeAttr("readonly");
@@ -86,7 +90,7 @@ function DeleteClauseRow(obj) {
     $(obj).closest('tr').remove();
 }
 
- 
+
 function GetClauseDetails() {
     var ClassDetails = [];
     var rows = $('#tblClause tbody >tr');
@@ -160,6 +164,19 @@ function SaveWD(GroupName, SubmitType) {
 
 
 }
+
+function PrevCompDtValidation() {
+    var value = $(this).val();
+    var PrevDate = new Date(formatDate($("#hdnDtPervCompl").val()));
+
+    if (value < PrevDate) {
+        app.ShowErrorMessage("Completion date should not be less previous completion date of w2");
+        $(this).val('');
+        return;
+    }
+}
+
+
 //FormWD RegionEnd
 
 
@@ -195,7 +212,7 @@ function OnWNUseridChange(tis) {
 
 function SaveWN(GroupName, SubmitType) {
 
-     
+
     if (SubmitType != "") {
 
         $("#FormWNpage .svalidate").addClass("validate");
@@ -210,7 +227,7 @@ function SaveWN(GroupName, SubmitType) {
         $("#FormWN_Status").val("Saved");
     }
 
-    
+
     if (ValidatePage('#FormWNpage')) {
         InitAjaxLoading();
         $.post('/InstructedWorks/SaveFormWN', $("form").serialize(), function (data) {
@@ -243,3 +260,16 @@ function SaveWN(GroupName, SubmitType) {
 }
 
 //FormWN RegionEnd
+
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}

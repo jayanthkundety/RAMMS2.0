@@ -982,8 +982,9 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W1Id);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
-            _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
+           // _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
             _formWDWNModel.FormWD.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
+            _formWDWNModel.FormWD.DtPervCompl = _formWDWNModel.FormW2.DtCompl;
             _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
             _formWDWNModel.FormWN.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
@@ -1002,9 +1003,8 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
             _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
-            _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
-            _formWDWNModel.FormWN = await _formWNService.FindFormWNByID(Wnid);
+            _formWDWNModel.FormWN =   Wnid == 0 ? new FormWNResponseDTO(): await _formWNService.FindFormWNByID(Wnid);
             return PartialView("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 

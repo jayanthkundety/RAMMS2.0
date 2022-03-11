@@ -63,10 +63,10 @@
         $(".approvesection").css("display", "none");
     }
 
-    debugger;
+      
     $('input[type=radio][id=FormW1_RecomdType]').change(function () {
 
-        debugger
+         
         if (this.value == '1' || this.value == '2') {
            // $('#ddlUseridRep').prop("disabled", false);
             $('#ddlUseridRep').trigger('chosen:updated');
