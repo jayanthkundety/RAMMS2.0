@@ -10328,6 +10328,10 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWD_USERNAME_ISSU")
                     .HasMaxLength(250);
 
+                entity.Property(e => e.FwdYourRefNo)
+                    .HasColumnName("FWD_Your_Ref_No")
+                    .HasMaxLength(100);
+
                 entity.HasOne(d => d.FwdFw1PkRefNoNavigation)
                     .WithMany(p => p.RmIwFormWd)
                     .HasForeignKey(d => d.FwdFw1PkRefNo)
