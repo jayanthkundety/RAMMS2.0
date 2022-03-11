@@ -134,26 +134,6 @@
                                                                             @*@Html.TextBoxFor(m => m.FormW1.ServPropName, new { @class = "form-control svalidate {required,Service Provider Name}" })*@
                                                                             @Html.DropDownListFor(m => m.FormW1.ServPropName, (IEnumerable<SelectListItem>)ViewData["ServiceProviderName"], "Select Service Provider Name", new { @class = "form-control svalidate {required, Service Provider Name}" })
                                                                         </div>
-                                                                        @*<div class="form-group col-lg-4">
-                                                                                <label for="Designation"> Address 1 </label>
-                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress1, new { @class = "form-control" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-4">
-                                                                                <label for="Designation"> Address 2 </label>
-                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress2, new { @class = "form-control" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-4">
-                                                                                <label for="Designation"> Address 3 </label>
-                                                                                @Html.TextBoxFor(m => m.FormW1.ServAddress3, new { @class = "form-control" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-3">
-                                                                                <label for="Designation">Phone NO </label>
-                                                                                @Html.TextBoxFor(m => m.FormW1.ServPhone, new { @class = "form-control" })
-                                                                            </div>
-                                                                            <div class="form-group col-lg-3">
-                                                                                <label for="Designation"> Fax </label>
-                                                                                @Html.TextBoxFor(m => m.FormW1.ServFax, new { @class = "form-control" })
-                                                                            </div>*@
                                                                         <div class="form-group col-lg-3">
                                                                             <label>
                                                                                 Intial Proposed Date
@@ -287,7 +267,7 @@
                                                                                             <div class="col-8">
                                                                                                 <label for="Consultancy Fees" class="pt-1 mb-0">
                                                                                                     <b class="lh30 mb-0">
-                                                                                                        <span class="float-left">Consultancy Fees + Government Tax </span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.ConsulTaxPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'ConsulTaxPercent invalid')", @style = "width:100px;" }) <b class="float-right">%</b></span><span class="float-left">(If any)</span>
+                                                                                                        <span class="float-left pr-2">Consultancy Fees + Government Tax </span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.ConsulTaxPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'ConsulTaxPercent invalid')", @style = "width:100px;" }) <b class="float-right">%</b></span><span class="float-left">(If any)</span>
                                                                                                     </b>
                                                                                                 </label>
                                                                                             </div>
@@ -304,7 +284,7 @@
                                                                                         <div class="row py-1  pt-2 border-bottom">
                                                                                             <div class="col-8">
                                                                                                 <label for="Surveyworks" class="pt-1 mb-0">
-                                                                                                    <b class="lh30 mb-0"><span class="float-left">Survey Works + Government Tax </span> <span class="float-left pr-3" style="width:135px;"> @Html.TextBoxFor(model => model.FormW1.SurvyWorksPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Survey Works + Government Tax invalid')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
+                                                                                                    <b class="lh30 mb-0"><span class="float-left pr-2">Survey Works + Government Tax </span> <span class="float-left pr-3" style="width: 134px; margin-left: 21px; "> @Html.TextBoxFor(model => model.FormW1.SurvyWorksPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Survey Works + Government Tax invalid')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
@@ -319,7 +299,7 @@
                                                                                         <div class="row py-1 pt-2 border-bottom">
                                                                                             <div class="col-8">
                                                                                                 <label for="SiteInvestigation" class="pt-1 mb-0">
-                                                                                                    <b class="lh30 mb-0"><span class="float-left">Site Investigation + Government Tax</span> <span class="float-left pr-3" style="width:135px;">@Html.TextBoxFor(model => model.FormW1.SiteInvestPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Site Investigation + Government Tax')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
+                                                                                                    <b class="lh30 mb-0"><span class="float-left pr-2">Site Investigation + Government Tax</span> <span class="float-left pr-3" style="width:134px;">@Html.TextBoxFor(model => model.FormW1.SiteInvestPercent, new { @maxlength = "5", @class = "form-control numeric allow_numeric form-control border-left border-top-0 border-left-0 border-right-0 float-left text-right", @onchange = "PercentChange(this,'Site Investigation + Government Tax')", @style = "width:100px;" }) <b class="float-right">%</b> </span><span class="float-left"> (If any)</span></b>
                                                                                                 </label>
                                                                                             </div>
                                                                                             <div class="col-4">
