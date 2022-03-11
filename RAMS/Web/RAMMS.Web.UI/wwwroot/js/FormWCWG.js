@@ -331,7 +331,7 @@ function ClearWC() {
 }
 
 function GetImageList(id, form) {
-    //debugger;
+    debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
@@ -348,11 +348,9 @@ function GetImageList(id, form) {
             if ($("#hdnView").val() == "1")
                 $("div.img-btns *").prop("disabled", true);
             if (form == "FormWCWG") 
-                $("divFormType").show();
-            else if (form == "FormWDWN")
-                $("divFormType").show();
+                $("#divFormType").show();
             else
-                $("divFormType").hide();
+                $("#divFormType").hide();
         },
         error: function (data) {
             alert(data.responseText);
@@ -362,4 +360,5 @@ function GetImageList(id, form) {
 
     return true;
 }
+
 

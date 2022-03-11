@@ -368,7 +368,7 @@
             if ($("#hdnPkRefNo").val() != "0") {
                 $("#myModal").modal('show');
 
-                if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN")
+                if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN" || $("#hdnFormType").val().indexOf("FormW") >=0)
                     $("#divFormType").show();
                 else
                     $("#divFormType").hide();

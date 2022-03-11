@@ -865,6 +865,13 @@
             window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW2";
         }
 
+
+        function PrintFormWCWG() {
+            var id = GetFormIDByName("wc");
+            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormWC";
+        }
+        
+
         function clearHeaderSearch() {
             $("#txtSmartSearch").val('');
             $("#txtIWRefNo").val('');
