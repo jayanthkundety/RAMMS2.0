@@ -35,6 +35,14 @@ namespace RAMMS.Business.ServiceProvider.Services
             _repo = repo;
         }
 
+
+
+        public async Task<FormWNResponseDTO> FindWNByW1ID(int id)
+        {
+            RmIwFormWn formWN = await _repo.FindWNByW1ID(id);
+            return _mapper.Map<FormWNResponseDTO>(formWN);
+        }
+
         public async Task<FormWNResponseDTO> FindFormWNByID(int id)
         {
             RmIwFormWn formWN = await _repo.FindFormWNByID(id);

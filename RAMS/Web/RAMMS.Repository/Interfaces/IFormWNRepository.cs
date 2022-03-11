@@ -9,6 +9,7 @@ namespace RAMMS.Repository.Interfaces
     public interface IFormWNRepository : IRepositoryBase<RmIwFormWn>
     {
         int SaveFormWN(RmIwFormWn FormWN);
+        Task<RmIwFormWn> FindWNByW1ID(int Id);
         Task<RmIwFormWn> FindFormWNByID(int Id);
     }
 }

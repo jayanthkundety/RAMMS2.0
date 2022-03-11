@@ -9,6 +9,7 @@ namespace RAMMS.Repository.Interfaces
     public interface IFormWDRepository : IRepositoryBase<RmIwFormWd>
     {
         int SaveFormWD(RmIwFormWd FormWD);
+        Task<RmIwFormWd> FindWDByw1ID(int Id);
         Task<RmIwFormWd> FindFormWDByID(int Id);
         Task<IEnumerable<RmIwFormWdDtl>> FindFormWDDtlByID(int Id);
         int? DeleteFormWDClause(int Id);

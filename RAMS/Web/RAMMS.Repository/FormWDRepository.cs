@@ -65,6 +65,12 @@ namespace RAMMS.Repository
             }
         }
 
+
+        public async Task<RmIwFormWd> FindWDByw1ID(int Id)
+        {
+            return await _context.RmIwFormWd.Where(x => x.FwdFw1PkRefNo == Id && x.FwdActiveYn == true).FirstOrDefaultAsync();
+        }
+
         public async Task<RmIwFormWd> FindFormWDByID(int Id)
         {
             return await _context.RmIwFormWd.Where(x => x.FwdPkRefNo == Id && x.FwdActiveYn == true).FirstOrDefaultAsync();

@@ -308,7 +308,7 @@ function formatDate(date) {
 //Image
 
 function GetImageList(id, form) {
-    //debugger;
+    debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
@@ -324,12 +324,10 @@ function GetImageList(id, form) {
             $("#ViewPhoto").html(data);
             if ($("#hdnView").val() == "1")
                 $("div.img-btns *").prop("disabled", true);
-            if (form == "FormWCWG") 
-                $("divFormType").show();
-            else if (form == "FormWDWN")
-                $("divFormType").show();
+            if (form == "FormWDWN")
+                $("#divFormType").show();
             else
-                $("divFormType").hide();
+                $("#divFormType").hide();
         },
         error: function (data) {
             alert(data.responseText);

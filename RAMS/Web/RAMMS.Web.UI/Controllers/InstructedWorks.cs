@@ -166,15 +166,24 @@ namespace RAMMS.Web.UI.Controllers
             }
             else if (form == "FormWDWN")
             {
-                assetsModel.FormName = form;
-                //ddLookup.Type = "IWFORMWDWN";
-                //ddLookup.TypeCode = "WDWN";
-                newDdl.Add(new SelectListItem("Form WD", "Form WN"));
-                newDdl.Add(new SelectListItem("Form WN", "Form WN"));
-                ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
+                assetsModel.FormName = "Form";
+                //var items = await _ddLookupService.GetDdLookup(ddLookup);
+                var _formWD = await  _formWDService.FindWDByW1ID(int.Parse(Id));
+                var _formWN = await _formWNService.FindWNByW1ID(int.Parse(Id));
 
-                assetsModel.IsSubmittedWD = false;
-                assetsModel.IsSubmittedWN = false;
+                if (!_formWD.SubmitSts)
+                {
+                    newDdl.Add(new SelectListItem("Form WD", "Form WD"));
+                    assetsModel.FormName = assetsModel.FormName + "WD";
+                }
+                if (!_formWN.SubmitSts)
+                {
+                    newDdl.Add(new SelectListItem("Form WN", "Form WN"));
+                    assetsModel.FormName = assetsModel.FormName + "WN";
+                }
+                ViewData["FormType"] = (IEnumerable<SelectListItem>)newDdl;
+                assetsModel.IsSubmittedWD = _formWD.SubmitSts;
+                assetsModel.IsSubmittedWN = _formWN.SubmitSts;
             }
             else
             {

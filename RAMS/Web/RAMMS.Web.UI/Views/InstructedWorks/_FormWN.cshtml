@@ -145,16 +145,17 @@
             </div>
         </div>
     </div>
-    @{
-        if (Model.FormWN.Status != "" )
-            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-            {
-                Form = "FormWN",
-                RefId = Model.FormWN.PkRefNo,
-                Stage = Model.FormWN.Status
-            });
-    }
-    <div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
+</div>
+@{
+    if (Model.FormWN.Status != "")
+        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+        {
+            Form = "FormWN",
+            RefId = Model.FormWN.PkRefNo,
+            Stage = Model.FormWN.Status
+        });
+}
+<div class="col-md-12 mb-2 float-right text-right custom-footer" style="    position: fixed;
     left: auto;
     bottom: 0px;
     right: 0;
@@ -163,7 +164,7 @@
     width: 96%;
     height: 45px;">
 
-        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','')">Save</button>
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
-    </div>
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
+    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','')">Save</button>
+    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
+</div>

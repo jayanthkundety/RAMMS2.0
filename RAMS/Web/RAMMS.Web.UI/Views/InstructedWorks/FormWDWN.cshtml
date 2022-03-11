@@ -30,8 +30,6 @@
                             </span>
                         </a>
                     </li>
-
-
                     <li class="nav-item">
                         <a href="#AccordPagegallery" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormWDWN');">
                             <span class="">
@@ -58,7 +56,7 @@
                         <div class="tab-pane show active " id="list_one">
                             <div id="div_wdload">
                                 @{
-                                    Html.RenderPartial("_FormWD.cshtml", Model);
+                                   Html.RenderPartial("_FormWD.cshtml", Model);
                                 }
                             </div>
                         </div>
@@ -66,7 +64,7 @@
                         <div class="tab-pane" id="list_two">
                             <div id="div_wnload">
                                 @{
-                                    Html.RenderPartial("_FormWN.cshtml", Model);
+                                  Html.RenderPartial("_FormWN.cshtml", Model);
                                 }
                             </div>
                         </div>
