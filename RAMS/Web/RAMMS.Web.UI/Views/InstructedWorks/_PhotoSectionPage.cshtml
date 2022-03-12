@@ -361,14 +361,12 @@
     });
 
     function FormAddImage() {
-        debugger;
-
         if ($("#hdnView").val() == "1") return;
         if (ValidatePage("#tab1")) {
             if ($("#hdnPkRefNo").val() != "0") {
                 $("#myModal").modal('show');
 
-                if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN" || $("#hdnFormType").val().indexOf("FormW") >=0)
+                if (getIsTabForm())
                     $("#divFormType").show();
                 else
                     $("#divFormType").hide();
@@ -564,7 +562,7 @@
                 formData.append("FormFile", filesToUpload[i].file);
                 formData.append("PhotoType", filesToUpload[i].fileType);
             }
-            if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN")
+            if (getIsTabForm())
                 formData.append("Source", $("#formType").val());
             else
                 formData.append("Source", $("#hdnForm").val());
@@ -582,9 +580,8 @@
                         if (data) {
                         app.ShowSuccessMessage('Uploaded Successcully', false);
                         $('#myModal').modal('hide');
-                         if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN"){
+                         if (getIsTabForm())
                              GetImageList(id, $("#hdnFormType").val());
-                         }
                          else
                             GetImageList(id, $("#hdnForm").val());
                     }
@@ -616,8 +613,19 @@
         });
     }
 
-      function DeleteImage(pkId) {
-          if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return; 
+    function getIsTabForm(){
+        if ($("#hdnFormType").val().indexOf("WC") >= 0 ||  $("#hdnFormType").val().indexOf("WG") >=0){
+            return true;
+        }  
+        else if ($("#hdnFormType").val().indexOf("WD") >=0  || $("#hdnFormType").val().indexOf("WN") >=0){
+             return true;
+        } 
+        
+        return false
+    }
+
+    function DeleteImage(pkId) {
+        if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return; 
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 InitAjaxLoading();
