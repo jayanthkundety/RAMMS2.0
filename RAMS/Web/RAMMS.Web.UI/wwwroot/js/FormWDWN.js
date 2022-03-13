@@ -162,7 +162,7 @@ function GetClauseDetails() {
 
 function SaveWD(GroupName, SubmitType) {
 
-    debugger
+     
     if (SubmitType != "") {
 
         var tbl = document.getElementById('tblClause');
@@ -331,7 +331,7 @@ function formatDate(date) {
 //Image
 
 function GetImageList(id, form) {
-    debugger;
+     ;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
