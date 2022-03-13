@@ -564,7 +564,6 @@
                 formData.append("FormFile", filesToUpload[i].file);
                 formData.append("PhotoType", filesToUpload[i].fileType);
             }
-            if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN")
                 formData.append("Source", $("#formType").val());
             else
                 formData.append("Source", $("#hdnForm").val());
