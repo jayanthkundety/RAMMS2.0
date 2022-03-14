@@ -637,10 +637,6 @@
                         if (data > 0) {
                             HideAjaxLoading();
                             app.ShowSuccessMessage("Successfully Deleted")
-                            if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN"){
-                             GetImageList(id, $("#hdnFormType").val());
-                         }
-                         else
                             GetImageList( $("#hdnPkRefNo").val(),$("#hdnForm").val());
                         }
                         else {
