@@ -97,6 +97,22 @@ function AddClauseData() {
             app.ShowErrorMessage("Only three rows allowed");
             return;
         }
+        else  {
+            if ($("#txtReason").val() == "") {
+                app.ShowErrorMessage("Reason Required");
+                return;
+            }
+            if ($("#txtClause").val() == "") {
+                app.ShowErrorMessage("Clause Required");
+                return;
+            }
+            if ($("#txtExtension").val() == "") {
+                app.ShowErrorMessage("Extension Required");
+                return;
+            }
+
+        }
+
         var rowdata = tbl.insertRow(length);
         var cell1 = rowdata.insertCell(rowdata.cells.length);
         cell1.innerHTML = $("#txtReason").val();
@@ -146,8 +162,15 @@ function GetClauseDetails() {
 
 function SaveWD(GroupName, SubmitType) {
 
-    debugger
+     
     if (SubmitType != "") {
+
+        var tbl = document.getElementById('tblClause');
+        length = tbl.rows.length;
+        if (length <= 1) {
+            app.ShowErrorMessage("Atleast one clause is required");
+            return;
+        }
 
         $("#FormWDpage .svalidate").addClass("validate");
 
@@ -308,7 +331,7 @@ function formatDate(date) {
 //Image
 
 function GetImageList(id, form) {
-    debugger;
+     ;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
