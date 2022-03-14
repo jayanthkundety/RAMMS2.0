@@ -103,7 +103,6 @@ $(document).ready(function () {
 });
 
 function SaveWC(submit) {
-    debugger;
     if (submit) {
         $("#page .svalidate").addClass("validate");
     }
@@ -198,10 +197,10 @@ function SaveWC(submit) {
 
 function SaveWG(submit) {
     if (submit) {
-        $("#divFormWg .svalidate").addClass("validate");
+        $("#Div_wg .svalidate").addClass("validate");
     }
 
-    if (!ValidatePage('#divFormWg')) {
+    if (!ValidatePage('#Div_wg')) {
         return false;
     }
 

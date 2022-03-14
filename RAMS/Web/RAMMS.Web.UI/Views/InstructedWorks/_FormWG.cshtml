@@ -35,7 +35,7 @@
                                 <label for="OurRef">
                                     Name of Division
                                 </label>
-                                @Html.DropDownListFor(m => m.FormWG.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWGDivisionCode", @class = "form-control  svalidate { required,Division }" })                                    
+                                @Html.DropDownListFor(m => m.FormWG.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWGDivisionCode", @class = "form-control svalidate {required,Division}" })                                    
 
                             </div>
                         </div>
@@ -55,19 +55,19 @@
                     <div class="row">
                         <div class="form-group col-lg-3">
                             <label for="OurRef">Our Ref / Contract No </label>
-                            @Html.TextBoxFor(m => m.FormWG.OurRefNo , new { @id="formWgOurRef", @class="form-control svalidate { required, ' Our Ref/Contract No.' }"})
+                            @Html.TextBoxFor(m => m.FormWG.OurRefNo , new { @id="formWgOurRef", @class="form-control svalidate {required, Our Ref Contract No }"})
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Date">
                                 Date
                             </label>
-                            @Html.EditorFor(m => m.FormWG.DtWg, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @id="formWgDate", @class = "form-control  svalidate { required,Wg Date }", @type = "date" } })
+                            @Html.EditorFor(m => m.FormWG.DtWg, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @id="formWgDate", @class = "form-control svalidate {required,Wg Date }", @type = "date" } })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Your Ref">
                                 Your Ref No
                             </label>
-                            @Html.TextBoxFor(m => m.FormWG.YourRefNo , new { @id="formWgYourRef", @class="form-control svalidate { required, Your Ref }"})
+                            @Html.TextBoxFor(m => m.FormWG.YourRefNo , new { @id="formWgYourRef", @class="form-control svalidate {required, Your Ref }"})
                         </div>
                         <div class="form-group  col-lg-3">
                             @Html.Label("Service Provider Name", "Service Provider Name")
@@ -114,7 +114,7 @@
             <p class="bg-white rounded landing-division w-100 float-left mb-3 border px-4" style="line-height: 30px; font-size: 18px;">
                 <span class="float-left" style="line-height: 55px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.10.8</b> of the Agreement, it is in my opinion that the Defects has been made good on </span>
                 <span class="float-left">                   
-                    @Html.EditorFor(m => m.FormWG.DtDefectCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @style="width:180px;font-weight:bold", @id="formWgDftComp", @class = "form-control border-left border-top-0 border-left-0 border-right-0 float-left svalidate { required, Extention Date }", @type="date" } })
+                    @Html.EditorFor(m => m.FormWG.DtDefectCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @style="width:180px;font-weight:bold", @id="formWgDftComp", @class = "form-control svalidate {required, Extention Date} border-left border-top-0 border-left-0 border-right-0 float-left ", @type="date" } })
                     </span>
             </p>
         </div>
@@ -122,19 +122,19 @@
             <div class="row py-2 px-3">
                 <div class="form-group col-lg-2">
                     <label for="Designation"> User ID </label>
-                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWgIssuedBy", "Select Users", new { Id = "formWgIssuedBy", @class = "form-control  svalidate {required,  Issued by} " })
+                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWgIssuedBy", "Select Users", new { Id = "formWgIssuedBy", @class = "form-control  svalidate {required,Issued by} " })
                 </div>
                 <div class="form-group col-lg-3">
                     @Html.Label("Name", "Name")
-                    @Html.TextBoxFor(w => w.FormWG.UsernameIssu, new {@id = "formWgIssuedName", @class = "form-control svalidate  {required,  Issued by Name}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.UsernameIssu, new {@id = "formWgIssuedName", @class = "form-control svalidate  {required,Issued by Name}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2">
                     @Html.Label("Designation", "Designation")
-                    @Html.TextBoxFor(w => w.FormWG.DesignationIssu, new { @id = "formWgIssuedDesig", @class = "form-control svalidate  {required,  Issued by Designation}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.DesignationIssu, new { @id = "formWgIssuedDesig", @class = "form-control svalidate  {required,Issued by Designation}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 p-0">
                     @Html.Label("Office", "Office")
-                    @Html.TextBoxFor(w => w.FormWG.OfficeIssu, new { @id = "formWgIssuedOffice", @class = "form-control svalidate  {required,  Issued by Office}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.OfficeIssu, new { @id = "formWgIssuedOffice", @class = "form-control svalidate  {required,Issued by Office}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 pr-0">
                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
@@ -181,5 +181,8 @@
     <button type="button" class="btn btn-sm btn-outline-theme" id="clearWGBtn" onclick="return ClearWG()">Clear</button>
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
     <button type="button" class="btn btn-sm btn-themebtn" id="saveWGBtn" onclick="return checkWExist()">Save</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="submitWGBtn">Submit</button>
+    @if (!string.IsNullOrEmpty(Model.FormWG.Status)  && Model.FormWG.Status == RAMMS.Common.StatusList.FormWGSaved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" id="submitWGBtn">Submit</button>
+    }
 </div>
