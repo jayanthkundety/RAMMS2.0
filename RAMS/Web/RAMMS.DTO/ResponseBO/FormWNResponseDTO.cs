@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace RAMMS.DTO.ResponseBO
 {
     public class FormWNResponseDTO
     {
+
         public int PkRefNo { get; set; }
+        public int? Fw1PkRefNo { get; set; }
+        public int? IwWrksDeptId { get; set; }
         public string RmuCode { get; set; }
         public string SecCode { get; set; }
         public string RoadCode { get; set; }
@@ -17,14 +21,22 @@ namespace RAMMS.DTO.ResponseBO
         public string IwProjectTitle { get; set; }
         public string OurRefNo { get; set; }
         public string ServRefNo { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? DtWn { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? DtW2Initiation { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? DtW2Compl { get; set; }
         public double? LadAmt { get; set; }
-        public bool? SignIssu { get; set; }
+        public bool SignIssu { get; set; }
         public int? UseridIssu { get; set; }
         public string UsernameIssu { get; set; }
         public string DesignationIssu { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime? DtIssu { get; set; }
         public string OfficeIssu { get; set; }
         public int? ModBy { get; set; }
@@ -35,5 +47,9 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+
+      
+
+         
     }
 }

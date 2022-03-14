@@ -15,11 +15,15 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
          Task<int> LastInsertedIMAGENO(int hederId, string type);
         Task<FormW1ResponseDTO> FindFormW1ByID(int id);
+        Task<FormW2ResponseDTO> FindFormW2ByPKRefNo(int PKRefNo);
+        string GetJKRRefNoFromW2(int PKRefNo);
         Task<int> SaveFormW1(FormW1ResponseDTO FormW1);
         Task<int> Update(FormW1ResponseDTO FormW1);
         Task<int> SaveImage(List<FormIWImageResponseDTO> image);
 
         Task<int> DeActivateImage(int imageId);
+
+        Task<int> DeActivateFormW1(int formNo);
 
         //Task<int> GetImageIdByW1Id(int formW1Id, string type);
 

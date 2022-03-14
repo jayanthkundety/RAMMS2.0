@@ -67,6 +67,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelFormWC = _mapper.Map<RmIwFormWc>(formWCBO);
                 domainModelFormWC.FwcPkRefNo = 0;
                 domainModelFormWC.FwcActiveYn = true;
+                domainModelFormWC.FwcSubmitSts = formWCBO.SubmitSts;
                 domainModelFormWC = UpdateStatus(domainModelFormWC);
                 var entity = _repoUnit.FormWCRepository.CreateReturnEntity(domainModelFormWC);
                 formWCResponse = _mapper.Map<FormWCResponseDTO>(entity);
@@ -80,9 +81,25 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public Task<int> Update(FormWCResponseDTO formWCDTO)
+        public async Task<int> Update(FormWCResponseDTO formWCDTO)
         {
-            throw new NotImplementedException();
+            int rowsAffected;
+            try
+            {
+                var domainModelformWc = _mapper.Map<RmIwFormWc>(formWCDTO);
+                domainModelformWc.FwcPkRefNo = formWCDTO.PkRefNo;
+                domainModelformWc.FwcActiveYn = true;
+                domainModelformWc = UpdateStatus(domainModelformWc);
+                _repoUnit.FormWCRepository.Update(domainModelformWc);
+                rowsAffected = await _repoUnit.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
         }
 
         public RmIwFormWc UpdateStatus(RmIwFormWc form)
@@ -100,7 +117,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             if (form.FwcSubmitSts && (string.IsNullOrEmpty(form.FwcStatus) || form.FwcStatus == Common.StatusList.FormWCSaved ))
             {
                 form.FwcStatus = Common.StatusList.FormWCSubmitted;
-                form.FwcAuditLog = Utility.ProcessLog(form.FwcAuditLog, "Recorded By", "Approved", form.FwcUsernameIssu, string.Empty, form.FwcDtIssu , _security.UserName);
+                form.FwcAuditLog = Utility.ProcessLog(form.FwcAuditLog, "Submitted By", "Submitted", form.FwcUsernameIssu, string.Empty, form.FwcDtIssu , _security.UserName);
                 processService.SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = _security.UserName,

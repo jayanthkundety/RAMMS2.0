@@ -5,6 +5,12 @@ namespace RAMMS.Domain.Models
 {
     public partial class RmIwWorksDeptMaster
     {
+        public RmIwWorksDeptMaster()
+        {
+            RmIwFormWg = new HashSet<RmIwFormWg>();
+            RmIwFormWn = new HashSet<RmIwFormWn>();
+        }
+
         public int FiwWrksDeptId { get; set; }
         public string FiwWrksDeptCode { get; set; }
         public string FiwWrksDeptName { get; set; }
@@ -19,5 +25,10 @@ namespace RAMMS.Domain.Models
         public int? FiwWrksDeptCrBy { get; set; }
         public DateTime? FiwWrksDeptCrDt { get; set; }
         public bool? FiwWrksDeptActiveYn { get; set; }
+
+        public virtual RmIwFormWc RmIwFormWc { get; set; }
+        public virtual RmIwFormWd RmIwFormWd { get; set; }
+        public virtual ICollection<RmIwFormWg> RmIwFormWg { get; set; }
+        public virtual ICollection<RmIwFormWn> RmIwFormWn { get; set; }
     }
 }

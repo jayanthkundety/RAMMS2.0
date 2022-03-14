@@ -100,7 +100,22 @@ namespace RAMMS.Business.ServiceProvider.Services
             return await _repoUnit.DivisonRepository.GetDivisions();
         }
 
-        public async Task<DivisionRequestDTO> GetServiceProviders()
+
+        public async Task<IEnumerable<SelectListItem>> GetDivisionsDDL()
+        {
+            var divDDL = new List<SelectListItem>();
+            var divDTO = await _repoUnit.DivisonRepository.GetDivisions();
+            var divList = divDTO.Divisions.ToList();
+
+            foreach (var div in divList)
+            {
+                divDDL.Add(new SelectListItem(div.Code + " - " + div.Name, div.ID.ToString()));
+            }
+
+            return divDDL;
+        }
+
+    public async Task<DivisionRequestDTO> GetServiceProviders()
         {
             return await _repoUnit.DivisonRepository.GetServiceProviders();
         }

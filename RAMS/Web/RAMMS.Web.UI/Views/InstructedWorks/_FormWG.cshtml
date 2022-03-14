@@ -1,8 +1,26 @@
 ﻿@using RAMMS.Business.ServiceProvider
 @model RAMMS.Web.UI.Models.FormWCWGModel;
 
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        process.Init("FormWG", "@Model.FormWG.Status", @Model.FormWG.PkRefNo);
+
+        $('#formWgIssuedBy').val("@Model.FormWG.UseridIssu");
+        $('#formWgIssuedBy').trigger('chosen:updated');
+        $("#formWgIssuedBy").trigger("change");
+
+    });
+
+     if ($("#hdngcView").val() == "1") {
+         $("#saveWGBtn").hide();
+         $("#submitWGBtn").hide();
+     }
+</script>
+
+
 <div class="col-12">
-    <div class="row">
+    <div class="row" id="divFormWg">
         <div class="col-lg-12">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                 <div class="col-lg-12 py-2 px-4">
@@ -12,78 +30,20 @@
                 </div>
                 <div class="border-top px-3 pt-3 pb-1 float-left w-100">
                     <div class="w-100 dt-tbl-section">
-
                         <div class="row">
-                            @for (var i = 0; i < @Model.Division.Divisions.Count; i++)
-                            {
-                                var div = Model.Division.Divisions[i];
-                                if (i == 0)
-                                {
-                                        <div class="form-group col-lg-4">
-                                            <label for="OurRef">Name of Division</label>
-                                            <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
-                                        </div>
-                                }
+                            <div class="form-group col-lg-4">
+                                <label for="OurRef">
+                                    Name of Division
+                                </label>
+                                @Html.DropDownListFor(m => m.FormWG.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWGDivisionCode", @class = "form-control svalidate {required,Division}" })                                    
 
-                                if (i == 1)
-                                {
-                                        <div class="form-group col-lg-4">
-                                            <label for="OurRef">
-                                                Divisional Address 1
-                                            </label>
-                                        @*<input type="text" placeholder="" class="form-control">*@
-                                            <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
-                                        </div>
-                                }
-
-                                if (i == 2)
-                                {
-                                        <div class="form-group col-lg-4">
-                                            <label for="OurRef">
-                                                Divisional Address 2
-                                            </label>
-                                        @*<input type="text" placeholder="" class="form-control">*@
-                                            <p class="font-weight-bold">@div.Name <br />@div.Adress1<br />@div.Adress2<br />@div.Adress3<br />Phone : @div.Phone<br />Fax : @div.Fax</p>
-                                        </div>
-                                }
-                            }
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--<div class="col-lg-12">
-            <div class="bg-white rounded landing-division w-100 float-left px-3 pt-2 mb-3 border">
-                <div class="row">
-                    <div class="form-group col-lg-3">
-                        <label for="RoadCode">Contract No</label>
-                        <input type="text" placeholder="Road name" disabled value="PWD/HO/B130/2019" class="form-control" />
-                    </div>-->
-        @*<div class="form-group col-lg-3">
-            <label for="Your Ref">
-            Service Provider's Proposal Ref No
-            </label>
-            <input type="text" placeholder="" class="form-control" />
-            </div>
-            <div class="form-group col-lg-3">
-            <label for="Your Ref">
-            Service Provider Name
-            </label>
-            <input type="text" placeholder="" class="form-control" />
-            </div>*@
-        @*<div class="form-group col-lg-2">
-            <div class="row mt-4">
-            <div class="col-6 pt-1">
-            <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> BQ</label>
-            </div>
-            <div class="col-6 pt-1">
-            <label class="checkbox-inline"><input type="checkbox" disabled="" value=""> Drawing</label>
-            </div>
-            </div>
-            </div>*@
-        <!--</div>
-            </div>
-        </div>-->
+
         <div class="col-lg-12">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
                 <div class="col-lg-12 py-2 px-4">
@@ -95,66 +55,27 @@
                     <div class="row">
                         <div class="form-group col-lg-3">
                             <label for="OurRef">Our Ref / Contract No </label>
-                            @Html.TextBoxFor(m => m.FormWG.OurRefNo , new { @id="formWgOurRef", @class="form-control svalidate { required, ' Our Ref/Contract No.' }"})
+                            @Html.TextBoxFor(m => m.FormWG.OurRefNo , new { @id="formWgOurRef", @class="form-control svalidate {required, Our Ref Contract No }"})
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Date">
                                 Date
                             </label>
-                            @Html.TextBoxFor(m => m.FormWG.DtWg  , new { @id="formWgDate", @type="date", @class="form-control svalidate { required, Date }"})
+                            @Html.EditorFor(m => m.FormWG.DtWg, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @id="formWgDate", @class = "form-control svalidate {required,Wg Date }", @type = "date" } })
                         </div>
                         <div class="form-group col-lg-3">
                             <label for="Your Ref">
-                             Your Ref No
+                                Your Ref No
                             </label>
-                             @Html.TextBoxFor(m => m.FormW1.IwRefNo , new { @id="formWgYourRef", @class="form-control svalidate { required, Your Ref }"})
+                            @Html.TextBoxFor(m => m.FormWG.YourRefNo , new { @id="formWgYourRef", @class="form-control svalidate {required, Your Ref }"})
                         </div>
                         <div class="form-group  col-lg-3">
-                             @Html.Label("Service Provider Name", "Service Provider Name")
+                            @Html.Label("Service Provider Name", "Service Provider Name")
                             @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropName , new { @Id = "formWgServiceProvider", @class = "form-control"  ,@disabled=true})
                         </div>
-                        @*<div class="row">
-                            <div class="form-group col-lg-6">
-                            <label for="Your Ref">
-                            Service Provider's Proposal Ref No
-                            </label>
-                            <input type="text" placeholder="" class="form-control" />
-                            </div>
-                            <div class="form-group col-lg-6">
-                            <label for="Your Ref">
-                            Service Provider Name
-                            </label>
-                            <input type="text" placeholder="" class="form-control" />
-                            </div>
-                            </div>*@
-                        <div class="form-group col-lg-4">
-                            <label for="Address1">Address 1</label>
-                             @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress1 , new { @Id = "formWgAdd1", @class = "form-control" ,@disabled=true  })
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="Your Ref">Address 2</label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress2 , new { @Id = "formWgAdd2", @class = "form-control"  ,@disabled=true})
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label for="Your Ref">Address 3</label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServAddress3 , new { @Id = "formWgAdd3", @class = "form-control"  ,@disabled=true})
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="Phone">Phone Number</label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPhone , new { @Id = "formWgPhone", @class = "form-control"  ,@disabled=true})
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label for="Fax">Fax Number</label>
-                            @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServFax , new { @Id = "formWgFax", @class = "form-control"  ,@disabled=true})
-                        </div>
-
                     </div>
-
-
                 </div>
-
             </div>
-
         </div>
         <div class="col-lg-12 d-none">
             <div class="bg-white rounded landing-division w-100 float-left mb-3 border">
@@ -170,18 +91,13 @@
                                 <div class="row">
                                     <div class="col-lg-12 mb-3">
                                         <label class="mb-0" for="S.O.'s Instruction No.">S.O.'s Instruction No.</label>
-                                         @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropRefNo , new { @Id = "formWgServPropRefNo", @class = "form-control" })
+                                        @Html.TextBoxFor(Ahdr => Ahdr.FormW1.ServPropRefNo , new { @Id = "formWgServPropRefNo", @class = "form-control" })
                                     </div>
                                     <div class="col-lg-12 mb-3">
                                         <label class="mb-0" for="Date of Commencement">Date of Commencement</label>
-                                         @Html.TextBoxFor(m => m.FormWG.DtDefectCompl , new { @id="formWgDeftDt", @type="date", @class="form-control svalidate { required, Date }"})
+                                        @Html.EditorFor(m => m.FormWG.DtDefectCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @id="formWgDeftDt", @class = "form-control  svalidate { required,Date of Commencement Date }", @type = "date" } })
                                     </div>
-                                    @*<div class="col-lg-12 mb-3">
-                                        <label class="mb-0" for="PhysicalWorks">
-                                        Date of Completion
-                                        </label>
-                                        <input type="date" class="form-control">
-                                        </div>*@
+                                   
                                 </div>
                             </div>
                             <div class="col-lg-8">
@@ -196,26 +112,29 @@
         </div>
         <div class="col-lg-12">
             <p class="bg-white rounded landing-division w-100 float-left mb-3 border px-4" style="line-height: 30px; font-size: 18px;">
-                <span class="float-left" style="line-height: 55px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.10.8</b> of the Agreement, it is in my opinion that the Defects has been made good on </span><span class="float-left"><input type="date" class="form-control border-top-0 border-left-0 border-right-0 font-weight-bold" value="15/05/2021" style="width:160px;float:left; margin-top:10px" /></span>
+                <span class="float-left" style="line-height: 55px;"> In accordance with <b style="padding:0px 2px;font-size:20px;">Clause 8.10.8</b> of the Agreement, it is in my opinion that the Defects has been made good on </span>
+                <span class="float-left">                   
+                    @Html.EditorFor(m => m.FormWG.DtDefectCompl, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @style="width:180px;font-weight:bold", @id="formWgDftComp", @class = "form-control svalidate {required, Extention Date} border-left border-top-0 border-left-0 border-right-0 float-left ", @type="date" } })
+                    </span>
             </p>
         </div>
         <div class="col-12">
             <div class="row py-2 px-3">
                 <div class="form-group col-lg-2">
                     <label for="Designation"> User ID </label>
-                      @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWgIssuedBy", "Select Users", new { Id = "formWgIssuedBy", @class = "form-control   {required,  Issued by} " })
+                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formWgIssuedBy", "Select Users", new { Id = "formWgIssuedBy", @class = "form-control  svalidate {required,Issued by} " })
                 </div>
                 <div class="form-group col-lg-3">
                     @Html.Label("Name", "Name")
-                     @Html.TextBoxFor(w => w.FormWG.UsernameIssu, new {@id = "formWgIssuedName", @class = "form-control svalidate  {required,  Requested by Name}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.UsernameIssu, new {@id = "formWgIssuedName", @class = "form-control svalidate  {required,Issued by Name}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2">
-                     @Html.Label("Designation", "Designation")
-                     @Html.TextBoxFor(w => w.FormWG.DesignationIssu, new { @id = "formWgIssuedDesig", @class = "form-control svalidate  {required,  Requested by Designation}", @disabled = true })
+                    @Html.Label("Designation", "Designation")
+                    @Html.TextBoxFor(w => w.FormWG.DesignationIssu, new { @id = "formWgIssuedDesig", @class = "form-control svalidate  {required,Issued by Designation}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 p-0">
                     @Html.Label("Office", "Office")
-                    @Html.TextBoxFor(w => w.FormWG.OfficeIssu, new { @id = "formWgIssuedOffice", @class = "form-control svalidate  {required,  Requested by Office}", @disabled = true })
+                    @Html.TextBoxFor(w => w.FormWG.OfficeIssu, new { @id = "formWgIssuedOffice", @class = "form-control svalidate  {required,Issued by Office}", @disabled = true })
                 </div>
                 <div class="form-group col-lg-2 pr-0">
                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
@@ -223,7 +142,7 @@
                         var vd = Model.FormWG.DtIssu;
                         string _IssuedDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                     }
-                    <input type="text" class="form-control  svalidate {required, Issue date}" id="formWgIssuedDate" value="@_IssuedDate" disabled />
+                    <input type="text" class="form-control  svalidate {required, Issued date}" id="formWgIssuedDate" value="@_IssuedDate" disabled />
                 </div>
                 <div class="form-group col-lg-1 text-center">
                     @Html.Label("Signature", "Signature")
@@ -232,14 +151,22 @@
 
                     }
                     <div class="clear-b mt-2">
-                        <input type="checkbox" id="formWgIssuedSig" class="disableinput" checked="@_issued" style="height: 20px;">
+                        <input type="checkbox" id="formWgIssuedSig" class="disableinput" checked="@_issued" style="height: 20px;" disabled>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @{
+        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+        {
+            Form = "FormWG",
+            RefId = Model.FormWG.PkRefNo,
+            Stage = Model.FormWG.Status
+        });
+    }
 </div>
-@Html.HiddenFor(m => m.View, new { @id = "hdnWgView", @class = "form-control", @value = "0" })
+@Html.HiddenFor(m => m.WGView, new { @id = "hdnWgView", @class = "form-control", @value = "0" })
 @Html.HiddenFor(m => m.FormWG.PkRefNo, new { @id = "hdnWgRefNo", @class = "form-control", @value = "0" })
 
 <input id="hdnForm" type="hidden" value="FormWG" />
@@ -251,8 +178,11 @@
     background:#fff;
     width: 96%;
     height: 45px;">
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="return ClearFCEM()">Clear</button>
+    <button type="button" class="btn btn-sm btn-outline-theme" id="clearWGBtn" onclick="return ClearWG()">Clear</button>
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
     <button type="button" class="btn btn-sm btn-themebtn" id="saveWGBtn" onclick="return checkWExist()">Save</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="submitWGBtn">Submit</button>
+    @if (!string.IsNullOrEmpty(Model.FormWG.Status)  && Model.FormWG.Status == RAMMS.Common.StatusList.FormWGSaved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" id="submitWGBtn">Submit</button>
+    }
 </div>

@@ -41,6 +41,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormW1ResponseDTO>(formW1);
         }
 
+        public async Task<FormW2ResponseDTO> FindFormW2ByPKRefNo(int id)
+        {
+            RmIwFormW2 formW2 = await _repo.FindFormW2ByPKRefNo(id);
+            return _mapper.Map<FormW2ResponseDTO>(formW2);
+        }
+
         public async Task<int> LastInsertedIMAGENO(string hederId, string type)
         {
             int imageCt = await _repoUnit.FormW1Repository.GetImageId(hederId, type);
@@ -53,6 +59,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             return imageCt;
         }
 
+
+
+
+        public string GetJKRRefNoFromW2(int PKRefNo)
+        {
+            return _repoUnit.FormW1Repository.GetJKRRefNoFromW2(PKRefNo);
+        }
 
         public async Task<int> SaveFormW1(FormW1ResponseDTO FormW1)
         {
@@ -87,7 +100,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.Fw1SubmitSts && form.Fw1Status == "Saved")
+            if (form.Fw1SubmitSts && (form.Fw1Status == "Saved" || form.Fw1Status == "Rejected"))
             {
                 form.Fw1Status = Common.StatusList.FormW2Submitted;
                 form.Fw1AuditLog = Utility.ProcessLog(form.Fw1AuditLog, "Submitted By", "Submitted", form.Fw1UsernameReq, string.Empty, form.Fw1DtReq, _security.UserName);
@@ -171,7 +184,26 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
+        public async Task<int> DeActivateFormW1(int formNo)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormW1 = await _repoUnit.FormW1Repository.GetByIdAsync(formNo);
+                domainModelFormW1.Fw1ActiveYn = false;
+                _repoUnit.FormW1Repository.Update(domainModelFormW1);
 
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
         public async Task<int> Update(FormW1ResponseDTO FormW1)
         {
             int rowsAffected;
