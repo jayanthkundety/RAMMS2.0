@@ -15,11 +15,11 @@
             <ul class="nav nav-tabs tabbed round">
                 @*<li class="nav-item">
                     <a href="#divFecm" data-toggle="tab" aria-expanded="false" class="nav-link active">
-                        <span class="">
-                            FECM
-                        </span>
+                    <span class="">
+                    FECM
+                    </span>
                     </a>
-                </li>*@
+                    </li>*@
                 <li class="nav-item">
                     <a href="#page" data-toggle="tab" aria-expanded="false" class="nav-link active">
                         <span class="">
@@ -57,8 +57,14 @@
         </div>
         <input type="hidden" id="hdnUserId" value="@security.UserID" />
         <input type="hidden" id="hdnUsername" value="@security.UserName" />
-        <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo"  />
-        <input type="hidden" id="hdnView" value="@Model.View"  />
+        <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo" />
+        <input type="hidden" id="hdnView" value="@Model.View" />
+        @Html.HiddenFor(m => m.FormW1.RmuCode, new { @id = "hdnRmuCode", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.SecCode, new { @id = "hdnSecCode", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.RoadCode, new { @id = "hdnRdCode", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.RoadName, new { @id = "hdnRdName", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.Ch, new { @id = "hdnCh", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.ChDeci, new { @id = "hdnChDeci", @class = "form-control" })
         <div class="row bg-white py-3">
             <div class="col-lg-12">
                 <div class="tab-content mh-250">
@@ -71,13 +77,13 @@
                     </div>
                     @*<div class="tab-pane show active" id="divFecm">
                         <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
-                            <div id="div_fecmload">
-                                @{
-                                    Html.RenderPartial("_FormFECM.cshtml", Model.FECM);
-                                }
-                            </div>
+                        <div id="div_fecmload">
+                        @{
+                        Html.RenderPartial("_FormFECM.cshtml", Model.FECM);
+                        }
                         </div>
-                    </div>*@
+                        </div>
+                        </div>*@
                     <div class="tab-pane show active" id="page">
                         <div id="div_wc">
                             @{
@@ -87,7 +93,6 @@
                     </div>
                     <div class="tab-pane show " id="AccordPagegallery">
                         <div id="ViewPhoto">
-
                         </div>
                     </div>
                 </div>
