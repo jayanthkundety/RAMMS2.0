@@ -97,7 +97,7 @@
 
                                             foreach (var item in Model.ImageList)
                                             {
-                                                var form = item.Source.Substring(4).Trim();
+                                                var form =  item.Source != null ? item.Source.Substring(4).Trim() : "W1";
                                                 <tr>
                                                     <td>@i</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>

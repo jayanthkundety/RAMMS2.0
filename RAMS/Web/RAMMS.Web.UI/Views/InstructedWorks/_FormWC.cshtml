@@ -37,7 +37,7 @@
                                         <label for="OurRef">
                                             Name of Division
                                         </label>
-                                         @Html.DropDownListFor(m => m.FormWC.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control " })                                    
+                                         @Html.DropDownListFor(m => m.FormWC.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control   svalidate { required, Division } " })                                    
                                     </div>
                                 </div>
                             

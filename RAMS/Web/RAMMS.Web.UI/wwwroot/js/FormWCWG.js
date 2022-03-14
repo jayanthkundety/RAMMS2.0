@@ -103,8 +103,9 @@ $(document).ready(function () {
 });
 
 function SaveWC(submit) {
+    debugger;
     if (submit) {
-        $("#divFormWc .svalidate").addClass("validate");
+        $("#page .svalidate").addClass("validate");
     }
 
     if (!ValidatePage('#page')) {
@@ -200,7 +201,7 @@ function SaveWG(submit) {
         $("#divFormWg .svalidate").addClass("validate");
     }
 
-    if (!ValidatePage('#Div_wg')) {
+    if (!ValidatePage('#divFormWg')) {
         return false;
     }
 
