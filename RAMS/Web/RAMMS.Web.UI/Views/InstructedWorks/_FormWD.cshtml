@@ -1,5 +1,4 @@
 ﻿@model RAMMS.Web.UI.Models.FormWDWNModel;
-dt@model RAMMS.Web.UI.Models.FormWDWNModel;
 @using RAMMS.Business.ServiceProvider;
 <div class="container-fluid" id="FormWDpage">
     <div class="row">
@@ -233,6 +232,9 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
 
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
     <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','')">Save</button>
-    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
+    @if (!string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
+    }
 </div>
 

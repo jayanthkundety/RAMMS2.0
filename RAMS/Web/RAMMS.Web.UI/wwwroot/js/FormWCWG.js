@@ -104,7 +104,7 @@ $(document).ready(function () {
 
 function SaveWC(submit) {
     if (submit) {
-        $("#divFormWc .svalidate").addClass("validate");
+        $("#page .svalidate").addClass("validate");
     }
 
     if (!ValidatePage('#page')) {
@@ -125,12 +125,12 @@ function SaveWC(submit) {
     saveObj.PkRefNo = $("#hdnWcRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
     saveObj.IwWrksDeptId = $("#formWCDivisionCode option:selected").val();
-    saveObj.RmuCode = ""
-    saveObj.SecCode = "";
-    saveObj.RoadCode = "";
-    saveObj.RoadName = "";
-    saveObj.Ch = "";
-    saveObj.ChDeci = "";
+    saveObj.RmuCode = $("#hdnRmuCode").val();
+    saveObj.SecCode = $("#hdnSecCode").val();
+    saveObj.RoadCode = $("#hdnRdCode").val();
+    saveObj.RoadName = $("#hdnRdName").val();
+    saveObj.Ch = $("#hdnCh").val();
+    saveObj.ChDeci = $("#hdnChDeci").val();
     saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWcProjectTitle").val()
     saveObj.OurRefNo = $("#formWcOurRef").val();
@@ -197,7 +197,7 @@ function SaveWC(submit) {
 
 function SaveWG(submit) {
     if (submit) {
-        $("#divFormWg .svalidate").addClass("validate");
+        $("#Div_wg .svalidate").addClass("validate");
     }
 
     if (!ValidatePage('#Div_wg')) {
@@ -219,12 +219,12 @@ function SaveWG(submit) {
     saveObj.PkRefNo = $("#hdnWgRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
     saveObj.IwWrksDeptId = $("#formWGDivisionCode option:selected").val();
-    saveObj.RmuCode = ""
-    saveObj.SecCode = "";
-    saveObj.RoadCode = "";
-    saveObj.RoadName = "";
-    saveObj.Ch = "";
-    saveObj.ChDeci = "";
+    saveObj.RmuCode = $("#hdnRmuCode").val();
+    saveObj.SecCode = $("#hdnSecCode").val();
+    saveObj.RoadCode = $("#hdnRdCode").val();
+    saveObj.RoadName = $("#hdnRdName").val();
+    saveObj.Ch = $("#hdnCh").val();
+    saveObj.ChDeci = $("#hdnChDeci").val();
     saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWgProjectTitle").val()
     saveObj.OurRefNo = $("#formWgOurRef").val();

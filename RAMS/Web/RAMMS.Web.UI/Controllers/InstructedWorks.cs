@@ -142,13 +142,12 @@ namespace RAMMS.Web.UI.Controllers
             List<SelectListItem> newDdl = new List<SelectListItem>();
             if (form == "FormWCWG")
             {
-
-                //ddLookup.Type = "IWFORMWCWG";
-                //ddLookup.TypeCode = "WGWC";
                 assetsModel.FormName = "Form";
                 //var items = await _ddLookupService.GetDdLookup(ddLookup);
                 var _formWC = await _formWCService.FindWCByW1ID(int.Parse(Id));
                 var _formWG = await _formWGService.FindWGByW1ID(int.Parse(Id));
+                _formWC = _formWC == null ? new FormWCResponseDTO() : _formWC;
+                _formWG = _formWG == null ? new FormWGResponseDTO() : _formWG;
 
                 if (!_formWC.SubmitSts)
                 {
@@ -170,6 +169,9 @@ namespace RAMMS.Web.UI.Controllers
                 //var items = await _ddLookupService.GetDdLookup(ddLookup);
                 var _formWD = await  _formWDService.FindWDByW1ID(int.Parse(Id));
                 var _formWN = await _formWNService.FindWNByW1ID(int.Parse(Id));
+
+                _formWD = _formWD == null ? new FormWDResponseDTO() : _formWD;
+                _formWN = _formWN == null ? new FormWNResponseDTO() : _formWN;
 
                 if (!_formWD.SubmitSts)
                 {
