@@ -10,16 +10,16 @@
         var text = $(this).val();
         if ((event.which == 46) && (text.indexOf('.') == -1)) {
             setTimeout(function () {
-                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                if ($this.val().substring($this.val().indexOf('.')).length > 2) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 2));
                 }
             }, 1);
         }
 
         if ((text.indexOf('.') != -1) &&
-            (text.substring(text.indexOf('.')).length > 3) &&
+            (text.substring(text.indexOf('.')).length > 2) &&
             (event.which != 0 && event.which != 8) &&
-            ($(this)[0].selectionStart >= text.length - 3)) {
+            ($(this)[0].selectionStart >= text.length - 2)) {
             event.preventDefault();
         }
     });
@@ -111,6 +111,69 @@ function DeleteW1() {
         }
     }));
 }
+
+function DeleteW2() {
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            var id = GetFormIDByName("w2");
+            InitAjaxLoading();
+            $.ajax({
+                url: "/InstructedWorks/DeleteW2",
+                data: { id },
+                type: 'POST',
+                success: function (data) {
+                    HideAjaxLoading();
+                    if (data > 0) {
+                        $("body").removeClass("loading");
+                        app.ShowSuccessMessage("Deleted Successfully", false);
+                        FormIWGridRefresh();
+                    }
+                    else {
+                        app.ShowWarningMessage("Please try again later.", false);
+                        $("body").removeClass("loading");
+                    }
+                }
+            });
+        }
+    }));
+}
+
+function DeleteWCWG(form) {
+    var id,url;
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            if (form == "WC") {
+                id = GetFormIDByName("wc");
+                url = "/InstructedWorks/DeleteWC";
+            }
+            else {
+                id = GetFormIDByName("wg");
+                url = "/InstructedWorks/DeleteWG";
+            }
+            
+            InitAjaxLoading();
+            $.ajax({
+                url: url,
+                data: { id },
+                type: 'POST',
+                success: function (data) {
+                    HideAjaxLoading();
+                    debugger;
+                    if (data.id.result > 0) {
+                        $("body").removeClass("loading");
+                        app.ShowSuccessMessage("Deleted Successfully", false);
+                        FormIWGridRefresh();
+                    }
+                    else {
+                        app.ShowWarningMessage("Please try again later.", false);
+                        $("body").removeClass("loading");
+                    }
+                }
+            });
+        }
+    }));
+}
+
 
 function getGridSelectedData() {
     var table = $('#FormIWGridView').DataTable();
@@ -307,6 +370,7 @@ function checkAction(form) {
             $("#w2Edit").hide();
             $("#w2View").hide();
             $("#w2Print").hide();
+            $("#w2Delete").hide();
             app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
             return;
         }
@@ -314,13 +378,21 @@ function checkAction(form) {
         var w1status = GetFormIDByName("w1Status");
         var w2status = GetFormIDByName("w2Status");
         var w2substatus = GetFormIDByName("w2SubStatus");
+
+        if (id == "-1" || id == null) $("#w2Delete").hide();
+
         if ((id == "-1" || id == null) && (w1status == "Approved")) {
             $("#w2Add").show();
             $("#w2Edit").hide();
             $("#w2View").hide();
             $("#w2Print").hide();
+            $("#w2Delete").hide();
         }
         else if (id != "-1" && id != null) {
+            if (w2status == "Saved" || w2status == "Submitted" || w2status == "Rejected")
+                $("#w2Delete").show();
+            else
+                $("#w2Delete").hide();
 
             if (w2status == "Approved") {
                 $("#w2Add").hide();
@@ -364,7 +436,7 @@ function checkAction(form) {
         var id = GetFormIDByName("w1");
         var w1status = GetFormIDByName("w1Status");
         if (id != "-1" && id != null) {
-            if (w1status == "Saved")
+            if (w1status == "Saved" || w1status == "Submitted" || w1status == "Rejected")
                 $("#w1Delete").show();
             else
                 $("#w1Delete").hide();
@@ -395,6 +467,7 @@ function checkAction(form) {
             $("#wcEdit").hide();
             $("#wcView").hide();
             $("#wcPrint").hide();
+            $("#wcDelete").hide();
             return;
         }
         var id = GetFormIDByName("wc");
@@ -406,6 +479,8 @@ function checkAction(form) {
             $("#wcEdit").hide();
             $("#wcView").hide();
             $("#wcPrint").hide();
+            $("#wcDelete").hide();
+            return;
         }
         else if (id != "-1" && id != null) {
             if (wcsubstatus && wgsubstatus) {
@@ -413,18 +488,21 @@ function checkAction(form) {
                 $("#wcEdit").hide();
                 $("#wcView").show();
                 $("#wcPrint").show();
+                $("#wcDelete").show();
                 return;
             }
             $("#wcAdd").hide();
             $("#wcEdit").show();
             $("#wcView").show();
             $("#wcPrint").show();
+            $("#wcDelete").show();
         }
         else {
             $("#wcAdd").hide();
             $("#wcEdit").hide();
             $("#wcView").hide();
             $("#wcPrint").hide();
+            $("#wcDelete").hide();
         }
 
     }
@@ -434,6 +512,7 @@ function checkAction(form) {
             $("#wdEdit").hide();
             $("#wdView").hide();
             $("#wdPrint").hide();
+            $("#wdDelete").hide();
             return;
         }
         var id = GetFormIDByName("wd");
@@ -444,6 +523,8 @@ function checkAction(form) {
             $("#wdEdit").hide();
             $("#wdView").hide();
             $("#wdPrint").hide();
+            $("#wdDelete").hide();
+            return;
         }
         else if (id != "-1" && id != null) {
             if (wdsubstatus) {
@@ -451,18 +532,21 @@ function checkAction(form) {
                 $("#wdEdit").hide();
                 $("#wdView").show();
                 $("#wdPrint").show();
+                $("#wdDelete").show();
                 return;
             }
             $("#wdAdd").hide();
             $("#wdEdit").show();
             $("#wdView").show();
             $("#wdPrint").show();
+            $("#wdDelete").show();
         }
         else {
             $("#wdAdd").hide();
             $("#wdEdit").hide();
             $("#wdView").hide();
             $("#wdPrint").hide();
+            $("#wdDelete").hide();
         }
     }
 }
