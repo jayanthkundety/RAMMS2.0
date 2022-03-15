@@ -56,7 +56,7 @@
                         <div class="tab-pane show active " id="list_one">
                             <div id="div_wdload">
                                 @{
-                                   Html.RenderPartial("_FormWD.cshtml", Model);
+                                    Html.RenderPartial("_FormWD.cshtml", Model);
                                 }
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                         <div class="tab-pane" id="list_two">
                             <div id="div_wnload">
                                 @{
-                                  Html.RenderPartial("_FormWN.cshtml", Model);
+                                    Html.RenderPartial("_FormWN.cshtml", Model);
                                 }
                             </div>
                         </div>
@@ -82,6 +82,9 @@
 
     @Html.HiddenFor(m => m.ClauseDetails);
     @Html.HiddenFor(m => m.FormWD.IwRefNo);
+    @Html.HiddenFor(m => m.FormWN.IwRefNo);
+    @Html.HiddenFor(m => m.FormWD.IwProjectTitle);
+    @Html.HiddenFor(m => m.FormWN.IwProjectTitle);
     @Html.HiddenFor(m => m.FormWD.PkRefNo);
     @Html.HiddenFor(m => m.FormWN.PkRefNo);
     @Html.HiddenFor(m => m.FormWD.Fw1PkRefNo);
@@ -97,18 +100,21 @@
     <input type="hidden" id="hdnWNPkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
     <input type="hidden" id="hdnDtPervCompl">
- 
+
 }
 <script>
 
     $(document).ready(function () {
-         
+
         process.Init("FormWD", "@Model.FormWD.Status", @Model.FormWD.PkRefNo);
         process.Init("FormWN", "@Model.FormWN.Status", @Model.FormWN.PkRefNo);
 
         $('#FormWD_IwRefNo').val("@Model.FormW1.IwRefNo")
         $('#FormWD_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
+        $('#FormWN_IwRefNo').val("@Model.FormW1.IwRefNo")
         $('#FormWN_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
+        $('#FormWD_IwProjectTitle').val("@Model.FormW1.ProjectTitle")
+        $('#FormWN_IwProjectTitle').val("@Model.FormW1.ProjectTitle")
 
         $('#ddlWDUserid').val("@Model.FormWD.UseridIssu");
         $('#ddlWDUserid').trigger('chosen:updated');

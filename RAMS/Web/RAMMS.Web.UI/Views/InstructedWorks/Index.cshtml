@@ -200,7 +200,7 @@
                     <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdView" onclick="OpenFormWDWN('View',1)">
                         <span class="view-icon"></span> View
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 border-top px-1" id="wdPrint">
+                    <button type="button" class="dropdown-item editdel-btns py-1 border-top px-1" id="wdPrint"  onclick="PrintFormWDWN('WN')">
                         <span class="print-icon"></span> Print <span class="caret"></span>
                     </button>
                     <div class="dropdown-menu">
@@ -891,6 +891,17 @@
         else {
             var id = GetFormIDByName("wg");
             window.location.href = '/download/PrintForm?id=' + id + "&formname=FormWG";
+        }
+    }
+
+    function PrintFormWDWN(form) {
+        if (form == 'WD') {
+            var id = GetFormIDByName("wd");
+            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormWD";
+        }
+        else {
+            var id = GetFormIDByName("wn");
+            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormWN";
         }
     }
 
