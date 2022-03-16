@@ -464,6 +464,7 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
             _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
             _formW2Model.FECM.FECM.Dt = DateTime.Today;
+            _formW2Model.FECM.FECM.DtTecm = DateTime.Today;
 
             var defaultData = new DTO.ResponseBO.FormW2ResponseDTO();
             defaultData.Fw1IwRefNo = _formW2Model.FormW1.IwRefNo;

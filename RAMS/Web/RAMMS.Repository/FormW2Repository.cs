@@ -454,14 +454,27 @@ namespace RAMMS.Repository
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.TECMStatus))
             {
-                query = query.Where(x => x.x.Fw1Sts == filterOptions.Filters.TECMStatus);
+                if (filterOptions.Filters.TECMStatus == "Pending")
+                {
+                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDtTecm == null);
+                }
+                else
+                {
+                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDtTecm != null);
+                }
             }
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.FECMStatus))
             {
-                query = query.Where(x => x.x.Fw1Sts == filterOptions.Filters.FECMStatus);
+                if (filterOptions.Filters.FECMStatus == "Pending")
+                {
+                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDt == null);
+                }
+                else
+                {
+                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDt != null);
+                }
             }
-
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
             {

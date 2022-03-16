@@ -174,7 +174,6 @@ function DeleteWCWG(form) {
     }));
 }
 
-
 function getGridSelectedData() {
     var table = $('#FormIWGridView').DataTable();
     var selectedIndex = table.$(".selected", { "page": "all" });
@@ -608,13 +607,17 @@ function clearHeaderSearch() {
     $("#txtSmartSearch").val('');
     $("#txtIWRefNo").val('');
     $("#txtCommenceDtFrom").val('');
-    $("#txtCommenceDtTo").val('')
-    $("#txtProjectTitle").val('')
+    $("#txtCommenceDtTo").val('');
+    $("#txtProjectTitle").val('');
     $("#txtStPercFrom").val('');
     $("#txtStPercTo").val('');
-    $("#txtstatus").val("").trigger("chosen:updated");
-    $("#txtRmu").val("").trigger("chosen:updated");
-    $('#txtRoadCode').val("").trigger("chosen:updated");
+    $("#txtStatus").val("").trigger("change").trigger("chosen:updated");
+    $("#txtRmu").val("").trigger("change").trigger("chosen:updated");
+    $("#txtRoadCode").val("").trigger("change").trigger("chosen:updated");
+    $("#txtDEYN").val("").trigger("change").trigger("chosen:updated");
+    $("#txtFormType").val("").trigger("change").trigger("chosen:updated");
+    $("#txtTECM").val("").trigger("change").trigger("chosen:updated");
+    $("#txtFECM").val("").trigger("change").trigger("chosen:updated");
     $("#btnSearch").click();
 }
 
