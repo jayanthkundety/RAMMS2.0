@@ -162,6 +162,7 @@ function GetClauseDetails() {
 
 function SaveWD(GroupName, SubmitType) {
 
+    $("#FormWD_SignIssu").removeClass("validate");
      
     if (SubmitType != "") {
 
@@ -178,6 +179,7 @@ function SaveWD(GroupName, SubmitType) {
             $("#FormWD_Status").val("Submitted");
             $("#FormWD_SubmitSts").val(true);
             $("#ddlWDUserid").addClass("validate");
+            $("#FormWD_SignIssu").addClass("validate");
         }
     }
     else {
@@ -266,6 +268,7 @@ function OnWNUseridChange(tis) {
 
 function SaveWN(GroupName, SubmitType) {
 
+    $("#FormWN_SignIssu").removeClass("validate");
 
     if (SubmitType != "") {
 
@@ -275,6 +278,7 @@ function SaveWN(GroupName, SubmitType) {
             $("#FormWN_Status").val("Submitted");
             $("#FormWN_SubmitSts").val(true);
             $("#ddlUseridReq").addClass("validate");
+            $("#FormWN_SignIssu").addClass("validate");
         }
     }
     else {
