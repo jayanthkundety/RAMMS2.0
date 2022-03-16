@@ -232,18 +232,18 @@
     width: 96%;
     height: 45px;">
 
-    @if ( Model.FormWD.Status != "Submitted")
+    @if (Model.FormWD.Status != "Submitted")
     {
         <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWD()">Clear</button>
     }
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    @if (string.IsNullOrEmpty(Model.FormW1.Status) && security.IsInstructedWorkEngg)
+    @if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && security.IsInstructedWorkEngg)
     {
-        <button type="button" class="btn btn-sm btn-themebtn" id="saveWCBtn" onclick="return  SaveWD('','Submitted')">Save</button>
+        <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','Submitted')">Save</button>
     }
     @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
     {
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
+        <button type="button" id="btnSubmitWD" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
     }
 </div>
 

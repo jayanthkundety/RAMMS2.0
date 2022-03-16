@@ -380,7 +380,7 @@ namespace RAMMS.Web.UI.Controllers
             if (model.FormW1.UseridReq == null || model.FormW1.UseridReq == 0)
                 model.FormW1.UseridReq = _security.UserID;
 
-            if ( model.FormW1.Status != "Approved")
+            if (model.FormW1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
             {
                 if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
                     model.FormW1.UseridVer = _security.UserID;
@@ -1076,10 +1076,17 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
             _formWDWNModel.FormWN = Wnid == 0 ? new FormWNResponseDTO() : await _formWNService.FindFormWNByID(Wnid);
-            if (_formWDWNModel.FormWD.UseridIssu == null || _formWDWNModel.FormWD.UseridIssu == 0)
-                _formWDWNModel.FormWD.UseridIssu = _security.UserID;
-            if (_formWDWNModel.FormWN.UseridIssu == null || _formWDWNModel.FormWN.UseridIssu == 0)
-                _formWDWNModel.FormWN.UseridIssu = _security.UserID;
+
+            if (_formWDWNModel.FormWD.Status == Common.StatusList.FormWDSubmitted && view == 0)
+            {
+                if (_formWDWNModel.FormWD.UseridIssu == null || _formWDWNModel.FormWD.UseridIssu == 0)
+                    _formWDWNModel.FormWD.UseridIssu = _security.UserID;
+            }
+            if (_formWDWNModel.FormWN.Status == Common.StatusList.FormWNSubmitted && view == 0)
+            {
+                if (_formWDWNModel.FormWN.UseridIssu == null || _formWDWNModel.FormWN.UseridIssu == 0)
+                    _formWDWNModel.FormWN.UseridIssu = _security.UserID;
+            }
             return PartialView("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
@@ -1133,6 +1140,20 @@ namespace RAMMS.Web.UI.Controllers
             }
 
             return Json(refNo);
+        }
+
+        public async Task<IActionResult> DeleteFormWD(int id)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formWDService.DeActivateFormWD(id);
+            return Json(rowsAffected);
+        }
+
+        public async Task<IActionResult> DeleteFormWN(int id)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formWNService.DeActivateFormWN(id);
+            return Json(rowsAffected);
         }
 
 
