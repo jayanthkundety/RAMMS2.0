@@ -1034,6 +1034,13 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
             _formWDWNModel.FormWN = new FormWNResponseDTO();
             _formWDWNModel.FormWN.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
+
+            _formWDWNModel.FormWD.UseridIssu = _security.UserID;
+            _formWDWNModel.FormWD.DtWd = DateTime.Today;
+            _formWDWNModel.FormWD.DtIssu = DateTime.Today;
+            _formWDWNModel.FormWN.UseridIssu = _security.UserID;
+            _formWDWNModel.FormWN.DtWn = DateTime.Today;
+            _formWDWNModel.FormWN.DtIssu = DateTime.Today;
             return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
@@ -1051,6 +1058,10 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
             _formWDWNModel.FormWN =   Wnid == 0 ? new FormWNResponseDTO(): await _formWNService.FindFormWNByID(Wnid);
+            if (_formWDWNModel.FormWD.UseridIssu == null || _formWDWNModel.FormWD.UseridIssu == 0)
+                _formWDWNModel.FormWD.UseridIssu = _security.UserID;
+            if (_formWDWNModel.FormWN.UseridIssu == null || _formWDWNModel.FormWN.UseridIssu == 0)
+                _formWDWNModel.FormWN.UseridIssu = _security.UserID;
             return PartialView("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 

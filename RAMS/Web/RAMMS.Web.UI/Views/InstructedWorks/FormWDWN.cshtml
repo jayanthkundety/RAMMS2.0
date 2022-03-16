@@ -123,6 +123,12 @@
         $('#ddlWNUserid').val("@Model.FormWN.UseridIssu");
         $('#ddlWNUserid').trigger('chosen:updated');
         $("#ddlWNUserid").trigger("change");
+
+        $("#ddlWDUserid").chosen('destroy');
+        $("#ddlWDUserid").prop("disabled", true);
+        $("#ddlWNUserid").chosen('destroy');
+        $("#ddlWNUserid").prop("disabled", true);
+
     });
 
     $("#hdnDtPervCompl").val("@Model.FormWD.DtPervCompl");
