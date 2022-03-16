@@ -100,6 +100,12 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         bool IsHeadMaintenance { get; }
         bool IsJKRSSuperiorOfficer { get; }
         bool IsRegionManager { get; }
+        bool IsDivisonalEngg { get; }
+        bool IsInstructedWorkEngg { get; }
+        bool IsJKRSHQ { get; }
+        bool IsDirector { get; }
+
+        bool isOperRAMSExecutive { get; }
 
     }
 }

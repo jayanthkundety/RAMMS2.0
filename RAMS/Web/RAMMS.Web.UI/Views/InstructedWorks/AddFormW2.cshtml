@@ -984,11 +984,11 @@
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                    @if (security.IsJKRSSuperiorOfficer && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
                     }
-                    else if ((security.IsJKRSSuperiorOfficer || security.IsRegionManager) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
+                    else if ((security.IsInstructedWorkEngg || security.IsRegionManager || security.IsDirector) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
                     {
                         <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Received By');"> Received </button>
                     }

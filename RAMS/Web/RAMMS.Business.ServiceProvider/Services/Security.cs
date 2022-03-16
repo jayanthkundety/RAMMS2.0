@@ -58,6 +58,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                 this.IsHeadMaintenance = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.OpeHeadMaintenance);
                 this.IsJKRSSuperiorOfficer = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.JKRSSuperiorOfficerSO);
                 this.IsRegionManager = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.OperRegionManager);
+                this.IsDivisonalEngg = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.DivisionalEngineer);
+                this.IsJKRSHQ = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.HQJKRS);
+                this.IsInstructedWorkEngg = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.InstructedWorksEngineer);
+                this.IsDirector = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.Director);
+                this.isOperRAMSExecutive = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.OperRAMSExecutive);
+
             }
             else
             {
@@ -336,6 +342,16 @@ namespace RAMMS.Business.ServiceProvider.Services
         public bool IsHeadMaintenance { get; private set; }
         public bool IsJKRSSuperiorOfficer { get; private set; }
         public bool IsRegionManager { get; private set; }
+
+        public bool IsDivisonalEngg { get; private set; }
+
+        public bool IsInstructedWorkEngg { get; private set; }
+
+        public bool IsJKRSHQ { get; private set; }
+
+        public bool IsDirector { get; private set; }
+
+        public bool isOperRAMSExecutive { get; private set; }
         #endregion
     }
 }

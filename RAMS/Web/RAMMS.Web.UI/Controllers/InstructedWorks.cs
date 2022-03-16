@@ -1013,6 +1013,21 @@ namespace RAMMS.Web.UI.Controllers
             return Json(refNo);
         }
 
+        [HttpPost]
+        public IActionResult DeleteWC(int id)
+        {
+            if (id > 0) { return Ok(new { id = _formWCService.Delete(id) }); }
+            else { return BadRequest("Invalid Request!"); }
+
+        }
+
+        public IActionResult DeleteWG(int id)
+        {
+            if (id > 0) { return Ok(new { id = _formWGService.Delete(id) }); }
+            else { return BadRequest("Invalid Request!"); }
+
+        }
+
         #endregion
 
         #region WDWN

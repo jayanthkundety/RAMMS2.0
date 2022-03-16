@@ -529,17 +529,19 @@
                             </div>
                         </div> <div class="col-md-12 mb-2 float-right text-right custom-footer">
                             <button type="button" id="btnBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-
-                            @if (string.IsNullOrEmpty(Model.FormW1.Status) || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            @{
+                                var hasRight = (security.IsSupervisor || security.IsExecutive || security.IsInstructedWorkEngg || security.IsRegionManager);
+                            }
+                            @if (string.IsNullOrEmpty(Model.FormW1.Status) && hasRight )
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                             }
-                            else if (Model.FormW1.Status == "Saved" || Model.FormW1.Status == "Rejected" || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            else if (Model.FormW1.Status == "Saved" && hasRight)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Submitted');">Submit</button>
                             }
-                            else if (security.IsJKRSSuperiorOfficer && Model.FormW1.Status == RAMMS.Common.StatusList.FormW1Submitted)
+                            else if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && Model.FormW1.Status == RAMMS.Common.StatusList.FormW1Submitted)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Verified'); ">Approve / Reject</button>
