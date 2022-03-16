@@ -372,7 +372,7 @@ namespace RAMMS.Web.UI.Controllers
             model.FormW1 = _formW1Model;
             model.View = View;
 
-            if (model.FormW1.Status == "Verified")
+            if (model.FormW1.Status == "Approved")
             {
                 model.View = 1;
             }
@@ -380,7 +380,7 @@ namespace RAMMS.Web.UI.Controllers
             if (model.FormW1.UseridReq == null || model.FormW1.UseridReq == 0)
                 model.FormW1.UseridReq = _security.UserID;
 
-            if (model.FormW1.Status != "Verified")
+            if ( model.FormW1.Status != "Approved")
             {
                 if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
                     model.FormW1.UseridVer = _security.UserID;
