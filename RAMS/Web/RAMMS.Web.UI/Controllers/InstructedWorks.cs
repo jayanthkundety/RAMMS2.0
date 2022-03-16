@@ -167,7 +167,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 assetsModel.FormName = "Form";
                 //var items = await _ddLookupService.GetDdLookup(ddLookup);
-                var _formWD = await  _formWDService.FindWDByW1ID(int.Parse(Id));
+                var _formWD = await _formWDService.FindWDByW1ID(int.Parse(Id));
                 var _formWN = await _formWNService.FindWNByW1ID(int.Parse(Id));
 
                 _formWD = _formWD == null ? new FormWDResponseDTO() : _formWD;
@@ -380,8 +380,11 @@ namespace RAMMS.Web.UI.Controllers
             if (model.FormW1.UseridReq == null || model.FormW1.UseridReq == 0)
                 model.FormW1.UseridReq = _security.UserID;
 
-            if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
-                model.FormW1.UseridVer = _security.UserID;
+            if (model.FormW1.Status != "Verified")
+            {
+                if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
+                    model.FormW1.UseridVer = _security.UserID;
+            }
 
             await LoadDropDownsSectionCode();
             GetRMUWithDivision("RMU_Division");
@@ -1043,7 +1046,7 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W1Id);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
-           // _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
+            // _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
             _formWDWNModel.FormWD.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
             _formWDWNModel.FormWD.DtPervCompl = _formWDWNModel.FormW2.DtCompl;
             _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
@@ -1072,7 +1075,7 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
             _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
-            _formWDWNModel.FormWN =   Wnid == 0 ? new FormWNResponseDTO(): await _formWNService.FindFormWNByID(Wnid);
+            _formWDWNModel.FormWN = Wnid == 0 ? new FormWNResponseDTO() : await _formWNService.FindFormWNByID(Wnid);
             if (_formWDWNModel.FormWD.UseridIssu == null || _formWDWNModel.FormWD.UseridIssu == 0)
                 _formWDWNModel.FormWD.UseridIssu = _security.UserID;
             if (_formWDWNModel.FormWN.UseridIssu == null || _formWDWNModel.FormWN.UseridIssu == 0)

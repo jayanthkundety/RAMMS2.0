@@ -364,3 +364,29 @@ function GetImageList(id, form) {
 
     return true;
 }
+
+
+function ClearWD() {
+    $("#FormWD_IwWrksDeptId").val("").trigger("change").trigger("chosen:updated");
+    $("#FormWD_CertificateDelay").val('');
+    $("#FormWD_OurRefNo").val('');
+    $("#FormWD_DtWd").val('');
+    $("#FormWD_YourRefNo").val('');
+    $("#FormWD_DtExtn").val('');
+
+    var rows = $('#tblClause tbody >tr');
+    for (var i = 0; i < rows.length; i++) {
+
+        if (i != 0) {
+            $(rows[i]).remove();
+        }
+    }
+}
+
+function ClearWN() {
+    $("#FormWN.IwWrksDeptId").val("").trigger("change").trigger("chosen:updated");
+    $("#FormWN_OurRefNo").val('');
+    $("#FormWN_DtWn").val('');
+    $("#FormWN.DtW2Initiation").val('');
+    $("#FormWN.LadAmt").val('');
+}

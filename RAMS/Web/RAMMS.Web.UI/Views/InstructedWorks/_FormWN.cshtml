@@ -1,5 +1,6 @@
 ﻿@model RAMMS.Web.UI.Models.FormWDWNModel;
 @using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 <div class="container-fluid" id="FormWNpage">
     <div class="row">
         <div class="col-lg-12">
@@ -16,7 +17,7 @@
                                 <label for="OurRef">
                                     Name of Division
                                 </label>
-                                @Html.DropDownListFor(m => m.FormWN.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control svalidate {required, Name of Division}" })
+                                @Html.DropDownListFor(m => m.FormWN.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @class = "form-control svalidate {required, Name of Division}" })
                             </div>
 
                         </div>
@@ -164,9 +165,17 @@
     width: 96%;
     height: 45px;">
 
+    
+    @if (Model.FormWN.Status != "Submitted")
+    {
+        <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWN()">Clear</button>
+    }
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','')">Save</button>
-    @if (!string.IsNullOrEmpty(Model.FormWN.Status) && Model.FormWN.Status == RAMMS.Common.StatusList.FormWNSaved)
+    @if (string.IsNullOrEmpty(Model.FormW1.Status) && security.IsInstructedWorkEngg)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" id="saveWCBtn" onclick="return  SaveWN('','Submitted')">Save</button>
+    }
+    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && !string.IsNullOrEmpty(Model.FormWN.Status) && Model.FormWN.Status == RAMMS.Common.StatusList.FormWNSaved)
     {
         <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
     }

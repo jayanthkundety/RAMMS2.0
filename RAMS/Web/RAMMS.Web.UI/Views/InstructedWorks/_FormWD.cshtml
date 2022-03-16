@@ -1,5 +1,7 @@
 ﻿@model RAMMS.Web.UI.Models.FormWDWNModel;
 @using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
 <div class="container-fluid" id="FormWDpage">
     <div class="row">
 
@@ -21,7 +23,7 @@
                                             <label for="OurRef">
                                                 Name of Division
                                             </label>
-                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control svalidate {required, Name of Division}" })
+                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new {  @class = "form-control svalidate {required, Name of Division}" })
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
@@ -230,9 +232,16 @@
     width: 96%;
     height: 45px;">
 
+    @if ( Model.FormWD.Status != "Submitted")
+    {
+        <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWD()">Clear</button>
+    }
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','')">Save</button>
-    @if (!string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
+    @if (string.IsNullOrEmpty(Model.FormW1.Status) && security.IsInstructedWorkEngg)
+    {
+        <button type="button" class="btn btn-sm btn-themebtn" id="saveWCBtn" onclick="return  SaveWD('','Submitted')">Save</button>
+    }
+    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
     {
         <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
     }
