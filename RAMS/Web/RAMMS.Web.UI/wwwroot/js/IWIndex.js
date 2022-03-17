@@ -466,7 +466,9 @@ function checkAction(form) {
             $("#wcEdit").hide();
             $("#wcView").hide();
             $("#wcPrint").hide();
+            $("#wgPrint").hide();
             $("#wcDelete").hide();
+            $("#wgDelete").hide();
             return;
         }
         var id = GetFormIDByName("wc");
@@ -479,6 +481,8 @@ function checkAction(form) {
             $("#wcView").hide();
             $("#wcPrint").hide();
             $("#wcDelete").hide();
+            $("#wgPrint").hide();
+            $("#wgDelete").hide();
             return;
         }
         else if (id != "-1" && id != null) {
@@ -502,6 +506,8 @@ function checkAction(form) {
             $("#wcView").hide();
             $("#wcPrint").hide();
             $("#wcDelete").hide();
+            $("#wgPrint").hide();
+            $("#wgDelete").hide();
         }
 
     }
