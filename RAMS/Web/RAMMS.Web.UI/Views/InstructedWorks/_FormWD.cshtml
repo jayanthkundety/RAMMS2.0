@@ -23,7 +23,7 @@
                                             <label for="OurRef">
                                                 Name of Division
                                             </label>
-                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new {  @class = "form-control svalidate {required, Name of Division}" })
+                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @class = "form-control svalidate {required, Name of Division}" })
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
@@ -99,32 +99,35 @@
                                             <div class="dataTables_scrollBody" style="min-height:auto!important">
 
                                                 <table id="tblClause" class="table w-100 nowrap dataTable table-bordered">
-                                                    <tr style="text-align: left; color:#152e4d;background-color: #c8e1ff">
-                                                        <th> <span style="width:60%; float:left">Reason/reasons</span></th>
-                                                        <th>Clause</th>
-                                                        <th>Extension of Time</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                    @{
-                                                        foreach (var item in Model.FormWDDtl)
-                                                        {
-                                                            <tr>
-                                                                <td>
-                                                                    @item.Reason
-                                                                </td>
-                                                                <td>
-                                                                    @item.Clause
-                                                                </td>
-                                                                <td>
-                                                                    @item.ExtnPrd
-                                                                </td>
-                                                                <td>
-                                                                    <span class='del-icon' onclick="Javascript:DeleteClauseRow(this);"></span>
-                                                                </td>
-                                                            </tr>
+                                                    <thead>
+                                                        <tr style="text-align: left; color:#152e4d;background-color: #c8e1ff">
+                                                            <th style="min-width:300px;"> <span style="width:100%; float:left">Reason/reasons</span></th>
+                                                            <th style="width:20%;">Clause</th>
+                                                            <th style="width:10%;">Extension of Time</th>
+                                                            <th style="width:10px;">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            foreach (var item in Model.FormWDDtl)
+                                                            {
+                                                                <tr >
+                                                                    <td >
+                                                                        @item.Reason
+                                                                    </td>
+                                                                    <td>
+                                                                        @item.Clause
+                                                                    </td>
+                                                                    <td>
+                                                                        @item.ExtnPrd
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class='del-icon' onclick="Javascript:DeleteClauseRow(this);"></span>
+                                                                    </td>
+                                                                </tr>
+                                                            }
                                                         }
-                                                    }
-
+                                                    </tbody>
                                                 </table>
                                             </div>
                                             <div class="modal fade" id="ClauseModal" role="dialog">
@@ -171,7 +174,7 @@
                     <div class="px-3  py-2 float-left w-100 border">
                         <p class="float-left mt-3" style="line-height: 30px; font-size: 17px;">
                             <span class="float-left px-1">The Date for Completion is now therefore extended to</span>
-                            @Html.EditorFor(m => m.FormWD.DtExtn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold svalidate {required,Date of Completion}", @type = "date", @style = "width:190px" } })
+                            @Html.EditorFor(m => m.FormWD.DtExtn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold svalidate {required,Date of Completion}", @type = "date", @style = "width:190px", @onchange = "CompDtValidation()" } })
 
                         </p>
                     </div>
@@ -232,16 +235,20 @@
     width: 96%;
     height: 45px;">
 
+    @{
+        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+    }
+
     @if (Model.FormWD.Status != "Submitted")
     {
         <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWD()">Clear</button>
     }
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    @if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && security.IsInstructedWorkEngg)
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
+    @if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
     {
         <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','Submitted')">Save</button>
     }
-    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
+    @if (isJKRS && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
     {
         <button type="button" id="btnSubmitWD" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
     }

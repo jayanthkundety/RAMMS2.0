@@ -3,13 +3,13 @@
 
     if ($("#hdnFormWDStatus").val() == "Submitted") {
         $("#FormWDdatapage *").prop("disabled", true);
-       
+
         $("#FormWD_IwWrksDeptId").chosen('destroy');
         $("#FormWD_IwWrksDeptId").prop("disabled", true);
 
         $("#btnSaveWD").hide();
         $("#btnSubmitWD").hide();
-       
+
     }
 
     if ($("#hdnFormWNStatus").val() == "Submitted") {
@@ -45,8 +45,7 @@
             ($(this)[0].selectionStart >= text.length - 3)) {
             event.preventDefault();
         }
-
-
+       
     });
 
 
@@ -56,6 +55,7 @@
     $("#ddlServiceProvider").chosen('destroy');
     $("#ddlServiceProvider").prop("disabled", true);
 
+    OnAmtChange();
 
 });
 
@@ -103,7 +103,7 @@ function AddClauseData() {
             app.ShowErrorMessage("Only three rows allowed");
             return;
         }
-        else  {
+        else {
             if ($("#txtReason").val() == "") {
                 app.ShowErrorMessage("Reason Required");
                 return;
@@ -169,7 +169,7 @@ function GetClauseDetails() {
 function SaveWD(GroupName, SubmitType) {
 
     $("#FormWD_SignIssu").removeClass("validate");
-     
+
     if (SubmitType != "") {
 
         var tbl = document.getElementById('tblClause');
@@ -225,13 +225,37 @@ function SaveWD(GroupName, SubmitType) {
 }
 
 function PrevCompDtValidation() {
-    var value = $(this).val();
-    var PrevDate = new Date(formatDate($("#hdnDtPervCompl").val()));
 
-    if (value < PrevDate) {
-        app.ShowErrorMessage("Completion date should not be less previous completion date of w2");
-        $(this).val('');
-        return;
+    if ($("#FormWD_DtPervCompl").val() != "") {
+        var value = new Date(formatDate($("#FormWD_DtPervCompl").val()));
+
+        if ($("#FormWD_DtExtn").val() != "") {
+            var ExtnDate = new Date(formatDate($("#FormWD_DtExtn").val()));
+            if (value < ExtnDate) {
+                app.ShowErrorMessage("Previous completion date should be greater than completion date");
+                $("#FormWD_DtPervCompl").val('');
+                return;
+            }
+        }
+    }
+}
+
+
+function CompDtValidation() {
+
+
+
+    if ($("#FormWD_DtExtn").val() != "") {
+        var value = new Date(formatDate($("#FormWD_DtExtn").val()));
+
+        if ($("#FormWD_DtPervCompl").val() != "") {
+            var PrevDate = new Date(formatDate($("#FormWD_DtPervCompl").val()));
+            if (value > PrevDate) {
+                app.ShowErrorMessage("Completion date should not be greater previous completion date");
+                $("#FormWD_DtExtn").val('');
+                return;
+            }
+        }
     }
 }
 
@@ -322,6 +346,32 @@ function SaveWN(GroupName, SubmitType) {
 
 }
 
+ 
+
+function OnAmtChange() {
+     
+    if ($("#FormWN_LadAmt").val() != "") {
+
+        var Amt = $("#FormWN_LadAmt").val().replace(/,/g, '');
+
+        if (!$.isNumeric(Amt)) {
+            app.ShowErrorMessage("Invalid Amount");
+            return;
+        }
+
+        var val = Number(parseFloat(Amt).toFixed(2)).toLocaleString('en');
+        if (val.indexOf('.') == -1) {
+            val = val + ".00";
+        }
+        $("#FormWN_LadAmt").val(val);
+
+        if (Amt > 999999999) {
+            $("#FormWN_LadAmt").val("")
+            app.ShowErrorMessage("Invalid Amount");
+        }
+    }
+}
+
 //FormWN RegionEnd
 
 
@@ -341,7 +391,7 @@ function formatDate(date) {
 //Image
 
 function GetImageList(id, form) {
-     ;
+    ;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
@@ -395,4 +445,30 @@ function ClearWN() {
     $("#FormWN_DtWn").val('');
     $("#FormWN.DtW2Initiation").val('');
     $("#FormWN.LadAmt").val('');
+}
+
+function GoBackWD() {
+
+    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormWD_Status").val() == "" || $("#FormWD_Status").val() == "Saved") {
+        if (app.Confirm("Are you sure you want to close the form?", function (e) {
+            if (e) {
+                location.href = "/InstructedWorks/Index";
+            }
+        }));
+    }
+    else
+        location.href = "/InstructedWorks/Index";
+}
+
+function GoBackWN() {
+
+    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "" || $("#FormWN_Status").val() == "" || $("#FormWN_Status").val() == "Saved") {
+        if (app.Confirm("Are you sure you want to close the form?", function (e) {
+            if (e) {
+                location.href = "/InstructedWorks/Index";
+            }
+        }));
+    }
+    else
+        location.href = "/InstructedWorks/Index";
 }
