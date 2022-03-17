@@ -1,20 +1,26 @@
 ﻿$(document).ready(function () {
 
 
-    //if ($("#hdnView").val() == "1") {
-    //    $("#FormWDdatapage *").prop("disabled", true);
-    //    $("#FormWDNdatapage *").prop("disabled", true);
+    if ($("#hdnFormWDStatus").val() == "Submitted") {
+        $("#FormWDdatapage *").prop("disabled", true);
+       
+        $("#FormWD_IwWrksDeptId").chosen('destroy');
+        $("#FormWD_IwWrksDeptId").prop("disabled", true);
 
-    //    $("#ddlWDUserid").chosen('destroy');
-    //    $("#ddlWDUserid").prop("disabled", true);
-    //    $("#ddlWNUserid").chosen('destroy');
-    //    $("#ddlWNUserid").prop("disabled", true);
+        $("#btnSaveWD").hide();
+        $("#btnSubmitWD").hide();
+       
+    }
 
-    //    $("#btnSave").hide();
-    //    $("#btnSubmit").hide();
-    //    $("#addAttachment").hide();
-    //    $("#btnBack").removeAttr("disabled");
-    //}
+    if ($("#hdnFormWNStatus").val() == "Submitted") {
+        $("#FormWDNdatapage *").prop("disabled", true);
+
+        $("#FormWN_IwWrksDeptId").chosen('destroy');
+        $("#FormWN_IwWrksDeptId").prop("disabled", true);
+
+        $("#btnSaveWN").hide();
+        $("#btnSubmitWN").hide();
+    }
 
     $('.allow_numeric').keypress(function (event) {
         var $this = $(this);
@@ -384,7 +390,7 @@ function ClearWD() {
 }
 
 function ClearWN() {
-    $("#FormWN.IwWrksDeptId").val("").trigger("change").trigger("chosen:updated");
+    $("#FormWN_IwWrksDeptId").val("").trigger("change").trigger("chosen:updated");
     $("#FormWN_OurRefNo").val('');
     $("#FormWN_DtWn").val('');
     $("#FormWN.DtW2Initiation").val('');

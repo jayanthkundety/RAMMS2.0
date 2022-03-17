@@ -162,6 +162,24 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
+        public async Task<int> DeActivateFormWD(int formNo)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormWD = await _repoUnit.FormWDRepository.GetByIdAsync(formNo);
+                domainModelFormWD.FwdActiveYn = false;
+                _repoUnit.FormWDRepository.Update(domainModelFormWD);
+                rowsAffected = await _repoUnit.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
 
     }
 }
