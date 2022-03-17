@@ -443,8 +443,8 @@ function ClearWN() {
     $("#FormWN_IwWrksDeptId").val("").trigger("change").trigger("chosen:updated");
     $("#FormWN_OurRefNo").val('');
     $("#FormWN_DtWn").val('');
-    $("#FormWN.DtW2Initiation").val('');
-    $("#FormWN.LadAmt").val('');
+    $("#FormWN_DtW2Initiation").val('');
+    $("#FormWN_LadAmt").val('');
 }
 
 function GoBackWD() {
