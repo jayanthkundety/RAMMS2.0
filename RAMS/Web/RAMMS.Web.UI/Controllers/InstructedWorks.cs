@@ -1059,6 +1059,7 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWN.UseridIssu = _security.UserID;
             _formWDWNModel.FormWN.DtWn = DateTime.Today;
             _formWDWNModel.FormWN.DtIssu = DateTime.Today;
+            _formWDWNModel.FormWN.DtW2Initiation = _formWDWNModel.FormW2.DtCompl;
             return View("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
@@ -1077,12 +1078,25 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
             _formWDWNModel.FormWN = Wnid == 0 ? new FormWNResponseDTO() : await _formWNService.FindFormWNByID(Wnid);
 
-            if (_formWDWNModel.FormWD.Status == Common.StatusList.FormWDSubmitted && view == 0)
+            if (_formWDWNModel.FormWN.DtW2Initiation == null)
+            {
+                if (_formWDWNModel.FormWD.DtPervCompl != null)
+                {
+                    _formWDWNModel.FormWN.DtW2Initiation = _formWDWNModel.FormWD.DtPervCompl;
+                }
+                else
+                {
+                    _formWDWNModel.FormWN.DtW2Initiation = _formWDWNModel.FormW2.DtCompl;
+                }
+                
+            }
+
+            if (_formWDWNModel.FormWD.Status == Common.StatusList.FormWDSaved && view == 0)
             {
                 if (_formWDWNModel.FormWD.UseridIssu == null || _formWDWNModel.FormWD.UseridIssu == 0)
                     _formWDWNModel.FormWD.UseridIssu = _security.UserID;
             }
-            if (_formWDWNModel.FormWN.Status == Common.StatusList.FormWNSubmitted && view == 0)
+            if (_formWDWNModel.FormWN.Status == Common.StatusList.FormWNSaved && view == 0)
             {
                 if (_formWDWNModel.FormWN.UseridIssu == null || _formWDWNModel.FormWN.UseridIssu == 0)
                     _formWDWNModel.FormWN.UseridIssu = _security.UserID;

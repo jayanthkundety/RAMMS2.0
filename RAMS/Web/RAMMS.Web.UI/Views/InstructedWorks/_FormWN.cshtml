@@ -101,7 +101,7 @@
                         </span>
                         <span class="float-left">
                             <b style="padding:0px 6px;font-size:20px; float:left"> RM</b>
-                            @Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold allow_numeric svalidate {required, Amount}", @style = "width:150px; margin:0px 6px; border-radius:0px" })
+                            @Html.TextBoxFor(m => m.FormWN.LadAmt, new { @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold allow_numeric svalidate {required, Amount}", @style = "width:150px; margin:0px 6px; border-radius:0px", @maxlength = "12", @onchange = "OnAmtChange()" })
                         </span>
                     </span>
                     <span class="float-left">  per day as Liquidated and Ascertained Damages for the period during which the said Instructed Work shall so remain and have remain incomplete and i shall certify for deduction such damages from any money due or which may become due to you under this Agreement.</span>
@@ -165,17 +165,20 @@
     width: 96%;
     height: 45px;">
 
+    @{
+        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+    }
 
     @if (Model.FormWN.Status != "Submitted")
     {
         <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWN()">Clear</button>
     }
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    @if ((string.IsNullOrEmpty(Model.FormWN.Status) || Model.FormWN.Status == "Saved") && security.IsInstructedWorkEngg)
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWN()">Close</button>
+    @if ((string.IsNullOrEmpty(Model.FormWN.Status) || Model.FormWN.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
     {
-        <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWN" onclick="return  SaveWN('','Submitted')">Save</button>
+        <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWN" onclick="return  SaveWN('','')">Save</button>
     }
-    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && !string.IsNullOrEmpty(Model.FormWN.Status) && Model.FormWN.Status == RAMMS.Common.StatusList.FormWNSaved)
+    @if ((security.IsInstructedWorkEngg || isJKRS) && !string.IsNullOrEmpty(Model.FormWN.Status) && Model.FormWN.Status == RAMMS.Common.StatusList.FormWNSaved)
     {
         <button type="button" id="btnSubmitWN" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
     }
