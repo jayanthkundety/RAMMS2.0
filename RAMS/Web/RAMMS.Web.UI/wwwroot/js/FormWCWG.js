@@ -317,6 +317,8 @@ function ClearWG() {
     $("#formWcDtDlpExtn").val('');
     $("#formWcIssuedBy").val('');
     $("#formWgIssuedDate").val('');
+    $("#formWgOurRef").val('');
+    $("#formWgYourRef").val('');
 }
 
 function ClearWC() {
