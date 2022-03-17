@@ -341,7 +341,7 @@ namespace RAMMS.Web.UI.Controllers
             model.FormW1.InitialProposedDate = DateTime.Today;
             model.FormW1.Dt = DateTime.Today;
             model.FormW1.DtReq = DateTime.Today;
-            
+
 
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -547,7 +547,7 @@ namespace RAMMS.Web.UI.Controllers
                 }
 
 
-              
+
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
                 _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
                 _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;
@@ -1070,7 +1070,9 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWD.UseridIssu = _security.UserID;
             _formWDWNModel.FormWD.DtWd = DateTime.Today;
             _formWDWNModel.FormWD.DtIssu = DateTime.Today;
+
             _formWDWNModel.FormWN.UseridIssu = _security.UserID;
+
             _formWDWNModel.FormWN.DtWn = DateTime.Today;
             _formWDWNModel.FormWN.DtIssu = DateTime.Today;
             _formWDWNModel.FormWN.DtW2Initiation = _formWDWNModel.FormW2.DtCompl;
@@ -1102,19 +1104,15 @@ namespace RAMMS.Web.UI.Controllers
                 {
                     _formWDWNModel.FormWN.DtW2Initiation = _formWDWNModel.FormW2.DtCompl;
                 }
-                
+
             }
 
-            if (_formWDWNModel.FormWD.Status == Common.StatusList.FormWDSaved && view == 0)
-            {
-                if (_formWDWNModel.FormWD.UseridIssu == null || _formWDWNModel.FormWD.UseridIssu == 0)
-                    _formWDWNModel.FormWD.UseridIssu = _security.UserID;
-            }
-            if (_formWDWNModel.FormWN.Status == Common.StatusList.FormWNSaved && view == 0)
-            {
-                if (_formWDWNModel.FormWN.UseridIssu == null || _formWDWNModel.FormWN.UseridIssu == 0)
-                    _formWDWNModel.FormWN.UseridIssu = _security.UserID;
-            }
+            if (_formWDWNModel.FormWD.UseridIssu == null || _formWDWNModel.FormWD.UseridIssu == 0)
+                _formWDWNModel.FormWD.UseridIssu = _security.UserID;
+
+            if (_formWDWNModel.FormWN.UseridIssu == null || _formWDWNModel.FormWN.UseridIssu == 0)
+                _formWDWNModel.FormWN.UseridIssu = _security.UserID;
+
             return PartialView("~/Views/InstructedWorks/FormWDWN.cshtml", _formWDWNModel);
         }
 
