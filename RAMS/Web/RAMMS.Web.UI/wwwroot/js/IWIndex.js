@@ -492,6 +492,8 @@ function checkAction(form) {
                 $("#wcView").show();
                 $("#wcPrint").show();
                 $("#wcDelete").show();
+                $("#wgPrint").show();
+                $("#wgDelete").show();
                 return;
             }
             $("#wcAdd").hide();
@@ -499,6 +501,8 @@ function checkAction(form) {
             $("#wcView").show();
             $("#wcPrint").show();
             $("#wcDelete").show();
+            $("#wgPrint").show();
+            $("#wgDelete").show();
         }
         else {
             $("#wcAdd").hide();
@@ -518,26 +522,33 @@ function checkAction(form) {
             $("#wdView").hide();
             $("#wdPrint").hide();
             $("#wdDelete").hide();
+            $("#wnPrint").hide();
+            $("#wnDelete").hide();
             return;
         }
         var id = GetFormIDByName("wd");
         var w2status = GetFormIDByName("w2Status");
         var wdsubstatus = GetFormIDByName("wdSubStatus");
+        var wnsubstatus = GetFormIDByName("wnSubStatus");
         if ((id == "-1" || id == null) && (w2status == "Received")) {
             $("#wdAdd").show();
             $("#wdEdit").hide();
             $("#wdView").hide();
             $("#wdPrint").hide();
             $("#wdDelete").hide();
+            $("#wnPrint").hide();
+            $("#wnDelete").hide();
             return;
         }
         else if (id != "-1" && id != null) {
-            if (wdsubstatus) {
+            if (wdsubstatus && wnsubstatus) {
                 $("#wdAdd").hide();
                 $("#wdEdit").hide();
                 $("#wdView").show();
                 $("#wdPrint").show();
                 $("#wdDelete").show();
+                $("#wnPrint").show();
+                $("#wnDelete").show();
                 return;
             }
             $("#wdAdd").hide();
@@ -545,6 +556,8 @@ function checkAction(form) {
             $("#wdView").show();
             $("#wdPrint").show();
             $("#wdDelete").show();
+            $("#wnPrint").show();
+            $("#wnDelete").show();
         }
         else {
             $("#wdAdd").hide();
@@ -552,6 +565,8 @@ function checkAction(form) {
             $("#wdView").hide();
             $("#wdPrint").hide();
             $("#wdDelete").hide();
+            $("#wnPrint").hide();
+            $("#wnDelete").hide();
         }
     }
 }
