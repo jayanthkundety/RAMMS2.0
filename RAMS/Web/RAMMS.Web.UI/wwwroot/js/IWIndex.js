@@ -624,6 +624,18 @@ function PrintFormWCWG(form) {
     }
 }
 
+function PrintFormWDWN(form) {
+    if (form == 'WD') {
+        var id = GetFormIDByName("wd");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormWD";
+    }
+    else {
+        var id = GetFormIDByName("wn");
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormWN";
+    }
+}
+
+
 function clearHeaderSearch() {
     $("#txtSmartSearch").val('');
     $("#txtIWRefNo").val('');
