@@ -199,11 +199,11 @@
     height: 45px;">
     <button type="button" class="btn btn-sm btn-outline-theme" id="clearWCBtn" onclick="return ClearWC()">Clear</button>
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    @if (string.IsNullOrEmpty(Model.FormW1.Status) && security.IsInstructedWorkEngg)
+    @if ((string.IsNullOrEmpty(Model.FormWC.Status) || Model.FormWC.Status == "Saved" ) && security.IsInstructedWorkEngg)
     {
         <button type="button" class="btn btn-sm btn-themebtn" id="saveWCBtn" onclick="return checkW2Exist()">Save</button>
     }
-    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && !string.IsNullOrEmpty(Model.FormWC.Status) && Model.FormWC.Status == RAMMS.Common.StatusList.FormWCSaved)
+    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && (!string.IsNullOrEmpty(Model.FormWC.Status) && Model.FormWC.Status == RAMMS.Common.StatusList.FormWCSaved))
     {
         <button type="button" class="btn btn-sm btn-themebtn" id="submitWCBtn">Submit</button>
     }

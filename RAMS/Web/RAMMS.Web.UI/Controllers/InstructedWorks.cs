@@ -341,7 +341,7 @@ namespace RAMMS.Web.UI.Controllers
             model.FormW1.InitialProposedDate = DateTime.Today;
             model.FormW1.Dt = DateTime.Today;
             model.FormW1.DtReq = DateTime.Today;
-            model.FormW1.DtVer = DateTime.Today;
+            
 
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -383,7 +383,10 @@ namespace RAMMS.Web.UI.Controllers
             if (model.FormW1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
             {
                 if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
+                {
                     model.FormW1.UseridVer = _security.UserID;
+                    model.FormW1.DtVer = DateTime.Today;
+                }
             }
 
             await LoadDropDownsSectionCode();
@@ -467,6 +470,7 @@ namespace RAMMS.Web.UI.Controllers
             _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
             _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
             _formW2Model.FECM.FECM.Dt = DateTime.Today;
+            _formW2Model.FECM.FECM.DtTecm = DateTime.Today;
 
             var defaultData = new DTO.ResponseBO.FormW2ResponseDTO();
             defaultData.Fw1IwRefNo = _formW2Model.FormW1.IwRefNo;
@@ -509,7 +513,7 @@ namespace RAMMS.Web.UI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> EditFormW2(int id, string view)
+        public async Task<IActionResult> EditFormW2(int id, string view = "")
         {
             _formW2Model = new FormW2Model();
 
@@ -533,7 +537,17 @@ namespace RAMMS.Web.UI.Controllers
                 if ((resultFormW2.SubmitSts && view != null) || view == "1") _formW2Model.View = "1";
 
                 _formW2Model.SaveFormW2Model = resultFormW2;
-                if (_formW2Model.SaveFormW2Model.UseridReq == null || _formW2Model.SaveFormW2Model.UseridReq == 0) _formW2Model.SaveFormW2Model.UseridReq = _security.UserID;
+
+                if ((_formW2Model.SaveFormW2Model.Status == Common.StatusList.FormW2Submitted && view == "1") && (_security.IsInstructedWorkEngg || _security.IsRegionManager || _security.IsDirector))
+                {
+                    if (_formW2Model.SaveFormW2Model.UseridReq == null || _formW2Model.SaveFormW2Model.UseridReq == 0)
+                    {
+                        _formW2Model.SaveFormW2Model.UseridReq = _security.UserID;
+                    }
+                }
+
+
+              
                 _formW2Model.FormW1 = _formW2Model.SaveFormW2Model.Fw1PkRefNoNavigation;
                 _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
                 _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;

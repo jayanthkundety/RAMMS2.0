@@ -457,19 +457,19 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Name", "Name")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Received by Name}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control ssvalidate  {required, Received by Name}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Designation", "Designation")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control svalidate  {required, Received by Designation}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control ssvalidate  {required, Received by Designation}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Office", "Office")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control svalidate  {required, Received by Office }", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control ssvalidate  {required, Received by Office }", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Received by date}" id="formW2RequestedDate" value="@_RequestedDate" />
+                                                                    <input type="date" class="datepicker form-control  ssvalidate {required, Received by date}" id="formW2RequestedDate" value="@_RequestedDate" />
                                                                 </div>
                                                                 <div class="form-group col-lg-2 text-center">
                                                                     @Html.Label("Signature", "Signature")
@@ -983,7 +983,10 @@
                 </div>
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
-                    <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
+                    @if ((security.IsInstructedWorkEngg || security.IsRegionManager) && (string.IsNullOrEmpty(Model.SaveFormW2Model.Status) ||  Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                    {
+                        <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
+                    }
                     @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
