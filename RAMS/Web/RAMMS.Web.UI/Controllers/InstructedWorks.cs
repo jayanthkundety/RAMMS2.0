@@ -341,7 +341,7 @@ namespace RAMMS.Web.UI.Controllers
             model.FormW1.InitialProposedDate = DateTime.Today;
             model.FormW1.Dt = DateTime.Today;
             model.FormW1.DtReq = DateTime.Today;
-            model.FormW1.DtVer = DateTime.Today;
+            
 
 
             DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -383,7 +383,10 @@ namespace RAMMS.Web.UI.Controllers
             if (model.FormW1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
             {
                 if (model.FormW1.UseridVer == null || model.FormW1.UseridVer == 0)
+                {
                     model.FormW1.UseridVer = _security.UserID;
+                    model.FormW1.DtVer = DateTime.Today;
+                }
             }
 
             await LoadDropDownsSectionCode();
