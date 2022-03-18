@@ -139,7 +139,7 @@ function DeleteW2() {
 }
 
 function DeleteWCWG(form) {
-    var id,url;
+    var id, url;
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
             if (form == "WC") {
@@ -150,7 +150,7 @@ function DeleteWCWG(form) {
                 id = GetFormIDByName("wg");
                 url = "/InstructedWorks/DeleteWG";
             }
-            
+
             InitAjaxLoading();
             $.ajax({
                 url: url,
@@ -249,7 +249,7 @@ function GetFormIDByName(formName) {
     return value;
 }
 
-function OpenFormW1(mode, view) {
+function OpenFormW1(mode) {
 
     var SelectedIWGridId = 0;
 
@@ -257,13 +257,9 @@ function OpenFormW1(mode, view) {
         url = "/InstructedWorks/AddFormW1";
     }
     else if (mode == "Edit") {
-
         SelectedIWGridId = GetFormIDByName("w1");
+        if (SelectedIWGridId == null || SelectedIWGridId == '-1') return;
         url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
-    }
-    else if (mode == "View") {
-        SelectedIWGridId = GetFormIDByName("w1");
-        url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId + "&View=1";
     }
     InitAjaxLoading();
     $.ajax({
@@ -282,23 +278,29 @@ function OpenFormW1(mode, view) {
     });
 }
 
-function OpenFormW2(mode, view) {
+function OpenFormW2(mode) {
 
     InitAjaxLoading();
     var url = '';
-    var id = "";
+    var w1id = GetFormIDByName("w1");
+    var w2id = GetFormIDByName("w2");
+    var w1status = GetFormIDByName("w1Status");
+    var w2status = GetFormIDByName("w2Status");
+    var w2substatus = GetFormIDByName("w2SubStatus");
 
     if (mode == 'Add') {
-        id = GetFormIDByName("w1");
-        if (id > 0 && id != null) {
+        if (id > 0 && id != null && w1status == "Approved") {
             url = '/InstructedWorks/AddFormW2?id=' + id;
+        }
+        else {
+            app.ShowErrorMessage("Form W1 is not approved");
         }
 
     }
     else {
         id = GetFormIDByName("w2");
         if (id > 0 && id != null)
-            url = '/InstructedWorks/EditFormW2?id=' + id + (view == 1 ? '&view=1' : '');
+            url = '/InstructedWorks/EditFormW2?id=' + id;
     }
 
     if (url == '') {
@@ -324,7 +326,7 @@ function OpenFormW2(mode, view) {
     return true;
 }
 
-function OpenFormWDWN(mode, view) {
+function OpenFormWDWN(mode) {
     var W1Id = GetFormIDByName("w1");
     var W2Id = GetFormIDByName("w2");
     var Wdid = GetFormIDByName("wd");
@@ -332,20 +334,17 @@ function OpenFormWDWN(mode, view) {
     var view;
     //EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int View)
     if (mode == "Add") {
+
         url = "/InstructedWorks/OpenWDWN";
     }
     else if (mode == "Edit") {
-        url = "/InstructedWorks/EditFormWDWN";
-    }
-    else if (mode == "View") {
-        view = 1;
         url = "/InstructedWorks/EditFormWDWN";
     }
     InitAjaxLoading();
     $.ajax({
         url: url,
         type: 'POST',
-        data: { Wdid, Wnid, W1Id, W2Id, view },
+        data: { Wdid, Wnid, W1Id, W2Id },
         success: function (data) {
             $("#formWDWN").modal('show');
             $("#formWDWNContent").html(data);
@@ -571,11 +570,12 @@ function checkAction(form) {
     }
 }
 
-function OpenFormWCWG(mode, view) {
+function OpenFormWCWG(mode) {
     var w1id = GetFormIDByName("w1");
     var w2id = GetFormIDByName("w2");
     var wcid = GetFormIDByName("wc");
     var wgid = GetFormIDByName("wg");
+
 
     if (mode == "Add") {
         url = "/InstructedWorks/OpenWCWG?w1id=" + w1id + "&w2id=" + w2id;
@@ -584,7 +584,7 @@ function OpenFormWCWG(mode, view) {
         url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id;
     }
     else if (mode == "View") {
-        url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id + "&View=1";
+        url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id;
     }
     InitAjaxLoading();
     $.ajax({

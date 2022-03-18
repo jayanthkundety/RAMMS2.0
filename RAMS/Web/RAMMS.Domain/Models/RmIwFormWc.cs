@@ -38,6 +38,6 @@ namespace RAMMS.Domain.Models
         public string FwcAuditLog { get; set; }
 
         public virtual RmIwFormW1 FwcFw1PkRefNoNavigation { get; set; }
-        public virtual RmIwWorksDeptMaster FwcPkRefNoNavigation { get; set; }
+        public virtual RmIwWorksDeptMaster FwcIwWrksDept { get; set; }
     }
 }

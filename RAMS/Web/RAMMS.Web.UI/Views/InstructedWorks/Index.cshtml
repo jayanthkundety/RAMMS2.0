@@ -10,7 +10,7 @@
     var isModifyPerm = security.IsPCModify(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
     var isDeletePerm = security.IsPCDelete(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
 }
-<script src="~/js/IWIndex.js" type="text/javascript"></script> 
+<script src="~/js/IWIndex.js" type="text/javascript"></script>
 
 <div class="row">
     <div class="body-header w-100">
@@ -130,129 +130,115 @@
     <div class="col-12">
         <div class="text-right">
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('w1')">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
                     PROPOSED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="w1Add" data-toggle="modal" onclick="OpenFormW1('Add',0)">
-                        <span class="add-icon"></span> Add
+                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="w1Add" data-toggle="modal" onclick="OpenFormW1('Add')">
+                        <span class="add-icon"></span> Add W1
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w1Edit" data-toggle="modal" onclick="OpenFormW1('Edit',0)">
-                        <span class="edit-icon"></span>Edit
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w1Edit" data-toggle="modal" onclick="OpenFormW1('Edit')">
+                        <span class="edit-icon"></span>View / Edit W1
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w1View" data-toggle="modal" onclick="OpenFormW1('View',1)">
+                   @* <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w1View" data-toggle="modal" onclick="OpenFormW1('View',1)">
                         <span class="view-icon"></span> View
-                    </button>
+                    </button>*@
                     <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w1Delete" onclick="DeleteW1()">
-                        <span class="print-icon"></span> Delete
+                        <span class="del-icon"></span> Delete W1
                     </button>
                     <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w1Print" onclick="PrintFormW1()">
-                        <span class="print-icon"></span> Print
+                        <span class="print-icon"></span> Print W1
                     </button>
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('w2')">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
                     IW TECM & FECM
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="w2Add" data-toggle="modal" onclick="OpenFormW2('Add',0)">
-                        <span class="add-icon"></span> Add
+                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="w2Add" data-toggle="modal" onclick="OpenFormW2('Add')">
+                        <span class="add-icon"></span> Add W2
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w2Edit" data-toggle="modal" onclick="OpenFormW2('Edit',0)">
-                        <span class="edit-icon"></span>   Edit
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w2Edit" data-toggle="modal" onclick="OpenFormW2('Edit')">
+                        <span class="edit-icon"></span>   View / Edit W2
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w2View" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
+                   @* <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w2View" data-toggle="modal" data-target="#formW2" onclick="OpenFormW2('View',1)">
                         <span class="view-icon"></span> View
+                    </button>*@ 
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w2Delete" onclick="DeleteW2()">
+                        <span class="del-icon"></span> Delete W2
                     </button>
-                     <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="w2Delete" onclick="DeleteW2()">
-                        <span class="print-icon"></span> Delete
-                    </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="w2Print" onclick="PrintFormW2()">
-                        <span class="print-icon"></span> Print
+                    <button type="button" class="dropdown-item editdel-btns border-top  py-1 px-1" id="w2Print" onclick="PrintFormW2()">
+                        <span class="print-icon"></span> Print W2
                     </button>
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('wd')">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
                     EOT / LAD
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add',0)">
-                        <span class="add-icon"></span> Add
-                    </button>
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit',0)">
-                        <span class="edit-icon"></span>   Edit
+                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add','WD')">
+                        <span class="add-icon"></span> Add WD
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdView" onclick="OpenFormWDWN('View',1)">
-                        <span class="view-icon"></span> View
+                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add','WN')">
+                        <span class="add-icon"></span> Add WN
                     </button>
-                    @*<button type="button" class="dropdown-item editdel-btns border-top py-1 px-1 dropdown-toggle dropleft" id="wdDelete" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                        <span class="print-icon"></span> Delete <span class="caret"></span>
-                    </button>*@
-                    @*<div  id="wdDelete">*@
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1"  id="wdDelete" onclick="DeleteWCWG('WD')">
-                            <span class="print-icon"></span> Delete WD
-                        </button>
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wnDelete" onclick="DeleteWCWG('WN')">
-                            <span class="print-icon"></span> Delete WN
-                        </button>
-                    @*</div>*@
-                    
-                   @* <button type="button" class="dropdown-item editdel-btns py-1 border-top px-1  dropdown-toggle dropleft" id="wdPrint"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                        <span class="print-icon"></span> Print <span class="caret"></span>
-                    </button>*@
-                    @*<div id="wdPrint">*@
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1"  id="wdPrint" onclick="PrintFormWDWN('WD')">
-                            <span class="print-icon"></span> Print WD
-                        </button>
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wnPrint" onclick="PrintFormWDWN('WN')">
-                            <span class="print-icon"></span> Print WN
-                        </button>
+
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit','WD')">
+                        <span class="edit-icon"></span>   View / Edit WG
+                    </button>
+
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit','WN')">
+                        <span class="edit-icon"></span>   View / Edit WN
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdDelete" onclick="DeleteWCWG('WD')">
+                        <span class="del-icon"></span> Delete WD
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wnDelete" onclick="DeleteWCWG('WN')">
+                        <span class="del-icon"></span> Delete WN
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdPrint" onclick="PrintFormWDWN('WD')">
+                        <span class="print-icon"></span> Print WD
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wnPrint" onclick="PrintFormWDWN('WN')">
+                        <span class="print-icon"></span> Print WN
+                    </button>
                     @*</div>*@
                 </div>
             </div>
             <div class="btn-group dropbottom" id="actiondropdown">
-                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false" onclick="checkAction('wc')">
+                <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle font-12" data-toggle="dropdown" aria-expanded="false">
                     COMPLETED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wcAdd" onclick="OpenFormWCWG('Add',0)">
-                        <span class="add-icon"></span> Add
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wcAdd" onclick="OpenFormWCWG('Add','WC')">
+                        <span class="add-icon"></span> Add WC
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcEdit" onclick="OpenFormWCWG('Edit',0)">
-                        <span class="edit-icon"></span>   Edit
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgAdd" onclick="OpenFormWCWG('Add','WG')">
+                        <span class="add-icon"></span> Add WG
                     </button>
-                    
-                     <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcView" onclick="OpenFormWCWG('View',1)">
-                        <span class="view-icon"></span> View
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcEdit" onclick="OpenFormWCWG('Edit','WC')">
+                        <span class="edit-icon"></span>  View / Edit WC
                     </button>
-                    
-                    @*<button type="button" class="dropdown-item editdel-btns border-top py-1 px-1 dropdown-toggle dropleft" id="wcDelete" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                        <span class="print-icon"></span> Delete <span class="caret"></span>
-                    </button>*@
-                    @*<div id="wcDelete">*@
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcDelete" onclick="DeleteWCWG('WC')">
-                            <span class="print-icon"></span> Delete WC
-                        </button>
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wgDelete" onclick="DeleteWCWG('WG')">
-                            <span class="print-icon"></span> Delete WG
-                        </button>
-                    @*</div>*@
-                   
-                    @*<button type="button" class="dropdown-item editdel-btns border-top py-1 px-1 dropdown-toggle dropleft" id="wcPrint" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                        <span class="print-icon"></span> Print <span class="caret"></span>
-                    </button>*@
-                    @*<div id="wcPrint">*@
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcPrint" onclick="PrintFormWCWG('WC')">
-                            <span class="print-icon"></span> Print WC
-                        </button>
-                        <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wgPrint" onclick="PrintFormWCWG('WG')">
-                            <span class="print-icon"></span> Print WG
-                        </button>
-                    @*</div>*@
+
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgEdit" onclick="OpenFormWCWG('Edit','WG')">
+                        <span class="view-icon"></span> View / Edit WG
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcDelete" onclick="DeleteWCWG('WC')">
+                        <span class="del-icon"></span> Delete WC
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgDelete" onclick="DeleteWCWG('WG')">
+                        <span class="del-icon"></span> Delete WG
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcPrint" onclick="PrintFormWCWG('WC')">
+                        <span class="print-icon"></span> Print WC
+                    </button>
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgPrint" onclick="PrintFormWCWG('WG')">
+                        <span class="print-icon"></span> Print WG
+                    </button>
                 </div>
             </div>
             <div class="panel with-nav-tabs panel-default">
@@ -301,6 +287,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="hdnHasRights" value="@ViewData["IWRights"]" />
 <div class="modal fade" id="formW1" role="dialog">
     <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
         <div class="modal-content mt-5">

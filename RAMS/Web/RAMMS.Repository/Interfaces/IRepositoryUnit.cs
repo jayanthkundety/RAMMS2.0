@@ -54,6 +54,8 @@ namespace RAMMS.Repository.Interfaces
         public FormWDRepository FormWDRepository { get; }
         public FormWNRepository FormWNRepository { get; }
 
+        public ModuleFormRightsRepository ModuleFormRightsRepository { get; }
+
         //End IW Forms
 
         FormS2QuarterDtlRepository FormS2QuarterDtlRepository { get; }

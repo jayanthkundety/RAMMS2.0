@@ -105,13 +105,7 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "";
             ViewData["IWBYDE"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
-
-            //var res = ((IEnumerable<CSelectListItem>)ViewData["TECM_Status"]).ToList();
-            //res.Insert(0, new CSelectListItem()
-            //{
-            //    Value = "All",
-            //    Text = "All"
-            //});
+            ViewData["IWRights"] = _security.IWRights.GroupBy(m => m.MfrModFormName).ToList();
 
             return View();
         }
