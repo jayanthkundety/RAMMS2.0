@@ -1058,7 +1058,7 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.Division = await _divisionService.GetDivisions();
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
-            _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W1Id);
+            _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
             _formWDWNModel.FormWD = new FormWDResponseDTO();
             // _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
             _formWDWNModel.FormWD.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
