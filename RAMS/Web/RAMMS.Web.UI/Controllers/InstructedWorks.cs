@@ -105,12 +105,14 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "";
             ViewData["IWBYDE"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
-            ViewData["IWRights"] = _security.IWRights.GroupBy(m => m.MfrModFormName).ToList();
+            var irights = _security.IWRights.GroupBy(m => m.MfrModFormName);
+            ViewData["IWRights"] = JsonConvert.SerializeObject(irights);
+            ViewData["Groups"] = JsonConvert.SerializeObject(_security.Groups);
 
             return View();
         }
 
-        [HttpPost]
+        [HttpPost] 
         public async Task<IActionResult> GetIWImageList(string Id, string assetgroup, string form)
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();

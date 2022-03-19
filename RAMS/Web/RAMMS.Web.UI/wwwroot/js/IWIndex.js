@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
     $('.allow_numeric').keypress(function (event) {
         var $this = $(this);
         if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
@@ -87,6 +88,7 @@ function OnRoadChange(tis) {
 }
 
 function DeleteW1() {
+    if (!checkAction("FormW1", 'Delete')) return;
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
             var id = GetFormIDByName("w1");
@@ -113,6 +115,7 @@ function DeleteW1() {
 }
 
 function DeleteW2() {
+    if (!checkAction("FormW2", 'Delete')) return;
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
             var id = GetFormIDByName("w2");
@@ -140,15 +143,53 @@ function DeleteW2() {
 
 function DeleteWCWG(form) {
     var id, url;
+    if (!checkAction(form, 'Delete')) return;
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
-            if (form == "WC") {
+            if (form == "FormWC") {
                 id = GetFormIDByName("wc");
                 url = "/InstructedWorks/DeleteWC";
             }
             else {
                 id = GetFormIDByName("wg");
                 url = "/InstructedWorks/DeleteWG";
+            }
+
+            InitAjaxLoading();
+            $.ajax({
+                url: url,
+                data: { id },
+                type: 'POST',
+                success: function (data) {
+                    HideAjaxLoading();
+                    debugger;
+                    if (data.id.result > 0) {
+                        $("body").removeClass("loading");
+                        app.ShowSuccessMessage("Deleted Successfully", false);
+                        FormIWGridRefresh();
+                    }
+                    else {
+                        app.ShowWarningMessage("Please try again later.", false);
+                        $("body").removeClass("loading");
+                    }
+                }
+            });
+        }
+    }));
+}
+
+function DeleteWDWN(form) {
+    var id, url;
+    if (!checkAction(form, 'Delete')) return;
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            if (form == "FormWD") {
+                id = GetFormIDByName("wd");
+                url = "/InstructedWorks/DeleteWD";
+            }
+            else {
+                id = GetFormIDByName("wn");
+                url = "/InstructedWorks/DeleteWN";
             }
 
             InitAjaxLoading();
@@ -254,9 +295,11 @@ function OpenFormW1(mode) {
     var SelectedIWGridId = 0;
 
     if (mode == "Add") {
+        if (!checkAction("FormW1", 'Add')) return;
         url = "/InstructedWorks/AddFormW1";
     }
     else if (mode == "Edit") {
+        if (!checkAction("FormW1", 'Edit')) return;
         SelectedIWGridId = GetFormIDByName("w1");
         if (SelectedIWGridId == null || SelectedIWGridId == '-1') return;
         url = "/InstructedWorks/EditFormW1?id=" + SelectedIWGridId;
@@ -279,30 +322,41 @@ function OpenFormW1(mode) {
 }
 
 function OpenFormW2(mode) {
-
-    InitAjaxLoading();
     var url = '';
-    var w1id = GetFormIDByName("w1");
-    var w2id = GetFormIDByName("w2");
-    var w1status = GetFormIDByName("w1Status");
-    var w2status = GetFormIDByName("w2Status");
-    var w2substatus = GetFormIDByName("w2SubStatus");
 
+    var view = 0;
     if (mode == 'Add') {
-        if (id > 0 && id != null && w1status == "Approved") {
-            url = '/InstructedWorks/AddFormW2?id=' + id;
-        }
-        else {
-            app.ShowErrorMessage("Form W1 is not approved");
-        }
+        if (!checkAction("FormW2", 'Add')) return;
+        var id = GetFormIDByName("w1");
 
+        if (id != -1) {
+            var w1status = GetFormIDByName("w1Status");
+            var w2status = GetFormIDByName("w2Status");
+            if (w1status == "Approved" && w2status == "") {
+                url = '/InstructedWorks/AddFormW2?id=' + id;
+            }
+            else if (w1status == "Approved" && w2status != "") {
+                app.ShowErrorMessage("A Form W2 is already created");
+            } else {
+
+                app.ShowErrorMessage("Form W1 is not approved");
+            }
+        }
     }
     else {
+        //var w2status = GetFormIDByName("w2Status");
+        var w2substatus = GetFormIDByName("w2SubStatus");
+
+        if (w2substatus == true) {
+            view = 1;
+        }
+
+        if (!checkAction("FormW2", view > 0 ? 'View' : 'Edit')) return;
         id = GetFormIDByName("w2");
         if (id > 0 && id != null)
-            url = '/InstructedWorks/EditFormW2?id=' + id;
+            url = '/InstructedWorks/EditFormW2?id=' + id + (view > 0 ? "&view=1" : "");
     }
-
+    InitAjaxLoading();
     if (url == '') {
         HideAjaxLoading();
         return;
@@ -331,20 +385,33 @@ function OpenFormWDWN(mode) {
     var W2Id = GetFormIDByName("w2");
     var Wdid = GetFormIDByName("wd");
     var Wnid = GetFormIDByName("wn");
+    var wdsubstatus = GetFormIDByName("wdsubstatus");
+    var wnsubstatus = GetFormIDByName("wnsubstatus");
+
     var view;
+
+    if (form == 'FormWD' && wdsubstatus == "true") {
+        view = 1;
+    }
+
+    if (form == 'FormWN' && wnsubstatus == "true") {
+        view = 1;
+    }
+
     //EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int View)
     if (mode == "Add") {
-
+        if (!checkAction(form, 'Add') && !wdsubstatus) return;
         url = "/InstructedWorks/OpenWDWN";
     }
     else if (mode == "Edit") {
+        if (!checkAction(form, 'Edit') && !wnsubstatus) return;
         url = "/InstructedWorks/EditFormWDWN";
     }
     InitAjaxLoading();
     $.ajax({
         url: url,
         type: 'POST',
-        data: { Wdid, Wnid, W1Id, W2Id },
+        data: { Wdid, Wnid, W1Id, W2Id, view },
         success: function (data) {
             $("#formWDWN").modal('show');
             $("#formWDWNContent").html(data);
@@ -358,234 +425,87 @@ function OpenFormWDWN(mode) {
     });
 }
 
-function checkAction(form) {
+function GetRightsByForm(form) {
 
-    var si = getGridSelectedData();
-    if (form == 'w2') {
+    var iwRoles = JSON.parse($("#hdnHasRights").val());
 
-        if (si == null) {
-            $("#w2Add").hide();
-            $("#w2Edit").hide();
-            $("#w2View").hide();
-            $("#w2Print").hide();
-            $("#w2Delete").hide();
-            app.ShowErrorMessage("Kindly select a row to open to Add/Edit W2 Form");
-            return;
-        }
-        var id = GetFormIDByName("w2");
-        var w1status = GetFormIDByName("w1Status");
-        var w2status = GetFormIDByName("w2Status");
-        var w2substatus = GetFormIDByName("w2SubStatus");
+    for (var i = 0; i <= iwRoles.length; i++) {
 
-        if (id == "-1" || id == null) $("#w2Delete").hide();
-
-        if ((id == "-1" || id == null) && (w1status == "Approved")) {
-            $("#w2Add").show();
-            $("#w2Edit").hide();
-            $("#w2View").hide();
-            $("#w2Print").hide();
-            $("#w2Delete").hide();
-        }
-        else if (id != "-1" && id != null) {
-            if (w2status == "Saved" || w2status == "Submitted" || w2status == "Rejected")
-                $("#w2Delete").show();
-            else
-                $("#w2Delete").hide();
-
-            if (w2status == "Approved") {
-                $("#w2Add").hide();
-                $("#w2Edit").hide();
-                $("#w2View").show();
-                $("#w2Print").show();
-                return;
-            }
-            else if (w2status == "Rejected" || w2status == "Saved") {
-                $("#w2Add").hide();
-                $("#w2Edit").show();
-                $("#w2View").show();
-                $("#w2Print").show();
-                return;
-            }
-
-            if (w2substatus) {
-                $("#w2Add").hide();
-                $("#w2Edit").hide();
-                $("#w2View").show();
-                $("#w2Print").show();
-                return;
-            }
-        }
-        else {
-            $("#w2Add").hide();
-            $("#w2Edit").hide();
-            $("#w2View").hide();
-            $("#w2Print").hide();
-        }
-
-    }
-    else if (form == 'w1') {
-        if (si == null) {
-            $("#w1Edit").hide();
-            $("#w1View").hide();
-            $("#w1Print").hide();
-            $("#w1Delete").hide();
-            return;
-        }
-        var id = GetFormIDByName("w1");
-        var w1status = GetFormIDByName("w1Status");
-        if (id != "-1" && id != null) {
-            if (w1status == "Saved" || w1status == "Submitted" || w1status == "Rejected")
-                $("#w1Delete").show();
-            else
-                $("#w1Delete").hide();
-
-            if (w1status == "Approved") {
-                $("#w1Edit").hide();
-                $("#w1View").show();
-                $("#w1Print").show();
-
-                return;
-            }
-
-            if (w1status == "Rejected") {
-                $("#w1Edit").show();
-                $("#w1View").show();
-                $("#w1Print").show();
-
-                return;
-            }
-        }
-        $("#w1Edit").show();
-        $("#w1View").show();
-        $("#w1Print").show();
-    }
-    else if (form == 'wc') {
-        if (si == null) {
-            $("#wcAdd").hide();
-            $("#wcEdit").hide();
-            $("#wcView").hide();
-            $("#wcPrint").hide();
-            $("#wgPrint").hide();
-            $("#wcDelete").hide();
-            $("#wgDelete").hide();
-            return;
-        }
-        var id = GetFormIDByName("wc");
-        var w2status = GetFormIDByName("w2Status"); //To Do change to wd Status
-        var wcsubstatus = GetFormIDByName("wcSubStatus");
-        var wgsubstatus = GetFormIDByName("wgSubStatus");
-        if ((id == "-1" || id == null) && (w2status == "Received")) {
-            $("#wcAdd").show();
-            $("#wcEdit").hide();
-            $("#wcView").hide();
-            $("#wcPrint").hide();
-            $("#wcDelete").hide();
-            $("#wgPrint").hide();
-            $("#wgDelete").hide();
-            return;
-        }
-        else if (id != "-1" && id != null) {
-            if (wcsubstatus && wgsubstatus) {
-                $("#wcAdd").hide();
-                $("#wcEdit").hide();
-                $("#wcView").show();
-                $("#wcPrint").show();
-                $("#wcDelete").show();
-                $("#wgPrint").show();
-                $("#wgDelete").show();
-                return;
-            }
-            $("#wcAdd").hide();
-            $("#wcEdit").show();
-            $("#wcView").show();
-            $("#wcPrint").show();
-            $("#wcDelete").show();
-            $("#wgPrint").show();
-            $("#wgDelete").show();
-        }
-        else {
-            $("#wcAdd").hide();
-            $("#wcEdit").hide();
-            $("#wcView").hide();
-            $("#wcPrint").hide();
-            $("#wcDelete").hide();
-            $("#wgPrint").hide();
-            $("#wgDelete").hide();
-        }
-
-    }
-    else if (form == 'wd') {
-        if (si == null) {
-            $("#wdAdd").hide();
-            $("#wdEdit").hide();
-            $("#wdView").hide();
-            $("#wdPrint").hide();
-            $("#wdDelete").hide();
-            $("#wnPrint").hide();
-            $("#wnDelete").hide();
-            return;
-        }
-        var id = GetFormIDByName("wd");
-        var w2status = GetFormIDByName("w2Status");
-        var wdsubstatus = GetFormIDByName("wdSubStatus");
-        var wnsubstatus = GetFormIDByName("wnSubStatus");
-        if ((id == "-1" || id == null) && (w2status == "Received")) {
-            $("#wdAdd").show();
-            $("#wdEdit").hide();
-            $("#wdView").hide();
-            $("#wdPrint").hide();
-            $("#wdDelete").hide();
-            $("#wnPrint").hide();
-            $("#wnDelete").hide();
-            return;
-        }
-        else if (id != "-1" && id != null) {
-            if (wdsubstatus && wnsubstatus) {
-                $("#wdAdd").hide();
-                $("#wdEdit").hide();
-                $("#wdView").show();
-                $("#wdPrint").show();
-                $("#wdDelete").show();
-                $("#wnPrint").show();
-                $("#wnDelete").show();
-                return;
-            }
-            $("#wdAdd").hide();
-            $("#wdEdit").show();
-            $("#wdView").show();
-            $("#wdPrint").show();
-            $("#wdDelete").show();
-            $("#wnPrint").show();
-            $("#wnDelete").show();
-        }
-        else {
-            $("#wdAdd").hide();
-            $("#wdEdit").hide();
-            $("#wdView").hide();
-            $("#wdPrint").hide();
-            $("#wdDelete").hide();
-            $("#wnPrint").hide();
-            $("#wnDelete").hide();
+        if (iwRoles[i][0].MfrModFormName == form) {
+            var AllRoles = GetRightsByRole(iwRoles[i]);
+            return AllRoles;
         }
     }
 }
 
-function OpenFormWCWG(mode) {
-    var w1id = GetFormIDByName("w1");
-    var w2id = GetFormIDByName("w2");
-    var wcid = GetFormIDByName("wc");
-    var wgid = GetFormIDByName("wg");
+function GetRightsByRole(iwRights) {
+    var iwroles = [];
+    var roles = JSON.parse($("#hdnRole").val());
+    for (var i = 0; i < iwRights.length; i++) {
+        for (var j = 0; j < roles.length; j++) {
+            if (iwRights[i].MfrGroupName == roles[j]) {
+                iwroles.push(iwRights[i]);
+            }
+        }
+    }
+    return iwroles;
+}
 
+function hasRights(form, action) {
+    var AllRoles = GetRightsByForm(form);
+    for (var i = 0; i < AllRoles.length; i++) {
+        if (AllRoles[i].MfrCanAdd && action == "Add")
+            return true;
 
+        if (AllRoles[i].MfrCanEdit && action == "Edit")
+            return true;
+
+        if (AllRoles[i].MfrCanView && action == "View")
+            return true;
+
+        if (AllRoles[i].MfrCanDelete && action == "Delete")
+            return true;
+
+        if (AllRoles[i].MfrCanPrint && action == "Print")
+            return true;
+    }
+    return false
+
+}
+
+function checkAction(form, action) {
+    if (!hasRights(form, action)) {
+        app.ShowErrorMessage("User is not allowed to " + action + " form")
+        return false;
+    }
+    return true;
+}
+
+function OpenFormWCWG(mode, form) {
     if (mode == "Add") {
+        if (!checkAction(form, 'Add')) return;
+        var w1id = GetFormIDByName("w1");
+        var w2id = GetFormIDByName("w2");
         url = "/InstructedWorks/OpenWCWG?w1id=" + w1id + "&w2id=" + w2id;
     }
     else if (mode == "Edit") {
-        url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id;
+        var wcsubstatus = GetFormIDByName("wcsubstatus");
+        var wgsubstatus = GetFormIDByName("wgsubstatus");
+        var view = 0;
+        if (form == 'FormWC' && wcsubstatus == "true") {
+            view = 1;
+        }
+
+        if (form == 'FormWG' && wgsubstatus == "true") {
+            view = 1;
+        }
+        if (!checkAction(form, view > 0 ? 'View' :'Edit')) return;
+        var wcid = GetFormIDByName("wc");
+        var wgid = GetFormIDByName("wg");
+        var w2id = GetFormIDByName("w2");
+        url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id + (view > 0 && "&view=1");
     }
-    else if (mode == "View") {
-        url = "/InstructedWorks/EditFormWCWG?wcid=" + wcid + "&wgid=" + wgid + "&w2id=" + w2id;
-    }
+  
     InitAjaxLoading();
     $.ajax({
         url: url,

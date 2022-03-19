@@ -179,19 +179,19 @@
                     EOT / LAD
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add','WD')">
+                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add','FormWD')">
                         <span class="add-icon"></span> Add WD
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add','WN')">
+                    <button type="button" class="dropdown-item editdel-btns  py-1 px-1" id="wdAdd" onclick="OpenFormWDWN('Add','FormWN')">
                         <span class="add-icon"></span> Add WN
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit','WD')">
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit','FormWD')">
                         <span class="edit-icon"></span>   View / Edit WG
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit','WN')">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wdEdit" onclick="OpenFormWDWN('Edit','FormWN')">
                         <span class="edit-icon"></span>   View / Edit WN
                     </button>
                     <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wdDelete" onclick="DeleteWCWG('WD')">
@@ -214,17 +214,17 @@
                     COMPLETED IW
                 </button>
                 <div class="dropdown-menu">
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wcAdd" onclick="OpenFormWCWG('Add','WC')">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wcAdd" onclick="OpenFormWCWG('Add','FormWC')">
                         <span class="add-icon"></span> Add WC
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgAdd" onclick="OpenFormWCWG('Add','WG')">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgAdd" onclick="OpenFormWCWG('Add','FormWG')">
                         <span class="add-icon"></span> Add WG
                     </button>
-                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcEdit" onclick="OpenFormWCWG('Edit','WC')">
+                    <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcEdit" onclick="OpenFormWCWG('Edit','FormWC')">
                         <span class="edit-icon"></span>  View / Edit WC
                     </button>
 
-                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgEdit" onclick="OpenFormWCWG('Edit','WG')">
+                    <button type="button" class="dropdown-item editdel-btns py-1 px-1" id="wgEdit" onclick="OpenFormWCWG('Edit','FormWG')">
                         <span class="view-icon"></span> View / Edit WG
                     </button>
                     <button type="button" class="dropdown-item editdel-btns border-top py-1 px-1" id="wcDelete" onclick="DeleteWCWG('WC')">
@@ -288,6 +288,9 @@
     </div>
 </div>
 <input type="hidden" id="hdnHasRights" value="@ViewData["IWRights"]" />
+<input type="hidden" id="hdnRole" value='@ViewData["Groups"]' />
+
+
 <div class="modal fade" id="formW1" role="dialog">
     <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
         <div class="modal-content mt-5">
