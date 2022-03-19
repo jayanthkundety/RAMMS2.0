@@ -8,6 +8,12 @@
     Layout = null;// "~/Views/Shared/_PortalLayout.cshtml";
 }
 <script src="~/js/FormWDWN.js" type="text/javascript"></script>
+<style>
+    .disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+</style>
 
 @using (Html.BeginForm())
 {
@@ -16,21 +22,21 @@
             <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
                 <ul class="nav nav-tabs tabbed round">
 
-                    <li class="nav-item">
+                    <li class="nav-item" id="tabWD">
                         <a href="#list_one" data-toggle="tab" aria-expanded="false" class="nav-link active">
                             <span class="">
                                 Form WD
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="tabWN">
                         <a href="#list_two" data-toggle="tab" aria-expanded="false" class="nav-link">
                             <span class="">
                                 Form WN
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="tabAttach">
                         <a href="#AccordPagegallery" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormWDWN');">
                             <span class="">
                                 Attachment
@@ -130,6 +136,36 @@
         $("#ddlWDUserid").prop("disabled", true);
         $("#ddlWNUserid").chosen('destroy');
         $("#ddlWNUserid").prop("disabled", true);
+
+        if ($("#hdnFormWDStatus").val() == "Saved") {
+            $("#tabWN").addClass("disabled");
+        }
+        else if ($("#hdnFormWDStatus").val() == "Submitted") {
+            $("#FormWDpage *").prop("disabled", true);
+
+            $("#FormWD_IwWrksDeptId").chosen('destroy');
+            $("#FormWD_IwWrksDeptId").prop("disabled", true);
+
+            $("#btnSaveWD").hide();
+            $("#btnSubmitWD").hide();
+        }
+
+        if ($("#hdnFormWNStatus").val() == "Saved" && $("#hdnFormWDStatus").val() == "") {
+            $("#tabWD").addClass("disabled");
+        }
+        else if ($("#hdnFormWNStatus").val() == "Submitted") {
+            if ($("#hdnFormWDStatus").val() == "")
+                $("#tabWD").addClass("disabled");
+
+           $("#FormWNpage *").prop("disabled", true);
+
+            $("#FormWN_IwWrksDeptId").chosen('destroy');
+            $("#FormWN_IwWrksDeptId").prop("disabled", true);
+
+            $("#btnSaveWN").hide();
+            $("#btnSubmitWN").hide();
+        }
+
 
     });
 

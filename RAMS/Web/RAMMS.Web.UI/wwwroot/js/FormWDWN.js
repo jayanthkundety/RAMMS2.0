@@ -1,26 +1,11 @@
 ﻿$(document).ready(function () {
+     
+
+  
 
 
-    if ($("#hdnFormWDStatus").val() == "Submitted") {
-        $("#FormWDdatapage *").prop("disabled", true);
 
-        $("#FormWD_IwWrksDeptId").chosen('destroy');
-        $("#FormWD_IwWrksDeptId").prop("disabled", true);
-
-        $("#btnSaveWD").hide();
-        $("#btnSubmitWD").hide();
-
-    }
-
-    if ($("#hdnFormWNStatus").val() == "Submitted") {
-        $("#FormWDNdatapage *").prop("disabled", true);
-
-        $("#FormWN_IwWrksDeptId").chosen('destroy');
-        $("#FormWN_IwWrksDeptId").prop("disabled", true);
-
-        $("#btnSaveWN").hide();
-        $("#btnSubmitWN").hide();
-    }
+  
 
     $('.allow_numeric').keypress(function (event) {
         var $this = $(this);
@@ -143,6 +128,7 @@ function DeleteClauseRow(obj) {
 
 
 function GetClauseDetails() {
+    debugger
     var ClassDetails = [];
     var rows = $('#tblClause tbody >tr');
     var columns;
@@ -168,10 +154,13 @@ function GetClauseDetails() {
 
 function SaveWD(GroupName, SubmitType) {
 
+    debugger
     $("#FormWD_SignIssu").removeClass("validate");
+    $("#FormWDpage .validate").addClass("svalidate");
+    $("#FormWDpage .svalidate").removeClass("validate");
 
     if (SubmitType != "") {
-
+ 
         var tbl = document.getElementById('tblClause');
         length = tbl.rows.length;
         if (length <= 1) {
@@ -190,6 +179,7 @@ function SaveWD(GroupName, SubmitType) {
     }
     else {
         $("#FormWD_Status").val("Saved");
+        $("#FormWD_SubmitSts").val(false);
     }
 
     document.getElementById('ClauseDetails').value = JSON.stringify(GetClauseDetails());
@@ -299,6 +289,8 @@ function OnWNUseridChange(tis) {
 function SaveWN(GroupName, SubmitType) {
 
     $("#FormWN_SignIssu").removeClass("validate");
+    $("#FormWNpage .validate").addClass("svalidate");
+    $("#FormWNpage .svalidate").removeClass("validate");
 
     if (SubmitType != "") {
 
