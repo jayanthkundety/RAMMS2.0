@@ -1131,7 +1131,8 @@ namespace RAMMS.Web.UI.Controllers
             }
             else
             {
-                refNo = await _formWDService.Update(frm.FormWD);
+                  await _formWDService.Update(frm.FormWD);
+                refNo = frm.FormWD.PkRefNo;
             }
 
             _formWDService.DeleteFormWDClause(refNo);

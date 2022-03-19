@@ -96,38 +96,38 @@
                                     <div class="top">
                                         <div class="dataTables_length w-100">
 
-                                            <div class="dataTables_scrollBody" style="min-height:auto!important">
+                                            <div class="" style="min-height:auto!important">
 
                                                 <table id="tblClause" class="table w-100 nowrap dataTable table-bordered">
-                                                    <thead>
-                                                        <tr style="text-align: left; color:#152e4d;background-color: #c8e1ff">
-                                                            <th style="min-width:300px;"> <span style="width:100%; float:left">Reason/reasons</span></th>
-                                                            <th style="width:20%;">Clause</th>
-                                                            <th style="width:10%;">Extension of Time</th>
-                                                            <th style="width:10px;">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @{
-                                                            foreach (var item in Model.FormWDDtl)
-                                                            {
-                                                                <tr >
-                                                                    <td >
-                                                                        @item.Reason
-                                                                    </td>
-                                                                    <td>
-                                                                        @item.Clause
-                                                                    </td>
-                                                                    <td>
-                                                                        @item.ExtnPrd
-                                                                    </td>
-                                                                    <td>
-                                                                        <span class='del-icon' onclick="Javascript:DeleteClauseRow(this);"></span>
-                                                                    </td>
-                                                                </tr>
-                                                            }
+
+                                                    <tr style="text-align: left; color:#152e4d;background-color: #c8e1ff">
+                                                        <th style="width:60%;"> <span style="width:100%; float:left">Reason/reasons</span></th>
+                                                        <th style="width:20%;">Clause</th>
+                                                        <th style="width:10%;">Extension of Time</th>
+                                                        <th style="width:10px;">Action</th>
+                                                    </tr>
+
+
+                                                    @{
+                                                        foreach (var item in Model.FormWDDtl)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @item.Reason
+                                                                </td>
+                                                                <td>
+                                                                    @item.Clause
+                                                                </td>
+                                                                <td>
+                                                                    @item.ExtnPrd
+                                                                </td>
+                                                                <td>
+                                                                    <span class='del-icon' onclick="Javascript:DeleteClauseRow(this);"></span>
+                                                                </td>
+                                                            </tr>
                                                         }
-                                                    </tbody>
+                                                    }
+
                                                 </table>
                                             </div>
                                             <div class="modal fade" id="ClauseModal" role="dialog">
@@ -246,7 +246,7 @@
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
     @if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
     {
-        <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','Submitted')">Save</button>
+        <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','')">Save</button>
     }
     @if (isJKRS && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
     {
