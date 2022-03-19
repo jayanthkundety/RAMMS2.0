@@ -107,5 +107,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         bool isOperRAMSExecutive { get; }
 
+        public IList<RmModuleRightByForm> IWRights { get; }
+
     }
 }

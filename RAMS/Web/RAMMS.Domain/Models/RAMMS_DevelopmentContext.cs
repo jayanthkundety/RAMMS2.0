@@ -96,7 +96,6 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmIwFormW1> RmIwFormW1 { get; set; }
         public virtual DbSet<RmIwFormW2> RmIwFormW2 { get; set; }
         public virtual DbSet<RmIwFormW2Fecm> RmIwFormW2Fecm { get; set; }
-        public virtual DbSet<RmIwFormW2Image> RmIwFormW2Image { get; set; }
         public virtual DbSet<RmIwFormWc> RmIwFormWc { get; set; }
         public virtual DbSet<RmIwFormWd> RmIwFormWd { get; set; }
         public virtual DbSet<RmIwFormWdDtl> RmIwFormWdDtl { get; set; }
@@ -106,8 +105,10 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmIwWorksDeptMaster> RmIwWorksDeptMaster { get; set; }
         public virtual DbSet<RmIwformImage> RmIwformImage { get; set; }
         public virtual DbSet<RmModule> RmModule { get; set; }
+        public virtual DbSet<RmModuleForms> RmModuleForms { get; set; }
         public virtual DbSet<RmModuleGroupFieldRights> RmModuleGroupFieldRights { get; set; }
         public virtual DbSet<RmModuleGroupRights> RmModuleGroupRights { get; set; }
+        public virtual DbSet<RmModuleRightByForm> RmModuleRightByForm { get; set; }
         public virtual DbSet<RmModuleRightsCode> RmModuleRightsCode { get; set; }
         public virtual DbSet<RmRmuMaster> RmRmuMaster { get; set; }
         public virtual DbSet<RmRoadMaster> RmRoadMaster { get; set; }
@@ -121,7 +122,6 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmWeekLookup> RmWeekLookup { get; set; }
         public virtual DbSet<TestColumns> TestColumns { get; set; }
         public virtual DbSet<UvwSearchData> UvwSearchData { get; set; }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -5455,7 +5455,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FduSeperator)
                     .HasColumnName("FDU_Seperator")
-                    .HasMaxLength(150)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FduSubmitSts).HasColumnName("FDU_SUBMIT_STS");
@@ -9899,7 +9899,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw2DivText)
                     .HasColumnName("FW2_Div_Text")
-                    .HasMaxLength(10);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Fw2DivisonName)
                     .HasColumnName("FW2_Divison_Name")
@@ -10108,9 +10108,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WC");
 
-                entity.Property(e => e.FwcPkRefNo)
-                    .HasColumnName("FWC_PK_Ref_no")
-                    .ValueGeneratedOnAdd();
+                entity.Property(e => e.FwcPkRefNo).HasColumnName("FWC_PK_Ref_no");
 
                 entity.Property(e => e.FwcActiveYn).HasColumnName("FWC_Active_YN");
 
@@ -10213,10 +10211,9 @@ namespace RAMMS.Domain.Models
                     .HasForeignKey(d => d.FwcFw1PkRefNo)
                     .HasConstraintName("FK_RM_IW_Form_WC_RM_IW_FormW1");
 
-                entity.HasOne(d => d.FwcPkRefNoNavigation)
-                    .WithOne(p => p.RmIwFormWc)
-                    .HasForeignKey<RmIwFormWc>(d => d.FwcPkRefNo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                entity.HasOne(d => d.FwcIwWrksDept)
+                    .WithMany(p => p.RmIwFormWc)
+                    .HasForeignKey(d => d.FwcIwWrksDeptId)
                     .HasConstraintName("FK_RM_IW_Form_WC_RM_IW_Works_Dept_Master");
             });
 
@@ -10795,6 +10792,37 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.ModName).HasColumnName("Mod_Name");
             });
 
+            modelBuilder.Entity<RmModuleForms>(entity =>
+            {
+                entity.HasKey(e => e.MfPkId)
+                    .HasName("PK_RM_Module_Forms_1");
+
+                entity.ToTable("RM_Module_Forms");
+
+                entity.Property(e => e.MfPkId).HasColumnName("MF_PkId");
+
+                entity.Property(e => e.MfActiveYn).HasColumnName("MF_Active_YN");
+
+                entity.Property(e => e.MfCrBy).HasColumnName("MF_CR_By");
+
+                entity.Property(e => e.MfCrDt)
+                    .HasColumnName("MF_CR_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfFormName)
+                    .HasColumnName("MF_FormName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfModBy).HasColumnName("MF_Mod_By");
+
+                entity.Property(e => e.MfModDt)
+                    .HasColumnName("MF_Mod_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfModPkId).HasColumnName("MF_Mod_PkId");
+            });
+
             modelBuilder.Entity<RmModuleGroupFieldRights>(entity =>
             {
                 entity.HasKey(e => e.MgfrPkId);
@@ -10908,6 +10936,84 @@ namespace RAMMS.Domain.Models
                     .WithMany(p => p.RmModuleGroupRights)
                     .HasForeignKey(d => d.UsrPkId)
                     .HasConstraintName("FK_RM_Module_Group_Rights_RM_USERS");
+            });
+
+            modelBuilder.Entity<RmModuleRightByForm>(entity =>
+            {
+                entity.HasKey(e => e.MfrPkId);
+
+                entity.ToTable("RM_Module_Right_By_Form");
+
+                entity.Property(e => e.MfrPkId).HasColumnName("MFR_PkId");
+
+                entity.Property(e => e.MfrActiveYn).HasColumnName("MFR_Active_YN");
+
+                entity.Property(e => e.MfrCanAdd)
+                    .HasColumnName("MFR_Can_Add")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanApprove)
+                    .HasColumnName("MFR_Can_Approve")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanDelete)
+                    .HasColumnName("MFR_Can_Delete")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanEdit)
+                    .HasColumnName("MFR_Can_Edit")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanPrint)
+                    .HasColumnName("MFR_Can_Print")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanSignature)
+                    .HasColumnName("MFR_Can_Signature")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanSubmit)
+                    .HasColumnName("MFR_Can_Submit")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanView)
+                    .HasColumnName("MFR_Can_View")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCrBy).HasColumnName("MFR_CR_By");
+
+                entity.Property(e => e.MfrCrDt)
+                    .HasColumnName("MFR_CR_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfrGroupName)
+                    .HasColumnName("MFR_GroupName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfrMfPkId).HasColumnName("MFR_MF_PkId");
+
+                entity.Property(e => e.MfrModBy).HasColumnName("MFR_Mod_By");
+
+                entity.Property(e => e.MfrModDt)
+                    .HasColumnName("MFR_Mod_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfrModFormName)
+                    .HasColumnName("MFR_Mod_Form_Name")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfrModPkId).HasColumnName("MFR_Mod_PkId");
+
+                entity.Property(e => e.MfrModuleName)
+                    .HasColumnName("MFR_ModuleName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfrUgPkId).HasColumnName("MFR_Ug_PkId");
+
+                entity.Property(e => e.MfrUserid).HasColumnName("MFR_Userid");
             });
 
             modelBuilder.Entity<RmModuleRightsCode>(entity =>

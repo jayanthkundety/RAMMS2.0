@@ -23,15 +23,18 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IFieldRightsRepository repFieldRights;
         private readonly IModuleRightsRepository repModuleRights;
         private readonly IGroupRepository repGroup;
+        private readonly IModuleFormRightsRepository repModuleFormRights;
         #endregion
         #region Ctor and Default Binding
-        public Security(IHttpContextAccessor httpContextAccessor, IFieldRightsRepository FieldrightsRepo, IModuleRightsRepository ModuleRightsRepo, IGroupRepository GroupRepo)
+        public Security(IHttpContextAccessor httpContextAccessor, IFieldRightsRepository FieldrightsRepo, IModuleRightsRepository ModuleRightsRepo, 
+            IGroupRepository GroupRepo, IModuleFormRightsRepository moduleFormRightsRepository)
         {
-            repFieldRights = FieldrightsRepo;            
+            repFieldRights = FieldrightsRepo;
             repModuleRights = ModuleRightsRepo;
             repGroup = GroupRepo;
+            repModuleFormRights = moduleFormRightsRepository;
             context = httpContextAccessor.HttpContext;
-            BindContext();            
+            BindContext();
         }
 
         /// <summary>
@@ -63,7 +66,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 this.IsInstructedWorkEngg = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.InstructedWorksEngineer);
                 this.IsDirector = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.Director);
                 this.isOperRAMSExecutive = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.OperRAMSExecutive);
-
+                this.IWRights = this.ModuleIWFormRights(UserID);
+                  
             }
             else
             {
@@ -352,6 +356,16 @@ namespace RAMMS.Business.ServiceProvider.Services
         public bool IsDirector { get; private set; }
 
         public bool isOperRAMSExecutive { get; private set; }
+
+        public IList<RmModuleRightByForm> IWRights { get; private set; }
+
+
+
+        public IList<RmModuleRightByForm> ModuleIWFormRights(int UserID)
+        {
+            return MemoryCache.Instance.ModuleRightByForm ??= repModuleFormRights.GetIWRightsAll(UserID);
+        }
+      
         #endregion
     }
 }
