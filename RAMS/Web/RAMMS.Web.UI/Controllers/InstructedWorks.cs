@@ -112,7 +112,7 @@ namespace RAMMS.Web.UI.Controllers
             return View();
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<IActionResult> GetIWImageList(string Id, string assetgroup, string form)
         {
             DDLookUpDTO ddLookup = new DDLookUpDTO();
@@ -1049,7 +1049,7 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WDWN
 
-        public async Task<IActionResult> OpenWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view)
+        public async Task<IActionResult> OpenWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view, string form)
         {
 
             var _formWDWNModel = new FormWDWNModel();
@@ -1059,20 +1059,29 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
-            _formWDWNModel.FormWD = new FormWDResponseDTO();
-            // _formWDWNModel.FormWD.OurRefNo = _formWDWNModel.FormW2.JkrRefNo;
-            _formWDWNModel.FormWD.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
-            _formWDWNModel.FormWD.DtPervCompl = _formWDWNModel.FormW2.DtCompl;
-            _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
+            _formWDWNModel.FormName = form;
+          
+            if (Wdid <= 0)
+            {
+                _formWDWNModel.FormWD = new FormWDResponseDTO();
+                _formWDWNModel.FormWD.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
+                _formWDWNModel.FormWD.DtPervCompl = _formWDWNModel.FormW2.DtCompl;
+                _formWDWNModel.FormWDDtl = new List<FormWDDtlResponseDTO>();
+                
+
+                _formWDWNModel.FormWD.UseridIssu = _security.UserID;
+                _formWDWNModel.FormWD.DtWd = DateTime.Today;
+                _formWDWNModel.FormWD.DtIssu = DateTime.Today;
+            }
+            else
+            {
+                _formWDWNModel.FormWD =  await _formWDService.FindFormWDByID(Wdid);
+                _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
+            }
+
             _formWDWNModel.FormWN = new FormWNResponseDTO();
             _formWDWNModel.FormWN.Fw1PkRefNo = _formWDWNModel.FormW1.PkRefNo;
-
-            _formWDWNModel.FormWD.UseridIssu = _security.UserID;
-            _formWDWNModel.FormWD.DtWd = DateTime.Today;
-            _formWDWNModel.FormWD.DtIssu = DateTime.Today;
-
             _formWDWNModel.FormWN.UseridIssu = _security.UserID;
-
             _formWDWNModel.FormWN.DtWn = DateTime.Today;
             _formWDWNModel.FormWN.DtIssu = DateTime.Today;
             _formWDWNModel.FormWN.DtW2Initiation = _formWDWNModel.FormW2.DtCompl;
@@ -1080,7 +1089,7 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view , string form)
+        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view, string form)
         {
             var _formWDWNModel = new FormWDWNModel();
             _formWDWNModel.View = view;
@@ -1093,6 +1102,7 @@ namespace RAMMS.Web.UI.Controllers
             _formWDWNModel.FormWD = Wdid == 0 ? new FormWDResponseDTO() : await _formWDService.FindFormWDByID(Wdid);
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
             _formWDWNModel.FormWN = Wnid == 0 ? new FormWNResponseDTO() : await _formWNService.FindFormWNByID(Wnid);
+            _formWDWNModel.FormName = form;
 
             if (_formWDWNModel.FormWN.DtW2Initiation == null)
             {
@@ -1131,7 +1141,7 @@ namespace RAMMS.Web.UI.Controllers
             }
             else
             {
-                  await _formWDService.Update(frm.FormWD);
+                await _formWDService.Update(frm.FormWD);
                 refNo = frm.FormWD.PkRefNo;
             }
 
