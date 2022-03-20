@@ -944,7 +944,9 @@ namespace RAMMS.Web.UI.Controllers
             if (_formC != null && _formC.SubmitSts) _formWCWGModel.WCView = "1";
             _formWCWGModel.FormWC.UseridIssu = _security.UserID;
             //_formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
-            _formWCWGModel.FormWC.DtWc = DateTime.Today;
+            if (wcid <=0)
+                _formWCWGModel.FormWC.DtWc = DateTime.Today;
+            
             _formWCWGModel.FormWG = new FormWGResponseDTO();
             _formWCWGModel.FormWG.DtWg = DateTime.Today;
             _formWCWGModel.FormWG.UseridIssu = _security.UserID;
