@@ -327,9 +327,10 @@ function DeleteW2() {
         app.ShowErrorMessage("Form W2 is not created");
         return;
     }
-
+    var w2status = GetFormIDByName("w2Status");
     if (w2status == "Received") {
         app.ShowErrorMessage("Unable to delete as form is received.")
+        return;
     }
 
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
@@ -574,7 +575,8 @@ function OpenFormWDWN(mode, form) {
         else if (form == "FormWN") {
             wdid = GetFormIDByName("wd");
             wdsubstatus = GetFormIDByName("wdSubStatus");
-            if ((wdid == -2 || wdid >0) && wdsubstatus == false) {
+
+            if (wdid > 0 && wdid != -2 && wdsubstatus == false) {
                 app.ShowErrorMessage("Form WD is not submitted");
                 return;
             }
