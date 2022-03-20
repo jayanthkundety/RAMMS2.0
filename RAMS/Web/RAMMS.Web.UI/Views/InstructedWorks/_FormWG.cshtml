@@ -178,10 +178,11 @@
     background:#fff;
     width: 96%;
     height: 45px;">
-    <button type="button" class="btn btn-sm btn-outline-theme" id="clearWGBtn" onclick="return ClearWG()">Clear</button>
+    
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
     @if ((string.IsNullOrEmpty(Model.FormWG.Status) || Model.FormWG.Status == "Saved" ) && security.IsInstructedWorkEngg)
     {
+        <button type="button" class="btn btn-sm btn-outline-theme" id="clearWGBtn" onclick="return ClearWG()">Clear</button>
         <button type="button" class="btn btn-sm btn-themebtn" id="saveWGBtn" onclick="return checkWExist()">Save</button>
     }
     @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && (!string.IsNullOrEmpty(Model.FormWG.Status)  && Model.FormWG.Status == RAMMS.Common.StatusList.FormWGSaved))

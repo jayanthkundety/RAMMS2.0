@@ -928,17 +928,20 @@ namespace RAMMS.Web.UI.Controllers
 
         #region WCWG
 
-        public async Task<IActionResult> OpenWCWG(int w1id, int w2id)
+        public async Task<IActionResult> OpenWCWG(int w1id, int w2id, int wcid, string form)
         {
 
             var _formWCWGModel = new FormWCWGModel();
+            _formWCWGModel.Show = form;
             LoadLookupService("TECM_Status", "User");
             _formWCWGModel.FormW1 = await _formW2Service.GetFormW1ById(w1id);
             _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
             var spList = await _divisionService.GetServiceProviders();
             var serProv = spList.ServiceProviders.Find(s => s.Code == _formWCWGModel.FormW1.ServPropName);
             _formWCWGModel.FormW1.ServPropName = serProv.Name;
-            _formWCWGModel.FormWC = new FormWCResponseDTO();
+            var _formC = await _formWCService.FindWCByID(wcid);
+            _formWCWGModel.FormWC = _formC == null ? new FormWCResponseDTO() : _formC;
+            if (_formC != null && _formC.SubmitSts) _formWCWGModel.WCView = "1";
             _formWCWGModel.FormWC.UseridIssu = _security.UserID;
             //_formWCWGModel.FormWC.OurRefNo = _formWCWGModel.FormW2.JkrRefNo;
             _formWCWGModel.FormWC.DtWc = DateTime.Today;
@@ -951,7 +954,7 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/InstructedWorks/FormWCWG.cshtml", _formWCWGModel);
         }
 
-        public async Task<IActionResult> EditFormWCWG(int wcid, int wgid, int w2id, string view)
+        public async Task<IActionResult> EditFormWCWG(int wcid, int wgid, int w2id, string view, string form)
         {
 
             var _formWCWGModel = new FormWCWGModel();
@@ -965,6 +968,7 @@ namespace RAMMS.Web.UI.Controllers
 
             _formWCWGModel.FormW2 = await _formW2Service.FindW2ByID(w2id);
 
+            _formWCWGModel.Show = form;
 
             _formWCWGModel.FormW1 = _formC != null ? _formWCWGModel.FormWC.Fw1PkRefNoNavigation : new FormW1ResponseDTO();
 
@@ -1076,7 +1080,7 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view)
+        public async Task<IActionResult> EditFormWDWN(int Wdid, int Wnid, int W1Id, int W2Id, int view , string form)
         {
             var _formWDWNModel = new FormWDWNModel();
             _formWDWNModel.View = view;
@@ -1086,7 +1090,7 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["ServiceProviderName"] = LookupService.LoadServiceProviderName().Result;
             _formWDWNModel.FormW1 = await _formW1Service.FindFormW1ByID(W1Id);
             _formWDWNModel.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
-            _formWDWNModel.FormWD = await _formWDService.FindFormWDByID(Wdid);
+            _formWDWNModel.FormWD = Wdid == 0 ? new FormWDResponseDTO() : await _formWDService.FindFormWDByID(Wdid);
             _formWDWNModel.FormWDDtl = await _formWDService.FindFormWDDtlByID(Wdid);
             _formWDWNModel.FormWN = Wnid == 0 ? new FormWNResponseDTO() : await _formWNService.FindFormWNByID(Wnid);
 
