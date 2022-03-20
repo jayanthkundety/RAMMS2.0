@@ -224,6 +224,13 @@ function DeleteW1() {
     if (!checkAction("FormW1", 'Delete')) return;
     var id = GetFormIDByName("w1", "Form W1", "delete");
     if (id == -1) return;
+
+    var w1status = GetFormIDByName("w1Status");
+
+    if (w1status == "Approved") {
+        app.ShowErrorMessage("Unable to delete as form is approved.")
+    }
+
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
 
@@ -320,6 +327,11 @@ function DeleteW2() {
         app.ShowErrorMessage("Form W2 is not created");
         return;
     }
+
+    if (w2status == "Received") {
+        app.ShowErrorMessage("Unable to delete as form is received.")
+    }
+
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
             var id = GetFormIDByName("w2");
@@ -473,6 +485,14 @@ function DeleteWCWG(form) {
         return;
     }
 
+    var wcid = GetFormIDByName("wc");
+    var wgid = GetFormIDByName("wg");
+
+    if (form == "FormWC" && wgid > 0) {
+        app.ShowErrorMessage(form + " cannot be deleted, first delete Form WG ");
+        return;
+    }
+
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
             if (form == "FormWC")
@@ -610,7 +630,7 @@ function OpenFormWDWN(mode, form) {
     $.ajax({
         url: url,
         type: 'POST',
-        data: { wdid, wnid, w1id, w2id, view },
+        data: { wdid, wnid, w1id, w2id, view , form },
         success: function (data) {
             $("#formWDWN").modal('show');
             $("#formWDWNContent").html(data);
@@ -638,6 +658,7 @@ function DeleteWDWN(form) {
         app.ShowErrorMessage(form + " is not created");
         return;
     }
+
 
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
