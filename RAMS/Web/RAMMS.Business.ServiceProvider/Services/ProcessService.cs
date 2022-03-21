@@ -88,7 +88,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormWG":
                     iResult = await SaveFormW2(process);
                     break;
-               
+
             }
             return iResult;
         }
@@ -502,7 +502,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (process.Stage == Common.StatusList.FormW1Submitted)
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.OperationsExecutive;
-                    
+
                     form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Approved : StatusList.FormW1Rejected;
 
                     if (process.IsApprove)
@@ -552,7 +552,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.JKRSSuperiorOfficerSO;
                     strTitle = "Received";
-                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Received  : StatusList.FormW2Rejected;
+                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Received : StatusList.FormW2Rejected;
 
                     if (process.IsApprove)
                     {
@@ -561,6 +561,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                             lstNotUserId.Add(form.Fw2UseridIssu.Value);
                         if (form.Fw2UseridReq.HasValue)
                             lstNotUserId.Add(form.Fw2UseridReq.Value);
+
+                        form.Fw2UseridReq = Convert.ToInt32(process.UserID);
+                        form.Fw2UsernameReq = process.UserName;
+                        form.Fw2DesignationReq = process.UserDesignation;
+                        form.Fw2DtReq = process.ApproveDate;
+                        form.Fw2SignReq = true;
 
                         strNotUserID = string.Join(",", lstNotUserId.Distinct());
                     }

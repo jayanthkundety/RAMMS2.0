@@ -10,6 +10,10 @@ namespace RAMMS.Repository.Interfaces
     public interface IModuleFormRightsRepository : IRepositoryBase<RmModuleRightByForm>
     {
 
-        IList<RmModuleRightByForm> GetIWRightsAll(int UserID);
+        IList<RmModuleRightByForm> GetIWRightsByUser(int UserID);
+
+        IList<RmModuleRightByForm> GetIWRightsAll();
+
+        string GetUserGroupName(string code);
     }
 }

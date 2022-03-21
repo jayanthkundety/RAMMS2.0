@@ -194,13 +194,36 @@ function OpenFormW1(mode) {
     var id = 0;
 
     if (mode == "Add") {
-        if (!checkAction("FormW1", 'add')) return;
+        if (!checkAction("FormW1", 'Add')) return;
         url = "/InstructedWorks/AddFormW1";
     }
     else if (mode == "Edit") {
-        if (!checkAction("FormW1", 'Edit')) return;
+
         id = GetFormIDByName("w1", "Form W1", "View / Edit");
         if (id == '-1') return;
+
+        if (id == -2) {
+            app.ShowErrorMessage("Form W1 is not created");
+            return;
+        }
+
+        var w1status = GetFormIDByName("w1Status");
+
+        var isEdit = false, isApprove = false, isView = false;
+
+        if (checkAction("FormW1", 'Edit',false)) {
+            isEdit = true;
+        }
+        if (w1status == 'Submitted' && checkAction("FormW1", 'Approve', false)) {
+            isApprove = true;
+        }
+
+        if (checkAction("FormW1", 'View')) {
+            isView = true;
+        }
+
+        if (!isEdit && !isApprove && !isView) return;
+
         url = "/InstructedWorks/EditFormW1?id=" + id;
     }
     InitAjaxLoading();
@@ -229,6 +252,7 @@ function DeleteW1() {
 
     if (w1status == "Approved") {
         app.ShowErrorMessage("Unable to delete as form is approved.")
+        return;
     }
 
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
@@ -275,7 +299,8 @@ function OpenFormW2(mode) {
         if (id == -1) return;
         var w1status = GetFormIDByName("w1Status");
         var w2status = GetFormIDByName("w2Status");
-        if (w1status == "Approved" && w2status == "" && w2id == "")
+        var w2id = GetFormIDByName("w2");
+        if (w1status == "Approved" && w2id <= 0)
             url = '/InstructedWorks/AddFormW2?id=' + id;
         else if (w1status == "Approved" && w2status != "")
             app.ShowErrorMessage("A Form W2 is already created");
@@ -285,14 +310,35 @@ function OpenFormW2(mode) {
 
     }
     else {
+
         id = GetFormIDByName("w2", "Form W2", "View / Edit");
         if (id == -1) return;
+
+        if (id == -2) {
+            app.ShowErrorMessage("Form W2 is not created");
+            return;
+        }
+        var w2status = GetFormIDByName("w2Status");
         var w2substatus = GetFormIDByName("w2SubStatus");
         if (w2substatus == true) {
             view = 1;
         }
 
-        if (!checkAction("FormW2", view > 0 ? 'View' : 'Edit')) return;
+        var isEdit = false, isApprove = false, isView = false;
+
+        if (checkAction("FormW2", 'Edit', false)) {
+            isEdit = true;
+        }
+        if (w1status == 'Submitted' && checkAction("FormW2", 'Approve', false)) {
+            isApprove = true;
+        }
+
+        if (checkAction("FormW2", 'View')) {
+            isView = true;
+        }
+
+        if (!isEdit && !isApprove && !isView) return;
+
         url = '/InstructedWorks/EditFormW2?id=' + id + "&view=" + view;
     }
     InitAjaxLoading();
@@ -362,6 +408,10 @@ function PrintFormW2() {
     if (!checkAction("FormW2", 'Print')) return;
     var id = GetFormIDByName("w2", "Form W2", "print");
     if (id == -1) return;
+    if (id == -2) {
+        app.ShowErrorMessage("Form W2 is not created");
+        return;
+    }
     window.location.href = '/download/PrintForm?id=' + id + "&formname=FormW2";
 }
 
@@ -387,7 +437,7 @@ function OpenFormWCWG(mode, form) {
         wcid = GetFormIDByName("wc");
         wgid = GetFormIDByName("wg");
         if (form == "FormWC") {
-           
+
             if (wcid == -1) return;
 
             if (wcid > 0) {
@@ -395,7 +445,7 @@ function OpenFormWCWG(mode, form) {
                 return;
             }
         }
-        else if (form == "FormWG") {             
+        else if (form == "FormWG") {
             wcsubstatus = GetFormIDByName("wcSubStatus");
             if ((wgid == -2 || wgid > 0) && wcsubstatus == false) {
                 app.ShowErrorMessage("Form WC is not submitted");
@@ -428,7 +478,7 @@ function OpenFormWCWG(mode, form) {
                 return;
             }
         }
-        wcid = GetFormIDByName("wc");        
+        wcid = GetFormIDByName("wc");
         wgid = GetFormIDByName("wg");
 
         if (wcid == -2) wcid = 0;
@@ -632,7 +682,7 @@ function OpenFormWDWN(mode, form) {
     $.ajax({
         url: url,
         type: 'POST',
-        data: { wdid, wnid, w1id, w2id, view , form },
+        data: { wdid, wnid, w1id, w2id, view, form },
         success: function (data) {
             $("#formWDWN").modal('show');
             $("#formWDWNContent").html(data);
@@ -756,15 +806,40 @@ function hasRights(form, action) {
 
         if (AllRoles[i].MfrCanPrint && action == "Print")
             return true;
+
+        if (AllRoles[i].MfrCanApprove && action == "Approve")
+            return true;
     }
     return false
 
 }
 
-function checkAction(form, action) {
-    if (!hasRights(form, action)) {
-        app.ShowErrorMessage("User is not allowed to " + action + " form")
-        return false;
+function checkAction(form, action, alert = true) {
+    //if (!hasRights(form, action) && alert) {
+    //    app.ShowErrorMessage("User is not allowed to " + action + " " + form)
+    //    return false;
+    //}
+    var isAdd = $("#hdnAdd").val();
+    var isDelete = $("#hdnDelete").val();
+    var isModify = $("#hdnModify").val();
+
+    switch (action) {
+        case "Add":
+            if (isAdd == "") return true;
+            break;
+        case "Edit":
+            if (isModify == "") return true;
+            break;
+        case "Delete":
+            if (isDelete == "") return true;
+            break;
+        case "Print":
+            return true;
+            break;
+        default:
+            return false;
+            break;
     }
-    return true;
+    app.ShowErrorMessage("User is not allowed to " + action + " " + form)
+    return false;
 }

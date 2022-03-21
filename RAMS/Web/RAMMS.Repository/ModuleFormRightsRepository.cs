@@ -16,17 +16,23 @@ namespace RAMMS.Repository
         public ModuleFormRightsRepository(RAMMSContext context) : base(context) { _context = context ?? throw new ArgumentNullException(nameof(context)); }
 
 
-        public IList<RmModuleRightByForm> GetIWRightsAll(int UserID)
+        public IList<RmModuleRightByForm> GetIWRightsByUser(int UserID)
         {
-
             return (from s in _context.RmGroupUser where s.RmUsersUsrPkId == UserID
                     join uug in _context.RmModuleRightByForm on s.RmGroupsUgPkId equals uug.MfrUgPkId
                     select uug).ToListAsync().Result;
-
-
-
-
-
         }
+
+
+        public IList<RmModuleRightByForm> GetIWRightsAll()
+        {
+            return _context.RmModuleRightByForm.ToListAsync().Result;
+        }
+
+        public string GetUserGroupName(string code)
+        {
+            return _context.RmGroup.Where(x => x.UgGroupCode == code).Select(z => z.UgGroupName).FirstOrDefault();
+        }
+
     }
 }

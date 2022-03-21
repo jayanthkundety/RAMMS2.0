@@ -494,6 +494,10 @@
                             @Html.HiddenFor(m => m.FormW1.PkRefNo, new { @id="hdnPkRefNo"} )
                             @Html.HiddenFor(m => m.View, new { @id = "hdnView", @value = "0" })
                             <input id="hdnForm" type="hidden" value="FormW2" />
+                            @{
+                                var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+                            }
+                            <input id="hdnGroupName" type="hidden" value="@groupname" />
                             <input id="hdnW2FormStatus" type="hidden" value="@Model.SaveFormW2Model.Status" />
 
                             @{
@@ -996,7 +1000,7 @@
                     }
                     else if ((security.IsInstructedWorkEngg || security.IsRegionManager || security.IsDirector) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
                     {
-                        <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Received By');"> Received </button>
+                        <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Received By');"> Received </button>
                     }
 
                 </div>

@@ -23,6 +23,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         /// </summary>
         string Email { get; }
         string Group { get; }
+
+        string GroupName { get; }
         string Module { get; }
         IList<string> Groups { get; }
         IList<string> Modules { get; }

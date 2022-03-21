@@ -8,6 +8,7 @@ namespace RAMMS.Domain.Models
         public RmIwWorksDeptMaster()
         {
             RmIwFormWc = new HashSet<RmIwFormWc>();
+            RmIwFormWd = new HashSet<RmIwFormWd>();
             RmIwFormWg = new HashSet<RmIwFormWg>();
             RmIwFormWn = new HashSet<RmIwFormWn>();
         }
@@ -27,8 +28,8 @@ namespace RAMMS.Domain.Models
         public DateTime? FiwWrksDeptCrDt { get; set; }
         public bool? FiwWrksDeptActiveYn { get; set; }
 
-        public virtual RmIwFormWd RmIwFormWd { get; set; }
         public virtual ICollection<RmIwFormWc> RmIwFormWc { get; set; }
+        public virtual ICollection<RmIwFormWd> RmIwFormWd { get; set; }
         public virtual ICollection<RmIwFormWg> RmIwFormWg { get; set; }
         public virtual ICollection<RmIwFormWn> RmIwFormWn { get; set; }
     }

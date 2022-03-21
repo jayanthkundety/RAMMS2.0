@@ -7,8 +7,9 @@
     ViewData["Title"] = "IW - Instructed Work";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
-    var isModifyPerm = security.IsPCModify(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
-    var isDeletePerm = security.IsPCDelete(ModuleNameList.Emergency_Response_Team) ? "" : "hidden";
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Instructed_Works) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Instructed_Works) ? "" : "hidden";
+    var isAddPerm = security.IsPCAdd(ModuleNameList.Instructed_Works) ? "" : "hidden";
 }
 <script src="~/js/IWIndex.js" type="text/javascript"></script>
 
@@ -289,7 +290,9 @@
 </div>
 <input type="hidden" id="hdnHasRights" value="@ViewData["IWRights"]" />
 <input type="hidden" id="hdnRole" value='@ViewData["Groups"]' />
-
+<input type="hidden" id="hdnAdd" value='@isAddPerm' />
+<input type="hidden" id="hdnModify" value='@isModifyPerm' />
+<input type="hidden" id="hdnDelete" value='@isDeletePerm' />
 
 <div class="modal fade" id="formW1" role="dialog">
     <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">

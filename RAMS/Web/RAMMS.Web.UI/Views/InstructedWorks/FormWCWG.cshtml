@@ -82,6 +82,7 @@
         <input type="hidden" id="hdnUsername" value="@security.UserName" />
         <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo" />
         <input type="hidden" id="hdnView" value="@Model.View" />
+        <input type="hidden" id="hdnFormType" value="FormWCWG" />
         @Html.HiddenFor(m => m.FormW1.RmuCode, new { @id = "hdnRmuCode", @class = "form-control" })
         @Html.HiddenFor(m => m.FormW1.SecCode, new { @id = "hdnSecCode", @class = "form-control" })
         @Html.HiddenFor(m => m.FormW1.RoadCode, new { @id = "hdnRdCode", @class = "form-control" })

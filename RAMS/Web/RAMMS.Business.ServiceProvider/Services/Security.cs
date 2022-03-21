@@ -26,7 +26,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IModuleFormRightsRepository repModuleFormRights;
         #endregion
         #region Ctor and Default Binding
-        public Security(IHttpContextAccessor httpContextAccessor, IFieldRightsRepository FieldrightsRepo, IModuleRightsRepository ModuleRightsRepo, 
+        public Security(IHttpContextAccessor httpContextAccessor, IFieldRightsRepository FieldrightsRepo, IModuleRightsRepository ModuleRightsRepo,
             IGroupRepository GroupRepo, IModuleFormRightsRepository moduleFormRightsRepository)
         {
             repFieldRights = FieldrightsRepo;
@@ -53,6 +53,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 this.Module = claims.Where(x => x.Type == "Modules").Select(x => x.Value).FirstOrDefault();
                 this.UserID = Convert.ToInt32(claims.Where(x => x.Type == "UserID").Select(x => x.Value).FirstOrDefault());
                 this.Group = this.Group == null ? "" : this.Group;
+                this.GroupName = "";
                 this.Module = this.Module == null ? "" : this.Module;
                 this.Groups = this.Group == "" ? null : this.Group.Split(',');
                 this.Modules = this.Module.Split(',');
@@ -66,8 +67,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 this.IsInstructedWorkEngg = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.InstructedWorksEngineer);
                 this.IsDirector = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.Director);
                 this.isOperRAMSExecutive = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.OperRAMSExecutive);
-                this.IWRights = this.ModuleIWFormRights(UserID);
-                  
+                this.IWRights = repModuleFormRights.GetIWRightsByUser(UserID);
             }
             else
             {
@@ -85,6 +85,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         public IList<string> Groups { get; private set; }
         public IList<string> Modules { get; private set; }
         #endregion
+
         #region Web Authentication
         /// <summary>
         /// Cookie Authentication for web
@@ -359,13 +360,27 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         public IList<RmModuleRightByForm> IWRights { get; private set; }
 
+        public string GroupName { get; private set; }
 
+        #region IW Rights
 
-        public IList<RmModuleRightByForm> ModuleIWFormRights(int UserID)
+        public IList<RmModuleRightByForm> ModuleIWFormRightsByUser(int UserID)
         {
-            return MemoryCache.Instance.ModuleRightByForm ??= repModuleFormRights.GetIWRightsAll(UserID);
+            IList<RmModuleRightByForm> ret = ModuleIWFormRights();
+
+            foreach (var item in ret)
+            {
+                
+            }
+
+            return ret;
         }
-      
+        #endregion
+        public IList<RmModuleRightByForm> ModuleIWFormRights()
+        {
+            return MemoryCache.Instance.ModuleRightByForm ??= repModuleFormRights.GetIWRightsAll();
+        }
+
         #endregion
     }
 }

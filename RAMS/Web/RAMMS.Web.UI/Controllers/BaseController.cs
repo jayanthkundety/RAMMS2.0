@@ -65,6 +65,30 @@ namespace RAMMS.Web.UI.Models
                 ViewData[GroupNameList.OpeHeadMaintenance] = UserService.GetSupervisor(GroupNameList.OpeHeadMaintenance, null).Result;
                 types = types.Where(x => x != GroupNameList.OpeHeadMaintenance).ToArray();
             }
+            if (types.Contains(GroupNameList.InstructedWorksEngineer))
+            {
+                ViewData[GroupNameList.InstructedWorksEngineer] = UserService.GetSupervisor(GroupNameList.InstructedWorksEngineer, null).Result;
+                types = types.Where(x => x != GroupNameList.InstructedWorksEngineer).ToArray();
+            }
+
+            if (types.Contains(GroupNameList.DivisionalEngineer))
+            {
+                ViewData[GroupNameList.DivisionalEngineer] = UserService.GetSupervisor(GroupNameList.DivisionalEngineer, null).Result;
+                types = types.Where(x => x != GroupNameList.InstructedWorksEngineer).ToArray();
+            }
+
+            if (types.Contains(GroupNameList.HQJKRS))
+            {
+                ViewData[GroupNameList.HQJKRS] = UserService.GetSupervisor(GroupNameList.HQJKRS, null).Result;
+                types = types.Where(x => x != GroupNameList.InstructedWorksEngineer).ToArray();
+            }
+
+            if (types.Contains(GroupNameList.Director))
+            {
+                ViewData[GroupNameList.Director] = UserService.GetSupervisor(GroupNameList.Director, null).Result;
+                types = types.Where(x => x != GroupNameList.Director).ToArray();
+            }
+
             if (types.Length > 0)
             {
                 IList<CSelectListItem> lstItem = LookupService.GetDdLookup(types).Result.ToList();
