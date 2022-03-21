@@ -109,20 +109,25 @@
 
     <input type="hidden" id="hdnWDPkRefNo" />
     <input type="hidden" id="hdnWNPkRefNo" />
+    <input type="hidden" id="hdnPkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
     <input type="hidden" id="hdnFormWDStatus" value="@Model.FormWD.Status" />
     <input type="hidden" id="hdnFormWNStatus" value="@Model.FormWN.Status" />
     <input type="hidden" id="hdnDtPervCompl">
+    <input type="hidden" id="hdnFormType" value="FormWDWN">
 
 }
 <script>
 
     $(document).ready(function () {
 
+       
+
         process.Init("FormWD", "@Model.FormWD.Status", @Model.FormWD.PkRefNo);
         process.Init("FormWN", "@Model.FormWN.Status", @Model.FormWN.PkRefNo);
 
         $('#FormWD_IwRefNo').val("@Model.FormW1.IwRefNo")
+        $('#hdnPkRefNo').val("@Model.FormW1.PkRefNo")
         $('#FormWD_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
         $('#FormWN_IwRefNo').val("@Model.FormW1.IwRefNo")
         $('#FormWN_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
