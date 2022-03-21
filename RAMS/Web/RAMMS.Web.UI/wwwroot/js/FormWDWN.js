@@ -221,8 +221,8 @@ function PrevCompDtValidation() {
 
         if ($("#FormWD_DtExtn").val() != "") {
             var ExtnDate = new Date(formatDate($("#FormWD_DtExtn").val()));
-            if (value < ExtnDate) {
-                app.ShowErrorMessage("Previous completion date should be greater than completion date");
+            if (value > ExtnDate) {
+                app.ShowErrorMessage("Date of Completion should be greater than previously approved");
                 $("#FormWD_DtPervCompl").val('');
                 return;
             }
@@ -240,8 +240,8 @@ function CompDtValidation() {
 
         if ($("#FormWD_DtPervCompl").val() != "") {
             var PrevDate = new Date(formatDate($("#FormWD_DtPervCompl").val()));
-            if (value > PrevDate) {
-                app.ShowErrorMessage("Completion date should not be greater previous completion date");
+            if (value < PrevDate) {
+                app.ShowErrorMessage("Previously approved should be less than Date of Completion");
                 $("#FormWD_DtExtn").val('');
                 return;
             }
@@ -383,7 +383,9 @@ function formatDate(date) {
 //Image
 
 function GetImageList(id, form) {
-    ;
+
+    debugger
+  
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
         $("#fw1IWRefNo").val(id);
@@ -403,6 +405,10 @@ function GetImageList(id, form) {
                 $("#divFormType").show();
             else
                 $("#divFormType").hide();
+
+            if ($("#hdnFormWDStatus").val() == "Submitted" && $("#hdnFormWNStatus").val() == "Submitted") {
+                $("#addAttachment").hide();
+            }
         },
         error: function (data) {
             alert(data.responseText);
