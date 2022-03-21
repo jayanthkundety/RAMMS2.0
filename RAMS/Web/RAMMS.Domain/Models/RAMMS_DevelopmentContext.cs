@@ -10223,9 +10223,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WD");
 
-                entity.Property(e => e.FwdPkRefNo)
-                    .HasColumnName("FWD_PK_Ref_No")
-                    .ValueGeneratedOnAdd();
+                entity.Property(e => e.FwdPkRefNo).HasColumnName("FWD_PK_Ref_No");
 
                 entity.Property(e => e.FwdActiveYn).HasColumnName("FWD_Active_YN");
 
@@ -10334,10 +10332,9 @@ namespace RAMMS.Domain.Models
                     .HasForeignKey(d => d.FwdFw1PkRefNo)
                     .HasConstraintName("FK_RM_IW_Form_WD_RM_IW_FormW1");
 
-                entity.HasOne(d => d.FwdPkRefNoNavigation)
-                    .WithOne(p => p.RmIwFormWd)
-                    .HasForeignKey<RmIwFormWd>(d => d.FwdPkRefNo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                entity.HasOne(d => d.FwdIwWrksDept)
+                    .WithMany(p => p.RmIwFormWd)
+                    .HasForeignKey(d => d.FwdIwWrksDeptId)
                     .HasConstraintName("FK_RM_IW_Form_WD_RM_IW_Works_Dept_Master");
             });
 
@@ -10359,7 +10356,9 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWDD_CR_DT")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.FwddExtnPrd).HasColumnName("FWDD_EXTN_Prd");
+                entity.Property(e => e.FwddExtnPrd)
+                    .HasColumnName("FWDD_EXTN_Prd")
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.FwddFwdPkRefNo).HasColumnName("FWDD_FWD_PK_Ref_No");
 
