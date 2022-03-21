@@ -640,7 +640,10 @@
                         if (data > 0) {
                             HideAjaxLoading();
                             app.ShowSuccessMessage("Successfully Deleted")
-                            GetImageList( $("#hdnPkRefNo").val(),$("#hdnForm").val());
+                            if (getIsTabForm())
+                                GetImageList($("#hdnPkRefNo").val(), $("#hdnFormType").val());
+                            else
+                                GetImageList($("#hdnPkRefNo").val(), $("#hdnForm").val());
                         }
                         else {
                             HideAjaxLoading();
