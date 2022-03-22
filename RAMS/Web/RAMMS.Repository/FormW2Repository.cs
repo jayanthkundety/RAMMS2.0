@@ -454,25 +454,25 @@ namespace RAMMS.Repository
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.TECMStatus))
             {
-                if (filterOptions.Filters.TECMStatus == "Pending")
+                if (filterOptions.Filters.TECMStatus == "TECMPending")
                 {
-                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDtTecm == null);
+                    query = query.Where(x => x.x.Fw1Status == "Saved" && x.x.Fw1ActiveYn == true &&  (x.fecm.FecmDtTecm == null || x.fecm == null));
                 }
                 else
                 {
-                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDtTecm != null);
+                    query = query.Where(x => x.x.Fw1Status != null  && x.x.Fw1ActiveYn == true && x.fecm.FecmDtTecm != null);
                 }
             }
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.FECMStatus))
             {
-                if (filterOptions.Filters.FECMStatus == "Pending")
+                if (filterOptions.Filters.FECMStatus == "FECMPending")
                 {
-                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDt == null);
+                    query = query.Where(x => x.w2Form.Fw2Status == "Saved" && x.w2Form.Fw2ActiveYn == true && (x.fecm.FecmDt == null || x.fecm == null));
                 }
                 else
                 {
-                    query = query.Where(x => x.fecm.FecmActiveYn == true && x.fecm.FecmDt != null);
+                    query = query.Where(x => x.w2Form.Fw2Status != null && x.w2Form.Fw2ActiveYn == true && x.fecm.FecmDt != null);
                 }
             }
 
@@ -621,7 +621,7 @@ namespace RAMMS.Repository
                                 wnDt = wnForm.FwnDtWn != null ? DateTime.Parse(Convert.ToString(wnForm.FwnDtWn)).ToString("dd/MM/yyyy") : "-",
                                 ContractPeriod = w2Form.Fw2IwDuration.HasValue ? String.Format("{0:N}", w2Form.Fw2IwDuration) : "0",
                                 wcDt = wcForm.FwcDtWc != null ? DateTime.Parse(Convert.ToString(wcForm.FwcDtWc)).ToString("dd/MM/yyyy") : "-",
-                                dlpPeriod = wcForm.FwcDtDlpExtn.ToString(),
+                                dlpPeriod = wcForm.FwcDlpPeriod.HasValue ? String.Format("{0:N}", wcForm.FwcDlpPeriod) : "-",
                                 finalAmt = "0.00",
                                 sitePhy = fecm.FecmProgressPerc.HasValue ? String.Format("{0:N}", fecm.FecmProgressPerc) : "0",
                                 wgDate = wgForm.FwgDtWg != null ? DateTime.Parse(Convert.ToString(wgForm.FwgDtWg)).ToString("dd/MM/yyyy") : "-",

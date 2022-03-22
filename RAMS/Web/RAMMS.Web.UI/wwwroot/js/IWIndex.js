@@ -615,10 +615,16 @@ function OpenFormWDWN(mode, form) {
 
         if (form == "FormWD") {
             wdid = GetFormIDByName("wd");
+            var wnstatus = GetFormIDByName("wnStatus");
             if (wdid == -1) return;
 
             if (wdid > 0) {
                 app.ShowErrorMessage("Form WD already created");
+                return;
+            }
+
+            if (wnstatus == "Saved" || wnstatus == "Submitted") {
+                app.ShowErrorMessage("Form WD cannot be created");
                 return;
             }
         }
@@ -710,7 +716,6 @@ function DeleteWDWN(form) {
         app.ShowErrorMessage(form + " is not created");
         return;
     }
-
 
     if (app.Confirm("Are you sure you want to delete the record?", function (e) {
         if (e) {
