@@ -1181,18 +1181,18 @@ namespace RAMMS.Web.UI.Controllers
             return Json(refNo);
         }
 
-        public async Task<IActionResult> DeleteFormWD(int id)
+        public IActionResult DeleteWD(int id)
         {
-            int rowsAffected = 0;
-            rowsAffected = await _formWDService.DeActivateFormWD(id);
-            return Json(rowsAffected);
+            
+            if (id > 0) { return Ok(new { id =  _formWDService.DeActivateFormWD(id) }); }
+            else { return BadRequest("Invalid Request!"); }
         }
 
-        public async Task<IActionResult> DeleteFormWN(int id)
+        public IActionResult DeleteWN(int id)
         {
-            int rowsAffected = 0;
-            rowsAffected = await _formWNService.DeActivateFormWN(id);
-            return Json(rowsAffected);
+            
+            if (id > 0) { return Ok(new { id =  _formWNService.DeActivateFormWN(id) }); }
+            else { return BadRequest("Invalid Request!"); }
         }
 
 
