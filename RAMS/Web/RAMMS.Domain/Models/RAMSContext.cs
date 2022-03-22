@@ -105,8 +105,10 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmIwWorksDeptMaster> RmIwWorksDeptMaster { get; set; }
         public virtual DbSet<RmIwformImage> RmIwformImage { get; set; }
         public virtual DbSet<RmModule> RmModule { get; set; }
+        public virtual DbSet<RmModuleForms> RmModuleForms { get; set; }
         public virtual DbSet<RmModuleGroupFieldRights> RmModuleGroupFieldRights { get; set; }
         public virtual DbSet<RmModuleGroupRights> RmModuleGroupRights { get; set; }
+        public virtual DbSet<RmModuleRightByForm> RmModuleRightByForm { get; set; }
         public virtual DbSet<RmModuleRightsCode> RmModuleRightsCode { get; set; }
         public virtual DbSet<RmRmuMaster> RmRmuMaster { get; set; }
         public virtual DbSet<RmRoadMaster> RmRoadMaster { get; set; }
@@ -1156,7 +1158,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmAccUcuImageDtl>(entity =>
             {
                 entity.HasKey(e => e.FauPkRefNo)
-                    .HasName("PK__RM_ACC_U__AC8746FA89CAC65C");
+                    .HasName("PK__RM_ACC_U__AC8746FAE21542DA");
 
                 entity.ToTable("RM_ACC_UCU_image_DTL");
 
@@ -1214,18 +1216,18 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FauFddPkRefNoNavigation)
                     .WithMany(p => p.RmAccUcuImageDtl)
                     .HasForeignKey(d => d.FauFddPkRefNo)
-                    .HasConstraintName("FK__RM_ACC_UC__FAU_F__55009F39");
+                    .HasConstraintName("FK__RM_ACC_UC__FAU_F__7CD98669");
 
                 entity.HasOne(d => d.FauFxhPkRefNoNavigation)
                     .WithMany(p => p.RmAccUcuImageDtl)
                     .HasForeignKey(d => d.FauFxhPkRefNo)
-                    .HasConstraintName("FK__RM_ACC_UC__FAU_F__55F4C372");
+                    .HasConstraintName("FK__RM_ACC_UC__FAU_F__7DCDAAA2");
             });
 
             modelBuilder.Entity<RmAllassetInvOthers>(entity =>
             {
                 entity.HasKey(e => e.AioPkRefNo)
-                    .HasName("PK__RM_Allas__638388FC0D77C2B2");
+                    .HasName("PK__RM_Allas__638388FCE25A8099");
 
                 entity.ToTable("RM_Allasset_inv_Others");
 
@@ -2897,7 +2899,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmAssetDefectCode>(entity =>
             {
                 entity.HasKey(e => e.AdcPkRefNo)
-                    .HasName("PK__RM_asset__DED4272910AC08F8");
+                    .HasName("PK__RM_asset__DED42729F8CBE7F2");
 
                 entity.ToTable("RM_asset_defect_code");
 
@@ -2967,13 +2969,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.AdcAgtPkRefNoNavigation)
                     .WithMany(p => p.RmAssetDefectCode)
                     .HasForeignKey(d => d.AdcAgtPkRefNo)
-                    .HasConstraintName("FK__RM_asset___ADC_A__57DD0BE4");
+                    .HasConstraintName("FK__RM_asset___ADC_A__00AA174D");
             });
 
             modelBuilder.Entity<RmAssetGroupType>(entity =>
             {
                 entity.HasKey(e => e.AgtPkRefNo)
-                    .HasName("PK__RM_asset__05F95360E7CC2D06");
+                    .HasName("PK__RM_asset__05F9536009291682");
 
                 entity.ToTable("RM_asset_Group_Type");
 
@@ -3040,7 +3042,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmAssetImageDtl>(entity =>
             {
                 entity.HasKey(e => e.AidPkRefNo)
-                    .HasName("PK__RM_Asset__E2BB2247EB131BB2");
+                    .HasName("PK__RM_Asset__E2BB2247DBE6C8C3");
 
                 entity.ToTable("RM_Asset_Image_DTL");
 
@@ -3225,7 +3227,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmDdLookup>(entity =>
             {
                 entity.HasKey(e => e.DdlPkRefNo)
-                    .HasName("PK__RM_DD_LO__C0F32C37F406BAA2");
+                    .HasName("PK__RM_DD_LO__C0F32C37E4C52338");
 
                 entity.ToTable("RM_DD_LOOKUP");
 
@@ -3309,7 +3311,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmDivRmuSecMaster>(entity =>
             {
                 entity.HasKey(e => e.RdsmPkRefNo)
-                    .HasName("PK__RM_div_R__98BD4F44DF73A5C8");
+                    .HasName("PK__RM_div_R__98BD4F44CF3899B8");
 
                 entity.ToTable("RM_div_RMU_Sec_Master");
 
@@ -3396,7 +3398,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFieldDisRightsDtl>(entity =>
             {
                 entity.HasKey(e => e.FrdPkId)
-                    .HasName("PK__RM_Field__FD4DA7F39D01CC8E");
+                    .HasName("PK__RM_Field__FD4DA7F36290197B");
 
                 entity.ToTable("RM_Field_DIS_Rights_DTL");
 
@@ -3466,13 +3468,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FrdMrcPk)
                     .WithMany(p => p.RmFieldDisRightsDtl)
                     .HasForeignKey(d => d.FrdMrcPkId)
-                    .HasConstraintName("FK__RM_Field___FRD_M__59C55456");
+                    .HasConstraintName("FK__RM_Field___FRD_M__038683F8");
             });
 
             modelBuilder.Entity<RmFormADtl>(entity =>
             {
                 entity.HasKey(e => e.FadPkRefNo)
-                    .HasName("PK__RM_FormA__312C1ECD705185C6");
+                    .HasName("PK__RM_FormA__312C1ECD66A6CC8E");
 
                 entity.ToTable("RM_FormA_DTL");
 
@@ -3611,13 +3613,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FadFahPkRefNoNavigation)
                     .WithMany(p => p.RmFormADtl)
                     .HasForeignKey(d => d.FadFahPkRefNo)
-                    .HasConstraintName("FK__RM_FormA___FAD_F__5AB9788F");
+                    .HasConstraintName("FK__RM_FormA___FAD_F__093F5D4E");
             });
 
             modelBuilder.Entity<RmFormAHdr>(entity =>
             {
                 entity.HasKey(e => e.FahPkRefNo)
-                    .HasName("PK__RM_FormA__797F99D65F47979C");
+                    .HasName("PK__RM_FormA__797F99D602112B6A");
 
                 entity.ToTable("RM_FormA_HDR");
 
@@ -3740,7 +3742,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormASiterefDtl>(entity =>
             {
                 entity.HasKey(e => e.FsdPkRefId)
-                    .HasName("PK__RM_FormA__A2DE63B9694AC755");
+                    .HasName("PK__RM_FormA__A2DE63B964C8B1FD");
 
                 entity.ToTable("RM_FormA_Siteref_DTL");
 
@@ -3795,13 +3797,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FsdFadPkRefNoNavigation)
                     .WithMany(p => p.RmFormASiterefDtl)
                     .HasForeignKey(d => d.FsdFadPkRefNo)
-                    .HasConstraintName("FK__RM_FormA___FSD_F__5CA1C101");
+                    .HasConstraintName("FK__RM_FormA___FSD_F__0B27A5C0");
             });
 
             modelBuilder.Entity<RmFormB1b2BrInsDtl>(entity =>
             {
                 entity.HasKey(e => e.FbridPkRefNo)
-                    .HasName("PK__RM_FormB__F6E9C9D8AEC237B0");
+                    .HasName("PK__RM_FormB__F6E9C9D8E23E3CC5");
 
                 entity.ToTable("RM_FormB1B2_BR_Ins_DTL");
 
@@ -4161,7 +4163,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormB1b2BrInsHdr>(entity =>
             {
                 entity.HasKey(e => e.FbrihPkRefNo)
-                    .HasName("PK__RM_FormB__FBB0931F5DA5DB3C");
+                    .HasName("PK__RM_FormB__FBB0931FB61160F7");
 
                 entity.ToTable("RM_FormB1B2_BR_Ins_HDR");
 
@@ -4387,7 +4389,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormB1b2BrInsImage>(entity =>
             {
                 entity.HasKey(e => e.FbriPkRefNo)
-                    .HasName("PK__RM_FormB__AE33A08A25F7C392");
+                    .HasName("PK__RM_FormB__AE33A08A279F69FD");
 
                 entity.ToTable("RM_FormB1B2_BR_Ins_Image");
 
@@ -4444,7 +4446,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormCvInsDtl>(entity =>
             {
                 entity.HasKey(e => e.FcvidPkRefNo)
-                    .HasName("PK__RM_Form___B5D09FE214BB2C33");
+                    .HasName("PK__RM_Form___B5D09FE2B392DD4D");
 
                 entity.ToTable("RM_Form_CV_Ins_DTL");
 
@@ -4501,23 +4503,23 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FcvidFcvihPkRefNoNavigation)
                     .WithMany(p => p.RmFormCvInsDtl)
                     .HasForeignKey(d => d.FcvidFcvihPkRefNo)
-                    .HasConstraintName("FK__RM_Form_C__FCVID__7DCDAAA2");
+                    .HasConstraintName("FK__RM_Form_C__FCVID__056ECC6A");
 
                 entity.HasOne(d => d.FcvidIimPkRefNoNavigation)
                     .WithMany(p => p.RmFormCvInsDtl)
                     .HasForeignKey(d => d.FcvidIimPkRefNo)
-                    .HasConstraintName("FK__RM_Form_C__FCVID__46486B8E");
+                    .HasConstraintName("FK__RM_Form_C__FCVID__047AA831");
 
                 entity.HasOne(d => d.FcvidIimdPkRefNoNavigation)
                     .WithMany(p => p.RmFormCvInsDtl)
                     .HasForeignKey(d => d.FcvidIimdPkRefNo)
-                    .HasConstraintName("FK__RM_Form_C__FCVID__7EC1CEDB");
+                    .HasConstraintName("FK__RM_Form_C__FCVID__0662F0A3");
             });
 
             modelBuilder.Entity<RmFormCvInsHdr>(entity =>
             {
                 entity.HasKey(e => e.FcvihPkRefNo)
-                    .HasName("PK__RM_Form___A6A7CCCBF6F23C91");
+                    .HasName("PK__RM_Form___A6A7CCCB5FB30581");
 
                 entity.ToTable("RM_Form_CV_Ins_HDR");
 
@@ -4726,13 +4728,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FcvihAiPkRefNoNavigation)
                     .WithMany(p => p.RmFormCvInsHdr)
                     .HasForeignKey(d => d.FcvihAiPkRefNo)
-                    .HasConstraintName("FK__RM_Form_C__FCVIH__6B79F03D");
+                    .HasConstraintName("FK__RM_Form_C__FCVIH__075714DC");
             });
 
             modelBuilder.Entity<RmFormCvInsImage>(entity =>
             {
                 entity.HasKey(e => e.FcviPkRefNo)
-                    .HasName("PK__RM_Form___7E761F0983E2728A");
+                    .HasName("PK__RM_Form___7E761F096D142282");
 
                 entity.ToTable("RM_Form_CV_Ins_Image");
 
@@ -4786,13 +4788,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FcviFcvihPkRefNoNavigation)
                     .WithMany(p => p.RmFormCvInsImage)
                     .HasForeignKey(d => d.FcviFcvihPkRefNo)
-                    .HasConstraintName("FK__RM_Form_C__FCVI___038683F8");
+                    .HasConstraintName("FK__RM_Form_C__FCVI___084B3915");
             });
 
             modelBuilder.Entity<RmFormDDtl>(entity =>
             {
                 entity.HasKey(e => e.FddPkRefNo)
-                    .HasName("PK__RM_FormD__4151D5A8E0250BD4");
+                    .HasName("PK__RM_FormD__4151D5A82852AB26");
 
                 entity.ToTable("RM_FormD_DTL");
 
@@ -5231,7 +5233,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormDLabourDtl>(entity =>
             {
                 entity.HasKey(e => e.FdldPkRefNo)
-                    .HasName("PK__RM_FormD__A24A9F0303C0D1DF");
+                    .HasName("PK__RM_FormD__A24A9F034E7ABDC6");
 
                 entity.ToTable("RM_FormD_Labour_DTL");
 
@@ -5396,7 +5398,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormDownloadUse>(entity =>
             {
                 entity.HasKey(e => e.FduPkRefNo)
-                    .HasName("PK__RM_Form___049F0581DF9EA30F");
+                    .HasName("PK__RM_Form___049F05813A98D099");
 
                 entity.ToTable("RM_Form_Download_Use");
 
@@ -5453,7 +5455,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FduSeperator)
                     .HasColumnName("FDU_Seperator")
-                    .HasMaxLength(150)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FduSubmitSts).HasColumnName("FDU_SUBMIT_STS");
@@ -5825,7 +5827,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormF2GrInsDtl>(entity =>
             {
                 entity.HasKey(e => e.FgridPkRefNo)
-                    .HasName("PK__RM_FormF__0F30EEBF1161D98B");
+                    .HasName("PK__RM_FormF__0F30EEBF86BE9281");
 
                 entity.ToTable("RM_FormF2_GR_Ins_DTL");
 
@@ -5889,13 +5891,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FgridFgrihPkRefNoNavigation)
                     .WithMany(p => p.RmFormF2GrInsDtl)
                     .HasForeignKey(d => d.FgridFgrihPkRefNo)
-                    .HasConstraintName("FK__RM_FormF2__FGRID__1881A0DE");
+                    .HasConstraintName("FK__RM_FormF2__FGRID__12C8C788");
             });
 
             modelBuilder.Entity<RmFormF2GrInsHdr>(entity =>
             {
                 entity.HasKey(e => e.FgrihPkRefNo)
-                    .HasName("PK__RM_FormF__7CB958B974B3FE5C");
+                    .HasName("PK__RM_FormF__7CB958B9D96F7C86");
 
                 entity.ToTable("RM_FormF2_GR_Ins_HDR");
 
@@ -5993,13 +5995,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FgrihRoad)
                     .WithMany(p => p.RmFormF2GrInsHdr)
                     .HasForeignKey(d => d.FgrihRoadId)
-                    .HasConstraintName("FK__RM_FormF2__FGRIH__61F08603");
+                    .HasConstraintName("FK__RM_FormF2__FGRIH__13BCEBC1");
             });
 
             modelBuilder.Entity<RmFormF4InsDtl>(entity =>
             {
                 entity.HasKey(e => e.FivadPkRefNo)
-                    .HasName("PK__RM_FormF__3B46FFCA3D070932");
+                    .HasName("PK__RM_FormF__3B46FFCAA64A3568");
 
                 entity.ToTable("RM_FormF4_Ins_DTL");
 
@@ -6062,18 +6064,18 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FivadFcvihPkRefNoNavigation)
                     .WithMany(p => p.RmFormF4InsDtl)
                     .HasForeignKey(d => d.FivadFcvihPkRefNo)
-                    .HasConstraintName("FK__RM_FormF4__FIVAD__37FA4C37");
+                    .HasConstraintName("FK__RM_FormF4__FIVAD__15A53433");
 
                 entity.HasOne(d => d.FivadFivahPkRefNoNavigation)
                     .WithMany(p => p.RmFormF4InsDtl)
                     .HasForeignKey(d => d.FivadFivahPkRefNo)
-                    .HasConstraintName("FK__RM_FormF4__FIVAD__370627FE");
+                    .HasConstraintName("FK__RM_FormF4__FIVAD__14B10FFA");
             });
 
             modelBuilder.Entity<RmFormF4InsHdr>(entity =>
             {
                 entity.HasKey(e => e.FivahPkRefNo)
-                    .HasName("PK__RM_FormF__8C6E55867126710C");
+                    .HasName("PK__RM_FormF__8C6E55866579BEF7");
 
                 entity.ToTable("RM_FormF4_Ins_HDR");
 
@@ -6172,13 +6174,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FivahRoad)
                     .WithMany(p => p.RmFormF4InsHdr)
                     .HasForeignKey(d => d.FivahRoadId)
-                    .HasConstraintName("FK__RM_FormF4__FIVAH__324172E1");
+                    .HasConstraintName("FK__RM_FormF4__FIVAH__1699586C");
             });
 
             modelBuilder.Entity<RmFormF5InsDtl>(entity =>
             {
                 entity.HasKey(e => e.FvadPkRefNo)
-                    .HasName("PK__RM_FormF__CEB2790CECCD9AC0");
+                    .HasName("PK__RM_FormF__CEB2790C1D3214C0");
 
                 entity.ToTable("RM_FormF5_Ins_DTL");
 
@@ -6245,13 +6247,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FvadFvahPkRefNoNavigation)
                     .WithMany(p => p.RmFormF5InsDtl)
                     .HasForeignKey(d => d.FvadFvahPkRefNo)
-                    .HasConstraintName("FK__RM_FormF5__FVAD___4183B671");
+                    .HasConstraintName("FK__RM_FormF5__FVAD___178D7CA5");
             });
 
             modelBuilder.Entity<RmFormF5InsHdr>(entity =>
             {
                 entity.HasKey(e => e.FvahPkRefNo)
-                    .HasName("PK__RM_FormF__7E3F420D15E3DC3C");
+                    .HasName("PK__RM_FormF__7E3F420D6C3F6E63");
 
                 entity.ToTable("RM_FormF5_Ins_HDR");
 
@@ -6350,13 +6352,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FvahRoad)
                     .WithMany(p => p.RmFormF5InsHdr)
                     .HasForeignKey(d => d.FvahRoadId)
-                    .HasConstraintName("FK__RM_FormF5__FVAH___3CBF0154");
+                    .HasConstraintName("FK__RM_FormF5__FVAH___1975C517");
             });
 
             modelBuilder.Entity<RmFormFcInsDtl>(entity =>
             {
                 entity.HasKey(e => e.FcidPkRefNo)
-                    .HasName("PK__RM_FormF__9501D0F6512AA065");
+                    .HasName("PK__RM_FormF__9501D0F627988BC9");
 
                 entity.ToTable("RM_FormFC_Ins_DTL");
 
@@ -6428,18 +6430,18 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FcidAiPkRefNoNavigation)
                     .WithMany(p => p.RmFormFcInsDtl)
                     .HasForeignKey(d => d.FcidAiPkRefNo)
-                    .HasConstraintName("FK__RM_FormFC__FCID___6A85CC04");
+                    .HasConstraintName("FK__RM_FormFC__FCID___1B5E0D89");
 
                 entity.HasOne(d => d.FcidFcihPkRefNoNavigation)
                     .WithMany(p => p.RmFormFcInsDtl)
                     .HasForeignKey(d => d.FcidFcihPkRefNo)
-                    .HasConstraintName("FK__RM_FormFC__FCID___220B0B18");
+                    .HasConstraintName("FK__RM_FormFC__FCID___1A69E950");
             });
 
             modelBuilder.Entity<RmFormFcInsHdr>(entity =>
             {
                 entity.HasKey(e => e.FcihPkRefNo)
-                    .HasName("PK__RM_FormF__E3AB924AF5B6DACA");
+                    .HasName("PK__RM_FormF__E3AB924A644C394B");
 
                 entity.ToTable("RM_FormFC_Ins_HDR");
 
@@ -6553,13 +6555,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FcihRoad)
                     .WithMany(p => p.RmFormFcInsHdr)
                     .HasForeignKey(d => d.FcihRoadId)
-                    .HasConstraintName("FK__RM_FormFC__FCIH___1D4655FB");
+                    .HasConstraintName("FK__RM_FormFC__FCIH___1C5231C2");
             });
 
             modelBuilder.Entity<RmFormFdInsDtl>(entity =>
             {
                 entity.HasKey(e => e.FdidPkRefNo)
-                    .HasName("PK__RM_FormF__3C10A35C8D51CCF4");
+                    .HasName("PK__RM_FormF__3C10A35C10034A63");
 
                 entity.ToTable("RM_FormFD_Ins_DTL");
 
@@ -6631,18 +6633,18 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FdidAiPkRefNoNavigation)
                     .WithMany(p => p.RmFormFdInsDtl)
                     .HasForeignKey(d => d.FdidAiPkRefNo)
-                    .HasConstraintName("FK__RM_FormFD__FDID___2D7CBDC4");
+                    .HasConstraintName("FK__RM_FormFD__FDID___1E3A7A34");
 
                 entity.HasOne(d => d.FdidFdihPkRefNoNavigation)
                     .WithMany(p => p.RmFormFdInsDtl)
                     .HasForeignKey(d => d.FdidFdihPkRefNo)
-                    .HasConstraintName("FK__RM_FormFD__FDID___2C88998B");
+                    .HasConstraintName("FK__RM_FormFD__FDID___1D4655FB");
             });
 
             modelBuilder.Entity<RmFormFdInsHdr>(entity =>
             {
                 entity.HasKey(e => e.FdihPkRefNo)
-                    .HasName("PK__RM_FormF__FCF91F3D196DC06F");
+                    .HasName("PK__RM_FormF__FCF91F3D48C4C931");
 
                 entity.ToTable("RM_FormFD_Ins_HDR");
 
@@ -6761,13 +6763,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FdihRoad)
                     .WithMany(p => p.RmFormFdInsHdr)
                     .HasForeignKey(d => d.FdihRoadId)
-                    .HasConstraintName("FK__RM_FormFD__FDIH___27C3E46E");
+                    .HasConstraintName("FK__RM_FormFD__FDIH___1F2E9E6D");
             });
 
             modelBuilder.Entity<RmFormFsInsDtl>(entity =>
             {
                 entity.HasKey(e => e.FsdPkRefNo)
-                    .HasName("PK__RM_FormF__A2DE4BFA243A7281");
+                    .HasName("PK__RM_FormF__A2DE4BFAECCAA2E3");
 
                 entity.ToTable("RM_FormFS_Ins_DTL");
 
@@ -6848,13 +6850,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FsdFshPkRefNoNavigation)
                     .WithMany(p => p.RmFormFsInsDtl)
                     .HasForeignKey(d => d.FsdFshPkRefNo)
-                    .HasConstraintName("FK__RM_FormFS__FSD_F__5F141958");
+                    .HasConstraintName("FK__RM_FormFS__FSD_F__2022C2A6");
             });
 
             modelBuilder.Entity<RmFormFsInsHdr>(entity =>
             {
                 entity.HasKey(e => e.FshPkRefNo)
-                    .HasName("PK__RM_FormF__7D8649FFFCCFBA6C");
+                    .HasName("PK__RM_FormF__7D8649FFE6D42123");
 
                 entity.ToTable("RM_FormFS_Ins_HDR");
 
@@ -6989,13 +6991,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FshRoad)
                     .WithMany(p => p.RmFormFsInsHdr)
                     .HasForeignKey(d => d.FshRoadId)
-                    .HasConstraintName("FK__RM_FormFS__FSH_R__5A4F643B");
+                    .HasConstraintName("FK__RM_FormFS__FSH_R__2116E6DF");
             });
 
             modelBuilder.Entity<RmFormGenDtl>(entity =>
             {
                 entity.HasKey(e => e.FgdPkId)
-                    .HasName("PK__RM_FORM___11F786953F8FAB4E");
+                    .HasName("PK__RM_FORM___11F7869534723080");
 
                 entity.ToTable("RM_FORM_GEN_DTL");
 
@@ -7046,7 +7048,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormHHdr>(entity =>
             {
                 entity.HasKey(e => e.FhhPkRefNo)
-                    .HasName("PK__RM_FormH__E221D2BF2E8254C8");
+                    .HasName("PK__RM_FormH__E221D2BF58BC0F76");
 
                 entity.ToTable("RM_FormH_HDR");
 
@@ -7271,18 +7273,18 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FhhFadPkRefNoNavigation)
                     .WithMany(p => p.RmFormHHdr)
                     .HasForeignKey(d => d.FhhFadPkRefNo)
-                    .HasConstraintName("FK__RM_FormH___FHH_F__6166761E");
+                    .HasConstraintName("FK__RM_FormH___FHH_F__220B0B18");
 
                 entity.HasOne(d => d.FhhFjdPkRefNoNavigation)
                     .WithMany(p => p.RmFormHHdr)
                     .HasForeignKey(d => d.FhhFjdPkRefNo)
-                    .HasConstraintName("FK__RM_FormH___FHH_F__625A9A57");
+                    .HasConstraintName("FK__RM_FormH___FHH_F__22FF2F51");
             });
 
             modelBuilder.Entity<RmFormJDtl>(entity =>
             {
                 entity.HasKey(e => e.FjdPkRefNo)
-                    .HasName("PK__RM_FormJ__CAC96AA807310FF4");
+                    .HasName("PK__RM_FormJ__CAC96AA8E256A1B8");
 
                 entity.ToTable("RM_FormJ_DTL");
 
@@ -7399,13 +7401,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FjdFjhPkRefNoNavigation)
                     .WithMany(p => p.RmFormJDtl)
                     .HasForeignKey(d => d.FjdFjhPkRefNo)
-                    .HasConstraintName("FK__RM_FormJ___FJD_F__6442E2C9");
+                    .HasConstraintName("FK__RM_FormJ___FJD_F__24E777C3");
             });
 
             modelBuilder.Entity<RmFormJHdr>(entity =>
             {
                 entity.HasKey(e => e.FjhPkRefNo)
-                    .HasName("PK__RM_FormJ__8E84C363B13F3D4A");
+                    .HasName("PK__RM_FormJ__8E84C3630621E12F");
 
                 entity.ToTable("RM_FormJ_HDR");
 
@@ -7546,7 +7548,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormN1Hdr>(entity =>
             {
                 entity.HasKey(e => e.FnihPkRefNo)
-                    .HasName("PK__RM_FormN__89C1C7ECDA9B8B3C");
+                    .HasName("PK__RM_FormN__89C1C7EC22A63217");
 
                 entity.ToTable("RM_FormN1_HDR");
 
@@ -7811,7 +7813,7 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FnihFqaiidPkRefNoNavigation)
                     .WithMany(p => p.RmFormN1Hdr)
                     .HasForeignKey(d => d.FnihFqaiidPkRefNo)
-                    .HasConstraintName("FK__RM_FormN1__FNIH___6319B466");
+                    .HasConstraintName("FK__RM_FormN1__FNIH___26CFC035");
 
                 entity.HasOne(d => d.FnihFsidPkRefNoNavigation)
                     .WithMany(p => p.RmFormN1Hdr)
@@ -7822,7 +7824,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormN2Hdr>(entity =>
             {
                 entity.HasKey(e => e.FnthPkRefNo)
-                    .HasName("PK__RM_FormN__85079DD4F40377A0");
+                    .HasName("PK__RM_FormN__85079DD43DECA75F");
 
                 entity.ToTable("RM_FormN2_HDR");
 
@@ -8114,7 +8116,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormQa2Dtl>(entity =>
             {
                 entity.HasKey(e => e.FqaiidPkRefNo)
-                    .HasName("PK__RM_FormQ__B9E996F1A1E44EAE");
+                    .HasName("PK__RM_FormQ__B9E996F1F7A877F0");
 
                 entity.ToTable("RM_FormQA2_DTL");
 
@@ -8265,7 +8267,7 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FqaiidFqaiihPkRefNoNavigation)
                     .WithMany(p => p.RmFormQa2Dtl)
                     .HasForeignKey(d => d.FqaiidFqaiihPkRefNo)
-                    .HasConstraintName("FK__RM_FormQA__FQAII__603D47BB");
+                    .HasConstraintName("FK__RM_FormQA__FQAII__29AC2CE0");
 
                 entity.HasOne(d => d.FqaiidFsidPkRefNoNavigation)
                     .WithMany(p => p.RmFormQa2Dtl)
@@ -8276,7 +8278,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormQa2Hdr>(entity =>
             {
                 entity.HasKey(e => e.FqaiihPkRefNo)
-                    .HasName("PK__RM_FormQ__66942BBDE5EDF509");
+                    .HasName("PK__RM_FormQ__66942BBD40726B79");
 
                 entity.ToTable("RM_FormQA2_HDR");
 
@@ -8609,7 +8611,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormS1Hdr>(entity =>
             {
                 entity.HasKey(e => e.FsihPkRefNo)
-                    .HasName("PK__RM_FormS__5959C3425BBB5D24");
+                    .HasName("PK__RM_FormS__5959C3421DFDD7BD");
 
                 entity.ToTable("RM_FormS1_HDR");
 
@@ -8720,7 +8722,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormS1WkDtl>(entity =>
             {
                 entity.HasKey(e => e.FsiwdPkRefNo)
-                    .HasName("PK__RM_FormS__96B8BA5CA366BAEF");
+                    .HasName("PK__RM_FormS__96B8BA5CBAC076AB");
 
                 entity.ToTable("RM_FormS1_WK_DTL");
 
@@ -8753,7 +8755,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormS2Dtl>(entity =>
             {
                 entity.HasKey(e => e.FsiidPkRefNo)
-                    .HasName("PK__RM_FormS__929B49DB71B76E1D");
+                    .HasName("PK__RM_FormS__929B49DBC4ADF3B2");
 
                 entity.ToTable("RM_FormS2_DTL");
 
@@ -8841,13 +8843,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FsiidFsiihPkRefNoNavigation)
                     .WithMany(p => p.RmFormS2Dtl)
                     .HasForeignKey(d => d.FsiidFsiihPkRefNo)
-                    .HasConstraintName("FK__RM_FormS2__FSIID__09746778");
+                    .HasConstraintName("FK__RM_FormS2__FSIID__2D7CBDC4");
             });
 
             modelBuilder.Entity<RmFormS2Hdr>(entity =>
             {
                 entity.HasKey(e => e.FsiihPkRefNo)
-                    .HasName("PK__RM_FormS__52EC5442F7EA9E6D");
+                    .HasName("PK__RM_FormS__52EC544226430E73");
 
                 entity.ToTable("RM_FormS2_HDR");
 
@@ -8995,7 +8997,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormS2QuarDtl>(entity =>
             {
                 entity.HasKey(e => e.FsiiqdPkRefNo)
-                    .HasName("PK__RM_FormS__7BCCE6DAA0359FEB");
+                    .HasName("PK__RM_FormS__7BCCE6DAD87FCDBF");
 
                 entity.ToTable("RM_FormS2_Quar_DTL");
 
@@ -9014,18 +9016,18 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FsiiqdClkPkRefNoNavigation)
                     .WithMany(p => p.RmFormS2QuarDtl)
                     .HasForeignKey(d => d.FsiiqdClkPkRefNo)
-                    .HasConstraintName("FK__RM_FormS2__FSIIQ__336AA144");
+                    .HasConstraintName("FK__RM_FormS2__FSIIQ__2F650636");
 
                 entity.HasOne(d => d.FsiiqdFsiidPkRefNoNavigation)
                     .WithMany(p => p.RmFormS2QuarDtl)
                     .HasForeignKey(d => d.FsiiqdFsiidPkRefNo)
-                    .HasConstraintName("FK__RM_FormS2__FSIIQ__15DA3E5D");
+                    .HasConstraintName("FK__RM_FormS2__FSIIQ__2E70E1FD");
             });
 
             modelBuilder.Entity<RmFormXHdr>(entity =>
             {
                 entity.HasKey(e => e.FxhPkRefNo)
-                    .HasName("PK__RM_FormX__B2E09EA327A7863F");
+                    .HasName("PK__RM_FormX__B2E09EA3B2FE5EF0");
 
                 entity.ToTable("RM_FormX_HDR");
 
@@ -9308,13 +9310,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FxhFddPkRefNoNavigation)
                     .WithMany(p => p.RmFormXHdr)
                     .HasForeignKey(d => d.FxhFddPkRefNo)
-                    .HasConstraintName("FK__RM_FormX___FXH_F__6AEFE058");
+                    .HasConstraintName("FK__RM_FormX___FXH_F__30592A6F");
             });
 
             modelBuilder.Entity<RmFormaImageDtl>(entity =>
             {
                 entity.HasKey(e => e.FaiPkRefNo)
-                    .HasName("PK__RM_FORMA__F68F13665F489273");
+                    .HasName("PK__RM_FORMA__F68F136653BCC95B");
 
                 entity.ToTable("RM_FORMA_image_DTL");
 
@@ -9372,13 +9374,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FaiFadPkRefNoNavigation)
                     .WithMany(p => p.RmFormaImageDtl)
                     .HasForeignKey(d => d.FaiFadPkRefNo)
-                    .HasConstraintName("FK__RM_FORMA___FAI_F__5BAD9CC8");
+                    .HasConstraintName("FK__RM_FORMA___FAI_F__0A338187");
             });
 
             modelBuilder.Entity<RmFormhImageDtl>(entity =>
             {
                 entity.HasKey(e => e.FhiPkRefNo)
-                    .HasName("PK__RM_FORMH__9D78178513DB2999");
+                    .HasName("PK__RM_FORMH__9D7817859EA7488A");
 
                 entity.ToTable("RM_FORMH_image_DTL");
 
@@ -9436,13 +9438,13 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FhiFhhPkRefNoNavigation)
                     .WithMany(p => p.RmFormhImageDtl)
                     .HasForeignKey(d => d.FhiFhhPkRefNo)
-                    .HasConstraintName("FK__RM_FORMH___FHI_F__634EBE90");
+                    .HasConstraintName("FK__RM_FORMH___FHI_F__23F3538A");
             });
 
             modelBuilder.Entity<RmFormjImageDtl>(entity =>
             {
                 entity.HasKey(e => e.FjiPkRefNo)
-                    .HasName("PK__RM_FORMJ__D85FB9EBD2AF27E1");
+                    .HasName("PK__RM_FORMJ__D85FB9EBD08223D7");
 
                 entity.ToTable("RM_FORMJ_image_DTL");
 
@@ -9500,7 +9502,7 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FjiFjdPkRefNoNavigation)
                     .WithMany(p => p.RmFormjImageDtl)
                     .HasForeignKey(d => d.FjiFjdPkRefNo)
-                    .HasConstraintName("FK__RM_FORMJ___FJI_F__65370702");
+                    .HasConstraintName("FK__RM_FORMJ___FJI_F__25DB9BFC");
             });
 
             modelBuilder.Entity<RmGroup>(entity =>
@@ -9550,7 +9552,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmInspItemMas>(entity =>
             {
                 entity.HasKey(e => e.IimPkRefNo)
-                    .HasName("PK__RM_Insp___DDDD8E989C782A2E");
+                    .HasName("PK__RM_Insp___DDDD8E989A236EB8");
 
                 entity.ToTable("RM_Insp_Item_Mas");
 
@@ -9584,7 +9586,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmInspItemMasDtl>(entity =>
             {
                 entity.HasKey(e => e.IimdPkRefNo)
-                    .HasName("PK__RM_Insp___8D6E61065A8D43DF");
+                    .HasName("PK__RM_Insp___8D6E61068980CAF3");
 
                 entity.ToTable("RM_Insp_Item_Mas_DTL");
 
@@ -9624,7 +9626,7 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.IimdIimPkRefNoNavigation)
                     .WithMany(p => p.RmInspItemMasDtl)
                     .HasForeignKey(d => d.IimdIimPkRefNo)
-                    .HasConstraintName("FK__RM_Insp_I__IIMD___7908F585");
+                    .HasConstraintName("FK__RM_Insp_I__IIMD___3429BB53");
             });
 
             modelBuilder.Entity<RmIwFormW1>(entity =>
@@ -9897,7 +9899,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fw2DivText)
                     .HasColumnName("FW2_Div_Text")
-                    .HasMaxLength(10);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Fw2DivisonName)
                     .HasColumnName("FW2_Divison_Name")
@@ -10106,9 +10108,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WC");
 
-                entity.Property(e => e.FwcPkRefNo)
-                    .HasColumnName("FWC_PK_Ref_no")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwcPkRefNo).HasColumnName("FWC_PK_Ref_no");
 
                 entity.Property(e => e.FwcActiveYn).HasColumnName("FWC_Active_YN");
 
@@ -10156,6 +10156,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWC_IW_Ref_No")
                     .HasMaxLength(100);
 
+                entity.Property(e => e.FwcIwWrksDeptId).HasColumnName("FWC_IW_WRKS_Dept_ID");
+
                 entity.Property(e => e.FwcModBy).HasColumnName("FWC_Mod_By");
 
                 entity.Property(e => e.FwcModDt)
@@ -10186,10 +10188,6 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWC_Sec_Code")
                     .HasMaxLength(16);
 
-                entity.Property(e => e.FwcServRefNo)
-                    .HasColumnName("FWC_Serv_Ref_No")
-                    .HasMaxLength(100);
-
                 entity.Property(e => e.FwcSignIssu).HasColumnName("FWC_Sign_ISSU");
 
                 entity.Property(e => e.FwcStatus)
@@ -10204,10 +10202,19 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWC_USERNAME_ISSU")
                     .HasMaxLength(250);
 
+                entity.Property(e => e.FwcYourRefNo)
+                    .HasColumnName("FWC_Your_Ref_No")
+                    .HasMaxLength(100);
+
                 entity.HasOne(d => d.FwcFw1PkRefNoNavigation)
                     .WithMany(p => p.RmIwFormWc)
                     .HasForeignKey(d => d.FwcFw1PkRefNo)
                     .HasConstraintName("FK_RM_IW_Form_WC_RM_IW_FormW1");
+
+                entity.HasOne(d => d.FwcIwWrksDept)
+                    .WithMany(p => p.RmIwFormWc)
+                    .HasForeignKey(d => d.FwcIwWrksDeptId)
+                    .HasConstraintName("FK_RM_IW_Form_WC_RM_IW_Works_Dept_Master");
             });
 
             modelBuilder.Entity<RmIwFormWd>(entity =>
@@ -10216,13 +10223,15 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WD");
 
-                entity.Property(e => e.FwdPkRefNo)
-                    .HasColumnName("FWD_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwdPkRefNo).HasColumnName("FWD_PK_Ref_No");
 
                 entity.Property(e => e.FwdActiveYn).HasColumnName("FWD_Active_YN");
 
                 entity.Property(e => e.FwdAuditLog).HasColumnName("FWD_AuditLog");
+
+                entity.Property(e => e.FwdCertificateDelay)
+                    .HasColumnName("FWD_Certificate_Delay")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.FwdCh).HasColumnName("FWD_CH");
 
@@ -10254,6 +10263,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWD_DT_WD")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.FwdFw1PkRefNo).HasColumnName("FWD_FW1_PK_Ref_No");
+
                 entity.Property(e => e.FwdIwProjectTitle)
                     .HasColumnName("FWD_IW_Project_Title")
                     .HasMaxLength(250);
@@ -10261,6 +10272,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwdIwRefNo)
                     .HasColumnName("FWD_IW_Ref_No")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.FwdIwWrksDeptId).HasColumnName("FWD_IW_WRKS_Dept_ID");
 
                 entity.Property(e => e.FwdModBy).HasColumnName("FWD_Mod_By");
 
@@ -10309,6 +10322,20 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwdUsernameIssu)
                     .HasColumnName("FWD_USERNAME_ISSU")
                     .HasMaxLength(250);
+
+                entity.Property(e => e.FwdYourRefNo)
+                    .HasColumnName("FWD_Your_Ref_No")
+                    .HasMaxLength(100);
+
+                entity.HasOne(d => d.FwdFw1PkRefNoNavigation)
+                    .WithMany(p => p.RmIwFormWd)
+                    .HasForeignKey(d => d.FwdFw1PkRefNo)
+                    .HasConstraintName("FK_RM_IW_Form_WD_RM_IW_FormW1");
+
+                entity.HasOne(d => d.FwdIwWrksDept)
+                    .WithMany(p => p.RmIwFormWd)
+                    .HasForeignKey(d => d.FwdIwWrksDeptId)
+                    .HasConstraintName("FK_RM_IW_Form_WD_RM_IW_Works_Dept_Master");
             });
 
             modelBuilder.Entity<RmIwFormWdDtl>(entity =>
@@ -10317,9 +10344,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WD_Dtl");
 
-                entity.Property(e => e.FwddPkRefNo)
-                    .HasColumnName("FWDD_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwddPkRefNo).HasColumnName("FWDD_PK_Ref_No");
 
                 entity.Property(e => e.FwddClause)
                     .HasColumnName("FWDD_Clause")
@@ -10331,7 +10356,9 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWDD_CR_DT")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.FwddExtnPrd).HasColumnName("FWDD_EXTN_Prd");
+                entity.Property(e => e.FwddExtnPrd)
+                    .HasColumnName("FWDD_EXTN_Prd")
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.FwddFwdPkRefNo).HasColumnName("FWDD_FWD_PK_Ref_No");
 
@@ -10399,6 +10426,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWG_IW_Ref_No")
                     .HasMaxLength(100);
 
+                entity.Property(e => e.FwgIwWrksDeptId).HasColumnName("FWG_IW_WRKS_Dept_ID");
+
                 entity.Property(e => e.FwgModBy).HasColumnName("FWG_Mod_By");
 
                 entity.Property(e => e.FwgModDt)
@@ -10429,10 +10458,6 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWG_Sec_Code")
                     .HasMaxLength(16);
 
-                entity.Property(e => e.FwgServRefNo)
-                    .HasColumnName("FWG_Serv_Ref_No")
-                    .HasMaxLength(100);
-
                 entity.Property(e => e.FwgSignIssu).HasColumnName("FWG_Sign_ISSU");
 
                 entity.Property(e => e.FwgStatus)
@@ -10447,10 +10472,19 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWG_USERNAME_ISSU")
                     .HasMaxLength(250);
 
+                entity.Property(e => e.FwgYourRefNo)
+                    .HasColumnName("FWG_Your_Ref_No")
+                    .HasMaxLength(100);
+
                 entity.HasOne(d => d.FwgFw1PkRefNoNavigation)
                     .WithMany(p => p.RmIwFormWg)
                     .HasForeignKey(d => d.FwgFw1PkRefNo)
                     .HasConstraintName("FK_RM_IW_Form_WG_RM_IW_FormW1");
+
+                entity.HasOne(d => d.FwgIwWrksDept)
+                    .WithMany(p => p.RmIwFormWg)
+                    .HasForeignKey(d => d.FwgIwWrksDeptId)
+                    .HasConstraintName("FK_RM_IW_Form_WG_RM_IW_Works_Dept_Master");
             });
 
             modelBuilder.Entity<RmIwFormWn>(entity =>
@@ -10459,9 +10493,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_IW_Form_WN");
 
-                entity.Property(e => e.FwnPkRefNo)
-                    .HasColumnName("FWN_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.FwnPkRefNo).HasColumnName("FWN_PK_Ref_No");
 
                 entity.Property(e => e.FwnActiveYn).HasColumnName("FWN_Active_YN");
 
@@ -10497,6 +10529,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FWN_DT_WN")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.FwnFw1PkRefNo).HasColumnName("FWN_FW1_PK_Ref_No");
+
                 entity.Property(e => e.FwnIwProjectTitle)
                     .HasColumnName("FWN_IW_Project_Title")
                     .HasMaxLength(250);
@@ -10504,6 +10538,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwnIwRefNo)
                     .HasColumnName("FWN_IW_Ref_No")
                     .HasMaxLength(100);
+
+                entity.Property(e => e.FwnIwWrksDeptId).HasColumnName("FWN_IW_WRKS_Dept_ID");
 
                 entity.Property(e => e.FwnLadAmt).HasColumnName("FWN_LAD_AMT");
 
@@ -10554,6 +10590,16 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FwnUsernameIssu)
                     .HasColumnName("FWN_USERNAME_ISSU")
                     .HasMaxLength(250);
+
+                entity.HasOne(d => d.FwnFw1PkRefNoNavigation)
+                    .WithMany(p => p.RmIwFormWn)
+                    .HasForeignKey(d => d.FwnFw1PkRefNo)
+                    .HasConstraintName("FK_RM_IW_Form_WN_RM_IW_FormW1");
+
+                entity.HasOne(d => d.FwnIwWrksDept)
+                    .WithMany(p => p.RmIwFormWn)
+                    .HasForeignKey(d => d.FwnIwWrksDeptId)
+                    .HasConstraintName("FK_RM_IW_Form_WN_RM_IW_Works_Dept_Master");
             });
 
             modelBuilder.Entity<RmIwSrvProviderMaster>(entity =>
@@ -10745,6 +10791,37 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.ModName).HasColumnName("Mod_Name");
             });
 
+            modelBuilder.Entity<RmModuleForms>(entity =>
+            {
+                entity.HasKey(e => e.MfPkId)
+                    .HasName("PK_RM_Module_Forms_1");
+
+                entity.ToTable("RM_Module_Forms");
+
+                entity.Property(e => e.MfPkId).HasColumnName("MF_PkId");
+
+                entity.Property(e => e.MfActiveYn).HasColumnName("MF_Active_YN");
+
+                entity.Property(e => e.MfCrBy).HasColumnName("MF_CR_By");
+
+                entity.Property(e => e.MfCrDt)
+                    .HasColumnName("MF_CR_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfFormName)
+                    .HasColumnName("MF_FormName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfModBy).HasColumnName("MF_Mod_By");
+
+                entity.Property(e => e.MfModDt)
+                    .HasColumnName("MF_Mod_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfModPkId).HasColumnName("MF_Mod_PkId");
+            });
+
             modelBuilder.Entity<RmModuleGroupFieldRights>(entity =>
             {
                 entity.HasKey(e => e.MgfrPkId);
@@ -10860,15 +10937,93 @@ namespace RAMMS.Domain.Models
                     .HasConstraintName("FK_RM_Module_Group_Rights_RM_USERS");
             });
 
+            modelBuilder.Entity<RmModuleRightByForm>(entity =>
+            {
+                entity.HasKey(e => e.MfrPkId);
+
+                entity.ToTable("RM_Module_Right_By_Form");
+
+                entity.Property(e => e.MfrPkId).HasColumnName("MFR_PkId");
+
+                entity.Property(e => e.MfrActiveYn).HasColumnName("MFR_Active_YN");
+
+                entity.Property(e => e.MfrCanAdd)
+                    .HasColumnName("MFR_Can_Add")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanApprove)
+                    .HasColumnName("MFR_Can_Approve")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanDelete)
+                    .HasColumnName("MFR_Can_Delete")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanEdit)
+                    .HasColumnName("MFR_Can_Edit")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanPrint)
+                    .HasColumnName("MFR_Can_Print")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanSignature)
+                    .HasColumnName("MFR_Can_Signature")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanSubmit)
+                    .HasColumnName("MFR_Can_Submit")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCanView)
+                    .HasColumnName("MFR_Can_View")
+                    .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.MfrCrBy).HasColumnName("MFR_CR_By");
+
+                entity.Property(e => e.MfrCrDt)
+                    .HasColumnName("MFR_CR_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfrGroupName)
+                    .HasColumnName("MFR_GroupName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfrMfPkId).HasColumnName("MFR_MF_PkId");
+
+                entity.Property(e => e.MfrModBy).HasColumnName("MFR_Mod_By");
+
+                entity.Property(e => e.MfrModDt)
+                    .HasColumnName("MFR_Mod_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.MfrModFormName)
+                    .HasColumnName("MFR_Mod_Form_Name")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfrModPkId).HasColumnName("MFR_Mod_PkId");
+
+                entity.Property(e => e.MfrModuleName)
+                    .HasColumnName("MFR_ModuleName")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.MfrUgPkId).HasColumnName("MFR_Ug_PkId");
+
+                entity.Property(e => e.MfrUserid).HasColumnName("MFR_Userid");
+            });
+
             modelBuilder.Entity<RmModuleRightsCode>(entity =>
             {
                 entity.HasKey(e => e.MrcPkId)
-                    .HasName("PK__RM_Modul__5B82B2E31B2396A5");
+                    .HasName("PK__RM_Modul__5B82B2E3BADDCA7B");
 
                 entity.ToTable("RM_Module_Rights_Code");
 
                 entity.HasIndex(e => e.MrcPermLevel)
-                    .HasName("UQ__RM_Modul__FA9FC6599E7EF988")
+                    .HasName("UQ__RM_Modul__FA9FC659C4DA5D22")
                     .IsUnique();
 
                 entity.Property(e => e.MrcPkId).HasColumnName("MRC_PK_Id");
@@ -10965,7 +11120,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmRoadMaster>(entity =>
             {
                 entity.HasKey(e => e.RdmPkRefNo)
-                    .HasName("PK__RM_Road___D2C3D8CD2878CCB9");
+                    .HasName("PK__RM_Road___D2C3D8CDD6844D97");
 
                 entity.ToTable("RM_Road_Master");
 
@@ -11082,7 +11237,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmUserGroup>(entity =>
             {
                 entity.HasKey(e => e.UgPkId)
-                    .HasName("PK__RM_User___3B6DA8CF7B39DB1A");
+                    .HasName("PK__RM_User___3B6DA8CFBDA3A046");
 
                 entity.ToTable("RM_User_Group");
 
@@ -11151,7 +11306,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmUserGroupRights>(entity =>
             {
                 entity.HasKey(e => e.UgrPkId)
-                    .HasName("PK__RM_User___76A9E1951AAB0546");
+                    .HasName("PK__RM_User___76A9E1958BFD7B3A");
 
                 entity.ToTable("RM_User_Group_Rights");
 
@@ -11430,7 +11585,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmWarImageDtl>(entity =>
             {
                 entity.HasKey(e => e.FwarPkRefNo)
-                    .HasName("PK__RM_WAR_i__B72C77913A9353C6");
+                    .HasName("PK__RM_WAR_i__B72C77917F68D8DC");
 
                 entity.ToTable("RM_WAR_image_DTL");
 
@@ -11490,18 +11645,18 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FwarFddPkRefNoNavigation)
                     .WithMany(p => p.RmWarImageDtl)
                     .HasForeignKey(d => d.FwarFddPkRefNo)
-                    .HasConstraintName("FK__RM_WAR_im__FWAR___73852659");
+                    .HasConstraintName("FK__RM_WAR_im__FWAR___408F9238");
 
                 entity.HasOne(d => d.FwarFxhPkRefNoNavigation)
                     .WithMany(p => p.RmWarImageDtl)
                     .HasForeignKey(d => d.FwarFxhPkRefNo)
-                    .HasConstraintName("FK__RM_WAR_im__FWAR___74794A92");
+                    .HasConstraintName("FK__RM_WAR_im__FWAR___4183B671");
             });
 
             modelBuilder.Entity<RmWeekLookup>(entity =>
             {
                 entity.HasKey(e => e.ClkPkRefNo)
-                    .HasName("PK__RM_Calen__8642B1A4C4D33D44");
+                    .HasName("PK__RM_Week___8642B1A4A008F3F5");
 
                 entity.ToTable("RM_Week_Lookup");
 
@@ -11519,7 +11674,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<TestColumns>(entity =>
             {
                 entity.HasKey(e => e.Column1)
-                    .HasName("PK__TestColu__1AA08F1C1F107C75");
+                    .HasName("PK__TestColu__1AA08F1C09E1A05F");
 
                 entity.Property(e => e.Column1)
                     .HasColumnName("Column_1")

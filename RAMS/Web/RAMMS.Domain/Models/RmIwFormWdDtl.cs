@@ -9,7 +9,7 @@ namespace RAMMS.Domain.Models
         public int? FwddFwdPkRefNo { get; set; }
         public string FwddReason { get; set; }
         public string FwddClause { get; set; }
-        public double? FwddExtnPrd { get; set; }
+        public string FwddExtnPrd { get; set; }
         public int? FwddModBy { get; set; }
         public DateTime? FwddModDt { get; set; }
         public int? FwddCrBy { get; set; }

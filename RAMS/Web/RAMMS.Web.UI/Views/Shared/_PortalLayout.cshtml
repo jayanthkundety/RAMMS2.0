@@ -281,9 +281,9 @@
                                 </ul>
                             </li>
                         }
-                        @*Commented based on the mentioned issue https://ramms.atlassian.net/browse/RU-118*@
-                        @*@if (security.IsPCView(ModuleNameList.Instructed_Works) || security.HasGroup(GroupNameList.Admin))
-                            {*@
+                        
+                        @if (security.IsPCView(ModuleNameList.Instructed_Works) || security.HasGroup(GroupNameList.Admin))
+                            {
                         <li class="navbar-vertical-aside-has-menu">
                             <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="instructedWorks" href="javascript:;" title="Instructed Works">
                                 <i class="icon-cpu nav-icon"></i>
@@ -299,8 +299,8 @@
                                 </li>*@
                             </ul>
                         </li>
-                        @*}
-                            @if (security.IsPCView(ModuleNameList.User_Management) || security.HasGroup(GroupNameList.Admin))
+                        }
+                            @*@if (security.IsPCView(ModuleNameList.User_Management) || security.HasGroup(GroupNameList.Admin))
                             {*@
                         <li class="navbar-vertical-aside-has-menu">
                             <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle svg-hover" id="UserManagement" href="javascript:;" title="User Management">

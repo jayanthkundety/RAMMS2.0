@@ -109,11 +109,11 @@
                                                                             @Html.EditorFor(m => m.FormW1.TecmDt, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
                                                                         </div>
                                                                         @*<div class="form-group col-lg-3">
-                                                                                       @Html.Label("Status", "Status")
-                                                                                       @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
+                                                                            @Html.Label("Status", "Status")
+                                                                            @Html.DropDownListFor(m => m.FormW1.Status, (IEnumerable
                                                                             <SelectListItem>)ViewData["TECM_Status"], "Select Satus", new { @class = "form-control svalidate {required, RMU}" })
 
-                                                                                   </div>*@
+                                                                            </div>*@
                                                                         <div class="form-group col-lg-2">
                                                                             <div class="row mt-4">
                                                                                 <div class="col-6 pt-1">
@@ -313,7 +313,6 @@
                                                                                         </div>
                                                                                         <div class="row py-2 border-bottom">
                                                                                             <div class="col-12">
-
                                                                                             </div>
                                                                                             <div class="col-8">
                                                                                                 @Html.TextAreaFor(m => m.FormW1.OtherCostLabel, new { placeholder = "Any other cost", @class = "form-control", @style = "height:37px" })
@@ -501,18 +500,18 @@
                                                         @{
                                                             if (Model.FormW1.Status != "" && Model.FormW1.Status != "Draft")
                                                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                                                {
-                                                                    Form = "FormW1",
-                                                                    RefId = Model.FormW1.PkRefNo,
-                                                                    Stage = Model.FormW1.Status
-                                                                });
+                    {
+                        Form = "FormW1",
+                        RefId = Model.FormW1.PkRefNo,
+                        Stage = Model.FormW1.Status
+                    });
                                                         }
 
                                                         <!--gallery start-->
                                                         <!--galler end-->
 
 
-                                                    </div>
+                                                </div>
                                                 </div>
 
                                             </div>
@@ -521,28 +520,31 @@
                                     </div>
                                     <div id="photoGallery" class="tab-pane">
                                         <div id="ViewPhoto">
-
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div> <div class="col-md-12 mb-2 float-right text-right custom-footer">
+                            
                             <button type="button" id="btnBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-
-                            @if (string.IsNullOrEmpty(Model.FormW1.Status) || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            @{
+                               var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+                                var hasRight = (security.IsSupervisor || security.IsExecutive || security.IsInstructedWorkEngg || security.IsRegionManager);
+                            }
+                            @if (string.IsNullOrEmpty(Model.FormW1.Status) && hasRight)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                             }
-                            else if (Model.FormW1.Status == "Saved" || Model.FormW1.Status == "Rejected" || Model.FormW1.Status == RAMMS.Common.StatusList.Supervisor)
+                            else if (Model.FormW1.Status == "Saved" && hasRight)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Submitted');">Submit</button>
                             }
-                            else if (security.IsJKRSSuperiorOfficer && Model.FormW1.Status == RAMMS.Common.StatusList.FormW1Submitted)
+                            else if ((isJKRS) && Model.FormW1.Status == RAMMS.Common.StatusList.FormW1Submitted)
                             {
                                 <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
-                                <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Verified'); ">Approve / Reject</button>
+                                <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO','Verified'); ">Approve / Reject</button>
                             }
                         </div>
 
@@ -554,22 +556,32 @@
     </div>
 
 
-    @Html.HiddenFor(m => m.FormW1.RmuCode);
-    @Html.HiddenFor(m => m.FormW1.PkRefNo);
-    @Html.HiddenFor(m => m.FormW1.RoadCode);
-    @Html.HiddenFor(m => m.FormW1.UseridReq);
-    @Html.HiddenFor(m => m.FormW1.UseridVer);
-    @Html.HiddenFor(m => m.FormW1.UseridRep);
-    @Html.HiddenFor(m => m.FormW1.Status);
-    @Html.HiddenFor(m => m.FormW1.SubmitSts);
-    @Html.HiddenFor(m => m.FormW1.IsBq);
-    @Html.HiddenFor(m => m.FormW1.IsDrawing);
+    @Html.HiddenFor(m => m.FormW1.RmuCode)
+    ;
+    @Html.HiddenFor(m => m.FormW1.PkRefNo)
+    ;
+    @Html.HiddenFor(m => m.FormW1.RoadCode)
+    ;
+    @Html.HiddenFor(m => m.FormW1.UseridReq)
+    ;
+    @Html.HiddenFor(m => m.FormW1.UseridVer)
+    ;
+    @Html.HiddenFor(m => m.FormW1.UseridRep)
+    ;
+    @Html.HiddenFor(m => m.FormW1.Status)
+    ;
+    @Html.HiddenFor(m => m.FormW1.SubmitSts)
+    ;
+    @Html.HiddenFor(m => m.FormW1.IsBq)
+    ;
+    @Html.HiddenFor(m => m.FormW1.IsDrawing)
+    ;
     <input type="hidden" id="hdnForm" value="FormW1" />
     <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
     <input type="hidden" id="hdnRecommondedValue" value="@Model.FormW1.RecomdType" />
     <input type="hidden" id="hdnUserId" value="@security.UserID" />
-   
+
 
 
 

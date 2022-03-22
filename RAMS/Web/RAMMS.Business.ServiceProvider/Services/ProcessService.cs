@@ -82,6 +82,13 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormW2":
                     iResult = await SaveFormW2(process);
                     break;
+                case "FormWC":
+                    iResult = await SaveFormW1(process);
+                    break;
+                case "FormWG":
+                    iResult = await SaveFormW2(process);
+                    break;
+
             }
             return iResult;
         }
@@ -149,6 +156,18 @@ namespace RAMMS.Business.ServiceProvider.Services
                     break;
                 case "FormW2":
                     logs = this.context.RmIwFormW2.Where(x => x.Fw2PkRefNo == RefId).Select(x => x.Fw2AuditLog).FirstOrDefault();
+                    break;
+                case "FormWC":
+                    logs = this.context.RmIwFormWc.Where(x => x.FwcPkRefNo == RefId).Select(x => x.FwcAuditLog).FirstOrDefault();
+                    break;
+                case "FormWG":
+                    logs = this.context.RmIwFormWg.Where(x => x.FwgPkRefNo == RefId).Select(x => x.FwgAuditLog).FirstOrDefault();
+                    break;
+                case "FormWD":
+                    logs = this.context.RmIwFormWd.Where(x => x.FwdPkRefNo == RefId).Select(x => x.FwdAuditLog).FirstOrDefault();
+                    break;
+                case "FormWN":
+                    logs = this.context.RmIwFormWn.Where(x => x.FwnPkRefNo == RefId).Select(x => x.FwnAuditLog).FirstOrDefault();
                     break;
             }
             return Utility.ProcessLog(logs);
@@ -483,7 +502,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (process.Stage == Common.StatusList.FormW1Submitted)
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.OperationsExecutive;
-                   
+
                     form.Fw1Status = process.IsApprove ? Common.StatusList.FormW1Approved : StatusList.FormW1Rejected;
 
                     if (process.IsApprove)
@@ -533,7 +552,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     strNotGroupName = process.IsApprove ? "" : GroupNames.JKRSSuperiorOfficerSO;
                     strTitle = "Received";
-                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Received  : StatusList.FormW2Rejected;
+                    form.Fw2Status = process.IsApprove ? Common.StatusList.FormW2Received : StatusList.FormW2Rejected;
 
                     if (process.IsApprove)
                     {
@@ -543,11 +562,17 @@ namespace RAMMS.Business.ServiceProvider.Services
                         if (form.Fw2UseridReq.HasValue)
                             lstNotUserId.Add(form.Fw2UseridReq.Value);
 
+                        form.Fw2UseridReq = Convert.ToInt32(process.UserID);
+                        form.Fw2UsernameReq = process.UserName;
+                        form.Fw2DesignationReq = process.UserDesignation;
+                        form.Fw2DtReq = process.ApproveDate;
+                        form.Fw2SignReq = true;
+
                         strNotUserID = string.Join(",", lstNotUserId.Distinct());
                     }
                     else
                     {
-                        strTitle = StatusList.FormW2Rejected;
+                        strTitle = StatusList.FormW2Received;
                     }
                 }
                 form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, strTitle, process.IsApprove ? "Recieved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);

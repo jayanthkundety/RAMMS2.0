@@ -9,6 +9,7 @@ $(document).ready(function () {
             $("#formWgIssuedName").val(ctrl.find("option:selected").attr("Item1"));
             $("#formWgIssuedDesig").val(ctrl.find("option:selected").attr("Item2"));
             $("#formWgIssuedOffice").val(ctrl.find("option:selected").attr("Item3"));
+            $("#formWgIssuedSig").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formWgIssuedName").prop("disabled", false);
@@ -17,6 +18,7 @@ $(document).ready(function () {
             $("#formWgIssuedDesig").val('');
             $("#formWgIssuedOffice").prop("disabled", false);
             $("#formWgIssuedOffice").val('');
+            $("#formWgIssuedSig").prop("checked", true);
         }
         else {
             $("#formWgIssuedName").prop("disabled", true);
@@ -30,7 +32,6 @@ $(document).ready(function () {
         return false;
     });
 
-
     $("#formWcIssuedBy").on("change", function () {
         debugger;
         var id = $("#formWcIssuedBy option:selected").val();
@@ -39,6 +40,7 @@ $(document).ready(function () {
             $("#formWcIssuedName").val(ctrl.find("option:selected").attr("Item1"));
             $("#formWcIssuedDesig").val(ctrl.find("option:selected").attr("Item2"));
             $("#formWcIssuedOffice").val(ctrl.find("option:selected").attr("Item3"));
+            $("#formWcIssuedSig").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formWcIssuedName").prop("disabled", false);
@@ -47,6 +49,7 @@ $(document).ready(function () {
             $("#formWcIssuedDesig").val('');
             $("#formWcIssuedOffice").prop("disabled", false);
             $("#formWcIssuedOffice").val('');
+            $("#formWcIssuedSig").prop("checked", true);
         }
         else {
             $("#formWcIssuedName").prop("disabled", true);
@@ -81,17 +84,21 @@ $(document).ready(function () {
     });
 
     if ($("#hdnWcView").val() == "1") {
-        $("#page *").prop("disabled", true);
+        $("#divFormWc *").prop("disabled", true);
         $("#clearWCBtn").hide();
         $("#saveWCBtn").hide();
         $("#submitWCBtn").hide();
+        $("#formWCDivisionCode").chosen('destroy');
+        $("#formWCDivisionCode").prop("disabled", true);
     }
 
     if ($("#hdnWgView").val() == "1") {
-        $("#Div_wg *").prop("disabled", true);
+        $("#divFormWg *").prop("disabled", true);
         $("#clearWGBtn").hide();
         $("#saveWGBtn").hide();
         $("#submitWGBtn").hide();
+        $("#formWGDivisionCode").chosen('destroy');
+        $("#formWGDivisionCode").prop("disabled", true);
     }
 });
 
@@ -115,19 +122,19 @@ function SaveWC(submit) {
         (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
 
     var saveObj = new Object;
-
     saveObj.PkRefNo = $("#hdnWcRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
-    saveObj.RmuCode = ""
-    saveObj.SecCode = "";
-    saveObj.RoadCode = "";
-    saveObj.RoadName = "";
-    saveObj.Ch = "";
-    saveObj.ChDeci = "";
-    saveObj.IwRefNo = $("fw1IWRefNo").val();
+    saveObj.IwWrksDeptId = $("#formWCDivisionCode option:selected").val();
+    saveObj.RmuCode = $("#hdnRmuCode").val();
+    saveObj.SecCode = $("#hdnSecCode").val();
+    saveObj.RoadCode = $("#hdnRdCode").val();
+    saveObj.RoadName = $("#hdnRdName").val();
+    saveObj.Ch = $("#hdnCh").val();
+    saveObj.ChDeci = $("#hdnChDeci").val();
+    saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWcProjectTitle").val()
     saveObj.OurRefNo = $("#formWcOurRef").val();
-    saveObj.ServRefNo = $("#formWcServPropRefNo").val();
+    saveObj.YourRefNo = $("#formWcYourRef").val();
     saveObj.DtWc = $("#formWcDate").val();
     saveObj.DtCompl = $("#formWcDtCompl").val();
     saveObj.DtDlpExtn = $("#formWcDtDlpExtn").val();
@@ -196,7 +203,7 @@ function SaveWG(submit) {
     if (!ValidatePage('#Div_wg')) {
         return false;
     }
-    //debugger;
+
     InitAjaxLoading();
 
     var d = new Date();
@@ -211,18 +218,19 @@ function SaveWG(submit) {
 
     saveObj.PkRefNo = $("#hdnWgRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
-    saveObj.RmuCode = ""
-    saveObj.SecCode = "";
-    saveObj.RoadCode = "";
-    saveObj.RoadName = "";
-    saveObj.Ch = "";
-    saveObj.ChDeci = "";
-    saveObj.IwRefNo = $("fw1IWRefNo").val();
+    saveObj.IwWrksDeptId = $("#formWGDivisionCode option:selected").val();
+    saveObj.RmuCode = $("#hdnRmuCode").val();
+    saveObj.SecCode = $("#hdnSecCode").val();
+    saveObj.RoadCode = $("#hdnRdCode").val();
+    saveObj.RoadName = $("#hdnRdName").val();
+    saveObj.Ch = $("#hdnCh").val();
+    saveObj.ChDeci = $("#hdnChDeci").val();
+    saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWgProjectTitle").val()
     saveObj.OurRefNo = $("#formWgOurRef").val();
-    saveObj.ServRefNo = $("#formWgServiceProvider").val();
+    saveObj.YourRefNo = $("#formWgYourRef").val();
     saveObj.DtWg = $("#formWgDate").val();
-    saveObj.DtDefectCompl = $("#formWgDeftDt").val();
+    saveObj.DtDefectCompl = $("#formWgDftComp").val();
 
     if ($("#formWgIssuedBy").find(":selected").val() != "") saveObj.UseridIssu = $("#formWgIssuedBy option:selected").val();
     if ($("#formWgIssuedName").val() != "") saveObj.UsernameIssu = $("#formWgIssuedName").val();
@@ -279,7 +287,7 @@ function SaveWG(submit) {
 }
 
 function GoBack() {
-    if ($("#hdnView").val() == "0" || $("#hdnView").val() == "") {
+    if ($("#hdnWgView").val() == "" || $("#hdnWcView").val() == "") {
         if (app.Confirm("Are you sure you want to close the form?", function (e) {
             if (e) {
                 location.href = "/InstructedWorks/Index";
@@ -301,3 +309,58 @@ function formatDate(date) {
 
     return [day, month, year].join('/');
 }
+
+function ClearWG() {
+    $("#formWGDivisionCode").val("").trigger("change").trigger("chosen:updated");
+    $("#formWgIssuedBy").val("").trigger("change").trigger("chosen:updated");
+    $("#formWgDate").val('');
+    $("#formWcDtDlpExtn").val('');
+    $("#formWcIssuedBy").val('');
+    $("#formWgIssuedDate").val('');
+    $("#formWgOurRef").val('');
+    $("#formWgYourRef").val('');
+}
+
+function ClearWC() {
+    $("#formWCDivisionCode").val("").trigger("change").trigger("chosen:updated");
+    $("#formWcIssuedBy").val("").trigger("change").trigger("chosen:updated");
+    $("#formWcDtCompl").val('');
+    $("#formWcDtDlpExtn").val('');
+    $("#formWcIssuedBy").val('');
+    $("#formWcIssuedDate").val('');
+    $("#formWcOurRef").val('');
+    $("#formWcYourRef").val('');
+}
+
+function GetImageList(id, form) {
+    debugger;
+    var group = $("#FormADetAssetGrpCode option:selected").val();
+    if (id && id > 0) {
+        $("#fw1IWRefNo").val(id);
+    }
+    else {
+        id = $("#fw1IWRefNo").val();
+    }
+    $.ajax({
+        url: '/InstructedWorks/GetIWImageList',
+        data: { id, assetgroup: group, form },
+        type: 'POST',
+        success: function (data) {
+            $("#ViewPhoto").html(data);
+            if ($("#hdnView").val() == "1")
+                $("div.img-btns *").prop("disabled", true);
+            if (form == "FormWCWG") 
+                $("#divFormType").show();
+            else
+                $("#divFormType").hide();
+        },
+        error: function (data) {
+            alert(data.responseText);
+        }
+
+    });
+
+    return true;
+}
+
+

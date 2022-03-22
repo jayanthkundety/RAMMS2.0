@@ -1,6 +1,5 @@
 ﻿var currentDate = new Date();
-$(document).ready(function ()
-{
+$(document).ready(function () {
     currentDate = formatDate(currentDate);
 
     $('.allow_numeric').keypress(function (event) {
@@ -35,6 +34,7 @@ $(document).ready(function ()
             $("#formW2IssuedName").val(ctrl.find("option:selected").attr("Item1"));
             $("#formW2IssuedDesig").val(ctrl.find("option:selected").attr("Item2"));
             $("#formW2IssuedOffice").val(ctrl.find("option:selected").attr("Item3"));
+            $("#formW2IssuedSig").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formW2IssuedName").prop("disabled", false);
@@ -43,6 +43,7 @@ $(document).ready(function ()
             $("#formW2IssuedDesig").val('');
             $("#formW2IssuedOffice").prop("disabled", false);
             $("#formW2IssuedOffice").val('');
+            $("#formW2IssuedSig").prop("checked", true);
         }
         else {
             $("#formW2IssuedName").prop("disabled", true);
@@ -51,6 +52,7 @@ $(document).ready(function ()
             $("#formW2IssuedDesig").val('');
             $("#formW2IssuedOffice").prop("disabled", true);
             $("#formW2IssuedOffice").val('');
+            //$("#formW2IssuedSig").prop("checked", true);
         }
         $("#formW2IssuedDate").val(currentDate);
         return false;
@@ -93,24 +95,11 @@ $(document).ready(function ()
         return false;
     });
 
+    $("#formW2DivisionCode").trigger("chosen:updated")
+    $("#formW2DivisionCode").trigger("change");
 
-    $("#frmW2RoadCodeDD").trigger("chosen:updated");
-    $("#frmW2RoadCodeDD").trigger("change");
-    $("#frmW2RoadCodeDD").chosen('destroy');
-    $("#frmW2RoadCodeDD").prop("disabled", true);
-
-
-    if ($("#FW2HRef_No").val() == "0") {
-        $("#formW2DivisionCode").trigger("chosen:updated");
-        $("#formW2DivisionCode").trigger("change");
-        $("#frmW2RoadCodeDD").prop("disabled", true);
-        $('#formW2RMU').trigger("chosen:updated")
-        $("#formW2RMU").trigger("change");
-    }
-    else {
-        $("#formW2DivisionCode").trigger("chosen:updated");
-        $('#formW2RMU').trigger("chosen:updated");
-    }
+    $('#formW2RMU').trigger("chosen:updated")
+    $("#formW2RMU").trigger("change");
 
     if ($("#hdnView").val() == "1") {
         $("#list *").prop("disabled", true);
@@ -120,18 +109,14 @@ $(document).ready(function ()
         $("#formW2RMU").chosen('destroy');
         $("formW2RMU").prop("disabled", true);
         $("#frmW2RoadCodeDD").chosen('destroy');
-        $("#frmW2RoadCodeDD").prop("disabled", true);
+        $("frmW2RoadCodeDD").prop("disabled", true);
         $("#formw2RequestedBy").chosen('destroy');
         $("formw2RequestedBy").prop("disabled", true);
-        $("#closeFormW2Btn").hide();
+        //$("#closeFormW2Btn").hide();
         $("#saveFormW2Btn").hide();
         //$("#submitFormW2Btn").hide();
     }
-
-   
-    $("#divSaveRow").hide();
 });
-
 
 function openW1() {
     if ($("#hdnView").val() == "1") return;
@@ -357,38 +342,38 @@ function changeRMU(obj) {
         name = name.split('-')[1];
         $("#formW2RMUName").val(name);
 
-       /* $.ajax({
-            url: '/InstructedWorks/GetRoadCodeByRMU',
-            dataType: 'JSON',
-            data: { rmu: ctrl.val() },
-            type: 'Post',
-            success: function (data) {
-                //  debugger;
-                if (data != null) {
-                    $('#frmW2RoadCodeDD').empty();
-                    $('#frmW2RoadCodeDD')
-                        .append($("<option></option>")
-                            .attr("value", "")
-                            .text("Select Road Code"));
-                    $.each(data, function (key, value) {
-                        $('#frmW2RoadCodeDD')
-                            .append($("<option></option>")
-                                .attr("item1", value.item1)
-                                .attr("fromkm", value.fromKm)
-                                .attr("fromm", value.fromM)
-                                .attr("value", value.value)
-                                .text(value.text));
-                    });
-                    $("#frmW2RoadCodeDD").val($('#frmW2RoadCode').val());
-                    $('#frmW2RoadCodeDD').trigger("chosen:updated")
-                    $("#frmW2RoadCodeDD").trigger("change");
-                }
-            },
-            error: function (data) {
+        //$.ajax({
+        //    url: '/InstructedWorks/GetRoadCodeByRMU',
+        //    dataType: 'JSON',
+        //    data: { rmu: ctrl.val() },
+        //    type: 'Post',
+        //    success: function (data) {
+        //        //  debugger;
+        //        if (data != null) {
+        //            $('#frmW2RoadCodeDD').empty();
+        //            $('#frmW2RoadCodeDD')
+        //                .append($("<option></option>")
+        //                    .attr("value", "")
+        //                    .text("Select Road Code"));
+        //            $.each(data, function (key, value) {
+        //                $('#frmW2RoadCodeDD')
+        //                    .append($("<option></option>")
+        //                        .attr("item1", value.item1)
+        //                        .attr("fromkm", value.fromKm)
+        //                        .attr("fromm", value.fromM)
+        //                        .attr("value", value.value)
+        //                        .text(value.text));
+        //            });
+        //            $("#frmW2RoadCodeDD").val($('#frmW2RoadCode').val());
+        //            $('#frmW2RoadCodeDD').trigger("chosen:updated")
+        //            $("#frmW2RoadCodeDD").trigger("change");
+        //        }
+        //    },
+        //    error: function (data) {
 
-                console.error(data);
-            }
-        });*/
+        //        console.error(data);
+        //    }
+        //});
     }
     else {
         $("#formW2RMUName").val('');
@@ -455,6 +440,7 @@ function ChangeRUser(obj) {
         $("#formW2RequestedName").val(ctrl.find("option:selected").attr("Item1"));
         $("#formW2RequestedDesig").val(ctrl.find("option:selected").attr("Item2"));
         $("#formW2RequestedOffice").val(ctrl.find("option:selected").attr("Item3"));
+        $("#formW2RequestedSign").prop("checked", true);
     }
     else if (id == "99999999") {
         $("#formW2RequestedName").prop("disabled", false);
@@ -463,6 +449,7 @@ function ChangeRUser(obj) {
         $("#formW2RequestedDesig").val('');
         $("#formW2RequestedOffice").prop("disabled", false);
         $("#formW2RequestedOffice").val('');
+        $("#formW2RequestedSign").prop("checked", true);
 
     }
     else {

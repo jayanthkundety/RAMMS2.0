@@ -27,7 +27,7 @@ namespace RAMMS.Repository
         public async Task<RmIwFormW2> FindW2ByID(int Id)
         {
             return await _context.RmIwFormW2.Include(x => x.Fw2Fw1PkRefNoNavigation).Where(x => x.Fw2PkRefNo == Id && x.Fw2ActiveYn == true && x.Fw2Fw1PkRefNoNavigation.Fw1PkRefNo == x.Fw2Fw1PkRefNo).FirstOrDefaultAsync();
-        }       
+        }
 
         public void UpdateImage(RmIwFormW2Image image)
         {
@@ -38,7 +38,7 @@ namespace RAMMS.Repository
         public Task<List<RmIwformImage>> GetImagelist(int formW2Id)
         {
             return _context.RmIwformImage.Where(x => x.FiwiFw1PkRefNo == formW2Id && x.FiwiActiveYn == true).ToListAsync();
-        }        
+        }
 
         public async Task<List<RmIwFormW1>> GetFormW1List()
         {
@@ -95,10 +95,14 @@ namespace RAMMS.Repository
         public async Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
         {
             var query = (from x in _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true)
-            let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
                          let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo && s.Fw2ActiveYn == true)
                          let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo && s.FecmActiveYn == true)
-                         select new { rmu, w2Form, fecm, x });
+                         let wcForm = _context.RmIwFormWc.FirstOrDefault(s => s.FwcFw1PkRefNo == x.Fw1PkRefNo && s.FwcActiveYn == true)
+                         let wgForm = _context.RmIwFormWg.FirstOrDefault(s => s.FwgFw1PkRefNo == x.Fw1PkRefNo && s.FwgActiveYn == true)
+                         let wdForm = _context.RmIwFormWd.FirstOrDefault(s => s.FwdFw1PkRefNo == x.Fw1PkRefNo && s.FwdActiveYn == true)
+                         let wnForm = _context.RmIwFormWn.FirstOrDefault(s => s.FwnFw1PkRefNo == x.Fw1PkRefNo && s.FwnActiveYn == true)
+                         select new { rmu, w2Form, fecm, x, wcForm, wgForm, wdForm, wnForm });
 
 
 
@@ -146,16 +150,16 @@ namespace RAMMS.Repository
                         query = query.Where(x => x.w2Form.Fw2Status.Contains(_status));
                         break;
                     case "WD":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status));
                         break;
                     case "WN":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status));
                         break;
                     case "WC":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status));
                         break;
                     case "WG":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wgForm.FwgStatus.Contains(_status));
                         break;
                     default:
                         break;
@@ -173,16 +177,16 @@ namespace RAMMS.Repository
                         query = query.Where(x => x.w2Form.Fw2Status.Contains("Saved"));
                         break;
                     case "WD":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains("Saved"));
                         break;
                     case "WN":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains("Saved"));
                         break;
                     case "WC":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains("Saved"));
                         break;
                     case "WG":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wgForm.FwgStatus.Contains("Saved"));
                         break;
                     default:
                         break;
@@ -296,9 +300,11 @@ namespace RAMMS.Repository
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
                          let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo && s.Fw2ActiveYn == true)
                          let fecm = _context.RmIwFormW2Fecm.FirstOrDefault(s => s.FecmFw2PkRefNo == w2Form.Fw2PkRefNo && s.FecmActiveYn == true)
-                         select new { rmu, w2Form, fecm, x });
-
-
+                         let wcForm = _context.RmIwFormWc.FirstOrDefault(s => s.FwcFw1PkRefNo == x.Fw1PkRefNo && s.FwcActiveYn == true)
+                         let wgForm = _context.RmIwFormWg.FirstOrDefault(s => s.FwgFw1PkRefNo == x.Fw1PkRefNo && s.FwgActiveYn == true)
+                         let wdForm = _context.RmIwFormWd.FirstOrDefault(s => s.FwdFw1PkRefNo == x.Fw1PkRefNo && s.FwdActiveYn == true)
+                         let wnForm = _context.RmIwFormWn.FirstOrDefault(s => s.FwnFw1PkRefNo == x.Fw1PkRefNo && s.FwnActiveYn == true)
+                         select new { rmu, w2Form, fecm, x, wcForm, wgForm, wdForm, wnForm });
 
             query = query.OrderByDescending(x => x.x.Fw1ModDt);
 
@@ -318,7 +324,7 @@ namespace RAMMS.Repository
                 DateTime dtFrom, dtTo;
                 DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
                 DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
-                
+
                 {
                     query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? x.w2Form.Fw2DtCommence >= dtFrom && x.w2Form.Fw2DtCommence <= dtTo : false);
                 }
@@ -333,7 +339,7 @@ namespace RAMMS.Repository
                 }
             }
 
-             if (string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
+            if (string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
                 DateTime dt;
                 if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
@@ -357,16 +363,16 @@ namespace RAMMS.Repository
                         query = query.Where(x => x.w2Form.Fw2Status.Contains(_status));
                         break;
                     case "WD":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status));
                         break;
                     case "WN":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status));
                         break;
                     case "WC":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status));
                         break;
                     case "WG":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wgForm.FwgStatus.Contains(_status));
                         break;
                     default:
                         break;
@@ -384,16 +390,16 @@ namespace RAMMS.Repository
                         query = query.Where(x => x.w2Form.Fw2Status.Contains("Saved"));
                         break;
                     case "WD":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains("Saved"));
                         break;
                     case "WN":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains("Saved"));
                         break;
                     case "WC":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains("Saved"));
                         break;
                     case "WG":
-                        query = query.Where(x => x.x.Fw1Status == "WD");
+                        query = query.Where(x => x.wgForm.FwgStatus.Contains("Saved"));
                         break;
                     default:
                         break;
@@ -443,19 +449,32 @@ namespace RAMMS.Repository
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.RecommdDE))
             {
-                query = query.Where(x => (bool)(x.x.Fw1RecomdBydeYn ==  (filterOptions.Filters.RecommdDE == "Yes" ? true : false)));
+                query = query.Where(x => (bool)(x.x.Fw1RecomdBydeYn == (filterOptions.Filters.RecommdDE == "Yes" ? true : false)));
             }
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.TECMStatus ))
+            if (!string.IsNullOrEmpty(filterOptions.Filters.TECMStatus))
             {
-                query = query.Where(x => x.x.Fw1Sts  == filterOptions.Filters.TECMStatus );
+                if (filterOptions.Filters.TECMStatus == "TECMPending")
+                {
+                    query = query.Where(x => x.x.Fw1Status == "Saved" && x.x.Fw1ActiveYn == true &&  (x.fecm.FecmDtTecm == null || x.fecm == null));
+                }
+                else
+                {
+                    query = query.Where(x => x.x.Fw1Status != null  && x.x.Fw1ActiveYn == true && x.fecm.FecmDtTecm != null);
+                }
             }
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.FECMStatus))
             {
-                query = query.Where(x => x.x.Fw1Sts == filterOptions.Filters.FECMStatus);
+                if (filterOptions.Filters.FECMStatus == "FECMPending")
+                {
+                    query = query.Where(x => x.w2Form.Fw2Status == "Saved" && x.w2Form.Fw2ActiveYn == true && (x.fecm.FecmDt == null || x.fecm == null));
+                }
+                else
+                {
+                    query = query.Where(x => x.w2Form.Fw2Status != null && x.w2Form.Fw2ActiveYn == true && x.fecm.FecmDt != null);
+                }
             }
-
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
             {
@@ -557,43 +576,55 @@ namespace RAMMS.Repository
                             let w1Form = form.x
                             let w2Form = form.w2Form
                             let fecm = form.fecm
+                            let wnForm = form.wnForm
+                            let wdForm = form.wdForm
+                            let wcForm = form.wcForm
+                            let wgForm = form.wgForm
                             select new FormIWResponseDTO
                             {
                                 W1RefNo = w1Form.Fw1PkRefNo.ToString(),
                                 W2RefNo = w2Form.Fw2PkRefNo.ToString(),
-                                WCRefNo = "0",
-                                WGRefNo = "0",
-                                WDRefNo = "0",
-                                WNRefNo = "0",
+                                WCRefNo = wcForm.FwcPkRefNo.ToString(),
+                                WGRefNo = wgForm.FwgPkRefNo.ToString(),
+                                WDRefNo = wdForm.FwdPkRefNo.ToString(),
+                                WNRefNo = wnForm.FwnPkRefNo.ToString(),
                                 W1Status = w1Form.Fw1Status,
                                 W1SubStatus = w1Form.Fw1SubmitSts,
                                 W2Status = w2Form.Fw2Status,
-                                W2SubStatus = w2Form.Fw2SubmitSts ,
+                                W2SubStatus = w2Form.Fw2SubmitSts,
+                                WCStatus = wcForm.FwcStatus,
+                                WCSubStatus = wcForm.FwcSubmitSts,
+                                WGStatus = wgForm.FwgStatus,
+                                WGSubStatus = wgForm.FwgSubmitSts,
+                                WDStatus = wdForm.FwdStatus,
+                                WDSubStatus = wdForm.FwdSubmitSts,
+                                WNStatus = wnForm.FwnStatus,
+                                WNSubStatus = wnForm.FwnSubmitSts,
                                 iWReferenceNo = w1Form.Fw1IwRefNo,
                                 projectTitle = w1Form.Fw1ProjectTitle,
-                                overAllStatus = w2Form != null && w2Form.Fw2Status != "" ? "W2 - " + w2Form.Fw2Status : "W1 - " + w1Form.Fw1Status ,
+                                overAllStatus = wgForm != null && wgForm.FwgStatus != "" ? "WG - " + wgForm.FwgStatus : wcForm != null && wcForm.FwcStatus != "" ? "WC - " + wcForm.FwcStatus : wnForm != null && wnForm.FwnStatus != "" ? "WN - " + wnForm.FwnStatus : wdForm != null && wdForm.FwdStatus != "" ? "WD - " + wdForm.FwdStatus : w2Form != null && w2Form.Fw2Status != "" ? "W2 - " + w2Form.Fw2Status : "W1 - " + w1Form.Fw1Status,
                                 initialPropDt = w1Form.Fw1InitialProposedDate != null ? DateTime.Parse(Convert.ToString(w1Form.Fw1InitialProposedDate)).ToString("dd/MM/yyyy") : "-",
                                 recommdDEYN = w1Form.Fw1RecomdBydeYn != null && w1Form.Fw1RecomdBydeYn == true ? "Yes" : "No",
-                                w1dt = w1Form.Fw1Dt != null ?  DateTime.Parse(Convert.ToString(w1Form.Fw1Dt)).ToString("dd/MM/yyyy") : "-",
+                                w1dt = w1Form.Fw1Dt != null ? DateTime.Parse(Convert.ToString(w1Form.Fw1Dt)).ToString("dd/MM/yyyy") : "-",
                                 recommdYN = w1Form.Fw1RecomdYn != null && w1Form.Fw1RecomdYn == true ? "Yes" : "No",
-                                estimatedCost =  w1Form.Fw1EstimTotalCostAmt.HasValue  ? String.Format("{0:N}",w1Form.Fw1EstimTotalCostAmt) : "0.00",
+                                estimatedCost = w1Form.Fw1EstimTotalCostAmt.HasValue ? String.Format("{0:N}", w1Form.Fw1EstimTotalCostAmt) : "0.00",
                                 w2dt = w2Form.Fw2DateOfInitation != null ? DateTime.Parse(Convert.ToString(w2Form.Fw2DateOfInitation)).ToString("dd/MM/yyyy") : "-",
-                                tecmDt = fecm.FecmDtTecm != null ?  DateTime.Parse(Convert.ToString(fecm.FecmDtTecm)).ToString("dd/MM/yyyy") : "-",
-                                fecmDt = fecm.FecmDt != null ?  DateTime.Parse(Convert.ToString(fecm.FecmDt)).ToString("dd/MM/yyyy") : "-",
+                                tecmDt = fecm.FecmDtTecm != null ? DateTime.Parse(Convert.ToString(fecm.FecmDtTecm)).ToString("dd/MM/yyyy") : "-",
+                                fecmDt = fecm.FecmDt != null ? DateTime.Parse(Convert.ToString(fecm.FecmDt)).ToString("dd/MM/yyyy") : "-",
                                 agreedNegoYN = fecm.FecmAgreedNegoLetrYn != null && fecm.FecmAgreedNegoLetrYn == true ? "Yes" : "No",
-                                agreedNegoPriceDt = fecm.FecmDtAgreedNego  != null ? DateTime.Parse(Convert.ToString(fecm.FecmDtAgreedNego)).ToString("dd/MM/yyyy") : "-",
-                                issueW2Ref = w2Form.Fw2JkrRefNo , 
+                                agreedNegoPriceDt = fecm.FecmDtAgreedNego != null ? DateTime.Parse(Convert.ToString(fecm.FecmDtAgreedNego)).ToString("dd/MM/yyyy") : "-",
+                                issueW2Ref = w2Form.Fw2JkrRefNo,
                                 commenceDt = w2Form.Fw2DtCommence != null ? DateTime.Parse(Convert.ToString(w2Form.Fw2DtCommence)).ToString("dd/MM/yyyy") : "-",
                                 compDt = w2Form.Fw2DtCompl != null ? DateTime.Parse(Convert.ToString(w2Form.Fw2DtCompl)).ToString("dd/MM/yyyy") : "-",
-                                wdDt = "-",
-                                newCompDt = "-",
-                                wnDt = "-",
+                                wdDt = wdForm.FwdDtWd != null ? DateTime.Parse(Convert.ToString(wdForm.FwdDtWd)).ToString("dd/MM/yyyy") : "-",
+                                newCompDt = wdForm.FwdDtExtn != null ? DateTime.Parse(Convert.ToString(wdForm.FwdDtExtn)).ToString("dd/MM/yyyy") : "-",
+                                wnDt = wnForm.FwnDtWn != null ? DateTime.Parse(Convert.ToString(wnForm.FwnDtWn)).ToString("dd/MM/yyyy") : "-",
                                 ContractPeriod = w2Form.Fw2IwDuration.HasValue ? String.Format("{0:N}", w2Form.Fw2IwDuration) : "0",
-                                wcDt = "-",
-                                dlpPeriod = "-",
+                                wcDt = wcForm.FwcDtWc != null ? DateTime.Parse(Convert.ToString(wcForm.FwcDtWc)).ToString("dd/MM/yyyy") : "-",
+                                dlpPeriod = wcForm.FwcDlpPeriod.HasValue ? String.Format("{0:N}", wcForm.FwcDlpPeriod) : "-",
                                 finalAmt = "0.00",
                                 sitePhy = fecm.FecmProgressPerc.HasValue ? String.Format("{0:N}", fecm.FecmProgressPerc) : "0",
-                                wgDate = "-",
+                                wgDate = wgForm.FwgDtWg != null ? DateTime.Parse(Convert.ToString(wgForm.FwgDtWg)).ToString("dd/MM/yyyy") : "-",
 
                             }).Skip(filterOptions.StartPageNo)
                                 .Take(filterOptions.RecordsPerPage)

@@ -10,6 +10,8 @@ namespace RAMMS.Business.ServiceProvider
         public IList<RAMMS.Domain.Models.RmUvModuleGroupRights> ModuleRights { get; set; }
         public IList<RAMMS.Domain.Models.RmGroup> Groups { get; set; }
 
+        public IList<RAMMS.Domain.Models.RmModuleRightByForm> ModuleRightByForm { get; set; }
+
         public static MemoryCache _MemoryCache = null;
         public static MemoryCache Instance
         {

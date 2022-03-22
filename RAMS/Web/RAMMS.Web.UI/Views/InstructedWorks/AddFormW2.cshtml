@@ -44,12 +44,52 @@
 
     });
 
-    $("#saveFormW2Btn").hide();
-    //$("#submitFormW2Btn").hide();
-    $("#divSaveRow").hide();
+     $("#saveFormW2Btn").show();
+     $("#submitFormW2Btn").show();
+     $("#divSaveRow").show();
+     $("#saveFCEMBtn").hide();
+     $("#submitFCEMBtn").hide();
 
-    $("#saveFCEMBtn").show();
-    $("#submitFCEMBtn").show();
+     $("#closeFormW2Btn").show();
+
+     function GetImageList(id, form) {
+        //debugger;
+        var group = $("#FormADetAssetGrpCode option:selected").val();
+        $("#saveFormW2Btn").hide();
+        $("#submitFormW2Btn").hide();
+        $("#saveFCEMBtn").hide();
+        $("#submitFCEMBtn").hide();
+        $("#closeFormW2Btn").show();
+        $("#divSaveRow").show();
+        if (id && id > 0) {
+            $("#fw1IWRefNo").val(id);
+        }
+        else {
+            id = $("#fw1IWRefNo").val();
+        }
+
+        $.ajax({
+            url: '/InstructedWorks/GetIWImageList', 
+            data: { id, assetgroup: group , form },
+            type: 'POST',
+            success: function (data) {
+                $("#ViewPhoto").html(data);
+                if ($("#hdnView").val() == "1")
+                    $("div.img-btns *").prop("disabled", true);
+                //$("#FW2HRef_No").val(id);
+            },
+            error: function (data) {
+                alert(data.responseText);
+            }
+
+        });
+
+        return true;
+     }
+
+     function toCurrency(obj){
+         return obj.value.toLocaleString('en-IN')
+     }
 
     formatCurrency($("#formW2EstCost")[0])
 
@@ -62,15 +102,9 @@
         <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
             <ul class="nav nav-tabs tabbed round">
 
+
                 <li class="nav-item">
-                    <a href="#divFecm" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openFCEM()">
-                        <span class="">
-                            FECM
-                        </span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#page" id="lnkPage" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:openW2()">
+                    <a href="#page" id="lnkPage" data-toggle="tab" aria-expanded="false" class="nav-link active" onclick="javascript:openW2()">
                         <span class="">
                             Form W2
                         </span>
@@ -79,7 +113,7 @@
 
 
                 <li class="nav-item">
-                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:GetImageList(@Model.FormW1.PkRefNo,'FormW2');">
+                    <a href="#photoGallery" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormW2');">
                         <span class="">
                             Attachment
                         </span>
@@ -89,6 +123,13 @@
                     <a href="#formw1" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:openW1()">
                         <span class="">
                             @Html.Label("Form W1", "Form W1")
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#divFecm" data-toggle="tab" aria-expanded="false" class="nav-link " onclick="javascript:openFCEM()">
+                        <span class="">
+                            FECM
                         </span>
                     </a>
                 </li>
@@ -106,13 +147,13 @@
         <div class="row bg-white py-3">
             <div class="col-lg-12">
                 <div class="tab-content mh-250">
-                    <div class="tab-pane show active" id="divFecm">
+                    <div class="tab-pane show" id="divFecm">
 
                         @{
                             Html.RenderPartial("_FormFECM.cshtml", Model.FECM);
                         }
                     </div>
-                    <div class="tab-pane show " id="page">
+                    <div class="tab-pane show active" id="page">
                         <div class="col-md-12" id="divPage">
                             <div class="row" id="div-addformd">
                                 <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
@@ -404,7 +445,7 @@
 
                                                                     }
                                                                     <div class="clear-b mt-2">
-                                                                        <input type="checkbox" id="formW2IssuedSig" class="disableinput" checked="@_issued" style="height: 20px;">
+                                                                        <input type="checkbox" id="formW2IssuedSig" class="disableinput" checked="@_issued" style="height: 20px;" disabled>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -416,19 +457,19 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Name", "Name")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control svalidate  {required, Received by Name}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.UsernameReq, new { @id = "formW2RequestedName", @class = "form-control ssvalidate  {required, Received by Name}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Designation", "Designation")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control svalidate  {required, Received by Designation}", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.DesignationIssu, new { @id = "formW2RequestedDesig", @class = "form-control ssvalidate  {required, Received by Designation}", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("Office", "Office")
-                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control svalidate  {required, Received by Office }", @disabled = true })
+                                                                    @Html.TextBoxFor(w => w.SaveFormW2Model.OfficeIssu, new { @id = "formW2RequestedOffice", @class = "form-control ssvalidate  {required, Received by Office }", @disabled = true })
                                                                 </div>
                                                                 <div class="form-group col-lg-2">
                                                                     @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                                    <input type="date" class="datepicker form-control  svalidate {required, Received by date}" id="formW2RequestedDate" value="@_RequestedDate" />
+                                                                    <input type="date" class="datepicker form-control  ssvalidate {required, Received by date}" id="formW2RequestedDate" value="@_RequestedDate" />
                                                                 </div>
                                                                 <div class="form-group col-lg-2 text-center">
                                                                     @Html.Label("Signature", "Signature")
@@ -437,7 +478,7 @@
 
                                                                     }
                                                                     <div class="clear-b mt-2">
-                                                                        <input type="checkbox" id="formW2RequestedSign" class="disableinput" checked="@_Requested" style="height: 20px;">
+                                                                        <input type="checkbox" id="formW2RequestedSign" class="disableinput" checked="@_Requested" style="height: 20px;" disabled>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -453,19 +494,23 @@
                             @Html.HiddenFor(m => m.FormW1.PkRefNo, new { @id="hdnPkRefNo"} )
                             @Html.HiddenFor(m => m.View, new { @id = "hdnView", @value = "0" })
                             <input id="hdnForm" type="hidden" value="FormW2" />
+                            @{
+                                var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+                            }
+                            <input id="hdnGroupName" type="hidden" value="@groupname" />
                             <input id="hdnW2FormStatus" type="hidden" value="@Model.SaveFormW2Model.Status" />
 
                             @{
                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-            {
-                Form = "FormW2",
-                RefId = Model.SaveFormW2Model.PkRefNo,
-                Stage = Model.SaveFormW2Model.Status
-            });
+                                {
+                                    Form = "FormW2",
+                                    RefId = Model.SaveFormW2Model.PkRefNo,
+                                    Stage = Model.SaveFormW2Model.Status
+                                });
                             }
                         </div>
                     </div>
-                    <div class="tab-pane show " id="formw1">
+                    <div class="tab-pane show" id="formw1">
                         <div class="p-3">
                             <div class="col-md-12">
                                 <div class="row">
@@ -935,21 +980,27 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane show " id="photoGallery">
+                    <div class="tab-pane show" id="photoGallery">
                         <div id="ViewPhoto">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
+                    @{
+                        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+                    }
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
-                    <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                    @if (security.IsJKRSSuperiorOfficer && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                    @if ((security.IsInstructedWorkEngg || isJKRS) && (string.IsNullOrEmpty(Model.SaveFormW2Model.Status) ||  Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                    {
+                        <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
+                    }
+                    @if ((isJKRS) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
                     }
-                    else if ((security.IsJKRSSuperiorOfficer || security.IsRegionManager) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
+                    else if ((security.IsInstructedWorkEngg || security.IsRegionManager || security.IsDirector) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
                     {
-                        <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Received By');"> Received </button>
+                        <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Received By');"> Received </button>
                     }
 
                 </div>

@@ -80,32 +80,36 @@
                                         }
                                         else
                                         {
-                                            <td></td>
+                                            <th>&nbsp;</th>
                                         }
                                         <th>Download</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{ int i = 1;
+                                    @{
+                                        int i = 1;
+                                        var formtype = Model.FormName;
+                                        var _disabled = false;
 
                                         if (Model.ImageList != null && Model.ImageList.Count() > 0)
                                         {
 
                                             foreach (var item in Model.ImageList)
                                             {
+                                                var form =  item.Source != null ? item.Source.Substring(4).Trim() : "W1";
                                                 <tr>
                                                     <td>@i</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageTypeCode)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.ImageUserFilePath)</td>
                                                     <td>@Html.DisplayFor(modelItem => item.Source)</td>
-                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && item.Source == Model.FormName)
+                                                    @if (security.IsPCDelete(ModuleNameList.Instructed_Works) && (item.Source == Model.FormName || formtype.IndexOf(form) >= 0))
                                                     {
                                                         <td style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(@item.PkRefNo)"><span class="remove-icon"></span></button></td>
                                                     }
                                                     else
                                                     {
-                                                        <td></td>
+                                                        <td>&nbsp;</td>
                                                     }
                                                     <td><a class="warCaption" href="~/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">Download</a></td>
                                                 </tr>
@@ -138,7 +142,7 @@
                     </a>
                     <div class="img-btns mt-1">
                         @*<a class="btn btn-sm btn-themebtn" id="printWarButton" onclick="printImage()" role="button">
-                                <span class="print-icon-white"></span> Print
+                            <span class="print-icon-white"></span> Print
                             </a>*@
                     </div>
                 </div>
@@ -182,12 +186,12 @@
                                                     {
 
                                                         <img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
-                                                        <a class="warCaption" href="~/Uploads/FormW1/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@item.ImageUserFilePath</a>
+                                                        <a class="warCaption" href="~/@item.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@item.ImageUserFilePath</a>
 
                                                     }
                                                     else
                                                     {
-                                                        <img src="~/Uploads/FormW1/@item.ImageFilenameUpload" alt="Image_Unavailable" />
+                                                        <img src="~/@item.ImageFilenameUpload" alt="Image_Unavailable" />
                                                         <span class="warCaption">@item.ImageUserFilePath</span>
                                                     }
                                                 }
@@ -205,9 +209,9 @@
     </div>
 </div>
 @*<div class="modal-footer">
-        <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
+    <button type="button" id="btnclosephto" class="btn btn-sm btn-outline-theme" onclick="CloseWarModal()">Close</button>
     </div>*@
-
+<input type="hidden" id="hdnFormType" value="@Model.FormName" />
 <div class="modal hide border-10x addphoto-mdl" id="myModal">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -222,8 +226,16 @@
                         <div class="form-group col-lg-12">
                             @Html.Label("Please Select Photo Type ", "Please Select Photo Type: ", new { @class = "float-left" })
                             @Html.DropDownList("Select Type", (IEnumerable
-                                <SelectListItem>)ViewData["PhotoTypeList"], "Select Type", new { @Id = "photoType", @class = "form-control" })
+                            <SelectListItem>)ViewData["PhotoTypeList"], "Select Type", new { @Id = "photoType", @class = "form-control" })
                         </div>
+
+                        <div class="form-group col-lg-12" id="divFormType">
+                            @Html.Label("Please Select Form Type ", "Please Select Form Type: ", new { @class = "float-left" })
+                            @Html.DropDownList("Select Type", (IEnumerable
+                            <SelectListItem>)ViewData["FormType"], "Select Type", new { @Id = "formType", @class = "form-control" })
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -349,12 +361,15 @@
     });
 
     function FormAddImage() {
-        //debugger;
-
         if ($("#hdnView").val() == "1") return;
         if (ValidatePage("#tab1")) {
             if ($("#hdnPkRefNo").val() != "0") {
                 $("#myModal").modal('show');
+
+                if (getIsTabForm())
+                    $("#divFormType").show();
+                else
+                    $("#divFormType").hide();
             }
             else {
                 $("#tab1").click();
@@ -539,6 +554,8 @@
         });
 
         $("#btnImageUpload").click(function (e) {
+
+            debugger
             var type = $("#photoType").val();
             var id = $("#hdnPkRefNo").val();
             var formData = new FormData();
@@ -547,7 +564,10 @@
                 formData.append("FormFile", filesToUpload[i].file);
                 formData.append("PhotoType", filesToUpload[i].fileType);
             }
-            formData.append("Source", $("#hdnForm").val());
+            if (getIsTabForm())
+                formData.append("Source", $("#formType").val());
+            else
+                formData.append("Source", $("#hdnForm").val());
             InitAjaxLoading();
             $.ajax(
                 {
@@ -559,9 +579,13 @@
                     dataType: 'JSON',
                     success: function (data) {
                         HideAjaxLoading();
+                        debugger
                         if (data) {
                         app.ShowSuccessMessage('Uploaded Successcully', false);
                         $('#myModal').modal('hide');
+                         if (getIsTabForm())
+                             GetImageList(id, $("#hdnFormType").val());
+                         else
                             GetImageList(id, $("#hdnForm").val());
                     }
                     else {
@@ -592,8 +616,15 @@
         });
     }
 
-    function DeleteIWImage(pkid){
-
+    function getIsTabForm(){
+        if ($("#hdnFormType").val().indexOf("WC") >= 0 ||  $("#hdnFormType").val().indexOf("WG") >=0){
+            return true;
+        }  
+        else if ($("#hdnFormType").val().indexOf("WD") >=0  || $("#hdnFormType").val().indexOf("WN") >=0){
+             return true;
+        } 
+        
+        return false
     }
 
     function DeleteImage(pkId) {
@@ -609,7 +640,10 @@
                         if (data > 0) {
                             HideAjaxLoading();
                             app.ShowSuccessMessage("Successfully Deleted")
-                            GetImageList( $("#hdnPkRefNo").val(),$("#hdnForm").val());
+                            if (getIsTabForm())
+                                GetImageList($("#hdnPkRefNo").val(), $("#hdnFormType").val());
+                            else
+                                GetImageList($("#hdnPkRefNo").val(), $("#hdnForm").val());
                         }
                         else {
                             HideAjaxLoading();

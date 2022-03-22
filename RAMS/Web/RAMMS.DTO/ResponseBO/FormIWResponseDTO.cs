@@ -23,12 +23,19 @@ namespace RAMMS.DTO.ResponseBO
 
         public string WCStatus { get; set; }
 
+        public bool WCSubStatus { get; set; } //Submit Status
+
         public string WGStatus { get; set; }
+
+        public bool WGSubStatus { get; set; } //Submit Status
         public string WDStatus { get; set; }
 
-        public string WNStatus { get; set; }
+        public bool WDSubStatus { get; set; } //Submit Status
 
-        
+        public string WNStatus { get; set; }
+        public bool WNSubStatus { get; set; } //Submit Status
+
+
 
 
         //FormW1
