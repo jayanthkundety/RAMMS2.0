@@ -486,13 +486,6 @@
                                                                         </div>
 
                                                                     </div>
-
-
-
-
-
-
-
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -500,11 +493,11 @@
                                                         @{
                                                             if (Model.FormW1.Status != "" && Model.FormW1.Status != "Draft")
                                                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                    {
-                        Form = "FormW1",
-                        RefId = Model.FormW1.PkRefNo,
-                        Stage = Model.FormW1.Status
-                    });
+                                                                {
+                                                                    Form = "FormW1",
+                                                                    RefId = Model.FormW1.PkRefNo,
+                                                                    Stage = Model.FormW1.Status
+                                                                });
                                                         }
 
                                                         <!--gallery start-->
@@ -526,10 +519,10 @@
 
                             </div>
                         </div> <div class="col-md-12 mb-2 float-right text-right custom-footer">
-                            
+
                             <button type="button" id="btnBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
                             @{
-                               var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+                                var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
                                 var hasRight = (security.IsSupervisor || security.IsExecutive || security.IsInstructedWorkEngg || security.IsRegionManager);
                             }
                             @if (string.IsNullOrEmpty(Model.FormW1.Status) && hasRight)
