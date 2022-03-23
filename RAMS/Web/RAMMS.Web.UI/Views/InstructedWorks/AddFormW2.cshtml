@@ -994,6 +994,7 @@
                     }
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     @if (isModifyPerm == "")
+                    {
                         @if ((security.IsInstructedWorkEngg || isJKRS) && (string.IsNullOrEmpty(Model.SaveFormW2Model.Status) || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
                         {
                             <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>

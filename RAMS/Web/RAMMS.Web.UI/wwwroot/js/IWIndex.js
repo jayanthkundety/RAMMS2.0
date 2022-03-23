@@ -444,8 +444,9 @@ function OpenFormWCWG(mode, form) {
        
 
         var wnstatus = GetFormIDByName("wnStatus");
+        var wdstatus = GetFormIDByName("wdStatus");
 
-        if (wnstatus == "Submitted") {
+        if (wnstatus == "Submitted" || wdstatus == "Saved" ) {
             app.ShowErrorMessage(form + " cannot be created");
             return;
         }
