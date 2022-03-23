@@ -165,21 +165,24 @@
     width: 96%;
     height: 45px;">
 
-    @{
-        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
-    }
-
-    @if (Model.FormWN.Status != "Submitted")
-    {
-        <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWN()">Clear</button>
-    }
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWN()">Close</button>
-    @if ((string.IsNullOrEmpty(Model.FormWN.Status) || Model.FormWN.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
+    @if (!@security.IsPCModify(ModuleNameList.Instructed_Works))
     {
-        <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWN" onclick="return  SaveWN('','')">Save</button>
-    }
-    @if ((security.IsInstructedWorkEngg || isJKRS) && !string.IsNullOrEmpty(Model.FormWN.Status) && Model.FormWN.Status == RAMMS.Common.StatusList.FormWNSaved)
-    {
-        <button type="button" id="btnSubmitWN" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
+        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+
+        if (Model.FormWN.Status != "Submitted")
+        {
+            <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWN()">Clear</button>
+        }
+
+        if ((string.IsNullOrEmpty(Model.FormWN.Status) || Model.FormWN.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
+        {
+            <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWN" onclick="return  SaveWN('','')">Save</button>
+        }
+
+        if ((security.IsInstructedWorkEngg || isJKRS) && !string.IsNullOrEmpty(Model.FormWN.Status) && Model.FormWN.Status == RAMMS.Common.StatusList.FormWNSaved)
+        {
+            <button type="button" id="btnSubmitWN" class="btn btn-sm btn-themebtn" onclick="return SaveWN('','Submitted')">Submit</button>
+        }
     }
 </div>
