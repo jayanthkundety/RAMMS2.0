@@ -135,7 +135,7 @@
                                                     <!-- Modal content-->
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
 
                                                         </div>
                                                         <div id="divClause" class="modal-body">
@@ -150,18 +150,15 @@
                                                                 </div>
                                                                 <div class="col-lg-6">
                                                                     <label>Period of Delay and Extension of Time</label>
-                                                                    <input id="txtExtension"  class="form-control " value="" />
+                                                                    <input id="txtExtension" class="form-control " value="" />
                                                                 </div>
 
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mb-2 float-right text-right custom-footer">
-                                                            <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
-                                                            @if (!@security.IsPCModify(ModuleNameList.Instructed_Works))
-                                                            {
-                                                                <button type="button" class="btn btn-sm btn-themebtn" onclick="AddClauseData();">Submit</button>
-                                                            }
-                                                            </div>
+                                                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
+                                                            <button type="button" class="btn btn-sm btn-themebtn" onclick="AddClauseData();">Submit</button>
+                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -238,22 +235,24 @@
     width: 96%;
     height: 45px;">
 
-    @{
-        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
-    }
+    @if (!security.IsPCModify(ModuleNameList.Instructed_Works))
+    {
 
-    @if (Model.FormWD.Status != "Submitted")
-    {
-        <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWD()">Clear</button>
-    }
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
-    @if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
-    {
-        <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','')">Save</button>
-    }
-    @if (isJKRS && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
-    {
-        <button type="button" id="btnSubmitWD" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
+        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+
+        if (Model.FormWD.Status != "Submitted")
+        {
+            <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWD()">Clear</button>
+        }
+        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
+        if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
+        {
+            <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','')">Save</button>
+        }
+        if (isJKRS && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
+        {
+            <button type="button" id="btnSubmitWD" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
+        }
     }
 </div>
 
