@@ -222,7 +222,10 @@ function OpenFormW1(mode) {
             isView = true;
         }
 
-        if (!isEdit && !isApprove && !isView) return;
+        if (!isEdit && !isApprove && !isView && $("#hdnAllView").val() == "0") return;
+        if ($("#hdnAllView").val() == "1") {
+            view = 1;
+        }
 
         url = "/InstructedWorks/EditFormW1?id=" + id;
     }
@@ -337,7 +340,10 @@ function OpenFormW2(mode) {
             isView = true;
         }
 
-        if (!isEdit && !isApprove && !isView) return;
+        if ((!isEdit && !isApprove && !isView) && $("#hdnAllView").val() == "0") return;
+        if ($("#hdnAllView").val() == "1") {
+            view = 1;
+        }
 
         url = '/InstructedWorks/EditFormW2?id=' + id + "&view=" + view;
     }
@@ -434,6 +440,17 @@ function OpenFormWCWG(mode, form) {
             app.ShowErrorMessage("Form W2 is not received");
             return;
         }
+
+       
+
+        var wnstatus = GetFormIDByName("wnStatus");
+
+        if (wnstatus == "Submitted") {
+            app.ShowErrorMessage(form + " cannot be created");
+            return;
+        }
+
+
         wcid = GetFormIDByName("wc");
         wgid = GetFormIDByName("wg");
         if (form == "FormWC") {
@@ -495,7 +512,10 @@ function OpenFormWCWG(mode, form) {
             view = 1;
         }
 
-        if (!checkAction(form, view > 0 ? 'View' : 'Edit')) return;
+        if (!checkAction(form, view > 0 ? 'View' : 'Edit') && $("#hdnAllView").val() == "0") return;
+        if ($("#hdnAllView").val() == "1") {
+            view = 1;
+        }
         //if (wcid > 0 && wcstatus != "Submitted" && wgid == -2 && form == "FormWG") {
         //    app.ShowErrorMessage("Form WC is not submitted");
         //    return;
@@ -679,7 +699,10 @@ function OpenFormWDWN(mode, form) {
             view = 1;
         }
 
-        if (!checkAction(form, view > 0 ? 'View' : 'Edit')) return;
+        if (!checkAction(form, view > 0 ? 'View' : 'Edit') && $("#hdnAllView").val() == "0") return;
+        if ($("#hdnAllView").val() == "1") {
+            view = 1;
+        }
         w1id = GetFormIDByName("w1");
         w2id = GetFormIDByName("w2");
         url = "/InstructedWorks/EditFormWDWN";
@@ -833,7 +856,12 @@ function checkAction(form, action, alert = true) {
             if (isAdd == "") return true;
             break;
         case "Edit":
-            if (isModify == "") return true;
+            if (isModify == "") {
+                return true;
+            } else {
+                $("#hdnAllView").val(1);
+                return false;
+            }
             break;
         case "Delete":
             if (isDelete == "") return true;
