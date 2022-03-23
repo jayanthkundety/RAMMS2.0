@@ -237,7 +237,7 @@
 
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
 
-    @if (!security.IsPCModify(ModuleNameList.Instructed_Works))
+    @if (security.IsPCModify(ModuleNameList.Instructed_Works))
     {
 
         var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
