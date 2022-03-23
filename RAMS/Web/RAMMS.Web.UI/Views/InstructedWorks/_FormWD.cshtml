@@ -235,6 +235,8 @@
     width: 96%;
     height: 45px;">
 
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
+
     @if (!security.IsPCModify(ModuleNameList.Instructed_Works))
     {
 
@@ -244,7 +246,7 @@
         {
             <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWD()">Clear</button>
         }
-        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
+
         if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
         {
             <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','')">Save</button>
