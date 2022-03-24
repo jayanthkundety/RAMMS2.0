@@ -186,7 +186,7 @@ var isModifyPerm = security.IsPCModify(ModuleNameList.Instructed_Works) ? "" : "
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
     @if (isModifyPerm == "")
     {
-        @if ((string.IsNullOrEmpty(Model.FormWG.Status) || Model.FormWG.Status == "Saved") && security.IsInstructedWorkEngg)
+        @if ((string.IsNullOrEmpty(Model.FormWG.Status) || Model.FormWG.Status == "Saved"))
         {
             <button type="button" class="btn btn-sm btn-outline-theme" id="clearWGBtn" onclick="return ClearWG()">Clear</button>
             <button type="button" class="btn btn-sm btn-themebtn" id="saveWGBtn" onclick="return checkWExist()">Save</button>

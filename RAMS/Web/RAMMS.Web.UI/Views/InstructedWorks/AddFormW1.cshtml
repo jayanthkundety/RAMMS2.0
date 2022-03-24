@@ -531,7 +531,7 @@
                             @if (security.IsPCModify(ModuleNameList.Instructed_Works))
                             {
                                     var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
-                                    var hasRight = (security.IsSupervisor || security.IsExecutive || security.IsInstructedWorkEngg || security.IsRegionManager);
+                                    var hasRight = (security.IsSupervisor || security.IsExecutive || security.IsInstructedWorkEngg || security.IsRegionManager ||  security.isEnggAssistant);
                                
                                 if (string.IsNullOrEmpty(Model.FormW1.Status) && hasRight)
                                 {
