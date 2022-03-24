@@ -169,6 +169,10 @@
 @Html.HiddenFor(m => m.WGView, new { @id = "hdnWgView", @class = "form-control", @value = "0" })
 @Html.HiddenFor(m => m.FormWG.PkRefNo, new { @id = "hdnWgRefNo", @class = "form-control", @value = "0" })
 
+@{
+var isModifyPerm = security.IsPCModify(ModuleNameList.Instructed_Works) ? "" : "hidden";
+}
+
 <input id="hdnForm" type="hidden" value="FormWG" />
 <div class="col-md-12 mb-2 float-right text-right custom-footer" style="position: fixed;
     left: auto;
@@ -180,13 +184,17 @@
     height: 45px;">
     
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    @if ((string.IsNullOrEmpty(Model.FormWG.Status) || Model.FormWG.Status == "Saved" ) && security.IsInstructedWorkEngg)
+    @if (isModifyPerm == "")
     {
-        <button type="button" class="btn btn-sm btn-outline-theme" id="clearWGBtn" onclick="return ClearWG()">Clear</button>
-        <button type="button" class="btn btn-sm btn-themebtn" id="saveWGBtn" onclick="return checkWExist()">Save</button>
-    }
-    @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && (!string.IsNullOrEmpty(Model.FormWG.Status)  && Model.FormWG.Status == RAMMS.Common.StatusList.FormWGSaved))
-    {
-        <button type="button" class="btn btn-sm btn-themebtn" id="submitWGBtn">Submit</button>
+        @if ((string.IsNullOrEmpty(Model.FormWG.Status) || Model.FormWG.Status == "Saved"))
+        {
+            <button type="button" class="btn btn-sm btn-outline-theme" id="clearWGBtn" onclick="return ClearWG()">Clear</button>
+            <button type="button" class="btn btn-sm btn-themebtn" id="saveWGBtn" onclick="return checkWExist()">Save</button>
+        }
+        @if ((security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.IsJKRSHQ) && (!string.IsNullOrEmpty(Model.FormWG.Status) && Model.FormWG.Status == RAMMS.Common.StatusList.FormWGSaved))
+        {
+            <button type="button" class="btn btn-sm btn-themebtn" id="submitWGBtn">Submit</button>
+        }
+
     }
 </div>

@@ -25,75 +25,77 @@
     vd = Model.FormW1 != null ? Model.FormW1.Dt : null;
     string _TCEMDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
+
+
 }
 
 <script src="~/js/FormW2.js" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        process.Init("FormW2", "@Model.SaveFormW2Model.Status", @Model.SaveFormW2Model.PkRefNo);
+        $(document).ready(function () {
+            process.Init("FormW2", "@Model.SaveFormW2Model.Status", @Model.SaveFormW2Model.PkRefNo);
 
-        $('#formW2IssuedBy').val("@Model.SaveFormW2Model.UseridIssu");
-        $('#formW2IssuedBy').trigger('chosen:updated');
-        $("#formW2IssuedBy").trigger("change");
+            $('#formW2IssuedBy').val("@Model.SaveFormW2Model.UseridIssu");
+            $('#formW2IssuedBy').trigger('chosen:updated');
+            $("#formW2IssuedBy").trigger("change");
 
-//        if ($("#hdnW2FormStatus").val() == "Saved"){
-              $('#formw2RequestedBy').val("@Model.SaveFormW2Model.UseridReq");
-              $('#formw2RequestedBy').trigger('chosen:updated');
-              $("#formw2RequestedBy").trigger("change");
-  //      }
-
-    });
-
-     $("#saveFormW2Btn").show();
-     $("#submitFormW2Btn").show();
-     $("#divSaveRow").show();
-     $("#saveFCEMBtn").hide();
-     $("#submitFCEMBtn").hide();
-
-     $("#closeFormW2Btn").show();
-
-     function GetImageList(id, form) {
-        //debugger;
-        var group = $("#FormADetAssetGrpCode option:selected").val();
-        $("#saveFormW2Btn").hide();
-        $("#submitFormW2Btn").hide();
-        $("#saveFCEMBtn").hide();
-        $("#submitFCEMBtn").hide();
-        $("#closeFormW2Btn").show();
-        $("#divSaveRow").show();
-        if (id && id > 0) {
-            $("#fw1IWRefNo").val(id);
-        }
-        else {
-            id = $("#fw1IWRefNo").val();
-        }
-
-        $.ajax({
-            url: '/InstructedWorks/GetIWImageList', 
-            data: { id, assetgroup: group , form },
-            type: 'POST',
-            success: function (data) {
-                $("#ViewPhoto").html(data);
-                if ($("#hdnView").val() == "1")
-                    $("div.img-btns *").prop("disabled", true);
-                //$("#FW2HRef_No").val(id);
-            },
-            error: function (data) {
-                alert(data.responseText);
-            }
+    //        if ($("#hdnW2FormStatus").val() == "Saved"){
+                  $('#formw2RequestedBy').val("@Model.SaveFormW2Model.UseridReq");
+                  $('#formw2RequestedBy').trigger('chosen:updated');
+                  $("#formw2RequestedBy").trigger("change");
+      //      }
 
         });
 
-        return true;
-     }
+         $("#saveFormW2Btn").show();
+         $("#submitFormW2Btn").show();
+         $("#divSaveRow").show();
+         $("#saveFCEMBtn").hide();
+         $("#submitFCEMBtn").hide();
 
-     function toCurrency(obj){
-         return obj.value.toLocaleString('en-IN')
-     }
+         $("#closeFormW2Btn").show();
 
-    formatCurrency($("#formW2EstCost")[0])
+         function GetImageList(id, form) {
+            //debugger;
+            var group = $("#FormADetAssetGrpCode option:selected").val();
+            $("#saveFormW2Btn").hide();
+            $("#submitFormW2Btn").hide();
+            $("#saveFCEMBtn").hide();
+            $("#submitFCEMBtn").hide();
+            $("#closeFormW2Btn").show();
+            $("#divSaveRow").show();
+            if (id && id > 0) {
+                $("#fw1IWRefNo").val(id);
+            }
+            else {
+                id = $("#fw1IWRefNo").val();
+            }
 
-    $("#closeFormW2Btn").show();
+            $.ajax({
+                url: '/InstructedWorks/GetIWImageList',
+                data: { id, assetgroup: group , form },
+                type: 'POST',
+                success: function (data) {
+                    $("#ViewPhoto").html(data);
+                    if ($("#hdnView").val() == "1")
+                        $("div.img-btns *").prop("disabled", true);
+                    //$("#FW2HRef_No").val(id);
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+
+            });
+
+            return true;
+         }
+
+         function toCurrency(obj){
+             return obj.value.toLocaleString('en-IN')
+         }
+
+        formatCurrency($("#formW2EstCost")[0])
+
+        $("#closeFormW2Btn").show();
 </script>
 
 
@@ -502,11 +504,11 @@
 
                             @{
                                 Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                {
-                                    Form = "FormW2",
-                                    RefId = Model.SaveFormW2Model.PkRefNo,
-                                    Stage = Model.SaveFormW2Model.Status
-                                });
+            {
+                Form = "FormW2",
+                RefId = Model.SaveFormW2Model.PkRefNo,
+                Stage = Model.SaveFormW2Model.Status
+            });
                             }
                         </div>
                     </div>
@@ -988,19 +990,23 @@
                 <div class="col-md-12 mb-2 float-right text-right custom-footer" id="divSaveRow">
                     @{
                         var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+                        var isModifyPerm = security.IsPCModify(ModuleNameList.Instructed_Works) ? "" : "hidden";
                     }
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
-                    @if ((security.IsInstructedWorkEngg || isJKRS) && (string.IsNullOrEmpty(Model.SaveFormW2Model.Status) ||  Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                    @if (isModifyPerm == "")
                     {
-                        <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
-                    }
-                    @if ((isJKRS) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
-                    }
-                    else if ((security.IsInstructedWorkEngg || security.IsRegionManager || security.IsDirector) && Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted)
-                    {
+                        @if ((security.IsInstructedWorkEngg || isJKRS) && (string.IsNullOrEmpty(Model.SaveFormW2Model.Status) || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                        {
+                            <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
+                        }
+                        @if ((isJKRS) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                        {
+                            <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
+                        }
+                        else if ((security.IsInstructedWorkEngg || security.IsRegionManager || security.IsDirector) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Submitted))
+                        {
                         <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Received By');"> Received </button>
+                        }
                     }
 
                 </div>
