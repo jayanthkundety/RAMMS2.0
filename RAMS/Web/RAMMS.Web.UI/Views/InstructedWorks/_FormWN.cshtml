@@ -69,16 +69,19 @@
                         <span class="float-left">
                             <span class="float-left">"Date for Completion"  stated in S.O.'s Instruction No.:</span>
                             <span class="float-left">
-                                @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @readonly = true, @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 5px 0px 0px; border-radius:0px" })
-                                @Html.EditorFor(m => m.FormW2.DateOfInitation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
-                                , or within any extended
-                            </span>
-                            <span class="float-left"> time approved</span>
+                                <span class="float-left">
+                                    @Html.TextBoxFor(m => m.FormW1.IwRefNo, new { @readonly = true, @class = "float-left form-control border-top-0 border-left-0 border-right-0 font-weight-bold", @style = "width:150px; margin:0px 5px 0px 0px; border-radius:0px" })
+                                </span> 
+                                <span class="float-left"> Dated </span>
+                                <span class="float-left">
+                                    @Html.EditorFor(m => m.FormW2.DateOfInitation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @readonly = true, @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })
+                                </span>  , or within any extended
+                           </span>
                         </span>
                     </span>
 
                     <span class="float-left mb-3">
-                        <span class="float-left"> under  <b style="padding:0px 2px;font-size:20px;">Clause 8.7  </b></span>
+                        <span class="float-left"> time approved under  <b style="padding:0px 2px;font-size:20px;">Clause 8.7  </b></span>
                         <span class="float-left">of the Agreement, i.e. on</span>
                         <span class="float-left">  @Html.EditorFor(m => m.FormWN.DtW2Initiation, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold", @type = "date", @style = " width: 170px;border-radius:0px ;margin: 0px 8px;border-radius: 0;" } })</span>
                         <span class="float-left">and in my opinion the said Instructed Works </span>
