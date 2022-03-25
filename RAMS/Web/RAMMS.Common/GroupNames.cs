@@ -24,5 +24,6 @@ namespace RAMMS.Common
         public const string DivisionalEngineer = "Div_Eng";
         public const string Director = "DIR";
         public const string InstructedWorksEngineer = "IWENG";
+        public const string EngineeringAssistant = "Eng_Ass";
     }
 }

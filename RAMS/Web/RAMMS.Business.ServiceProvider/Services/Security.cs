@@ -68,6 +68,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 this.IsDirector = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.Director);
                 this.isOperRAMSExecutive = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.OperRAMSExecutive);
                 this.IWRights = repModuleFormRights.GetIWRightsByUser(UserID);
+                this.isEnggAssistant = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.EngineeringAssistant);
             }
             else
             {
@@ -357,6 +358,8 @@ namespace RAMMS.Business.ServiceProvider.Services
         public bool IsDirector { get; private set; }
 
         public bool isOperRAMSExecutive { get; private set; }
+
+        public bool isEnggAssistant { get; private set; }
 
         public IList<RmModuleRightByForm> IWRights { get; private set; }
 
