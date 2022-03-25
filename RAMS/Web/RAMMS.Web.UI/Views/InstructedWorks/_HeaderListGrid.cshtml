@@ -9,13 +9,13 @@
         <table id="FormIWGridView" class="table w-100 nowrap dataTable table-bordered">
                 <thead style="text-align: center; color:#152e4d;background-color: #c8e1ff">
                     <tr class="border-0">
-                        <th colspan="3">General</th>
+                        <th colspan="4">General</th>
                         <th colspan="2">Initial Proposal</th>
                         <th colspan="3">IW Proposal</th>
                         <th colspan="8" style="text-align: center">JKR HQ Meeting</th>
                         <th colspan="3"> Extension of Time / Liquidated and Ascertained Damages</th>
                         <th colspan="5">  JKR Approval Process</th>
-                        <th>Certificate of Completion of Making Good Defects</th>
+                        <th>Certificate of Completion<br/>of Making Good Defects</th>
                     </tr>
                     <tr class="border-top-0" style="text-align: center; background-color:#c8e1ff">
                         <th>&nbsp;</th>
@@ -40,7 +40,7 @@
                         <th>WN Date</th>
                         <th>Contract<br/>Period<br/>(Month)</th>
                         <th>WC Date</th>
-                        <th>DLP Period<br/>(Month)</th>
+                        <th>DLP Period<br />Date</th>
                         <th>Final Amount(RM)</th>
                         <th>Site<br/>Physical<br/>Progress (%)</th>
                         <th>WG Date</th>
@@ -86,9 +86,9 @@
     var wnDtCol = {data: "wnDt", type: "date", format: 'DD-MM-YYYY', name: "WNDate", title: "WN Date", autoWidth: false, width: 150, sortable: true, class: "text-center" };
     var contractPeriodCol = { data: "contractPeriod", name: "ContractPeriod", title: "Contract<br/>Period<br/>(Month)", autoWidth: true, sortable: true, class: "text-center" };
     var wcDtCol = {data: "wcDt", type: "date", format: 'DD-MM-YYYY', name: "WCDate", title: "WC Date", autoWidth: false, width: 150, sortable: true, class: "text-center" };
-    var dLPPeriodCol = { data: "dlpPeriod", name: "DLPPeriod", title: "DLP Period<br/>(Month)", autoWidth: true, sortable: true, class: "text-center" };
+    var dLPPeriodCol = { data: "dlpPeriod", name: "DLPPeriod", title: "DLP Period<br/>(Date)", autoWidth: true, sortable: true, class: "text-center" };
     var finalAmountCol = { data: "finalAmt", name: "FinalAmount", title: "Final Amount(RM)", autoWidth: true, sortable: true, class: "text-right" };
-    var sitePhysicalCol = { data: "sitePhy", name: "SitePhysical", title: "Site<br/>Physical<br/>Progress(%)", autoWidth: true, sortable: true, class: "text-center" };
+    var sitePhysicalCol = { data: "sitePhy", name: "SitePhysical", title: "Site<br/>Physical<br/>Progress(%)", width: 150, sortable: true, class: "text-center" };
     var wgDtCol = {data: "wgDate", type: "date", format: 'DD-MM-YYYY', name: "WgDate", title: "WG Date", autoWidth: false, width: 150, sortable: true, class: "text-center" };
 
     table_columns.push(chkRefNoCol);
