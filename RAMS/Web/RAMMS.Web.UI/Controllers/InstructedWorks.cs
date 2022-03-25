@@ -774,7 +774,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 if (!string.IsNullOrEmpty(Request.Form["columns[6][search][value]"].ToString()))
                 {
-                    searchData.filterData.PercentageFrom = Convert.ToInt32(Request.Form["columns[6][search][value]"].ToString());
+                    searchData.filterData.PercentageFrom = Convert.ToDouble(Request.Form["columns[6][search][value]"].ToString());
                 }
             }
 
@@ -782,7 +782,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 if (!string.IsNullOrEmpty(Request.Form["columns[7][search][value]"].ToString()))
                 {
-                    searchData.filterData.PercentageTo = Convert.ToInt32(Request.Form["columns[7][search][value]"].ToString());
+                    searchData.filterData.PercentageTo = Convert.ToDouble(Request.Form["columns[7][search][value]"].ToString());
                 }
             }
 

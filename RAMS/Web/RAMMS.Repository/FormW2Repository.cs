@@ -635,7 +635,7 @@ namespace RAMMS.Repository
                                 wnDt = wnForm.FwnDtWn != null ? DateTime.Parse(Convert.ToString(wnForm.FwnDtWn)).ToString("dd/MM/yyyy") : "-",
                                 ContractPeriod = w2Form.Fw2IwDuration.HasValue ? String.Format("{0:N}", w2Form.Fw2IwDuration) : "0",
                                 wcDt = wcForm.FwcDtWc != null ? DateTime.Parse(Convert.ToString(wcForm.FwcDtWc)).ToString("dd/MM/yyyy") : "-",
-                                dlpPeriod = wcForm.FwcDlpPeriod.HasValue ? String.Format("{0:N}", wcForm.FwcDlpPeriod) : "-",
+                                dlpPeriod = ((DateTime)wcForm.FwcDtDlpExtn - (DateTime)wcForm.FwcDtCompl).TotalDays.ToString() != "" ? String.Format("{0:N}", ((DateTime)wcForm.FwcDtDlpExtn - (DateTime)wcForm.FwcDtCompl).TotalDays.ToString()) : "-",
                                 finalAmt = w2Form.Fw2EstCostAmt.HasValue ? String.Format("{0:N}", w1Form.Fw1EstimTotalCostAmt) : "0.00",
                                 sitePhy = fecm.FecmProgressPerc.HasValue ? String.Format("{0:N}", fecm.FecmProgressPerc) : "0",
                                 wgDate = wgForm.FwgDtWg != null ? DateTime.Parse(Convert.ToString(wgForm.FwgDtWg)).ToString("dd/MM/yyyy") : "-",
