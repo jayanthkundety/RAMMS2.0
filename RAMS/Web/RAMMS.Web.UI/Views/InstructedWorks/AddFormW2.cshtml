@@ -54,41 +54,7 @@
 
          $("#closeFormW2Btn").show();
 
-         function GetImageList(id, form) {
-            //debugger;
-            var group = $("#FormADetAssetGrpCode option:selected").val();
-            $("#saveFormW2Btn").hide();
-            $("#submitFormW2Btn").hide();
-            $("#saveFCEMBtn").hide();
-            $("#submitFCEMBtn").hide();
-            $("#closeFormW2Btn").show();
-            $("#divSaveRow").show();
-            if (id && id > 0) {
-                $("#fw1IWRefNo").val(id);
-            }
-            else {
-                id = $("#fw1IWRefNo").val();
-            }
-
-            $.ajax({
-                url: '/InstructedWorks/GetIWImageList',
-                data: { id, assetgroup: group , form },
-                type: 'POST',
-                success: function (data) {
-                    $("#ViewPhoto").html(data);
-                    if ($("#hdnView").val() == "1")
-                        $("div.img-btns *").prop("disabled", true);
-                    //$("#FW2HRef_No").val(id);
-                },
-                error: function (data) {
-                    alert(data.responseText);
-                }
-
-            });
-
-            return true;
-         }
-
+   
          function toCurrency(obj){
              return obj.value.toLocaleString('en-IN')
          }

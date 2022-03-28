@@ -12,7 +12,7 @@
                         <th colspan="4">General</th>
                         <th colspan="2">Initial Proposal</th>
                         <th colspan="3">IW Proposal</th>
-                        <th colspan="8" style="text-align: center">JKR HQ Meeting</th>
+                        <th colspan="7" style="text-align: center">JKR HQ Meeting</th>
                         <th colspan="3"> Extension of Time / Liquidated and Ascertained Damages</th>
                         <th colspan="5">  JKR Approval Process</th>
                         <th>Certificate of Completion<br/>of Making Good Defects</th>
@@ -32,7 +32,7 @@
                         <th>FECM Date</th>
                         <th>Agreed<br/>Nego<br/>Price<br/>Letter<br />(Yes / No)</th>
                         <th>Agreed<br/>Nego<br/>Price<br/>Date</th>
-                        <th>Issuance of W2 IW Ref</th>
+                        @*<th>Issuance of W2 IW Ref</th>*@
                         <th>Commencement<br/>Date</th>
                         <th>Completion Date</th>
                         <th>WD Date</th>
@@ -78,7 +78,7 @@
     var financialDtCol = { data: "fecmDt", type: "date", format: 'DD-MM-YYYY', name: "FinanceDt", title: "FECM Date", autoWidth: false, width: 150, sortable: true, class: "text-center"};
     var agreeNegoCol = { data: "agreedNegoYN", name: "AgreedNegoPrice", title: "Agreed<br/>Nego<br/>Price<br/>Letter<br/>(Yes / No)", autoWidth: true, sortable: true, class: "text-center"};
     var agreeNegoPriceDtCol = { data: "agreedNegoPriceDt", name: "AgreedNegoPrice", title: "Agreed<br/>Nego<br/>Price<br/>Date", autoWidth: true, sortable: true, class: "text-center"};
-    var issuW2IWRefCol = { data: "issueW2Ref", name: "IssuW2IWRef", title: "Issuance of W2 IW Ref", autoWidth: true, sortable: true };
+    //var issuW2IWRefCol = { data: "issueW2Ref", name: "IssuW2IWRef", title: "Issuance of W2 IW Ref", autoWidth: true, sortable: true };
     var commencementDtCol = { data: "commenceDt", type: "date", format: 'DD-MM-YYYY', name: "CommencementDt", title: "Commencement<br/>Date", autoWidth: false, width: 150, sortable: true, class: "text-center" };
     var completionDtCol = {data: "compDt", type: "date", format: 'DD-MM-YYYY', name: "CompletionDt", title: "Completion Date", autoWidth: false, width: 150, sortable: true, class: "text-center" };
     var wdDtCol = {data: "wdDt", type: "date", format: 'DD-MM-YYYY', name: "WDDate", title: "WD Date", autoWidth: false, width: 150, sortable: true, class: "text-center" };
@@ -105,7 +105,7 @@
     table_columns.push(financialDtCol);
     table_columns.push(agreeNegoCol);
     table_columns.push(agreeNegoPriceDtCol);
-    table_columns.push(issuW2IWRefCol);
+    //table_columns.push(issuW2IWRefCol);
     table_columns.push(commencementDtCol);
     table_columns.push(completionDtCol);
     table_columns.push(wdDtCol);

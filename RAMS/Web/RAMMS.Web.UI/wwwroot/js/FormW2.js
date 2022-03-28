@@ -290,6 +290,7 @@ function Delete(id) {
 }
 
 function GetImageList(id, form) {
+    //debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     $("#saveFormW2Btn").hide();
     $("#submitFormW2Btn").hide();
@@ -298,15 +299,15 @@ function GetImageList(id, form) {
     $("#closeFormW2Btn").show();
     $("#divSaveRow").show();
     if (id && id > 0) {
-        $("#fw1IWRefNo").val(id);
+        $("#fw1PKRefNo").val(id);
     }
     else {
-        id = $("#fw1IWRefNo").val();
+        id = $("#fw1PKRefNo").val();
     }
 
     $.ajax({
         url: '/InstructedWorks/GetIWImageList',
-        data: { id, assetgroup: group , form },
+        data: { id, assetgroup: group, form },
         type: 'POST',
         success: function (data) {
             $("#ViewPhoto").html(data);

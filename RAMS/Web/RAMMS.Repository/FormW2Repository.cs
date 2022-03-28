@@ -371,22 +371,22 @@ namespace RAMMS.Repository
                 switch (_form)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status.Contains(_status));
+                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.x.Fw1ActiveYn == true );
                         break;
                     case "W2":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status));
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status) && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status));
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status) && x.wdForm.FwdActiveYn == true);
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status));
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status) && x.wnForm.FwnActiveYn == true);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status));
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status) && x.wcForm.FwcActiveYn == true);
                         break;
                     case "WG":
-                        query = query.Where(x => x.wgForm.FwgStatus.Contains(_status));
+                        query = query.Where(x => x.wgForm.FwgStatus.Contains(_status) && x.wgForm.FwgActiveYn == true);
                         break;
                     default:
                         break;
@@ -398,22 +398,22 @@ namespace RAMMS.Repository
                 switch (filterOptions.Filters.FormType)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status.Contains("Saved"));
+                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true );
                         break;
                     case "W2":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains("Saved"));
+                        query = query.Where(x => x.w2Form.Fw2Status != "" && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus.Contains("Saved"));
+                        query = query.Where(x => x.wdForm.FwdStatus != "" && x.wdForm.FwdActiveYn == true);
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus.Contains("Saved"));
+                        query = query.Where(x => x.wnForm.FwnStatus != "" && x.wnForm.FwnActiveYn == true);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus.Contains("Saved"));
+                        query = query.Where(x => x.wcForm.FwcStatus != "" && x.wcForm.FwcActiveYn == true);
                         break;
                     case "WG":
-                        query = query.Where(x => x.wgForm.FwgStatus.Contains("Saved"));
+                        query = query.Where(x => x.wgForm.FwgStatus != "" && x.wgForm.FwgActiveYn == true);
                         break;
                     default:
                         break;
