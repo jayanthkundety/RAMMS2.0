@@ -94,6 +94,7 @@ namespace RAMMS.Repository
 
         public async Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormIWSearchGridDTO> filterOptions)
         {
+            List<FormIWResponseDTO> result = new List<FormIWResponseDTO>();
             var query = (from x in _context.RmIwFormW1.Where(x => x.Fw1ActiveYn == true)
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fw1RmuCode || s.DdlTypeDesc == x.Fw1RmuCode))
                          let w2Form = _context.RmIwFormW2.FirstOrDefault(s => s.Fw2Fw1PkRefNo == x.Fw1PkRefNo && s.Fw2ActiveYn == true)
@@ -104,26 +105,31 @@ namespace RAMMS.Repository
                          let wnForm = _context.RmIwFormWn.FirstOrDefault(s => s.FwnFw1PkRefNo == x.Fw1PkRefNo && s.FwnActiveYn == true)
                          select new { rmu, w2Form, fecm, x, wcForm, wgForm, wdForm, wnForm });
 
-
-
             query = query.OrderByDescending(x => x.x.Fw1ModDt);
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.IWRefNo))
             {
-                query = query.Where(x => x.x.Fw1IwRefNo == filterOptions.Filters.IWRefNo);
+                query = query.Where(x => x.x.Fw1IwRefNo.Contains(filterOptions.Filters.IWRefNo));
+            }
+
+            if (!string.IsNullOrEmpty(filterOptions.Filters.PrjTitle))
+            {
+                query = query.Where(x => x.x.Fw1ProjectTitle.Contains(filterOptions.Filters.PrjTitle));
             }
 
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
-                DateTime dt;
-                if (DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                DateTime dtFrom, dtTo;
+                DateTime.TryParseExact(filterOptions.Filters.CommencementFrom, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
                 {
-                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? (x.w2Form.Fw2DtCommence.Value.Year == dt.Year && x.w2Form.Fw2DtCommence.Value.Month == dt.Month && x.w2Form.Fw2DtCommence.Value.Day == dt.Day) : false);
+                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? x.w2Form.Fw2DtCommence >= dtFrom && x.w2Form.Fw2DtCommence <= dtTo : false);
                 }
             }
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
+            if (!string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
                 DateTime dt;
                 if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
@@ -132,10 +138,16 @@ namespace RAMMS.Repository
                 }
             }
 
-            if (!string.IsNullOrEmpty(filterOptions.Filters.ProjectTitle))
+            if (string.IsNullOrEmpty(filterOptions.Filters.CommencementFrom) && !string.IsNullOrEmpty(filterOptions.Filters.CommencementTo))
             {
-                query = query.Where(x => x.x.Fw1ProjectTitle.Contains(filterOptions.Filters.ProjectTitle));
+                DateTime dt;
+                if (DateTime.TryParseExact(filterOptions.Filters.CommencementTo, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                {
+                    query = query.Where(x => x.w2Form.Fw2DtCommence.HasValue ? (x.w2Form.Fw2DtCommence.Value.Year == dt.Year && x.w2Form.Fw2DtCommence.Value.Month == dt.Month && x.w2Form.Fw2DtCommence.Value.Day == dt.Day) : false);
+                }
             }
+
+
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.Status))
             {
@@ -144,22 +156,22 @@ namespace RAMMS.Repository
                 switch (_form)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status.Contains(_status));
+                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.w2Form == null && x.x.Fw1ActiveYn == true);
                         break;
                     case "W2":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status));
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status) && x.wdForm == null && x.wnForm == null && x.wcForm == null && x.wdForm == null && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status));
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status) && x.wdForm.FwdActiveYn == true);
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status));
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status) && x.wnForm.FwnActiveYn == true);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status));
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status) && x.wcForm.FwcActiveYn == true);
                         break;
                     case "WG":
-                        query = query.Where(x => x.wgForm.FwgStatus.Contains(_status));
+                        query = query.Where(x => x.wgForm.FwgStatus.Contains(_status) && x.wgForm.FwgActiveYn == true);
                         break;
                     default:
                         break;
@@ -171,27 +183,28 @@ namespace RAMMS.Repository
                 switch (filterOptions.Filters.FormType)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status.Contains("Saved"));
+                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true);
                         break;
                     case "W2":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains("Saved"));
+                        query = query.Where(x => x.w2Form.Fw2Status != "" && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus.Contains("Saved"));
+                        query = query.Where(x => x.wdForm.FwdStatus != "" && x.wdForm.FwdActiveYn == true);
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus.Contains("Saved"));
+                        query = query.Where(x => x.wnForm.FwnStatus != "" && x.wnForm.FwnActiveYn == true);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus.Contains("Saved"));
+                        query = query.Where(x => x.wcForm.FwcStatus != "" && x.wcForm.FwcActiveYn == true);
                         break;
                     case "WG":
-                        query = query.Where(x => x.wgForm.FwgStatus.Contains("Saved"));
+                        query = query.Where(x => x.wgForm.FwgStatus != "" && x.wgForm.FwgActiveYn == true);
                         break;
                     default:
                         break;
                 }
             }
+
 
             if (filterOptions.Filters.PercentageFrom.HasValue && filterOptions.Filters.PercentageTo.HasValue)
             {
@@ -223,7 +236,7 @@ namespace RAMMS.Repository
 
             if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
             {
-                query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                query = query.Where(x => x.x.Fw1RmuCode == filterOptions.Filters.RMU || x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.RMU));
             }
 
 
@@ -242,11 +255,11 @@ namespace RAMMS.Repository
             {
                 if (filterOptions.Filters.TECMStatus == "TECMPending")
                 {
-                    query = query.Where(x => x.x.Fw1ActiveYn == true && (x.fecm.FecmDtTecm == null || x.fecm == null));
+                    query = query.Where(x => x.x.Fw1ActiveYn == true && (x.x.Fw1TecmDt == null));
                 }
                 else
                 {
-                    query = query.Where(x => x.x.Fw1Status != null && x.x.Fw1ActiveYn == true && x.fecm.FecmDtTecm != null);
+                    query = query.Where(x => x.x.Fw1Status != null && x.x.Fw1ActiveYn == true && x.x.Fw1TecmDt != null);
                 }
             }
 
@@ -302,6 +315,62 @@ namespace RAMMS.Repository
                 }
             }
 
+            if (filterOptions.sortOrder == SortOrder.Ascending)
+            {
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderBy(s => s.x.Fw1ProjectTitle);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(s => s.x.Fw1InitialProposedDate);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(s => s.x.Fw1RecomdBydeYn);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(s => s.x.Fw1Dt);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderBy(s => s.x.Fw1RecomdYn);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderBy(s => s.w2Form.Fw2EstCostAmt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(s => s.fecm.FecmDtTecm);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderBy(s => s.fecm.FecmDt);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderBy(s => s.fecm.FecmAgreedNegoLetrYn);
+                //if (filterOptions.ColumnIndex == 11)
+                //    query = query.OrderBy(s => s.x.Fw1UsernameVer);
+                //if (filterOptions.ColumnIndex == 12)
+                //    query = query.OrderBy(s => s.x.Fw1UsernameRcvdAuth);
+                //if (filterOptions.ColumnIndex == 13)
+                //    query = query.OrderBy(s => s.x.Fw1UsernameVetAuth);
+
+            }
+            else if (filterOptions.sortOrder == SortOrder.Descending)
+            {
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderByDescending(s => s.x.Fw1ProjectTitle);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(s => s.x.Fw1InitialProposedDate);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(s => s.x.Fw1RecomdBydeYn);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(s => s.x.Fw1Dt);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderByDescending(s => s.x.Fw1RecomdYn);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderByDescending(s => s.w2Form.Fw2EstCostAmt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(s => s.fecm.FecmDtTecm);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderByDescending(s => s.fecm.FecmDt);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderByDescending(s => s.fecm.FecmAgreedNegoLetrYn);
+                //if (filterOptions.ColumnIndex == 11)
+                //    query = query.OrderByDescending(s => s.x.Fw1UsernameVer);
+                //if (filterOptions.ColumnIndex == 12)
+                //    query = query.OrderByDescending(s => s.x.Fw1UsernameRcvdAuth);
+                //if (filterOptions.ColumnIndex == 13)
+                //    query = query.OrderByDescending(s => s.x.Fw1UsernameVetAuth);
+
+            }
 
 
             return await query.CountAsync().ConfigureAwait(false);
@@ -371,10 +440,10 @@ namespace RAMMS.Repository
                 switch (_form)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.x.Fw1ActiveYn == true );
+                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.w2Form == null && x.x.Fw1ActiveYn == true );
                         break;
                     case "W2":
-                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status) && x.w2Form.Fw2ActiveYn == true);
+                        query = query.Where(x => x.w2Form.Fw2Status.Contains(_status) && x.wdForm == null && x.wnForm == null && x.wcForm == null && x.wdForm == null && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
                         query = query.Where(x => x.wdForm.FwdStatus.Contains(_status) && x.wdForm.FwdActiveYn == true);
