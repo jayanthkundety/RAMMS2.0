@@ -10,6 +10,10 @@ namespace RAMMS.Repository.Interfaces
     {
         RmIwFormW2 SaveFormW2(RmIwFormW2 formS1Header, bool updateSubmit);
         public Task<RmIwFormW2> FindW2ByID(int Id);
+
+        public int FindWNWGStatus(int Id);
+        
+
         Task<List<RmIwformImage>> GetImagelist(int formW2Id);
         Task<List<RmIwFormW1>> GetFormW1List();
         Task<RmIwFormW1> GetFormW1ById(int formW1Id);
