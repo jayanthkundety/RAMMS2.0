@@ -162,13 +162,13 @@ namespace RAMMS.Repository
                         query = query.Where(x => x.w2Form.Fw2Status.Contains(_status) && x.wdForm == null && x.wnForm == null && x.wcForm == null && x.wdForm == null && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status) && x.wdForm.FwdActiveYn == true);
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status) && x.wdForm.FwdActiveYn == true && x.wnForm == null && x.wcForm == null && x.wgForm == null );
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status) && x.wnForm.FwnActiveYn == true);
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status) && x.wnForm.FwnActiveYn == true  && x.wcForm == null && x.wgForm == null);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status) && x.wcForm.FwcActiveYn == true);
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status) && x.wcForm.FwcActiveYn == true && x.wgForm == null);
                         break;
                     case "WG":
                         query = query.Where(x => x.wgForm.FwgStatus.Contains(_status) && x.wgForm.FwgActiveYn == true);
@@ -183,19 +183,19 @@ namespace RAMMS.Repository
                 switch (filterOptions.Filters.FormType)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true);
+                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true && x.w2Form == null);
                         break;
                     case "W2":
-                        query = query.Where(x => x.w2Form.Fw2Status != "" && x.w2Form.Fw2ActiveYn == true);
+                        query = query.Where(x => x.w2Form.Fw2Status != ""  && x.wdForm == null && x.wnForm == null && x.wcForm == null && x.wdForm == null && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus != "" && x.wdForm.FwdActiveYn == true);
+                        query = query.Where(x => x.wdForm.FwdStatus != "" && x.wdForm.FwdActiveYn == true && x.wnForm == null && x.wcForm == null && x.wgForm == null);
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus != "" && x.wnForm.FwnActiveYn == true);
+                        query = query.Where(x => x.wnForm.FwnStatus != "" && x.wnForm.FwnActiveYn == true && x.wcForm == null && x.wgForm == null);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus != "" && x.wcForm.FwcActiveYn == true);
+                        query = query.Where(x => x.wcForm.FwcStatus != "" && x.wcForm.FwcActiveYn == true && x.wcForm.FwcActiveYn == true && x.wgForm == null);
                         break;
                     case "WG":
                         query = query.Where(x => x.wgForm.FwgStatus != "" && x.wgForm.FwgActiveYn == true);
@@ -440,19 +440,19 @@ namespace RAMMS.Repository
                 switch (_form)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.w2Form == null && x.x.Fw1ActiveYn == true );
+                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.w2Form == null && x.x.Fw1ActiveYn == true);
                         break;
                     case "W2":
                         query = query.Where(x => x.w2Form.Fw2Status.Contains(_status) && x.wdForm == null && x.wnForm == null && x.wcForm == null && x.wdForm == null && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status) && x.wdForm.FwdActiveYn == true);
+                        query = query.Where(x => x.wdForm.FwdStatus.Contains(_status) && x.wdForm.FwdActiveYn == true && x.wnForm == null && x.wcForm == null && x.wgForm == null);
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status) && x.wnForm.FwnActiveYn == true);
+                        query = query.Where(x => x.wnForm.FwnStatus.Contains(_status) && x.wnForm.FwnActiveYn == true && x.wcForm == null && x.wgForm == null);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status) && x.wcForm.FwcActiveYn == true);
+                        query = query.Where(x => x.wcForm.FwcStatus.Contains(_status) && x.wcForm.FwcActiveYn == true && x.wgForm == null);
                         break;
                     case "WG":
                         query = query.Where(x => x.wgForm.FwgStatus.Contains(_status) && x.wgForm.FwgActiveYn == true);
@@ -467,19 +467,19 @@ namespace RAMMS.Repository
                 switch (filterOptions.Filters.FormType)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true );
+                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true && x.w2Form == null);
                         break;
                     case "W2":
-                        query = query.Where(x => x.w2Form.Fw2Status != "" && x.w2Form.Fw2ActiveYn == true);
+                        query = query.Where(x => x.w2Form.Fw2Status != "" && x.wdForm == null && x.wnForm == null && x.wcForm == null && x.wdForm == null && x.w2Form.Fw2ActiveYn == true);
                         break;
                     case "WD":
-                        query = query.Where(x => x.wdForm.FwdStatus != "" && x.wdForm.FwdActiveYn == true);
+                        query = query.Where(x => x.wdForm.FwdStatus != "" && x.wdForm.FwdActiveYn == true && x.wnForm == null && x.wcForm == null && x.wgForm == null);
                         break;
                     case "WN":
-                        query = query.Where(x => x.wnForm.FwnStatus != "" && x.wnForm.FwnActiveYn == true);
+                        query = query.Where(x => x.wnForm.FwnStatus != "" && x.wnForm.FwnActiveYn == true && x.wcForm == null && x.wgForm == null);
                         break;
                     case "WC":
-                        query = query.Where(x => x.wcForm.FwcStatus != "" && x.wcForm.FwcActiveYn == true);
+                        query = query.Where(x => x.wcForm.FwcStatus != "" && x.wcForm.FwcActiveYn == true && x.wcForm.FwcActiveYn == true && x.wgForm == null);
                         break;
                     case "WG":
                         query = query.Where(x => x.wgForm.FwgStatus != "" && x.wgForm.FwgActiveYn == true);
