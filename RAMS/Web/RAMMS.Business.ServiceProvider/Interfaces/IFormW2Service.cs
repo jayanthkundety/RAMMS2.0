@@ -20,6 +20,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<FormW2ResponseDTO> FindW2ByID(int id);
 
+        int FindWNWGStatus(int id);
+
         Task<int> Delete(int id);
 
         Task<int> Update(FormW2ResponseDTO formW2DTO);

@@ -80,6 +80,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
+        public  int FindWNWGStatus(int id)
+        {
+            int res = 0;
+            res =   _repo.FindWNWGStatus(id);
+            return res;
+        }
+
         public async Task<FormW2ResponseDTO> FindW2ByID(int id)
         {
             RmIwFormW2 formW2 = await _repo.FindW2ByID(id);

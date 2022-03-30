@@ -24,6 +24,27 @@ namespace RAMMS.Repository
             return formW2;
         }
 
+
+        public int FindWNWGStatus(int Id)
+        {
+            var Res1 = (from r1 in _context.RmIwFormWn where r1.FwnFw1PkRefNo == Id && r1.FwnStatus == "Submitted" select r1).ToList();
+
+            if (Res1.Count > 0)
+            {
+                return 1;
+            }
+            else
+            {
+                var Res2 = (from r1 in _context.RmIwFormWg where r1.FwgFw1PkRefNo == Id && r1.FwgStatus == "Submitted" select r1).ToList();
+
+                if (Res2.Count > 0)
+                {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
         public async Task<RmIwFormW2> FindW2ByID(int Id)
         {
             return await _context.RmIwFormW2.Include(x => x.Fw2Fw1PkRefNoNavigation).Where(x => x.Fw2PkRefNo == Id && x.Fw2ActiveYn == true && x.Fw2Fw1PkRefNoNavigation.Fw1PkRefNo == x.Fw2Fw1PkRefNo).FirstOrDefaultAsync();
@@ -440,7 +461,7 @@ namespace RAMMS.Repository
                 switch (_form)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.w2Form == null && x.x.Fw1ActiveYn == true );
+                        query = query.Where(x => x.x.Fw1Status.Contains(_status) && x.w2Form == null && x.x.Fw1ActiveYn == true);
                         break;
                     case "W2":
                         query = query.Where(x => x.w2Form.Fw2Status.Contains(_status) && x.wdForm == null && x.wnForm == null && x.wcForm == null && x.wdForm == null && x.w2Form.Fw2ActiveYn == true);
@@ -467,7 +488,7 @@ namespace RAMMS.Repository
                 switch (filterOptions.Filters.FormType)
                 {
                     case "W1":
-                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true );
+                        query = query.Where(x => x.x.Fw1Status != "" && x.x.Fw1ActiveYn == true);
                         break;
                     case "W2":
                         query = query.Where(x => x.w2Form.Fw2Status != "" && x.w2Form.Fw2ActiveYn == true);
@@ -539,11 +560,11 @@ namespace RAMMS.Repository
             {
                 if (filterOptions.Filters.TECMStatus == "TECMPending")
                 {
-                    query = query.Where(x => x.x.Fw1ActiveYn == true &&  (x.x.Fw1TecmDt == null));
+                    query = query.Where(x => x.x.Fw1ActiveYn == true && (x.x.Fw1TecmDt == null));
                 }
                 else
                 {
-                    query = query.Where(x => x.x.Fw1Status != null  && x.x.Fw1ActiveYn == true && x.x.Fw1TecmDt != null);
+                    query = query.Where(x => x.x.Fw1Status != null && x.x.Fw1ActiveYn == true && x.x.Fw1TecmDt != null);
                 }
             }
 
@@ -551,7 +572,7 @@ namespace RAMMS.Repository
             {
                 if (filterOptions.Filters.FECMStatus == "FECMPending")
                 {
-                    query = query.Where(x =>  x.w2Form.Fw2ActiveYn == true && (x.fecm.FecmDt == null || x.fecm == null));
+                    query = query.Where(x => x.w2Form.Fw2ActiveYn == true && (x.fecm.FecmDt == null || x.fecm == null));
                 }
                 else
                 {
@@ -692,7 +713,7 @@ namespace RAMMS.Repository
                                 recommdYN = w1Form.Fw1RecomdYn != null && w1Form.Fw1RecomdYn == true ? "Yes" : "No",
                                 estimatedCost = w1Form.Fw1EstimTotalCostAmt.HasValue ? String.Format("{0:N}", w1Form.Fw1EstimTotalCostAmt) : "0.00",
                                 w2dt = w2Form.Fw2DateOfInitation != null ? DateTime.Parse(Convert.ToString(w2Form.Fw2DateOfInitation)).ToString("dd/MM/yyyy") : "-",
-                                tecmDt = w1Form.Fw1TecmDt  != null ? DateTime.Parse(Convert.ToString(w1Form.Fw1TecmDt)).ToString("dd/MM/yyyy") : "-",
+                                tecmDt = w1Form.Fw1TecmDt != null ? DateTime.Parse(Convert.ToString(w1Form.Fw1TecmDt)).ToString("dd/MM/yyyy") : "-",
                                 fecmDt = fecm.FecmDt != null ? DateTime.Parse(Convert.ToString(fecm.FecmDt)).ToString("dd/MM/yyyy") : "-",
                                 agreedNegoYN = fecm.FecmAgreedNegoLetrYn != null && fecm.FecmAgreedNegoLetrYn == true ? "Yes" : "No",
                                 agreedNegoPriceDt = fecm.FecmDtAgreedNego != null ? DateTime.Parse(Convert.ToString(fecm.FecmDtAgreedNego)).ToString("dd/MM/yyyy") : "-",
@@ -704,7 +725,7 @@ namespace RAMMS.Repository
                                 wnDt = wnForm.FwnDtWn != null ? DateTime.Parse(Convert.ToString(wnForm.FwnDtWn)).ToString("dd/MM/yyyy") : "-",
                                 ContractPeriod = w2Form.Fw2IwDuration.HasValue ? String.Format("{0:N}", w2Form.Fw2IwDuration) : "0",
                                 wcDt = wcForm.FwcDtWc != null ? DateTime.Parse(Convert.ToString(wcForm.FwcDtWc)).ToString("dd/MM/yyyy") : "-",
-                                dlpPeriod = wcForm.FwcDtDlpExtn  != null ? DateTime.Parse(Convert.ToString(wcForm.FwcDtDlpExtn)).ToString("dd/MM/yyyy") : "-",
+                                dlpPeriod = wcForm.FwcDtDlpExtn != null ? DateTime.Parse(Convert.ToString(wcForm.FwcDtDlpExtn)).ToString("dd/MM/yyyy") : "-",
                                 finalAmt = w2Form.Fw2EstCostAmt.HasValue ? String.Format("{0:N}", w1Form.Fw1EstimTotalCostAmt) : "0.00",
                                 sitePhy = fecm.FecmProgressPerc.HasValue ? String.Format("{0:N}", fecm.FecmProgressPerc) : "0",
                                 wgDate = wgForm.FwgDtWg != null ? DateTime.Parse(Convert.ToString(wgForm.FwgDtWg)).ToString("dd/MM/yyyy") : "-",

@@ -548,6 +548,7 @@ namespace RAMMS.Web.UI.Controllers
                 _formW2Model.FECM.FormW1 = _formW2Model.FormW1;
                 _formW2Model.FECM.FECM.Fw2PkRefNo = resultFormW2.PkRefNo;
                 _formW2Model.FECM.W1Date = _formW2Model.FormW1.Dt;
+                _formW2Model.FECM.WNWGStatus =   _formW2Service.FindWNWGStatus(_formW2Model.FormW1.PkRefNo);
 
             }
 
