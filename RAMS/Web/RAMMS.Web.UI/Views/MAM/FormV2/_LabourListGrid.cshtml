@@ -1,0 +1,97 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="w-100 position-relative in-tbl-btns custom-tbl">
+            @if (security.IsPCModify(ModuleNameList.Emergency_Response_Team))
+            {
+                <div class="grid-btns">
+                    <button type="button" id="btnLabourAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static"
+                            data-target="#FormDLabourModal" onclick="javascript:EditFormDLabour(0);">
+                        <span class="intbl-add-icon"></span>
+                    </button>
+                </div>
+            }
+
+            <table id="FormDLabourGridView" class="table w-100 nowrap">
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : "hidden";
+    //alert(IsView);
+    var Lbtable_columns = [];
+    var table = null;
+    var LbactionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 20, sortable: false, render: function (data) {
+            if (IsView != "1" && (!data.submitStatus)) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormDLabourModal' id='formDLabourEdit' onclick='javascript:EditFormDLabour(" + data.no + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteFormDLabourRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnLabView' href='#'  data-toggle='modal' data-target='#FormDLabourModal'  onclick='javascript:EditFormDLabour(" + data.no + ",1);'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+             else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' id='btnLabView' href='#'  data-toggle='modal' data-target='#FormDLabourModal'  onclick='javascript:EditFormDLabour(" + data.no + ",1);'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var LbrefNoCol = { data: "serialNo", name: "LbsNo", title: "S No", autoWidth: false, width: 20, sortable: false };
+    var LbCodeCol = { data: "labourCode", name: "LbCode", title: "Code", autoWidth: false, width: 60, sortable: false };
+    var LbDescCol = { data: "codeDesc", name: "LbDescription", title: "Description", autoWidth: true, sortable: false };
+    var LbQtyCol = { data: "quantity", name: "LbQuantity", title: "Qty", autoWidth: true, sortable: false };
+    var LbUnitCol = { data: "unit", name: "LbUnit", title: "Unit", autoWidth: true, sortable: false };
+
+    Lbtable_columns.push(LbactionCol);
+    Lbtable_columns.push(LbrefNoCol);
+    Lbtable_columns.push(LbCodeCol);
+    Lbtable_columns.push(LbDescCol);
+    Lbtable_columns.push(LbQtyCol);
+    Lbtable_columns.push(LbUnitCol);
+
+
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
+    }
+
+    var LbfilterData = new Object();
+
+    function lInitializeGrid() {
+
+        var _LbcurrentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _LbcurrentGridSettings);
+        //if (id == undefined) {
+        //    id = "0";
+        //}
+        if (table != null) {
+            table.destroy();
+            $('#FormDLabourGridView').empty();
+        }
+
+        table = $('#FormDLabourGridView').DataTable({
+            ajax: {
+                url: "/ERT/LoadFormDLabourList?id=" + $("#FDHRef_No").val(),
+               // url: "/ERT/LoadFormDLabourList?id=" + id,
+                type: "POST",
+                datatype: "json",
+                data: {
+                    LbfilterData
+                }
+            },
+            columns: Lbtable_columns
+        });
+        table.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        lInitializeGrid();
+        loTable = $('#FormDLabourGridView').DataTable();
+        IsView = $("#hdnView").val();
+        //alert(IsView);
+    });
+
+
+</script>

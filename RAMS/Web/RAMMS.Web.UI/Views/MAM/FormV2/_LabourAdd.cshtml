@@ -1,0 +1,101 @@
+﻿@model RAMMS.Web.UI.Models.FormDLabourDtlModel;
+<script type="text/javascript">
+
+    var val = $("#hdnLabid").val();
+    var labDesc = "";
+    $(document).ready(function () {
+        $("#formDLabCode").chosen();
+        $("#formDLabUnit").chosen();
+
+        if ($("#formDLabCode").find(":selected").val() == '99999999') {
+            labDesc = $("#formDlabDesc").val();
+            $("#formDlabDesc").attr('readonly', false);
+        }
+
+        $('.allow_numeric').keypress(function (e) {
+            var charCode = (e.which) ? e.which : event.keyCode
+
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                return false;
+        });
+    });
+
+    $("#formDLabCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+
+        if ($(this).find(":selected").val() == "99999999") {
+            $("#formDlabDesc").attr('readonly', false);
+            $("#formDlabDesc").val(labDesc);
+        }
+        else {
+            $("#formDlabDesc").val(val);
+            $("#formDlabDesc").attr('readonly', true);
+        }
+        $("#formDLabDescription").val(val);
+    });
+
+    function GoBackLab() {
+        FormLabGridRefresh()
+        if ($("#hdnLabView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormDLabourModal").modal("hide");
+                }
+            }));
+        } else {
+            $("#FormDLabourModal").modal("hide");
+        }
+    }
+
+
+
+    //if (val != 0 && val != undefined && val != "")
+    //    $("#formDLabCode").trigger("change");
+
+</script>
+<form id="FormDLabourModal" action="/ERT/FormDSaveLabour">
+    <div class="modal-body mh-100">
+        <div class="row">
+            <div class="form-group col-lg-8 mb-0">
+                @Html.Label("Code", "Code")
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDLabourModel.LabourCode, (IEnumerable
+                                                           <SelectListItem>)Model.selectList, "Select Code", new { @Id = "formDLabCode", @class = "form-control  validate {required, Labour Code}" })
+                        @Html.HiddenFor(Ahdr => Ahdr.SaveFormDLabourModel.LabourCode, new { @id = "hdnformDLabCode", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormDLabourModel.CodeDesc, new { @Id = "formDlabDesc", @readonly = "readonly", @type = "text", @class = "form-control", @rows = 1 })
+                    </div>
+                </div>
+            </div>
+            <div class="clear-b"></div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Quantity", "Quantity")
+                @Html.TextBoxFor(Adtl => Adtl.SaveFormDLabourModel.Quantity, new { @Id = "formDLabQty", @maxlength = 3, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric  validate {required, Quantity}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Unit", "Unit")
+                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDLabourModel.Unit, (IEnumerable
+                                                              <SelectListItem>)Model.UnitList, "Select Unit", new { @Id = "formDLabUnit", @class = "form-control validate {required, Unit}" })
+            </div>
+
+            <div class="form-group col-lg-12 txtarea-107">
+                @Html.Label("Description", "Description")
+                @Html.TextAreaFor(m => m.SaveFormDLabourModel.LabourDesc, new { @Id = "formDLabDescription", @class = "form-control  validate {required, Description}" })
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SaveFormDLabourModel.No, new { @id = "hdnLabid", @class = "form-control" })
+    @Html.HiddenFor(m => m.SaveFormDLabourModel.SerialNo, new { @id = "LabSerialNo", @class = "form-control" })
+    @Html.Hidden("hdnLabView", "")
+    <div class="modal-footer">
+        <div id="val-summary-displayer-labour">
+            <div id="val-summary-displayer"></div>
+        </div>
+        <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="GoBackLab()">Cancel</button>
+        <button id="saveContinueFormDLabBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+        <button id="saveFormDLabBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+    </div>
+</form>

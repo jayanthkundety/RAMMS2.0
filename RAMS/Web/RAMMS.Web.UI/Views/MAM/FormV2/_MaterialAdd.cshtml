@@ -1,0 +1,117 @@
+﻿@model RAMMS.Web.UI.Models.FormDMaterialDetailsModel;
+<script type="text/javascript"> 
+    var val = $("#hdnMaterialNo").val();
+    var matDesc = "";
+
+    $(document).ready(function () {
+        $("#formDMatCode").chosen();
+        $("#formDMatUnit").chosen();
+
+        if ($("#formDMatCode").find(":selected").val() == '99999999') {
+            matDesc = $("#formDMatDesc").val();
+            $("#formDMatDesc").attr('readonly', false);
+        }
+
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    $("#formDMatCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+
+        if ($(this).find(":selected").val() == "99999999") {
+            $("#formDMatDesc").attr('readonly', false);
+            $("#formDMatDesc").val(matDesc);
+        }
+        else {
+            $("#formDMatDesc").attr('readonly', true);
+            $("#formDMatDesc").val(val);
+        }
+        $("#FormDMatDescription").val(val);
+    });
+
+    function GoBackMat() {
+        FormMatGridRefresh();
+        if ($("#hdnMatView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormDMaterialModal").modal("hide");
+                }
+            }));
+        } else
+            $("#FormDMaterialModal").modal("hide");
+    }
+
+   
+    if (val != 0 && val != undefined && val != "") {}
+        //$("#formDMatCode").trigger("change");
+</script>
+<form id="FormDMaterialModal" action="/ERT/FormDMaterialModal">
+    <div class="modal-body mh-100">
+        <div class="row">
+            <div class="form-group col-lg-8 mb-0">
+                @Html.Label("Code", "Code")
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.DropDownListFor(Adtl => Adtl.SaveFormDMaterialModel.MaterialCode, (IEnumerable
+                                                               <SelectListItem>)Model.selectList, "Select Code", new { @Id = "formDMatCode", @class = "form-control  validate {required, Material Code}" })
+                        @Html.HiddenFor(Ahdr => Ahdr.SaveFormDMaterialModel.MaterialCode, new { @id = "hdnformDMatCode", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.TextBoxFor(Adtl => Adtl.SaveFormDMaterialModel.CodeDesc, new { @Id = "formDMatDesc", @readonly = "readonly", @autocomplete = "off", @type = "text", @class = "form-control ", @rows = 1 })
+                    </div>
+                </div>
+            </div>
+            <div class="clear-b"></div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Quantity", "Quantity")
+                @Html.TextBoxFor(Adtl => Adtl.SaveFormDMaterialModel.Quantity, new { @Id = "formDMatQuantity", @maxlength = 6, @type = "text", @autocomplete = "off", @class = "form-control allow_numeric  validate {required, Quantity}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Unit", "Unit")
+                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDMaterialModel.Unit, (IEnumerable
+                                              <SelectListItem>)Model.UnitList, "Select Unit", new { @Id = "formDMatUnit", @class = "form-control validate {required, Unit}" })
+            </div>
+            <div class="form-group col-lg-12 txtarea-107">
+                @Html.Label("Description", "Description")
+                @Html.TextAreaFor(m => m.SaveFormDMaterialModel.MaterialDesc, new { @Id = "FormDMatDescription", @class = "form-control  validate {required, Description}" })
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SaveFormDMaterialModel.No, new { @id = "hdnMaterialNo", @class = "form-control" })
+    @Html.HiddenFor(m => m.SaveFormDMaterialModel.SerialNo, new { @id = "MaterialSerialNo", @class = "form-control" })
+    @Html.Hidden("hdnMatView", "")
+    <input type="hidden" id="hdnMatid" value="0" />
+    <div class="modal-footer">
+        <div id="val-summary-displayer-material">
+            <div id="val-summary-displayer"></div>
+        </div>
+        <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="GoBackMat()">Cancel</button>
+        <button id="saveContinueFormDMtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+        <button id="saveFormDMtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+    </div>
+</form>

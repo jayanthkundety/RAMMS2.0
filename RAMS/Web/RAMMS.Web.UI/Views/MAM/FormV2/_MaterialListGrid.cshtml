@@ -1,0 +1,116 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="w-100 position-relative in-tbl-btns custom-tbl">
+            @if (security.IsPCModify(ModuleNameList.Emergency_Response_Team))
+            {
+                <div class="grid-btns">
+                    <button type="button" id="btnMaterialAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormDMaterialModal" onclick="javascript:EditFormDMaterial(0);"><span class="intbl-add-icon"></span></button>
+                </div>
+            }
+
+            <table id="FormDMaterialGridView" class="table w-100 nowrap">
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : "hidden";
+    var mtable_columns = [];
+    var Mtable = null;
+    var mactionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 20, sortable: false, render: function (data) {
+            if (IsView != "1" && (!data.submitStatus)) {
+                var actionSection = "<div class='btn-group dropright' id='Matactiondropdown'> <button id='Matactionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormDMaterialModal' id='formDMaterialEdit' onclick='javascript:EditFormDMaterial(" + data.no + ");'><span class='edit-icon'></span> Edit</button><button type='button' " + isDeletePerm + " class='dropdown-item editdel-btns' onclick='javascript:DeleteFormDMaterialRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnMatView' href='#' data-toggle='modal' data-target='#FormDMaterialModal' onclick='javascript:EditFormDMaterial(" + data.no + ",1);'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' id='btnMatView' href='#' data-toggle='modal' data-target='#FormDMaterialModal' onclick='javascript:EditFormDMaterial(" + data.no + ",1);'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var mrefNoCol = { data: "serialNo", name: "msNo", title: "S No", autoWidth: false, width: 20, sortable: false };
+    var mCodeCol = { data: "materialCode", name: "mCode", title: "Code", autoWidth: false, width: 60, sortable: false };
+    var mDescCol = { data: "codeDesc", name: "mDescription", title: "Description", autoWidth: true, sortable: false };
+    var mQtyCol = { data: "quantity", name: "mQuantity", title: "Qty", autoWidth: true, sortable: false };
+    var mUnitCol = { data: "unit", name: "mUnit", title: "Unit", autoWidth: true, sortable: false };
+
+    mtable_columns.push(mactionCol);
+    mtable_columns.push(mrefNoCol);
+    mtable_columns.push(mCodeCol);
+    mtable_columns.push(mDescCol);
+    mtable_columns.push(mQtyCol);
+    mtable_columns.push(mUnitCol);
+
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
+    }
+
+    var mfilterData = new Object();
+
+    function mInitializeGrid() {
+        var _mcurrentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _mcurrentGridSettings);
+
+        //if (id == undefined) {
+        //    id = "0";
+        //}
+        if (Mtable != null) {
+            Mtable.destroy();
+            $('#FormDMaterialGridView').empty();
+        }
+        //alert($("#FDHRef_No").val());
+        mfilterData.HeaderNo = $("#FDHRef_No").val();
+        //filterData.Rmu = $("#formDDetSrchRMU").val();
+        //filterData.Section = $("#formDDetSrchSec").val();
+        //filterData.RoadCode = $("#formDDetSrchRoadCode").val();
+        //filterData.AssetGroupCode = $("#formDDetSrchAsstGrp").val();
+        //filterData.Month = $("#formDDetSrchMonth").val();
+        //filterData.Year = $("#formDDetSrchYear").val();
+        //filterData.ChinageFromKm = $("#formDFromKm").val();
+        ////filterData.ChinageFromM = $("#formDFromM").val();
+        //filterData.ChinageToKm = $("#formDToKm").val();
+        ////filterData.ChinageToM = $("#formDToM").val();
+
+        Mtable = $('#FormDMaterialGridView').DataTable({
+            ajax: {
+                url: "/ERT/LoadFormDMaterialList?id=" + $("#FDHRef_No").val(),
+                type: "POST",
+                datatype: "json",
+                data: {
+                    mfilterData
+                }
+            },
+            columns: mtable_columns
+        });
+        Mtable.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        mInitializeGrid();
+        IsView = $("#hdnView").val();
+        //Apply Custom search on jQuery DataTables here
+        moTable = $('#FormDMaterialGridView').DataTable();
+        $('#formDSearchBtn').click(function () {
+            oTable.columns(0).search($("#FormDSmartSearch").val().trim());
+            oTable.columns(1).search($("#formDDetSrchRMU").val().trim());
+            oTable.columns(2).search($("#formDDetSrchSec").val().trim());
+            oTable.columns(3).search($("#formDDetSrchRoadCode").val().trim());
+            //oTable.columns(4).search($("#formDDetSrchAsstGrp").val().trim());
+            //oTable.columns(5).search($("#formDDetSrchMonth").val().trim());
+            //oTable.columns(6).search($("#formDDetSrchYear").val().trim());
+            //oTable.columns(7).search($("#formDFromKm").val().trim());
+            //oTable.columns(8).search($("#formDFromM").val().trim());
+            //oTable.columns(9).search($("#formDToKm").val().trim());
+            //oTable.columns(10).search($("#formDToM").val().trim());
+            moTable.data = filterData;
+            moTable.draw();
+        });
+    });
+</script>

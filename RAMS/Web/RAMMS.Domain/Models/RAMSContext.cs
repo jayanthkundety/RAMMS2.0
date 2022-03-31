@@ -85,6 +85,17 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmFormS2Dtl> RmFormS2Dtl { get; set; }
         public virtual DbSet<RmFormS2Hdr> RmFormS2Hdr { get; set; }
         public virtual DbSet<RmFormS2QuarDtl> RmFormS2QuarDtl { get; set; }
+        public virtual DbSet<RmFormV1Dtl> RmFormV1Dtl { get; set; }
+        public virtual DbSet<RmFormV1Hdr> RmFormV1Hdr { get; set; }
+        public virtual DbSet<RmFormV2Eqp> RmFormV2Eqp { get; set; }
+        public virtual DbSet<RmFormV2Hdr> RmFormV2Hdr { get; set; }
+        public virtual DbSet<RmFormV2Lab> RmFormV2Lab { get; set; }
+        public virtual DbSet<RmFormV2Mat> RmFormV2Mat { get; set; }
+        public virtual DbSet<RmFormV3Dtl> RmFormV3Dtl { get; set; }
+        public virtual DbSet<RmFormV3Hdr> RmFormV3Hdr { get; set; }
+        public virtual DbSet<RmFormV4Hdr> RmFormV4Hdr { get; set; }
+        public virtual DbSet<RmFormV5Dtl> RmFormV5Dtl { get; set; }
+        public virtual DbSet<RmFormV5Hdr> RmFormV5Hdr { get; set; }
         public virtual DbSet<RmFormXHdr> RmFormXHdr { get; set; }
         public virtual DbSet<RmFormaImageDtl> RmFormaImageDtl { get; set; }
         public virtual DbSet<RmFormhImageDtl> RmFormhImageDtl { get; set; }
@@ -1216,7 +1227,7 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FauFddPkRefNoNavigation)
                     .WithMany(p => p.RmAccUcuImageDtl)
                     .HasForeignKey(d => d.FauFddPkRefNo)
-                    .HasConstraintName("FK__RM_ACC_UC__FAU_F__7CD98669");
+                    .HasConstraintName("FK_RM_ACC_UCU_image_DTL_RM_FormD_DTL");
 
                 entity.HasOne(d => d.FauFxhPkRefNoNavigation)
                     .WithMany(p => p.RmAccUcuImageDtl)
@@ -9022,6 +9033,1052 @@ namespace RAMMS.Domain.Models
                     .WithMany(p => p.RmFormS2QuarDtl)
                     .HasForeignKey(d => d.FsiiqdFsiidPkRefNo)
                     .HasConstraintName("FK__RM_FormS2__FSIIQ__2E70E1FD");
+            });
+
+            modelBuilder.Entity<RmFormV1Dtl>(entity =>
+            {
+                entity.HasKey(e => e.Fv1dPkRefNo);
+
+                entity.ToTable("RM_FormV1_DTL");
+
+                entity.Property(e => e.Fv1dPkRefNo).HasColumnName("FV1D_PK_Ref_No");
+
+                entity.Property(e => e.Fv1dActiveYn).HasColumnName("FV1D_Active_YN");
+
+                entity.Property(e => e.Fv1dCrBy)
+                    .HasColumnName("FV1D_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1dCrDt)
+                    .HasColumnName("FV1D_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1dFrmCh).HasColumnName("FV1D_FRM_CH");
+
+                entity.Property(e => e.Fv1dFrmChDeci).HasColumnName("FV1D_FRM_CH_Deci");
+
+                entity.Property(e => e.Fv1dFv1hPkRefNo).HasColumnName("FV1D_FV1H_PK_Ref_No");
+
+                entity.Property(e => e.Fv1dModBy)
+                    .HasColumnName("FV1D_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1dModDt)
+                    .HasColumnName("FV1D_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1dRemarks)
+                    .HasColumnName("FV1D_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1dRoadCode)
+                    .HasColumnName("FV1D_Road_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1dRoadName)
+                    .HasColumnName("FV1D_Road_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1dSiteRef)
+                    .HasColumnName("FV1D_Site_Ref")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1dStartTime)
+                    .HasColumnName("FV1D_Start_Time")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1dSubmitSts).HasColumnName("FV1D_SUBMIT_STS");
+
+                entity.Property(e => e.Fv1dToCh).HasColumnName("FV1D_To_CH");
+
+                entity.Property(e => e.Fv1dToChDeci).HasColumnName("FV1D_To_CH_Deci");
+
+                entity.HasOne(d => d.Fv1dFv1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormV1Dtl)
+                    .HasForeignKey(d => d.Fv1dFv1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormV1_DTL_RM_FormV1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormV1Hdr>(entity =>
+            {
+                entity.HasKey(e => e.Fv1hPkRefNo);
+
+                entity.ToTable("RM_FormV1_HDR");
+
+                entity.Property(e => e.Fv1hPkRefNo).HasColumnName("FV1H_PK_Ref_No");
+
+                entity.Property(e => e.Fv1hActCode)
+                    .HasColumnName("FV1H_ACT_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hActiveYn).HasColumnName("FV1H_Active_YN");
+
+                entity.Property(e => e.Fv1hContNo).HasColumnName("FV1H_CONT_No");
+
+                entity.Property(e => e.Fv1hCrBy)
+                    .HasColumnName("FV1H_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hCrDt)
+                    .HasColumnName("FV1H_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1hCrew)
+                    .HasColumnName("FV1H_Crew")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hDesignationAck)
+                    .HasColumnName("FV1H_Designation_ACK")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hDesignationAgr)
+                    .HasColumnName("FV1H_Designation_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hDesignationSch)
+                    .HasColumnName("FV1H_Designation_SCH")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hDt)
+                    .HasColumnName("FV1H_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1hDtAck)
+                    .HasColumnName("FV1H_DT_ACK")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1hDtAgr)
+                    .HasColumnName("FV1H_DT_AGR")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1hDtSch)
+                    .HasColumnName("FV1H_DT_SCH")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1hFacilitator)
+                    .HasColumnName("FV1H_Facilitator")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hModBy)
+                    .HasColumnName("FV1H_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hModDt)
+                    .HasColumnName("FV1H_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv1hRefId)
+                    .HasColumnName("FV1H_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hRemarks)
+                    .HasColumnName("FV1H_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hRmu)
+                    .HasColumnName("FV1H_RMU")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hSecCode)
+                    .HasColumnName("FV1H_Sec_Code")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fv1hServiceProvider)
+                    .HasColumnName("FV1H_Service_Provider")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hSignAck).HasColumnName("FV1H_Sign_ACK");
+
+                entity.Property(e => e.Fv1hSignAgr).HasColumnName("FV1H_Sign_AGR");
+
+                entity.Property(e => e.Fv1hSignSch).HasColumnName("FV1H_Sign_SCH");
+
+                entity.Property(e => e.Fv1hSubmitSts).HasColumnName("FV1H_SUBMIT_STS");
+
+                entity.Property(e => e.Fv1hUseridAck)
+                    .HasColumnName("FV1H_Userid_ACK")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hUseridAgr)
+                    .HasColumnName("FV1H_Userid_AGR")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hUseridSch)
+                    .HasColumnName("FV1H_Userid_SCH")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hUsernameAck)
+                    .HasColumnName("FV1H_Username_ACK")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hUsernameAgr)
+                    .HasColumnName("FV1H_Username_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hUsernameSch)
+                    .HasColumnName("FV1H_Username_SCH")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hVerifier)
+                    .HasColumnName("FV1H_Verifier")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RmFormV2Eqp>(entity =>
+            {
+                entity.HasKey(e => e.Fv2ePkRefNo);
+
+                entity.ToTable("RM_FormV2_EQP");
+
+                entity.Property(e => e.Fv2ePkRefNo).HasColumnName("FV2E_PK_Ref_No");
+
+                entity.Property(e => e.Fv2eActiveYn).HasColumnName("FV2E_Active_YN");
+
+                entity.Property(e => e.Fv2eCapacity)
+                    .HasColumnName("FV2E_Capacity")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2eCond).HasColumnName("FV2E_Cond");
+
+                entity.Property(e => e.Fv2eCrBy)
+                    .HasColumnName("FV2E_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2eCrDt)
+                    .HasColumnName("FV2E_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2eDesc)
+                    .HasColumnName("FV2E_Desc")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2eEqpRefCode)
+                    .HasColumnName("FV2E_EQP_Ref_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2eFv2hPkRefNo).HasColumnName("FV2E_FV2H_PK_Ref_No");
+
+                entity.Property(e => e.Fv2eModBy)
+                    .HasColumnName("FV2E_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2eModDt)
+                    .HasColumnName("FV2E_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2eModel)
+                    .HasColumnName("FV2E_Model")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2eSubmitSts).HasColumnName("FV2E_SUBMIT_STS");
+
+                entity.HasOne(d => d.Fv2eFv2hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormV2Eqp)
+                    .HasForeignKey(d => d.Fv2eFv2hPkRefNo)
+                    .HasConstraintName("FK_RM_FormV2_EQP_RM_FormV2_HDR");
+            });
+
+            modelBuilder.Entity<RmFormV2Hdr>(entity =>
+            {
+                entity.HasKey(e => e.Fv2hPkRefNo);
+
+                entity.ToTable("RM_FormV2_HDR");
+
+                entity.Property(e => e.Fv2hPkRefNo).HasColumnName("FV2H_PK_Ref_No");
+
+                entity.Property(e => e.Fv2hActCode).HasColumnName("FV2H_ACT_Code");
+
+                entity.Property(e => e.Fv2hActiveYn).HasColumnName("FV2H_Active_YN");
+
+                entity.Property(e => e.Fv2hContNo).HasColumnName("FV2H_CONT_No");
+
+                entity.Property(e => e.Fv2hCrBy)
+                    .HasColumnName("FV2H_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hCrDt)
+                    .HasColumnName("FV2H_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2hCrew).HasColumnName("FV2H_Crew");
+
+                entity.Property(e => e.Fv2hDesignationAck)
+                    .HasColumnName("FV2H_Designation_ACK")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hDesignationAgr)
+                    .HasColumnName("FV2H_Designation_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hDesignationSch)
+                    .HasColumnName("FV2H_Designation_SCH")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hDt)
+                    .HasColumnName("FV2H_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2hDtAck)
+                    .HasColumnName("FV2H_DT_ACK")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2hDtAgr)
+                    .HasColumnName("FV2H_DT_AGR")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2hDtSch)
+                    .HasColumnName("FV2H_DT_SCH")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2hFacilitator)
+                    .HasColumnName("FV2H_Facilitator")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hModBy)
+                    .HasColumnName("FV2H_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hModDt)
+                    .HasColumnName("FV2H_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2hRefId)
+                    .HasColumnName("FV2H_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hRemarks)
+                    .HasColumnName("FV2H_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hRmu)
+                    .HasColumnName("FV2H_RMU")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hSecCode)
+                    .HasColumnName("FV2H_Sec_Code")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fv2hServiceProvider)
+                    .HasColumnName("FV2H_Service_Provider")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hSignAck).HasColumnName("FV2H_Sign_ACK");
+
+                entity.Property(e => e.Fv2hSignAgr).HasColumnName("FV2H_Sign_AGR");
+
+                entity.Property(e => e.Fv2hSignSch).HasColumnName("FV2H_Sign_SCH");
+
+                entity.Property(e => e.Fv2hSubmitSts).HasColumnName("FV2H_SUBMIT_STS");
+
+                entity.Property(e => e.Fv2hUseridAck)
+                    .HasColumnName("FV2H_Userid_ACK")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hUseridAgr)
+                    .HasColumnName("FV2H_Userid_AGR")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hUseridSch)
+                    .HasColumnName("FV2H_Userid_SCH")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hUsernameAck)
+                    .HasColumnName("FV2H_Username_ACK")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hUsernameAgr)
+                    .HasColumnName("FV2H_Username_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hUsernameSch)
+                    .HasColumnName("FV2H_Username_SCH")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hVerifier)
+                    .HasColumnName("FV2H_Verifier")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RmFormV2Lab>(entity =>
+            {
+                entity.HasKey(e => e.Fv2lPkRefNo);
+
+                entity.ToTable("RM_FormV2_LAB");
+
+                entity.Property(e => e.Fv2lPkRefNo).HasColumnName("FV2L_PK_Ref_No");
+
+                entity.Property(e => e.Fv2lActiveYn).HasColumnName("FV2L_Active_YN");
+
+                entity.Property(e => e.Fv2lCrBy)
+                    .HasColumnName("FV2L_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2lCrDt)
+                    .HasColumnName("FV2L_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2lDesc)
+                    .HasColumnName("FV2L_Desc")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2lFv2hPkRefNo).HasColumnName("FV2L_FV2H_PK_Ref_No");
+
+                entity.Property(e => e.Fv2lLabRefCode)
+                    .HasColumnName("FV2L_LAB_Ref_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2lModBy)
+                    .HasColumnName("FV2L_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2lModDt)
+                    .HasColumnName("FV2L_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2lRemark)
+                    .HasColumnName("FV2L_Remark")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2lSubmitSts).HasColumnName("FV2L_SUBMIT_STS");
+
+                entity.HasOne(d => d.Fv2lFv2hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormV2Lab)
+                    .HasForeignKey(d => d.Fv2lFv2hPkRefNo)
+                    .HasConstraintName("FK_RM_FormV2_LAB_RM_FormV2_HDR");
+            });
+
+            modelBuilder.Entity<RmFormV2Mat>(entity =>
+            {
+                entity.HasKey(e => e.Fv2mPkRefNo);
+
+                entity.ToTable("RM_FormV2_MAT");
+
+                entity.Property(e => e.Fv2mPkRefNo).HasColumnName("FV2M_PK_Ref_No");
+
+                entity.Property(e => e.Fv2mActiveYn).HasColumnName("FV2M_Active_YN");
+
+                entity.Property(e => e.Fv2mCrBy)
+                    .HasColumnName("FV2M_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2mCrDt)
+                    .HasColumnName("FV2M_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2mDesc)
+                    .HasColumnName("FV2M_Desc")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2mFv2hPkRefNo).HasColumnName("FV2M_FV2H_PK_Ref_No");
+
+                entity.Property(e => e.Fv2mMatRefCode)
+                    .HasColumnName("FV2M_MAT_Ref_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2mModBy)
+                    .HasColumnName("FV2M_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2mModDt)
+                    .HasColumnName("FV2M_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv2mQnty)
+                    .HasColumnName("FV2M_QNTY")
+                    .HasColumnType("decimal(9, 0)");
+
+                entity.Property(e => e.Fv2mSubmitSts).HasColumnName("FV2M_SUBMIT_STS");
+
+                entity.Property(e => e.Fv2mUnit).HasColumnName("FV2M_Unit");
+            });
+
+            modelBuilder.Entity<RmFormV3Dtl>(entity =>
+            {
+                entity.HasKey(e => e.Fv3dPkRefNo);
+
+                entity.ToTable("RM_FormV3_DTL");
+
+                entity.Property(e => e.Fv3dPkRefNo).HasColumnName("FV3D_PK_Ref_No");
+
+                entity.Property(e => e.Fv3dActiveYn).HasColumnName("FV3D_Active_YN");
+
+                entity.Property(e => e.Fv3dAdp).HasColumnName("FV3D_ADP");
+
+                entity.Property(e => e.Fv3dCrBy)
+                    .HasColumnName("FV3D_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3dCrDt)
+                    .HasColumnName("FV3D_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3dFrmCh).HasColumnName("FV3D_FRM_CH");
+
+                entity.Property(e => e.Fv3dFrmChDeci).HasColumnName("FV3D_FRM_CH_Deci");
+
+                entity.Property(e => e.Fv3dFv3hPkRefNo).HasColumnName("FV3D_FV3H_PK_Ref_No");
+
+                entity.Property(e => e.Fv3dLength).HasColumnName("FV3D_Length");
+
+                entity.Property(e => e.Fv3dModBy)
+                    .HasColumnName("FV3D_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3dModDt)
+                    .HasColumnName("FV3D_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3dRoadCode)
+                    .HasColumnName("FV3D_Road_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3dRoadName)
+                    .HasColumnName("FV3D_Road_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3dSubmitSts).HasColumnName("FV3D_SUBMIT_STS");
+
+                entity.Property(e => e.Fv3dTimeTakenTo)
+                    .HasColumnName("FV3D_TimeTaken_TO")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3dTimeTakenTotal)
+                    .HasColumnName("FV3D_TimeTaken_Total")
+                    .HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Fv3dTimetakenFrm)
+                    .HasColumnName("FV3D_Timetaken_FRM")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3dToCh).HasColumnName("FV3D_To_CH");
+
+                entity.Property(e => e.Fv3dToChDeci).HasColumnName("FV3D_To_CH_Deci");
+
+                entity.Property(e => e.Fv3dTransitTimeFrm)
+                    .HasColumnName("FV3D_Transit_Time_FRM")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3dTransitTimeTo)
+                    .HasColumnName("FV3D_Transit_Time_To")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3dTransitTimeTotal)
+                    .HasColumnName("FV3D_Transit_Time_Total")
+                    .HasColumnType("decimal(4, 0)");
+
+                entity.Property(e => e.Fv3dWidth).HasColumnName("FV3D_Width");
+
+                entity.HasOne(d => d.Fv3dFv3hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormV3Dtl)
+                    .HasForeignKey(d => d.Fv3dFv3hPkRefNo)
+                    .HasConstraintName("FK_RM_FormV3_DTL_RM_FormV3_HDR");
+            });
+
+            modelBuilder.Entity<RmFormV3Hdr>(entity =>
+            {
+                entity.HasKey(e => e.Fv3hPkRefNo);
+
+                entity.ToTable("RM_FormV3_HDR");
+
+                entity.Property(e => e.Fv3hPkRefNo).HasColumnName("FV3H_PK_Ref_No");
+
+                entity.Property(e => e.Fv3hActCode).HasColumnName("FV3H_ACT_Code");
+
+                entity.Property(e => e.Fv3hActiveYn).HasColumnName("FV3H_Active_YN");
+
+                entity.Property(e => e.Fv3hContNo).HasColumnName("FV3H_CONT_No");
+
+                entity.Property(e => e.Fv3hCrBy)
+                    .HasColumnName("FV3H_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hCrDt)
+                    .HasColumnName("FV3H_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3hCrew).HasColumnName("FV3H_Crew");
+
+                entity.Property(e => e.Fv3hDesignationAgr)
+                    .HasColumnName("FV3H_Designation_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hDesignationFac)
+                    .HasColumnName("FV3H_Designation_FAC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hDesignationRec)
+                    .HasColumnName("FV3H_Designation_REC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hDt)
+                    .HasColumnName("FV3H_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3hDtAgr)
+                    .HasColumnName("FV3H_DT_AGR")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3hDtRec)
+                    .HasColumnName("FV3H_DT_REC")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3hDtSch)
+                    .HasColumnName("FV3H_DT_SCH")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3hFacilitator)
+                    .HasColumnName("FV3H_Facilitator")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hModBy)
+                    .HasColumnName("FV3H_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hModDt)
+                    .HasColumnName("FV3H_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv3hRefId)
+                    .HasColumnName("FV3H_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hRemarks)
+                    .HasColumnName("FV3H_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hRmu)
+                    .HasColumnName("FV3H_RMU")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hSecCode)
+                    .HasColumnName("FV3H_Sec_Code")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fv3hServiceProvider)
+                    .HasColumnName("FV3H_Service_Provider")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hSignAgr).HasColumnName("FV3H_Sign_AGR");
+
+                entity.Property(e => e.Fv3hSignFac).HasColumnName("FV3H_Sign_FAC");
+
+                entity.Property(e => e.Fv3hSignRec).HasColumnName("FV3H_Sign_REC");
+
+                entity.Property(e => e.Fv3hSubmitSts).HasColumnName("FV3H_SUBMIT_STS");
+
+                entity.Property(e => e.Fv3hUseridAgr)
+                    .HasColumnName("FV3H_Userid_AGR")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hUseridFac)
+                    .HasColumnName("FV3H_Userid_FAC")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hUseridRec)
+                    .HasColumnName("FV3H_Userid_REC")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hUsernameAgr)
+                    .HasColumnName("FV3H_Username_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hUsernameFac)
+                    .HasColumnName("FV3H_Username_FAC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hUsernameRec)
+                    .HasColumnName("FV3H_Username_REC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hVerifier)
+                    .HasColumnName("FV3H_Verifier")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RmFormV4Hdr>(entity =>
+            {
+                entity.HasKey(e => e.Fv4hPkRefNo);
+
+                entity.ToTable("RM_FormV4_HDR");
+
+                entity.Property(e => e.Fv4hPkRefNo).HasColumnName("FV4H_PK_Ref_No");
+
+                entity.Property(e => e.Fv4hActCode).HasColumnName("FV4H_ACT_Code");
+
+                entity.Property(e => e.Fv4hActiveYn).HasColumnName("FV4H_Active_YN");
+
+                entity.Property(e => e.Fv4hContNo).HasColumnName("FV4H_CONT_No");
+
+                entity.Property(e => e.Fv4hCrBy)
+                    .HasColumnName("FV4H_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hCrDt)
+                    .HasColumnName("FV4H_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hCrew).HasColumnName("FV4H_Crew");
+
+                entity.Property(e => e.Fv4hDesignationAgr)
+                    .HasColumnName("FV4H_Designation_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hDesignationFac)
+                    .HasColumnName("FV4H_Designation_FAC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hDesignationVet)
+                    .HasColumnName("FV4H_Designation_VET")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hDivision)
+                    .HasColumnName("FV4H_Division")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hDt)
+                    .HasColumnName("FV4H_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hDtAgr)
+                    .HasColumnName("FV4H_DT_AGR")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hDtSch)
+                    .HasColumnName("FV4H_DT_SCH")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hDtVet)
+                    .HasColumnName("FV4H_DT_VET")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hEndTime)
+                    .HasColumnName("FV4H_End_Time")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hFacilitator)
+                    .HasColumnName("FV4H_Facilitator")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hModBy)
+                    .HasColumnName("FV4H_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hModDt)
+                    .HasColumnName("FV4H_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hRefId)
+                    .HasColumnName("FV4H_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hRemarks)
+                    .HasColumnName("FV4H_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hRmu)
+                    .HasColumnName("FV4H_RMU")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hSecCode)
+                    .HasColumnName("FV4H_Sec_Code")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fv4hServiceProvider)
+                    .HasColumnName("FV4H_Service_Provider")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hSignAgr).HasColumnName("FV4H_Sign_AGR");
+
+                entity.Property(e => e.Fv4hSignFac).HasColumnName("FV4H_Sign_FAC");
+
+                entity.Property(e => e.Fv4hSignVet).HasColumnName("FV4H_Sign_VET");
+
+                entity.Property(e => e.Fv4hStartTime)
+                    .HasColumnName("FV4H_Start_Time")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hSubmitSts).HasColumnName("FV4H_SUBMIT_STS");
+
+                entity.Property(e => e.Fv4hTotalProduction)
+                    .HasColumnName("FV4H_Total_Production")
+                    .HasColumnType("decimal(9, 0)");
+
+                entity.Property(e => e.Fv4hUseridAgr)
+                    .HasColumnName("FV4H_Userid_AGR")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hUseridFac)
+                    .HasColumnName("FV4H_Userid_FAC")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hUseridVet)
+                    .HasColumnName("FV4H_Userid_VET")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hUsernameAgr)
+                    .HasColumnName("FV4H_Username_AGR")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hUsernameFac)
+                    .HasColumnName("FV4H_Username_FAC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hUsernameVet)
+                    .HasColumnName("FV4H_Username_VET")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hVerifier)
+                    .HasColumnName("FV4H_Verifier")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RmFormV5Dtl>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("RM_FormV5_DTL");
+
+                entity.Property(e => e.Fv5dActiveYn).HasColumnName("FV5D_Active_YN");
+
+                entity.Property(e => e.Fv5dCrBy)
+                    .HasColumnName("FV5D_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dCrDt)
+                    .HasColumnName("FV5D_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv5dDesc)
+                    .HasColumnName("FV5D_Desc")
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dFf5hPkRefNo).HasColumnName("FV5D_FF5H_PK_Ref_No");
+
+                entity.Property(e => e.Fv5dFileNameFrm)
+                    .HasColumnName("FV5D_FileName_FRM")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dFileNameTo)
+                    .HasColumnName("FV5D_FileName_TO")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dImageFilenameSys)
+                    .HasColumnName("FV5D_Image_Filename_Sys")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dImageFilenameUpload)
+                    .HasColumnName("FV5D_Image_Filename_Upload")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dImageUserFilePath)
+                    .HasColumnName("FV5D_image_user_filePath")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dModBy)
+                    .HasColumnName("FV5D_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dModDt)
+                    .HasColumnName("FV5D_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv5dPkRefNo)
+                    .HasColumnName("FV5D_PK_Ref_No")
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Fv5dSubmitSts).HasColumnName("FV5D_SUBMIT_STS");
+            });
+
+            modelBuilder.Entity<RmFormV5Hdr>(entity =>
+            {
+                entity.HasKey(e => e.Fv5hPkRefNo);
+
+                entity.ToTable("RM_FormV5_HDR");
+
+                entity.Property(e => e.Fv5hPkRefNo).HasColumnName("FV5H_PK_Ref_No");
+
+                entity.Property(e => e.Fv5hActCode).HasColumnName("FV5H_ACT_Code");
+
+                entity.Property(e => e.Fv5hActiveYn).HasColumnName("FV5H_Active_YN");
+
+                entity.Property(e => e.Fv5hContNo).HasColumnName("FV5H_CONT_No");
+
+                entity.Property(e => e.Fv5hCrBy)
+                    .HasColumnName("FV5H_CR_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hCrDt)
+                    .HasColumnName("FV5H_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv5hCrew).HasColumnName("FV5H_Crew");
+
+                entity.Property(e => e.Fv5hDesignationRec)
+                    .HasColumnName("FV5H_Designation_REC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hDt)
+                    .HasColumnName("FV5H_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv5hDtRec)
+                    .HasColumnName("FV5H_DT_REC")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv5hModBy)
+                    .HasColumnName("FV5H_Mod_By")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hModDt)
+                    .HasColumnName("FV5H_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv5hRefId)
+                    .HasColumnName("FV5H_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hRemarks)
+                    .HasColumnName("FV5H_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hRmu)
+                    .HasColumnName("FV5H_RMU")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hSecCode)
+                    .HasColumnName("FV5H_Sec_Code")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fv5hSignRec).HasColumnName("FV5H_Sign_REC");
+
+                entity.Property(e => e.Fv5hSubmitSts).HasColumnName("FV5H_SUBMIT_STS");
+
+                entity.Property(e => e.Fv5hUseridRec)
+                    .HasColumnName("FV5H_Userid_REC")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hUsernameRec)
+                    .HasColumnName("FV5H_Username_REC")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hVerifier)
+                    .HasColumnName("FV5H_Verifier")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hYear).HasColumnName("FV5H_Year");
             });
 
             modelBuilder.Entity<RmFormXHdr>(entity =>

@@ -1,0 +1,934 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+
+    ViewBag.TabTitle = "ERT - Form D - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@model RAMMS.Web.UI.Models.FormDModel;
+<script src="~/js/ERTFormD.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function () {
+        process.Init("FormD", "@Model.SaveFormDModel.Status", @Model.SaveFormDModel.No);
+
+        Date.prototype.getWeek = function () {
+            var target = new Date(this.valueOf());
+            var dayNr = (this.getDay() + 6) % 7;
+            target.setDate(target.getDate() - dayNr + 3);
+            var firstThursday = target.valueOf();
+            target.setMonth(0, 1);
+            if (target.getDay() != 4) {
+                target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+            }
+            return 1 + Math.ceil((firstThursday - target) / 604800000);
+        }
+
+        function GetWeekNumber(date) {
+            var target = new Date(date);
+            var dayNr = (target.getDay() + 6) % 7;
+            target.setDate(target.getDate() - dayNr + 3);
+            var firstThursday = target.valueOf();
+            target.setMonth(0, 1);
+            if (target.getDay() != 4) {
+                target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+            }
+            return 1 + Math.ceil((firstThursday - target) / 604800000);
+        }
+
+        $("#formDroadCode").on("change", function () {
+            //var d = new Date();
+            var ddldata = $(this).val();
+            //var month = d.getMonth() + 1;
+            //var day = d.getDate();
+            //var year = d.getFullYear();
+            //var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
+            //    (('' + day).length < 2 ? '0' : '') + day + '/' + year;
+            if (ddldata != "") {
+                $.ajax({
+                    url: '/ERT/GetAllRoadCodeDataBySectionCode',
+                    dataType: 'JSON',
+                    data: { secCode: $("#formDroadCode option:selected").text().split("-")[0] },
+                    type: 'Post',
+                    success: function (data) {
+                        if (data != null) {
+                            if (data._RMAllData != undefined && data._RMAllData != null) {
+                                $("#formDroadDesc").val(data._RMAllData.secName);
+                                $("#hdnFormDRoadcode").val($("#formDroadCode option:selected").text().split("-")[0]);
+                                $("#formDDivisionDesc").val(data._RMAllData.divisionCode);
+                                //ERT/Form D/RoadCode/Chainage/Month/0001(RunningNo)-Year
+                                // Form D/Date/Crew Supervisor code/ running number
+                                //$(this).val(ddldata);
+                                //
+                            }
+                            document.getElementById("formDDivisionDesc").disabled = true;
+                        } else {
+                            document.getElementById("formDDivisionDesc").disabled = false;
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }      
+                });
+            }
+            else {
+                $("#formDroadDesc").val("");
+                $("#formDDivisionDesc").val("");
+            }
+            //$(this).val(ddldata);
+            // $("#formDroadCode").trigger("chosen:updated")
+            return false;
+        });
+
+        function getDateRangeOfWeek(weekNo, y) {
+            var d1, numOfdaysPastSinceLastMonday, rangeIsFrom, rangeIsTo, d2;
+            d1 = new Date('' + y + '');
+            numOfdaysPastSinceLastMonday = d1.getDay() - 1;
+            d2 = new Date('' + y + '');
+            d2.setDate(d2.getDate() - numOfdaysPastSinceLastMonday);
+
+            if (d2.getFullYear() < y) {
+                d2.setDate(d2.getDate() + 7);
+                d1 = new Date(d2);
+            }
+            else {
+                d1.setDate(d1.getDate() - numOfdaysPastSinceLastMonday);
+            }
+            d1.setDate(d1.getDate() + (7 * (weekNo - d1.getWeek())));
+            rangeIsFrom = new Date((d1.getMonth() + 1) + "/" + d1.getDate() + "/" + y);
+            d1.setDate(d1.getDate() + 6);
+            rangeIsTo = new Date((d1.getMonth() + 1) + "/" + d1.getDate() + "/" + y);
+
+            var weekday = new Array(7);
+            weekday[0] = "Sunday";
+            weekday[1] = "Monday";
+            weekday[2] = "Tuesday";
+            weekday[3] = "Wednesday";
+            weekday[4] = "Thursday";
+            weekday[5] = "Friday";
+            weekday[6] = "Saturday";
+
+            while (rangeIsFrom <= rangeIsTo) {
+                var d3 = new Date(rangeIsFrom);
+                if (weekday[d3.getDay()] == $("#formDDay").val()) {
+                    var d4 = formatDate(d3);
+                    $('#WeekDate').val(d4);
+                }
+                d3.setDate(d3.getDate() + 1);
+                rangeIsFrom = new Date(d3,);
+            }
+
+        }
+
+        function formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        function SetWeekDayYear(date) {
+
+            //Set Week
+            var todaydate = new Date(date);
+            $("#formDWeekNo").val(GetWeekNumber(date));
+
+            //Set Day
+            var weekday = new Array(7);
+            weekday[0] = "Sunday";
+            weekday[1] = "Monday";
+            weekday[2] = "Tuesday";
+            weekday[3] = "Wednesday";
+            weekday[4] = "Thursday";
+            weekday[5] = "Friday";
+            weekday[6] = "Saturday";
+
+            var n = weekday[todaydate.getDay()];
+            $("#formDDay").val(n);
+
+            //Set Year
+            $("#formDYear").val(todaydate.getFullYear());
+        }
+
+        $("#formDCrewUnit").on("change", function () {
+            var id = $("#formDCrewUnit option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#formDCrewName").val(data.userName);
+                        $("#formDCrewName").prop("disabled", true);
+
+                        //if ($("#FDHRef_No").val() == "0" || $("#FDHRef_No").val() == "") {
+
+                        //var text = "ERT/Form D/" + $("#formDroadCode").val() + "/" + month + "/" + maxcount + "-" + year
+                        SetReferenceId();
+                        //}
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#formDCrewName").prop("disabled", false);
+                $("#formDCrewName").val('');
+            }
+            else {
+                $("#formDCrewName").prop("disabled", true);
+                $("#formDCrewName").val('');
+            }
+
+            return false;
+        });
+
+        $("#formDCrewUnit").trigger("change");
+
+        $("#formDWeekNo").on("change", function () {
+            var text = GetDate($("#formDYear").val(), $(this).val(), $("#formDDay").val());
+            getDateRangeOfWeek($("#formDWeekNo").val(), $("#formDYear").val());
+            //$("#hdnWeekNo").val(text.split('~')[0]);
+            //$("#hdnMonthNo").val(text.split('~')[1])
+            //SetReferenceId()
+        });
+
+        $("#formDDay").on("change", function () {
+            var text = GetDate($("#formDYear").val(), $("#formDWeekNo").val(), $(this).val());
+            getDateRangeOfWeek($("#formDWeekNo").val(), $("#formDYear").val());
+            //$("#hdnWeekNo").val(text.split('~')[0]);
+            //$("#hdnMonthNo").val(text.split('~')[1])
+            //SetReferenceId();
+        });
+
+        $("#formDYear").on("change", function () {
+            //var text = GetDate($("#formDYear").val(), $(this).val(), $("#formDDay").val());
+            getDateRangeOfWeek($("#formDWeekNo").val(), $("#formDYear").val());
+            SetReferenceId();
+        })
+
+        function SetReferenceId() {
+            // alert($("#FDHRef_No").val());
+            //if ($("#FDHRef_No").val() == "0" || $("#FDHRef_No").val() == "") {
+            //alert($("#formDWeekNo").val());
+            var maxcount = $("#hdnMaxNo").val();
+            if ($("#FDHRef_No").val() != 0) {
+                //debugger;
+                $("#formDFindDetailsBtn").hide();
+                if ($("#hdnView").val() != "1") {
+                    $("#saveFormDBtn").show();
+                    $("#SubmitFormDBtn").show();
+                }
+            }
+            else {
+                var RefId = "ERT/FORM D/" + $("#formDWeekNo").val() + "-" + $("#hdnMonthNo").val() + "-" + $("#formDYear").val() + "/" + $("#formDCrewUnit").val() + "/????"
+                $("#formDReferenceNo").val(RefId);
+                //$.ajax({
+                //    url: '/ERT/GetformDReferenceData',
+                //    dataType: 'JSON',
+                //    data: { Weekno: $("#formDWeekNo").val(), monthNo: $("#hdnMonthNo").val(), Year: $("#formDYear").val(), CrewUnit: $("#formDCrewUnit").val(), Reccount: maxcount, Day: $("#formDDay").val(), RMU: $("#formDrmu").val(), secCode: $("#formDroadCode option:selected").text().split("-")[0]},
+                //    type: 'Post',
+                //    success: function (data) {
+                //        console.log(data);
+                //        if (data != null) {
+                //            if (data.dataId != null) {
+                //                $("#formDReferenceNo").val(data.autoRefNo);
+                //                $("#hdnNo").val(data.dataId);
+                //                $("#formDFindDetailsBtn").show();
+                //                $("#saveFormDBtn").show();
+                //                $("#SubmitFormDBtn").show();
+                //            }
+                //            $("#formDReferenceNo").val(data.autoRefNo);
+                //            $("#hdnNo").val(data.dataId);
+                //        }
+                //    },
+                //    error: function (data) {
+
+                //        console.error(data);
+                //    }
+                //});
+            }
+
+
+            //maxcount = maxcount.length == 1 ? "000" + maxcount : maxcount.length == 2 ? "00" + (+maxcount + +1) : maxcount.length == 3 ? "0" + (+maxcount + +1) : maxcount.length >= 4 ? (+maxcount + +1) : (+maxcount + +1);
+            //var text = "ERT/FORM D/" + $("#hdnWeekNo").val() + "-" + $("#hdnMonthNo").val() + "-" + $("#formDYear").val() + "/" + $("#formDCrewUnit").val() + "/" + maxcount
+            // $("#formDReferenceNo").val(text);
+            //}
+        }
+
+        function GetDate(year, weekno, weekday) {
+            var Value = "";
+            $.ajax({
+                url: '/ERT/GetDateString',
+                dataType: 'html',
+                data: { year: year, weekno: weekno, weekday: weekday },
+                type: 'Post',
+                success: function (data) {
+                    $("#hdnWeekNo").val(data.split('~')[0]);
+                    $("#hdnMonthNo").val(data.split('~')[1]);
+                    $("#hdnFormDMonthNo").val(data.split('~')[1]);
+                    SetReferenceId()
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+
+            return Value;
+        }
+
+        $("#formDrmu").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#formDrmuDesc").val(val);
+            var req = {};
+            req.Section = '';
+            req.RoadCode = '';
+            req.RMU = $("#formDrmu option:selected").text().split("-")[1];
+            //RM_div_RMU_Sec_Master
+            $.ajax({
+                url: '/ERT/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $("#formDroadCode").empty();
+                        $("#formDroadCode").append($("<option></option>").val("").html("Select Section Code"));
+                        $.each(data.section, function (index, v) {
+                            $("#formDroadCode").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                        // var hdnRoadcode = $('#hdnRoadcode').val();
+                        $.each(data.section, function (index, v) {
+                            var splittedVal = v.text.split("-")[0];
+                            var editVal = $('#hdnRoadcode').val();
+                            if (splittedVal == editVal) {
+                                $("#formDroadCode").val(v.value);
+                            }
+                        });
+                        $('#formDroadCode').trigger("chosen:updated");
+                        $("#formDroadCode").trigger("change");
+                        document.getElementById("formDDivisionDesc").disabled = true;
+                    } else {
+                        document.getElementById("formDDivisionDesc").disabled = false;
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+
+
+        });
+
+        $("#formDrmu").trigger("change");
+
+        $('#WeekDate').change(function () {
+            SetWeekDayYear($('#WeekDate').val());
+        });
+
+        //var hdnCrewName = $("#hdnCrewName").val();
+        //if (hdnCrewName.indexOf("99999999") == 0) {
+        //    if (hdnCrewName.indexOf("-") > 0 && hdnCrewName.split("-").length > 0) {
+        //        $("#formDCrewName").val(hdnCrewName.split("-")[1]);
+        //        $("#formDCrewUnit").val(hdnCrewName.split("-")[0]);
+        //    }
+        //}
+        //debugger;
+
+        if ($("#hdnView").val() == "1") {
+            $("#saveFormDBtn").hide();
+            $("#SubmitFormDBtn").hide();
+            $("#div-addformd *:not(.enblmode)").attr("disabled", "disabled").off('click');
+            $("#formDrmu").chosen('destroy');
+            $("#formDroadCode").chosen('destroy');
+            $("#formDWeekNo").chosen('destroy');
+            $("#formDDay").chosen('destroy');
+            $("#formDYear").chosen('destroy');
+            $("#btnFrmDBack").attr("disabled", false);
+            $("#formDCrewUnit").chosen('destroy');
+            $("#formDMaterialEdit").attr("disabled", "disabled").off('click');
+            $("#formDEquipmentEdit").attr("disabled", "disabled").off('click');
+            $("#formDDtlEdit").attr("disabled", "disabled").off('click');
+        }
+        else {
+            $("#saveFormDBtn").hide();
+            $("#SubmitFormDBtn").hide();
+            $("#formDWeekNo").chosen('destroy');
+            $("#formDDay").chosen('destroy');
+            $("#formDYear").chosen('destroy');
+        }
+
+        $("#hdnisAdd").val($("#FDHRef_No").val());
+
+        if ($("#FDHRef_No").val() != "0") {
+            //$("#saveFormDBtn").hide();
+            //$("#SubmitFormDBtn").hide();
+            $("#formDroadCode").attr("disabled", "disabled").off('click');
+            $("#formDrmu").attr("disabled", "disabled").off('click');
+            $("#formDrmu").chosen('destroy');
+            $("#formDWeekNo").attr("disabled", "disabled").off('click').chosen('destroy');
+            $("#formDCrewUnit").attr("disabled", "disabled").off('click');
+            $("#formDCrewUnit").chosen('destroy');
+            $("#formDYear").attr("disabled", "disabled").off('click').chosen('destroy');
+            $("#formDDay").attr("disabled", "disabled").off('click').chosen('destroy');
+            $("#WeekDate").attr("disabled", "disabled").off('click');
+            //$("#FormDHeaders *").attr("disabled", "disabled").off('click');
+        }
+    });
+
+    function GoBack() {
+        if ($("#hdnView").val() == "0") {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    location.href = "/ERT/FormD";
+
+                }
+            }));
+        }
+        else
+            location.href = "/ERT/FormD";
+    }
+
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    function DeleteFormDLabourRecord(id) {
+        var headerId = id;
+        if ($("#hdnView").val() == "1") {
+            app.ShowErrorMessage("Delete function not available in View Mode");
+            return false;
+        }
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/ERT/FormDLabourDelete',
+                    data: { headerId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            FormLabGridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Error in Deleted. Kindly retry later.");
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        }));
+    }
+
+    function DeleteFormDMaterialRecord(id) {
+        var headerId = id;
+        if ($("#hdnView").val() == "1") {
+            app.ShowErrorMessage("Delete function not available in View Mode");
+            return false;
+        }
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/ERT/FormDMaterialDelete',
+                    data: { headerId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            FormMatGridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Error in Deleted. Kindly retry later.");
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        }));
+    }
+
+    function DeleteFormDEquipmentRecord(id) {
+        var headerId = id;
+
+        if ($("#hdnView").val() == "1") {
+            app.ShowErrorMessage("Delete function not available in View Mode");
+            return false;
+        }
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/ERT/FormDEquipmentDelete',
+                    data: { headerId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            FormEquipGridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Error in Deleted. Kindly retry later.");
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        }));
+    }
+
+    function DeleteFormDDetailRecord(id) {
+        var headerId = id;
+        if ($("#hdnView").val() == "1") {
+            app.ShowErrorMessage("Delete function not available in View Mode");
+            return false;
+        }
+        if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/ERT/FormDDetailsDelete',
+                    data: { headerId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            FormDDtlGridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Error in Deleted. Kindly retry later.");
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        }));
+    }
+
+</script>
+@*<link hreflinkhref ="~/Content/chosen.min.css" rel="stylesheet" />
+    <script srcscriptsrc ="~/Scripts/chosen.jquery.min.js"></script>*@
+@*@using (Html.BeginForm("_AddFormX", "ERTFormX", FormMethod.Post)*@
+
+<script type="text/javascript">
+        $(document).ready(function () {
+             process.Init("FormD", "@Model.SaveFormDModel.Status", @Model.SaveFormDModel.No);
+        });
+</script>
+
+@{
+
+    var vd = Model.SaveFormDModel.WeekDate;
+    string _WeekDate = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+}
+<div class="row" id="div-addformd">
+    <div class="w-100 float-left bg-body">
+
+        <div class="w-100">
+            <div class="d-flex justify-content-center pt-3 pb-3">
+                <div id="formDRefDiv" class="form-group mb-0">
+                    @Html.Label("Form D No.", "Form D No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                    @Html.TextBoxFor(m => m.SaveFormDModel.ReferenceID, new { @Id = "formDReferenceNo", @disabled = true, @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
+                </div>
+            </div>
+
+            <div class="w-100 bg-white pt-3 mh-185" style="border-top:1px solid #dee2e6;">
+                <div id="accordion" class="col-lg-12">
+                    <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                        <div class="card mb-0">
+                            <div class="card-header" id="headingZero">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Form D
+                                        </span>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                <div class="card-body">
+
+                                    @*Labour Grid*@
+                                    <div id="FormDHeaders" class="w-100 dt-tbl-section">
+                                        <div class="form-group col-lg-2 pr-lg-0">
+                                            @Html.Label("RMU", "RMU")
+                                            @Html.DropDownListFor(Adtl => Adtl.SaveFormDModel.Rmu, (IEnumerable
+                                                                <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formDrmu", @class = "form-control validate {required, RMU}" })
+                                        </div>
+                                        <div class="form-group col-lg-2 mb-0">
+                                            @Html.Label("RMU Name", "RMU Name")
+                                            @Html.TextBoxFor(m => m.RmuDescription, new { @Id = "formDrmuDesc", @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2 pr-lg-0">
+                                            @Html.Label("Section Code", "Section Code")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.RoadCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "formDroadCode", @class = "form-control validate {required, Section Code}" })
+                                            @Html.HiddenFor(Ahdr => Ahdr.SaveFormDModel.RoadCode, new { @id = "hdnRoadcode", @class = "form-control" })
+                                            @Html.HiddenFor(m => m.RoadCode, new { @id = "hdnFormDRoadcode", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2 mb-0">
+                                            @Html.Label("Section Name ", "Section Name")
+                                            @Html.TextBoxFor(m => m.RoadDescription, new { @Id = "formDroadDesc", @readonly = "readonly", @class = "form-control " })
+                                        </div>
+                                        <div class="form-group col-lg-2 pr-lg-0">
+                                            @Html.Label("Division Code", "Division Code")
+                                            @Html.TextBoxFor(m => m.DivisionName, new { @Id = "formDDivisionDesc", @readonly = "readonly", @class = "form-control " })
+                                            @*@Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.DivisionName, (IEnumerable
+                                    <SelectListItem>)ViewData["Division"], "Select Division", new { @Id = "formDdivisionName", @class = "form-control  validate {required, Division}" })*@
+                                        </div>
+
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Crew Supervisor", "Crew Supervisor")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.CrewUnit, (IEnumerable
+                                                                   <SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "formDCrewUnit", @class = "form-control  validate {required, Name of Crew Supervisor}" })
+
+                                            @*@Html.HiddenFor(Dhdr => Dhdr.SaveFormDModel.CrewUnit, new { @id = "hdnCrewUnit" })*@
+                                        </div>
+                                        @*<div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                    <button id="formDFindDetailsBtn" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right disablebtn">Find Details</button>
+                                </div>*@
+                                        @*<div class="form-group col-lg-2 mb-0">
+                                    @Html.Label("Section Name", "Section Name")
+                                    @Html.TextBoxFor(m => m.DivisionDescription, new { @Id = "formDDivisionDesc", @readonly = "readonly", @class = "form-control " })
+                                </div>*@
+
+
+                                        <div class="form-group col-lg-4 pl-lg-0">
+                                            @Html.Label("Name of Crew Supervisor", "Name of Crew Supervisor")
+                                            @Html.TextBoxFor(Dhdr => Dhdr.SaveFormDModel.CrewUnitName, "", new { @id = "formDCrewName", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2 pl-lg-0 mb-0">
+                                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                            <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control disableinput" id="WeekDate" value="@_WeekDate" name="WeekDate">
+
+                                        </div>
+                                        <div class="form-group col-lg-1 pr-lg-0">
+                                            @Html.Label("Week No", "Week No")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.WeekNo, (IEnumerable
+                                                                            <SelectListItem>)ViewData["WeekNo"], "Select Week", new { @Id = "formDWeekNo", @class = "form-control  validate {required, Week No}" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Day of the Week", "Day of the Week")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.Day, (IEnumerable
+                                                                  <SelectListItem>)ViewData["Day"], "Select Day", new { @Id = "formDDay", @class = "form-control  validate {required, Day}" })
+                                        </div>
+                                        <div class="form-group col-lg-1 pl-lg-0">
+                                            @Html.Label("Year (YYYY)", "Year (YYYY)")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.Year, (IEnumerable
+                                                                             <SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formDYear", @class = "form-control validate {required, Year}" })
+                                        </div>
+                                        @Html.HiddenFor(m => m.SaveFormDModel.Month, new { @id = "hdnFormDMonthNo", @class = "form-control" })
+                                        <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                            <button id="formDFindDetailsBtn" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right disablebtn"> Find Details </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+                        <div class="card mb-0">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Labour Details
+                                        </span>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+                                <div class="card-body">
+
+
+                                    @*Labour Grid*@
+                                    <div id="LabourListGrid" class="w-100 dt-tbl-section">
+                                        @{
+                                            Html.RenderPartial("_LabourListGrid.cshtml");
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+                        <div class="card mb-0">
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Equipment
+                                        </span>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                <div class="card-body">
+                                    @*Equipment Grid*@
+                                    <div id="EquipmentListGrid" class="w-100 dt-tbl-section">
+                                        @{
+                                            Html.RenderPartial("_EquipListGrid.cshtml");
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion custom-accordion mb-3" id="custom-accordion-three">
+                        <div class="card mb-0">
+                            <div class="card-header" id="headingThree">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage3" aria-expanded="false" aria-controls="collapseThree">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Material
+                                        </span>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="AccordPage3" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingThree" data-parent="#custom-accordion-three">
+                                <div class="card-body">
+
+
+                                    @*Material Grid*@
+                                    <div id="MaterialListGrid" class="w-100 dt-tbl-section">
+                                        @{
+                                            Html.RenderPartial("_MaterialListGrid.cshtml");
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion custom-accordion mb-3" id="custom-accordion-four">
+                        <div class="card mb-0">
+                            <div class="card-header" id="headingFour">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage4" aria-expanded="false" aria-controls="collapseFour">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            Details
+                                        </span>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="AccordPage4" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFour" data-parent="#custom-accordion-four">
+                                <div class="card-body">
+                                    @*FormD Detasil Grid*@
+                                    <div id="FormDDetailsListGrid" class="w-100 dt-tbl-section">
+                                        @{
+                                            Html.RenderPartial("_FormDDetailsListGrid.cshtml");
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion custom-accordion mb-4" id="custom-accordion-five">
+                        <div class="card mb-0">
+                            <div class="card-header" id="headingFive">
+                                <h5 class="m-0">
+                                    <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage5" aria-expanded="false" aria-controls="collapseFive">
+                                        <span class="float-left">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                        </span>
+                                        <span class="float-left" style="padding: 4px 8px;">
+                                            User Details
+                                        </span>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="AccordPage5" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFive" data-parent="#custom-accordion-five">
+                                <div class="card-body float-left p-0">
+
+                                    <div id="FormDUsers" class="w-100 dt-tbl-section">
+                                        @{
+                                            Html.RenderPartial("_UserDetails.cshtml");
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @{
+                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                    {
+                        Form = "FormD",
+                        RefId = Model.SaveFormDModel.No ,
+                        Stage = Model.SaveFormDModel.Status
+                    });
+                }
+            </div>
+
+        </div>
+        @Html.HiddenFor(m => m.SaveFormDModel.No, new { @id = "FDHRef_No", @class = "form-control" })
+        @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
+        @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
+        @Html.Hidden("hdnWeekNo", ViewData["weedate"])
+        @Html.Hidden("hdnMonthNo", ViewData["monthno"])
+        @Html.Hidden("hdnDetailNo", "")
+        @Html.HiddenFor(m => m.SaveFormDModel.SubmitSts, new { @id = "hdnstatus", @class = "form-control" })
+        @Html.Hidden("hdnNo", new { @id = "hdnNo", @class = "form-control" })
+        <div class="col-md-12 float-right text-right custom-footer">
+            <div id="val-summary-displayer"></div>
+            <button type="button" id="btnFrmDBack" class="btn btn-sm btn-outline-theme" onclick="GoBack()"> Close </button>
+            <button id="saveFormDBtn" type="button" class="btn btn-sm btn-themebtn"> Save </button>
+            @if (string.IsNullOrEmpty(Model.SaveFormDModel.Status) || Model.SaveFormDModel.Status == RAMMS.Common.StatusList.Supervisor)
+            {
+                <button id="SubmitFormDBtn" type="button" class="btn btn-sm btn-themebtn"> Submit </button>
+            }
+            else if (security.IsExecutive && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.Executive)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive','Verified By');"> Approved / Verified </button>
+            }
+            else if (security.IsHeadMaintenance && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.HeadMaintenance)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Vetted By');"> Approved / Vetted </button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.VerifiedJKRSSuperior)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'S.O Verified By');"> Approved / Verified </button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.ProcessedJKRSSuperior)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'S.O Processed By');"> Approved / Processed </button>
+            }
+            else if (security.IsJKRSSuperiorOfficer && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.AgreedJKRSSuperior)
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'S.O Agreed By');"> Approved / Agreed </button>
+            }
+        </div>
+
+    </div>
+    <div class="modal fade" id="FormDMaterialModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="FormDMaterialModalid" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FormDMaterialModalid"> Add Materials </h5>
+                    <button type="button" class="close" onclick="GoBackMat()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+                </div>
+                @* Patial View for add Class to bind data in partial view *@
+                <div id="div-mat-container">
+                    @{
+                        //  Html.RenderPartial("_MaterialAdd.cshtml", Model.FormDMaterial);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="FormDEquipModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="FormDEquipModalid" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FormDEquipModalid"> Add Equipment </h5>
+                    <button type="button" class="close" onclick="GoBackEquip()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+                </div>
+
+
+                @* Patial View for add Class to bind data in partial view *@
+                <div id="div-equip-container">
+                    @{
+                        //Html.RenderPartial("_EquipAdd.cshtml", Model.FormDEquip);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="FormDLabourModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="FormDLabourModalid" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FormDLabourModalid"> Add Labour </h5>
+                    <button type="button" class="close" onclick="GoBackLab()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+                </div>
+                @* Patial View for add Class to bind data in partial view *@
+                <div id="div-lab-container">
+                    @{
+                        //Html.RenderPartial("_LabourAdd.cshtml", Model.FormDLabour);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="FormDDetailsModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="FormDDetailsModalid" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="FormDDetailsModalid"> Add Details </h5>
+                    <button type="button" class="close" onclick="GoBackDtl()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+                </div>
+                @* Patial View for add Class to bind data in partial view *@
+                <div id="div-dtl-container">
+                    @{
+                        // Html.RenderPartial("_DetailsAdd.cshtml", Model.FormDDetails);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="WarPhotoModald" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="WarPhotoModald">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AssetsAddModalCenterTitle">WAR Image Upload</h5>
+                    <button type="button" class="close" onclick="CloseWarModald()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div id="div-WarPhotod">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="USeeUModald" aria-hidden="true" role="dialog" aria-labelledby="USeeUModald" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AssetsAddModalCenterTitle">U See U Act and Accident Form PDF Upload</h5>
+                    <button type="button" class="close" onclick="CloseUSeeUModald()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div id="div-USeeUModald">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

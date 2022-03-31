@@ -1,0 +1,472 @@
+﻿@model RAMMS.Web.UI.Models.FormDModel;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    var rights = security;
+    var vd = Model.SaveFormDModel.DateReported;
+    string _DateReported = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd");
+
+    var _id = Model.SaveFormDModel.DtVer;
+    string _DtVer = _id.HasValue ? _id.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormDModel.DtVet;
+    string _DtVet = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormDModel.DtVerSo;
+    string _DtVerSo = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormDModel.DtAgrdSo;
+    string _DtAgrdSo = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormDModel.DtPrcdSo;
+    string _DtPrcdSo = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+}
+
+<div class="w-100 float-left" id="div-addformd">
+    <div class="w-100 p-4">
+        <div class="col-lg-10 offset-lg-1">
+            <div class="row">
+                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">Recorded By</span>
+                    </div>
+                    @{
+                        bool IsSupervisor = rights.IsSupervisor && (string.IsNullOrEmpty(Model.SaveFormDModel.Status) || Model.SaveFormDModel.Status == RAMMS.Common.StatusList.Supervisor);
+                        bool IsExecutive = rights.IsExecutive && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.Executive;
+                        bool IsHeadMaintenance = rights.IsHeadMaintenance && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.HeadMaintenance;
+                        bool IsVerifiedJKRSSuperior = rights.IsJKRSSuperiorOfficer && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.VerifiedJKRSSuperior;
+                        bool IsProcessedJKRSSuperior = rights.IsJKRSSuperiorOfficer && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.ProcessedJKRSSuperior;
+                        bool IsAgreedJKRSSuperior = rights.IsJKRSSuperiorOfficer && Model.SaveFormDModel.Status == RAMMS.Common.StatusList.AgreedJKRSSuperior;
+                    }
+                    <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                        <div class="form-group col-lg-6 float-left mb-0">
+                            @Html.Label("Name", "Name")
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.ReportedByUserId, (IEnumerable
+                                    <SelectListItem>)ViewData[GroupNameList.Supervisor], "Select Users", CHTMLControls.GetHtmlAttribute("formDReportedByUserId", "form-control " + (IsSupervisor ? "validate {req, Name of Reported By}" : ""), IsSupervisor))
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.ReportedByUsername, CHTMLControls.GetHtmlAttribute("FormDReportedByName", "form-control", IsSupervisor))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.ReportedByDesignation, CHTMLControls.GetHtmlAttribute("FormDReportedByDesign", "form-control " + (IsSupervisor ? "validate {req,  Designation}" : ""), IsSupervisor))
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                            <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control disableinput @(IsSupervisor ? "validate {req, Reported Date}":"")" id="FormDReportedByDate" value="@_DateReported" name="FormDReportedByDate" @(IsSupervisor ? "" : "disabled='disabled'")>
+                            @*@Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DateReported, new { @Id = "FormDReportedByDate", @type = "date", @class = "form-control validate {required, Date}" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">Verified By</span>
+                    </div>
+                    <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                        <div class="form-group col-lg-6 float-left mb-0">
+                            @Html.Label("Name", "Name")
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.UseridVer, (IEnumerable
+                                    <SelectListItem>)ViewData[GroupNameList.OperationsExecutive], "Select Users", CHTMLControls.GetHtmlAttribute("formDUseridVer", "form-control validate {visreq, Name of Verified By}", IsExecutive))
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.UsernameVer, CHTMLControls.GetHtmlAttribute("FormDVerifiedByName", "form-control", IsExecutive))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DesignationVer, CHTMLControls.GetHtmlAttribute("FormDVerifiedDesign", "form-control validate {visreq,  Designation}", IsExecutive))
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                            <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control disableinput validate {visreq, Vetted Date}" id="FormDVerifiedDate" value="@_DtVer" name="FormDVerifiedDate" @(IsExecutive ? "" : "disabled='disabled'")>
+                            @*@Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DtVer, new { @Id = "FormDVerifiedDate", @type = "date", @class = "form-control validate {required, Date}" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">Vetted By</span>
+                    </div>
+                    <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                        <div class="form-group col-lg-6 float-left mb-0">
+                            @Html.Label("Name", "Name")
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.UseridVet, (IEnumerable
+                                    <SelectListItem>)ViewData[GroupNameList.OpeHeadMaintenance], "Select Users", CHTMLControls.GetHtmlAttribute("formDUseridVet", "form-control  validate {visreq, Name of Vetted By}", IsHeadMaintenance))
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.UsernameVet, CHTMLControls.GetHtmlAttribute("FormDVettedByName", "form-control", IsHeadMaintenance))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DesignationVet, CHTMLControls.GetHtmlAttribute("FormDVettedDesign", "form-control validate {visreq,  Designation}", IsHeadMaintenance))
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                            <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control disableinput validate {visreq, Vetted Date}" id="FormDVettedByDate" value="@_DtVet" name="FormDVettedByDate" @(IsHeadMaintenance ? "" : "disabled='disabled'")>
+                            @*@Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DtVet, new { @Id = "FormDVettedByDate", @type = "date", @class = "form-control validate {required, Date}" })*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear-b"></div>
+            <div class="row sub-heading mt-3">S.O/ Engineering Consultant</div>
+            <div class="row">
+                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">Verified By</span>
+                    </div>
+                    <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                        <div class="form-group col-lg-6 float-left mb-0">
+                            @Html.Label("Name", "Name")
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.UseridVerSo, (IEnumerable
+                                    <SelectListItem>)ViewData[GroupNameList.JKRSSuperiorOfficerSO], "Select Users", CHTMLControls.GetHtmlAttribute("formDUseridVerSo", "form-control  validate {visreq, Name of Verfied By}", IsVerifiedJKRSSuperior))
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.UsernameVerSo, CHTMLControls.GetHtmlAttribute("FormDUsernameVerSo", "form-control", IsVerifiedJKRSSuperior))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DesignationVerSo, CHTMLControls.GetHtmlAttribute("FormDDesignationVerSo", "form-control validate {visreq,Designation}", IsVerifiedJKRSSuperior))
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                            <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control disableinput validate {visreq, Verified Date}" id="FormDDtVerSo" value="@_DtVerSo" name="FormDDtVerSo" @(IsVerifiedJKRSSuperior ? "" : "disabled='disabled'")>
+                            @*@Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DtVerSo, new { @Id = "FormDDtVerSo", @type = "date", @class = "form-control validate {required, Date}" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">Processed By</span>
+                    </div>
+                    <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                        <div class="form-group col-lg-6 float-left mb-0">
+                            @Html.Label("Name", "Name")
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.UseridPrcdSo, (IEnumerable
+                                    <SelectListItem>)ViewData[GroupNameList.JKRSSuperiorOfficerSO], "Select Users", CHTMLControls.GetHtmlAttribute("formDUseridPrcdSo", "form-control  validate {visreq, Name of Agreed By}", IsProcessedJKRSSuperior))
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.UsernamePrcdSo, CHTMLControls.GetHtmlAttribute("FormDUsernamePrcdSo", "form-control", IsProcessedJKRSSuperior))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DesignationPrcdSo, CHTMLControls.GetHtmlAttribute("FormDDesignationPrcdSo", "form-control validate {visreq,  Designation}", IsProcessedJKRSSuperior))
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                            <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control disableinput validate {visreq, Processed Date}" id="FormDDtPrcdSo" value="@_DtPrcdSo" name="FormDDtPrcdSo" @(IsProcessedJKRSSuperior ? "" : "disabled='disabled'")>
+                            @*@Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DtPrcdSo, new { @Id = "FormDDtPrcdSo", @type = "date", @class = "form-control validate {required, Date}" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded landing-division w-100 float-left">
+                    <div class="col-lg-12 py-2 px-4">
+                        <span class="font-14 font-weight-bold">Agreed By</span>
+                    </div>
+                    <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                        <div class="form-group col-lg-6 float-left mb-0">
+                            @Html.Label("Name", "Name")
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.UseridAgrdSo, (IEnumerable
+                                    <SelectListItem>)ViewData[GroupNameList.JKRSSuperiorOfficerSO], "Select Users", CHTMLControls.GetHtmlAttribute("formDUseridAgrdSo", "form-control  validate {visreq, Name of Agreed By}", IsAgreedJKRSSuperior))
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.UsernameAgrdSo, CHTMLControls.GetHtmlAttribute("FormDUsernameAgrdSo", "form-control", IsAgreedJKRSSuperior))
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DesignationAgrdSo, CHTMLControls.GetHtmlAttribute("FormDDesignationAgrdSo", "form-control validate {visreq,  Designation}", IsAgreedJKRSSuperior))
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                            <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control disableinput validate {visreq, Agreed Date}" id="FormDDtAgrdSo" value="@_DtAgrdSo" name="FormDDtAgrdSo" @(IsAgreedJKRSSuperior ? "" : "disabled='disabled'")>
+                            @*@Html.TextBoxFor(Ahdr => Ahdr.SaveFormDModel.DtAgrdSo, new { @Id = "FormDDtAgrdSo", @type = "date", @class = "form-control validate {required, Date}" })*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="hdnisAdd" value="0" />
+    <input type="hidden" id="hdnuserDetailsSaved" value="0" />
+    <div class="clear-b"></div>
+    @*<div class="col-md-12 float-right text-right border-top p-2 bg-body" style="border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+            <div id="val-summary-displayer"></div>
+            <button id="saveFormDUserBtn" type="button" class="btn btn-sm btn-themebtn" style="padding: .25rem .5rem;font-size: .875rem !important;">Save</button>
+        </div>*@
+</div>
+<script>
+
+    $(document).ready(function () {
+
+        if ($("#formDReportedByUserId").val() != "99999999") {
+            $("#FormDReportedByName").prop("disabled", true);
+            $("#FormDReportedByDesign").prop("disabled", true);
+        }
+
+        if ($("#formDUseridVet").val() != "99999999") {
+            $("#FormDVettedByName").prop("disabled", true);
+            $("#FormDVettedDesign").prop("disabled", true);
+        }
+
+        if ($("#formDUseridVer").val() != "99999999") {
+            $("#FormDVerifiedByName").prop("disabled", true);
+            $("#FormDVerifiedDesign").prop("disabled", true);
+        }
+
+        if ($("#formDUseridVerSo").val() != "99999999") {
+            $("#FormDUsernameVerSo").prop("disabled", true);
+            $("#FormDDesignationVerSo").prop("disabled", true);
+        }
+
+        if ($("#formDUseridAgrdSo").val() != "99999999") {
+            $("#FormDUsernameAgrdSo").prop("disabled", true);
+            $("#FormDDesignationAgrdSo").prop("disabled", true);
+        }
+
+        if ($("#formDUseridPrcdSo").val() != "99999999") {
+            $("#FormDUsernamePrcdSo").prop("disabled", true);
+            $("#FormDDesignationPrcdSo").prop("disabled", true);
+        }
+
+        $("#formDReportedByUserId").on("change", function () {
+            var id = $("#formDReportedByUserId option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#FormDReportedByName").val(data.userName);
+                        $("#FormDReportedByDesign").val(data.position);
+                        $("#FormDReportedByName").prop("disabled", true);
+                        $("#FormDReportedByDesign").prop("disabled", true);
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#FormDReportedByName").prop("disabled", false);
+                $("#FormDReportedByName").val('');
+                $("#FormDReportedByDesign").prop("disabled", false);
+                $("#FormDReportedByDesign").val('');
+            }
+            else {
+                $("#FormDReportedByName").prop("disabled", true);
+                $("#FormDReportedByName").val('');
+                $("#FormDReportedByDesign").prop("disabled", true);
+                $("#FormDReportedByDesign").val('');
+            }
+
+            return false;
+        });
+
+        $("#formDUseridVet").on("change", function () {
+            var id = $("#formDUseridVet option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#FormDVettedByName").val(data.userName);
+                        $("#FormDVettedByName").prop("disabled", true);
+                        $("#FormDVettedDesign").val(data.position);
+                        $("#FormDVettedDesign").prop("disabled", true);
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#FormDVettedByName").prop("disabled", false);
+                $("#FormDVettedByName").val('');
+                $("#FormDVettedDesign").val('');
+                $("#FormDVettedDesign").prop("disabled", false);
+            }
+            else {
+                $("#FormDVettedByName").prop("disabled", true);
+                $("#FormDVettedByName").val('');
+                $("#FormDVettedDesign").val('');
+                $("#FormDVettedDesign").prop("disabled", true);
+            }
+
+            return false;
+        });
+
+        $("#formDUseridVer").on("change", function () {
+            var id = $("#formDUseridVer option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#FormDVerifiedByName").val(data.userName);
+                        $("#FormDVerifiedByName").prop("disabled", true);
+
+                        $("#FormDVerifiedDesign").prop("disabled", true);
+                        $("#FormDVerifiedDesign").val(data.position);
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#FormDVerifiedByName").prop("disabled", false);
+                $("#FormDVerifiedByName").val('');
+
+                $("#FormDVerifiedDesign").prop("disabled", false);
+                $("#FormDVerifiedDesign").val('');
+            }
+            else {
+                $("#FormDVerifiedByName").prop("disabled", true);
+                $("#FormDVerifiedByName").val('');
+
+                $("#FormDVerifiedDesign").prop("disabled", true);
+                $("#FormDVerifiedDesign").val('');
+            }
+
+            return false;
+        });
+
+        //So
+
+        $("#formDUseridVerSo").on("change", function () {
+            var id = $("#formDUseridVerSo option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#FormDUsernameVerSo").val(data.userName);
+                        $("#FormDDesignationVerSo").val(data.position);
+                        $("#FormDUsernameVerSo").prop("disabled", true);
+                        $("#FormDDesignationVerSo").prop("disabled", true);
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#FormDUsernameVerSo").prop("disabled", false);
+                $("#FormDUsernameVerSo").val('');
+                $("#FormDDesignationVerSo").prop("disabled", false);
+                $("#FormDDesignationVerSo").val('');
+            }
+            else {
+                $("#FormDUsernameVerSo").prop("disabled", true);
+                $("#FormDUsernameVerSo").val('');
+                $("#FormDDesignationVerSo").prop("disabled", true);
+                $("#FormDDesignationVerSo").val('');
+            }
+
+            return false;
+        });
+
+        $("#formDUseridAgrdSo").on("change", function () {
+            var id = $("#formDUseridAgrdSo option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#FormDUsernameAgrdSo").val(data.userName);
+                        $("#FormDUsernameAgrdSo").prop("disabled", true);
+                        $("#FormDDesignationAgrdSo").val(data.position);
+                        $("#FormDDesignationAgrdSo").prop("disabled", true);
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#FormDUsernameAgrdSo").prop("disabled", false);
+                $("#FormDUsernameAgrdSo").val('');
+                $("#FormDDesignationAgrdSo").val('');
+                $("#FormDDesignationAgrdSo").prop("disabled", false);
+            }
+            else {
+                $("#FormDUsernameAgrdSo").prop("disabled", true);
+                $("#FormDUsernameAgrdSo").val('');
+                $("#FormDDesignationAgrdSo").val('');
+                $("#FormDDesignationAgrdSo").prop("disabled", true);
+            }
+
+            return false;
+        });
+
+        $("#formDUseridPrcdSo").on("change", function () {
+            var id = $("#formDUseridPrcdSo option:selected").val();
+            if (id != "99999999" && id != "") {
+                $.ajax({
+                    url: '/ERT/GetUserById',
+                    dataType: 'JSON',
+                    data: { id },
+                    type: 'Post',
+                    success: function (data) {
+                        $("#FormDUsernamePrcdSo").val(data.userName);
+                        $("#FormDUsernamePrcdSo").prop("disabled", true);
+
+                        $("#FormDDesignationPrcdSo").prop("disabled", true);
+                        $("#FormDDesignationPrcdSo").val(data.position);
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    }
+                });
+            }
+            else if (id == "99999999") {
+                $("#FormDUsernamePrcdSo").prop("disabled", false);
+                $("#FormDUsernamePrcdSo").val('');
+
+                $("#FormDDesignationPrcdSo").prop("disabled", false);
+                $("#FormDDesignationPrcdSo").val('');
+            }
+            else {
+                $("#FormDUsernamePrcdSo").prop("disabled", true);
+                $("#FormDUsernamePrcdSo").val('');
+
+                $("#FormDDesignationPrcdSo").prop("disabled", true);
+                $("#FormDDesignationPrcdSo").val('');
+            }
+
+            return false;
+        });
+
+    });
+</script>

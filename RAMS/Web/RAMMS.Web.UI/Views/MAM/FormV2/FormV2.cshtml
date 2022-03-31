@@ -1,0 +1,282 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+@{
+    ViewBag.TabTitle = "ERT - Form D - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Management_and_Maintanence) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Management_and_Maintanence) ? "" : "hidden";
+}
+
+@model RAMMS.Web.UI.Models.FormV2Model;
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#formV2DetSrchRMU").chosen();
+        $('#formV2DetSrchRoadCode').chosen();
+        $("#formV2AdvSearch").hide();
+
+        $("#formV2DetSrchRMU").on("change", function () {
+            var req = {};
+            req.Section = '';
+            req.RoadCode = '';
+            req.RMU = $("#formV2DetSrchRMU option:selected").text().split("-")[1];
+
+            $.ajax({
+                url: '/ERT/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $("#formV2DetSrchRoadCode").empty();
+                        $("#formV2DetSrchRoadCode").append($("<option></option>").val("").html("Select Section Code"));
+                        $.each(data.section, function (index, v) {
+                            $("#formV2DetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                        $('#formV2DetSrchRoadCode').trigger("chosen:updated")
+
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+         $("#formV2DetSrchRMU").trigger("change");
+    });
+
+    function clearHeaderSearch() {
+        $("#FormV2SmartSearch").val('');
+        $("#formV2DetSrchRMU").val("").trigger("chosen:updated");
+        $('#formV2DetSrchRoadCode').val("").trigger("chosen:updated");
+        $("#formV2DetSrchWeek").val("").trigger("chosen:updated");
+        $("#formV2DetSrchYear").val("").trigger("chosen:updated");
+        $("#FormV2SrchByDate").val('');
+
+        var req = {};
+        var _rmu = $("#formV2DetSrchRMU");
+        var _road = $("#formV2DetSrchRoadCode");
+        req.RMU = this.value;
+        req.Section = '';
+        req.RoadCode = '';
+
+        $.ajax({
+            url: '/ERT/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                if (req.RMU == "") {
+                    $("#formV2DetSrchRMU").empty();
+                    $("#formV2DetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
+                    $.each(data.rmu, function (index, v) {
+                        $("#formV2DetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                }
+                if (req.Section == "") {
+                    $("#formV2DetSrchRoadCode").empty();
+                    $("#formV2DetSrchRoadCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#formV2DetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+
+                    $('#formV2DetSrchRoadCode').trigger("chosen:updated");
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+        $("#formV2SearchBtn").click();
+    }
+
+    function detailSearch() {
+        $("#formV2AdvSearch").slideToggle(500);
+    }
+
+    function FormV2GridRefresh() {
+        oTable = $('#FormV2GridView').DataTable();
+        oTable.columns(0).search($("#FormV2SmartSearch").val().trim());
+        oTable.columns(1).search($("#formV2DetSrchRMU").val().trim());
+        oTable.columns(2).search($("#formV2DetSrchRoadCode").val().trim());
+       // oTable.columns(3).search($("#formV2DetSrchWeek").val().trim());
+        //oTable.columns(4).search($("#formV2DetSrchYear").val().trim());
+        oTable.columns(3).search($("#FormV2SrchByDate").val().trim());
+        //oTable.columns(6).search($("#formV2DetSrchDay").val().trim());
+
+        //oTable.columns(5).search($("#formXSrchWrkCmpDate").val().trim());
+        //oTable.columns(6).search($("#formXSrchCaseDt").val().trim());
+        //oTable.columns(7).search($("#formXSrchRdCode").val().trim());
+        oTable.data = filterData;
+        oTable.draw();
+    }
+
+    function EditFormV2(pid,view) {
+        window.location = "@Url.Action("EditFormV2", "ERT")" +
+            "?id=" + pid + "&view=" + view;
+    }
+
+    function DeleteHeaderRecord(id) {
+        var headerId = id;
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/ERT/HeaderListFormV2Delete',
+                    data: { headerId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            FormV2GridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Error in Deleted. Kindly retry later.", false);
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        });
+    }
+
+    function EditHeaderRecord(id){
+        var headerId = id;
+        localStorage.setItem("headeridvalue", headerId);
+
+        window.location = "@Url.Action("HeaderListEdit", "ERT")" +
+                "?headerId=" + headerId;
+    }
+
+</script>
+
+@using (Html.BeginForm())
+{
+    //BreadCrumbs
+    <div class="row">
+        <div class="body-header w-100">
+            <div class="col-lg-12">
+                <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                    <span class="mb-0 font-weight-bold font-20">ERT - Form D</span>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item">ERT</li>
+                            <li class="breadcrumb-item" aria-current="page">
+                                Form D
+                                @*<a class="link-fx" href="">Form D</a>*@
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <form action="" method="POST">
+            <div class="row justify-content-center mb-1">
+                <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormV2SmartSearch", placeholder = "Search...", @class = "form-control" })
+                        <div class="input-group-append">
+                            <div class="btn-group">
+                                <button id="formV2SearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                <button id="formV2SearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                                <button id="formBSearchClearBtn" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @*Detail Search Screen*@
+        <div id="detailSearch">
+            <div class="row" id="formV2AdvSearch" style="display:block">
+                <form id="formV2DetailsearchForm" name="formV2DetailsearchForm">
+                    <div class="col-lg-8 offset-lg-2">
+                        <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("RMU ", "RMU ")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.RMU, (IEnumerable
+                                     <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV2DetSrchRMU", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Section Code ", "Section Code")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Road_Code, (IEnumerable
+                                    <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2DetSrchRoadCode", @class = "form-control widget-content-area" })
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                    <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="FormV2SrchByDate" value="" name="FormV2SrchByDate" onfocusout="onFocusOut();">
+                                </div>
+                            </div>
+                            <div class="row" style="display:none">
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Week No", "Week No")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.WeekNo, (IEnumerable
+                                     <SelectListItem>)ViewData["WeekNo"], "WeekNo", new { @Id = "formV2DetSrchWeek", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-1 text-center font-weight-bold pt30px">/</div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Day of the Week", "Day of the Week")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2Model.Day, (IEnumerable
+                                                                    <SelectListItem>)ViewData["Day"], "Select Day", new { @Id = "formV2DetSrchDay", @class = "form-control  validate {required, Day}" })
+                                </div>
+                                <div class="form-group col-lg-1 text-center font-weight-bold pt30px">/</div>
+                                <div class="form-group col-lg-3">
+                                    @Html.Label("Year (YYYY)", "Year (YYYY)")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Year, (IEnumerable
+                                    <SelectListItem>)ViewData["Year"], "Year", new { @Id = "formV2DetSrchYear", @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main id="main-container" class="row">
+        <div class="col-lg-12">
+            <div class="w-100 float-left position-relative">
+
+                <div class="grid-btns">
+                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditFormV2(0,0);"><span class="add-icon"></span> Add Form D</button>
+                </div>
+
+                @*Form D Grid*@
+                <div id="headerListGrid" class="w-100 dt-tbl-section">
+                    @{
+                        Html.RenderPartial("_HeaderListGrid.cshtml");
+                    }
+                </div>
+
+            </div>
+        </div>
+    </main>
+    <script type="text/javascript">
+        function onFocusOut() {
+            //debugger;
+
+            var frmdate = $("#FormV2SrchByDate").val();
+            if (frmdate != "") {
+                d = new Date(frmdate);
+                var frmYear = d.getFullYear();
+                if (frmYear < 2019 || frmYear > 2099) {
+                    app.ShowErrorMessage('Year should between 2019 to 2099')
+                    //$("#dtFromDate").val('');
+                    $("#FormV2SrchByDate").focus();
+                    $('#formV2SearchBtn').attr("disabled", true);
+                }
+                else {
+                    $('#formV2SearchBtn').attr("disabled", false);
+                }
+            }
+        }
+    </script>
+}
