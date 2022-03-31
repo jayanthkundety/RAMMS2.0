@@ -17,6 +17,7 @@ namespace RAMMS.Domain.Models
         public string Fv2hSecCode { get; set; }
         public string Fv2hRefId { get; set; }
         public int? Fv2hCrew { get; set; }
+        public string Fv2hCrewname { get; set; }
         public int? Fv2hActCode { get; set; }
         public DateTime? Fv2hDt { get; set; }
         public bool? Fv2hSignSch { get; set; }
@@ -44,6 +45,8 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv2hCrDt { get; set; }
         public bool? Fv2hSubmitSts { get; set; }
         public bool? Fv2hActiveYn { get; set; }
+        public string Fv2hStatus { get; set; }
+        public string Fv2hAuditLog { get; set; }
 
         public virtual ICollection<RmFormV2Eqp> RmFormV2Eqp { get; set; }
         public virtual ICollection<RmFormV2Lab> RmFormV2Lab { get; set; }

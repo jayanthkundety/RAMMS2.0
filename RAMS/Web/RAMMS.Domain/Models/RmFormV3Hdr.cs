@@ -14,6 +14,7 @@ namespace RAMMS.Domain.Models
         public int? Fv3hContNo { get; set; }
         public string Fv3hRmu { get; set; }
         public int? Fv3hCrew { get; set; }
+        public string Fv3hCrewname { get; set; }
         public string Fv3hSecCode { get; set; }
         public string Fv3hRefId { get; set; }
         public int? Fv3hActCode { get; set; }
@@ -43,6 +44,8 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv3hCrDt { get; set; }
         public bool? Fv3hSubmitSts { get; set; }
         public bool? Fv3hActiveYn { get; set; }
+        public string Fv3hStatus { get; set; }
+        public string Fv3hAuditLog { get; set; }
 
         public virtual ICollection<RmFormV3Dtl> RmFormV3Dtl { get; set; }
     }
