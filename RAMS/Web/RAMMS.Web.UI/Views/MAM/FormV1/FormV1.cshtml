@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.TabTitle = "INSTRUCTED WORKS";
+    ViewData["Title"] = "INSTRUCTED WORKS";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="body-header w-100">
+            <div class="col-lg-12">
+                <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                    <span class="mb-0 font-weight-bold font-20">
+                        FIELD VERIFICATION (FORM V1)
+                    </span>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item" aria-current="page">Form V1</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="search-section">
+                <div class="justify-content-center mb-1">
+                    <div class="search-content">
+                        <div class="input-group">
+                            <input autocomplete="off" class="form-control" id="txtSmartSearch" name="SearchObj.SmartInputValue" onfocus="this.removeAttribute('readonly')" placeholder="Search..." spellcheck="false" type="text" value="">
+                            <div class="input-group-append">
+                                <div class="btn-group">
+                                    <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                    <button id="btnAdvSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0" data-toggle="collapse" data-target="#div_advsearch"><span class="filter-icon"></span></button>
+                                    <button id="btnClearSearch" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_advsearch" class="collapse">
+                        <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label for="RMU_">RMU </label>
+                                            <select class="form-control" id="formDDetSrchRMU" name="SearchObj.RMU" style="display: none;">
+                                                <option value="">Select RMU</option>
+                                                <option value="MRI">MRI-Miri</option>
+                                                <option value="BTN">BTN-Batu Niah</option>
+                                                <option value="ERI">ERI-ERI</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-6 mb-0">
+                                            <label for="RMU_Name">RMU Name</label>
+                                            <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4">
+                                    <div class="row">
+                                        <div class="col-6 form-group">
+                                            <label for="RMU">Section Code</label>
+                                            <select class="form-control disableHinput editHdisable validate {required, RMU}" id="formRmu" name="SaveFormQa2Model.Rmu" onchange="bindRoadName()">
+                                                <option value="">Select Section Code</option>
+                                                <option value="MRI">MRI-Miri</option>
+                                                <option value="BTN">BTN-Batu Niah</option>
+                                                <option value="ERI">ERI-ERI</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-lg-6 mb-0">
+                                            <label for="RMU_Name">Section Name</label>
+                                            <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @*<div class="form-group col-2">
+                                        <label for="RMU"> Division Code</label>
+                                        <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                    </div>*@
+                                <div class="form-group col-2">
+                                    <label for="Name_of_Crew_Supervisor">Crew</label>
+                                    <select class="form-control  editHdisable validate" id="formQA2CrewUnit" name="SaveFormQa2Model.CrewSup" style="display: none;">
+                                        <option value="">Select Crew</option>
+                                        <option value="100000035">100000035 - Jelayan Anak Mawar</option>
+                                        <option value="100000034">100000034 - Ramlee Nor</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="Name_of_Crew_Supervisor">Crew Name</label>
+                                    <input class="form-control" id="formQA2CrewName" name="SaveFormQa2Model.CrewSupName" type="text" value="" disabled="">
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="RMU_">
+                                        Activity Code
+                                    </label>
+                                    <select class="form-control" id="formDDetSrchRMU" name="SearchObj.RMU" style="display: none;">
+                                        <option value="">Select Activity Code</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="Ref_No_">Activity Name</label>
+                                    <input type="text" class="form-control validate {required, Reference No.}" readonly="">
+                                </div>
+                                <div class="form-group col-2">
+                                    <label>Start Date (DD-MM-YYYY)</label>
+                                    <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="FormDSrchByDate" value="" name="FormDSrchByDate" onfocusout="onFocusOut();">
+                                </div>
+                                <div class="form-group col-2">
+                                    <label>End Date (DD-MM-YYYY)</label>
+                                    <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="FormDSrchByDate" value="" name="FormDSrchByDate" onfocusout="onFocusOut();">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="w-100 dt-tbl-section">
+
+                <div class="w-100 float-left position-relative">
+                    <div class="grid-btns">
+                        <button type="button" class="btn btn-sm btn-themebtn"><span class="add-icon"></span> Add Form V1</button>
+                    </div>
+                    <div id="headerListGrid" class="w-100 dt-tbl-section">
+                        @{
+                            Html.RenderPartial("_HeaderListGrid.cshtml");
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
