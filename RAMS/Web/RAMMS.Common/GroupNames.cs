@@ -25,5 +25,6 @@ namespace RAMMS.Common
         public const string Director = "DIR";
         public const string InstructedWorksEngineer = "IWENG";
         public const string EngineeringAssistant = "Eng_Ass";
+		public const string User_Management = "UM";
     }
 }

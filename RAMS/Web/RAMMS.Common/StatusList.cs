@@ -16,25 +16,25 @@ namespace RAMMS.Common
         public const string RegionManager = "Region Manager";
         public const string Completed = "Completed";
 
-        public const string N1Init = "Initialize";
+        public const string N1Init = "Open";
         public const string N1Issued = "Issued";
         public const string N1Received = "Received";
         public const string N1CorrectiveCompleted = "Corrective Action Completed";
         public const string N1CorrectiveAccepted = "Corrective Action Accepted";
         //public const string N1Verified = "Verified";
 
-        public const string N2Init = "Initialize";
+        public const string N2Init = "Open";
         public const string N2Issued = "Issued";
         public const string N2Received = "Received";
         public const string N2CorrectiveCompleted = "Corrective Action Completed";
         public const string N2CorrectiveAccepted = "Corrective Action Accepted";
         public const string N2PreventRecurrenceAccepted = "Prevent Recurrence Accepted";
 
-        public const string S1Init = "Initialize";
+        public const string S1Init = "Open";
         public const string S1Planned = "Planned";
         public const string S1Vetted = "Vetted";
 
-        public const string S2Init = "Initialize";
+        public const string S2Init = "Open";
         public const string S2Submitted = "Submitted";
         public const string S2Vetted = "Vetted";
 
@@ -60,25 +60,25 @@ namespace RAMMS.Common
         public const string FormWNSubmitted = "Submitted";
         public const string FormWNSaved = "Saved";
 
-        public const string FormXInit = "Initialize";
+         public const string FormXInit = "Open";
         public const string FormXWorkCompleted = "Work Completed";
         public const string FormXVerified= "Verified";
         public const string FormXVetted = "Vetted";
 
-        public const string FormAInit = "Initialize";
+        public const string FormAInit = "Open";
         public const string FormAInspected = "Inspected";
         public const string FormAExecutiveApproved = "Executive Approved";
         public const string FormAHeadMaintenanceApproved = "Head Maintenance Approved";        
         public const string FormARegionManagerApproved = "Region Manager Approved";
         //public const string FormAJKRSSuperior = "JKRS Approved";
 
-        public const string FormJInit = "Initialize";
+        public const string FormJInit = "Open";
         public const string FormJInspected = "Inspected";
         public const string FormJChecked = "Checked";
         public const string FormJHeadMaintenanceApproved = "Head Maintenance Approved";
         public const string FormJRegionManagerApproved = "Region Manager Approved";
 
-        public const string FormHInit = "Initialize";
+        public const string FormHInit = "Open";
         public const string FormHReported = "Reported"; //Opp Executive
         public const string FormHVerified = "Verified"; //Head Maintenance       
         public const string FormHRegionManagerApproved = "Region Manager Approved";
@@ -123,7 +123,7 @@ namespace RAMMS.Common
         public const string FormFCHeadMaintenanceApproved = "Head Maintenance";
         public const string FormFCRegionManagerApproved = "Region Manager";
 
-        public const string FormFDInit = "Initialize";
+        public const string FormFDInit = "Open";
         public const string FormFDInspected = "Inspected";
         public const string FormFDExecutiveApproved = "Executive";
         public const string FormFDHeadMaintenanceApproved = "Head Maintenance";

@@ -119,7 +119,7 @@
                 tr[0].Asset = elm[i];
                 tr.append("<td class='fixed' style='width: 100px;'>" + elm[i].Desc + "</td>");
                 tr.append("<td class='fixed'>" + elm[i].Value + "</td>");
-                tr.append("<td class='fixed'><input value='" + (elm[i].LAvgWidth ? elm[i].LAvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Left " + elm[i].Desc + "'/></td>");
+                tr.append("<td class='fixed'><input value='" + (elm[i].LAvgWidth ? elm[i].LAvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Left " + elm[i].Desc + "'/></td>");
                 tr.append("<td class='fixed'>m</td>");
                 tr.append("<td condaftertd class='rfixed'>Km</td>");
                 tr.append("<td 1con class='rfixed'></td>");
@@ -133,7 +133,7 @@
             tr[0].Asset = rs;
             tr.append("<td class='fixed' colspan='2'>Road Studs</td>");
             tr.append("<td class='fixed'>R</td>");
-            tr.append("<td class='fixed'><input value='" + (rs.LAvgWidth ? rs.LAvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Left Road Studs'/></td>");
+            tr.append("<td class='fixed'><input value='" + (rs.LAvgWidth ? rs.LAvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Left Road Studs'/></td>");
             tr.append("<td class='fixed'>m</td>");
             tr.append("<td condaftertd class='rfixed'>Km</td>");
             tr.append("<td 1con class='rfixed'></td>");
@@ -149,7 +149,7 @@
             tr.append("<td class='fixed rowspantd' style='line-height:13px;'>L<br />e<br />f<br />t</td>");
             tr.append("<td class='fixed' colspan='2'>Road Studs</td>");
             tr.append("<td class='fixed'>R</td>");
-            tr.append("<td class='fixed'><input value='" + (rs.LAvgWidth ? rs.LAvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Left Road Studs'/></td>");
+            tr.append("<td class='fixed'><input value='" + (rs.LAvgWidth ? rs.LAvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Left Road Studs'/></td>");
             tr.append("<td class='fixed'>m</td>");
             tr.append("<td condaftertd class='rfixed'>Km</td>");
             tr.append("<td 1con class='rfixed'></td>");
@@ -174,7 +174,7 @@
                 tr.attr("asset", "CW_" + cw[i].Desc);
                 tr.append("<td class='fixed' style='width: 100px;'>" + cw[i].Desc + "</td>");
                 tr.append("<td class='fixed'>" + cw[i].Value + "</td>");
-                tr.append("<td class='fixed'><input value='" + (cw[i].AvgWidth ? cw[i].AvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Carriageway " + cw[i].Desc + "'/></td>");
+                tr.append("<td class='fixed'><input value='" + (cw[i].AvgWidth ? cw[i].AvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Carriageway " + cw[i].Desc + "'/></td>");
                 tr.append("<td class='fixed'>m</td>");
                 tr.append("<td condaftertd class='rfixed'>Km</td>");
                 tr.append("<td 1con class='rfixed'></td>");
@@ -189,7 +189,7 @@
         tr[0].Asset = rs;
         tr.append("<td class='fixed' colspan='2'>Centre Road Studs</td>");
         tr.append("<td class='fixed'>R</td>");
-        tr.append("<td class='fixed'><input value='" + (rs.AvgWidth ? rs.AvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Centre Road Studs'/></td>");
+        tr.append("<td class='fixed'><input value='" + (rs.AvgWidth ? rs.AvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Centre Road Studs'/></td>");
         tr.append("<td class='fixed'>m</td>");
         tr.append("<td condaftertd class='rfixed'>Km</td>");
         tr.append("<td 1con class='rfixed'></td>");
@@ -208,7 +208,7 @@
                 tr.attr("asset", "CLM_" + clm[i].Desc);
                 tr.append("<td class='fixed' style='width: 100px;'>" + clm[i].Desc + "</td>");
                 tr.append("<td class='fixed'>" + clm[i].Value + "</td>");
-                tr.append("<td class='fixed'><input value='" + (clm[i].AvgWidth ? clm[i].AvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Carriageway " + clm[i].Desc + "'/></td>");
+                tr.append("<td class='fixed'><input value='" + (clm[i].AvgWidth ? clm[i].AvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Carriageway " + clm[i].Desc + "'/></td>");
                 tr.append("<td class='fixed'>m</td>");
                 tr.append("<td condaftertd class='rfixed'>Km</td>");
                 tr.append("<td 1con class='rfixed'></td>");
@@ -229,7 +229,7 @@
             tr.append("<td class='fixed rowspantd' rowspan='" + (elm.length + 1) + "' style='line-height:13px;'>R<br/>I<br/>G<br/>H<br/>T</td>");
             tr.append("<td class='fixed' colspan='2' style='width: 70px; line - height: 13px;'>Road Studs</td>");
             tr.append("<td class='fixed'>R</td>");
-            tr.append("<td class='fixed'><input value='" + (rs.RAvgWidth ? rs.RAvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Right Road Studs'/></td>");
+            tr.append("<td class='fixed'><input value='" + (rs.RAvgWidth ? rs.RAvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Right Road Studs'/></td>");
             tr.append("<td class='fixed'>m</td>");
             tr.append("<td condaftertd class='rfixed'>Km</td>");
             tr.append("<td 1con class='rfixed'></td>");
@@ -246,7 +246,7 @@
                 tr.attr("asset", "ELM_Right_" + elm[i].Desc);
                 tr.append("<td class='fixed' style='width: 100px;'>" + elm[i].Desc + "</td>");
                 tr.append("<td class='fixed'>" + elm[i].Value + "</td>");
-                tr.append("<td class='fixed'><input value='" + (elm[i].RAvgWidth ? elm[i].RAvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Right " + elm[i].Desc + "'/></td>");
+                tr.append("<td class='fixed'><input value='" + (elm[i].RAvgWidth ? elm[i].RAvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Right " + elm[i].Desc + "'/></td>");
                 tr.append("<td class='fixed'>m</td>");
                 tr.append("<td condaftertd class='rfixed'>Km</td>");
                 tr.append("<td 1con class='rfixed'></td>");
@@ -263,7 +263,7 @@
             tr.append("<td class='fixed rowspantd' style='line-height:13px;'>R<br/>i<br/>g<br/>h<br/>t</td>");
             tr.append("<td class='fixed' colspan='2'>Road Studs</td>");
             tr.append("<td class='fixed'>R</td>");
-            tr.append("<td class='fixed'><input value='" + (rs.RAvgWidth ? rs.RAvgWidth : '') + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Right Road Studs'/></td>");
+            tr.append("<td class='fixed'><input value='" + (rs.RAvgWidth ? rs.RAvgWidth : '') + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Right Road Studs'/></td>");
             tr.append("<td class='fixed'>m</td>");
             tr.append("<td condaftertd class='rfixed'>Km</td>");
             tr.append("<td 1con class='rfixed'></td>");
@@ -316,6 +316,7 @@
                             });
                         }
                         maxchar = (minKM + 0.099).toFixed(3).replace(".", "+");
+                        if ((minKM + 0.1).toFixed(1) == maxKM) maxchar = (minKM + 0.1).toFixed(3).replace(".", "+");
                         thCon.before("<th colspan='5' class='kmrange'>" + minchar + " to " + maxchar + "</th>");
                         minKM += 0.1;
                     }
