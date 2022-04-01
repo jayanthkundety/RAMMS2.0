@@ -9,7 +9,7 @@
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
     string strDisabled = ViewBag.IsEdit ? "" : "grpctrldisabled";
 
-    bool IsAdd = Model.Item1 != null ? false : true;
+    bool IsAdd = Model.Item1.PkRefNo == 0;
     bool IsEdit = !IsAdd && ViewBag.IsEdit;
 }
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;

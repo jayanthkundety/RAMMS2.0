@@ -29,6 +29,7 @@
                 var data = tblGrid.dataTable.row(rowidx).data();
                 switch (type.toLowerCase()) {
                     case "edit":
+                        $(".border-error").removeClass("border-error");
                         switch (jsAdmin.PageName) {
                             case "section":
                                 $("#selDivision").val(data.Div).trigger("change").trigger("chosen:updated");
@@ -51,6 +52,7 @@
                                 $("#txtAssestTypeCode").val(data.Code);
                                 $("#txtAssestTypeContractCode").val(data.ContractCode);
                                 $("#txtId").val(data.Id);
+                                $("#title").text("Edit Asset Type");
                                 $(".addmodal").modal("show");
                                 break;
                             case "defect":
@@ -60,6 +62,7 @@
                                 $("#txtAssestTypeContractCode").val(data.ContractCode);
                                 $("#selFormNo").val(data.FormNo).trigger("change").trigger("chosen:updated");
                                 $("#txtId").val(data.Id);
+                                $("#title").text("Edit Defect");
                                 $(".addmodal").modal("show");
                                 break;
                         }
@@ -89,9 +92,9 @@
         if (ValidatePage(sel, "", "")) {
             GetResponseValue("Update", "Administration", FormValueCollection(sel, { PageName: jsAdmin.PageName }), function (data) {
                 if (data.IsSuccess) {
-                    app.ShowSuccessMessage(data.Message);
+                    app.ShowSuccessMessage("Saved Successfully");
                     tblGrid.Refresh();
-                    jsAdmin.Cancel();
+                    jsAdmin.Close();
                 }
                 else {
                     app.ShowErrorMessage(data.Message);
@@ -99,7 +102,14 @@
             }, "Saving");
         }
     }
-    this.Cancel = function () {
+    this.Cancel = function () {        
+        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+            if (e) {
+                jsAdmin.Close();
+            }
+        }));
+    }
+    this.Close = function () {
         var modal = $(".addmodal");
         modal.modal('hide');
         modal.find("input").each(function () {
@@ -108,6 +118,7 @@
         modal.find("select").each(function () {
             $(this).val("").trigger("chosen:updated");
         });
+        $(".border-error").removeClass("border-error");
     }
     this.DivChange = function (tis) {
         if (tis.value != "") {
