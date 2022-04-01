@@ -41,8 +41,8 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv4hModDt { get; set; }
         public string Fv4hCrBy { get; set; }
         public DateTime? Fv4hCrDt { get; set; }
-        public bool? Fv4hSubmitSts { get; set; }
-        public bool? Fv4hActiveYn { get; set; }
+        public bool Fv4hSubmitSts { get; set; }
+        public bool Fv4hActiveYn { get; set; }
         public string Fv4hStatus { get; set; }
         public string Fv4hAuditLog { get; set; }
     }

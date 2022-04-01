@@ -16,8 +16,8 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv2eModDt { get; set; }
         public string Fv2eCrBy { get; set; }
         public DateTime? Fv2eCrDt { get; set; }
-        public bool? Fv2eSubmitSts { get; set; }
-        public bool? Fv2eActiveYn { get; set; }
+        public bool Fv2eSubmitSts { get; set; }
+        public bool Fv2eActiveYn { get; set; }
 
         public virtual RmFormV2Hdr Fv2eFv2hPkRefNoNavigation { get; set; }
     }

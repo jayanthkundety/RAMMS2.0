@@ -19,8 +19,8 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? ModDt { get; set; }
         public string CrBy { get; set; }
         public DateTime? CrDt { get; set; }
-        public bool? SubmitSts { get; set; }
-        public bool? ActiveYn { get; set; }
+        public bool SubmitSts { get; set; }
+        public bool ActiveYn { get; set; }
 
         public virtual FormV2SearchGridDTO Fv2hPkRefNoNavigation { get; set; }
 
