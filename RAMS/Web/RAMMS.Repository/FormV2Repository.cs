@@ -142,7 +142,7 @@ namespace RAMS.Repository
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
-                    query = query.Where(x => x.x.Fv2hActCode.HasValue ? x.x.Fv2hActCode.ToString() == filterOptions.Filters.ActivityCode : x.x.Fv2hActCode.ToString() == "");
+                    query = query.Where(x => x.x.Fv2hActCode  == filterOptions.Filters.ActivityCode );
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
@@ -276,7 +276,7 @@ namespace RAMS.Repository
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
-                    query = query.Where(x => x.x.Fv2hActCode.HasValue ? x.x.Fv2hActCode.ToString() == filterOptions.Filters.ActivityCode : x.x.Fv2hActCode.ToString() == "");
+                    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode  );
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))

@@ -47,13 +47,12 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredRecordList(filterOptions);
 
-                result.TotalRecords = await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
 
                 foreach (var listData in filteredRecords)
                 {
-                    var _ = _mapper.Map<FormDHeaderResponseDTO>(listData);
-                    _.ProcessStatus = listData.FdhStatus;
-
+                    var _ = _mapper.Map<FormV1ResponseDTO>(listData);
+                   // _.ProcessStatus = listData.FdhStatus;
                     formDList.Add(_);
                 }
 

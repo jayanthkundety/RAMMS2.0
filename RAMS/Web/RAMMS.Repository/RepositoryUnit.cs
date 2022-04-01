@@ -66,6 +66,7 @@ namespace RAMMS.Repository
         private FormV2EquipmentRepository _formV2EquipmentRepository;
         private FormV2MaterialRepository _formV2MaterialRepository;
 
+        public FormV1Repository FormV1Repository => _formV1Repository = _formV1Repository ?? new FormV1Repository(_context);
         public FormV2Repository FormV2Repository => _formV2Repository = _formV2Repository ?? new FormV2Repository(_context);
         public FormV2LabourRepository FormV2LabourRepository => _formV2LabourRepository = _formV2LabourRepository ?? new FormV2LabourRepository(_context);
 

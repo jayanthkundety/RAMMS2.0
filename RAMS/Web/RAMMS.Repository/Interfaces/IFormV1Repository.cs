@@ -11,7 +11,7 @@ namespace RAMMS.Repository.Interfaces
     public interface IFormV1Repository : IRepositoryBase<RmFormV1Hdr>
     {
 
-        Task<List<RmFormV1Hdr>> GetFilteredRecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        Task<List<RmFormV1Hdr>> GetFilteredRecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
         //int SaveFormWD(RmIwFormWd FormWD);
         //int? DeleteFormWDClause(int Id);
