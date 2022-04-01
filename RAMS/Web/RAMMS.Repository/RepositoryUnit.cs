@@ -59,6 +59,7 @@ namespace RAMMS.Repository
         private FormWDRepository _formWDRepository;
         private FormWNRepository _formWNRepository;
         private ModuleFormRightsRepository _moduleFormRightsRepository;
+        private FormV1Repository _formV1Repository;
 
         private FormV2Repository _formV2Repository;
         private FormV2LabourRepository _formV2LabourRepository;

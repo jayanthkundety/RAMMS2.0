@@ -25,6 +25,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormJServices _formJService;
         private readonly IFormQa2Service _formQa2Service;
         private readonly IFormQa2Repository _mAMQA2Repository;
+        private readonly IFormV1Service _formV1Service;
 
         private readonly IBridgeBO _bridgeBO;
         private readonly IDDLookupBO _dDLookupBO;
@@ -54,6 +55,7 @@ namespace RAMMS.Web.UI.Controllers
         IFormQa2Service formQa2Service,
         IFormS2Service formS2Service,
         IFormS1Service formS1Service,
+        IFormV1Service _formV1Service,
         ISecurity security,
         ILogger logger, IRoadMasterService roadMaster, IUserService userService, IWebHostEnvironment webhostenvironment,
         IBridgeBO bridgeBO, IFormQa2Repository mAMQA2Repository)
@@ -68,6 +70,7 @@ namespace RAMMS.Web.UI.Controllers
             _formJService = formJServices ?? throw new ArgumentNullException(nameof(formJServices));
             _formQa2Service = formQa2Service ?? throw new ArgumentNullException(nameof(formQa2Service));
             _formS1Service = formS1Service ?? throw new ArgumentNullException(nameof(formS1Service));
+            _formV1Service = _formV1Service ?? throw new ArgumentNullException(nameof(_formV1Service));
             _webHostEnvironment = webhostenvironment;
             _bridgeBO = bridgeBO;
             _mAMQA2Repository = mAMQA2Repository;
@@ -908,5 +911,65 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         #endregion
+
+        #region Form V1
+
+        public async Task<IActionResult> FormV1()
+        {
+            return View("~/Views/MAM/FormV1/FormV1.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadFormV1List(DataTableAjaxPostModel<FormV1SearchGridDTO> formV1Filter)
+        {
+
+            if (Request.Form.ContainsKey("columns[0][search][value]"))
+            {
+                formV1Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[1][search][value]"))
+            {
+                formV1Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                formV1Filter.filterData.Section_Code = Request.Form["columns[2][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[3][search][value]"))
+            {
+                formV1Filter.filterData.Crew_Supervisor = Request.Form["columns[3][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                formV1Filter.filterData.Activity_Code = Request.Form["columns[4][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                formV1Filter.filterData.DateFrom = Request.Form["columns[5][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                formV1Filter.filterData.DateFrom = Request.Form["columns[6][search][value]"].ToString();
+            }
+
+            FilteredPagingDefinition<FormV1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1SearchGridDTO>();
+            filteredPagingDefinition.Filters = formV1Filter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV1Filter.length;
+            filteredPagingDefinition.StartPageNo = formV1Filter.start;
+
+            if (formV1Filter.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = formV1Filter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV1Filter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+
+            var result = await _formV1Service.GetFilteredFormV1Grid(filteredPagingDefinition).ConfigureAwait(false);
+
+            return Json(new { draw = formV1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+
+        #endregion
+
     }
 }

@@ -85,11 +85,14 @@ namespace RAMMS.Repository.Interfaces
         IModuleGroupRepository ModuleGroupRepository { get; }
         IAuditTransactionRepository AuditTransactionRepository { get; }
         IAuditActionRepository AuditActionRepository { get; }
-      
-    
 
-        
-                 
+        //MAM
+        public FormV1Repository FormV1Repository { get; }
+
+
+
+
+
         int Commit();
         Task<int> CommitAsync();
         void Rollback();
