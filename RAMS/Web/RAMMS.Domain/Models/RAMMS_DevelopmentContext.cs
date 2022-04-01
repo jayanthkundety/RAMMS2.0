@@ -6,15 +6,15 @@ namespace RAMMS.Domain.Models
 {
     public partial class RAMMS_DevelopmentContext : DbContext
     {
-        public RAMSContext()
+
+        public RAMMS_DevelopmentContext()
         {
         }
 
-        public RAMSContext(DbContextOptions<RAMSContext> options)
+        public RAMMS_DevelopmentContext(DbContextOptions<RAMMS_DevelopmentContext> options)
             : base(options)
         {
         }
-
         public virtual DbSet<AssetFieldDtl> AssetFieldDtl { get; set; }
         public virtual DbSet<AssetImport> AssetImport { get; set; }
         public virtual DbSet<ImportAssetUse> ImportAssetUse { get; set; }
@@ -9120,6 +9120,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv1hActiveYn).HasColumnName("FV1H_Active_YN");
 
+                entity.Property(e => e.Fv1hAuditLog).HasColumnName("FV1H_AuditLog");
+
                 entity.Property(e => e.Fv1hContNo).HasColumnName("FV1H_CONT_No");
 
                 entity.Property(e => e.Fv1hCrBy)
@@ -9134,6 +9136,11 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fv1hCrew)
                     .HasColumnName("FV1H_Crew")
                     .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hCrewname)
+                    .HasColumnName("FV1H_Crewname")
+                    .HasMaxLength(250)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fv1hDesignationAck)
@@ -9210,6 +9217,10 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fv1hSignAgr).HasColumnName("FV1H_Sign_AGR");
 
                 entity.Property(e => e.Fv1hSignSch).HasColumnName("FV1H_Sign_SCH");
+
+                entity.Property(e => e.Fv1hStatus)
+                    .HasColumnName("FV1H_Status")
+                    .HasMaxLength(30);
 
                 entity.Property(e => e.Fv1hSubmitSts).HasColumnName("FV1H_SUBMIT_STS");
 
@@ -9321,6 +9332,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv2hActiveYn).HasColumnName("FV2H_Active_YN");
 
+                entity.Property(e => e.Fv2hAuditLog).HasColumnName("FV2H_AuditLog");
+
                 entity.Property(e => e.Fv2hContNo).HasColumnName("FV2H_CONT_No");
 
                 entity.Property(e => e.Fv2hCrBy)
@@ -9333,6 +9346,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fv2hCrew).HasColumnName("FV2H_Crew");
+
+                entity.Property(e => e.Fv2hCrewname)
+                    .HasColumnName("FV2H_Crewname")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv2hDesignationAck)
                     .HasColumnName("FV2H_Designation_ACK")
@@ -9408,6 +9426,10 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fv2hSignAgr).HasColumnName("FV2H_Sign_AGR");
 
                 entity.Property(e => e.Fv2hSignSch).HasColumnName("FV2H_Sign_SCH");
+
+                entity.Property(e => e.Fv2hStatus)
+                    .HasColumnName("FV2H_Status")
+                    .HasMaxLength(30);
 
                 entity.Property(e => e.Fv2hSubmitSts).HasColumnName("FV2H_SUBMIT_STS");
 
@@ -9647,6 +9669,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3hActiveYn).HasColumnName("FV3H_Active_YN");
 
+                entity.Property(e => e.Fv3hAuditLog).HasColumnName("FV3H_AuditLog");
+
                 entity.Property(e => e.Fv3hContNo).HasColumnName("FV3H_CONT_No");
 
                 entity.Property(e => e.Fv3hCrBy)
@@ -9659,6 +9683,10 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fv3hCrew).HasColumnName("FV3H_Crew");
+
+                entity.Property(e => e.Fv3hCrewname)
+                    .HasColumnName("FV3H_Crewname")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.Fv3hDesignationAgr)
                     .HasColumnName("FV3H_Designation_AGR")
@@ -9735,6 +9763,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3hSignRec).HasColumnName("FV3H_Sign_REC");
 
+                entity.Property(e => e.Fv3hStatus)
+                    .HasColumnName("FV3H_Status")
+                    .HasMaxLength(30);
+
                 entity.Property(e => e.Fv3hSubmitSts).HasColumnName("FV3H_SUBMIT_STS");
 
                 entity.Property(e => e.Fv3hUseridAgr)
@@ -9785,6 +9817,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv4hActiveYn).HasColumnName("FV4H_Active_YN");
 
+                entity.Property(e => e.Fv4hAuditLog).HasColumnName("FV4H_AuditLog");
+
                 entity.Property(e => e.Fv4hContNo).HasColumnName("FV4H_CONT_No");
 
                 entity.Property(e => e.Fv4hCrBy)
@@ -9797,6 +9831,10 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fv4hCrew).HasColumnName("FV4H_Crew");
+
+                entity.Property(e => e.Fv4hCrewname)
+                    .HasColumnName("FV4H_Crewname")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.Fv4hDesignationAgr)
                     .HasColumnName("FV4H_Designation_AGR")
@@ -9885,6 +9923,10 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fv4hStartTime)
                     .HasColumnName("FV4H_Start_Time")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Fv4hStatus)
+                    .HasColumnName("FV4H_Status")
+                    .HasMaxLength(30);
 
                 entity.Property(e => e.Fv4hSubmitSts).HasColumnName("FV4H_SUBMIT_STS");
 
@@ -10005,6 +10047,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv5hActiveYn).HasColumnName("FV5H_Active_YN");
 
+                entity.Property(e => e.Fv5hAuditLog).HasColumnName("FV5H_AuditLog");
+
                 entity.Property(e => e.Fv5hContNo).HasColumnName("FV5H_CONT_No");
 
                 entity.Property(e => e.Fv5hCrBy)
@@ -10017,6 +10061,10 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fv5hCrew).HasColumnName("FV5H_Crew");
+
+                entity.Property(e => e.Fv5hCrewname)
+                    .HasColumnName("FV5H_Crewname")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.Fv5hDesignationRec)
                     .HasColumnName("FV5H_Designation_REC")
@@ -10060,6 +10108,10 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16);
 
                 entity.Property(e => e.Fv5hSignRec).HasColumnName("FV5H_Sign_REC");
+
+                entity.Property(e => e.Fv5hStatus)
+                    .HasColumnName("FV5H_Status")
+                    .HasMaxLength(30);
 
                 entity.Property(e => e.Fv5hSubmitSts).HasColumnName("FV5H_SUBMIT_STS");
 

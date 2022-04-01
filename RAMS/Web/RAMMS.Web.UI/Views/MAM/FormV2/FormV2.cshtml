@@ -11,7 +11,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#formV2DetSrchRMU").chosen();
-        $('#formV2DetSrchRoadCode').chosen();
+        $('#formV2DetSrchSectionCode').chosen();
         $("#formV2AdvSearch").hide();
 
         $("#formV2DetSrchRMU").on("change", function () {
@@ -21,18 +21,18 @@
             req.RMU = $("#formV2DetSrchRMU option:selected").text().split("-")[1];
 
             $.ajax({
-                url: '/ERT/RMUSecRoad',
+                url: '/MAM/RMUSecRoad',
                 dataType: 'JSON',
                 data: req,
                 type: 'Post',
                 success: function (data) {
                     if (data != null) {
-                        $("#formV2DetSrchRoadCode").empty();
-                        $("#formV2DetSrchRoadCode").append($("<option></option>").val("").html("Select Section Code"));
+                        $("#formV2DetSrchSectionCode").empty();
+                        $("#formV2DetSrchSectionCode").append($("<option></option>").val("").html("Select Section Code"));
                         $.each(data.section, function (index, v) {
-                            $("#formV2DetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                            $("#formV2DetSrchSectionCode").append($("<option></option>").val(v.value).html(v.text));
                         });
-                        $('#formV2DetSrchRoadCode').trigger("chosen:updated")
+                        $('#formV2DetSrchSectionCode').trigger("chosen:updated")
 
                     }
                 },
@@ -48,14 +48,15 @@
     function clearHeaderSearch() {
         $("#FormV2SmartSearch").val('');
         $("#formV2DetSrchRMU").val("").trigger("chosen:updated");
-        $('#formV2DetSrchRoadCode').val("").trigger("chosen:updated");
-        $("#formV2DetSrchWeek").val("").trigger("chosen:updated");
-        $("#formV2DetSrchYear").val("").trigger("chosen:updated");
-        $("#FormV2SrchByDate").val('');
+        $('#formV2DetSrchSectionCode').val("").trigger("chosen:updated");
+        $("#formV2DetSrchCrew").val("").trigger("chosen:updated");
+        $("#formV2DetSrchActivityCode").val("").trigger("chosen:updated");
+        $("#FormV2SrchByFromDate").val('');
+        $("#FormV2SrchByToDate").val('');
 
         var req = {};
         var _rmu = $("#formV2DetSrchRMU");
-        var _road = $("#formV2DetSrchRoadCode");
+        var _road = $("#formV2DetSrchSectionCode");
         req.RMU = this.value;
         req.Section = '';
         req.RoadCode = '';
@@ -74,13 +75,13 @@
                     });
                 }
                 if (req.Section == "") {
-                    $("#formV2DetSrchRoadCode").empty();
-                    $("#formV2DetSrchRoadCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $("#formV2DetSrchSectionCode").empty();
+                    $("#formV2DetSrchSectionCode").append($("<option></option>").val("").html("Select Section Code"));
                     $.each(data.section, function (index, v) {
-                        $("#formV2DetSrchRoadCode").append($("<option></option>").val(v.value).html(v.text));
+                        $("#formV2DetSrchSectionCode").append($("<option></option>").val(v.value).html(v.text));
                     });
 
-                    $('#formV2DetSrchRoadCode').trigger("chosen:updated");
+                    $('#formV2DetSrchSectionCode').trigger("chosen:updated");
                 }
             },
             error: function (data) {
@@ -99,21 +100,17 @@
         oTable = $('#FormV2GridView').DataTable();
         oTable.columns(0).search($("#FormV2SmartSearch").val().trim());
         oTable.columns(1).search($("#formV2DetSrchRMU").val().trim());
-        oTable.columns(2).search($("#formV2DetSrchRoadCode").val().trim());
-       // oTable.columns(3).search($("#formV2DetSrchWeek").val().trim());
-        //oTable.columns(4).search($("#formV2DetSrchYear").val().trim());
-        oTable.columns(3).search($("#FormV2SrchByDate").val().trim());
-        //oTable.columns(6).search($("#formV2DetSrchDay").val().trim());
-
-        //oTable.columns(5).search($("#formXSrchWrkCmpDate").val().trim());
-        //oTable.columns(6).search($("#formXSrchCaseDt").val().trim());
-        //oTable.columns(7).search($("#formXSrchRdCode").val().trim());
+        oTable.columns(2).search($("#formV2DetSrchSectionCode").val().trim());
+        otable.columns(3).search($("#formV2DetSrchCrew").val().trim());
+        otable.columns(4).search($("#formV2DetSrchActivityCode").val().trim());
+        oTable.columns(5).search($("#FormV2SrchByFromDate").val().trim());
+        oTable.columns(6).search($("#FormV2SrchByToDate").val().trim());
         oTable.data = filterData;
         oTable.draw();
     }
 
     function EditFormV2(pid,view) {
-        window.location = "@Url.Action("EditFormV2", "ERT")" +
+        window.location = "@Url.Action("EditFormV2", "MAM")" +
             "?id=" + pid + "&view=" + view;
     }
 
@@ -123,7 +120,7 @@
             if (e) {
                 InitAjaxLoading();
                 $.ajax({
-                    url: '/ERT/HeaderListFormV2Delete',
+                    url: '/MAM/HeaderListFormV2Delete',
                     data: { headerId },
                     type: 'POST',
                     success: function (data) {
@@ -153,7 +150,7 @@
 
 @using (Html.BeginForm())
 {
-    //BreadCrumbs
+                //BreadCrumbs
     <div class="row">
         <div class="body-header w-100">
             <div class="col-lg-12">
@@ -199,39 +196,54 @@
                     <div class="col-lg-8 offset-lg-2">
                         <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
                             <div class="row">
-                                <div class="form-group col-lg-4">
+                                <div class="form-group col-lg-2">
                                     @Html.Label("RMU ", "RMU ")
                                     @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.RMU, (IEnumerable
-                                     <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV2DetSrchRMU", @class = "form-control" })
+                                <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV2DetSrchRMU", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("RMU Name", "RMU Name")
+                                    <input type="text" class="form-control" id="txtRmuName" disabled />
                                 </div>
                                 <div class="form-group col-lg-4">
                                     @Html.Label("Section Code ", "Section Code")
-                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Road_Code, (IEnumerable
-                                    <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2DetSrchRoadCode", @class = "form-control widget-content-area" })
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
+                                <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2DetSrchSectionCode", @class = "form-control widget-content-area" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Section Name", "Section Name")
+                                    <input type="text" class="form-control" id="txtSectionName" disabled />
                                 </div>
                                 <div class="form-group col-lg-4">
-                                    @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                    <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="FormV2SrchByDate" value="" name="FormV2SrchByDate" onfocusout="onFocusOut();">
+                                    @Html.Label("Crew ", "Crew")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
+                                <SelectListItem>)ViewData["SectionCode"], "Select Crew", new { @Id = "formV2DetSrchCrew", @class = "form-control widget-content-area" })
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Crew Name", "Crew Name")
+                                    <input type="text" class="form-control" id="txtCrewName" disabled />
                                 </div>
                             </div>
                             <div class="row" style="display:none">
-                                <div class="form-group col-lg-3">
-                                    @Html.Label("Week No", "Week No")
-                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.WeekNo, (IEnumerable
-                                     <SelectListItem>)ViewData["WeekNo"], "WeekNo", new { @Id = "formV2DetSrchWeek", @class = "form-control" })
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Activity Code", "Activity Code")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.ActivityCode, (IEnumerable
+                                <SelectListItem>)ViewData["ActivityCode"], "WeekNo", new { @Id = "formV2DetSrchActivityCode", @class = "form-control" })
                                 </div>
-                                <div class="form-group col-lg-1 text-center font-weight-bold pt30px">/</div>
-                                <div class="form-group col-lg-3">
-                                    @Html.Label("Day of the Week", "Day of the Week")
-                                    @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2Model.Day, (IEnumerable
-                                                                    <SelectListItem>)ViewData["Day"], "Select Day", new { @Id = "formV2DetSrchDay", @class = "form-control  validate {required, Day}" })
+                                <div class="form-group col-lg-2">
+                                    @Html.Label("Activity Name", "Activity Name")
+                                    <input type="text" class="form-control" id="txtCrewName" disabled />
                                 </div>
-                                <div class="form-group col-lg-1 text-center font-weight-bold pt30px">/</div>
-                                <div class="form-group col-lg-3">
-                                    @Html.Label("Year (YYYY)", "Year (YYYY)")
-                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Year, (IEnumerable
-                                    <SelectListItem>)ViewData["Year"], "Year", new { @Id = "formV2DetSrchYear", @class = "form-control" })
+                                <div class="form-group col-lg-2">
+                                    <label for="Start Date">Start Date(DD-MM-YYY)</label>
+                                    <input class="form-control" type="date" id="FormV2SrchByFromDate">
                                 </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="End Date">End Date(DD-MM-YYY)</label>
+                                    <input class="form-control" type="date" id="FormV2SrchByToDate">
+                                </div>
+                                <div class="form-group col-lg-2"></div>
+                                <div class="form-group col-lg-2"></div>
                             </div>
                         </div>
                     </div>
@@ -249,7 +261,7 @@
                     <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditFormV2(0,0);"><span class="add-icon"></span> Add Form D</button>
                 </div>
 
-                @*Form D Grid*@
+                @*Form V2 Grid*@
                 <div id="headerListGrid" class="w-100 dt-tbl-section">
                     @{
                         Html.RenderPartial("_HeaderListGrid.cshtml");
@@ -263,14 +275,14 @@
         function onFocusOut() {
             //debugger;
 
-            var frmdate = $("#FormV2SrchByDate").val();
+            var frmdate = $("#FormV2SrchByToDate").val();
             if (frmdate != "") {
                 d = new Date(frmdate);
                 var frmYear = d.getFullYear();
                 if (frmYear < 2019 || frmYear > 2099) {
                     app.ShowErrorMessage('Year should between 2019 to 2099')
                     //$("#dtFromDate").val('');
-                    $("#FormV2SrchByDate").focus();
+                    $("#FormV2SrchByFromDate").focus();
                     $('#formV2SearchBtn').attr("disabled", true);
                 }
                 else {

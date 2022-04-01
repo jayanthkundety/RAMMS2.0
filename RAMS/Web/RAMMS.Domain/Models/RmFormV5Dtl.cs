@@ -17,7 +17,7 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv5dModDt { get; set; }
         public string Fv5dCrBy { get; set; }
         public DateTime? Fv5dCrDt { get; set; }
-        public bool? Fv5dSubmitSts { get; set; }
-        public bool? Fv5dActiveYn { get; set; }
+        public bool Fv5dSubmitSts { get; set; }
+        public bool Fv5dActiveYn { get; set; }
     }
 }

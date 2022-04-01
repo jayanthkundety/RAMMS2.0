@@ -12,10 +12,10 @@ namespace RAMMS.Web.UI.Models
     public class FormV2Model
     {
 
-        public FormDSearchGridDTO SearchObj { get; set; }
-        public FormDHeaderRequestDTO SaveFormV2Model { get; set; }
+        public FormV2SearchGridDTO SearchObj { get; set; }
+        public FormV2HeaderResponseDTO SaveFormV2Model { get; set; }
 
-        public IEnumerable<FormDHeaderResponseDTO> FormV2HeaderList { get; set; }
+        public IEnumerable<FormV2HeaderResponseDTO> FormV2HeaderList { get; set; }
 
         public string SectionName { get; set; }
 
@@ -24,24 +24,17 @@ namespace RAMMS.Web.UI.Models
         public string DivisionName { get; set; }
 
         public string RoadDescription { get; set; }
-        public string RoadCode { get; set; }
+        public string RoadCode { get; set; }       
 
-        public List<string> ImageTypeList { get; set; }
-        public IEnumerable<WarImageDtlResponseDTO> WarImageimageList { get; set; }
-        public IEnumerable<AccUccImageDtlResponseDTO> AccUccImageList { get; set; }
-        public AccUccImageDtlResponseDTO AccUccImage { get; set; }
+        public FormV2MaterialDetailsModel FormV2Material { get; set; }
 
-        public FormDMaterialDetailsModel FormV2Material { get; set; }
+        public FormV2EquipDetailsModel FormV2Equip { get; set; }
 
-        public FormDEquipDetailsModel FormV2Equip { get; set; }
+        public FormV2LabourDtlModel FormV2Labour { get; set; }
 
-        public FormDLabourDtlModel FormDLabour { get; set; }
+        public FormDUserDetailsModel FormV2Users { get; set; }
 
-        public FormDDetailsDtlModel FormDDetails { get; set; }
-
-        public FormDUserDetailsModel FormDUsers { get; set; }
-
-        public FormDHeaderRequestDTO SaveUserModel { get; set; }
+        public FormV2HeaderResponseDTO SaveUserModel { get; set; }
 
         public string HeaderNo { get; set; }
 

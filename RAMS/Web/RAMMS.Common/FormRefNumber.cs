@@ -80,7 +80,8 @@ namespace RAMMS.Common.RefNumber
         FormF4Header,
         FormF5Header,
         FormFCHeader,
-        FormFDHeader
+        FormFDHeader,
+            FormV2Header
     }
 
 }

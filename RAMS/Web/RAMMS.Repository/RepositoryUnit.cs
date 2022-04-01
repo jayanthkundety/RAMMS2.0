@@ -61,7 +61,17 @@ namespace RAMMS.Repository
         private ModuleFormRightsRepository _moduleFormRightsRepository;
         private FormV1Repository _formV1Repository;
 
-        public FormV1Repository FormV1Repository => _formV1Repository = _formV1Repository ?? new FormV1Repository(_context);
+        private FormV2Repository _formV2Repository;
+        private FormV2LabourRepository _formV2LabourRepository;
+        private FormV2EquipmentRepository _formV2EquipmentRepository;
+        private FormV2MaterialRepository _formV2MaterialRepository;
+
+        public FormV2Repository FormV2Repository => _formV2Repository = _formV2Repository ?? new FormV2Repository(_context);
+        public FormV2LabourRepository FormV2LabourRepository => _formV2LabourRepository = _formV2LabourRepository ?? new FormV2LabourRepository(_context);
+
+        public FormV2EquipmentRepository FormV2EquipmentRepository => _formV2EquipmentRepository = _formV2EquipmentRepository ?? new FormV2EquipmentRepository(_context);
+
+        public FormV2MaterialRepository FormV2MaterialRepository => _formV2MaterialRepository = _formV2MaterialRepository ?? new FormV2MaterialRepository(_context);
         public ModuleFormRightsRepository ModuleFormRightsRepository => _moduleFormRightsRepository = _moduleFormRightsRepository ?? new ModuleFormRightsRepository(_context);
         public FormWNRepository FormWNRepository => _formWNRepository = _formWNRepository ?? new FormWNRepository(_context);
         public FormWDRepository FormWDRepository => _formWDRepository = _formWDRepository ?? new FormWDRepository(_context);

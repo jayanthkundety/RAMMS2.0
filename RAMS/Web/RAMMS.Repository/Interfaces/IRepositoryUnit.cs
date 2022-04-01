@@ -58,6 +58,15 @@ namespace RAMMS.Repository.Interfaces
 
         //End IW Forms
 
+        //MAM - VForms
+        public FormV2Repository FormV2Repository { get; }
+        public FormV2LabourRepository FormV2LabourRepository { get; }
+        public FormV2EquipmentRepository FormV2EquipmentRepository { get; }
+        public FormV2MaterialRepository FormV2MaterialRepository { get; }
+
+
+        //End Vforms
+
         FormS2QuarterDtlRepository FormS2QuarterDtlRepository { get; }
         CalendarRepository CalendarRepository { get; }
         IFormF2Repository FormF2Repository { get; }

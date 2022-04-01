@@ -10,6 +10,7 @@ namespace RAMMS.Domain.Models
         public string Fv4hRmu { get; set; }
         public string Fv4hDivision { get; set; }
         public int? Fv4hCrew { get; set; }
+        public string Fv4hCrewname { get; set; }
         public string Fv4hSecCode { get; set; }
         public string Fv4hRefId { get; set; }
         public int? Fv4hActCode { get; set; }
@@ -40,7 +41,9 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv4hModDt { get; set; }
         public string Fv4hCrBy { get; set; }
         public DateTime? Fv4hCrDt { get; set; }
-        public bool? Fv4hSubmitSts { get; set; }
-        public bool? Fv4hActiveYn { get; set; }
+        public bool Fv4hSubmitSts { get; set; }
+        public bool Fv4hActiveYn { get; set; }
+        public string Fv4hStatus { get; set; }
+        public string Fv4hAuditLog { get; set; }
     }
 }
