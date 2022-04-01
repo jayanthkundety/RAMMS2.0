@@ -14,6 +14,7 @@ namespace RAMMS.DTO.ResponseBO
         public string RefId { get; set; }
         public string Crew { get; set; }
         public string ActCode { get; set; }
+        public string DivCode { get; set; }
         public DateTime? Dt { get; set; }
         public bool? SignSch { get; set; }
         public string UseridSch { get; set; }
@@ -40,6 +41,6 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? CrDt { get; set; }
         public bool? SubmitSts { get; set; }
         public bool? ActiveYn { get; set; }
- 
+
     }
 }

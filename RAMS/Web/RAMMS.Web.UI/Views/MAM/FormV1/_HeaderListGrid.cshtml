@@ -23,16 +23,14 @@
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
-    var refNoCol = { data: "referenceID", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
+    var refNoCol = { data: "refId", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
     var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
-    var divisionCol = { data: "divisionName", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
-    var roadCodeCol = { data: "roadCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
-    var crewCol = { data: "crewUnitName", name: "Crew ID", title: "Crew Supervisor", autoWidth: true, sortable: true };
-    var weekCol = { data: "weekNo", name: "Week No", title: "Week No", autoWidth: true, sortable: true };
-    var yearCol = { data: "year", name: "Year", title: "Year", autoWidth: true, sortable: true };
-    var ownernCol = { data: "reportedByUsername", name: "UsernamePrp", title: "Owner", autoWidth: true, sortable: true };
-    var verByCol = { data: "usernameVer", name: "UsernameVer", title: "Verified By", autoWidth: true, sortable: true };
- 
+    var divisionCol = { data: "divCode", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
+    var ActivityCodeCol = { data: "actCode", name: "ActivityCode", title: "Activity Code", autoWidth: true, sortable: true };
+    var SectionCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
+    var crewCol = { data: "crew", name: "Crew", title: "Crew Supervisor", autoWidth: true, sortable: true };
+    var DtCol = { data: "Dt", name: "Date", title: "Date", autoWidth: true, sortable: true };
+   
 
     var submitStsCol = { data: "processStatus", name: "Status", title: "Status", autoWidth: true, sortable: true };
      
@@ -58,15 +56,15 @@
         var _currentGridSettings = new CustomGridSettings();
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
-        filterData.SmartInputValue = $("#FormDSmartSearch").val();
-        filterData.RMU = $("#formDDetSrchRMU").val();
-        filterData.Road_Code =  $("#formDDetSrchRoadCode option:selected").text().split("-")[0];
-        filterData.Bydate = $("#FormDSrchByDate").val().trim();
+        //filterData.SmartInputValue = $("#FormDSmartSearch").val();
+        //filterData.RMU = $("#formDDetSrchRMU").val();
+        //filterData.Road_Code =  $("#formDDetSrchRoadCode option:selected").text().split("-")[0];
+        //filterData.Bydate = $("#FormDSrchByDate").val().trim();
         
 
         $('#FormDGridView').DataTable({
             ajax: {
-                url: "/ERT/LoadFormDList",
+                url: "/MAM/LoadFormDList",
                 type: "POST",
                 datatype: "json",
                 data: {
