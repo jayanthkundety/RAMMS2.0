@@ -15,10 +15,14 @@ namespace RAMMS.Domain.Models
         public int? Fv2hContNo { get; set; }
         public string Fv2hRmu { get; set; }
         public string Fv2hSecCode { get; set; }
+        public string Fv2hSecName { get; set; }
+        public string Fv2hDivCode { get; set; }
+        public string Fv2hDivName { get; set; }
         public string Fv2hRefId { get; set; }
         public int? Fv2hCrew { get; set; }
         public string Fv2hCrewname { get; set; }
-        public int? Fv2hActCode { get; set; }
+        public string Fv2hActCode { get; set; }
+        public string Fv2hActName { get; set; }
         public DateTime? Fv2hDt { get; set; }
         public bool? Fv2hSignSch { get; set; }
         public string Fv2hUseridSch { get; set; }
