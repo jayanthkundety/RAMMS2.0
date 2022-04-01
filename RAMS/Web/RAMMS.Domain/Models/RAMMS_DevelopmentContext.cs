@@ -9118,6 +9118,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv1hActName)
+                    .HasColumnName("FV1H_ACT_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fv1hActiveYn).HasColumnName("FV1H_Active_YN");
 
                 entity.Property(e => e.Fv1hAuditLog).HasColumnName("FV1H_AuditLog");
@@ -9155,6 +9160,16 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv1hDesignationSch)
                     .HasColumnName("FV1H_Designation_SCH")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hDivCode)
+                    .HasColumnName("FV1H_Div_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hDivName)
+                    .HasColumnName("FV1H_Div_Name")
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
@@ -9205,7 +9220,13 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv1hSecCode)
                     .HasColumnName("FV1H_Sec_Code")
-                    .HasMaxLength(16);
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv1hSecName)
+                    .HasColumnName("FV1H_Sec_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv1hServiceProvider)
                     .HasColumnName("FV1H_Service_Provider")
@@ -9328,7 +9349,14 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv2hPkRefNo).HasColumnName("FV2H_PK_Ref_No");
 
-                entity.Property(e => e.Fv2hActCode).HasColumnName("FV2H_ACT_Code");
+                entity.Property(e => e.Fv2hActCode)
+                    .HasColumnName("FV2H_ACT_Code")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fv2hActName)
+                    .HasColumnName("FV2H_ACT_Name")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv2hActiveYn).HasColumnName("FV2H_Active_YN");
 
@@ -9364,6 +9392,16 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv2hDesignationSch)
                     .HasColumnName("FV2H_Designation_SCH")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hDivCode)
+                    .HasColumnName("FV2H_Div_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv2hDivName)
+                    .HasColumnName("FV2H_Div_Name")
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
@@ -9415,6 +9453,11 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fv2hSecCode)
                     .HasColumnName("FV2H_Sec_Code")
                     .HasMaxLength(16);
+
+                entity.Property(e => e.Fv2hSecName)
+                    .HasColumnName("FV2H_Sec_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv2hServiceProvider)
                     .HasColumnName("FV2H_Service_Provider")
