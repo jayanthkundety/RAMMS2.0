@@ -172,5 +172,18 @@ namespace RAMMS.Business.ServiceProvider.Services
             });
             return result;
         }
+
+        public int DeleteRoad(int PkRefNo, string userid)
+        {
+            try
+            {
+                this._repo.DeleteRoad(PkRefNo, userid);
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
     }
 }

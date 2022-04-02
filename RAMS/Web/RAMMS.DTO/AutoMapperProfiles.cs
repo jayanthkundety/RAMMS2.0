@@ -25,7 +25,7 @@ namespace RAMMS.DTO
             CreateMap<FormXHeaderRequestDTO, RmFormXHdr>();
             CreateMap<FormADetailsRequestDTO, RmFormADtl>();
             CreateMap<AssetListRequestDTO, RmAllassetInventory>();
-            CreateMap<RoadMasterRequestDTO, RmRoadMaster>();
+            CreateMap<RoadMasterResponseDTO, RmRoadMaster>();
             CreateMap<ImageListRequestDTO, RmAssetImageDtl>();
             CreateMap<FormAImageListRequestDTO, RmFormaImageDtl>();
             CreateMap<FormJImageListRequestDTO, RmFormjImageDtl>();
@@ -84,7 +84,9 @@ namespace RAMMS.DTO
             CreateMap<DivisionRequestDTO, RmDivisionMaster>();
             CreateMap<RMURequestDTO, RmRmuMaster>();
             CreateMap<DivRmuSectionRequestDTO, RmDivRmuSecMaster>();
-            CreateMap<DivRmuSectionResponseDTO, RmDivRmuSecMaster>();
+            //CreateMap<DivRmuSectionResponseDTO, RmDivRmuSecMaster>();
+            CreateMap<SectionRequestDTO, RmDivRmuSecMaster>();
+            CreateMap<RoadRequestDTO, RmRoadMaster>();
         }
 
         private void MapDomainObjectsToDTO()
@@ -116,8 +118,8 @@ namespace RAMMS.DTO
                 .ForMember(x => x.ActiveYn, options => options.MapFrom(input => input.RdsmActiveYn)
                 );
 
-            CreateMap<RmDivRmuSecMaster, DivRmuSectionResponseDTO>()
-                .ForMember(x => x.RefNo, options => options.MapFrom(input => input.RdsmPkRefNo))
+            CreateMap<RmDivRmuSecMaster, SectionRequestDTO>()
+                .ForMember(x => x.PkRefNo, options => options.MapFrom(input => input.RdsmPkRefNo))
                 .ForMember(x => x.DivCode, options => options.MapFrom(input => input.RdsmDivCode))
                 .ForMember(x => x.Division, options => options.MapFrom(input => input.RdsmDivision))
                 .ForMember(x => x.RmuCode, options => options.MapFrom(input => input.RdsmRmuCode))
@@ -131,6 +133,33 @@ namespace RAMMS.DTO
                 .ForMember(x => x.ActiveYn, options => options.MapFrom(input => input.RdsmActiveYn)
                 );
 
+            CreateMap<RmRoadMaster, RoadRequestDTO>()
+                .ForMember(x => x.PkRefNo, options => options.MapFrom(input => input.RdmPkRefNo))
+                .ForMember(x => x.FeatureId, options => options.MapFrom(input => input.RdmFeatureId))
+                .ForMember(x => x.DivCode, options => options.MapFrom(input => input.RdmDivCode))
+                .ForMember(x => x.RmuCode, options => options.MapFrom(input => input.RdmRmuCode))
+                .ForMember(x => x.SecName, options => options.MapFrom(input => input.RdmSecName))
+                .ForMember(x => x.RdCatgName, options => options.MapFrom(input => input.RdmRdCatgName))
+                .ForMember(x => x.RdCatgCode, options => options.MapFrom(input => input.RdmRdCatgCode))
+                .ForMember(x => x.RdCode , options => options.MapFrom(input => input.RdmRdCode))
+                .ForMember(x => x.RdName, options => options.MapFrom(input => input.RdmRdName))
+                .ForMember(x => x.FrmLoc, options => options.MapFrom(input => input.RdmFrmLoc))
+                .ForMember(x => x.ToLoc, options => options.MapFrom(input => input.RdmToLoc))
+                .ForMember(x => x.FrmCh, options => options.MapFrom(input => input.RdmFrmCh))
+                .ForMember(x => x.FrmChDeci, options => options.MapFrom(input => input.RdmFrmChDeci))
+                .ForMember(x => x.ToCh, options => options.MapFrom(input => input.RdmToCh))
+                .ForMember(x => x.ToChDeci, options => options.MapFrom(input => input.RdmToChDeci))
+                .ForMember(x => x.LengthPaved, options => options.MapFrom(input => input.RdmLengthPaved))
+                .ForMember(x => x.LengthUnpaved, options => options.MapFrom(input => input.RdmLengthUnpaved))
+                .ForMember(x => x.Owner, options => options.MapFrom(input => input.RdmOwner))
+                .ForMember(x => x.ModBy, options => options.MapFrom(input => input.RdmModBy))
+                .ForMember(x => x.ModDt, options => options.MapFrom(input => input.RdmModDt))
+                .ForMember(x => x.CrBy, options => options.MapFrom(input => input.RdmCrBy))
+                .ForMember(x => x.CrDt, options => options.MapFrom(input => input.RdmCrDt))
+                .ForMember(x => x.ActiveYn, options => options.MapFrom(input => input.RdmActiveYn))
+                .ForMember(x => x.SecCode, options => options.MapFrom(input => input.RdmSecCode))
+                .ForMember(x => x.RmuName, options => options.MapFrom(input => input.RdmRmuName))
+                .ForMember(x => x.RdCdSort, options => options.MapFrom(input => input.RdmRdCdSort));
 
             CreateMap<RmAuditLogTransaction, AuditTransactionRequestDTO>()
                 .ForMember(x => x.PkRefNo, options => options.MapFrom(input => input.AltPkRefNo))
