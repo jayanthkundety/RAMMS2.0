@@ -16,5 +16,7 @@ namespace RAMMS.Repository.Interfaces
         void SaveDefect(RmAssetDefectCode defect);
         Task<List<RmAssetGroupType>> AssetGroupList();
         Task<List<RmAssetGroupType>> DefectAssetGroupList();
+
+        void DeleteRoad(int PkRefNo, string userid);
     }
 }

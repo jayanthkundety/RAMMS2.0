@@ -117,7 +117,7 @@
                     tr[0].Asset = elm[i];
                     tr.append("<td class='fixed' style='width: 100px;'>" + elm[i].Desc + "</td>");
                     tr.append("<td class='fixed'>" + elm[i].Value + "</td>");
-                    tr.append("<td class='fixed'><input value='" + (ctype == "L" ? (elm[i].LAvgWidth ? elm[i].LAvgWidth : '') : (elm[i].RAvgWidth ? elm[i].RAvgWidth : '')) + "' txtavgwidth type='text' style='width:50px;' onkeypressvalidate='cdecimal,5,3,Left " + elm[i].Desc + "'/></td>");
+                    tr.append("<td class='fixed'><input value='" + (ctype == "L" ? (elm[i].LAvgWidth ? elm[i].LAvgWidth : '') : (elm[i].RAvgWidth ? elm[i].RAvgWidth : '')) + "' txtavgwidth type='text' style='width:100px;' onkeypressvalidate='cdecimal,5,3,Left " + elm[i].Desc + "'/></td>");
                     tr.append("<td class='fixed'>m</td>");
                     tr.append("<td condaftertd class='rfixed'>Km</td>");
                     tr.append("<td 1con class='rfixed'></td>");
@@ -152,10 +152,16 @@
                         for (var i = 0; i < 5; i++) {
                             if (i > 0) { minKM -= 0.1; }
                             trs.each(function () {
-                                $(this).find("[condaftertd]").before("<td km='" + minKM.toFixed(3) + "' fccondition class='fcconditiontd fcblock'><div condtion> </div></td>");
+                                $(this).find("[condaftertd]").before("<td title='" + minKM.toFixed(3) + "' km='" + minKM.toFixed(3) + "' km='" + minKM.toFixed(3) + "' fccondition class='fcconditiontd fcblock'><div condtion con> </div></td>");
                             });
                         }
-                        maxchar = (minKM + 0.099).toFixed(3).replace(".", "+");
+                        if ((minKM - 0.1) > maxKM) {
+                            maxchar = (minKM + 0.099).toFixed(3).replace(".", "+");
+                        }
+                        else {
+                            maxchar = (minKM + 0.100).toFixed(3).replace(".", "+");
+                        }
+                        //maxchar = (minKM + 0.099).toFixed(3).replace(".", "+");
                         thCon.before("<th colspan='5' class='kmrange'>" + minchar + " to " + maxchar + "</th>");
                         minKM -= 0.1;
                     }
@@ -167,10 +173,15 @@
                         for (var i = 0; i < 5; i++) {
                             if (i > 0) { minKM += 0.1; }
                             trs.each(function () {
-                                $(this).find("[condaftertd]").before("<td km='" + minKM.toFixed(3) + "' fccondition class='fcconditiontd fcblock'><div condtion> </div></td>");
+                                $(this).find("[condaftertd]").before("<td title='" + minKM.toFixed(3) + "' km='" + minKM.toFixed(3) + "' km='" + minKM.toFixed(3) + "' fccondition class='fcconditiontd fcblock'><div condtion con> </div></td>");
                             });
                         }
-                        maxchar = (minKM + 0.099).toFixed(3).replace(".", "+");
+                        if ((minKM + 0.1) < maxKM) {
+                            maxchar = (minKM + 0.099).toFixed(3).replace(".", "+");
+                        }
+                        else {
+                            maxchar = (minKM + 0.100).toFixed(3).replace(".", "+");
+                        }
                         thCon.before("<th colspan='5' class='kmrange'>" + minchar + " to " + maxchar + "</th>");
                         minKM += 0.1;
                     }
@@ -193,7 +204,7 @@
                     bound = bound == "Left" ? "L" : (bound == "Right" ? "R" : bound);
                     asset = bound + "_" + obj.AiAssetGrpCode + "_" + obj.AiGrpType;
                     if (asset != "") {
-                        var _td = trs.filter("[asset='" + asset + "']").find("[km='" + obj.FromCHKm.toFixed(3) + "']");
+                        var _td = trs.filter("[asset='" + asset + "']").find("[km='" + obj.FromCHKm.toFixed(1) + "00" + "']");
                         if (_td.length > 0) {
                             _td.removeClass("fcblock");
                             _td[0].Asset = obj;
@@ -428,14 +439,25 @@
     this.Save = function (isSubmit) {
         var tis = this;
         if (isSubmit) {
+            $("#hdnFormFDCond").val($("#tblFormFD tbody tr td:not(.fcblock) [con='']").length > 0 ? "" : "sucess");
             $("#frmFDHeader .svalidate").addClass("validate");
         }
         if (ValidatePage("#frmFDHeader", "", "")) {
             var action = isSubmit ? "Submit" : "Save";
             GetResponseValue(action, "FormFD", FormValueCollection("#frmFDHeader", tis.HeaderData), function (data) {
-                app.ShowSuccessMessage('Successfully Saved', false);
-                setTimeout(tis.NavToList, 2000);
-            }, "Saving");
+                if (data && !data._error) {
+                    if (isSubmit) {
+                        app.ShowSuccessMessage('Successfully Submitted', false);
+                    }
+                    else {
+                        app.ShowSuccessMessage('Successfully Saved', false);
+                    }
+                    setTimeout(tis.NavToList, 2000);
+                }
+                else {
+                    app.Alert(data._error);
+                }
+            }, (isSubmit ? "Submitting" : "Saving"));
         }
         if (isSubmit) {
             $("#frmFDHeader .svalidate").removeClass("validate");

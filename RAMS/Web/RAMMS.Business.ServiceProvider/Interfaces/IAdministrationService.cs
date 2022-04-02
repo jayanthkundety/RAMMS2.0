@@ -15,5 +15,6 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         void Delete(AdministratorDTO administratorDTO, string createdBy);
         Task<List<CSelectListItem>> AssetGroupList();
         Task<List<CSelectListItem>> DefectAssetGroupList();
+        int DeleteRoad(int PkRefNo, string userid);
     }
 }

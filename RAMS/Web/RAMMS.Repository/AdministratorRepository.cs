@@ -614,5 +614,15 @@ namespace RAMMS.Repository
 
             return grid;
         }
+        public void DeleteRoad(int PkRefNo, string userid)
+        {
+            RmRoadMaster rmRoadMaster = _context.RmRoadMaster.Where(x => x.RdmPkRefNo == PkRefNo).FirstOrDefault();
+            if (rmRoadMaster == null)
+                return;
+            rmRoadMaster.RdmActiveYn = new bool?(false);
+            rmRoadMaster.RdmModBy = userid;
+            rmRoadMaster.RdmModDt = new DateTime?(DateTime.UtcNow);
+            _context.SaveChanges();
+        }
     }
 }

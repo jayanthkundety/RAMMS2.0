@@ -46,13 +46,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             return result;
         }
 
-        public List<SelectListItem> GetList(string divcode)
-        {
-            return _repoUnit.RMURepository.FindAll(s => s.DivCode == divcode && s.RmuIsActive == true).Select(s => new SelectListItem
-            {
-                Text = s.RmuName,
-                Value = s.RmuCode
-            }).ToList();
-        }
+        public List<SelectListItem> GetList(string divcode) => _repoUnit.DivisonRepository.RMUListByDivCode(divcode);
     }
 }
+

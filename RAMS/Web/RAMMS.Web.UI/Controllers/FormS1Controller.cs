@@ -16,7 +16,7 @@ using static RAMMS.DTO.RequestBO.FormS1DetailDTO;
 
 namespace RAMMS.Web.UI.Controllers
 {
-    [CAuthorize(ModuleName = ModuleNameList.Routine_Maintanance_Work)]
+    [CAuthorize(ModuleName = ModuleNameList.Asset_Maintenance)]
     public class FormS1Controller : Models.BaseController
     {
         private IFormS1Service serFormS1;
@@ -33,9 +33,9 @@ namespace RAMMS.Web.UI.Controllers
             LoadLookupService("RMU", "Week No");
 
             var grid = new Models.CDataTable() { Name = "tblFS1HeaderGrid", APIURL = "/FormS1/HeaderList", LeftFixedColumn = 1 };
-            grid.IsModify = _security.IsPCModify(ModuleNameList.Routine_Maintanance_Work);
-            grid.IsDelete = _security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work);
-            grid.IsView = _security.IsPCView(ModuleNameList.Routine_Maintanance_Work);
+            grid.IsModify = _security.IsPCModify(ModuleNameList.Asset_Maintenance);
+            grid.IsDelete = _security.IsPCDelete(ModuleNameList.Asset_Maintenance);
+            grid.IsView = _security.IsPCView(ModuleNameList.Asset_Maintenance);
             grid.Columns.Add(new CDataColumns() { data = null, title = "Action", IsFreeze = true, sortable = false, render = "formS1.HeaderGrid.ActionRender" });
             grid.Columns.Add(new CDataColumns() { data = "RefID", title = "Reference No" });
             grid.Columns.Add(new CDataColumns() { data = "RMUCode", title = "RMU Abbreviation" });
@@ -110,10 +110,10 @@ namespace RAMMS.Web.UI.Controllers
             }
             else
             {
-                grid.IsModify = _security.IsPCModify(ModuleNameList.Routine_Maintanance_Work);
-                grid.IsDelete = _security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work);
+                grid.IsModify = _security.IsPCModify(ModuleNameList.Asset_Maintenance);
+                grid.IsDelete = _security.IsPCDelete(ModuleNameList.Asset_Maintenance);
             }
-            grid.IsView = _security.IsPCView(ModuleNameList.Routine_Maintanance_Work);
+            grid.IsView = _security.IsPCView(ModuleNameList.Asset_Maintenance);
             grid.Columns.Add(new CDataColumns() { data = null, title = "Action", IsFreeze = true, sortable = false, render = "formS1.DetailGrid.ActionRender" });
             grid.Columns.Add(new CDataColumns() { data = "RefID", title = "Reference No", sortable = false });
             grid.Columns.Add(new CDataColumns() { data = "ACode", title = "Activity Code", ColumnGroup = "Road Details", sortable = false });

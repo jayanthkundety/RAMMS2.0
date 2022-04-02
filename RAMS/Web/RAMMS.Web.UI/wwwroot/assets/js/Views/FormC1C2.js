@@ -330,7 +330,7 @@
             //    var ctrl = $("#selRoadCode"); ctrl.find("option:hidden").show(); ctrl.val("").trigger("change").trigger("chosen:updated");
             //}
 
-            //frmC1C2.FilterAssestID();
+            frmC1C2.FilterAssestID();
         }
         this.RoadCodeChange = function (tis, isAdd) {
             //debugger;

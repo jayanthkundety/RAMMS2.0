@@ -102,5 +102,7 @@ namespace RAMMS.Repository.Interfaces
         IRMURepository RMURepository { get; }
 
         IDivRmuSectionRepository DivRmuSectionRepository { get; }
+        ISectionRepository SectionRepository { get; }
+        IRoadRepository RoadRepository { get; }
     }
 }

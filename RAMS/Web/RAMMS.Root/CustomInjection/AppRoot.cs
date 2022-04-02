@@ -85,6 +85,8 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IProcessService, ProcessService>();
             services.AddTransient<IDivisionService, DivisionService>();
             services.AddTransient<IRMUService, RMUService>();
+			services.AddTransient<ISectionService, SectionService>();
+            services.AddTransient<IRoadService, RoadService>();
             services.AddTransient<IFormW1Service, FormW1Service>();
             services.AddTransient<IFormW2Service, FormW2Service>();
             services.AddTransient<IFormWCService, FormWCService>();
