@@ -15,6 +15,7 @@ using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.Repository.Interfaces;
+using System.Linq;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -90,7 +91,17 @@ namespace RAMMS.Web.UI.Controllers
 
             if (from == "V2")
             {
-                LoadLookupService("RMU",  "User" , "Act-FormS2");
+                ddLookup.Type = "RMU";
+                ViewData["RMU"] = await _formN1Service.GetRMU();
+
+                ddLookup.Type = "Act-FormD";
+                ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
+
+                ViewData["CREW"] = _userService.GetUserSelectList(null);
+
+                FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+
+                ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
             }
             else if (from == "N1")
             {
@@ -984,7 +995,7 @@ namespace RAMMS.Web.UI.Controllers
 
         public async Task<IActionResult> FormV2()
         {
-            LoadDropDowns("V2", "");
+            await LoadDropDowns("V2", "");
             return View("~/Views/MAM/FormV2/FormV2.cshtml");
         }
 
