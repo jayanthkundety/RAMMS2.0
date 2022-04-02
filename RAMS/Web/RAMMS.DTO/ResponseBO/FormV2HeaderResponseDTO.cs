@@ -11,10 +11,18 @@ namespace RAMMS.DTO.ResponseBO
         public int? ContNo { get; set; }
         public string Rmu { get; set; }
         public string SecCode { get; set; }
+
+        public string SecName { get; set; }
+
+        public string DivCode { get; set; }
+        public string DivName { get; set; }
+
         public string RefId { get; set; }
         public int? Crew { get; set; }
         public string Crewname { get; set; }
         public int? ActCode { get; set; }
+
+        public string ActName { get; set; }
         public DateTime? Dt { get; set; }
         public bool? SignSch { get; set; }
         public string UseridSch { get; set; }

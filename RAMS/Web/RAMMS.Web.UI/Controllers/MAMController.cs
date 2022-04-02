@@ -26,6 +26,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormQa2Service _formQa2Service;
         private readonly IFormQa2Repository _mAMQA2Repository;
         private readonly IFormV1Service _formV1Service;
+        private readonly IFormV2Service _formV2Service;
 
         private readonly IBridgeBO _bridgeBO;
         private readonly IDDLookupBO _dDLookupBO;
@@ -55,7 +56,8 @@ namespace RAMMS.Web.UI.Controllers
         IFormQa2Service formQa2Service,
         IFormS2Service formS2Service,
         IFormS1Service formS1Service,
-        IFormV1Service _formV1Service,
+        IFormV1Service formV1Service,
+        IFormV2Service formV2Service,
         ISecurity security,
         ILogger logger, IRoadMasterService roadMaster, IUserService userService, IWebHostEnvironment webhostenvironment,
         IBridgeBO bridgeBO, IFormQa2Repository mAMQA2Repository)
@@ -70,7 +72,8 @@ namespace RAMMS.Web.UI.Controllers
             _formJService = formJServices ?? throw new ArgumentNullException(nameof(formJServices));
             _formQa2Service = formQa2Service ?? throw new ArgumentNullException(nameof(formQa2Service));
             _formS1Service = formS1Service ?? throw new ArgumentNullException(nameof(formS1Service));
-            _formV1Service = _formV1Service ?? throw new ArgumentNullException(nameof(_formV1Service));
+            _formV1Service = formV1Service ?? throw new ArgumentNullException(nameof(formV1Service));
+            _formV2Service = formV2Service ?? throw new ArgumentNullException(nameof(formV2Service));
             _webHostEnvironment = webhostenvironment;
             _bridgeBO = bridgeBO;
             _mAMQA2Repository = mAMQA2Repository;
@@ -84,7 +87,12 @@ namespace RAMMS.Web.UI.Controllers
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Other Follow Up Action";
             ViewData["Other Follow Up Action"] = await _ddLookupService.GetDdLookup(ddLookup);
-            if (from == "N1")
+
+            if (from == "V2")
+            {
+                LoadLookupService("RMU",  "User" , "Act-FormS2");
+            }
+            else if (from == "N1")
             {
                 ddLookup.Type = "SourceTypeN1";
                 ViewData["sourceType"] = await _ddLookupService.GetDdLookup(ddLookup);
@@ -966,6 +974,106 @@ namespace RAMMS.Web.UI.Controllers
             var result = await _formV1Service.GetFilteredFormV1Grid(filteredPagingDefinition).ConfigureAwait(false);
 
             return Json(new { draw = formV1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+
+        #endregion
+
+
+        #region Form V2
+
+        public async Task<IActionResult> FormV2()
+        {
+            LoadDropDowns("V2", "");
+            return View("~/Views/MAM/FormV2/FormV2.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadFormV2List(DataTableAjaxPostModel<FormV2SearchGridDTO> formV2Filter)
+        {
+
+            if (Request.Form.ContainsKey("columns[0][search][value]"))
+            {
+                formV2Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[1][search][value]"))
+            {
+                formV2Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                formV2Filter.filterData.Section = Request.Form["columns[2][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[3][search][value]"))
+            {
+                formV2Filter.filterData.Crew  = Request.Form["columns[3][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                formV2Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                formV2Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                formV2Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
+            }
+
+            FilteredPagingDefinition<FormV2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV2SearchGridDTO>();
+            filteredPagingDefinition.Filters = formV2Filter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV2Filter.length;
+            filteredPagingDefinition.StartPageNo = formV2Filter.start;
+
+            if (formV2Filter.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = formV2Filter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV2Filter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+
+            var result = await _formV2Service.GetFilteredFormV2Grid(filteredPagingDefinition).ConfigureAwait(false);
+
+            return Json(new { draw = formV2Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadFormV2EquipmentList(DataTableAjaxPostModel<FormV2SearchGridDTO> FormV2Filter, string id)
+        {
+
+            FilteredPagingDefinition<FormV2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV2SearchGridDTO>();
+            filteredPagingDefinition.RecordsPerPage = FormV2Filter.length;
+            filteredPagingDefinition.StartPageNo = FormV2Filter.start;
+
+            var result = await _formV2Service.GetEquipmentFormV2Grid(filteredPagingDefinition, id).ConfigureAwait(false);
+
+            return Json(new { draw = FormV2Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadFormV2MaterialList(DataTableAjaxPostModel<FormV2SearchGridDTO> FormV2Filter, string id)
+        {
+
+            FilteredPagingDefinition<FormV2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV2SearchGridDTO>();
+            filteredPagingDefinition.RecordsPerPage = FormV2Filter.length;
+            filteredPagingDefinition.StartPageNo = FormV2Filter.start;
+
+            var result = await _formV2Service.GetMaterialFormV2Grid(filteredPagingDefinition, id).ConfigureAwait(false);
+
+            return Json(new { draw = FormV2Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadFormV2LabourList(DataTableAjaxPostModel<FormV2SearchGridDTO> FormV2Filter, string id)
+        {
+
+            FilteredPagingDefinition<FormV2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV2SearchGridDTO>();
+            filteredPagingDefinition.RecordsPerPage = FormV2Filter.length;
+            filteredPagingDefinition.StartPageNo = FormV2Filter.start;
+
+            var result = await _formV2Service.GetLabourFormV2Grid(filteredPagingDefinition, id).ConfigureAwait(false);
+
+            return Json(new { draw = FormV2Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
 

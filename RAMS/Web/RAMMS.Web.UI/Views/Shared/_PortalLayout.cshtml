@@ -215,7 +215,7 @@
                                 </ul>
                             </li>
                         }
-                        @if (security.IsPCView(ModuleNameList.Routine_Maintanance_Work) || security.HasGroup(GroupNameList.Admin))
+                        @if (security.IsPCView(ModuleNameList.Routine_Maintanance_Work  ) || security.HasGroup(GroupNameList.Admin))
                         {
                             <li class="navbar-vertical-aside-has-menu">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" id="AssetMaintenance" href="javascript:;" title="Asset Maintenance">
@@ -241,6 +241,21 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="@Url.Action("FormD", "ERT")" class="nav-link"><span class="text-truncate">Daily Work Report, DWR (Form D)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormV1", "MAM")" class="nav-link"><span class="text-truncate">Work Schedule (Form V1)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormV2", "MAM")" class="nav-link"><span class="text-truncate">Resources Register (Form V2)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormV3", "MAM")" class="nav-link"><span class="text-truncate">Work Accomplishment (Form V3)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormV4", "MAM")" class="nav-link"><span class="text-truncate">Production Summary (Form V4)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("FormV5", "MAM")" class="nav-link"><span class="text-truncate">Photo & Video Recording Register (Form V5)</span></a>
                                     </li>
                                 </ul>
                             </li>

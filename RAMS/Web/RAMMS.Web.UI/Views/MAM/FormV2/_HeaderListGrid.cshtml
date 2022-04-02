@@ -12,8 +12,8 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isModifyPerm =@security.IsPCModify(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : 'hidden';
-    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
 
     var table_columns = [];
     var actionCol = {
