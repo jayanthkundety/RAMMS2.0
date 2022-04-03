@@ -1156,6 +1156,9 @@ namespace RAMMS.Web.UI.Controllers
                 foreach (var item in res)
                 {
                     item.FwdPkRefNo = refNo;
+                    item.Clause = item.Clause.Trim();
+                    item.ExtnPrd = item.ExtnPrd.Trim();
+                    item.Reason = item.Reason.Trim();
                     _formWDService.SaveFormWDClause(item);
                 }
             }
