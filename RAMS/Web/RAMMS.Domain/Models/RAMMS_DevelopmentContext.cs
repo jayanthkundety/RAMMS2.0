@@ -1216,7 +1216,7 @@ namespace RAMMS.Domain.Models
                 entity.HasOne(d => d.FauFddPkRefNoNavigation)
                     .WithMany(p => p.RmAccUcuImageDtl)
                     .HasForeignKey(d => d.FauFddPkRefNo)
-                    .HasConstraintName("FK__RM_ACC_UC__FAU_F__7CD98669");
+                    .HasConstraintName("FK_RM_ACC_UCU_image_DTL_RM_FormD_DTL");
 
                 entity.HasOne(d => d.FauFxhPkRefNoNavigation)
                     .WithMany(p => p.RmAccUcuImageDtl)
@@ -5271,8 +5271,8 @@ namespace RAMMS.Domain.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.FdldLabQty)
-                                   .HasColumnName("FDLD_LAB_QTY")
-                                   .HasColumnType("decimal(6, 3)");
+                    .HasColumnName("FDLD_LAB_QTY")
+                    .HasColumnType("decimal(6, 3)");
 
                 entity.Property(e => e.FdldLabUnit)
                     .HasColumnName("FDLD_LAB_Unit")
