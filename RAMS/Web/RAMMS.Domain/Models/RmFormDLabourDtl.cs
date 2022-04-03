@@ -10,7 +10,7 @@ namespace RAMMS.Domain.Models
         public int? FdldSrno { get; set; }
         public string FdldLabCode { get; set; }
         public string FdldLabDesc { get; set; }
-        public int? FdldLabQty { get; set; }
+        public decimal? FdldLabQty { get; set; }
         public string FdldLabUnit { get; set; }
         public string FdldModBy { get; set; }
         public DateTime? FdldModDt { get; set; }

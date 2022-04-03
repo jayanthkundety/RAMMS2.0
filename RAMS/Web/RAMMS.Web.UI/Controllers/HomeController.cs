@@ -87,12 +87,13 @@ namespace RAMMS.Web.UI.Controllers
         public IActionResult Section(string rmu)
         {
             ViewBag.rmu = rmu;
-            var data = _rmService.GetAll().Where(x => x.RdmActiveYn == true).Select(x => new { x.RdmSecName, x.RdmRdName, x.RdmRdCode }).OrderBy(x => x.RdmRdName).ToList();
+            var data = _rmService.GetAll().Distinct().Where(x => x.RdmActiveYn == true).Select(x => new { x.RdmSecName, x.RdmRdName, x.RdmRdCode }).OrderBy(x => x.RdmRdName).ToList();
             IDictionary<string, object> lstData = new Dictionary<string, object>();
             var distCode = data.Select(x => x.RdmSecName).Distinct().ToList();
             foreach (string strSec in distCode)
             {
-                lstData.Add(strSec.ToLower(), data.Where(x => x.RdmSecName == strSec).ToList());
+                if (!lstData.ContainsKey(strSec.ToLower()))
+                    lstData.Add(strSec.ToLower(), data.Where(x => x.RdmSecName == strSec).ToList());
             }
 
             return View("~/Views/Home/Section.cshtml", lstData);

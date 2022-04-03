@@ -106,7 +106,7 @@
 
     //   FECM Change Request
    // var WNWGStatus = "@Model.WNWGStatus";
-    var WNWGStatus = 1;
+    //var WNWGStatus = 1;
 
     $(document).ready(function () {
         if ($("#hdnFecmView").val() == "1") {
@@ -117,16 +117,16 @@
         }
 
        
-        if (WNWGStatus == 0) {
-            $("#submitFCEMBtn").show();
-            $("#fecmProgress").prop("disabled", false);
-            $("#fecmRemark").prop("disabled", false);
-        }
-        else {
-            $("#fecmProgress").prop("disabled", true);
-            $("#fecmRemark").prop("disabled", true);
-            $("#submitFCEMBtn").hide();
-        }
+        //if (WNWGStatus == 0) {
+        //    $("#submitFCEMBtn").show();
+        //    $("#fecmProgress").prop("disabled", false);
+        //    $("#fecmRemark").prop("disabled", false);
+        //}
+        //else {
+        //    $("#fecmProgress").prop("disabled", true);
+        //    $("#fecmRemark").prop("disabled", true);
+        //    $("#submitFCEMBtn").hide();
+        //}
 
     });
 
