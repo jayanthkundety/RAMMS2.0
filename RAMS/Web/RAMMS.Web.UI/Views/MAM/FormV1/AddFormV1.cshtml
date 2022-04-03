@@ -1,8 +1,12 @@
-﻿@{
+﻿@model RAMMS.Web.UI.Models.FormV1Model;
+@using RAMMS.Business.ServiceProvider;
+@{
     ViewBag.TabTitle = "INSTRUCTED WORKS";
     ViewData["Title"] = "INSTRUCTED WORKS";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 }
+<link src="~/css/tui-time-picker.min.css" />
+<script src="~/js/tui-time-picker.min.js" asp-append-version="true"></script>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
@@ -11,7 +15,7 @@
                 <div class="form-group mb-0" style="width:400px; float:left">
                     <span style="width:100px;float:left;"> <label for="Form_C1_C2_No_" style="padding: .5rem .5rem 0 !important;">Reference No</label></span>
                     <span style="width:300px; float:left">
-                        <input type="text" class="form-control" />
+                        @Html.TextBoxFor(m => m.FormV1.RefId, new { @Id = "formV1ReferenceNo", @disabled = true, @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
                     </span>
 
                 </div>
@@ -47,16 +51,13 @@
                                                         <div class="row">
                                                             <div class="col-6 form-group pr-lg-0">
                                                                 <label for="RMU">RMU</label>
-                                                                <select class="form-control disableHinput editHdisable validate {required, RMU}" id="formRmu" name="SaveFormQa2Model.Rmu" onchange="bindRoadName()">
-                                                                    <option value="">Select RMU Code</option>
-                                                                    <option value="MRI">MRI-Miri</option>
-                                                                    <option value="BTN">BTN-Batu Niah</option>
-                                                                    <option value="ERI">ERI-ERI</option>
-                                                                </select>
+                                                                @Html.DropDownListFor(Adtl => Adtl.FormV1.Rmu, (IEnumerable
+      <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV1rmu", @class = "form-control validate {required, RMU}" })
+
                                                             </div>
                                                             <div class="form-group col-lg-6 mb-0">
                                                                 <label for="RMU_Name">RMU Name</label>
-                                                                <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                                                @Html.TextBoxFor(m => m.FormV1.RmuName, new { @Id = "formV1rmuDesc", @readonly = "readonly", @class = "form-control" })
                                                             </div>
                                                         </div>
 
@@ -65,24 +66,20 @@
                                                         <div class="row">
                                                             <div class="col-6 form-group px-0">
                                                                 <label for="RMU">Section Code</label>
-                                                                <select class="form-control disableHinput editHdisable validate {required, RMU}" id="formRmu" name="SaveFormQa2Model.Rmu" onchange="bindRoadName()">
-                                                                    <option value="">Select Section Code</option>
-                                                                    <option value="MRI">MRI-Miri</option>
-                                                                    <option value="BTN">BTN-Batu Niah</option>
-                                                                    <option value="ERI">ERI-ERI</option>
-                                                                </select>
+                                                                @Html.DropDownListFor(Ahdr => Ahdr.FormV1.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "formV1SecCode", @class = "form-control validate {required, Section Code}" })
+                                                                @Html.HiddenFor(Ahdr => Ahdr.FormV1.SecCode, new { @id = "hdnSecCode", @class = "form-control" })
+                                                                @Html.HiddenFor(m => m.SecCode, new { @id = "hdnFormV1SecCode", @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-6 mb-0">
                                                                 <label for="RMU_Name">Section Name</label>
-                                                                <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                                                @Html.TextBoxFor(m => m.SecDescription, new { @Id = "formV1SecDesc", @readonly = "readonly", @class = "form-control " })
                                                             </div>
                                                         </div>
 
                                                     </div>
                                                     <div class="col-2 form-group px-0">
                                                         <label for="RMU"> Division Code</label>
-
-                                                        <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                                        @Html.TextBoxFor(m => m.DivisionName, new { @Id = "formV1DivisionDesc", @readonly = "readonly", @class = "form-control " })
                                                     </div>
                                                     <div class="col-lg-5">
 
@@ -90,15 +87,13 @@
 
                                                             <div class="form-group col-lg-6">
                                                                 <label for="Name_of_Crew_Supervisor">Crew</label>
-                                                                <select class="form-control  editHdisable validate" id="formQA2CrewUnit" name="SaveFormQa2Model.CrewSup">
-                                                                    <option value="">Select Users</option>
-                                                                    <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                    <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                </select>
+                                                                @Html.DropDownListFor(Ahdr => Ahdr.FormV1.Crew, (IEnumerable
+        <SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "formV1Crew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
+
                                                             </div>
                                                             <div class="form-group col-lg-6">
                                                                 <label for="Name_of_Crew_Supervisor">Crew Name</label>
-                                                                <input class="form-control" id="formQA2CrewName" name="SaveFormQa2Model.CrewSupName" type="text" value="" disabled="">
+                                                                @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Crewname, "", new { @id = "formV1CrewName", @class = "form-control" })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -106,15 +101,13 @@
                                                         <div class="row">
                                                             <div class="col-lg-6 form-group px-0">
                                                                 <label for="Ref_No_">Activity Code</label>
-                                                                <select class="form-control  editHdisable validate" id="formQA2CrewUnit" name="SaveFormQa2Model.CrewSup">
-                                                                    <option value="">Select Activity Code</option>
-                                                                    <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                    <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                </select>
+                                                                @Html.DropDownListFor(Adtl => Adtl.FormV1.ActCode, (IEnumerable
+    <SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "formV1Activity", @class = "form-control validate {required, Activity}" })
+
                                                             </div>
                                                             <div class="col-lg-6 form-group">
                                                                 <label for="Ref_No_">Activity Name</label>
-                                                                <input type="text" class="form-control validate {required, Reference No.}" readonly="">
+                                                                @Html.TextBoxFor(Dhdr => Dhdr.FormV1.ActName, "", new { @id = "formV1ActName", @class = "form-control" })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -122,7 +115,7 @@
 
                                                     <div class="col-2 form-group px-0">
                                                         <label for="Division_Code">Date </label>
-                                                        <input class="form-control" type="date" value="">
+                                                        @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Dt)
                                                     </div>
                                                 </div>
 
@@ -747,30 +740,41 @@
                                                             <div class="form-group col-lg-7">
                                                                 <div class="row">
                                                                     <div class="col-6">
-                                                                        <label for="RoadCode">Road Code</label>
-                                                                        <select class="form-control">
-                                                                            <option value="">Select Road Code</option>
-                                                                        </select>
+                                                                        @Html.Label("Road Code", "Road Code")
+                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @class = "form-control svalidate {required,Road Code}", @onchange = "OnRoadChange(this);" })
+
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <label for="RoadCode"> Road Name:</label>
-                                                                        <input type="text" class="form-control" disabled placeholder="" />
+                                                                        @Html.Label("Road Name", "Road Name")
+                                                                        @Html.TextBoxFor(m => m.FormV1Dtl.RoadName, new { @readonly = true, @class = "form-control" })
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group col-lg-5">
-                                                                <label for="Chainage_From">
-                                                                    Chainage Location
-                                                                </label>
-                                                                <div class="row">
-                                                                    <div class="col-6 float-left pr-0">
-                                                                        <input autocomplete="off" class="form-control allow_numeric validate {required,number, Chainage From}" id="formDChinageFrom" maxlength="5" name="SaveFormDDetailsModel.FrmCh" rows="1" type="text" value="">
-                                                                    </div>
-                                                                    <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> <label for="z">+</label></div>
-                                                                    <div class="col-5 float-left pl-0">
-                                                                        <input autocomplete="off" class="form-control allow_numeric validate {required,number, Chainage From Deci}" id="formDChinageFromDeci" maxlength="3" name="SaveFormDDetailsModel.FrmChDeci" rows="1" type="text" value="">
+                                                                <div class="form-group col-lg-2 p-0">
+
+                                                                    <label for="RoadCode" class="mb-1">
+                                                                        Chainage 'KM' Location
+                                                                    </label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text" style="height: 35px;">CH</span>
+                                                                        </div>
+                                                                        @Html.TextBoxFor(m => m.FormV1Dtl.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric svalidate {required,Chainage KM from}", style = "height:35px" })
+
                                                                     </div>
                                                                 </div>
+                                                                <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
+                                                                    +
+                                                                </div>
+                                                                <div class="form-group col-lg-2 p-0">
+                                                                    <label for="RoadCode">
+                                                                        Chainage 'M' Location
+                                                                    </label>
+                                                                    @Html.TextBoxFor(m => m.FormV1Dtl.ToChDeci, new { @maxlength = "3", @class = "form-control allow_numeric svalidate {required,Chainage KM from}" })
+
+                                                                </div>
+
                                                             </div>
                                                             <div class="form-group col-lg-7">
                                                                 <div class="row">
@@ -786,7 +790,20 @@
                                                                         <div class="row mt-1">
                                                                             <div class="col">
                                                                                 <select class="form-control px-0 py-2">
-                                                                                    <option value="">8:00</option>
+                                                                                    @{for (int i = 1; i <= 12; i++)
+                                                                                        {
+                                                                                            <option value="@i">@i</option>
+                                                                                        }
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="col">
+                                                                                <select class="form-control px-0 py-2">
+                                                                                    @{for (int i = 0; i <= 59; i++)
+                                                                                        {
+                                                                                            <option value="@i">@i</option>
+                                                                                        }
+                                                                                    }
                                                                                 </select>
                                                                             </div>
                                                                             <div class="col">
@@ -796,9 +813,6 @@
                                                                                 </select>
                                                                             </div>
                                                                         </div>
-
-
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -808,7 +822,7 @@
                                                                 <label for="RoadCode">
                                                                     Remarks
                                                                 </label>
-                                                                <input type="text" class="form-control" placeholder="" />
+                                                                @Html.TextBoxFor(m => m.FormV1Dtl.Remarks, new { @class = "form-control " })
                                                             </div>
                                                         </div>
 
@@ -1202,6 +1216,9 @@
     </div>
 </div>
 
+@Html.HiddenFor(m => m.FormV1Dtl.RoadCode);
+
+
 <style>
 
     .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(2), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(2), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(3), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(3), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(5), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(5) {
@@ -1209,3 +1226,170 @@
         min-width: auto !important;
     }
 </style>
+
+<script>
+
+
+    $("#formV1rmu").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+        $("#formV1rmuDesc").val(val);
+        var req = {};
+        req.Section = '';
+        req.RoadCode = '';
+        req.RMU = $("#formV1rmu option:selected").text().split("-")[1];
+        //RM_div_RMU_Sec_Master
+        $.ajax({
+            url: '/ERT/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                if (data != null) {
+                    $("#formV1SecCode").empty();
+                    $("#formV1SecCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#formV1SecCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    // var hdnRoadcode = $('#hdnRoadcode').val();
+                    $.each(data.section, function (index, v) {
+                        var splittedVal = v.text.split("-")[0];
+                        var editVal = $('#hdnRoadcode').val();
+                        if (splittedVal == editVal) {
+                            $("#formV1SecCode").val(v.value);
+                        }
+                    });
+                    $('#formV1SecCode').trigger("chosen:updated");
+                    $("#formV1SecCode").trigger("change");
+                    document.getElementById("formV1SecDesc").disabled = true;
+                } else {
+                    document.getElementById("formV1SecDesc").disabled = false;
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+
+
+    });
+
+    $("#formV1rmu").trigger("change");
+
+
+    $("#formV1SecCode").on("change", function () {
+        //var d = new Date();
+        var ddldata = $(this).val();
+
+        if (ddldata != "") {
+            $.ajax({
+                url: '/ERT/GetAllRoadCodeDataBySectionCode',
+                dataType: 'JSON',
+                data: { secCode: $("#formV1SecCode option:selected").text().split("-")[0] },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        if (data._RMAllData != undefined && data._RMAllData != null) {
+                            $("#formV1SecDesc").val(data._RMAllData.secName);
+                            $("#hdnformV1SecCode").val($("#formV1SecCode option:selected").text().split("-")[0]);
+                            $("#formV1DivisionDesc").val(data._RMAllData.divisionCode);
+
+                        }
+                        document.getElementById("formV1DivisionDesc").disabled = true;
+                    } else {
+                        document.getElementById("formV1DivisionDesc").disabled = false;
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        }
+        else {
+            $("#formV1SecDesc").val("");
+            $("#formV1DivisionDesc").val("");
+        }
+
+        return false;
+    });
+
+
+    $("#formV1Crew").on("change", function () {
+        var id = $("#formV1Crew option:selected").val();
+        if (id != "99999999" && id != "") {
+            $.ajax({
+                url: '/ERT/GetUserById',
+                dataType: 'JSON',
+                data: { id },
+                type: 'Post',
+                success: function (data) {
+                    $("#formV1CrewName").val(data.userName);
+                    $("#formV1CrewName").prop("disabled", true);
+
+                    //if ($("#FDHRef_No").val() == "0" || $("#FDHRef_No").val() == "") {
+
+                    //var text = "ERT/Form D/" + $("#formDroadCode").val() + "/" + month + "/" + maxcount + "-" + year
+                    SetReferenceId();
+                    //}
+                },
+                error: function (data) {
+                    console.error(data);
+                }
+            });
+        }
+        else if (id == "99999999") {
+            $("#formV1CrewName").prop("disabled", false);
+            $("#formV1CrewName").val('');
+        }
+        else {
+            $("#formV1CrewName").prop("disabled", true);
+            $("#formV1CrewName").val('');
+        }
+
+        return false;
+    });
+
+    $("#formV1Crew").trigger("change");
+
+
+
+    function OnRoadChange(tis) {
+
+        var ctrl = $("#ddlRoadCode");
+        $('#FormV1Dtl_RoadCode').val(ctrl.val());
+
+        if (ctrl.find("option:selected").attr("fromkm") != undefined)
+            $("#FormV1Dtl_FrmCh").val(ctrl.find("option:selected").attr("fromkm"));
+        else
+            $("#FormV1Dtl_FrmCh").val(ctrl.find("option:selected").attr("Item1"));
+
+        if (ctrl.find("option:selected").attr("fromm") != undefined)
+            $("#FormV1Dtl_ToChDeci").val(ctrl.find("option:selected").attr("fromm"));
+        else
+            $("#FormV1Dtl_ToChDeci").val(ctrl.find("option:selected").attr("Item2"));
+
+        var obj = new Object();
+        obj.TypeCode = ctrl.val();
+        obj.Type = "RD_Code";
+        getNameByCode(obj)
+
+    }
+
+    function getNameByCode(obj) {
+        $.ajax({
+            url: '/InstructedWorks/GetNameByCode',
+            data: obj,
+            type: 'Post',
+            success: function (data) {
+
+                if (obj.Type == "RD_Code") {
+                    $("#FormV1Dtl_RoadName").val(data);
+                }
+            }
+        })
+    }
+
+
+</script>

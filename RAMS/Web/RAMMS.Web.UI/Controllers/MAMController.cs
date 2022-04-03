@@ -15,6 +15,7 @@ using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.Repository.Interfaces;
+using System.Linq;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -26,6 +27,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormQa2Service _formQa2Service;
         private readonly IFormQa2Repository _mAMQA2Repository;
         private readonly IFormV1Service _formV1Service;
+        private readonly IFormDService _formDService;
 
         private readonly IBridgeBO _bridgeBO;
         private readonly IDDLookupBO _dDLookupBO;
@@ -43,7 +45,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IFormS1Service _formS1Service;
-      
+
 
         public MAMController(IDDLookupBO _ddLookupBO,
         IFormABO _FormABO,
@@ -55,7 +57,8 @@ namespace RAMMS.Web.UI.Controllers
         IFormQa2Service formQa2Service,
         IFormS2Service formS2Service,
         IFormS1Service formS1Service,
-        IFormV1Service _formV1Service,
+        IFormV1Service formV1Service,
+        IFormDService formDService,
         ISecurity security,
         ILogger logger, IRoadMasterService roadMaster, IUserService userService, IWebHostEnvironment webhostenvironment,
         IBridgeBO bridgeBO, IFormQa2Repository mAMQA2Repository)
@@ -70,7 +73,8 @@ namespace RAMMS.Web.UI.Controllers
             _formJService = formJServices ?? throw new ArgumentNullException(nameof(formJServices));
             _formQa2Service = formQa2Service ?? throw new ArgumentNullException(nameof(formQa2Service));
             _formS1Service = formS1Service ?? throw new ArgumentNullException(nameof(formS1Service));
-            _formV1Service = _formV1Service ?? throw new ArgumentNullException(nameof(_formV1Service));
+            _formV1Service = formV1Service ?? throw new ArgumentNullException(nameof(formV1Service));
+            _formDService = formDService ?? throw new ArgumentNullException(nameof(formDService));
             _webHostEnvironment = webhostenvironment;
             _bridgeBO = bridgeBO;
             _mAMQA2Repository = mAMQA2Repository;
@@ -179,7 +183,7 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "SP";
             ViewData["Service Provider"] = await _ddLookupService.GetDdLookup(ddLookup);
 
-           
+
             ViewData["Users"] = _userService.GetUserSelectList(null);
 
 
@@ -216,7 +220,7 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoadFormN1List(DataTableAjaxPostModel<FormN1SearchGridDTO> formNFilter) 
+        public async Task<IActionResult> LoadFormN1List(DataTableAjaxPostModel<FormN1SearchGridDTO> formNFilter)
         {
             string searchByDate = "", years = "", day = "", month = "";
             if (Request.Form.ContainsKey("columns[0][search][value]"))
@@ -267,7 +271,7 @@ namespace RAMMS.Web.UI.Controllers
             FilteredPagingDefinition<FormN1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormN1SearchGridDTO>();
             filteredPagingDefinition.Filters = formNFilter.filterData;
             filteredPagingDefinition.RecordsPerPage = formNFilter.length;
-            filteredPagingDefinition.StartPageNo = formNFilter.start; 
+            filteredPagingDefinition.StartPageNo = formNFilter.start;
 
             if (formNFilter.order != null)
             {
@@ -299,7 +303,7 @@ namespace RAMMS.Web.UI.Controllers
             DateTime dt = Convert.ToDateTime(issueDate);
             month = string.IsNullOrEmpty(dt.ToString()) ? 0 : dt.Month;
             year = string.IsNullOrEmpty(dt.ToString()) ? 0 : dt.Year;
-          
+
             (_id, isExist) = this._formN1Service.CheckExistence(roadCode, month, year);
             if (refId == 0)
             {
@@ -458,7 +462,7 @@ namespace RAMMS.Web.UI.Controllers
                 refNo = int.Parse(saveObj.No.ToString());
             }
             var result = new { refNo, errorMessage };
-           
+
             return Json(result);
         }
 
@@ -479,7 +483,7 @@ namespace RAMMS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> GetUsers(string rmu)
         {
-            
+
             var obj = _userService.GetUserSelectList(null);
             return Json(obj);
         }
@@ -542,7 +546,7 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoadFormN2List(DataTableAjaxPostModel<FormN2SearchGridDTO> formNFilter) 
+        public async Task<IActionResult> LoadFormN2List(DataTableAjaxPostModel<FormN2SearchGridDTO> formNFilter)
         {
             string searchByDate = "", years = "", day = "", month = "";
 
@@ -679,7 +683,7 @@ namespace RAMMS.Web.UI.Controllers
                 RowsAffected = await _formN2Service.UpdateFormN2Async(saveRequestObj);
                 refNo = int.Parse(saveObj.No.ToString());
             }
-            
+
             return Json(refNo);
         }
 
@@ -695,7 +699,7 @@ namespace RAMMS.Web.UI.Controllers
         #region "Form QA2"
 
         [HttpPost]
-        public async Task<IActionResult> LoadQA2List(DataTableAjaxPostModel<FormQa2SearchGridDTO> formFilter) 
+        public async Task<IActionResult> LoadQA2List(DataTableAjaxPostModel<FormQa2SearchGridDTO> formFilter)
         {
             if (Request.Form.ContainsKey("columns[0][search][value]"))
             {
@@ -755,7 +759,7 @@ namespace RAMMS.Web.UI.Controllers
 
         public IActionResult FormS1()
         {
-           // return View("~/Views/MAM/FormS1/OLD_FormS1.cshtml");
+            // return View("~/Views/MAM/FormS1/OLD_FormS1.cshtml");
             return View("~/Views/MAM/FormS1/FormS1.cshtml");
         }
 
@@ -770,7 +774,7 @@ namespace RAMMS.Web.UI.Controllers
             bool isDelete = _security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work);
             var grid = new Models.CDataTable() { Name = "tblHeaderGrid", APIURL = "/MAM/QA2LoadHeaderList", LeftFixedColumn = 1, IsDelete = isDelete, IsModify = isModify };
             grid.Columns.Add(new CDataColumns() { data = null, title = "Action", sortable = false, render = "mAMQA2.ActionRender", className = "headcol" });
-            
+
             grid.Columns.Add(new CDataColumns() { data = "RefID", title = "Reference No" });
             grid.Columns.Add(new CDataColumns() { data = "RMU", title = "RMU" });
             grid.Columns.Add(new CDataColumns() { data = "RoadCode", title = "Road Code" });
@@ -788,7 +792,7 @@ namespace RAMMS.Web.UI.Controllers
             return Json(RowsAffected);
 
         }
-     
+
         [HttpPost]
         public async Task<IActionResult> QA2LoadHeaderList(DataTableAjaxPostModel searchData)
         {
@@ -815,7 +819,7 @@ namespace RAMMS.Web.UI.Controllers
             string refNo = "";
 
             (int id, bool isExist) lastSNo = await _formQa2Service.CheckExistence(roadCode, rmu, month, year);
-           
+
             refNo = $"MM/FORM QA2/{rmu}/{roadCode}/{month}-{year}/{lastSNo.id + (lastSNo.isExist ? 0 : 1)}";
             return Json(new { reference = refNo, headerNo = lastSNo.id, isExists = lastSNo.isExist });
         }
@@ -826,7 +830,7 @@ namespace RAMMS.Web.UI.Controllers
             FilteredPagingDefinition<FormQa2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormQa2SearchGridDTO>();
             filteredPagingDefinition.Filters = searchData.filterData;
             filteredPagingDefinition.RecordsPerPage = searchData.length;
-            filteredPagingDefinition.StartPageNo = searchData.start; 
+            filteredPagingDefinition.StartPageNo = searchData.start;
             var result = await _formQa2Service.GetFilteredFormQa2DetailsGrid(filteredPagingDefinition).ConfigureAwait(false);
             return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
 
@@ -877,16 +881,16 @@ namespace RAMMS.Web.UI.Controllers
                 return Json(new
                 {
 
-                   
+
                     ActCode = result.FsidActCode,
                     ChainageFrom = result.FsidFrmChKm,
                     ChainageFromDec = result.FsidFrmChM,
                     ChainageTo = result.FsidToChKm,
                     ChainageToDec = result.FsidToChM,
-                   
+
                 });
             }
-            
+
         }
 
         [HttpPost]
@@ -919,37 +923,40 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/MAM/FormV1/FormV1.cshtml");
         }
 
-        [HttpPost]
+        //  [HttpPost]
         public async Task<IActionResult> LoadFormV1List(DataTableAjaxPostModel<FormV1SearchGridDTO> formV1Filter)
         {
 
-            if (Request.Form.ContainsKey("columns[0][search][value]"))
+            if (formV1Filter.filterData != null)
             {
-                formV1Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[1][search][value]"))
-            {
-                formV1Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[2][search][value]"))
-            {
-                formV1Filter.filterData.Section_Code = Request.Form["columns[2][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[3][search][value]"))
-            {
-                formV1Filter.filterData.Crew_Supervisor = Request.Form["columns[3][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[4][search][value]"))
-            {
-                formV1Filter.filterData.Activity_Code = Request.Form["columns[4][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[5][search][value]"))
-            {
-                formV1Filter.filterData.DateFrom = Request.Form["columns[5][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[6][search][value]"))
-            {
-                formV1Filter.filterData.DateFrom = Request.Form["columns[6][search][value]"].ToString();
+                if (Request.Form.ContainsKey("columns[0][search][value]"))
+                {
+                    formV1Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+                }
+                if (Request.Form.ContainsKey("columns[1][search][value]"))
+                {
+                    formV1Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
+                }
+                if (Request.Form.ContainsKey("columns[2][search][value]"))
+                {
+                    formV1Filter.filterData.Section_Code = Request.Form["columns[2][search][value]"].ToString();
+                }
+                if (Request.Form.ContainsKey("columns[3][search][value]"))
+                {
+                    formV1Filter.filterData.Crew_Supervisor = Request.Form["columns[3][search][value]"].ToString();
+                }
+                if (Request.Form.ContainsKey("columns[4][search][value]"))
+                {
+                    formV1Filter.filterData.Activity_Code = Request.Form["columns[4][search][value]"].ToString();
+                }
+                if (Request.Form.ContainsKey("columns[5][search][value]"))
+                {
+                    formV1Filter.filterData.DateFrom = Request.Form["columns[5][search][value]"].ToString();
+                }
+                if (Request.Form.ContainsKey("columns[6][search][value]"))
+                {
+                    formV1Filter.filterData.DateFrom = Request.Form["columns[6][search][value]"].ToString();
+                }
             }
 
             FilteredPagingDefinition<FormV1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1SearchGridDTO>();
@@ -968,6 +975,30 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formV1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
+
+
+
+        public async Task<IActionResult> AddFormV1(int id, int view)
+        {
+
+            ViewData["RMU"] = await _formDService.GetRMU();
+
+            ViewData["Division"] = await _formDService.GetDivisions();
+
+            FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+            ViewData["SectionCodeList"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+
+            base.LoadLookupService(GroupNameList.Supervisor, GroupNameList.OperationsExecutive, GroupNameList.OpeHeadMaintenance, GroupNameList.JKRSSuperiorOfficerSO);
+
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "Act-FormD";
+            ViewData["ActCode"] = await _ddLookupService.GetLookUpCodeText(ddLookup);
+
+            LoadLookupService("RD_Code");
+
+
+            return View("~/Views/MAM/FormV1/AddFormV1.cshtml");
+        }
 
         #endregion
 

@@ -128,7 +128,7 @@
 
                 <div class="w-100 float-left position-relative">
                     <div class="grid-btns">
-                        <button type="button" class="btn btn-sm btn-themebtn"><span class="add-icon"></span> Add Form V1</button>
+                        <button type="button" class="btn btn-sm btn-themebtn" onclick="AddFormV1(0,0)"><span class="add-icon"></span> Add Form V1</button>
                     </div>
                     <div id="headerListGrid" class="w-100 dt-tbl-section">
                         @{
@@ -144,3 +144,9 @@
     </div>
 
 </div>
+
+<script>
+    function AddFormV1(pid, view) {
+        window.location = "/MAM/AddFormV1" +"?id=" + pid + "&view=" + view;
+    }
+</script>

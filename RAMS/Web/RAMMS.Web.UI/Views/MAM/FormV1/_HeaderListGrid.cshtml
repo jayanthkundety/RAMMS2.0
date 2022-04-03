@@ -29,7 +29,7 @@
     var ActivityCodeCol = { data: "actCode", name: "ActivityCode", title: "Activity Code", autoWidth: true, sortable: true };
     var SectionCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
     var crewCol = { data: "crew", name: "Crew", title: "Crew Supervisor", autoWidth: true, sortable: true };
-    var DtCol = { data: "Dt", name: "Date", title: "Date", autoWidth: true, sortable: true };
+    var DtCol = { data: "dt", name: "Date", title: "Date", autoWidth: true, sortable: true };
    
 
     var submitStsCol = { data: "processStatus", name: "Status", title: "Status", autoWidth: true, sortable: true };
@@ -62,7 +62,7 @@
 
         $('#FormDGridView').DataTable({
             ajax: {
-                url: "/MAM/LoadFormDList",
+                url: "/MAM/LoadFormV1List",
                 type: "POST",
                 datatype: "json",
                 data: {
@@ -77,7 +77,7 @@
         InitializeGrid();
 
         //Apply Custom search on jQuery DataTables here
-        oTable = $('#FormDGridView').DataTable();
+        oTable = $('#FormV1GridView').DataTable();
         $('#formDSearchBtn').click(function () {
             oTable.columns(0).search($("#FormDSmartSearch").val().trim());
             oTable.columns(1).search($("#formDDetSrchRMU").val().trim());

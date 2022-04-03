@@ -9,47 +9,49 @@ namespace RAMMS.DTO.ResponseBO
     public class FormV1ResponseDTO
     {
 
-        public int Fv1hPkRefNo { get; set; }
-        public int? Fv1hContNo { get; set; }
-        public string Fv1hRmu { get; set; }
-        public string Fv1hSecCode { get; set; }
-        public string Fv1hSecName { get; set; }
-        public string Fv1hDivCode { get; set; }
-        public string Fv1hDivName { get; set; }
-        public string Fv1hRefId { get; set; }
-        public string Fv1hCrew { get; set; }
-        public string Fv1hCrewname { get; set; }
-        public string Fv1hActCode { get; set; }
-        public string Fv1hActName { get; set; }
-        public DateTime? Fv1hDt { get; set; }
-        public bool? Fv1hSignSch { get; set; }
-        public string Fv1hUseridSch { get; set; }
-        public string Fv1hUsernameSch { get; set; }
-        public string Fv1hDesignationSch { get; set; }
-        public DateTime? Fv1hDtSch { get; set; }
-        public bool? Fv1hSignAgr { get; set; }
-        public string Fv1hUseridAgr { get; set; }
-        public string Fv1hUsernameAgr { get; set; }
-        public string Fv1hDesignationAgr { get; set; }
-        public DateTime? Fv1hDtAgr { get; set; }
-        public bool? Fv1hSignAck { get; set; }
-        public string Fv1hUseridAck { get; set; }
-        public string Fv1hUsernameAck { get; set; }
-        public string Fv1hDesignationAck { get; set; }
-        public DateTime? Fv1hDtAck { get; set; }
-        public string Fv1hServiceProvider { get; set; }
-        public string Fv1hVerifier { get; set; }
-        public string Fv1hFacilitator { get; set; }
-        public string Fv1hRemarks { get; set; }
-        public string Fv1hModBy { get; set; }
-        public DateTime? Fv1hModDt { get; set; }
-        public string Fv1hCrBy { get; set; }
-        public DateTime? Fv1hCrDt { get; set; }
-        public bool Fv1hSubmitSts { get; set; }
-        public bool Fv1hActiveYn { get; set; }
-        public string Fv1hStatus { get; set; }
-        public string Fv1hAuditLog { get; set; }
-        public virtual ICollection<RmFormV1Dtl> RmFormV1Dtl { get; set; }
+        public int PkRefNo { get; set; }
+        public int? ContNo { get; set; }
+        public string Rmu { get; set; }
+        public string RmuName { get; set; }
+        public string SecCode { get; set; }
+        public string SecName { get; set; }
+        public string DivCode { get; set; }
+        public string DivName { get; set; }
+        public string RefId { get; set; }
+        public string Crew { get; set; }
+        public string Crewname { get; set; }
+        public string ActCode { get; set; }
+        public string ActName { get; set; }
+        public DateTime? Dt { get; set; }
+        public bool? SignSch { get; set; }
+        public string UseridSch { get; set; }
+        public string UsernameSch { get; set; }
+        public string DesignationSch { get; set; }
+        public DateTime? DtSch { get; set; }
+        public bool? SignAgr { get; set; }
+        public string UseridAgr { get; set; }
+        public string UsernameAgr { get; set; }
+        public string DesignationAgr { get; set; }
+        public DateTime? DtAgr { get; set; }
+        public bool? SignAck { get; set; }
+        public string UseridAck { get; set; }
+        public string UsernameAck { get; set; }
+        public string DesignationAck { get; set; }
+        public DateTime? DtAck { get; set; }
+        public string ServiceProvider { get; set; }
+        public string Verifier { get; set; }
+        public string Facilitator { get; set; }
+        public string Remarks { get; set; }
+        public string ModBy { get; set; }
+        public DateTime? ModDt { get; set; }
+        public string CrBy { get; set; }
+        public DateTime? CrDt { get; set; }
+        public bool SubmitSts { get; set; }
+        public bool ActiveYn { get; set; }
+        public string Status { get; set; }
+        public string AuditLog { get; set; }
+
+        //   public virtual ICollection<RmFormV1Dtl> RmFormV1Dtl { get; set; }
 
     }
 }

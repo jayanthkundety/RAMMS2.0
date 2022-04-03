@@ -26,10 +26,7 @@ namespace RAMMS.Repository
         {
             List<RmFormV1Hdr> result = new List<RmFormV1Hdr>();
             var query = (from x in _context.RmFormV1Hdr
-                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv1hRmu || s.DdlTypeDesc == x.Fv1hRmu))
-                         let div= _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv1hSecCode)
-                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv1hSecCode || s.DdlTypeCode == x.Fv1hSecCode))
-                         select new { rmu, sec, x ,div});
+                         select new { x });
 
 
 
@@ -37,31 +34,31 @@ namespace RAMMS.Repository
             if (filterOptions.Filters != null)
             {
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.Section_Code))
-                {
-                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section_Code || x.sec.DdlTypeCode == filterOptions.Filters.Section_Code);
-                }
+                //if (!string.IsNullOrEmpty(filterOptions.Filters.Section_Code))
+                //{
+                //    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section_Code || x.sec.DdlTypeCode == filterOptions.Filters.Section_Code);
+                //}
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
-                {
-                    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
-                }
+                //if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+                //{
+                //    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                //}
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew_Supervisor))
-                {
-                    query = query.Where(x => x.x.Fv1hCrew  == filterOptions.Filters.Crew_Supervisor);
-                }
+                //if (!string.IsNullOrEmpty(filterOptions.Filters.Crew_Supervisor))
+                //{
+                //    query = query.Where(x => x.x.Fv1hCrew == filterOptions.Filters.Crew_Supervisor);
+                //}
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
-                {
-                    query = query.Where(x => x.x.Fv1hRmu.Contains(filterOptions.Filters.SmartInputValue)
-                                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
-                                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
-                                        || x.x.Fv1hCrew.Contains(filterOptions.Filters.SmartInputValue)
-                                        || x.x.Fv1hRefId.Contains(filterOptions.Filters.SmartInputValue)
-                                        );
+                //if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+                //{
+                //    query = query.Where(x => x.x.Fv1hRmu.Contains(filterOptions.Filters.SmartInputValue)
+                //                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                //                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                //                        || x.x.Fv1hCrew.Contains(filterOptions.Filters.SmartInputValue)
+                //                        || x.x.Fv1hRefId.Contains(filterOptions.Filters.SmartInputValue)
+                //                        );
 
-                }
+                //}
             }
 
 
@@ -73,7 +70,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 2)
                     query = query.OrderBy(x => x.x.Fv1hRmu);
                 if (filterOptions.ColumnIndex == 3)
-                    query = query.OrderBy(x => x.div.RdsmDivision);
+                  //  query = query.OrderBy(x => x.div.RdsmDivision);
                 if (filterOptions.ColumnIndex == 4)
                     query = query.OrderBy(x => x.x.Fv1hActCode);
                 if (filterOptions.ColumnIndex == 5)
@@ -82,7 +79,7 @@ namespace RAMMS.Repository
                     query = query.OrderBy(x => x.x.Fv1hCrew);
                 if (filterOptions.ColumnIndex == 7)
                     query = query.OrderBy(x => x.x.Fv1hDt);
- 
+
             }
             else if (filterOptions.sortOrder == SortOrder.Descending)
             {
@@ -91,7 +88,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 2)
                     query = query.OrderByDescending(x => x.x.Fv1hRmu);
                 if (filterOptions.ColumnIndex == 3)
-                    query = query.OrderByDescending(x => x.div.RdsmDivision);
+                 //   query = query.OrderByDescending(x => x.div.RdsmDivision);
                 if (filterOptions.ColumnIndex == 4)
                     query = query.OrderByDescending(x => x.x.Fv1hActCode);
                 if (filterOptions.ColumnIndex == 5)
