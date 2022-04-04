@@ -19,7 +19,7 @@
     }
 }
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
-@section Scripts{
+@*section Scripts{*@
     <script type="text/javascript" src="~/assets/js/Views/FormC1C2.js" asp-append-version="true"></script>
     @if (Model != null)
     {
@@ -242,7 +242,7 @@
             $("#photoType").val("").trigger("change").trigger("chosen:updated");
         }
     </script>
-}
+//}
 @{
     Html.RenderPartial("_breadcrumb", new BreadCrumb()
     {

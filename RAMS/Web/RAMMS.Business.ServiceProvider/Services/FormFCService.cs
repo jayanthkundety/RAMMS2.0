@@ -14,6 +14,7 @@ using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.Report;
 using ClosedXML.Excel;
 using System.IO;
+using RAMMS.DTO.RequestBO;
 
 namespace RAMMS.Business.ServiceProvider.Services
 {
@@ -24,13 +25,17 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IAssetRepository _asset;
         private readonly IRoadMasterRepository _roadMaster;
         private readonly IDDLookUpRepository _lookup;
-        public FormFCService(IFormFCRepository repo, IAssetRepository asset, IRoadMasterRepository roadMaster, IDDLookUpRepository lookup, IMapper mapper)
+        private readonly IProcessService processService;
+        public FormFCService(IFormFCRepository repo, IAssetRepository asset, 
+            IRoadMasterRepository roadMaster, IDDLookUpRepository lookup, 
+            IMapper mapper, IProcessService proService)
         {
             _repo = repo;
             _mapper = mapper;
             _asset = asset;
             _roadMaster = roadMaster;
             _lookup = lookup;
+            processService = proService;
         }
         public async Task<FormFCDTO> FindByHeaderID(int headerId)
         {
@@ -110,9 +115,21 @@ namespace RAMMS.Business.ServiceProvider.Services
         public async Task<FormFCDTO> Save(FormFCDTO frmFC, bool updateSubmit)
         {
             RmFormFcInsHdr header = _mapper.Map<RmFormFcInsHdr>(frmFC);
-
-            header = await _repo.Save(header, updateSubmit);
-            frmFC = _mapper.Map<FormFCDTO>(header);
+            header.FcihStatus = "Open";
+            RmFormFcInsHdr source = await _repo.Save(header, updateSubmit);
+            if (source != null && source.FcihSubmitSts)
+            {
+                int result = this.processService.Save(new ProcessDTO()
+                {
+                    ApproveDate = new System.DateTime?(System.DateTime.Now),
+                    Form = "FormFC",
+                    IsApprove = true,
+                    RefId = source.FcihPkRefNo,
+                    Remarks = "",
+                    Stage = source.FcihStatus
+                }).Result;
+            }
+            frmFC = _mapper.Map<FormFCDTO>(source);
             return frmFC;
         }
         public async Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData)

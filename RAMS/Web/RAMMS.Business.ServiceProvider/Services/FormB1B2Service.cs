@@ -22,12 +22,18 @@ namespace RAMMS.Business.ServiceProvider.Services
     public class FormB1B2Service : IFormB1B2Service
     {
         private readonly IRepositoryUnit _repoUnit;
-        private readonly IMapper _mapper; private readonly ISecurity _security;
+        private readonly IMapper _mapper; 
+        private readonly ISecurity _security;
+        private readonly IProcessService processService;
+
         public FormB1B2Service(IRepositoryUnit repoUnit,
-            IMapper mapper, ISecurity security)
+            IMapper mapper, ISecurity security, IProcessService proService)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); _security = security ?? throw new ArgumentNullException(nameof(security));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); 
+            _security = security ?? throw new ArgumentNullException(nameof(security));
+            this._security = security ?? throw new ArgumentNullException(nameof(security));
+            this.processService = proService;
         }
         public long LastHeaderInsertedNo()
         {
@@ -55,6 +61,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 bool isAdd = false;
                 var form = _mapper.Map<Domain.Models.RmFormB1b2BrInsHdr>(model);
+                form.FbrihStatus = "Open";
                 form.FbrihActiveYn = true;
                 if (form.FbrihPkRefNo != 0)
                 {
@@ -77,28 +84,35 @@ namespace RAMMS.Business.ServiceProvider.Services
                     _repoUnit.FormB1B2HeaderRepository.Create(form);
                 }
                 await _repoUnit.CommitAsync();
+                if (form != null && form.FbrihSubmitSts)
+                {
+                    int result = this.processService.Save(new ProcessDTO()
+                    {
+                        ApproveDate = new System.DateTime?(System.DateTime.Now),
+                        Form = "FormB1B2",
+                        IsApprove = true,
+                        RefId = form.FbrihPkRefNo,
+                        Remarks = "",
+                        Stage = form.FbrihStatus
+                    }).Result;
+                }
                 if (form.FbrihPkRefNo > 0)
                 {
-                    var detail = _mapper.Map<Domain.Models.RmFormB1b2BrInsDtl>(model.Detail);
-                    detail.FbridActiveYn = true;
-                    detail.FbridFbrihPkRefNo = form.FbrihPkRefNo;
-                    if (detail.FbridPkRefNo == 0)
-                    {
-                        _repoUnit.FormB1B2DetailRepository.Create(detail);
-                    }
+                    RmFormB1b2BrInsDtl entity = this._mapper.Map<RmFormB1b2BrInsDtl>(model.Detail);
+                    entity.FbridActiveYn = new bool?(true);
+                    entity.FbridFbrihPkRefNo = new int?(form.FbrihPkRefNo);
+                    if (entity.FbridPkRefNo == 0)
+                        _repoUnit.FormB1B2DetailRepository.Create(entity);
                     else
-                    {
-                        _repoUnit.FormB1B2DetailRepository.Update(detail);
-                    }
+                        _repoUnit.FormB1B2DetailRepository.Update(entity);
                 }
                 if (isAdd)
                 {
-                    IDictionary<string, string> lstData = new Dictionary<string, string>();
-                    lstData.Add("AssetID", model.DisplayAssetId);
-                    lstData.Add("Year", form.FbrihYearOfInsp.ToString());
-                    //lstData.Add("RatingRecord", form.FbrihRecordNo.ToString());
-                    lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(form.FbrihPkRefNo));
-                    form.FbrihCInspRefNo = FormRefNumber.GetRefNumber(FormType.FormB1B2, lstData);
+                    IDictionary<string, string> values = new Dictionary<string, string>();
+                    values.Add("AssetID", model.DisplayAssetId);
+                    values.Add("Year", form.FbrihYearOfInsp.ToString());
+                    values.Add("????", Utility.ToString((object)form.FbrihPkRefNo));
+                    form.FbrihCInspRefNo = FormRefNumber.GetRefNumber(FormType.FormB1B2, values);
                 }
                 await _repoUnit.CommitAsync();
                 return form.FbrihPkRefNo;

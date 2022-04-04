@@ -323,15 +323,15 @@
                 </div>
 
                 @{
-                    if (ViewBag.IsEdit)
-                    {
+                    //if (ViewBag.IsEdit)
+                    //{
                         Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
                         {
                             Form = "FormFC",
                             RefId = RefNo,
                             Stage = formStatus
                         });
-                    }
+                    //}
                 }
             </div>
 

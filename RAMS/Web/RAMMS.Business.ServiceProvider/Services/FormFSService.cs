@@ -19,10 +19,14 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IRepositoryUnit _repoUnit;
         private readonly IMapper _mapper;
         private readonly ISecurity _security;
-        public FormFSService(IRepositoryUnit repoUnit, IMapper mapper, ISecurity security)
+        private readonly IProcessService processService;
+        public FormFSService(IRepositoryUnit repoUnit, IMapper mapper, 
+            ISecurity security,  IProcessService proService)
         {
-            _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit)); _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit)); 
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _security = security ?? throw new ArgumentNullException(nameof(security));
+            processService = proService;
         }
         public long LastHeaderInsertedNo()
         {
@@ -48,7 +52,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 bool IsAdd = false;
                 var form = _mapper.Map<Domain.Models.RmFormFsInsHdr>(model);
-
+                form.FshStatus = "Open";
                 var road = _repoUnit.RoadmasterRepository.FindAll(s => s.RdmRdCode == form.FshRoadCode).FirstOrDefault();
                 if (road != null)
                 {
@@ -77,6 +81,18 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     _repoUnit.FormFSDetailRepository.BulkInsert(form.FshPkRefNo, _security.UserID, form);
                 }
+                if (form != null && form.FshSubmitSts)
+                {
+                    int result = this.processService.Save(new ProcessDTO()
+                    {
+                        ApproveDate = new System.DateTime?(System.DateTime.Now),
+                        Form = "FormFS",
+                        IsApprove = true,
+                        RefId = form.FshPkRefNo,
+                        Remarks = "",
+                        Stage = form.FshStatus
+                    }).Result;
+                }
                 return form.FshPkRefNo;
             }
             catch (Exception ex) { await _repoUnit.RollbackAsync(); throw ex; }
@@ -87,7 +103,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 bool IsAdd = false;
                 var form = _mapper.Map<Domain.Models.RmFormFsInsHdr>(model);
-
+                form.FshStatus = "Open";
                 var exists = _repoUnit.FormFSHeaderRepository.Find(s => s.FshActiveYn == true && s.FshYearOfInsp == model.YearOfInsp && s.FshRoadCode == model.RoadCode);
                 if (exists != null)
                     return exists.FshPkRefNo;
@@ -119,6 +135,18 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (IsAdd)
                 {
                     _repoUnit.FormFSDetailRepository.BulkInsert(form.FshPkRefNo, _security.UserID, form);
+                }
+                if (form != null && form.FshSubmitSts)
+                {
+                    int result = this.processService.Save(new ProcessDTO()
+                    {
+                        ApproveDate = new System.DateTime?(System.DateTime.Now),
+                        Form = "FormFS",
+                        IsApprove = true,
+                        RefId = form.FshPkRefNo,
+                        Remarks = "",
+                        Stage = form.FshStatus
+                    }).Result;
                 }
                 return form.FshPkRefNo;
             }
