@@ -23,7 +23,7 @@ namespace RAMMS.DTO.ResponseBO
         public string LabourDesc { get; set; }
 
         [MapTo("FdldLabQty")]
-        public int? Quantity { get; set; }
+        public decimal? Quantity { get; set; }
 
         [MapTo("FdldLabUnit")]
         public string Unit { get; set; }

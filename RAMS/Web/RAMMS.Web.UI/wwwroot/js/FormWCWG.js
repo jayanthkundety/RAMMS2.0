@@ -336,10 +336,10 @@ function GetImageList(id, form) {
     debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
-        $("#fw1IWRefNo").val(id);
+        $("#fw1PKRefNo").val(id);
     }
     else {
-        id = $("#fw1IWRefNo").val();
+        id = $("#fw1PKRefNo").val();
     }
     $.ajax({
         url: '/InstructedWorks/GetIWImageList',

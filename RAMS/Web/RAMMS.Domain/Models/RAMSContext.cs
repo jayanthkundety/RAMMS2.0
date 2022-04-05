@@ -5281,7 +5281,9 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FdldLabQty).HasColumnName("FDLD_LAB_QTY");
+                entity.Property(e => e.FdldLabQty)
+                    .HasColumnName("FDLD_LAB_QTY")
+                    .HasColumnType("decimal(6, 3)");
 
                 entity.Property(e => e.FdldLabUnit)
                     .HasColumnName("FDLD_LAB_Unit")

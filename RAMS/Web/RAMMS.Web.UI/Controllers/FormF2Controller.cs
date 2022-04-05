@@ -199,27 +199,29 @@ namespace RAMMS.Web.UI.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<int> SaveHeader(FormF2HeaderRequestDTO model)
-        {
-            int response;
-            if (model.SubmitSts)
-            {
-                //var list = await formF2Service.GetF2DetailList(model.PkRefNo);
-                //if (list.All(x => x.GrCondition1 != null || x.GrCondition2 != null || x.GrCondition3 != null))
-                //{
-                response = await formF2Service.SaveHeader(model);
-                return response;
-                //}
-                //else
-                //{
-                //    return 0;
-                //}
-            }
-            else
-            {
-                return await formF2Service.SaveHeader(model);
-            }
-        }
+        /// 
+        public async Task<int> SaveHeader(FormF2HeaderRequestDTO model) => model.SubmitSts ? await this.formF2Service.SaveHeader(model) : await this.formF2Service.SaveHeader(model);
+        //public async Task<int> SaveHeader(FormF2HeaderRequestDTO model)
+        //{
+        //    int response;
+        //    if (model.SubmitSts)
+        //    {
+        //        //var list = await formF2Service.GetF2DetailList(model.PkRefNo);
+        //        //if (list.All(x => x.GrCondition1 != null || x.GrCondition2 != null || x.GrCondition3 != null))
+        //        //{
+        //        response = await formF2Service.SaveHeader(model);
+        //        return response;
+        //        //}
+        //        //else
+        //        //{
+        //        //    return 0;
+        //        //}
+        //    }
+        //    else
+        //    {
+        //        return await formF2Service.SaveHeader(model);
+        //    }
+        //}
         /// <summary>
         /// To Remove Header
         /// </summary>

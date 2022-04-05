@@ -11,6 +11,7 @@
             post.RmuName = $("#selRMU option:selected").attr("cvalue");
             GetResponseValue("FindDetails", "FormFD", FormValueCollection("#frmFDHeaderInformation", post), function (data) {
                 if (data && !data._error) {
+                    debugger;
                     $("[finddetailhide]").hide();
                     $("#selRoadCode,#formFDInsYear").prop("disabled", true).trigger("chosen:updated");
                     tis.HeaderData = data;

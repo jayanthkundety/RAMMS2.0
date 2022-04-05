@@ -19,7 +19,7 @@
     }
 }
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
-@section Scripts{
+@*section Scripts{*@
     <script type="text/javascript" src="~/assets/js/Views/FormC1C2.js" asp-append-version="true"></script>
     @if (Model != null)
     {
@@ -242,7 +242,7 @@
             $("#photoType").val("").trigger("change").trigger("chosen:updated");
         }
     </script>
-}
+//}
 @{
     Html.RenderPartial("_breadcrumb", new BreadCrumb()
     {
@@ -1008,14 +1008,14 @@
 
             <div class="modal-footer float-left w-100">
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmC1C2.Cancel()">Cancel</button>
-                @if (Model != null && !Model.SubmitSts)
-                {
+                @*@if (Model != null && !Model.SubmitSts)
+                {*@
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(false)" finddetailsdep>Save</button>
                     @if (IsSupervisor)
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(true)" finddetailsdep>Submit</button>
                     }
-                }
+                @*}*@
                 @if (security.IsExecutive && Model != null && Model.Status == RAMMS.Common.StatusList.FormC1C2Inspected)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>

@@ -11,25 +11,25 @@
     IEnumerable<SelectListItem> division = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "Division" }))
        .Select(s => new SelectListItem
-       {
-           Text = s.DdlTypeDesc,
-           Value = s.DdlTypeValue
-       }).ToArray();
+               {
+                   Text = s.DdlTypeDesc,
+                   Value = s.DdlTypeValue
+               }).ToArray();
 
     IEnumerable<SelectListItem> year = (await ddlService
-.GetLookups(new DDLookUpDTO { Type = "Year" }))
-.Select(s => new SelectListItem
-{
-    Text = s.DdlTypeValue,
-    Value = s.DdlTypeValue
-}).ToArray();
+        .GetLookups(new DDLookUpDTO { Type = "Year" }))
+        .Select(s => new SelectListItem
+                {
+                    Text = s.DdlTypeValue,
+                    Value = s.DdlTypeValue
+                }).ToArray();
     IEnumerable<SelectListItem> section = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
        .Select(s => new SelectListItem
-       {
-           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
-           Value = s.DdlTypeCode
-       }).ToArray();
+               {
+                   Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+                   Value = s.DdlTypeCode
+               }).ToArray();
 
     IEnumerable<SelectListItem> roadcode = new[] {new SelectListItem
        {
@@ -40,15 +40,15 @@
     IEnumerable<SelectListItem> rmu = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "RMU" }))
        .Select(s => new SelectListItem
-       {
-           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
-           Value = s.DdlTypeCode
-       }).ToArray();
+               {
+                   Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+                   Value = s.DdlTypeCode
+               }).ToArray();
     IEnumerable<SelectListItem>
     user = (await usr.GetUserNameRespectToPosition(new UserRequestDTO
-    {
-        Position = "Supervisor"
-    })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
+            {
+                Position = "Supervisor"
+            })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
 
     string inspectedDateBy = Model.DtInspBy.HasValue ? Model.DtInspBy.Value.ToString("yyyy-MM-dd") : "";
     string inspectionDate = Model.DtOfInsp.HasValue ? Model.DtOfInsp.Value.ToString("yyyy-MM-dd") : "";
@@ -61,9 +61,9 @@
 }
 
 <script type="text/javascript">
-        $(document).ready(function () {
-             process.Init("FormF2", "@Model.Status", @Model.PkRefNo);
-        });
+    $(document).ready(function () {
+         process.Init("FormF2", "@Model.Status", @Model.PkRefNo);
+    });
 </script>
 
 <input type="hidden" id="hdnHeaderId" value="@Model.PkRefNo" />
@@ -89,9 +89,9 @@
                         <div class="col-lg-10 p-0">
                             <div id="headerFindDiv" class="w-100 form-group mb-0">
                                 @*<div class="form-group col-md-3">
-                                @Html.Label("Asset Group", "Asset Group")
-                                <input class="form-control" value="Guardrail" disabled />
-                            </div>*@
+                                    @Html.Label("Asset Group", "Asset Group")
+                                    <input class="form-control" value="Guardrail" disabled />
+                                    </div>*@
                                 <div class="form-group col-md-3">
                                     @Html.Label("Division", "Division")
                                     @Html.DropDownListFor(m => m.DivCode, division, "Select Division", new { @Id = "ddlDivision", @class = "form-control" })
@@ -115,9 +115,9 @@
                                     <select id="ddlSection" class="form-control">
                                         <option value="">Select Section Code</option>
                                         @*@foreach (var div in section)
-                                    {
-                                        <option value="@div.Value">@div.Text</option>
-                                    }*@
+                                            {
+                                            <option value="@div.Value">@div.Text</option>
+                                            }*@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -208,11 +208,11 @@
                     </div>
                     @{
                         Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                        {
-                            Form = "FormF2",
-                            RefId = Model.PkRefNo,
-                            Stage = Model.Status
-                        });
+            {
+                Form = "FormF2",
+                RefId = Model.PkRefNo,
+                Stage = Model.Status
+            });
                     }
                 </div>
 
@@ -221,10 +221,10 @@
                 <button id="btnHCancel" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
                 @if (!Model.SubmitSts)
                 {
-            <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
+                    <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
                     @if (IsSupervisor)
                     {
-            <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                        <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn">Submit</button>
                     }
                 }
                 @if (security.IsExecutive && Model.Status == RAMMS.Common.StatusList.FormF2Inspected)
@@ -263,33 +263,6 @@
                     <div class="mh-182 bg-white py-4">
                         <div id="AddDetailFormF2">
                             <div class="col-lg-12 float-left">
-                                @*<div class="form-group col-lg-4">
-                                        @Html.Label("Reference No.", "Reference No.")
-                                        <input id="txtDReferenceNo" type="text" disabled class="form-control viewD validate {required, Reference No}" />
-                                    </div><div class="form-group col-lg-2">
-                                        @Html.Label("Starting CH", "Starting CH")
-                                        <select id="ddlStartinch" class="form-control validate viewD {required, Starting ch}">
-                                            <option>Select Starting CH</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3">
-                                        @Html.Label("Structure Code", "Structure Code")
-                                        <select id="ddlStructurecode" class="form-control viewD  validate {required, Structure Code}">
-                                            <option>Select Structure Code</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3">
-                                        @Html.Label("Bound", "Bound")
-                                        <select id="ddlBound" class="form-control viewD validate {required, Bound}">
-                                            <option>Select Bound</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-3">
-                                        @Html.Label("Post Spacing", "Post Spacing")
-                                        <select id="ddlPostspacing" class="form-control viewD validate {required, Post Spacing}">
-                                            <option>Select Post Spacing</option>
-                                        </select>
-                                    </div>*@
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Starting CHKm", "Starting CH (Km)")
                                     <input id="txtStartinchKm" disabled class="form-control validate {required, Starting ch Km}" />

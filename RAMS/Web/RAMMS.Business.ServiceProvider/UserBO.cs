@@ -51,29 +51,10 @@ namespace RAMMS.Business.ServiceProvider
         }
         public RmUsers UserLogin(RmUsers _user)
         {
-            //string DecryptedPwd = string.Empty;
-
-            //RmUsers user = new RmUsers();
-            //try
-            //{
-            //    user = _userProv.GetUser(_user);
-
-            //    if (user != null)
-            //    {
-            //        DecryptedPwd = Cryptography.Decrypt(user.UsrPassword);
-
-            //        if (_user.UsrPassword == DecryptedPwd)
-            //            return user;
-            //        else
-            //            user = null;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
-            //return user;
-            RmUserCredential user = new RmUserCredential() { UsrUserName = _user.UsrUserName, UsrPassword = _user.UsrPassword };
+            RmUserCredential user = new RmUserCredential() { 
+                UsrUserName = _user.UsrUserName,
+                UsrPassword = _user.UsrPassword 
+            };
             return UserLogin(user);
         }
 
@@ -84,15 +65,6 @@ namespace RAMMS.Business.ServiceProvider
             try
             {
                 user = _userService.GetUser(_user);
-
-                /*if (user != null)
-                {
-                    DecryptedPwd = Cryptography.Decrypt(user.UsrPassword);
-                    if (_user.UsrPassword == DecryptedPwd)
-                        return user;
-                    else
-                        user = null;
-                }*/
 
                 if (user != null)
                 {
