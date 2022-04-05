@@ -28,9 +28,9 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IProcessService processService;
         private readonly IRepositoryUnit _repoUnit;
 
-        public FormFDService(IRepositoryUnit repoUnit, IFormFDRepository formFDRepository, 
-            IAssetRepository asset, IRoadMasterRepository roadMaster, 
-            IDDLookUpRepository lookup, IMapper mapper , IProcessService proService)
+        public FormFDService(IRepositoryUnit repoUnit, IFormFDRepository formFDRepository,
+            IAssetRepository asset, IRoadMasterRepository roadMaster,
+            IDDLookUpRepository lookup, IMapper mapper, IProcessService proService)
         {
             _repo = formFDRepository;
             _mapper = mapper;
@@ -122,7 +122,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
                 return false;
             })))
-               // throw new Exception("There are pendings in conditional inspection.");
+                throw new Exception("There are pendings in conditional inspection.");
+
+
             header = await _repo.Save(header, updateSubmit);
             if (header != null && header.FdihSubmitSts)
             {

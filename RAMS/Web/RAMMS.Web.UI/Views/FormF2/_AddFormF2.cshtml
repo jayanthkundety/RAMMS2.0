@@ -19,10 +19,10 @@
     IEnumerable<SelectListItem> year = (await ddlService
         .GetLookups(new DDLookUpDTO { Type = "Year" }))
         .Select(s => new SelectListItem
-        {
-            Text = s.DdlTypeValue,
-            Value = s.DdlTypeValue
-        }).ToArray();
+                {
+                    Text = s.DdlTypeValue,
+                    Value = s.DdlTypeValue
+                }).ToArray();
     IEnumerable<SelectListItem> section = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
        .Select(s => new SelectListItem
@@ -263,33 +263,6 @@
                     <div class="mh-182 bg-white py-4">
                         <div id="AddDetailFormF2">
                             <div class="col-lg-12 float-left">
-                                @*<div class="form-group col-lg-4">
-                                    @Html.Label("Reference No.", "Reference No.")
-                                    <input id="txtDReferenceNo" type="text" disabled class="form-control viewD validate {required, Reference No}" />
-                                    </div><div class="form-group col-lg-2">
-                                    @Html.Label("Starting CH", "Starting CH")
-                                    <select id="ddlStartinch" class="form-control validate viewD {required, Starting ch}">
-                                    <option>Select Starting CH</option>
-                                    </select>
-                                    </div>
-                                    <div class="form-group col-lg-3">
-                                    @Html.Label("Structure Code", "Structure Code")
-                                    <select id="ddlStructurecode" class="form-control viewD  validate {required, Structure Code}">
-                                    <option>Select Structure Code</option>
-                                    </select>
-                                    </div>
-                                    <div class="form-group col-lg-3">
-                                    @Html.Label("Bound", "Bound")
-                                    <select id="ddlBound" class="form-control viewD validate {required, Bound}">
-                                    <option>Select Bound</option>
-                                    </select>
-                                    </div>
-                                    <div class="form-group col-lg-3">
-                                    @Html.Label("Post Spacing", "Post Spacing")
-                                    <select id="ddlPostspacing" class="form-control viewD validate {required, Post Spacing}">
-                                    <option>Select Post Spacing</option>
-                                    </select>
-                                    </div>*@
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Starting CHKm", "Starting CH (Km)")
                                     <input id="txtStartinchKm" disabled class="form-control validate {required, Starting ch Km}" />
@@ -352,51 +325,12 @@
                             </div>
                         </div>
                     </div>
-
-                    @{
-                        if (Model != null)
-                        {
-                            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                            {
-                                Form = "FormF2",
-                                RefId = Model.PkRefNo,
-                                Stage = Model.Status
-                            });
-                        }
-                   }
-                </div>
-                <div class="col-md-12 float-right text-right custom-footer"> 
-                    <button type="button" class="btn btn-sm btn-outline-theme" id="btnHCancel">Cancel</button>
-                    @*@if (Model != null && !Model.SubmitSts)
-                    {*@
-                        <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn" >Save</button>
-                        @if (IsSupervisor)
-                        {
-                            <button id="btnHSubmit"  type="button" class="btn btn-sm btn-themebtn" >Submit</button>
-                        }
-                    @*}*@
-                    @if (security.IsExecutive && Model != null && Model.Status == RAMMS.Common.StatusList.FormF2Inspected)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
-                    }
-                    else if (security.IsHeadMaintenance && Model != null && Model.Status == RAMMS.Common.StatusList.FormF2ExecutiveApproved)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
-                    }
-                    else if (security.IsRegionManager && Model != null && Model.Status == RAMMS.Common.StatusList.FormF2HeadMaintenanceApproved)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
-                    }
-                    else if (security.IsJKRSSuperiorOfficer && Model != null && Model.Status == RAMMS.Common.StatusList.FormF2RegionManagerApproved)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Audited / Reject</button>
-                    }
-
                 </div>
                 <div class="modal-footer">
                     <button id="btnDCancel" type="button" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
                     <button id="btnDSaveAndContinue" hidden type="button" class="btn btn-sm btn-themebtn">Save &amp; Continue</button>
                     <button id="btnDSaveAndExit" type="button" class="btn btn-sm btn-themebtn">Save &amp; Exit</button>
+                </div>
             </div>
         </div>
     </div>
