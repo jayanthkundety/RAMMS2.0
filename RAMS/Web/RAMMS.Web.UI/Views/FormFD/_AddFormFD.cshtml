@@ -318,14 +318,14 @@
 
             <div class="col-md-12 float-right text-right custom-footer">
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="formFD.Cancel();">Cancel</button>
-                @if (Model != null && !Model.SubmitSts && ViewBag.IsEdit)
-                {
+               @* @if (Model != null && !Model.SubmitSts)
+                {*@
             <button type="button" class="btn btn-sm btn-themebtn" onclick="formFD.Save(false)" finddetailsdep>Save</button>
                     @if (IsSupervisor)
                     {
             <button type="button" class="btn btn-sm btn-themebtn" onclick="formFD.Save(true)" finddetailsdep>Submit</button>
                     }
-                }
+                @*}*@
                 @if (security.IsExecutive && formStatus == RAMMS.Common.StatusList.FormFDInspected)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>

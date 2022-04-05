@@ -226,7 +226,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             FormN2HeaderRequestDTO formDRequest;
             try
-            {                
+            {
                 var domainModelForm = _mapper.Map<RmFormN2Hdr>(formN2HeaderBO);
                 domainModelForm.FnthStatus = Common.StatusList.N2Init;
                 var entity = _repoUnit.FormN2Repository.CreateReturnEntity(domainModelForm);

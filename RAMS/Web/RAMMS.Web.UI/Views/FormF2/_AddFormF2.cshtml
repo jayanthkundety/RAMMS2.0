@@ -367,14 +367,14 @@
                 </div>
                 <div class="col-md-12 float-right text-right custom-footer"> 
                     <button type="button" class="btn btn-sm btn-outline-theme" id="btnHCancel">Cancel</button>
-                    @if (Model != null && !Model.SubmitSts)
-                    {
+                    @*@if (Model != null && !Model.SubmitSts)
+                    {*@
                         <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn" >Save</button>
                         @if (IsSupervisor)
                         {
                             <button id="btnHSubmit"  type="button" class="btn btn-sm btn-themebtn" >Submit</button>
                         }
-                    }
+                    @*}*@
                     @if (security.IsExecutive && Model != null && Model.Status == RAMMS.Common.StatusList.FormF2Inspected)
                     {
                         <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
