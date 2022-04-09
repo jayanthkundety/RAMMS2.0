@@ -20,7 +20,7 @@ namespace RAMMS.Domain.Models
         public decimal? Fv4hTotalProduction { get; set; }
         public string Fv4hRemarks { get; set; }
         public bool? Fv4hSignFac { get; set; }
-        public string Fv4hUseridFac { get; set; }
+        public int? Fv4hUseridFac { get; set; }
         public string Fv4hUsernameFac { get; set; }
         public string Fv4hDesignationFac { get; set; }
         public DateTime? Fv4hDtSch { get; set; }
@@ -30,16 +30,16 @@ namespace RAMMS.Domain.Models
         public string Fv4hDesignationAgr { get; set; }
         public DateTime? Fv4hDtAgr { get; set; }
         public bool? Fv4hSignVet { get; set; }
-        public string Fv4hUseridVet { get; set; }
+        public int? Fv4hUseridVet { get; set; }
         public string Fv4hUsernameVet { get; set; }
         public string Fv4hDesignationVet { get; set; }
         public DateTime? Fv4hDtVet { get; set; }
         public string Fv4hServiceProvider { get; set; }
         public string Fv4hVerifier { get; set; }
         public string Fv4hFacilitator { get; set; }
-        public string Fv4hModBy { get; set; }
+        public int? Fv4hModBy { get; set; }
         public DateTime? Fv4hModDt { get; set; }
-        public string Fv4hCrBy { get; set; }
+        public int? Fv4hCrBy { get; set; }
         public DateTime? Fv4hCrDt { get; set; }
         public bool Fv4hSubmitSts { get; set; }
         public bool Fv4hActiveYn { get; set; }

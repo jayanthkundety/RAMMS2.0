@@ -25,17 +25,17 @@ namespace RAMMS.Domain.Models
         public string Fv2hActName { get; set; }
         public DateTime? Fv2hDt { get; set; }
         public bool? Fv2hSignSch { get; set; }
-        public string Fv2hUseridSch { get; set; }
+        public int? Fv2hUseridSch { get; set; }
         public string Fv2hUsernameSch { get; set; }
         public string Fv2hDesignationSch { get; set; }
         public DateTime? Fv2hDtSch { get; set; }
         public bool? Fv2hSignAgr { get; set; }
-        public string Fv2hUseridAgr { get; set; }
+        public int? Fv2hUseridAgr { get; set; }
         public string Fv2hUsernameAgr { get; set; }
         public string Fv2hDesignationAgr { get; set; }
         public DateTime? Fv2hDtAgr { get; set; }
         public bool? Fv2hSignAck { get; set; }
-        public string Fv2hUseridAck { get; set; }
+        public int? Fv2hUseridAck { get; set; }
         public string Fv2hUsernameAck { get; set; }
         public string Fv2hDesignationAck { get; set; }
         public DateTime? Fv2hDtAck { get; set; }
@@ -43,9 +43,9 @@ namespace RAMMS.Domain.Models
         public string Fv2hVerifier { get; set; }
         public string Fv2hFacilitator { get; set; }
         public string Fv2hRemarks { get; set; }
-        public string Fv2hModBy { get; set; }
+        public int? Fv2hModBy { get; set; }
         public DateTime? Fv2hModDt { get; set; }
-        public string Fv2hCrBy { get; set; }
+        public int? Fv2hCrBy { get; set; }
         public DateTime? Fv2hCrDt { get; set; }
         public bool Fv2hSubmitSts { get; set; }
         public bool Fv2hActiveYn { get; set; }

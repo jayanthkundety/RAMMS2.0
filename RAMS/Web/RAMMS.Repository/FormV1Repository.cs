@@ -49,7 +49,7 @@ namespace RAMMS.Repository
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.Crew_Supervisor))
                 {
-                    query = query.Where(x => x.x.Fv1hCrew  == filterOptions.Filters.Crew_Supervisor);
+                    query = query.Where(x => x.x.Fv1hCrew  == Convert.ToInt32(filterOptions.Filters.Crew_Supervisor));
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
@@ -57,7 +57,7 @@ namespace RAMMS.Repository
                     query = query.Where(x => x.x.Fv1hRmu.Contains(filterOptions.Filters.SmartInputValue)
                                         || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
                                         || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
-                                        || x.x.Fv1hCrew.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hCrewname.Contains(filterOptions.Filters.SmartInputValue)
                                         || x.x.Fv1hRefId.Contains(filterOptions.Filters.SmartInputValue)
                                         );
 

@@ -2,7 +2,7 @@
 
 <div class="main-container" id="container">
     <div id="content">
-        <table id="FormV2GridView" class="table w-100 nowrap">
+        <table id="FormDGridView" class="table w-100 nowrap">
         </table>
     </div>
 </div>
@@ -12,8 +12,8 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isModifyPerm =@security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
-    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : 'hidden';
 
     var table_columns = [];
     var actionCol = {
@@ -23,13 +23,15 @@
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
-    var refNoCol = { data: "refId", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
-    var rmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
-    var divisionCol = { data: "divName", name: "Division", title: "Division", autoWidth: true, sortable: true };
-    var actCodeCol = { data: "actCode", name: "Activity Code", title: "Activity Code", autoWidth: true, sortable: true };
-    var secCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
-    var crewCol = { data: "crewname", name: "Crewname", title: "Crew Supervisor", autoWidth: true, sortable: true };
-    var dtCol = { data: "dt", name: "Week No", title: "Date", autoWidth: true, sortable: true };
+    var refNoCol = { data: "referenceID", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
+    var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
+    var divisionCol = { data: "divisionName", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
+    var roadCodeCol = { data: "roadCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
+    var crewCol = { data: "crewUnitName", name: "Crew ID", title: "Crew Supervisor", autoWidth: true, sortable: true };
+    var weekCol = { data: "weekNo", name: "Week No", title: "Week No", autoWidth: true, sortable: true };
+    var yearCol = { data: "year", name: "Year", title: "Year", autoWidth: true, sortable: true };
+    var ownernCol = { data: "reportedByUsername", name: "UsernamePrp", title: "Owner", autoWidth: true, sortable: true };
+    var verByCol = { data: "usernameVer", name: "UsernameVer", title: "Verified By", autoWidth: true, sortable: true };
 
     /*var submitStsCol = {
         data: "submitSts",
@@ -38,19 +40,21 @@
         }, title: "Status", autoWidth: true, sortable: true
     };*/
 
-    var submitStsCol = { data: "status", name: "Status", title: "Status", autoWidth: true, sortable: true };
+    var submitStsCol = { data: "processStatus", name: "Status", title: "Status", autoWidth: true, sortable: true };
 
 
 
 
     table_columns.push(actionCol);
     table_columns.push(refNoCol);
-    table_columns.push(rmuCol);
+    table_columns.push(rmuRmuCol);
     table_columns.push(divisionCol);
-    table_columns.push(actCodeCol);
-    table_columns.push(secCodeCol);
+    table_columns.push(roadCodeCol);
     table_columns.push(crewCol);
-    table_columns.push(dtCol);
+    table_columns.push(weekCol);
+    table_columns.push(yearCol);
+    table_columns.push(ownernCol);
+    table_columns.push(verByCol);
     table_columns.push(submitStsCol);
 
     function PrintForm(id) {
@@ -62,16 +66,18 @@
         var _currentGridSettings = new CustomGridSettings();
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
-        filterData.SmartInputValue = $("#FormV2SmartSearch").val();
-        filterData.RMU = $("#formV2DetSrchRMU").val();
-        filterData.Section =  $("#formV2DetSrchSectionCode option:selected").text().split("-")[0];
-        filterData.Crew = $("#formV2DetSrchCrew").val().trim();
-        filterData.ActivityCode = $("#formV2DetSrchActivityCode").val();
-        filterData.ByFromdate = $("#FormV2SrchByFromDate").val();
-        filterData.ByTodate = $("#FormV2SrchByToDate").val();
-     
+        filterData.SmartInputValue = $("#FormDSmartSearch").val();
+        filterData.RMU = $("#formDDetSrchRMU").val();
+        filterData.Road_Code =  $("#formDDetSrchRoadCode option:selected").text().split("-")[0];
+        filterData.Bydate = $("#FormDSrchByDate").val().trim();
+        //filterData.WeekNo = $("#formDDetSrchWeek").val();
+        //filterData.Year = $("#formDDetSrchYear").val();
+        //filterData.ChinageFromKm = $("#formDFromKm").val();
+        //filterData.ChinageFromM = $("#formDFromM").val();
+        //filterData.ChinageToKm = $("#formDToKm").val();
+        //filterData.ChinageToM = $("#formDToM").val();
 
-        $('#FormV2GridView').DataTable({
+        $('#FormDGridView').DataTable({
             ajax: {
                 url: "/ERT/LoadFormDList",
                 type: "POST",
@@ -88,7 +94,7 @@
         InitializeGrid();
 
         //Apply Custom search on jQuery DataTables here
-        oTable = $('#FormV2GridView').DataTable();
+        oTable = $('#FormDGridView').DataTable();
         $('#formDSearchBtn').click(function () {
             oTable.columns(0).search($("#FormDSmartSearch").val().trim());
             oTable.columns(1).search($("#formDDetSrchRMU").val().trim());

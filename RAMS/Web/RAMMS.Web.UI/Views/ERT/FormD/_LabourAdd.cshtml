@@ -12,29 +12,11 @@
             $("#formDlabDesc").attr('readonly', false);
         }
 
-        $('.allow_numeric').keypress(function (event) {
-            var $this = $(this);
-            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
-                ((event.which < 48 || event.which > 57) &&
-                    (event.which != 0 && event.which != 8))) {
-                event.preventDefault();
-            }
+        $('.allow_numeric').keypress(function (e) {
+            var charCode = (e.which) ? e.which : event.keyCode
 
-            var text = $(this).val();
-            if ((event.which == 46) && (text.indexOf('.') == -1)) {
-                setTimeout(function () {
-                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
-                    }
-                }, 1);
-            }
-
-            if ((text.indexOf('.') != -1) &&
-                (text.substring(text.indexOf('.')).length > 3) &&
-                (event.which != 0 && event.which != 8) &&
-                ($(this)[0].selectionStart >= text.length - 3)) {
-                event.preventDefault();
-            }
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                return false;
         });
     });
 
@@ -91,7 +73,7 @@
             <div class="clear-b"></div>
             <div class="form-group col-lg-4">
                 @Html.Label("Quantity", "Quantity")
-                @Html.TextBoxFor(Adtl => Adtl.SaveFormDLabourModel.Quantity, new { @Id = "formDLabQty", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric  validate {required, Quantity}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.SaveFormDLabourModel.Quantity, new { @Id = "formDLabQty", @maxlength = 3, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric  validate {required, Quantity}", @rows = 1 })
             </div>
             <div class="form-group col-lg-4">
                 @Html.Label("Unit", "Unit")

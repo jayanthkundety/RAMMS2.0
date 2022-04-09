@@ -14,9 +14,9 @@ namespace RAMMS.DTO.ResponseBO
         public string Desc { get; set; }
         public decimal? Qnty { get; set; }
         public int? Unit { get; set; }
-        public string ModBy { get; set; }
+        public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
-        public string CrBy { get; set; }
+        public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
         public bool SubmitSts { get; set; }
         public bool ActiveYn { get; set; }

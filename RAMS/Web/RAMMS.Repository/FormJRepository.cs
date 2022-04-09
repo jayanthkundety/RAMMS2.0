@@ -557,7 +557,8 @@ namespace RAMMS.Repository
                                select new DropDown
                                {
                                    Text = o.DdlTypeCode + "-" + o.DdlTypeDesc,
-                                   Value = o.DdlTypeDesc
+                                   Value = o.DdlTypeDesc,
+                                   CValue = o.DdlTypeCode
                                }).ToList();
                 ddl.RoadCode = (from o in _context.RmRoadMaster
                                 where o.RdmActiveYn == true

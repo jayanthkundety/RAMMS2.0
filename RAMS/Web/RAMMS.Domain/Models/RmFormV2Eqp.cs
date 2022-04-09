@@ -12,9 +12,9 @@ namespace RAMMS.Domain.Models
         public string Fv2eCapacity { get; set; }
         public int? Fv2eCond { get; set; }
         public string Fv2eModel { get; set; }
-        public string Fv2eModBy { get; set; }
+        public int? Fv2eModBy { get; set; }
         public DateTime? Fv2eModDt { get; set; }
-        public string Fv2eCrBy { get; set; }
+        public int? Fv2eCrBy { get; set; }
         public DateTime? Fv2eCrDt { get; set; }
         public bool Fv2eSubmitSts { get; set; }
         public bool Fv2eActiveYn { get; set; }

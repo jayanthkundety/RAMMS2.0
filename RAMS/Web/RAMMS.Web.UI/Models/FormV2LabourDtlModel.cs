@@ -12,7 +12,7 @@ namespace RAMMS.Web.UI.Models
     public class FormV2LabourDtlModel
     {
         public FormV2SearchGridDTO SearchObj { get; set; }
-        public FormV2LabourDetailsResponseDTO SaveFormDLabourModel { get; set; }
+        public FormV2LabourDetailsResponseDTO SaveFormV2LabourModel { get; set; }
 
         public IEnumerable<FormV2LabourDetailsResponseDTO> FormV2LabourDtlList { get; set; }
 

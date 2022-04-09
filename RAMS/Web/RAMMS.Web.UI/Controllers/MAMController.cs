@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.Repository.Interfaces;
 using System.Linq;
+using System.Globalization;
+using System.Collections.Generic;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -40,6 +42,11 @@ namespace RAMMS.Web.UI.Controllers
         FormN1Model _formN1Model = new FormN1Model();
         FormN2Model _formN2Model = new FormN2Model();
         FormQa2Model _formQa2Model = new FormQa2Model();
+
+        FormV2Model _formV2Model = new FormV2Model();
+        FormV2LabourDtlModel _formV2LabourModel = new FormV2LabourDtlModel();
+        FormV2MaterialDetailsModel _formV2MaterialModel = new FormV2MaterialDetailsModel();
+        FormV2EquipDetailsModel _formV2EquipmentModel = new FormV2EquipDetailsModel();
 
         private readonly IRoadMasterService _roadMasterService;
         private readonly IUserService _userService;
@@ -97,11 +104,11 @@ namespace RAMMS.Web.UI.Controllers
                 ddLookup.Type = "Act-FormD";
                 ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
 
-                ViewData["CREW"] = _userService.GetUserSelectList(null);
+                LoadLookupService("User");
 
                 FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
 
-                ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+                ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value  }).ToArray();
             }
             else if (from == "N1")
             {
@@ -160,7 +167,7 @@ namespace RAMMS.Web.UI.Controllers
 
                 ViewData["RD_Code"] = await _formQa2Service.GetRoadCodesByRMU("");
 
-                ddLookup.Type = "Act-FormD";
+                ddLookup.Type = "Act-FormV2";
                 ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
 
                 ddLookup.Type = "Week No";
@@ -524,7 +531,7 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetFormData(int id, string form)
+        public async Task<IActionResult> GetFormV2ata(int id, string form)
         {
             if (form == "Form S1")
             {
@@ -1049,6 +1056,30 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
+        public async Task<JsonResult> FindDetails(FormV2Model header)
+        {
+            FormV2HeaderResponseDTO formV2 = new FormV2HeaderResponseDTO();
+            FormV2HeaderResponseDTO formV2Res = new FormV2HeaderResponseDTO();
+
+            formV2 = header.SaveFormV2Model;
+            //formV2.DivisionName = header.DivisionName;
+            //formV2.RoadCode = header.RoadCode;
+            formV2Res = await _formV2Service.FindDetails(formV2);
+            if (formV2Res == null || formV2Res.PkRefNo == 0)
+            {
+
+                formV2.CrBy = _security.UserID;
+                formV2.ModBy = _security.UserID;
+                formV2.ModDt = DateTime.Now;
+                formV2.CrDt = DateTime.Now;
+
+                formV2Res = await _formV2Service.FindAndSaveFormV2Hdr(formV2, false);
+            }
+            header.SaveFormV2Model = formV2Res;
+            return Json(formV2Res, JsonOption());
+        }
+
+        [HttpPost]
         public async Task<IActionResult> LoadFormV2EquipmentList(DataTableAjaxPostModel<FormV2SearchGridDTO> FormV2Filter, string id)
         {
 
@@ -1085,6 +1116,227 @@ namespace RAMMS.Web.UI.Controllers
             var result = await _formV2Service.GetLabourFormV2Grid(filteredPagingDefinition, id).ConfigureAwait(false);
 
             return Json(new { draw = FormV2Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+
+        public async Task<IActionResult> EditFormV2(int id, string view)
+        {
+            //base.LoadLookupService(GroupNameList.Supervisor, GroupNameList.OperationsExecutive, GroupNameList.OpeHeadMaintenance, GroupNameList.JKRSSuperiorOfficerSO);
+            _formV2Model.SaveFormV2Model = new FormV2HeaderResponseDTO();
+            await LoadDropDowns("V2","");
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            //Labour
+            FormV2LabourDtlModel formV2Labour = new FormV2LabourDtlModel();
+            formV2Labour.selectList = await _formV2Service.GetLabourCode();
+            _formV2Model.FormV2Labour = formV2Labour;
+            ddLookup.Type = "UNIT";
+            _formV2Model.FormV2Labour.UnitList = await _ddLookupService.GetDdLookup(ddLookup);
+
+            //Material
+            FormV2MaterialDetailsModel formV2Material = new FormV2MaterialDetailsModel();
+            formV2Material.selectList = await _formV2Service.GetMaterialCode();
+            _formV2Model.FormV2Material = formV2Material;
+            ddLookup.Type = "UNIT";
+            _formV2Model.FormV2Material.UnitList = await _ddLookupService.GetDdLookup(ddLookup);
+
+            //Equipment
+            FormV2EquipDetailsModel formV2EquipDetails = new FormV2EquipDetailsModel();
+            formV2EquipDetails.selectList = await _formV2Service.GetEquipmentCode();
+            ddLookup.Type = "EQPMODEL";
+            //_formV2Model.FormV2Material.mo = await _ddLookupService.GetDdLookup(ddLookup);
+            _formV2Model.FormV2Equip = formV2EquipDetails;           
+
+            RoadMasterRequestDTO roadMasterReq = new RoadMasterRequestDTO();
+            ViewData["Division"] = await _formV2Service.GetDivisions();
+
+            FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+            _formV2Model.MaxNo = await _formV2Service.GetMaxIdLength();
+
+            _formV2Model.FormV2Users = new FormV2UserDetailsModel();
+            _formV2Model.SaveFormV2Model = new FormV2HeaderResponseDTO();
+            _formV2Model.SaveFormV2Model.FormV2Lab = new List<FormV2LabourDetailsResponseDTO>();
+            _formV2Model.SaveFormV2Model.FormV2Eqp = new List<FormV2EquipDetailsResponseDTO>();
+            _formV2Model.SaveFormV2Model.FormV2Mat = new List<FormV2MaterialDetailsResponseDTO>();
+
+            if (id > 0)
+            {
+                var result = await _formV2Service.GetFormV2WithDetailsByNoAsync(id);
+                _formV2Model.SaveFormV2Model = result;
+                _formV2Model.viewm = result.SubmitSts == true ? "1" : view;
+              
+            }
+            else
+            {
+                _formV2Model.SaveFormV2Model.UseridAck = _security.UserID;
+                _formV2Model.SaveFormV2Model.UseridSch = _security.UserID;
+                _formV2Model.SaveFormV2Model.UseridAgr = _security.UserID;
+
+                _formV2Model.SaveFormV2Model.DtAgr = DateTime.Today;
+                _formV2Model.SaveFormV2Model.DtSch = DateTime.Today;
+                _formV2Model.SaveFormV2Model.DtAck = DateTime.Today;
+
+                _formV2Model.viewm = view != null ? view : "0";
+            }
+            ViewBag.view = view;
+
+            return PartialView("~/Views/MAM/FormV2/_AddFormV2.cshtml", _formV2Model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GetAllRoadCodeDataBySectionCode(string secCode)
+        {
+            RoadMasterRequestDTO _Rmroad = new RoadMasterRequestDTO();
+            var id = "";
+            _Rmroad.SecCode = Convert.ToInt32(secCode);
+            var _RMAllData = await _roadMasterService.GetAllRoadCodeDataBySectionCode(_Rmroad);
+            var obj = new
+            {
+                _RMAllData = _RMAllData,
+                id = id
+            };
+            return Json(obj);
+        }
+
+        public async Task<IActionResult> EditFormLabour(int id)
+        {
+            _formV2LabourModel = new FormV2LabourDtlModel();
+
+            _formV2LabourModel.selectList = await _formV2Service.GetLabourCode();
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "LabourUnit";
+            _formV2LabourModel.UnitList = await _ddLookupService.GetDdLookup(ddLookup);
+
+            if (id > 0)
+            {
+                var result = await _formV2Service.GetFormV2LabourDetailsByNoAsync(id);
+                _formV2LabourModel.SaveFormV2LabourModel = result;
+            }
+
+            return PartialView("~/Views/MAM/FormV2/_LabourAdd.cshtml", _formV2LabourModel);
+        }
+
+        public async Task<IActionResult> EditFormMaterial(int id)
+        {
+            _formV2MaterialModel = new FormV2MaterialDetailsModel();
+
+            _formV2MaterialModel.selectList = await _formV2Service.GetMaterialCode();
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "MaterialUnit";
+            _formV2MaterialModel.UnitList = await _ddLookupService.GetDdLookup(ddLookup);
+
+            if (id > 0)
+            {
+
+                var result = await _formV2Service.GetFormV2MaterialDetailsByNoAsync(id);
+                _formV2MaterialModel.SaveFormV2MaterialModel = result;
+            }
+
+            return PartialView("~/Views/MAM/FormV2/_MaterialAdd.cshtml", _formV2MaterialModel);
+        }
+
+        public async Task<IActionResult> EditFormV2EquipmentDetails(int id)
+        {
+            _formV2EquipmentModel = new FormV2EquipDetailsModel();
+
+            _formV2EquipmentModel.selectList = await _formV2Service.GetEquipmentCode();
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "EQPMODEL";
+            _formV2EquipmentModel.ModelList   = await _ddLookupService.GetDdLookup(ddLookup);
+
+            if (id > 0)
+            {
+                var result = await _formV2Service.GetFormV2EquipmentDetailsByNoAsync(id);
+                _formV2EquipmentModel.SaveFormV2EquipModel = result;
+            }
+
+            return PartialView("~/Views/MAM/FormV2/_EquipAdd.cshtml", _formV2EquipmentModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FormV2SaveHdr(FormV2HeaderResponseDTO saveObj)
+        {
+            int rowsAffected = 0;
+
+            int refNo = 0;
+            FormV2HeaderResponseDTO saveRequestObj = new FormV2HeaderResponseDTO();
+            saveRequestObj = saveObj;
+            if (saveObj.PkRefNo == 0)
+            {
+                refNo = await _formV2Service.SaveFormV2Async(saveRequestObj);
+            }
+            else
+            {
+                rowsAffected = await _formV2Service.UpdateFormV2Async(saveRequestObj);
+                refNo = int.Parse(saveObj.PkRefNo.ToString());
+            }
+
+            return Json(refNo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FormV2SaveLabour(FormV2LabourDetailsResponseDTO saveObj)
+        {
+            int rowsAffected = 0;
+            int refNo = 0;
+            FormV2LabourDetailsResponseDTO saveRequestObj = new FormV2LabourDetailsResponseDTO();
+            saveRequestObj = saveObj;
+            if (saveObj.PkRefNo == 0)
+            {
+                //var SrNo = await _formV2Service.GetLabourSrNo(saveObj.FdmdFdhPkRefNo);
+                //saveRequestObj.SerialNo = ((SrNo == null) ? 0 : SrNo) + 1;
+                refNo = await _formV2Service.SaveFormV2LabourAsync(saveRequestObj);
+            }
+            else
+            {
+                rowsAffected = await _formV2Service.UpdateFormV2LabourAsync(saveRequestObj);
+                refNo = int.Parse(saveObj.PkRefNo.ToString());
+            }
+
+            return Json(refNo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FormV2SaveMaterial(FormV2MaterialDetailsResponseDTO saveObj)
+        {
+            int rowsAffected = 0;
+            int refNo = 0;
+            FormV2MaterialDetailsResponseDTO saveResponseObj = new FormV2MaterialDetailsResponseDTO();
+            saveResponseObj = saveObj;
+            if (saveObj.PkRefNo == 0 )
+            {
+                //var SrNo = await _formV2Service.GetMaterialSRNO(saveObj.FdmdFdhPkRefNo);
+                //saveResponseObj.SerialNo = ((SrNo == null) ? 0 : SrNo) + 1;
+                refNo = await _formV2Service.SaveFormV2MaterialAsync(saveResponseObj);
+            }
+            else
+            {
+                rowsAffected = await _formV2Service.UpdateFormV2MaterialAsync(saveResponseObj);
+                refNo = int.Parse(saveObj.PkRefNo.ToString());
+            }
+
+            return Json(refNo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FormV2SaveEquipment(FormV2EquipDetailsResponseDTO saveObj)
+        {
+            int rowsAffected = 0;
+            int refNo = 0;
+            FormV2EquipDetailsResponseDTO saveResponseObj = new FormV2EquipDetailsResponseDTO();
+            saveResponseObj = saveObj;
+            if (saveObj.PkRefNo == 0 )
+            {
+                //var SrNo = await _formV2Service.GetEqpSRNO(saveObj.FormV2EDFHeaderNo);
+                //saveResponseObj.SerialNo = ((SrNo == null) ? 0 : SrNo) + 1;
+                refNo = await _formV2Service.SaveFormV2EquipmentAsync(saveResponseObj);
+            }
+            else
+            {
+                rowsAffected = await _formV2Service.UpdateFormV2EquipmentAsync(saveResponseObj);
+                refNo = int.Parse(saveObj.PkRefNo.ToString());
+            }
+            return Json(refNo);
         }
 
 
