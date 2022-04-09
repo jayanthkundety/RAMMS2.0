@@ -22,21 +22,29 @@ namespace RAMMS.DTO.ResponseBO
         public string Crewname { get; set; }
         public string ActCode { get; set; }
         public string ActName { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? Dt { get; set; }
-        public bool? SignSch { get; set; }
+        public bool SignSch { get; set; }
         public string UseridSch { get; set; }
         public string UsernameSch { get; set; }
         public string DesignationSch { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DtSch { get; set; }
-        public bool? SignAgr { get; set; }
+        public bool SignAgr { get; set; }
         public string UseridAgr { get; set; }
         public string UsernameAgr { get; set; }
         public string DesignationAgr { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DtAgr { get; set; }
-        public bool? SignAck { get; set; }
+        public bool SignAck { get; set; }
         public string UseridAck { get; set; }
         public string UsernameAck { get; set; }
         public string DesignationAck { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DtAck { get; set; }
         public string ServiceProvider { get; set; }
         public string Verifier { get; set; }

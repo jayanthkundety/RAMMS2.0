@@ -16,6 +16,7 @@ namespace RAMMS.DTO.Profiles
             this.RecognizePrefixes(arrPrefix);
 
             this.CreateMap<FormV1ResponseDTO, RmFormV1Hdr>().ReverseMap();
+            this.CreateMap<FormV1DtlResponseDTO, RmFormV1Dtl>().ReverseMap();
             this.CreateMap<FormV2HeaderResponseDTO, RmFormV2Hdr>().ReverseMap();
             this.CreateMap<FormV2EquipDetailsResponseDTO, RmFormV2Eqp>().ReverseMap();
             this.CreateMap<FormV2LabourDetailsResponseDTO, RmFormV2Lab>().ReverseMap();

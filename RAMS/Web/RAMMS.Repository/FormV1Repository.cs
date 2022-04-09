@@ -70,9 +70,9 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 2)
                     query = query.OrderBy(x => x.x.Fv1hRmu);
                 if (filterOptions.ColumnIndex == 3)
-                  //  query = query.OrderBy(x => x.div.RdsmDivision);
-                if (filterOptions.ColumnIndex == 4)
-                    query = query.OrderBy(x => x.x.Fv1hActCode);
+                    //  query = query.OrderBy(x => x.div.RdsmDivision);
+                    if (filterOptions.ColumnIndex == 4)
+                        query = query.OrderBy(x => x.x.Fv1hActCode);
                 if (filterOptions.ColumnIndex == 5)
                     query = query.OrderBy(x => x.x.Fv1hSecCode);
                 if (filterOptions.ColumnIndex == 6)
@@ -88,9 +88,9 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 2)
                     query = query.OrderByDescending(x => x.x.Fv1hRmu);
                 if (filterOptions.ColumnIndex == 3)
-                 //   query = query.OrderByDescending(x => x.div.RdsmDivision);
-                if (filterOptions.ColumnIndex == 4)
-                    query = query.OrderByDescending(x => x.x.Fv1hActCode);
+                    //   query = query.OrderByDescending(x => x.div.RdsmDivision);
+                    if (filterOptions.ColumnIndex == 4)
+                        query = query.OrderByDescending(x => x.x.Fv1hActCode);
                 if (filterOptions.ColumnIndex == 5)
                     query = query.OrderByDescending(x => x.x.Fv1hSecCode);
                 if (filterOptions.ColumnIndex == 6)
@@ -108,33 +108,92 @@ namespace RAMMS.Repository
         }
 
 
-        //public int SaveFormWD(RmIwFormWd FormWD)
-        //{
-        //    try
-        //    {
-        //        _context.Entry<RmIwFormWd>(FormWD).State = FormWD.FwdPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
-        //        _context.SaveChanges();
+        public async Task<List<RmFormV1Dtl>> GetFormV1WorkScheduleGridList(FilteredPagingDefinition<FormV1WorkScheduleGridDTO> filterOptions, int V1PkRefNo)
+        {
+            List<RmFormV1Dtl> result = new List<RmFormV1Dtl>();
+            var query = (from x in _context.RmFormV1Dtl
+                         where x.Fv1dFv1hPkRefNo == V1PkRefNo
+                         select new { x }).OrderByDescending(x => x.x.Fv1dPkRefNo);
 
-        //        return FormWD.FwdPkRefNo;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return 500;
 
-        //    }
-        //}
+            if (filterOptions.sortOrder == SortOrder.Ascending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderBy(x => x.x.Fv1dRoadCode);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderBy(x => x.x.Fv1dRoadName);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(x => x.x.Fv1dFrmCh);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(x => x.x.Fv1dSiteRef);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(x => x.x.Fv1dStartTime);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderBy(x => x.x.Fv1dRemarks);
 
-        //public int? DeleteFormWDClause(int Id)
-        //{
-        //    var res = (from r in _context.RmIwFormWdDtl where r.FwddFwdPkRefNo == Id select r).SingleOrDefault();
-        //    if (res != null)
-        //    {
-        //        _context.Entry(res).State = EntityState.Deleted;
-        //        _context.SaveChanges();
-        //        return 1;
-        //    }
-        //    return 0;
-        //}
+            }
+            else if (filterOptions.sortOrder == SortOrder.Descending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderByDescending(x => x.x.Fv1dRoadCode);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderByDescending(x => x.x.Fv1dRoadName);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(x => x.x.Fv1dFrmCh);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(x => x.x.Fv1dSiteRef);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(x => x.x.Fv1dStartTime);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderByDescending(x => x.x.Fv1dRemarks);
+            }
+
+
+            result = await query.Select(s => s.x)
+                    .Skip(filterOptions.StartPageNo)
+                    .Take(filterOptions.RecordsPerPage)
+                    .ToListAsync();
+
+            return result;
+        }
+
+
+        public async Task<RmFormV1Hdr> FindFormV1ByID(int id)
+        {
+            return await _context.RmFormV1Hdr.Where(x => x.Fv1hPkRefNo == id && x.Fv1hActiveYn == true).FirstOrDefaultAsync();
+        }
+
+
+        public int? SaveFormV1WorkSchedule(RmFormV1Dtl FormV1Dtl)
+        {
+            try
+            {
+                _context.Entry<RmFormV1Dtl>(FormV1Dtl).State = FormV1Dtl.Fv1dPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
+                _context.SaveChanges();
+
+                return FormV1Dtl.Fv1dPkRefNo;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? UpdateFormV1WorkSchedule(RmFormV1Dtl FormV1Dtl)
+        {
+            try
+            {
+                _context.Set<RmFormV1Dtl>().Attach(FormV1Dtl);
+                _context.Entry<RmFormV1Dtl>(FormV1Dtl).State = EntityState.Modified;
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
 
     }
 }

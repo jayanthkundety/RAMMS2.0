@@ -14,8 +14,19 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<PagingResult<FormV1ResponseDTO>> GetFilteredFormV1Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
-        //Task<int> SaveFormWD(FormWDResponseDTO FormW1);
+        Task<PagingResult<FormV1WorkScheduleGridDTO>> GetFormV1WorkScheduleGridList(FilteredPagingDefinition<FormV1WorkScheduleGridDTO> filterOptions, int V1PkRefNo);
+
+        Task<FormV1ResponseDTO> SaveFormV1(FormV1ResponseDTO FormV1);
+        Task<int> Update(FormV1ResponseDTO FormV1);
+
+        Task<FormV1ResponseDTO> FindFormV1ByID(int id);
         //Task<int> DeActivateFormWD(int formNo);
+
+        int? SaveFormV1WorkSchedule(FormV1DtlResponseDTO FormV1Dtl);
+
+        int? UpdateFormV1WorkSchedule(FormV1DtlResponseDTO FormV1Dtl);
+
+
 
     }
 }

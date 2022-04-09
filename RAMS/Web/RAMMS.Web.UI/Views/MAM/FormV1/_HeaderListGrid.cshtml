@@ -2,7 +2,7 @@
 
 <div class="main-container" id="container">
     <div id="content">
-        <table id="FormDGridView" class="table w-100 nowrap">
+        <table id="FormV1GridView" class="table w-100 nowrap">
         </table>
     </div>
 </div>
@@ -15,11 +15,14 @@
     var isModifyPerm =@security.IsPCModify(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
     var isDeletePerm =@security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
 
+    //need to remove
+    isModifyPerm = "";
+
     var table_columns = [];
     var actionCol = {
-        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formDHeaderEdit'" + isModifyPerm + " onclick='javascript:EditFormD(" + data.no + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.no + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data, type, full) {
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV1Edit'" + isModifyPerm + " onclick='javascript:EditFormV1(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
@@ -30,10 +33,7 @@
     var SectionCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
     var crewCol = { data: "crew", name: "Crew", title: "Crew Supervisor", autoWidth: true, sortable: true };
     var DtCol = { data: "dt", name: "Date", title: "Date", autoWidth: true, sortable: true };
-   
-
-    var submitStsCol = { data: "processStatus", name: "Status", title: "Status", autoWidth: true, sortable: true };
-     
+    
 
     table_columns.push(actionCol);
     table_columns.push(refNoCol);
@@ -60,7 +60,7 @@
         //filterData.Bydate = $("#FormDSrchByDate").val().trim();
         
 
-        $('#FormDGridView').DataTable({
+        $('#FormV1GridView').DataTable({
             ajax: {
                 url: "/MAM/LoadFormV1List",
                 type: "POST",
@@ -94,4 +94,10 @@
             oTable.draw();
         });
     });
+
+    
+    function EditFormV1(pid, view) {
+        window.location = "/MAM/EditFormV1" + "?Id=" + pid + "&view=" + view;
+    }
+
 </script>

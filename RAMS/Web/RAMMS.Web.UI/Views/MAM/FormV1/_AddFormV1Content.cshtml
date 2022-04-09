@@ -1,0 +1,364 @@
+﻿@model RAMMS.Web.UI.Models.FormV1Model;
+@using RAMMS.Business.ServiceProvider;
+<div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+    <div class="card mb-0">
+        <div class="card-header" id="headingOne">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        Work Schedule
+                    </span>
+                </a>
+            </h5>
+        </div>
+        <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+            <div class="card-body">
+
+
+                <div class="main-container" id="container">
+                    <div id="content">
+                        <div class="w-100 position-relative in-tbl-btns custom-tbl">
+                            <div class="grid-btns">
+                                <button type="button" id="btnWorkScheduleAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#myModal">
+                                    <span class="intbl-add-icon"></span>
+                                </button>
+                            </div>
+                            @{
+                                Html.RenderPartial("_WorkScheduleGrid.cshtml");
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <h4 class="modal-title w-100">
+                                    <span class="float-left"> WORK SCHEDULE</span>
+                                    <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="row pt-3">
+
+                                    <div class="form-group col-lg-7">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                @Html.Label("Road Code", "Road Code")
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @class = "form-control svalidate {required,Road Code}", @onchange = "OnRoadChange(this);" })
+
+                                            </div>
+                                            <div class="col-6">
+                                                @Html.Label("Road Name", "Road Name")
+                                                @Html.TextBoxFor(m => m.FormV1Dtl.RoadName, new { @readonly = true, @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-5">
+                                        <div class="form-group col-lg-6 p-0">
+
+                                            <label for="RoadCode" class="mb-1">
+                                                Chainage 'KM' Location
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" style="height: 35px;">CH</span>
+                                                </div>
+                                                @Html.TextBoxFor(m => m.FormV1Dtl.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric svalidate {required,Chainage KM from}", style = "height:35px" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
+                                            +
+                                        </div>
+                                        <div class="form-group col-lg-5 p-0">
+                                            <label for="RoadCode">
+                                                Chainage 'M' Location
+                                            </label>
+                                            @Html.TextBoxFor(m => m.FormV1Dtl.ToChDeci, new { @maxlength = "3", @class = "form-control allow_numeric svalidate {required,Chainage KM from}" })
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-lg-7">
+                                        <div class="row">
+                                            <div class="form-group col-4">
+                                                <label for="RoadCode">  Site Reference</label>
+                                                @Html.DropDownListFor(Adtl => Adtl.FormV1Dtl.SiteRef, (IEnumerable<CSelectListItem>)ViewData["Site_Ref"], "Select Site Reference", new { @Id = "ddlSiteRef", @class = "form-control validate {required, Site Reference}" })
+                                            </div><div class="form-group  col-8">
+                                                <label for="RoadCode">
+                                                    Schedule Time to Start
+                                                </label>
+                                                <div class="row mt-1">
+                                                    <div class="col-4">
+                                                        <select class="form-control px-0 py-2">
+                                                            @{for (int i = 1; i <= 12; i++)
+                                                                {
+                                                                    <option value="@i">@i</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <select class="form-control px-0 py-2">
+                                                            @{for (int i = 0; i <= 59; i++)
+                                                                {
+                                                                    <option value="@i">@i</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <select class="form-control">
+                                                            <option value="">AM</option>
+                                                            <option value="">PM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-5">
+                                        <label for="RoadCode">
+                                            Remarks
+                                        </label>
+                                        @Html.TextBoxFor(m => m.FormV1Dtl.Remarks, new { @class = "form-control " })
+                                    </div>
+                                </div>
+
+
+                                <!--<div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                    <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                                </div>-->
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                                <button type="button" class="btn btn-sm btn-themebtn" id="saveFormV1DtlBtn" onclick="SaveFormV1WorkSchedule()">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+    <div class="card mb-0">
+        <div class="card-header" id="headingTwo">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        Remarks
+                    </span>
+                </a>
+            </h5>
+        </div>
+        <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+            <div class="card-body">
+                <div id="EquipmentListGrid" class="w-100 dt-tbl-section">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.FormV1.Remarks, new { @class = "form-control  svalidate {required,Details of Work}" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="accordion custom-accordion mb-4" id="custom-accordion-five">
+    <div class="card mb-0">
+        <div class="card-header" id="headingFive">
+            <h5 class="m-0">
+                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage5" aria-expanded="false" aria-controls="collapseFive">
+                    <span class="float-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    </span>
+                    <span class="float-left" style="padding: 4px 8px;">
+                        User Details
+                    </span>
+                </a>
+            </h5>
+        </div>
+        <div id="AccordPage5" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFive" data-parent="#custom-accordion-five">
+            <div class="card-body float-left p-0 w-100">
+                <div class="row">
+                    <div class="col-lg-10 offset-lg-1 mt-2">
+                        <div class="row" useridgroup="">
+
+
+                            <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                <div class="col-lg-12 border-bottom py-2 my-2">
+                                    <span class="font-14 font-weight-bold">
+                                        Representative From
+                                    </span>
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="User_Id">
+                                        Service Provider
+                                    </label>
+
+                                    <input type="text" class="form-control" readonly title="Endaya Construction Sdn Bhd" value="Endaya Construction Sdn Bhd" />
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label for="Name">
+                                        Scheduled by
+                                    </label>
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Scheduledby", "Select Users", new { Id = "ddlScheduledby", @class = "form-control  {required,Scheduled by}", @onchange = "OnScheduledbyChange(this);" })
+
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="User_Id">
+                                        Name
+                                    </label>
+                                    @Html.TextBoxFor(model => model.FormV1.UsernameSch, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="Designation">Designation</label>
+                                    @Html.TextBoxFor(model => model.FormV1.DesignationSch, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
+                                    @Html.EditorFor(m => m.FormV1.DtSch, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="form-group col-lg-1 float-left">
+                                    <label>
+                                        Sign
+
+                                    </label>
+                                    <div class="clear-b mt-2">
+                                        @Html.CheckBoxFor(model => model.FormV1.SignSch, new { @class = "{required, Scheduled by Signature}" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="User_Id">
+                                        Verifier
+                                    </label>
+                                    <input type="text" disabled class="form-control" title="JKR Sarawak, Miri Division" value="JKR Sarawak, Miri Division">
+                                </div>
+                                <div class="form-group col-lg-2 float-left mb-0">
+                                    <label for="Name">
+                                        Agreed by
+                                    </label>
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Agreedby", "Select Users", new { Id = "ddlAgreedby", @class = "form-control  {required,Agreed by}", @onchange = "OnAgreedbyChange(this);" })
+
+                                </div>
+
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="User_Id">
+                                        Name
+                                    </label>
+                                    @Html.TextBoxFor(model => model.FormV1.UsernameAgr, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="Designation">Designation</label>
+                                    @Html.TextBoxFor(model => model.FormV1.DesignationAgr, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
+                                    @Html.EditorFor(m => m.FormV1.DtAgr, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="form-group col-lg-1 float-left">
+                                    <label>
+                                        Sign
+                                    </label>
+                                    <div class="clear-b mt-2">
+                                        @Html.CheckBoxFor(model => model.FormV1.SignAgr, new { @class = "{required, Agreed by Signature}" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+
+                            <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="User_Id">
+                                        Facilitator
+                                    </label>
+                                    <input type="text" class="form-control" value=" JKR Sarawak, Miri Division">
+
+                                </div>
+                                <div class="form-group col-lg-2 float-left mb-0">
+                                    <label for="Name"> Acknowledged by<!--  Bansing Tijun--></label>
+                                    @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Acknowledgedby", "Select Users", new { Id = "ddlAcknowledgedby", @class = "form-control  {required,Acknowledged by}", @onchange = "OnAcknowledgedChange(this);" })
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="User_Id">
+                                        Name
+                                    </label>
+                                    @Html.TextBoxFor(model => model.FormV1.UsernameAck, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-2 float-left">
+                                    <label for="Designation">Designation</label>
+                                    @Html.TextBoxFor(model => model.FormV1.DesignationAck, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
+                                    @Html.EditorFor(m => m.FormV1.DtAck, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="form-group col-lg-1 float-left">
+                                    <label>
+                                        Sign
+                                    </label>
+                                    <div class="clear-b mt-2">
+                                        @Html.CheckBoxFor(model => model.FormV1.SignAck, new { @class = "{required, Acknowledged by Signature}" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.HiddenFor(m => m.FormV1.PkRefNo);
+@Html.HiddenFor(m => m.FormV1Dtl.PkRefNo);
+@Html.HiddenFor(m => m.FormV1.SecCode);
+@Html.HiddenFor(m => m.FormV1.UseridAck);
+@Html.HiddenFor(m => m.FormV1.UseridAgr);
+@Html.HiddenFor(m => m.FormV1.UseridSch);
+@Html.HiddenFor(m => m.FormV1Dtl.RoadCode);
+<input type="hidden" id="hdnSecCode" value="@Model.FormV1.SecCode" />
+
+<script>
+    $("#FormV1_RefId").val(@Model.FormV1.RefId);
+    
+    if ("@Model.FormV1.PkRefNo" != "0") {
+        $("#AccordPage0 *").prop("disabled", true);
+        $("#btnFindDetails").hide();
+        $("#btnWorkScheduleAdd").show();
+    }
+    else {
+        $("#btnWorkScheduleAdd").hide();
+    }
+
+</script>

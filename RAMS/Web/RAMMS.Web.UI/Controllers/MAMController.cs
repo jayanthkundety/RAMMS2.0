@@ -975,30 +975,106 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formV1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
-
-
-
-        public async Task<IActionResult> AddFormV1(int id, int view)
+        public async Task<IActionResult> GetWorkScheduleGridList(DataTableAjaxPostModel<FormV1WorkScheduleGridDTO> formV1WorkScheduleFilter, int V1PkRefNo)
         {
 
+
+            FilteredPagingDefinition<FormV1WorkScheduleGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1WorkScheduleGridDTO>();
+            filteredPagingDefinition.Filters = formV1WorkScheduleFilter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV1WorkScheduleFilter.length;
+            filteredPagingDefinition.StartPageNo = formV1WorkScheduleFilter.start;
+
+            if (formV1WorkScheduleFilter.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = formV1WorkScheduleFilter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV1WorkScheduleFilter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+
+            var result = await _formV1Service.GetFormV1WorkScheduleGridList(filteredPagingDefinition, V1PkRefNo).ConfigureAwait(false);
+
+            return Json(new { draw = formV1WorkScheduleFilter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+
+        public async Task<int> LoadFormV1DropDown()
+        {
             ViewData["RMU"] = await _formDService.GetRMU();
-
             ViewData["Division"] = await _formDService.GetDivisions();
-
             FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
             ViewData["SectionCodeList"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
-
             base.LoadLookupService(GroupNameList.Supervisor, GroupNameList.OperationsExecutive, GroupNameList.OpeHeadMaintenance, GroupNameList.JKRSSuperiorOfficerSO);
-
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "Act-FormD";
             ViewData["ActCode"] = await _ddLookupService.GetLookUpCodeText(ddLookup);
-
-            LoadLookupService("RD_Code");
-
-
-            return View("~/Views/MAM/FormV1/AddFormV1.cshtml");
+            LoadLookupService("RD_Code", "User", "Site Ref");
+            return 1;
         }
+            public async Task<IActionResult> AddFormV1(int id, int view)
+        {
+            var _formV1Model = new FormV1Model();
+            _formV1Model.FormV1 = new FormV1ResponseDTO();
+            _formV1Model.FormV1Dtl = new FormV1DtlResponseDTO();
+            await LoadFormV1DropDown();
+            return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
+        }
+
+
+
+        public async Task<IActionResult> EditFormV1(int Id)
+        {
+            await LoadFormV1DropDown();
+            var _formV1Model = new FormV1Model();
+
+            _formV1Model.FormV1 = await _formV1Service.FindFormV1ByID(Id);
+            //  _formV1Model.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
+
+
+
+            return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveFormV1(FormV1Model frm)
+        {
+            int refNo = 0;
+            frm.FormV1.ActiveYn = true;
+            if (frm.FormV1.PkRefNo == 0)
+            {
+               
+                frm.FormV1.Status = "Saved";
+                frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
+                await LoadFormV1DropDown();
+                return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
+            }
+            else
+            {
+                refNo = await _formV1Service.Update(frm.FormV1);
+            }
+            return Json(refNo);
+
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveFormV1WorkSchedule(FormV1Model frm)
+        {
+            int? refNo = 0;
+            frm.FormV1Dtl.ActiveYn = true;
+            frm.FormV1Dtl.Fv1hPkRefNo = frm.FormV1.PkRefNo;
+            if (frm.FormV1Dtl.PkRefNo == 0)
+            {
+                refNo = _formV1Service.SaveFormV1WorkSchedule(frm.FormV1Dtl);
+            }
+            else
+            {
+                _formV1Service.UpdateFormV1WorkSchedule(frm.FormV1Dtl);
+            }
+            return Json(refNo);
+
+
+        }
+
+
 
         #endregion
 

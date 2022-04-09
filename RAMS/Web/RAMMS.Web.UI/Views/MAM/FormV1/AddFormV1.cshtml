@@ -7,1217 +7,153 @@
 }
 <link src="~/css/tui-time-picker.min.css" />
 <script src="~/js/tui-time-picker.min.js" asp-append-version="true"></script>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12">
 
-            <div class="d-flex justify-content-center pt-3 pb-3">
-                <div class="form-group mb-0" style="width:400px; float:left">
-                    <span style="width:100px;float:left;"> <label for="Form_C1_C2_No_" style="padding: .5rem .5rem 0 !important;">Reference No</label></span>
-                    <span style="width:300px; float:left">
-                        @Html.TextBoxFor(m => m.FormV1.RefId, new { @Id = "formV1ReferenceNo", @disabled = true, @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
-                    </span>
-
-                </div>
-            </div>
-        </div>
-        <div class="modal-body mh-182 pt-0 pb-0">
-
-
+@using (Html.BeginForm())
+{
+    <div class="container-fluid">
+        <div class="row">
             <div class="col-lg-12">
-                <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
-                    <div id="accordion" class="col-lg-12">
-                        <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
-                            <div class="card mb-0">
-                                <div class="card-header" id="headingZero">
-                                    <h5 class="m-0">
-                                        <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
-                                            <span class="float-left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                            </span>
-                                            <span class="float-left" style="padding: 4px 8px;">
-                                                Form V1
-                                            </span>
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="form-group col-lg-10 col-md-12">
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="row">
-                                                            <div class="col-6 form-group pr-lg-0">
-                                                                <label for="RMU">RMU</label>
-                                                                @Html.DropDownListFor(Adtl => Adtl.FormV1.Rmu, (IEnumerable
-      <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV1rmu", @class = "form-control validate {required, RMU}" })
 
-                                                            </div>
-                                                            <div class="form-group col-lg-6 mb-0">
-                                                                <label for="RMU_Name">RMU Name</label>
-                                                                @Html.TextBoxFor(m => m.FormV1.RmuName, new { @Id = "formV1rmuDesc", @readonly = "readonly", @class = "form-control" })
-                                                            </div>
-                                                        </div>
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div class="form-group mb-0" style="width:400px; float:left">
+                        <span style="width:100px;float:left;"> <label for="Form_C1_C2_No_" style="padding: .5rem .5rem 0 !important;">Reference No</label></span>
+                        <span style="width:300px; float:left">
+                            @Html.TextBoxFor(m => m.FormV1.RefId, new { @Id = "formV1ReferenceNo", @disabled = true, @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
+                        </span>
 
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="row">
-                                                            <div class="col-6 form-group px-0">
-                                                                <label for="RMU">Section Code</label>
-                                                                @Html.DropDownListFor(Ahdr => Ahdr.FormV1.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "formV1SecCode", @class = "form-control validate {required, Section Code}" })
-                                                                @Html.HiddenFor(Ahdr => Ahdr.FormV1.SecCode, new { @id = "hdnSecCode", @class = "form-control" })
-                                                                @Html.HiddenFor(m => m.SecCode, new { @id = "hdnFormV1SecCode", @class = "form-control" })
-                                                            </div>
-                                                            <div class="form-group col-lg-6 mb-0">
-                                                                <label for="RMU_Name">Section Name</label>
-                                                                @Html.TextBoxFor(m => m.SecDescription, new { @Id = "formV1SecDesc", @readonly = "readonly", @class = "form-control " })
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-2 form-group px-0">
-                                                        <label for="RMU"> Division Code</label>
-                                                        @Html.TextBoxFor(m => m.DivisionName, new { @Id = "formV1DivisionDesc", @readonly = "readonly", @class = "form-control " })
-                                                    </div>
-                                                    <div class="col-lg-5">
-
-                                                        <div class="row">
-
-                                                            <div class="form-group col-lg-6">
-                                                                <label for="Name_of_Crew_Supervisor">Crew</label>
-                                                                @Html.DropDownListFor(Ahdr => Ahdr.FormV1.Crew, (IEnumerable
-        <SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "formV1Crew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
-
-                                                            </div>
-                                                            <div class="form-group col-lg-6">
-                                                                <label for="Name_of_Crew_Supervisor">Crew Name</label>
-                                                                @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Crewname, "", new { @id = "formV1CrewName", @class = "form-control" })
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="row">
-                                                            <div class="col-lg-6 form-group px-0">
-                                                                <label for="Ref_No_">Activity Code</label>
-                                                                @Html.DropDownListFor(Adtl => Adtl.FormV1.ActCode, (IEnumerable
-    <SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "formV1Activity", @class = "form-control validate {required, Activity}" })
-
-                                                            </div>
-                                                            <div class="col-lg-6 form-group">
-                                                                <label for="Ref_No_">Activity Name</label>
-                                                                @Html.TextBoxFor(Dhdr => Dhdr.FormV1.ActName, "", new { @id = "formV1ActName", @class = "form-control" })
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="col-2 form-group px-0">
-                                                        <label for="Division_Code">Date </label>
-                                                        @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Dt)
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                                <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="display:none">
-                                            <div class="form-group col-lg-10 col-md-12">
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="row">
-                                                            <div class="col-6 form-group pr-lg-0">
-                                                                <label for="RMU">RMU</label>
-                                                                <select class="form-control disableHinput editHdisable validate {required, RMU}" id="formRmu" name="SaveFormQa2Model.Rmu" onchange="bindRoadName()">
-                                                                    <option value="">Select RMU Code</option>
-                                                                    <option value="MRI">MRI-Miri</option>
-                                                                    <option value="BTN">BTN-Batu Niah</option>
-                                                                    <option value="ERI">ERI-ERI</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-6 form-group pr-lg-0">
-                                                                <label for="RMU"> Division Code</label>
-                                                                <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <div class="col-lg-6">
-
-                                                        <div class="row">
-
-                                                            <div class="form-group col-lg-6 pr-0">
-                                                                <label for="Name_of_Crew_Supervisor">Crew</label>
-                                                                <select class="form-control  editHdisable validate" id="formQA2CrewUnit" name="SaveFormQa2Model.CrewSup">
-                                                                    <option value="">Select Users</option>
-                                                                    <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                    <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group col-lg-6 pr-0">
-                                                                <label for="Name_of_Crew_Supervisor">Crew Name</label>
-                                                                <input class="form-control" id="formQA2CrewName" name="SaveFormQa2Model.CrewSupName" type="text" value="" disabled="">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3 form-group px-0">
-                                                        <label for="Ref_No_">Activity Code</label>
-                                                        <select class="form-control  editHdisable validate" id="formQA2CrewUnit" name="SaveFormQa2Model.CrewSup">
-                                                            <option value="">Select Activity Code</option>
-                                                            <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                            <option value="100000034">100000034 - Ramlee Nor</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-lg-3 form-group">
-                                                        <label for="Ref_No_">Activity Name</label>
-                                                        <input type="text" class="form-control validate {required, Reference No.}" readonly="">
-                                                    </div>
-                                                    <div class="form-group col-lg-3">
-                                                        <label for="Division_Code">Date </label>
-                                                        <input class="form-control" type="date" value="">
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                                <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
-                            <div class="card mb-0">
-                                <div class="card-header" id="headingOne">
-                                    <h5 class="m-0">
-                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
-                                            <span class="float-left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                            </span>
-                                            <span class="float-left" style="padding: 4px 8px;">
-                                                Work Schedule
-                                            </span>
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
-                                    <div class="card-body">
-
-
-                                        <div class="main-container" id="container">
-                                            <div id="content">
-                                                <div class="w-100 position-relative in-tbl-btns custom-tbl">
-                                                    <div class="grid-btns">
-                                                        <button type="button" id="btnLabourAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#myModal">
-                                                            <span class="intbl-add-icon"></span>
-                                                        </button>
-                                                    </div>
-
-                                                    <div id="FormDLabourGridView_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                                                        <div class="top"><div class="dataTables_length" id="FormDLabourGridView_length"><label>Show <select name="FormDLabourGridView_length" aria-controls="FormDLabourGridView" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10 rows</option><option value="25">25 rows</option><option value="50">50 rows</option><option value="100">100 rows</option><option value="500">500 rows</option><option value="100000">All</option></select> entries</label></div><div class="dataTables_paginate paging_simple_numbers" id="FormDLabourGridView_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="FormDLabourGridView_previous"><a href="#" aria-controls="FormDLabourGridView" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item next disabled" id="FormDLabourGridView_next"><a href="#" aria-controls="FormDLabourGridView" data-dt-idx="1" tabindex="0" class="page-link">Next</a></li></ul></div></div>
-                                                        <div id="FormDLabourGridView_processing" class="dataTables_processing card" style="display: none;">Processing...</div><div class="dataTables_scroll">
-                                                            <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
-
-                                                            </div>
-                                                            <div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 100%; height: 100%;">
-                                                                <table class="table w-100 nowrap dataTable no-footer">
-
-                                                                    <thead style="background-color: #c8e1ff">
-                                                                        <tr>
-                                                                            <th></th>
-                                                                            <th colspan="1" class="text-center">
-                                                                                Road code
-                                                                            </th>
-                                                                            <th colspan="1" class="text-center">
-                                                                                Road Name
-                                                                            </th>
-                                                                            <th colspan="1" width="100px">
-                                                                                <span style="width:100px;">
-                                                                                    Chainage Location
-                                                                                </span>
-                                                                            </th>
-                                                                            <th colspan="1">
-                                                                                Site Reference
-                                                                            </th>
-                                                                            <th colspan="1">
-                                                                                Schedule Time to Start
-                                                                            </th>
-                                                                            <th colspan="1">
-                                                                                Remarks
-                                                                            </th>
-                                                                        </tr>
-
-                                                                    </thead>
-                                                                    <tbody>
-
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <!--  <td>
-
-                                                                            </td>-->
-                                                                            <td>
-                                                                                Q290
-                                                                            </td>
-                                                                            <td style="width:200px">
-
-                                                                                OLD RIAM ROAD OPPSITE FIELD FORCE CAMP
-                                                                            </td>
-                                                                            <td>
-                                                                                5+800
-                                                                            </td>
-                                                                            <td>
-                                                                                LHS/RHS
-                                                                            </td>
-                                                                            <td>
-                                                                                8:00 AM
-                                                                            </td>
-                                                                            <td>---</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <!--  <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="print-icon"></span> Print
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>-->
-                                                                            <td>
-                                                                                Q661
-                                                                            </td>
-                                                                            <td>KAMPUNG PAKALAN LUTONG ACCESS ROAD</td>
-                                                                            <td>2+750</td>
-                                                                            <td>LHS/RHS</td>
-                                                                            <td>8:00 AM</td>
-                                                                            <td>---</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <!--  <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="print-icon"></span> Print
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>-->
-                                                                            <td>
-                                                                                Q650
-                                                                            </td>
-                                                                            <td>
-                                                                                PIASAU INDUSTRIAL AREA ROAD
-                                                                            </td>
-                                                                            <td>
-                                                                                1+300
-                                                                            </td>
-                                                                            <td>
-                                                                                LHS/RHS
-                                                                            </td>
-                                                                            <td>
-                                                                                8:00 AM
-                                                                            </td>
-                                                                            <td>
-                                                                                ---
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <!--  <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="print-icon"></span> Print
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>-->
-                                                                            <td>
-                                                                                Q2007-2D (A)
-                                                                            </td>
-                                                                            <td>
-                                                                                TG.KIDURONG / K.SUAI / K.NIAH / K.SIBUTI / BAKAM ROAD
-
-
-                                                                            </td>
-                                                                            <td>
-                                                                                3+560
-                                                                            </td>
-                                                                            <td>
-                                                                                LHS/RHS
-                                                                            </td>
-                                                                            <td>
-                                                                                8:00 AM
-                                                                            </td>
-                                                                            <td>
-                                                                                ---
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <!--  <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="print-icon"></span> Print
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>-->
-                                                                            <td>
-                                                                                Q2007-2D (B)
-                                                                            </td>
-                                                                            <td>
-                                                                                TG.KIDURONG / K.SUAI / K.NIAH / K.SIBUTI / BAKAM ROAD
-                                                                            </td>
-                                                                            <td>
-                                                                                0+330
-                                                                            </td>
-                                                                            <td>
-                                                                                LHS/RHS
-                                                                            </td>
-                                                                            <td>
-                                                                                8:00 AM
-                                                                            </td>
-                                                                            <td>
-                                                                                ---
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <!--  <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="print-icon"></span> Print
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>-->
-                                                                            <td>
-                                                                                Q681
-                                                                            </td>
-                                                                            <td>
-                                                                                CUSTOMS QUARTERS ACCESS ROAD
-
-
-                                                                            </td>
-                                                                            <td>
-                                                                                0+410
-                                                                            </td>
-                                                                            <td>
-                                                                                LHS/RHS
-                                                                            </td>
-                                                                            <td>
-                                                                                8:00 AM
-                                                                            </td>
-                                                                            <td>
-                                                                                ---
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-
-
-                                                                            <!--  <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="print-icon"></span> Print
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>-->
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                Q683
-                                                                            </td>
-                                                                            <td>
-                                                                                FEDERAL QUARTERS ACCESS ROAD
-                                                                            </td>
-                                                                            <td>
-                                                                                13+300
-                                                                            </td>
-                                                                            <td>
-                                                                                LHS/RHS
-                                                                            </td>
-                                                                            <td>
-                                                                                8:00 AM
-                                                                            </td>
-                                                                            <td>
-                                                                                ---
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <!--  <td>
-                                                                                <div class="btn-group dropright" id="actiondropdown">
-                                                                                    <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                                                        Click Me
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu">
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="edit-icon"></span> Edit
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="del-icon"></span> Delete
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="view-icon"></span> View
-                                                                                        </button>
-                                                                                        <button type="button" class="dropdown-item editdel-btns">
-                                                                                            <span class="print-icon"></span> Print
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>-->
-                                                                            <td>
-                                                                                Q683
-                                                                            </td>
-                                                                            <td>
-                                                                                FEDERAL QUARTERS ACCESS ROAD
-                                                                            </td>
-                                                                            <td>
-                                                                                13+300
-                                                                            </td>
-                                                                            <td>
-                                                                                LHS/RHS
-                                                                            </td>
-                                                                            <td>
-                                                                                8:00 AM
-                                                                            </td>
-                                                                            <td>
-                                                                                ---
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div><div class="bottom d-flex justify-content-md-between"><div class="dataTables_info" id="FormDLabourGridView_info" role="status" aria-live="polite">Showing 0 to 0 of 0 entries</div><div class="dataTables_paginate paging_simple_numbers"><ul class="pagination"><li class="paginate_button page-item previous disabled"><a href="#" aria-controls="FormDLabourGridView" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item next disabled"><a href="#" aria-controls="FormDLabourGridView" data-dt-idx="1" tabindex="0" class="page-link">Next</a></li></ul></div></div><div class="clear"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal fade" id="myModal" role="dialog">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-
-                                                        <h4 class="modal-title w-100">
-                                                            <span class="float-left"> WORK SCHEDULE</span>
-                                                            <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
-                                                        </h4>
-                                                    </div>
-                                                    <div class="modal-body">
-
-                                                        <div class="row pt-3">
-
-                                                            <div class="form-group col-lg-7">
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        @Html.Label("Road Code", "Road Code")
-                                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @class = "form-control svalidate {required,Road Code}", @onchange = "OnRoadChange(this);" })
-
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        @Html.Label("Road Name", "Road Name")
-                                                                        @Html.TextBoxFor(m => m.FormV1Dtl.RoadName, new { @readonly = true, @class = "form-control" })
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group col-lg-5">
-                                                                <div class="form-group col-lg-2 p-0">
-
-                                                                    <label for="RoadCode" class="mb-1">
-                                                                        Chainage 'KM' Location
-                                                                    </label>
-                                                                    <div class="input-group">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text" style="height: 35px;">CH</span>
-                                                                        </div>
-                                                                        @Html.TextBoxFor(m => m.FormV1Dtl.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric svalidate {required,Chainage KM from}", style = "height:35px" })
-
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
-                                                                    +
-                                                                </div>
-                                                                <div class="form-group col-lg-2 p-0">
-                                                                    <label for="RoadCode">
-                                                                        Chainage 'M' Location
-                                                                    </label>
-                                                                    @Html.TextBoxFor(m => m.FormV1Dtl.ToChDeci, new { @maxlength = "3", @class = "form-control allow_numeric svalidate {required,Chainage KM from}" })
-
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="form-group col-lg-7">
-                                                                <div class="row">
-                                                                    <div class="form-group col-6">
-                                                                        <label for="RoadCode">  Site Reference</label>
-                                                                        <select class="form-control">
-                                                                            <option value="">Select</option>
-                                                                        </select>
-                                                                    </div><div class="form-group  col-6">
-                                                                        <label for="RoadCode">
-                                                                            Schedule Time to Start
-                                                                        </label>
-                                                                        <div class="row mt-1">
-                                                                            <div class="col">
-                                                                                <select class="form-control px-0 py-2">
-                                                                                    @{for (int i = 1; i <= 12; i++)
-                                                                                        {
-                                                                                            <option value="@i">@i</option>
-                                                                                        }
-                                                                                    }
-                                                                                </select>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                <select class="form-control px-0 py-2">
-                                                                                    @{for (int i = 0; i <= 59; i++)
-                                                                                        {
-                                                                                            <option value="@i">@i</option>
-                                                                                        }
-                                                                                    }
-                                                                                </select>
-                                                                            </div>
-                                                                            <div class="col">
-                                                                                <select class="form-control">
-                                                                                    <option value="">AM</option>
-                                                                                    <option value="">PM</option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="col-5">
-                                                                <label for="RoadCode">
-                                                                    Remarks
-                                                                </label>
-                                                                @Html.TextBoxFor(m => m.FormV1Dtl.Remarks, new { @class = "form-control " })
-                                                            </div>
-                                                        </div>
-
-
-                                                        <!--<div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                                            <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
-                                                        </div>-->
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
-                                                        <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
-                            <div class="card mb-0">
-                                <div class="card-header" id="headingTwo">
-                                    <h5 class="m-0">
-                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
-                                            <span class="float-left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                            </span>
-                                            <span class="float-left" style="padding: 4px 8px;">
-                                                Remarks
-                                            </span>
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
-                                    <div class="card-body">
-                                        <div id="EquipmentListGrid" class="w-100 dt-tbl-section">
-                                            <label>Remarks</label>
-                                            <textarea id="FsihRemarks" name="Remarks" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion custom-accordion mb-4" id="custom-accordion-five">
-                            <div class="card mb-0">
-                                <div class="card-header" id="headingFive">
-                                    <h5 class="m-0">
-                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage5" aria-expanded="false" aria-controls="collapseFive">
-                                            <span class="float-left">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                            </span>
-                                            <span class="float-left" style="padding: 4px 8px;">
-                                                User Details
-                                            </span>
-                                        </a>
-                                    </h5>
-                                </div>
-                                <div id="AccordPage5" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFive" data-parent="#custom-accordion-five">
-                                    <div class="card-body float-left p-0 w-100">
-                                        <div class="row">
-                                            <div class="col-lg-10 offset-lg-1 mt-2">
-                                                <div class="row" useridgroup="">
-
-
-                                                    <div class="bg-white rounded landing-division w-100 float-left  my-2">
-                                                        <div class="col-lg-12 border-bottom py-2 my-2">
-                                                            <span class="font-14 font-weight-bold">
-                                                                Representative From
-                                                            </span>
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="User_Id">
-                                                                Service Provider
-                                                            </label>
-                                                            <input type="text" class="form-control" value=" Endaya Construction Sdn Bhd" />
-                                                        </div>
-                                                        <div class="form-group col-lg-2">
-                                                            <label for="Name">
-                                                                Scheduled by
-                                                            </label>
-                                                            <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                                <option value="">Select Users</option>
-                                                                <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                                <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                            </select>
-
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="User_Id">
-                                                                Name
-                                                            </label>
-                                                            <input type="text" class="form-control" disabled />
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="Designation">Designation</label>
-                                                            <input type="text" name="UserDesignationPlan" userdest="" class="form-control cvalidate {req,Planned By User Designation}">
-                                                        </div>
-                                                        <div class="form-group col-lg-3 float-left">
-                                                            <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                            <input type="date" name="DtPlan" id="FsiihDtPlan" value="" class="form-control svalidate {req,Planned By Date}">
-                                                        </div>
-                                                        <div class="form-group col-lg-1 float-left">
-                                                            <label>
-                                                                Sign
-
-                                                            </label>
-                                                            <div class="clear-b mt-2">
-                                                                <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-
-
-                                                <div class="row">
-                                                    <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="User_Id">
-                                                                Verifier
-                                                            </label>
-                                                            <input type="text" class="form-control" value=" JKR Sarawak, Miri Division">
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left mb-0">
-                                                            <label for="Name">
-                                                                Agreed by
-                                                            </label>
-                                                            <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                                <option value="">Select Users</option>
-                                                                <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                                <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="Designation">Name</label>
-                                                            <input type="text" name="UserDesignationPlan" disabled class="form-control cvalidate {req,Planned By User Designation}">
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="Designation">Designation</label>
-                                                            <input type="text" name="UserDesignationPlan" userdest="" class="form-control cvalidate {req,Planned By User Designation}">
-                                                        </div>
-                                                        <div class="form-group col-lg-3 float-left">
-                                                            <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                            <input type="date" name="DtPlan" id="FsiihDtPlan" value="" class="form-control svalidate {req,Planned By Date}">
-                                                        </div>
-                                                        <div class="form-group col-lg-1 float-left">
-                                                            <label>
-                                                                Sign
-
-                                                            </label>
-                                                            <div class="clear-b mt-2">
-                                                                <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="row">
-
-                                                    <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="User_Id">
-                                                                Facilitator
-                                                            </label>
-                                                            <input type="text" class="form-control" value=" JKR Sarawak, Miri Division">
-
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left mb-0">
-                                                            <label for="Name"> Acknowledged by<!--  Bansing Tijun--></label>
-                                                            <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                                <option value="">Select Users</option>
-                                                                <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                                <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="Designation">Name</label>
-                                                            <input type="text" name="UserDesignationPlan" disabled class="form-control cvalidate {req,Planned By User Designation}">
-                                                        </div>
-                                                        <div class="form-group col-lg-2 float-left">
-                                                            <label for="Designation">Designation</label>
-                                                            <input type="text" name="UserDesignationPlan" userdest="" class="form-control cvalidate {req,Planned By User Designation}">
-                                                        </div>
-                                                        <div class="form-group col-lg-3 float-left">
-                                                            <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                            <input type="date" name="DtPlan" id="FsiihDtPlan" value="" class="form-control svalidate {req,Planned By Date}">
-                                                        </div>
-                                                        <div class="form-group col-lg-1 float-left">
-                                                            <label>
-                                                                Sign
-
-                                                            </label>
-                                                            <div class="clear-b mt-2">
-                                                                <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @*<div id="FormDUsers" class="w-100 dt-tbl-section">
-                                                <div class="col-lg-10 offset-lg-1 mt-2">
-
-                                                    <div class="row">
-                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
-                                                            <div class="col-lg-12 py-2 px-4">
-                                                                <span class="font-14 font-weight-bold">
-                                                                    Service Provider
-                                                                </span>
-                                                            </div>
-                                                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
-                                                                <div class="form-group col-lg-3 float-left mb-0">
-                                                                    <label for="Name">
-                                                                        Service Provider:
-                                                                    </label>
-                                                                    <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                                        <option value="">Select Users</option>
-                                                                        <option value="100000035">Endaya Construction Sdn Bhd</option>
-                                                                        <option value="100000035">
-                                                                            JKR Sarawak, Miri Division
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="clear-b"></div>
-                                                                <div class="form-group col-lg-5 float-left mb-0">
-                                                                    <label for="Name">Name</label>
-                                                                    <div class="row">
-                                                                        <div class="form-group col-lg-6">
-                                                                            <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                                                <option value="">Select Users</option>
-                                                                                <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                                <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                                <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                                                <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                                            </select>
-
-                                                                        </div>
-                                                                        <div class="form-group col-lg-6">
-                                                                            <input class="form-control" id="FormDReportedByName" name="SaveFormDModel.ReportedByUsername" type="text" value="" disabled="">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-lg-3 float-left">
-                                                                    <label for="Designation">Designation</label>
-                                                                    <input class="form-control validate {req,  Designation}" id="FormDReportedByDesign" name="SaveFormDModel.ReportedByDesignation" type="text" value="" disabled="">
-                                                                </div>
-                                                                <div class="form-group col-lg-3 float-left">
-                                                                    <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                    <input type="date" class="form-control">
-                                                                </div>
-                                                                <div class="form-group col-lg-1 float-left">
-                                                                    <label for="Date__DD-MM-YYYY_">
-                                                                        INITIAL
-                                                                    </label>
-                                                                    <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
-                                                            <div class="col-lg-12 py-2 px-4">
-                                                                <span class="font-14 font-weight-bold">
-                                                                    Verifier
-                                                                </span>
-                                                            </div>
-                                                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
-                                                                <div class="form-group col-lg-5 float-left mb-0">
-                                                                    <label for="Name">Name</label>
-                                                                    <div class="row">
-                                                                        <div class="form-group col-lg-6">
-                                                                            <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                                                <option value="">Select Users</option>
-                                                                                <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                                <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                                <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                                                <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                                            </select>
-
-                                                                        </div>
-                                                                        <div class="form-group col-lg-6">
-                                                                            <input class="form-control" id="FormDReportedByName" name="SaveFormDModel.ReportedByUsername" type="text" value="" disabled="">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-lg-3 float-left">
-                                                                    <label for="Designation">Designation</label>
-                                                                    <input class="form-control validate {req,  Designation}" id="FormDReportedByDesign" name="SaveFormDModel.ReportedByDesignation" type="text" value="" disabled="">
-                                                                </div>
-                                                                <div class="form-group col-lg-3 float-left">
-                                                                    <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                    <input type="date" class="form-control">
-                                                                </div>
-                                                                <div class="form-group col-lg-1 float-left">
-                                                                    <label for="Date__DD-MM-YYYY_">
-                                                                        INITIAL
-                                                                    </label>
-                                                                    <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
-                                                            <div class="col-lg-12 py-2 px-4">
-                                                                <span class="font-14 font-weight-bold">
-                                                                    Facilitator
-                                                                </span>
-                                                            </div>
-                                                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
-                                                                <div class="form-group col-lg-5 float-left mb-0">
-                                                                    <label for="Name">Name</label>
-                                                                    <div class="row">
-                                                                        <div class="form-group col-lg-6">
-                                                                            <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                                                <option value="">Select Users</option>
-                                                                                <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                                                <option value="100000034">100000034 - Ramlee Nor</option>
-                                                                                <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                                                <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                                            </select>
-
-                                                                        </div>
-                                                                        <div class="form-group col-lg-6">
-                                                                            <input class="form-control" id="FormDReportedByName" name="SaveFormDModel.ReportedByUsername" type="text" value="" disabled="">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group col-lg-3 float-left">
-                                                                    <label for="Designation">Designation</label>
-                                                                    <input class="form-control validate {req,  Designation}" id="FormDReportedByDesign" name="SaveFormDModel.ReportedByDesignation" type="text" value="" disabled="">
-                                                                </div>
-                                                                <div class="form-group col-lg-3 float-left">
-                                                                    <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                    <input type="date" class="form-control">
-                                                                </div>
-                                                                <div class="form-group col-lg-1 float-left">
-                                                                    <label for="Date__DD-MM-YYYY_">
-                                                                        INITIAL
-                                                                    </label>
-                                                                    <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>*@
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-
                 </div>
             </div>
+            <div class="modal-body mh-182 pt-0 pb-0">
+
+
+                <div class="col-lg-12">
+                    <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
+                        <div id="accordion" class="col-lg-12">
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingZero">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Form V1
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="form-group col-lg-10 col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <div class="row">
+                                                                <div class="col-6 form-group pr-lg-0">
+                                                                    <label for="RMU">RMU</label>
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.Rmu, (IEnumerable
+<SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV1rmu", @class = "form-control validate {required, RMU}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6 mb-0">
+                                                                    <label for="RMU_Name">RMU Name</label>
+                                                                    @Html.TextBoxFor(m => m.FormV1.RmuName, new { @Id = "formV1rmuDesc", @readonly = "readonly", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <div class="row">
+                                                                <div class="col-6 form-group px-0">
+                                                                    <label for="RMU">Section Code</label>
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV1.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "formV1SecCode", @class = "form-control validate {required, Section Code}" })
+                                                                    @Html.HiddenFor(Ahdr => Ahdr.FormV1.SecCode, new { @id = "hdnSecCode", @class = "form-control" })
+                                                                    @Html.HiddenFor(m => m.SecCode, new { @id = "hdnFormV1SecCode", @class = "form-control" })
+                                                                </div>
+                                                                <div class="form-group col-lg-6 mb-0">
+                                                                    <label for="RMU_Name">Section Name</label>
+                                                                    @Html.TextBoxFor(m => m.SecDescription, new { @Id = "formV1SecDesc", @readonly = "readonly", @class = "form-control " })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-2 form-group px-0">
+                                                            <label for="RMU"> Division Code</label>
+                                                            @Html.TextBoxFor(m => m.DivisionName, new { @Id = "formV1DivisionDesc", @readonly = "readonly", @class = "form-control " })
+                                                        </div>
+                                                        <div class="col-lg-5">
+
+                                                            <div class="row">
+
+                                                                <div class="form-group col-lg-6">
+                                                                    <label for="Name_of_Crew_Supervisor">Crew</label>
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV1.Crew, (IEnumerable
+<SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "formV1Crew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6">
+                                                                    <label for="Name_of_Crew_Supervisor">Crew Name</label>
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Crewname, "", new { @id = "formV1CrewName", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 form-group px-0">
+                                                                    <label for="Ref_No_">Activity Code</label>
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.ActCode, (IEnumerable
+<SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "formV1Activity", @class = "form-control validate {required, Activity}" })
+
+                                                                </div>
+                                                                <div class="col-lg-6 form-group">
+                                                                    <label for="Ref_No_">Activity Name</label>
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.ActName, "", new { @id = "formV1ActName", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-2 form-group px-0">
+                                                            <label for="Division_Code">Date </label>
+                                                            @Html.EditorFor(m => m.FormV1.Dt, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                                    <button id="btnFindDetails" type="button" onclick="Save('','')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divFormV1Content">
+                                @{
+                                    Html.RenderPartial("_AddFormV1Content.cshtml",Model);
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
-
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
+            <button id="saveFormV1Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
+            <button id="SubmitFormV1Btn" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+        </div>
     </div>
-    <div class="col-md-12 float-right text-right custom-footer">
-        <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
-        <button id="saveFormN2Btn" type="button" class="btn btn-sm btn-themebtn">Save</button>
-        <button id="SubmitFormN2Btn" type="button" class="btn btn-sm btn-themebtn">Submit</button>
-    </div>
-</div>
 
-@Html.HiddenFor(m => m.FormV1Dtl.RoadCode);
+ 
 
+}
 
 <style>
 
@@ -1229,6 +165,24 @@
 
 <script>
 
+    var onloadFlag = true;
+    $(document).ready(function () {
+        $('#formV1ReferenceNo').val("@Model.FormV1.Rmu");
+        $('#formV1ReferenceNo').trigger('chosen:updated');
+
+        $('#formV1SecCode').val("@Model.FormV1.SecCode");
+        $('#formV1SecCode').trigger('chosen:updated');
+
+        $('#ddlAcknowledgedby').val("@Model.FormV1.UseridAck");
+        $('#ddlAcknowledgedby').trigger('chosen:updated');
+
+        $('#ddlAgreedby').val("@Model.FormV1.UseridAgr");
+        $('#ddlAgreedby').trigger('chosen:updated');
+
+        $('#ddlScheduledby').val("@Model.FormV1.UseridSch");
+        $('#ddlScheduledby').trigger('chosen:updated');
+
+    });
 
     $("#formV1rmu").on("change", function () {
         var val = $(this).find(":selected").text();
@@ -1238,6 +192,8 @@
         req.Section = '';
         req.RoadCode = '';
         req.RMU = $("#formV1rmu option:selected").text().split("-")[1];
+
+        debugger;
         //RM_div_RMU_Sec_Master
         $.ajax({
             url: '/ERT/RMUSecRoad',
@@ -1252,16 +208,24 @@
                         $("#formV1SecCode").append($("<option></option>").val(v.value).html(v.text));
                     });
                     // var hdnRoadcode = $('#hdnRoadcode').val();
-                    $.each(data.section, function (index, v) {
-                        var splittedVal = v.text.split("-")[0];
-                        var editVal = $('#hdnRoadcode').val();
-                        if (splittedVal == editVal) {
-                            $("#formV1SecCode").val(v.value);
-                        }
-                    });
+                    //$.each(data.section, function (index, v) {
+                    //    var splittedVal = v.text.split("-")[0];
+                    //    var editVal = $('#hdnRoadcode').val();
+                    //    if (splittedVal == editVal) {
+                    //        $("#formV1SecCode").val(v.value);
+                    //    }
+                    //});
+
+                    if (onloadFlag) {
+                        $("#formV1SecCode").val($("#hdnSecCode").val());
+                        onloadFlag = false;
+                    }
+
                     $('#formV1SecCode').trigger("chosen:updated");
                     $("#formV1SecCode").trigger("change");
                     document.getElementById("formV1SecDesc").disabled = true;
+
+
                 } else {
                     document.getElementById("formV1SecDesc").disabled = false;
                 }
@@ -1392,4 +356,189 @@
     }
 
 
+    function OnAcknowledgedChange(tis) {
+
+        var ctrl = $(tis);
+        if (ctrl.val() != null)
+            $('#FormV1_UseridAck').val(ctrl.val());
+        if ($('#FormV1_UseridAck').val() != "") {
+            $("#FormV1_UsernameAck").val(ctrl.find("option:selected").attr("Item1"));
+            $("#FormV1_DesignationAck").val(ctrl.find("option:selected").attr("Item2"));
+
+            if ($('#FormV1_UseridAck').val() == "99999999") {
+                $("#FormV1_UsernameAck").removeAttr("readonly");
+                $("#FormV1_DesignationAck").removeAttr("readonly");
+
+            } else {
+                $("#FormV1_UsernameAck").attr("readonly", "true");
+                $("#FormV1_DesignationAck").attr("readonly", "true");
+            }
+            $('#FormV1_SignAck').prop('checked', true);
+        }
+        else {
+            $("#FormV1_UsernameAck").val('');
+            $("#FormV1_DesignationAck").val('');
+            $('#FormV1_SignAck').prop('checked', false);
+        }
+    }
+
+    function OnAgreedbyChange(tis) {
+
+        var ctrl = $(tis);
+        if (ctrl.val() != null)
+            $('#FormV1_UseridAgr').val(ctrl.val());
+        if ($('#FormV1_UseridAgr').val() != "") {
+            $("#FormV1_UsernameAgr").val(ctrl.find("option:selected").attr("Item1"));
+            $("#FormV1_DesignationAgr").val(ctrl.find("option:selected").attr("Item2"));
+
+            if ($('#FormV1_UseridAgr').val() == "99999999") {
+                $("#FormV1_UsernameAgr").removeAttr("readonly");
+                $("#FormV1_DesignationAgr").removeAttr("readonly");
+
+            } else {
+                $("#FormV1_UsernameAgr").attr("readonly", "true");
+                $("#FormV1_DesignationAgr").attr("readonly", "true");
+            }
+            $('#FormV1_SignAgr').prop('checked', true);
+        }
+        else {
+            $("#FormV1_UsernameAgr").val('');
+            $("#FormV1_DesignationAgr").val('');
+            $('#FormV1_SignAgr').prop('checked', false);
+        }
+    }
+
+    function OnScheduledbyChange(tis) {
+
+        var ctrl = $(tis);
+        if (ctrl.val() != null)
+            $('#FormV1_UseridSch').val(ctrl.val());
+        if ($('#FormV1_UseridSch').val() != "") {
+            $("#FormV1_UsernameSch").val(ctrl.find("option:selected").attr("Item1"));
+            $("#FormV1_DesignationSch").val(ctrl.find("option:selected").attr("Item2"));
+
+            if ($('#FormV1_UseridSch').val() == "99999999") {
+                $("#FormV1_UsernameSch").removeAttr("readonly");
+                $("#FormV1_DesignationSch").removeAttr("readonly");
+
+            } else {
+                $("#FormV1_UsernameSch").attr("readonly", "true");
+                $("#FormV1_DesignationSch").attr("readonly", "true");
+            }
+            $('#FormV1_SignSch').prop('checked', true);
+        }
+        else {
+            $("#FormV1_UsernameSch").val('');
+            $("#FormV1_DesignationSch").val('');
+            $('#FormV1_SignSch').prop('checked', false);
+        }
+    }
+
+
+
+    function Save(GroupName, SubmitType) {
+
+        debugger;
+
+        $("#ddlUseridReq").removeClass("validate");
+        $("#ddlUseridVer").removeClass("validate");
+        $("#ddlUseridRep").removeClass("validate");
+        $("#ddlRMU").removeClass("validate");
+
+        $("#FormW1_SignReq").removeClass("validate");
+        $("#FormW1_SignVer").removeClass("validate");
+        $("#FormW1_SignRep").removeClass("validate");
+
+        if (SubmitType != "") {
+
+            $("#FormW1page .svalidate").addClass("validate");
+
+            if (SubmitType == "Submitted") {
+                $("#FormW1_Status").val("Submitted");
+                $("#FormW1_SubmitSts").val(true);
+                $("#ddlUseridReq").addClass("validate");
+                $("#FormW1_SignReq").addClass("validate");
+
+
+            }
+            else if (SubmitType == "Verified") {
+                $("#ddlUseridReq").addClass("validate");
+                $("#ddlUseridVer").addClass("validate");
+                $("#ddlRMU").addClass("validate");
+                $("#ddlRMU").addClass("validate");
+                $("#FormW1_IwRefNo").addClass("validate");
+                $("#FormW1_SignVer").removeClass("validate");
+
+                if ($("#hdnRecommondedValue").val() == 1 || $("#hdnRecommondedValue").val() == 2) {
+                    $("#ddlUseridRep").addClass("validate");
+                    $("#FormW1_SignRep").removeClass("validate");
+                }
+            }
+        }
+        else {
+            $("#FormW1_Status").val("Saved");
+        }
+
+        if (ValidatePage('#FormW1page')) {
+            InitAjaxLoading();
+            $.post('/MAM/SaveFormV1', $("form").serialize(), function (data) {
+                HideAjaxLoading();
+                if (data == -1) {
+                    app.ShowErrorMessage(data.errorMessage);
+                }
+                else {
+
+                    if ($("#FormV1_PkRefNo").val() == "" || $("#FormV1_PkRefNo").val() == "0") {
+                        $("#FormV1_PkRefNo").val(data);
+                        $("#hdnPkRefNo").val(data);
+                    }
+
+                    if (SubmitType == "" ) {
+                        app.ShowSuccessMessage('Saved Successfully', false);
+                        $("#divFormV1Content").html(data);
+                    }
+                   else if ( SubmitType == "Saved") {
+                        app.ShowSuccessMessage('Saved Successfully', false);
+                         location.href = "/MAM/FormV1";
+                    }
+                    else if (SubmitType == "Submitted") {
+                        app.ShowSuccessMessage('Submitted Successfully', false);
+                        location.href = "/MAM/FormV1";
+                    }
+                    else if (SubmitType == "Verified") {
+                        process.ShowApprove(GroupName, SubmitType);
+                    }
+                }
+            });
+        }
+
+
+
+    }
+
+
+
+    function SaveFormV1WorkSchedule() {
+
+        debugger;
+
+        if (ValidatePage('#FormW1page')) {
+            InitAjaxLoading();
+            $.post('/MAM/SaveFormV1WorkSchedule', $("form").serialize(), function (data) {
+                HideAjaxLoading();
+                if (data == -1) {
+                    app.ShowErrorMessage(data.errorMessage);
+                }
+                else {
+                    debugger;
+                    if (data != 0)
+                        $("#FormV1Dtl_PkRefNo").val(data)
+                    InitializeGrid();
+                        app.ShowSuccessMessage('Saved Successfully', false);
+                }
+            });
+        }
+
+
+    }
 </script>
