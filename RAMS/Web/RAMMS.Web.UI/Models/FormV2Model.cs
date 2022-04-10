@@ -17,6 +17,7 @@ namespace RAMMS.Web.UI.Models
 
         public IEnumerable<FormV2HeaderResponseDTO> FormV2HeaderList { get; set; }
 
+        public DateTime? formV2Date { get; set; }
         public string SectionName { get; set; }
 
         public string RmuDescription { get; set; }

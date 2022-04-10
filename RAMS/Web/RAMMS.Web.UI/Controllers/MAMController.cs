@@ -52,7 +52,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IUserService _userService;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IFormS1Service _formS1Service;
-      
+
 
         public MAMController(IDDLookupBO _ddLookupBO,
         IFormABO _FormABO,
@@ -108,7 +108,7 @@ namespace RAMMS.Web.UI.Controllers
 
                 FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
 
-                ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value  }).ToArray();
+                ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
             }
             else if (from == "N1")
             {
@@ -205,7 +205,7 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "SP";
             ViewData["Service Provider"] = await _ddLookupService.GetDdLookup(ddLookup);
 
-           
+
             ViewData["Users"] = _userService.GetUserSelectList(null);
 
 
@@ -242,7 +242,7 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoadFormN1List(DataTableAjaxPostModel<FormN1SearchGridDTO> formNFilter) 
+        public async Task<IActionResult> LoadFormN1List(DataTableAjaxPostModel<FormN1SearchGridDTO> formNFilter)
         {
             string searchByDate = "", years = "", day = "", month = "";
             if (Request.Form.ContainsKey("columns[0][search][value]"))
@@ -293,7 +293,7 @@ namespace RAMMS.Web.UI.Controllers
             FilteredPagingDefinition<FormN1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormN1SearchGridDTO>();
             filteredPagingDefinition.Filters = formNFilter.filterData;
             filteredPagingDefinition.RecordsPerPage = formNFilter.length;
-            filteredPagingDefinition.StartPageNo = formNFilter.start; 
+            filteredPagingDefinition.StartPageNo = formNFilter.start;
 
             if (formNFilter.order != null)
             {
@@ -325,7 +325,7 @@ namespace RAMMS.Web.UI.Controllers
             DateTime dt = Convert.ToDateTime(issueDate);
             month = string.IsNullOrEmpty(dt.ToString()) ? 0 : dt.Month;
             year = string.IsNullOrEmpty(dt.ToString()) ? 0 : dt.Year;
-          
+
             (_id, isExist) = this._formN1Service.CheckExistence(roadCode, month, year);
             if (refId == 0)
             {
@@ -484,7 +484,7 @@ namespace RAMMS.Web.UI.Controllers
                 refNo = int.Parse(saveObj.No.ToString());
             }
             var result = new { refNo, errorMessage };
-           
+
             return Json(result);
         }
 
@@ -505,7 +505,7 @@ namespace RAMMS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> GetUsers(string rmu)
         {
-            
+
             var obj = _userService.GetUserSelectList(null);
             return Json(obj);
         }
@@ -568,7 +568,7 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoadFormN2List(DataTableAjaxPostModel<FormN2SearchGridDTO> formNFilter) 
+        public async Task<IActionResult> LoadFormN2List(DataTableAjaxPostModel<FormN2SearchGridDTO> formNFilter)
         {
             string searchByDate = "", years = "", day = "", month = "";
 
@@ -705,7 +705,7 @@ namespace RAMMS.Web.UI.Controllers
                 RowsAffected = await _formN2Service.UpdateFormN2Async(saveRequestObj);
                 refNo = int.Parse(saveObj.No.ToString());
             }
-            
+
             return Json(refNo);
         }
 
@@ -721,7 +721,7 @@ namespace RAMMS.Web.UI.Controllers
         #region "Form QA2"
 
         [HttpPost]
-        public async Task<IActionResult> LoadQA2List(DataTableAjaxPostModel<FormQa2SearchGridDTO> formFilter) 
+        public async Task<IActionResult> LoadQA2List(DataTableAjaxPostModel<FormQa2SearchGridDTO> formFilter)
         {
             if (Request.Form.ContainsKey("columns[0][search][value]"))
             {
@@ -781,7 +781,7 @@ namespace RAMMS.Web.UI.Controllers
 
         public IActionResult FormS1()
         {
-           // return View("~/Views/MAM/FormS1/OLD_FormS1.cshtml");
+            // return View("~/Views/MAM/FormS1/OLD_FormS1.cshtml");
             return View("~/Views/MAM/FormS1/FormS1.cshtml");
         }
 
@@ -796,7 +796,7 @@ namespace RAMMS.Web.UI.Controllers
             bool isDelete = _security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work);
             var grid = new Models.CDataTable() { Name = "tblHeaderGrid", APIURL = "/MAM/QA2LoadHeaderList", LeftFixedColumn = 1, IsDelete = isDelete, IsModify = isModify };
             grid.Columns.Add(new CDataColumns() { data = null, title = "Action", sortable = false, render = "mAMQA2.ActionRender", className = "headcol" });
-            
+
             grid.Columns.Add(new CDataColumns() { data = "RefID", title = "Reference No" });
             grid.Columns.Add(new CDataColumns() { data = "RMU", title = "RMU" });
             grid.Columns.Add(new CDataColumns() { data = "RoadCode", title = "Road Code" });
@@ -814,7 +814,7 @@ namespace RAMMS.Web.UI.Controllers
             return Json(RowsAffected);
 
         }
-     
+
         [HttpPost]
         public async Task<IActionResult> QA2LoadHeaderList(DataTableAjaxPostModel searchData)
         {
@@ -841,7 +841,7 @@ namespace RAMMS.Web.UI.Controllers
             string refNo = "";
 
             (int id, bool isExist) lastSNo = await _formQa2Service.CheckExistence(roadCode, rmu, month, year);
-           
+
             refNo = $"MM/FORM QA2/{rmu}/{roadCode}/{month}-{year}/{lastSNo.id + (lastSNo.isExist ? 0 : 1)}";
             return Json(new { reference = refNo, headerNo = lastSNo.id, isExists = lastSNo.isExist });
         }
@@ -852,7 +852,7 @@ namespace RAMMS.Web.UI.Controllers
             FilteredPagingDefinition<FormQa2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormQa2SearchGridDTO>();
             filteredPagingDefinition.Filters = searchData.filterData;
             filteredPagingDefinition.RecordsPerPage = searchData.length;
-            filteredPagingDefinition.StartPageNo = searchData.start; 
+            filteredPagingDefinition.StartPageNo = searchData.start;
             var result = await _formQa2Service.GetFilteredFormQa2DetailsGrid(filteredPagingDefinition).ConfigureAwait(false);
             return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
 
@@ -903,16 +903,16 @@ namespace RAMMS.Web.UI.Controllers
                 return Json(new
                 {
 
-                   
+
                     ActCode = result.FsidActCode,
                     ChainageFrom = result.FsidFrmChKm,
                     ChainageFromDec = result.FsidFrmChM,
                     ChainageTo = result.FsidToChKm,
                     ChainageToDec = result.FsidToChM,
-                   
+
                 });
             }
-            
+
         }
 
         [HttpPost]
@@ -1024,7 +1024,7 @@ namespace RAMMS.Web.UI.Controllers
             }
             if (Request.Form.ContainsKey("columns[3][search][value]"))
             {
-                formV2Filter.filterData.Crew  = Request.Form["columns[3][search][value]"].ToString();
+                formV2Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
             }
             if (Request.Form.ContainsKey("columns[4][search][value]"))
             {
@@ -1056,28 +1056,56 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> FindDetails(FormV2Model header)
+        public async Task<JsonResult> FindDetails(FormV2Model header, bool create = false)
         {
+            FormV1ResponseDTO formV1Res = new FormV1ResponseDTO();
             FormV2HeaderResponseDTO formV2 = new FormV2HeaderResponseDTO();
             FormV2HeaderResponseDTO formV2Res = new FormV2HeaderResponseDTO();
 
             formV2 = header.SaveFormV2Model;
-            //formV2.DivisionName = header.DivisionName;
-            //formV2.RoadCode = header.RoadCode;
-            formV2Res = await _formV2Service.FindDetails(formV2);
+            formV2.Dt = header.formV2Date;
+
+            formV1Res = await _formV2Service.FindV1Details(formV2);
+            //V1 Exisit
+            if (formV1Res != null)
+            {
+                formV2Res = await _formV2Service.FindDetails(formV2);
+                //V2 not Exist , Create V2
+                if (formV2Res == null || formV2Res.PkRefNo == 0)
+                {
+                    formV2Res = await CreateV2(header);
+                }// V2 Exist, Alert
+                else if (formV2Res != null || formV2Res.PkRefNo == 0)
+                {
+                    return Json(new { status = "V2Exisit" }, JsonOption());
+                }
+            }
+            else
+            {
+                return Json(new { status = "V1NotExisit" }, JsonOption());
+            }
+            return Json(formV2Res, JsonOption());
+        }
+
+        public async Task<FormV2HeaderResponseDTO> CreateV2(FormV2Model header)
+        {
+            var formV2 = header.SaveFormV2Model;
+            var formV2Res = await _formV2Service.FindDetails(formV2);
             if (formV2Res == null || formV2Res.PkRefNo == 0)
             {
-
+                formV2.UseridSch = _security.UserID;
+                formV2.UsernameSch = _security.UserName;
+                formV2.DtSch = DateTime.Today;
                 formV2.CrBy = _security.UserID;
                 formV2.ModBy = _security.UserID;
                 formV2.ModDt = DateTime.Now;
                 formV2.CrDt = DateTime.Now;
-
                 formV2Res = await _formV2Service.FindAndSaveFormV2Hdr(formV2, false);
+                header.SaveFormV2Model = formV2Res;
             }
-            header.SaveFormV2Model = formV2Res;
-            return Json(formV2Res, JsonOption());
+            return formV2Res;
         }
+
 
         [HttpPost]
         public async Task<IActionResult> LoadFormV2EquipmentList(DataTableAjaxPostModel<FormV2SearchGridDTO> FormV2Filter, string id)
@@ -1118,12 +1146,11 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = FormV2Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
-
         public async Task<IActionResult> EditFormV2(int id, string view)
         {
             //base.LoadLookupService(GroupNameList.Supervisor, GroupNameList.OperationsExecutive, GroupNameList.OpeHeadMaintenance, GroupNameList.JKRSSuperiorOfficerSO);
             _formV2Model.SaveFormV2Model = new FormV2HeaderResponseDTO();
-            await LoadDropDowns("V2","");
+            await LoadDropDowns("V2", "");
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             //Labour
             FormV2LabourDtlModel formV2Labour = new FormV2LabourDtlModel();
@@ -1144,7 +1171,7 @@ namespace RAMMS.Web.UI.Controllers
             formV2EquipDetails.selectList = await _formV2Service.GetEquipmentCode();
             ddLookup.Type = "EQPMODEL";
             //_formV2Model.FormV2Material.mo = await _ddLookupService.GetDdLookup(ddLookup);
-            _formV2Model.FormV2Equip = formV2EquipDetails;           
+            _formV2Model.FormV2Equip = formV2EquipDetails;
 
             RoadMasterRequestDTO roadMasterReq = new RoadMasterRequestDTO();
             ViewData["Division"] = await _formV2Service.GetDivisions();
@@ -1160,28 +1187,51 @@ namespace RAMMS.Web.UI.Controllers
 
             if (id > 0)
             {
+
+
                 var result = await _formV2Service.GetFormV2WithDetailsByNoAsync(id);
+
+                if ((_security.IsJKRSHQ || _security.IsDivisonalEngg || _security.IsJKRSSuperiorOfficer ||
+                    _security.isOperRAMSExecutive || _security.IsExecutive || _security.IsHeadMaintenance ||
+                    _security.IsRegionManager) &&
+                    (string.IsNullOrEmpty(result.Status) || result.Status == RAMMS.Common.StatusList.FormV2Submitted))
+                {
+                    if (_formV2Model.SaveFormV2Model.DtAgr == null)
+                    {
+                        result.UseridAgr = _security.UserID;
+                        result.UsernameAgr = _security.UserName;
+                        result.DtAgr = DateTime.Today;
+                    }
+                }
+
+
+                if ((_security.IsJKRSHQ || _security.IsDivisonalEngg || _security.IsJKRSSuperiorOfficer)
+                    && result.Status == RAMMS.Common.StatusList.FormV2Verified)
+                {
+                    if (_formV2Model.SaveFormV2Model.DtAck == null)
+                    {
+                        result.UseridAck = _security.UserID;
+                        result.UsernameAck = _security.UserName;
+                        result.DtAck = DateTime.Today;
+                    }
+                }
+
+
                 _formV2Model.SaveFormV2Model = result;
                 _formV2Model.viewm = result.SubmitSts == true ? "1" : view;
-              
+
             }
             else
             {
-                _formV2Model.SaveFormV2Model.UseridAck = _security.UserID;
                 _formV2Model.SaveFormV2Model.UseridSch = _security.UserID;
-                _formV2Model.SaveFormV2Model.UseridAgr = _security.UserID;
-
-                _formV2Model.SaveFormV2Model.DtAgr = DateTime.Today;
+                _formV2Model.SaveFormV2Model.UsernameSch = _security.UserName;
                 _formV2Model.SaveFormV2Model.DtSch = DateTime.Today;
-                _formV2Model.SaveFormV2Model.DtAck = DateTime.Today;
-
                 _formV2Model.viewm = view != null ? view : "0";
             }
             ViewBag.view = view;
 
             return PartialView("~/Views/MAM/FormV2/_AddFormV2.cshtml", _formV2Model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> GetAllRoadCodeDataBySectionCode(string secCode)
@@ -1242,7 +1292,7 @@ namespace RAMMS.Web.UI.Controllers
             _formV2EquipmentModel.selectList = await _formV2Service.GetEquipmentCode();
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "EQPMODEL";
-            _formV2EquipmentModel.ModelList   = await _ddLookupService.GetDdLookup(ddLookup);
+            _formV2EquipmentModel.ModelList = await _ddLookupService.GetDdLookup(ddLookup);
 
             if (id > 0)
             {
@@ -1303,7 +1353,7 @@ namespace RAMMS.Web.UI.Controllers
             int refNo = 0;
             FormV2MaterialDetailsResponseDTO saveResponseObj = new FormV2MaterialDetailsResponseDTO();
             saveResponseObj = saveObj;
-            if (saveObj.PkRefNo == 0 )
+            if (saveObj.PkRefNo == 0)
             {
                 //var SrNo = await _formV2Service.GetMaterialSRNO(saveObj.FdmdFdhPkRefNo);
                 //saveResponseObj.SerialNo = ((SrNo == null) ? 0 : SrNo) + 1;
@@ -1325,7 +1375,7 @@ namespace RAMMS.Web.UI.Controllers
             int refNo = 0;
             FormV2EquipDetailsResponseDTO saveResponseObj = new FormV2EquipDetailsResponseDTO();
             saveResponseObj = saveObj;
-            if (saveObj.PkRefNo == 0 )
+            if (saveObj.PkRefNo == 0)
             {
                 //var SrNo = await _formV2Service.GetEqpSRNO(saveObj.FormV2EDFHeaderNo);
                 //saveResponseObj.SerialNo = ((SrNo == null) ? 0 : SrNo) + 1;

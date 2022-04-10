@@ -9,6 +9,8 @@ namespace RAMMS.DTO.ResponseBO
     {
 
         public int PkRefNo { get; set; }
+
+        public int? Fv1hPkRefNo { get; set; }
         public int? ContNo { get; set; }
         public string Rmu { get; set; }
         public string SecCode { get; set; }
@@ -65,6 +67,7 @@ namespace RAMMS.DTO.ResponseBO
         public string Status { get; set; }
         public string AuditLog { get; set; }
 
+        public virtual FormV1ResponseDTO FormV1 { get; set; }
         public virtual List<FormV2EquipDetailsResponseDTO> FormV2Eqp { get; set; }
         public virtual List<FormV2LabourDetailsResponseDTO> FormV2Lab { get; set; }
         public virtual List<FormV2MaterialDetailsResponseDTO> FormV2Mat { get; set; }

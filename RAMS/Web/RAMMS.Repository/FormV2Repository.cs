@@ -142,7 +142,7 @@ namespace RAMS.Repository
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
-                    query = query.Where(x => x.x.Fv2hActCode  == filterOptions.Filters.ActivityCode );
+                    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode);
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
@@ -276,7 +276,7 @@ namespace RAMS.Repository
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
-                    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode  );
+                    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode);
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
@@ -444,7 +444,6 @@ namespace RAMS.Repository
             return await _context.RmRoadMaster.Where(x => x.RdmActiveYn == true && (string.IsNullOrEmpty(secCode) || x.RdmSecCode == Convert.ToInt32(secCode))).ToListAsync();
         }
 
-
         public async Task<RmFormV2Hdr> FindSaveFormV2Hdr(RmFormV2Hdr formV2Header, bool updateSubmit)
         {
             bool isAdd = false;
@@ -460,7 +459,7 @@ namespace RAMS.Repository
                 var entry = _context.Entry(formV2Header);
                 entry.Property(x => x.Fv2hSignAck).IsModified = true;
                 entry.Property(x => x.Fv2hSignAgr).IsModified = true;
-                entry.Property(x => x.Fv2hSignSch).IsModified = true;                
+                entry.Property(x => x.Fv2hSignSch).IsModified = true;
                 entry.Property(x => x.Fv2hModBy).IsModified = true;
                 entry.Property(x => x.Fv2hModDt).IsModified = true;
 
@@ -489,7 +488,12 @@ namespace RAMS.Repository
             if (isAdd)
             {
                 IDictionary<string, string> lstData = new Dictionary<string, string>();
+                lstData.Add("RMU", formV2Header.Fv2hRmu.ToString());
                 lstData.Add("CrewUnit", formV2Header.Fv2hCrew.ToString());
+                lstData.Add("ActCode", formV2Header.Fv2hActCode.ToString());
+                lstData.Add("Year", formV2Header.Fv2hDt.Value.Year.ToString());
+                lstData.Add("MonthNo", formV2Header.Fv2hDt.Value.Month.ToString());
+                lstData.Add("Day", formV2Header.Fv2hDt.Value.Day.ToString());
                 lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(formV2Header.Fv2hPkRefNo));
                 formV2Header.Fv2hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV2Header, lstData);
                 _context.SaveChanges();

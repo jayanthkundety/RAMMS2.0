@@ -88,6 +88,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormWG":
                     iResult = await SaveFormW2(process);
                     break;
+                case "FormV2":
+                    iResult = await SaveFormV2(process);
+                    break;
 
             }
             return iResult;
@@ -168,6 +171,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                     break;
                 case "FormWN":
                     logs = this.context.RmIwFormWn.Where(x => x.FwnPkRefNo == RefId).Select(x => x.FwnAuditLog).FirstOrDefault();
+                    break;
+                case "FormV2":
+                    logs = this.context.RmFormV2Hdr.Where(x => x.Fv2hPkRefNo == RefId).Select(x => x.Fv2hAuditLog).FirstOrDefault();
                     break;
             }
             return Utility.ProcessLog(logs);
@@ -578,6 +584,87 @@ namespace RAMMS.Business.ServiceProvider.Services
                 form.Fw2AuditLog = Utility.ProcessLog(form.Fw2AuditLog, strTitle, process.IsApprove ? "Recieved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
                 strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form W2 (" + form.Fw2PkRefNo + ")";
                 strNotURL = "/InstructedWorks/EditFormW2?id=" + form.Fw2PkRefNo.ToString() + "&View=0";
+                SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = security.UserName,
+                    RmNotGroup = strNotGroupName,
+                    RmNotMessage = strNotMsg,
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = strNotURL,
+                    RmNotUserId = strNotUserID,
+                    RmNotViewed = ""
+                }, false);
+            }
+            return await context.SaveChangesAsync();
+        }
+
+        private async Task<int> SaveFormV2(DTO.RequestBO.ProcessDTO process)
+        {
+            var form = context.RmFormV2Hdr.Where(x => x.Fv2hPkRefNo == process.RefId).FirstOrDefault();
+            if (form != null)
+            {
+                string strTitle = "";
+                string strNotURL = "";
+                string strNotMsg = "";
+                string strNotGroupName = "";
+                string strNotUserID = "";
+                string strStatus = "";
+                string strNotStatus = "";
+
+                if (process.Stage == Common.StatusList.FormV2Submitted )
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
+                    form.Fv2hStatus = process.IsApprove ? Common.StatusList.FormV2Verified : Common.StatusList.FormV2Saved ;
+                    strTitle = "Verified By";
+                    strStatus = "Verified";
+                    strNotStatus = Common.StatusList.FormV2Saved;
+                    form.Fv2hUseridAgr = Convert.ToInt32(process.UserID);
+                    form.Fv2hUsernameAgr = process.UserName;
+                    form.Fv2hDesignationAgr = process.UserDesignation;
+                    form.Fv2hDtAgr = process.ApproveDate;
+                    form.Fv2hSignAck = true;
+                }
+                else if (process.Stage == Common.StatusList.FormV2Verified)
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.JKRSSuperiorOfficerSO : GroupNames.OpeHeadMaintenance;
+                    form.Fv2hStatus = process.IsApprove ? Common.StatusList.FormV2Approved : Common.StatusList.FormV2Submitted;
+                    strTitle = "Approved By";
+                    strStatus = "Facilitated";
+                    strNotStatus = Common.StatusList.FormV2Verified;
+                    form.Fv2hUseridAck = Convert.ToInt32(process.UserID);
+                    form.Fv2hUsernameAck = process.UserName;
+                    form.Fv2hDesignationAck = process.UserDesignation;
+                    form.Fv2hDtAck = process.ApproveDate;
+                    form.Fv2hSignAck = true;
+                }
+
+                if (process.IsApprove)
+                {
+                    List<int> lstNotUserId = new List<int>();
+                    if (form.Fv2hUseridAgr.HasValue)
+                        lstNotUserId.Add(form.Fv2hUseridAgr.Value);
+                    if (form.Fv2hUseridAck.HasValue)
+                        lstNotUserId.Add(form.Fv2hUseridAck.Value);
+
+                    form.Fv2hUseridAck = Convert.ToInt32(process.UserID);
+                    form.Fv2hUsernameAck = process.UserName;
+                    form.Fv2hDesignationAck = process.UserDesignation;
+                    form.Fv2hDtAck = process.ApproveDate;
+                    form.Fv2hSignAck = true;
+
+                    strNotUserID = string.Join(",", lstNotUserId.Distinct());
+                }
+                else 
+                {
+                    if (process.Stage == Common.StatusList.FormV2Submitted)
+                    {
+                        form.Fv2hSubmitSts = false;
+                    }
+                }
+
+                form.Fv2hAuditLog = Utility.ProcessLog(form.Fv2hAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form V2 (" + form.Fv2hPkRefNo + ")";
+                strNotURL = "/MAM/EditFormV2?id=" + form.Fv2hPkRefNo.ToString() + "&View=0";
                 SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = security.UserName,

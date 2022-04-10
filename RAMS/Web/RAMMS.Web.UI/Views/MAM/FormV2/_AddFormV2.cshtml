@@ -11,10 +11,33 @@
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormV2", "@Model.SaveFormV2Model.Status", @Model.SaveFormV2Model.PkRefNo);
+        debugger;
+        $('#formV2RecordedBy').val("@Model.SaveFormV2Model.UseridSch");
+        $('#formV2RecordedBy').trigger('chosen:updated');
+        $("#formV2RecordedBy").trigger("change");
+
+        $('#formV2VettedBy').val("@Model.SaveFormV2Model.UseridAgr");
+        $('#formV2VettedBy').trigger('chosen:updated');
+        $("#formV2VettedBy").trigger("change");
+
+        $('#formV2FacilitatedBy').val("@Model.SaveFormV2Model.UseridAck");
+        $('#formV2FacilitatedBy').trigger('chosen:updated');
+        $("#formV2FacilitatedBy").trigger("change");
+
+        $('#formV2CrewCode').val("@Model.SaveFormV2Model.Crew");
+        $('#formV2CrewCode').trigger('chosen:updated');
+        $("#formV2CrewCode").trigger("change");
+
+        
     });
 </script>
 
 @{
+
+    //Operation Executive, RAMS Executive, Head Maintenance and Region Manager
+    bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+
 
     var vd = Model.SaveFormV2Model.Dt;
     string _Date = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
@@ -82,8 +105,8 @@
                                                         <div class="row">
                                                             <div class="form-group col-lg-6">
                                                                 @Html.Label("Section Code", "Section Code")
-                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2Model.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCode"], "Select Code", new { @Id = "formV2SectionCode", @class = "form-control validate {required, Section Code}" })
-                                                                @Html.HiddenFor(a => a.SaveFormV2Model.SecCode, new { @id="hdnSecCode"} )
+                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2Model.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2SectionCode", @class = "form-control validate {required, Section Code}" })
+                                                                @*@Html.HiddenFor(a => a.SaveFormV2Model.SecCode, new { @id="hdnSecCode"} )*@
                                                             </div>
                                                             <div class="form-group col-lg-6">
                                                                 @Html.Label("Section Name ", "Section Name")
@@ -94,12 +117,14 @@
                                                     <div class="col-2 form-group px-0">
                                                         <label for="Division Code"> Division Code</label>
                                                         @Html.TextBoxFor(m => m.SaveFormV2Model.DivCode , new { @Id = "formV2DivCode", @readonly = "readonly", @class = "form-control " })
+                                                        @Html.HiddenFor(m => m.SaveFormV2Model.DivName , new { @Id = "formV2DivCodeName" })
                                                     </div>
                                                     <div class="col-lg-5">
                                                         <div class="row">
                                                             <div class="form-group col-lg-6">
                                                                 @Html.Label("Crew", "Crew")
-                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2Model.Crew, (IEnumerable<CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formV2CrewCode", @class = "form-control validate {required, Section Code}" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"],"formV2CrewCode", "Select Crew", new { @Id = "formV2CrewCode", @class = "form-control validate {required, Section Code}" })
+                                                                @Html.HiddenFor(a => a.SaveFormV2Model.Crew, new { @id="hdnCrew"} )
                                                             </div>
                                                             <div class="form-group col-lg-6">
                                                                 @Html.Label("Crew Name ", "Crew Name")
@@ -284,7 +309,9 @@
                 </div>
             </div>
         </div>
-
+        @{
+            var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+        }
         @Html.HiddenFor(m => m.SaveFormV2Model.PkRefNo, new { @id = "FV2PkRefNo", @class = "form-control" })
         @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
         @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
@@ -295,30 +322,20 @@
             <div id="val-summary-displayer"></div>
             <button type="button" id="btnFrmV2Back" class="btn btn-sm btn-outline-theme" onclick="GoBack()"> Close </button>
             <button id="saveFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Save </button>
-            @if (string.IsNullOrEmpty(Model.SaveFormV2Model.Status) || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.Supervisor)
-            {
+            @*@if (isSubmit && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Saved)
+            {*@
                 <button id="SubmitFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Submit </button>
-            }
-            else if (security.IsExecutive && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.Executive)
+            @*}
+            else*@ 
+            @if (IsApproved && (Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Submitted || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Rejected))
             {
-                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive','Verified By');"> Approved / Verified </button>
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Vetted By');"> Approved / Verify </button>
             }
-            else if (security.IsHeadMaintenance && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.HeadMaintenance)
+            else if (IsApproved && (Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Verified || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Rejected))
             {
-                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Vetted By');"> Approved / Vetted </button>
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Facilitated By');"> Approved / Facilitate </button>
             }
-            else if (security.IsJKRSSuperiorOfficer && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.VerifiedJKRSSuperior)
-            {
-                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'S.O Verified By');"> Approved / Verified </button>
-            }
-            else if (security.IsJKRSSuperiorOfficer && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.ProcessedJKRSSuperior)
-            {
-                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'S.O Processed By');"> Approved / Processed </button>
-            }
-            else if (security.IsJKRSSuperiorOfficer && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.AgreedJKRSSuperior)
-            {
-                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'S.O Agreed By');"> Approved / Agreed </button>
-            }
+
         </div>
     </div>
 </div>

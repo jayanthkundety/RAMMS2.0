@@ -9,9 +9,11 @@ namespace RAMMS.Domain.Models
         {
             RmFormV2Eqp = new HashSet<RmFormV2Eqp>();
             RmFormV2Lab = new HashSet<RmFormV2Lab>();
+            RmFormV2Mat = new HashSet<RmFormV2Mat>();
         }
 
         public int Fv2hPkRefNo { get; set; }
+        public int? Fv2hFv1hPkRefNo { get; set; }
         public int? Fv2hContNo { get; set; }
         public string Fv2hRmu { get; set; }
         public string Fv2hSecCode { get; set; }
@@ -52,7 +54,9 @@ namespace RAMMS.Domain.Models
         public string Fv2hStatus { get; set; }
         public string Fv2hAuditLog { get; set; }
 
+        public virtual RmFormV1Hdr Fv2hFv1hPkRefNoNavigation { get; set; }
         public virtual ICollection<RmFormV2Eqp> RmFormV2Eqp { get; set; }
         public virtual ICollection<RmFormV2Lab> RmFormV2Lab { get; set; }
+        public virtual ICollection<RmFormV2Mat> RmFormV2Mat { get; set; }
     }
 }

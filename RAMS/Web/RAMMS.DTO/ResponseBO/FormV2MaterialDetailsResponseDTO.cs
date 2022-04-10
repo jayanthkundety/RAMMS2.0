@@ -21,7 +21,7 @@ namespace RAMMS.DTO.ResponseBO
         public bool SubmitSts { get; set; }
         public bool ActiveYn { get; set; }
 
-        public virtual FormV2HeaderResponseDTO Fv2hPkRefNoNavigation { get; set; }
+        public virtual FormV2HeaderResponseDTO FormV2 { get; set; }
 
 
     }

@@ -8,6 +8,7 @@ namespace RAMMS.Domain.Models
         public RmFormV1Hdr()
         {
             RmFormV1Dtl = new HashSet<RmFormV1Dtl>();
+            RmFormV2Hdr = new HashSet<RmFormV2Hdr>();
         }
 
         public int Fv1hPkRefNo { get; set; }
@@ -52,5 +53,6 @@ namespace RAMMS.Domain.Models
         public string Fv1hAuditLog { get; set; }
 
         public virtual ICollection<RmFormV1Dtl> RmFormV1Dtl { get; set; }
+        public virtual ICollection<RmFormV2Hdr> RmFormV2Hdr { get; set; }
     }
 }
