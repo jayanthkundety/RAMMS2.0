@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     $("#formV2SectionCode").on("change", function () {
         var ddldata = $(this).val();
-
+        $("#hdnSecCode").val(ddldata);
         if (ddldata != "") {
             $.ajax({
                 url: '/MAM/GetAllRoadCodeDataBySectionCode',
@@ -33,8 +33,8 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data != null) {
                         if (data._RMAllData != undefined && data._RMAllData != null) {
+                            
                             $("#formV2SectionName").val(data._RMAllData.secName);
-                            $("#hdnFormV2Roadcode").val($("#formV2SectionCode option:selected").text().split("-")[0]);
                             $("#formV2DivCode").val(data._RMAllData.divisionCode);
                             $("#formV2DivCodeName").val(data._RMAllData.DivisionName);
                         }
@@ -77,7 +77,6 @@ $(document).ready(function () {
                     $.each(data.section, function (index, v) {
                         $("#formV2SectionCode").append($("<option></option>").val(v.value).html(v.text));
                     });
-                    // var hdnRoadcode = $('#hdnRoadcode').val();
                     $.each(data.section, function (index, v) {
                         if (v != null) {
                             var splittedVal = v.value;
@@ -87,9 +86,8 @@ $(document).ready(function () {
                             }
                         }
                     });
-                    $('#formV2SectionCode').trigger("chosen:updated");
                     $("#formV2SectionCode").trigger("change");
-
+                    $('#formV2SectionCode').trigger("chosen:updated");
                     document.getElementById("formV2DivCode").disabled = true;
                 } else {
                     document.getElementById("formV2DivCode").disabled = false;
@@ -259,10 +257,32 @@ $(document).on("click", "#formV2FindDetailsBtn", function () {
                 if (data.status == 'V2Exisit') {
                     if (app.Confirm("Form V2 for this record has exist, Do you want to proceed with another Form V2", function (e) {
                         if (e) {
-                            
-
+                            $("#hdnV1PkRefNo").val(data.v1id);
+                            $.ajax({
+                                url: '/MAM/CreateV2',
+                                data: FormValueCollection("#FormV2Headers"),
+                                type: 'POST',
+                                success: function (data) {
+                                    $("#div-lab-container").html(data);
+                                    if (view == 1 || $("#hdnView").val() == "1") {
+                                        $("#hdnLabView").val(1);
+                                        $("#FormV2LabourModalid").html("View Labour")
+                                        $("#div-lab-container *").attr("disabled", "disabled").off('click');
+                                        $("#saveFormV2LabBtn").css("display", "none");
+                                        $("#cancelAddModelBtn").attr("disabled", false);
+                                        $("#saveContinueFormV2LabBtn").css("display", "none");
+                                    } else if ($("#hdnLabid").val() != "") {
+                                        $("#FormV2LabourModalid").html("Edit Labour")
+                                        //$("#hdnLabView").val(0);
+                                    }
+                                    HideAjaxLoading();
+                                    //$("body").removeClass("loading");
+                                }
+                            })
+                            createV2(data);
                         }
                     }));
+                    return;
                 }
                 createV2(data);
             }
@@ -507,7 +527,7 @@ function EditFormV2Material(id, view) {
                 $("#saveFormV2MtBtn").css("display", "none");
                 $("#cancelAddModelBtn").attr("disabled", false);
                 $("#saveContinueFormV2MtBtn").css("display", "none");
-            } else if ($("#FormV2MaterialNo").val() != "")
+            } else if ($("#hdnMaterialNo").val() != "")
                 $("#FormV2MaterialModalid").html("Edit Material")
             HideAjaxLoading();
         }
@@ -610,6 +630,7 @@ function saveHdr(isSubmit) {
 
         saveObj.PkRefNo = $("#FV2PkRefNo").val();
         saveObj.RefId = $("#formV2ReferenceNo").val();
+        //saveObj.Fv1hPkRefNo = $("#hdnV1PkRefNo").val();
         saveObj.ContNo = "";
         saveObj.Rmu = $("#formV2rmu").val();
         saveObj.SecCode = $("#formV2SectionCode").val();
@@ -695,6 +716,7 @@ function saveHdr(isSubmit) {
                         $("#saveFormV2Btn").show();
                         $("#SubmitFormV2Btn").show();
                         app.ShowSuccessMessage('Successfully Saved', false);
+                        location.href = "/MAM/FormV2";
                     }
                 }
             },
@@ -721,10 +743,10 @@ function saveEquipment(isSubmit, cont) {
         saveObj.PkRefNo = $("#hdnEquipid").val();
         saveObj.Fv2hPkRefNo = $("#FV2PkRefNo").val();
         saveObj.EqpRefCode = $("#formV2EquipCode").find(":selected").val();
-        saveObj.Desc = $("#formV2EquipDesc").val();
+        saveObj.Desc = $("#FormV2EquipDescription").val();
         saveObj.Capacity = $("#formV2EquipCapacity").val();
         saveObj.Cond = $("#formV2EquipCond").val();
-        saveObj.Model = $("#formV2EquipModel").find(":selected").val();
+        saveObj.Model = $("#formV2EquipModel").val();
 
         saveObj.CrDt = output
         saveObj.ModDt = output
@@ -835,7 +857,7 @@ function saveMaterial(isSubmit, cont) {
         //saveObj.Desc = $("#formV2MatDesc").val();
         saveObj.Qnty = $("#formV2MatQuantity").val();
         saveObj.Unit = $("#formV2MatUnit").find(":selected").val();
-        saveObj.Remark = $("#formV2MatDesc").val();
+        saveObj.Remark = $("#FormV2MatDescription").val();
         saveObj.ModDt = output
         saveObj.CrDt = output
         saveObj.ActiveYn = true;
@@ -853,7 +875,7 @@ function saveMaterial(isSubmit, cont) {
                     $("#hdnMaterialNo").val('');
                     $("#formV2MatCode").val('').trigger('chosen:updated');
                     $("#formV2MatQuantity").val("");
-                    $("#formV2MatUnit").val("");
+                    $("#formV2MatUnit").val('').trigger('chosen:updated');
                     $("#FormV2MatDescription").val("");
                 }
                 FormMatGridRefresh();
@@ -888,7 +910,6 @@ function DataBind() {
 
     $("#btnEquipAdd,#btnLabourAdd,#btnMaterialAdd").prop("disabled", false);
 }
-
 
 function formatDate(date) {
     var d = new Date(date),

@@ -175,7 +175,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormV2 = _mapper.Map<RmFormV2Hdr>(FormV2HeaderBO);
-                
+                domainModelFormV2.Fv2hPkRefNo = FormV2HeaderBO.PkRefNo;
+                domainModelFormV2.Fv2hFv1hPkRefNo = FormV2HeaderBO.Fv1hPkRefNo;
                 domainModelFormV2 = UpdateStatus(domainModelFormV2);
                 var entity = _repoUnit.FormV2Repository.CreateReturnEntity(domainModelFormV2);
                 formDRequest = _mapper.Map<FormV2HeaderResponseDTO>(entity);
@@ -483,6 +484,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormV2 = _mapper.Map<RmFormV2Lab>(FormV2LabourBO);
+                domainModelFormV2.Fv2lPkRefNo = FormV2LabourBO.PkRefNo;
+                domainModelFormV2.Fv2lFv2hPkRefNo = FormV2LabourBO.Fv2hPkRefNo;
                 _repoUnit.FormV2LabourRepository.Update(domainModelFormV2);
 
                 rowsAffected = await _repoUnit.CommitAsync();
@@ -497,12 +500,14 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
-        public async Task<int> UpdateFormV2MaterialAsync(FormV2MaterialDetailsResponseDTO FormV2LabourBO)
+        public async Task<int> UpdateFormV2MaterialAsync(FormV2MaterialDetailsResponseDTO FormV2MatBO)
         {
             int rowsAffected;
             try
             {
-                var domainModelFormV2 = _mapper.Map<RmFormV2Mat>(FormV2LabourBO);
+                var domainModelFormV2 = _mapper.Map<RmFormV2Mat>(FormV2MatBO);
+                domainModelFormV2.Fv2mPkRefNo = FormV2MatBO.PkRefNo;
+                domainModelFormV2.Fv2mFv2hPkRefNo = FormV2MatBO.Fv2hPkRefNo;
                 _repoUnit.FormV2MaterialRepository.Update(domainModelFormV2);
 
                 rowsAffected = await _repoUnit.CommitAsync();
@@ -523,6 +528,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormV2 = _mapper.Map<RmFormV2Eqp>(FormV2LabourBO);
+                domainModelFormV2.Fv2ePkRefNo = FormV2LabourBO.PkRefNo;
+                domainModelFormV2.Fv2eFv2hPkRefNo = FormV2LabourBO.Fv2hPkRefNo;
                 _repoUnit.FormV2EquipmentRepository.Update(domainModelFormV2);
 
                 rowsAffected = await _repoUnit.CommitAsync();
@@ -1031,8 +1038,10 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
         public async Task<FormV2HeaderResponseDTO> FindAndSaveFormV2Hdr(FormV2HeaderResponseDTO header, bool updateSubmit)
         {
-            var formD = _mapper.Map<RmFormV2Hdr>(header);
-            var response = await _repoUnit.FormV2Repository.FindSaveFormV2Hdr(formD, updateSubmit);
+            var formV2 = _mapper.Map<RmFormV2Hdr>(header);
+            formV2.Fv2hPkRefNo = header.PkRefNo;
+            formV2.Fv2hFv1hPkRefNo = header.Fv1hPkRefNo;
+            var response = await _repoUnit.FormV2Repository.FindSaveFormV2Hdr(formV2, updateSubmit);
             return _mapper.Map<FormV2HeaderResponseDTO>(response);
         }
     }

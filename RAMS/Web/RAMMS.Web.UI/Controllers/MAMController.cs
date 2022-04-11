@@ -1061,7 +1061,7 @@ namespace RAMMS.Web.UI.Controllers
             FormV1ResponseDTO formV1Res = new FormV1ResponseDTO();
             FormV2HeaderResponseDTO formV2 = new FormV2HeaderResponseDTO();
             FormV2HeaderResponseDTO formV2Res = new FormV2HeaderResponseDTO();
-
+            var formV1PkRefNo = 0;
             formV2 = header.SaveFormV2Model;
             formV2.Dt = header.formV2Date;
 
@@ -1069,15 +1069,17 @@ namespace RAMMS.Web.UI.Controllers
             //V1 Exisit
             if (formV1Res != null)
             {
+                formV1PkRefNo = formV1Res.Fv1hPkRefNo;
                 formV2Res = await _formV2Service.FindDetails(formV2);
                 //V2 not Exist , Create V2
                 if (formV2Res == null || formV2Res.PkRefNo == 0)
                 {
+                    header.SaveFormV2Model.Fv1hPkRefNo = formV1PkRefNo;
                     formV2Res = await CreateV2(header);
                 }// V2 Exist, Alert
                 else if (formV2Res != null || formV2Res.PkRefNo == 0)
                 {
-                    return Json(new { status = "V2Exisit" }, JsonOption());
+                    return Json(new { status = "V2Exisit" , v1id = formV1PkRefNo }, JsonOption());
                 }
             }
             else
@@ -1090,8 +1092,8 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<FormV2HeaderResponseDTO> CreateV2(FormV2Model header)
         {
             var formV2 = header.SaveFormV2Model;
-            var formV2Res = await _formV2Service.FindDetails(formV2);
-            if (formV2Res == null || formV2Res.PkRefNo == 0)
+            //var formV2Res = await _formV2Service.FindDetails(formV2);
+            if (formV2 != null || formV2.PkRefNo == 0)
             {
                 formV2.UseridSch = _security.UserID;
                 formV2.UsernameSch = _security.UserName;
@@ -1100,10 +1102,10 @@ namespace RAMMS.Web.UI.Controllers
                 formV2.ModBy = _security.UserID;
                 formV2.ModDt = DateTime.Now;
                 formV2.CrDt = DateTime.Now;
-                formV2Res = await _formV2Service.FindAndSaveFormV2Hdr(formV2, false);
-                header.SaveFormV2Model = formV2Res;
+                formV2 = await _formV2Service.FindAndSaveFormV2Hdr(formV2, false);
+                header.SaveFormV2Model = formV2;
             }
-            return formV2Res;
+            return formV2;
         }
 
 

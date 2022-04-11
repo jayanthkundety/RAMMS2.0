@@ -105,8 +105,8 @@
                                                         <div class="row">
                                                             <div class="form-group col-lg-6">
                                                                 @Html.Label("Section Code", "Section Code")
-                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2Model.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2SectionCode", @class = "form-control validate {required, Section Code}" })
-                                                                @*@Html.HiddenFor(a => a.SaveFormV2Model.SecCode, new { @id="hdnSecCode"} )*@
+                                                                @Html.DropDownList("formV2SectionCode",(IEnumerable<SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2SectionCode", @class = "form-control validate {required, Section Code}" })
+                                                                @Html.HiddenFor(a => a.SaveFormV2Model.SecCode, new { @id="hdnSecCode"} )
                                                             </div>
                                                             <div class="form-group col-lg-6">
                                                                 @Html.Label("Section Name ", "Section Name")
@@ -315,6 +315,8 @@
         @Html.HiddenFor(m => m.SaveFormV2Model.PkRefNo, new { @id = "FV2PkRefNo", @class = "form-control" })
         @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
         @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
+        @Html.HiddenFor(m => m.SaveFormV2Model.Fv1hPkRefNo , new { @id = "hdnV1PkRefNo", @class = "form-control" })
+        
 
         @Html.HiddenFor(m => m.SaveFormV2Model.SubmitSts, new { @id = "hdnstatus", @class = "form-control" })
         @Html.Hidden("hdnNo", new { @id = "hdnNo", @class = "form-control" })
