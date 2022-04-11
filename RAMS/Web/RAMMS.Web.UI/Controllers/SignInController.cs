@@ -136,7 +136,7 @@ namespace RAMMS.Web.UI.Controllers
         public IActionResult ResetPassword(string id)
         {
             ViewBag.ResetForm = true;
-            ViewBag.UserDetail = id;
+            ViewBag.UserDetail = security.UserID;
             return View("~/Views/SignIn/ForgotPassword.cshtml");
         }
 
@@ -145,7 +145,7 @@ namespace RAMMS.Web.UI.Controllers
             if (ModelState.IsValid)
             {
                 UserRequestDTO userRequestDTO = new UserRequestDTO();
-                userRequestDTO.UserId = Utility.ToInt(Cryptography.DecryptData(reset.USRUserId));
+                 userRequestDTO.UserId = Utility.ToInt(reset.USRUserId);
                 //var userResponse = await _userService.GetUserByUsrUserId(userRequestDTO);
                 var userResponse = await _userService.GetUserNameByCode(userRequestDTO);
                 return UpdateResetPassword(userResponse.UserId, reset.OldPassword, reset.NewPassword);

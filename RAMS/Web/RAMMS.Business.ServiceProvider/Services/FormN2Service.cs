@@ -98,7 +98,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 return codes.OrderBy(s => s.FnihPkRefNo).Select(s => new SelectListItem
                 {
                     Value = s.FnihPkRefNo.ToString(),
-                    Text = Convert.ToString(s.FnihPkRefNo) == "" ? "No Refrence ID" : Convert.ToString(s.FnihRefId),
+                    Text = Convert.ToString(s.FnihPkRefNo) == "" ? "No Refrence ID" : (Convert.ToString(s.FnihRefId) == "" || s.FnihRefId == null) ? s.FnihNcnNo  : Convert.ToString(s.FnihRefId),
                 }).ToArray();
             }
             catch (Exception Ex)
@@ -226,7 +226,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             FormN2HeaderRequestDTO formDRequest;
             try
-            {                
+            {
                 var domainModelForm = _mapper.Map<RmFormN2Hdr>(formN2HeaderBO);
                 domainModelForm.FnthStatus = Common.StatusList.N2Init;
                 var entity = _repoUnit.FormN2Repository.CreateReturnEntity(domainModelForm);

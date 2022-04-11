@@ -53,13 +53,9 @@ namespace RAMMS.Business.ServiceProvider.Services
             result.TotalRecords = await _repoUnit.DivisonRepository.GetFilteredRecordCount(filterOptions); return result;
         }
 
-        public List<SelectListItem> GetList()
+        public async Task<List<SelectListItem>> GetList()
         {
-            return _repoUnit.DivisonRepository.FindAll(s => s.DivIsActive == true).Select(s => new SelectListItem
-            {
-                Text = s.DivName,
-                Value = s.DivCode
-            }).ToList();
+            return await _repoUnit.DivisonRepository.DivisionList();
         }
 
         public async Task<PagingResult<DivRmuSectionRequestDTO>> GetList(FilteredPagingDefinition<DivRmuSectionRequestDTO> filterOptions)

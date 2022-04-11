@@ -11,12 +11,13 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     {
         long LastInsertedNo();
         Task<DivisionRequestDTO> GetById(int id);
-        Task<int> Save(DivisionRequestDTO model); Task<bool> Remove(int id);
+        Task<int> Save(DivisionRequestDTO model); 
+		Task<bool> Remove(int id);
         Task<PagingResult<DivisionRequestDTO>> GetList(FilteredPagingDefinition<DivisionRequestDTO> filterOptions);
 
         Task<PagingResult<DivRmuSectionRequestDTO>> GetList(FilteredPagingDefinition<DivRmuSectionRequestDTO> filterOptions);
 
-        List<SelectListItem> GetList();
+        Task<List<SelectListItem>> GetList();
 
         Task<int> Save(DivRmuSectionRequestDTO model);
 

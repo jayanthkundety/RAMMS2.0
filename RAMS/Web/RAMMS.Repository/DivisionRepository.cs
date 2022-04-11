@@ -8,6 +8,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace RAMMS.Repository
 {
@@ -19,7 +22,27 @@ namespace RAMMS.Repository
             return await (from s in _context.RmDivisionMaster where s.DivIsActive == true select s).LongCountAsync();
         }
 
-       
+        public async Task<List<SelectListItem>> DivisionList()
+        {
+            List<SelectListItem> selectListItemList = new List<SelectListItem>();
+            return await _context.RmDivRmuSecMaster.Where(o => o.RdsmActiveYn == true)
+                 .Select(s => new SelectListItem
+                 {
+                     Value = s.RdsmDivCode,
+                     Text = s.RdsmDivision
+                 }).Distinct().ToListAsync();
+        }
+
+        public List<SelectListItem> RMUListByDivCode(string divCode)
+        {
+            List<SelectListItem> selectListItemList = new List<SelectListItem>();
+            return _context.RmDivRmuSecMaster.Where(o => o.RdsmDivCode == divCode && o.RdsmActiveYn == true)
+            .Select(s => new SelectListItem
+             {
+                 Value = s.RdsmRmuCode,
+                 Text = s.RdsmRmuName
+             }).Distinct().ToList();
+        }
 
         public async Task<List<DivisionRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<DivisionRequestDTO> filterOptions)
         {

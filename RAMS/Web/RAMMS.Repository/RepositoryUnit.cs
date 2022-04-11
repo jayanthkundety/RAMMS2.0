@@ -53,6 +53,8 @@ namespace RAMMS.Repository
         private IDivRmuSectionRepository _divRmuSectionRepository;
         private FormW2Repository _formW2Repository;
         private FormW1Repository _formW1Repository;
+		private ISectionRepository sectionRepository;
+        private IRoadRepository roadRepository;
         private FormW2FcemRepository _formW2FcemRepository;
         private FormWCRepository _formWCRepository;
         private FormWGRepository _formWGRepository;
@@ -155,7 +157,10 @@ namespace RAMMS.Repository
 
         public IDivRmuSectionRepository DivRmuSectionRepository => _divRmuSectionRepository ?? new DivRmuSectionRepository(_context);
 
-       
+        public ISectionRepository SectionRepository => this.sectionRepository  ?? new SectionRepository(_context);
+
+        public IRoadRepository RoadRepository => roadRepository  ?? new RoadRepository(_context);
+
 
         public RepositoryUnit(RAMMSContext context)
         {

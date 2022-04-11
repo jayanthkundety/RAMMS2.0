@@ -9,10 +9,12 @@ namespace RAMMS.Domain.Models
         public int? Fv2lFv2hPkRefNo { get; set; }
         public string Fv2lLabRefCode { get; set; }
         public string Fv2lDesc { get; set; }
+        public decimal? Fv2lQty { get; set; }
+        public string Fv2lUnit { get; set; }
         public string Fv2lRemark { get; set; }
-        public string Fv2lModBy { get; set; }
+        public int? Fv2lModBy { get; set; }
         public DateTime? Fv2lModDt { get; set; }
-        public string Fv2lCrBy { get; set; }
+        public int? Fv2lCrBy { get; set; }
         public DateTime? Fv2lCrDt { get; set; }
         public bool Fv2lSubmitSts { get; set; }
         public bool Fv2lActiveYn { get; set; }

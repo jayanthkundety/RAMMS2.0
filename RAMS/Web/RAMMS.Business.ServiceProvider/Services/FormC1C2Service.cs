@@ -12,6 +12,7 @@ using RAMMS.Common;
 using RAMMS.Domain.Models;
 using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.Report;
+using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.Repository.Interfaces;
 
@@ -23,12 +24,15 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IRepositoryUnit _repoUnit;
         private readonly IMapper _mapper;
         private readonly IAssetsService _assetsService;
-        public FormC1C2Service(IRepositoryUnit repoUnit, IFormC1C2Repository repo, IAssetsService assetsService, IMapper mapper)
+        private readonly IProcessService processService;
+        public FormC1C2Service(IRepositoryUnit repoUnit, IFormC1C2Repository repo, 
+            IAssetsService assetsService, IMapper mapper, IProcessService proService)
         {
             _repo = repo;
             _mapper = mapper;
             _assetsService = assetsService;
             _repoUnit = repoUnit;
+            processService = proService;
         }
         public async Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData)
         {
@@ -36,16 +40,24 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
         public async Task<FormC1C2DTO> Save(FormC1C2DTO frmC1C2, bool updateSubmit)
         {
-            RmFormCvInsHdr header = _mapper.Map<RmFormCvInsHdr>(frmC1C2);
-            //int i = 0; 
-            foreach (var dtl in header.RmFormCvInsDtl)
+            RmFormCvInsHdr frmC1C2_1 = this._mapper.Map<RmFormCvInsHdr>((object)frmC1C2);
+            frmC1C2_1.FcvihStatus = "Open";
+            foreach (RmFormCvInsDtl rmFormCvInsDtl in (IEnumerable<RmFormCvInsDtl>)frmC1C2_1.RmFormCvInsDtl)
+                rmFormCvInsDtl.FcvidIimPkRefNoNavigation = (RmInspItemMas)null;
+            RmFormCvInsHdr source = await this._repo.Save(frmC1C2_1, updateSubmit);
+            if (source != null && source.FcvihSubmitSts)
             {
-                dtl.FcvidIimPkRefNoNavigation = null;
-                //i++;
+                int result = this.processService.Save(new ProcessDTO()
+                {
+                    ApproveDate = new System.DateTime?(System.DateTime.Now),
+                    Form = "FormC1C2",
+                    IsApprove = true,
+                    RefId = source.FcvihPkRefNo,
+                    Remarks = "",
+                    Stage = source.FcvihStatus
+                }).Result;
             }
-
-            header = await _repo.Save(header, updateSubmit);
-            frmC1C2 = _mapper.Map<FormC1C2DTO>(header);
+            frmC1C2 = this._mapper.Map<FormC1C2DTO>((object)source);
             return frmC1C2;
         }
         public async Task<FormC1C2DTO> FindByHeaderID(int headerId)

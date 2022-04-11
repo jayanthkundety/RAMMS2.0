@@ -22,9 +22,9 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv3dTransitTimeTo { get; set; }
         public decimal? Fv3dTransitTimeTotal { get; set; }
         public int? Fv3dAdp { get; set; }
-        public string Fv3dModBy { get; set; }
+        public int? Fv3dModBy { get; set; }
         public DateTime? Fv3dModDt { get; set; }
-        public string Fv3dCrBy { get; set; }
+        public int? Fv3dCrBy { get; set; }
         public DateTime? Fv3dCrDt { get; set; }
         public bool Fv3dSubmitSts { get; set; }
         public bool Fv3dActiveYn { get; set; }

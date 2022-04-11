@@ -13,9 +13,9 @@ namespace RAMMS.Web.UI.Models
 
     {
         public FormV2SearchGridDTO SearchObj { get; set; }
-        public FormV2MaterialDetailsResponseDTO SaveFormDMaterialModel { get; set; }
+        public FormV2MaterialDetailsResponseDTO SaveFormV2MaterialModel { get; set; }
 
-        public IEnumerable<FormV2MaterialDetailsResponseDTO> FormDMaterialDtlList { get; set; }
+        public IEnumerable<FormV2MaterialDetailsResponseDTO> FormV2MaterialDtlList { get; set; }
 
         public string HeaderNo { set; get; }
         public string MaterialDesc { get; set; }

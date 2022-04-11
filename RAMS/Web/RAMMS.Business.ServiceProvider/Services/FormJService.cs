@@ -77,7 +77,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {               
                 var domainModelFormA = _mapper.Map<RmFormJHdr>(formAHeaderBO);
-                domainModelFormA.FjhStatus = Common.StatusList.FormJInit;
+                domainModelFormA.FjhStatus = "Open";
                 foreach (var formADetail in formAHeaderBO.FormJDetails)
                 {
                     domainModelFormA.RmFormJDtl.Add(_mapper.Map<RmFormJDtl>(formADetail));

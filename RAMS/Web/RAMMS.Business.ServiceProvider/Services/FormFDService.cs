@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using RAMMS.DTO.Report;
 using ClosedXML.Excel;
 using System.IO;
+using RAMMS.DTO.RequestBO;
 
 namespace RAMMS.Business.ServiceProvider.Services
 {
@@ -24,13 +25,20 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IAssetRepository _asset;
         private readonly IRoadMasterRepository _roadMaster;
         private readonly IDDLookUpRepository _lookup;
-        public FormFDService(IFormFDRepository formFDRepository, IAssetRepository asset, IRoadMasterRepository roadMaster, IDDLookUpRepository lookup, IMapper mapper)
+        private readonly IProcessService processService;
+        private readonly IRepositoryUnit _repoUnit;
+
+        public FormFDService(IRepositoryUnit repoUnit, IFormFDRepository formFDRepository,
+            IAssetRepository asset, IRoadMasterRepository roadMaster,
+            IDDLookUpRepository lookup, IMapper mapper, IProcessService proService)
         {
             _repo = formFDRepository;
             _mapper = mapper;
             _asset = asset;
             _roadMaster = roadMaster;
             _lookup = lookup;
+            processService = proService;
+            _repoUnit = repoUnit;
         }
         public async Task<GridWrapper<object>> GetFormFDHeaderGrid(DataTableAjaxPostModel searchData)
         {
@@ -84,7 +92,52 @@ namespace RAMMS.Business.ServiceProvider.Services
         public async Task<FormFDDTO> Save(FormFDDTO frmFD, bool updateSubmit)
         {
             RmFormFdInsHdr header = _mapper.Map<RmFormFdInsHdr>(frmFD);
+            header.FdihStatus = "Open";
+
+            if (updateSubmit && header.RmFormFdInsDtl.Any((r =>
+            {
+                int? fdidAiFrmCh1 = r.FdidAiFrmCh;
+                Decimal? nullable1 = fdidAiFrmCh1.HasValue ? new Decimal?((Decimal)fdidAiFrmCh1.GetValueOrDefault()) : new Decimal?();
+                Decimal? nullable2 = header.FdihFrmCh;
+                if (nullable1.GetValueOrDefault() >= nullable2.GetValueOrDefault() & nullable1.HasValue & nullable2.HasValue)
+                {
+                    int? fdidAiFrmCh2 = r.FdidAiFrmCh;
+                    nullable2 = fdidAiFrmCh2.HasValue ? new Decimal?((Decimal)fdidAiFrmCh2.GetValueOrDefault()) : new Decimal?();
+                    nullable1 = header.FdihToCh;
+                    if (nullable2.GetValueOrDefault() <= nullable1.GetValueOrDefault() & nullable2.HasValue & nullable1.HasValue)
+                    {
+                        int? nullable3 = r.FdidFdihPkRefNo;
+                        int fdihPkRefNo = header.FdihPkRefNo;
+                        if (nullable3.GetValueOrDefault() == fdihPkRefNo & nullable3.HasValue)
+                        {
+                            nullable3 = r.FdidCondition;
+                            if (!nullable3.HasValue)
+                            {
+                                bool? fdidActiveYn = r.FdidActiveYn;
+                                bool flag = true;
+                                return fdidActiveYn.GetValueOrDefault() == flag & fdidActiveYn.HasValue;
+                            }
+                        }
+                    }
+                }
+                return false;
+            })))
+                throw new Exception("There are pendings in conditional inspection.");
+
+
             header = await _repo.Save(header, updateSubmit);
+            if (header != null && header.FdihSubmitSts)
+            {
+                int result = this.processService.Save(new ProcessDTO()
+                {
+                    ApproveDate = new System.DateTime?(System.DateTime.Now),
+                    Form = "FormFD",
+                    IsApprove = true,
+                    RefId = header.FdihPkRefNo,
+                    Remarks = "",
+                    Stage = header.FdihStatus
+                }).Result;
+            }
             frmFD = _mapper.Map<FormFDDTO>(header);
             return frmFD;
         }

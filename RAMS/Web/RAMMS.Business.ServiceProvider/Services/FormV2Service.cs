@@ -201,13 +201,13 @@ namespace RAMMS.Business.ServiceProvider.Services
         public async Task<int> SaveFormV2LabourAsync(FormV2LabourDetailsResponseDTO FormV2LabourBO)
         {
 
-            FormV2LabourDetailsResponseDTO formDRequest;
+            FormV2LabourDetailsResponseDTO formV2Request;
             try
             {
                 var domainModelFormV2 = _mapper.Map<RmFormV2Lab>(FormV2LabourBO);
-
+                domainModelFormV2.Fv2lPkRefNo = FormV2LabourBO.PkRefNo;
                 var entity = _repoUnit.FormV2LabourRepository.CreateReturnEntity(domainModelFormV2);
-                formDRequest = _mapper.Map<FormV2LabourDetailsResponseDTO>(entity);
+                formV2Request = _mapper.Map<FormV2LabourDetailsResponseDTO>(entity);
 
 
             }
@@ -217,19 +217,19 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw ex;
             }
 
-            return int.Parse(formDRequest.PkRefNo.ToString());
+            return int.Parse(formV2Request.PkRefNo.ToString());
         }
 
-        public async Task<int> SaveFormV2MaterialAsync(FormV2MaterialDetailsResponseDTO FormV2LabourBO)
+        public async Task<int> SaveFormV2MaterialAsync(FormV2MaterialDetailsResponseDTO FormV2MatBO)
         {
 
-            FormV2MaterialDetailsResponseDTO formDRequest;
+            FormV2MaterialDetailsResponseDTO formV2Request;
             try
             {
-                var domainModelFormV2 = _mapper.Map<RmFormV2Mat>(FormV2LabourBO);
-
+                var domainModelFormV2 = _mapper.Map<RmFormV2Mat>(FormV2MatBO);
+                domainModelFormV2.Fv2mPkRefNo = FormV2MatBO.PkRefNo;
                 var entity = _repoUnit.FormV2MaterialRepository.CreateReturnEntity(domainModelFormV2);
-                formDRequest = _mapper.Map<FormV2MaterialDetailsResponseDTO>(entity);
+                formV2Request = _mapper.Map<FormV2MaterialDetailsResponseDTO>(entity);
 
 
             }
@@ -239,19 +239,19 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw ex;
             }
 
-            return int.Parse(formDRequest.PkRefNo.ToString());
+            return int.Parse(formV2Request.PkRefNo.ToString());
         }
 
-        public async Task<int> SaveFormV2EquipmentAsync(FormV2EquipDetailsResponseDTO FormV2LabourBO)
+        public async Task<int> SaveFormV2EquipmentAsync(FormV2EquipDetailsResponseDTO FormV2EqpBO)
         {
 
-            FormV2EquipDetailsResponseDTO formDRequest;
+            FormV2EquipDetailsResponseDTO formV2Request;
             try
             {
-                var domainModelFormV2 = _mapper.Map<RmFormV2Eqp>(FormV2LabourBO);
-
+                var domainModelFormV2 = _mapper.Map<RmFormV2Eqp>(FormV2EqpBO);
+                domainModelFormV2.Fv2ePkRefNo = FormV2EqpBO.PkRefNo;
                 var entity = _repoUnit.FormV2EquipmentRepository.CreateReturnEntity(domainModelFormV2);
-                formDRequest = _mapper.Map<FormV2EquipDetailsResponseDTO>(entity);
+                formV2Request = _mapper.Map<FormV2EquipDetailsResponseDTO>(entity);
 
 
             }
@@ -261,7 +261,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw ex;
             }
 
-            return int.Parse(formDRequest.PkRefNo.ToString());
+            return int.Parse(formV2Request.PkRefNo.ToString());
         }
 
 
@@ -995,7 +995,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
 
                 getHeader.Fv2hUseridAck = formDDto.UseridAck ?? getHeader.Fv2hUseridAck ?? null;
-                getHeader.Fv2hUsernameAck = formDDto.UseridAck ?? getHeader.Fv2hUsernameAck ?? null;
+                getHeader.Fv2hUsernameAck = formDDto.UsernameAck ?? getHeader.Fv2hUsernameAck ?? null;
                 getHeader.Fv2hDesignationAck = formDDto.DesignationAck ?? getHeader.Fv2hDesignationAck ?? null;
                 getHeader.Fv2hDtAck = formDDto.DtAck ?? getHeader.Fv2hDtAck ?? null;
 

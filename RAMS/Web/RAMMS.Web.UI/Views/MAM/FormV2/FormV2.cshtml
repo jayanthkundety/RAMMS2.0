@@ -1,7 +1,8 @@
-﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+﻿@using RAMMS.Business.ServiceProvider
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 @{
-    ViewBag.TabTitle = "ERT - Form D - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "ERT - Form V2 - Road Asset Management and Maintenance System";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
     var isModifyPerm = security.IsPCModify(ModuleNameList.Management_and_Maintanence) ? "" : "hidden";
     var isDeletePerm = security.IsPCDelete(ModuleNameList.Management_and_Maintanence) ? "" : "hidden";
@@ -155,14 +156,13 @@
         <div class="body-header w-100">
             <div class="col-lg-12">
                 <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
-                    <span class="mb-0 font-weight-bold font-20">ERT - Form D</span>
+                    <span class="mb-0 font-weight-bold font-20">FIELD VERIFICATION (Form V2)</span>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
                             <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item">ERT</li>
+                            <li class="breadcrumb-item">MAM</li>
                             <li class="breadcrumb-item" aria-current="page">
-                                Form D
-                                @*<a class="link-fx" href="">Form D</a>*@
+                                Form v2
                             </li>
                         </ol>
                     </nav>
@@ -208,7 +208,7 @@
                                 <div class="form-group col-lg-4">
                                     @Html.Label("Section Code ", "Section Code")
                                     @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
-                                <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2DetSrchSectionCode", @class = "form-control widget-content-area" })
+                                <SelectListItem>)ViewData["RMU"], "Select Section Code", new { @Id = "formV2DetSrchSectionCode", @class = "form-control widget-content-area" })
                                 </div>
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Section Name", "Section Name")
@@ -217,7 +217,7 @@
                                 <div class="form-group col-lg-4">
                                     @Html.Label("Crew ", "Crew")
                                     @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
-                                <SelectListItem>)ViewData["SectionCode"], "Select Crew", new { @Id = "formV2DetSrchCrew", @class = "form-control widget-content-area" })
+                                <CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formV2DetSrchCrew", @class = "form-control widget-content-area" })
                                 </div>
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Crew Name", "Crew Name")
@@ -228,7 +228,7 @@
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Activity Code", "Activity Code")
                                     @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.ActivityCode, (IEnumerable
-                                <SelectListItem>)ViewData["ActivityCode"], "WeekNo", new { @Id = "formV2DetSrchActivityCode", @class = "form-control" })
+                                <SelectListItem>)ViewData["Activity"], "WeekNo", new { @Id = "formV2DetSrchActivityCode", @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-2">
                                     @Html.Label("Activity Name", "Activity Name")
@@ -258,7 +258,7 @@
             <div class="w-100 float-left position-relative">
 
                 <div class="grid-btns">
-                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditFormV2(0,0);"><span class="add-icon"></span> Add Form D</button>
+                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditFormV2(0,0);"><span class="add-icon"></span> Add Form V2</button>
                 </div>
 
                 @*Form V2 Grid*@

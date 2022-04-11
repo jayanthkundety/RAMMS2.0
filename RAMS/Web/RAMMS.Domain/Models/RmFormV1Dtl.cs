@@ -14,11 +14,11 @@ namespace RAMMS.Domain.Models
         public int? Fv1dToCh { get; set; }
         public int? Fv1dToChDeci { get; set; }
         public string Fv1dSiteRef { get; set; }
-        public DateTime? Fv1dStartTime { get; set; }
+        public string Fv1dStartTime { get; set; }
         public string Fv1dRemarks { get; set; }
-        public string Fv1dModBy { get; set; }
+        public int? Fv1dModBy { get; set; }
         public DateTime? Fv1dModDt { get; set; }
-        public string Fv1dCrBy { get; set; }
+        public int? Fv1dCrBy { get; set; }
         public DateTime? Fv1dCrDt { get; set; }
         public bool Fv1dSubmitSts { get; set; }
         public bool Fv1dActiveYn { get; set; }

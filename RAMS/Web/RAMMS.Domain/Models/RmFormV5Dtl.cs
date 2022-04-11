@@ -13,9 +13,9 @@ namespace RAMMS.Domain.Models
         public string Fv5dImageFilenameSys { get; set; }
         public string Fv5dImageFilenameUpload { get; set; }
         public string Fv5dImageUserFilePath { get; set; }
-        public string Fv5dModBy { get; set; }
+        public int? Fv5dModBy { get; set; }
         public DateTime? Fv5dModDt { get; set; }
-        public string Fv5dCrBy { get; set; }
+        public int? Fv5dCrBy { get; set; }
         public DateTime? Fv5dCrDt { get; set; }
         public bool Fv5dSubmitSts { get; set; }
         public bool Fv5dActiveYn { get; set; }

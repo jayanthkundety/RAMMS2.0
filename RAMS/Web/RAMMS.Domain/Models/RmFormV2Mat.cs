@@ -10,10 +10,10 @@ namespace RAMMS.Domain.Models
         public string Fv2mMatRefCode { get; set; }
         public string Fv2mDesc { get; set; }
         public decimal? Fv2mQnty { get; set; }
-        public int? Fv2mUnit { get; set; }
-        public string Fv2mModBy { get; set; }
+        public string Fv2mUnit { get; set; }
+        public int? Fv2mModBy { get; set; }
         public DateTime? Fv2mModDt { get; set; }
-        public string Fv2mCrBy { get; set; }
+        public int? Fv2mCrBy { get; set; }
         public DateTime? Fv2mCrDt { get; set; }
         public bool Fv2mSubmitSts { get; set; }
         public bool Fv2mActiveYn { get; set; }
