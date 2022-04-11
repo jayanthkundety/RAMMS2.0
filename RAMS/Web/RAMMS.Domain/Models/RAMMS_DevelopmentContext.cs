@@ -9227,6 +9227,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv1hSignSch).HasColumnName("FV1H_Sign_SCH");
 
+                entity.Property(e => e.Fv1hSource)
+                    .HasColumnName("FV1H_Source")
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fv1hStatus)
                     .HasColumnName("FV1H_Status")
                     .HasMaxLength(30)
@@ -12796,7 +12801,6 @@ namespace RAMMS.Domain.Models
 
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

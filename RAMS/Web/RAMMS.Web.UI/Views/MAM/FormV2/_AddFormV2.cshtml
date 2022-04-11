@@ -87,6 +87,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div id="FormV2Headers" class="form-group col-lg-10 col-md-12">
+                                                @Html.HiddenFor(m => m.SaveFormV2Model.Fv1hPkRefNo , new { @id = "hdnV1PkRefNo", @class = "form-control" })
                                                 <div class="row">
                                                     <div class="col-lg-5">
                                                         <div class="row">
@@ -315,7 +316,7 @@
         @Html.HiddenFor(m => m.SaveFormV2Model.PkRefNo, new { @id = "FV2PkRefNo", @class = "form-control" })
         @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
         @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
-        @Html.HiddenFor(m => m.SaveFormV2Model.Fv1hPkRefNo , new { @id = "hdnV1PkRefNo", @class = "form-control" })
+        
         
 
         @Html.HiddenFor(m => m.SaveFormV2Model.SubmitSts, new { @id = "hdnstatus", @class = "form-control" })

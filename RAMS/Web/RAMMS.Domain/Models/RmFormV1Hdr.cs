@@ -51,6 +51,7 @@ namespace RAMMS.Domain.Models
         public bool Fv1hActiveYn { get; set; }
         public string Fv1hStatus { get; set; }
         public string Fv1hAuditLog { get; set; }
+        public string Fv1hSource { get; set; }
 
         public virtual ICollection<RmFormV1Dtl> RmFormV1Dtl { get; set; }
         public virtual ICollection<RmFormV2Hdr> RmFormV2Hdr { get; set; }
