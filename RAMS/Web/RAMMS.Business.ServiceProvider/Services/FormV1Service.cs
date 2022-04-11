@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using ClosedXML.Excel;
@@ -114,7 +115,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
 
         public async Task<FormV1ResponseDTO> SaveFormV1(FormV1ResponseDTO FormV1)
-        { 
+        {
             try
             {
                 var domainModelFormV1 = _mapper.Map<RmFormV1Hdr>(FormV1);
@@ -126,13 +127,20 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 IDictionary<string, string> lstData = new Dictionary<string, string>();
                 lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
-                lstData.Add("Crew", domainModelFormV1.Fv1hCrew);
+                lstData.Add("Crew", domainModelFormV1.Fv1hCrew.ToString());
                 lstData.Add("ActivityCode", domainModelFormV1.Fv1hActCode);
                 domainModelFormV1.Fv1hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV1Header, lstData);
 
                 var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormV1);
                 FormV1.PkRefNo = _mapper.Map<FormV1ResponseDTO>(entity).PkRefNo;
- 
+
+
+                //var objS1 = _repoUnit.formS1Repository.FindAsync(x => x.FsihRmu == domainModelFormV1.Fv1hRmu && x.a == domainModelFormV1.Fv1hActCode && x.sec == domainModelFormV1.Fv1hSecCode && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hActiveYn == true).Result;
+                //if (obj != null)
+
+                //    FormV1.S1RefNoDetails = JsonSerializer.Serialize(new List<SelectListItem> { new SelectListItem { Text = "S1", Value = "1" }, new SelectListItem { Text = "V1", Value = "2" } });
+
+
                 return FormV1;
             }
             catch (Exception ex)
@@ -174,6 +182,22 @@ namespace RAMMS.Business.ServiceProvider.Services
                 _repoUnit.RollbackAsync();
                 throw ex;
             }
+        }
+
+        public int? DeleteFormV1WorkSchedule(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormV1WorkSchedule(id);
+            }
+            catch (Exception ex)
+            {
+                  _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
         }
 
 

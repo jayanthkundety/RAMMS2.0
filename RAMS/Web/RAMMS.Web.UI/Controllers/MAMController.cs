@@ -18,6 +18,7 @@ using RAMMS.Repository.Interfaces;
 using System.Linq;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -67,8 +68,7 @@ namespace RAMMS.Web.UI.Controllers
         IFormS1Service formS1Service,
         IFormV1Service formV1Service,
         IFormV2Service formV2Service,
-        IFormV1Service formV1Service,
-        IFormDService formDService,
+               IFormDService formDService,
         ISecurity security,
         ILogger logger, IRoadMasterService roadMaster, IUserService userService, IWebHostEnvironment webhostenvironment,
         IBridgeBO bridgeBO, IFormQa2Repository mAMQA2Repository)
@@ -85,7 +85,7 @@ namespace RAMMS.Web.UI.Controllers
             _formS1Service = formS1Service ?? throw new ArgumentNullException(nameof(formS1Service));
             _formV1Service = formV1Service ?? throw new ArgumentNullException(nameof(formV1Service));
             _formV2Service = formV2Service ?? throw new ArgumentNullException(nameof(formV2Service));
-           
+
             _formDService = formDService ?? throw new ArgumentNullException(nameof(formDService));
             _webHostEnvironment = webhostenvironment;
             _bridgeBO = bridgeBO;
@@ -113,7 +113,7 @@ namespace RAMMS.Web.UI.Controllers
 
                 FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
 
-                ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value  }).ToArray();
+                ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
             }
             else if (from == "N1")
             {
@@ -1036,12 +1036,25 @@ namespace RAMMS.Web.UI.Controllers
             LoadLookupService("RD_Code", "User", "Site Ref");
             return 1;
         }
-            public async Task<IActionResult> AddFormV1(int id, int view)
+        public async Task<IActionResult> AddFormV1(int id, int view)
         {
             var _formV1Model = new FormV1Model();
             _formV1Model.FormV1 = new FormV1ResponseDTO();
             _formV1Model.FormV1Dtl = new FormV1DtlResponseDTO();
             await LoadFormV1DropDown();
+
+            if (_formV1Model.FormV1.UseridSch == 0)
+                _formV1Model.FormV1.UseridSch = _security.UserID;
+
+            //if (_formV1Model.FormV1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
+            //{
+            //    if (_formV1Model.FormV1.UseridVer == null || _formV1Model.FormV1.UseridVer == 0)
+            //    {
+            //        _formV1Model.FormV1.UseridVer = _security.UserID;
+            //        _formV1Model.FormV1.DtVer = DateTime.Today;
+            //    }
+            //}
+
             return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
         }
 
@@ -1055,7 +1068,8 @@ namespace RAMMS.Web.UI.Controllers
             _formV1Model.FormV1 = await _formV1Service.FindFormV1ByID(Id);
             //  _formV1Model.FormW2 = await _formW1Service.FindFormW2ByPKRefNo(W2Id);
 
-
+            if (_formV1Model.FormV1.UseridSch == 0)
+                _formV1Model.FormV1.UseridSch = _security.UserID;
 
             return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
         }
@@ -1067,9 +1081,10 @@ namespace RAMMS.Web.UI.Controllers
             frm.FormV1.ActiveYn = true;
             if (frm.FormV1.PkRefNo == 0)
             {
-               
+
                 frm.FormV1.Status = "Saved";
                 frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
+                frm.Source = "";
                 await LoadFormV1DropDown();
                 return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
             }
@@ -1101,6 +1116,13 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteFormV1WorkSchedule(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formV1Service.DeleteFormV1WorkSchedule(id);
+            return Json(rowsAffected);
+        }
 
 
         #endregion
@@ -1132,7 +1154,7 @@ namespace RAMMS.Web.UI.Controllers
             }
             if (Request.Form.ContainsKey("columns[3][search][value]"))
             {
-                formV2Filter.filterData.Crew  = Request.Form["columns[3][search][value]"].ToString();
+                formV2Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
             }
             if (Request.Form.ContainsKey("columns[4][search][value]"))
             {
@@ -1231,7 +1253,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             //base.LoadLookupService(GroupNameList.Supervisor, GroupNameList.OperationsExecutive, GroupNameList.OpeHeadMaintenance, GroupNameList.JKRSSuperiorOfficerSO);
             _formV2Model.SaveFormV2Model = new FormV2HeaderResponseDTO();
-            await LoadDropDowns("V2","");
+            await LoadDropDowns("V2", "");
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             //Labour
             FormV2LabourDtlModel formV2Labour = new FormV2LabourDtlModel();
@@ -1252,7 +1274,7 @@ namespace RAMMS.Web.UI.Controllers
             formV2EquipDetails.selectList = await _formV2Service.GetEquipmentCode();
             ddLookup.Type = "EQPMODEL";
             //_formV2Model.FormV2Material.mo = await _ddLookupService.GetDdLookup(ddLookup);
-            _formV2Model.FormV2Equip = formV2EquipDetails;           
+            _formV2Model.FormV2Equip = formV2EquipDetails;
 
             RoadMasterRequestDTO roadMasterReq = new RoadMasterRequestDTO();
             ViewData["Division"] = await _formV2Service.GetDivisions();
@@ -1271,7 +1293,7 @@ namespace RAMMS.Web.UI.Controllers
                 var result = await _formV2Service.GetFormV2WithDetailsByNoAsync(id);
                 _formV2Model.SaveFormV2Model = result;
                 _formV2Model.viewm = result.SubmitSts == true ? "1" : view;
-              
+
             }
             else
             {
@@ -1350,7 +1372,7 @@ namespace RAMMS.Web.UI.Controllers
             _formV2EquipmentModel.selectList = await _formV2Service.GetEquipmentCode();
             DDLookUpDTO ddLookup = new DDLookUpDTO();
             ddLookup.Type = "EQPMODEL";
-            _formV2EquipmentModel.ModelList   = await _ddLookupService.GetDdLookup(ddLookup);
+            _formV2EquipmentModel.ModelList = await _ddLookupService.GetDdLookup(ddLookup);
 
             if (id > 0)
             {
@@ -1411,7 +1433,7 @@ namespace RAMMS.Web.UI.Controllers
             int refNo = 0;
             FormV2MaterialDetailsResponseDTO saveResponseObj = new FormV2MaterialDetailsResponseDTO();
             saveResponseObj = saveObj;
-            if (saveObj.PkRefNo == 0 )
+            if (saveObj.PkRefNo == 0)
             {
                 //var SrNo = await _formV2Service.GetMaterialSRNO(saveObj.FdmdFdhPkRefNo);
                 //saveResponseObj.SerialNo = ((SrNo == null) ? 0 : SrNo) + 1;
@@ -1433,7 +1455,7 @@ namespace RAMMS.Web.UI.Controllers
             int refNo = 0;
             FormV2EquipDetailsResponseDTO saveResponseObj = new FormV2EquipDetailsResponseDTO();
             saveResponseObj = saveObj;
-            if (saveObj.PkRefNo == 0 )
+            if (saveObj.PkRefNo == 0)
             {
                 //var SrNo = await _formV2Service.GetEqpSRNO(saveObj.FormV2EDFHeaderNo);
                 //saveResponseObj.SerialNo = ((SrNo == null) ? 0 : SrNo) + 1;

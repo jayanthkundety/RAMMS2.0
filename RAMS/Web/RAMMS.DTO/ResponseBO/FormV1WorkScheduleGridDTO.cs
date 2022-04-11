@@ -14,7 +14,7 @@ namespace RAMMS.DTO.ResponseBO
 
         public string Chainage { get; set; }
         public string SiteRef { get; set; }
-        public DateTime? StartTime { get; set; }
+        public string StartTime { get; set; }
         public string Remarks { get; set; }
        
 

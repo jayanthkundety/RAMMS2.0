@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.DTO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
@@ -25,6 +26,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         int? SaveFormV1WorkSchedule(FormV1DtlResponseDTO FormV1Dtl);
 
         int? UpdateFormV1WorkSchedule(FormV1DtlResponseDTO FormV1Dtl);
+
+        int? DeleteFormV1WorkSchedule(int id);
 
 
 

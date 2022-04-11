@@ -1,12 +1,6 @@
 ﻿$(document).ready(function () {
      
 
-  
-
-
-
-  
-
     $('.allow_numeric').keypress(function (event) {
         var $this = $(this);
         if ((event.which != 46 || $this.val().indexOf('.') != -1) &&

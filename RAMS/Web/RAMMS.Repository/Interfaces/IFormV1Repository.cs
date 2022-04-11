@@ -21,6 +21,8 @@ namespace RAMMS.Repository.Interfaces
         int? SaveFormV1WorkSchedule(RmFormV1Dtl FormV1Dtl);
         int? UpdateFormV1WorkSchedule(RmFormV1Dtl FormV1Dtl);
 
+        int? DeleteFormV1WorkSchedule(int id);
+
         //int SaveFormWD(RmIwFormWd FormWD);
         //int? DeleteFormWDClause(int Id);
 

@@ -112,7 +112,7 @@ namespace RAMMS.Repository
         {
             List<RmFormV1Dtl> result = new List<RmFormV1Dtl>();
             var query = (from x in _context.RmFormV1Dtl
-                         where x.Fv1dFv1hPkRefNo == V1PkRefNo
+                         where x.Fv1dFv1hPkRefNo == V1PkRefNo && x.Fv1dActiveYn == true
                          select new { x }).OrderByDescending(x => x.x.Fv1dPkRefNo);
 
 
@@ -185,6 +185,23 @@ namespace RAMMS.Repository
             {
                 _context.Set<RmFormV1Dtl>().Attach(FormV1Dtl);
                 _context.Entry<RmFormV1Dtl>(FormV1Dtl).State = EntityState.Modified;
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteFormV1WorkSchedule(int id)
+        {
+            try
+            {
+                var res = _context.Set<RmFormV1Dtl>().FindAsync(id);
+                res.Result.Fv1dActiveYn = false;
+                _context.Set<RmFormV1Dtl>().Attach(res.Result);
+                _context.Entry<RmFormV1Dtl>(res.Result).State = EntityState.Modified;
                 _context.SaveChanges();
                 return 1;
             }

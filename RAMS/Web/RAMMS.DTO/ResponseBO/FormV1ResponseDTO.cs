@@ -26,21 +26,21 @@ namespace RAMMS.DTO.ResponseBO
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? Dt { get; set; }
         public bool SignSch { get; set; }
-        public string UseridSch { get; set; }
+        public int UseridSch { get; set; }
         public string UsernameSch { get; set; }
         public string DesignationSch { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DtSch { get; set; }
         public bool SignAgr { get; set; }
-        public string UseridAgr { get; set; }
+        public int UseridAgr { get; set; }
         public string UsernameAgr { get; set; }
         public string DesignationAgr { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DtAgr { get; set; }
         public bool SignAck { get; set; }
-        public string UseridAck { get; set; }
+        public int UseridAck { get; set; }
         public string UsernameAck { get; set; }
         public string DesignationAck { get; set; }
         [DataType(DataType.Date)]
@@ -58,6 +58,7 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+        public string S1RefNoDetails { get; set; }
 
         //   public virtual ICollection<RmFormV1Dtl> RmFormV1Dtl { get; set; }
 

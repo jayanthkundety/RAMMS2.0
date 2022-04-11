@@ -133,5 +133,12 @@ namespace RAMMS.Common
         public const string FormFSSummarized = "Summarized";
         public const string FormFSHeadMaintenanceApproved = "Executive";
         public const string FormFSRegionManagerApproved = "Region Manager";
+
+        public const string FormV1Saved = "Saved";
+        public const string FormV1Submitted = "Submitted";
+        public const string FormV1Rejected = "Rejected";
+        public const string FormV1Approved = "Approved";
+        public const string FormV1Verified = "Verified";
+        
     }
 }

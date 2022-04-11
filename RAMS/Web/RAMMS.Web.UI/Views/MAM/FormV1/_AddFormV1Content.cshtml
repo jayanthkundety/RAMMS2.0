@@ -23,7 +23,7 @@
                     <div id="content">
                         <div class="w-100 position-relative in-tbl-btns custom-tbl">
                             <div class="grid-btns">
-                                <button type="button" id="btnWorkScheduleAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#myModal">
+                                <button type="button" id="btnWorkScheduleAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#WorkScheduleModal">
                                     <span class="intbl-add-icon"></span>
                                 </button>
                             </div>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal fade" id="WorkScheduleModal" role="dialog">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -47,7 +47,7 @@
 
                                 <div class="row pt-3">
 
-                                    <div class="form-group col-lg-7">
+                                    <div class="form-group col-lg-6">
                                         <div class="row">
                                             <div class="col-6">
                                                 @Html.Label("Road Code", "Road Code")
@@ -60,73 +60,72 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-lg-5">
-                                        <div class="form-group col-lg-6 p-0">
+                                    <div class="form-group col-lg-3">
 
-                                            <label for="RoadCode" class="mb-1">
-                                                Chainage 'KM' Location
-                                            </label>
+                                        <label for="RoadCode" class="mb-1">
+                                            Chainage Location From
+                                        </label>
+                                        <div class="form-group col-lg-7 p-0">
+
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text" style="height: 35px;">CH</span>
+                                                    <span class="input-group-text" style="height: 35px; padding: 4px">CH</span>
                                                 </div>
                                                 @Html.TextBoxFor(m => m.FormV1Dtl.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric svalidate {required,Chainage KM from}", style = "height:35px" })
 
                                             </div>
                                         </div>
-                                        <div class="form-group col-lg-1 pt-4 px-0 text-center" style="max-width:4.33%">
+                                        <div class="form-group col-lg-1 pt-2 px-0 text-center" style="max-width:4.33%">
                                             +
                                         </div>
-                                        <div class="form-group col-lg-5 p-0">
-                                            <label for="RoadCode">
-                                                Chainage 'M' Location
-                                            </label>
+                                        <div class="form-group col-lg-4 p-0">
+                                          
+                                            @Html.TextBoxFor(m => m.FormV1Dtl.FrmChDeci, new { @maxlength = "3", @class = "form-control allow_numeric svalidate {required,Chainage KM from}" })
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group col-lg-3">
+
+                                        <label for="RoadCode" class="mb-1">
+                                            Chainage Location To
+                                        </label>
+                                        <div class="form-group col-lg-7 p-0">
+
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" style="height: 35px;padding:4px">CH</span>
+                                                </div>
+                                                @Html.TextBoxFor(m => m.FormV1Dtl.ToCh, new { @maxlength = "6", @class = "form-control allow_numeric svalidate {required,Chainage KM from}", style = "height:35px" })
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-1 pt-2 px-0 text-center" style="max-width:4.33%">
+                                            +
+                                        </div>
+                                        <div class="form-group col-lg-4 p-0">
                                             @Html.TextBoxFor(m => m.FormV1Dtl.ToChDeci, new { @maxlength = "3", @class = "form-control allow_numeric svalidate {required,Chainage KM from}" })
 
                                         </div>
 
                                     </div>
-                                    <div class="form-group col-lg-7">
+                                    <div class="form-group col-lg-5">
                                         <div class="row">
-                                            <div class="form-group col-4">
+                                            <div class="form-group col-lg-6">
                                                 <label for="RoadCode">  Site Reference</label>
                                                 @Html.DropDownListFor(Adtl => Adtl.FormV1Dtl.SiteRef, (IEnumerable<CSelectListItem>)ViewData["Site_Ref"], "Select Site Reference", new { @Id = "ddlSiteRef", @class = "form-control validate {required, Site Reference}" })
-                                            </div><div class="form-group  col-8">
+                                            </div>
+                                            <div class="form-group col-lg-6">
                                                 <label for="RoadCode">
                                                     Schedule Time to Start
                                                 </label>
-                                                <div class="row mt-1">
-                                                    <div class="col-4">
-                                                        <select class="form-control px-0 py-2">
-                                                            @{for (int i = 1; i <= 12; i++)
-                                                                {
-                                                                    <option value="@i">@i</option>
-                                                                }
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <select class="form-control px-0 py-2">
-                                                            @{for (int i = 0; i <= 59; i++)
-                                                                {
-                                                                    <option value="@i">@i</option>
-                                                                }
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <select class="form-control">
-                                                            <option value="">AM</option>
-                                                            <option value="">PM</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                
+                                                        @Html.TextBoxFor(Adtl => Adtl.FormV1Dtl.StartTime, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required, Start Time}", @rows = 1 })
+                                                  
                                             </div>
                                         </div>
                                     </div>
-
-
-                                    <div class="col-5">
+                                    <div class="form-group col-lg-7">
                                         <label for="RoadCode">
                                             Remarks
                                         </label>
@@ -141,7 +140,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                                <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-sm btn-themebtn" id="saveFormV1DtlBtn" onclick="SaveFormV1WorkSchedule()">Submit</button>
                             </div>
                         </div>
@@ -340,18 +339,20 @@
     </div>
 </div>
 
-@Html.HiddenFor(m => m.FormV1.PkRefNo);
-@Html.HiddenFor(m => m.FormV1Dtl.PkRefNo);
-@Html.HiddenFor(m => m.FormV1.SecCode);
-@Html.HiddenFor(m => m.FormV1.UseridAck);
-@Html.HiddenFor(m => m.FormV1.UseridAgr);
-@Html.HiddenFor(m => m.FormV1.UseridSch);
-@Html.HiddenFor(m => m.FormV1Dtl.RoadCode);
+@Html.HiddenFor(m => m.FormV1.PkRefNo)
+@Html.HiddenFor(m => m.FormV1Dtl.PkRefNo)
+@Html.HiddenFor(m => m.FormV1.SecCode)
+@Html.HiddenFor(m => m.FormV1.UseridAck)
+@Html.HiddenFor(m => m.FormV1.UseridAgr)
+@Html.HiddenFor(m => m.FormV1.UseridSch)
+@Html.HiddenFor(m => m.FormV1Dtl.RoadCode)
 <input type="hidden" id="hdnSecCode" value="@Model.FormV1.SecCode" />
 
 <script>
     $("#FormV1_RefId").val(@Model.FormV1.RefId);
-    
+
+    debugger;
+
     if ("@Model.FormV1.PkRefNo" != "0") {
         $("#AccordPage0 *").prop("disabled", true);
         $("#btnFindDetails").hide();
@@ -360,5 +361,26 @@
     else {
         $("#btnWorkScheduleAdd").hide();
     }
+
+
+    @*var dsRefNo = JSON.parse("@Html.Raw(@Model.Source)");
+
+
+               if (dsRefNo.length > 0) {
+        $("#ddlRefNo").empty();
+        $("#ddlRefNo").append($("<option></option>").val("").html("Select Reference No"));
+        $.each(dsRefNo, function(index, v) {
+            $("#ddlRefNo").append($("<option></option>").val(v.Value).html(v.Text));
+                   });
+        $('#ddlRefNo').trigger("chosen:updated");
+               }*@
+
+
+
+
+
+    $(document).ready(function () {
+        $("#FormV1Dtl_StartTime").timeEntry();
+       });
 
 </script>
