@@ -22,6 +22,7 @@ namespace RAMMS.Domain.Models
         public DateTime? Fv1dCrDt { get; set; }
         public bool Fv1dSubmitSts { get; set; }
         public bool Fv1dActiveYn { get; set; }
+        public int? Fv1dS1dPkRefNo { get; set; }
 
         public virtual RmFormV1Hdr Fv1dFv1hPkRefNoNavigation { get; set; }
     }

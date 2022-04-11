@@ -52,7 +52,9 @@ namespace RAMMS.Domain.Models
         public string Fv1hStatus { get; set; }
         public string Fv1hAuditLog { get; set; }
         public string Fv1hSource { get; set; }
+        public int? Fv1hS1hPkRefNo { get; set; }
 
+        public virtual RmFormS1Hdr Fv1hS1hPkRefNoNavigation { get; set; }
         public virtual ICollection<RmFormV1Dtl> RmFormV1Dtl { get; set; }
         public virtual ICollection<RmFormV2Hdr> RmFormV2Hdr { get; set; }
     }
