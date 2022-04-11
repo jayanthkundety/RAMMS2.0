@@ -1636,20 +1636,34 @@ namespace RAMMS.Business.ServiceProvider.Services
                 string strNotMsg = "";
                 string strNotGroupName = "";
                 string strNotUserID = "";
-
-
+                string strStatus = "";
+                string strNotStatus = "";
 
                 if (process.Stage == Common.StatusList.FormV1Submitted)
                 {
-                    strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
-                    form.Fv1hStatus = process.IsApprove ? Common.StatusList.FormV1Verified : Common.StatusList.FormV1Rejected;
+                    //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
+                    form.Fv1hStatus = process.IsApprove ? Common.StatusList.FormV1Verified : Common.StatusList.FormV1Saved;
                     strTitle = "Verified By";
+                    strStatus = "Verified";
+                    strNotStatus = Common.StatusList.FormV1Saved;
+                    form.Fv1hUseridAgr = Convert.ToInt32(process.UserID);
+                    form.Fv1hUsernameAgr = process.UserName;
+                    form.Fv1hDesignationAgr = process.UserDesignation;
+                    form.Fv1hDtAgr = process.ApproveDate;
+                    form.Fv1hSignAck = true;
                 }
                 else if (process.Stage == Common.StatusList.FormV1Verified)
                 {
-                    strNotGroupName = process.IsApprove ? GroupNames.JKRSSuperiorOfficerSO : GroupNames.OpeHeadMaintenance;
-                    form.Fv1hStatus = process.IsApprove ? Common.StatusList.FormV1Approved : Common.StatusList.FormV1Rejected;
+                    //strNotGroupName = process.IsApprove ? GroupNames.JKRSSuperiorOfficerSO : GroupNames.OpeHeadMaintenance;
+                    form.Fv1hStatus = process.IsApprove ? Common.StatusList.FormV1Approved : Common.StatusList.FormV1Submitted;
                     strTitle = "Approved By";
+                    strStatus = "Facilitated";
+                    strNotStatus = Common.StatusList.FormV1Verified;
+                    form.Fv1hUseridAck = Convert.ToInt32(process.UserID);
+                    form.Fv1hUsernameAck = process.UserName;
+                    form.Fv1hDesignationAck = process.UserDesignation;
+                    form.Fv1hDtAck = process.ApproveDate;
+                    form.Fv1hSignAck = true;
                 }
 
                 if (process.IsApprove)
@@ -1660,27 +1674,24 @@ namespace RAMMS.Business.ServiceProvider.Services
                     if (form.Fv1hUseridAck.HasValue)
                         lstNotUserId.Add(form.Fv1hUseridAck.Value);
 
-
-
                     form.Fv1hUseridAck = Convert.ToInt32(process.UserID);
                     form.Fv1hUsernameAck = process.UserName;
                     form.Fv1hDesignationAck = process.UserDesignation;
                     form.Fv1hDtAck = process.ApproveDate;
                     form.Fv1hSignAck = true;
 
-
-
                     strNotUserID = string.Join(",", lstNotUserId.Distinct());
                 }
                 else
                 {
-                    strTitle = StatusList.FormW2Received;
+                    if (process.Stage == Common.StatusList.FormV1Submitted)
+                    {
+                        form.Fv1hSubmitSts = false;
+                    }
                 }
 
-
-
-                form.Fv1hAuditLog = Utility.ProcessLog(form.Fv1hAuditLog, strTitle, process.IsApprove ? "Recieved" : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
-                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form V2 (" + form.Fv1hPkRefNo + ")";
+                form.Fv1hAuditLog = Utility.ProcessLog(form.Fv1hAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form V1 (" + form.Fv1hPkRefNo + ")";
                 strNotURL = "/MAM/EditFormV1?id=" + form.Fv1hPkRefNo.ToString() + "&View=0";
                 SaveNotification(new RmUserNotification()
                 {
@@ -1695,5 +1706,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             return await context.SaveChangesAsync();
         }
+
     }
 }
