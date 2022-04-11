@@ -50,6 +50,7 @@ namespace RAMMS.DTO.ResponseBO
         public string Verifier { get; set; }
         public string Facilitator { get; set; }
         public string Remarks { get; set; }
+        public string Source { get; set; }
         public string ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public string CrBy { get; set; }
