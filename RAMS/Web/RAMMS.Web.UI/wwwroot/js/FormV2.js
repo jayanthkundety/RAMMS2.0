@@ -630,7 +630,7 @@ function saveHdr(isSubmit) {
 
         saveObj.PkRefNo = $("#FV2PkRefNo").val();
         saveObj.RefId = $("#formV2ReferenceNo").val();
-        //saveObj.Fv1hPkRefNo = $("#hdnV1PkRefNo").val();
+        saveObj.Fv1hPkRefNo = $("#hdnV1PkRefNo").val();
         saveObj.ContNo = "";
         saveObj.Rmu = $("#formV2rmu").val();
         saveObj.SecCode = $("#formV2SectionCode").val();
