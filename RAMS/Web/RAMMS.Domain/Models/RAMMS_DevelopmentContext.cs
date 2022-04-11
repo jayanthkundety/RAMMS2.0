@@ -134,6 +134,7 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<TestColumns> TestColumns { get; set; }
         public virtual DbSet<UvwSearchData> UvwSearchData { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -9080,6 +9081,8 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv1dS1dPkRefNo).HasColumnName("FV1D_S1D_PK_Ref_No");
+
                 entity.Property(e => e.Fv1dSiteRef)
                     .HasColumnName("FV1D_Site_Ref")
                     .HasMaxLength(100)
@@ -9206,6 +9209,8 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv1hS1hPkRefNo).HasColumnName("FV1H_S1H_PK_Ref_No");
+
                 entity.Property(e => e.Fv1hSecCode)
                     .HasColumnName("FV1H_Sec_Code")
                     .HasMaxLength(50)
@@ -9264,6 +9269,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV1H_Verifier")
                     .HasMaxLength(250)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Fv1hS1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormV1Hdr)
+                    .HasForeignKey(d => d.Fv1hS1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormV1_HDR_RM_FormS1_HDR");
             });
 
             modelBuilder.Entity<RmFormV2Eqp>(entity =>
