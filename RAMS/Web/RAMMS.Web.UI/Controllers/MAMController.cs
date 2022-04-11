@@ -1199,7 +1199,7 @@ namespace RAMMS.Web.UI.Controllers
             //V1 Exisit
             if (formV1Res != null)
             {
-                formV1PkRefNo = formV1Res.Fv1hPkRefNo;
+                formV1PkRefNo = formV1Res.PkRefNo;
                 formV2Res = await _formV2Service.FindDetails(formV2);
                 //V2 not Exist , Create V2
                 if (formV2Res == null || formV2Res.PkRefNo == 0)
