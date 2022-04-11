@@ -133,6 +133,7 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmWeekLookup> RmWeekLookup { get; set; }
         public virtual DbSet<TestColumns> TestColumns { get; set; }
         public virtual DbSet<UvwSearchData> UvwSearchData { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -140,6 +141,7 @@ namespace RAMMS.Domain.Models
                 optionsBuilder.UseSqlServer("Name=RAMMSDatabase");
             }
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AssetFieldDtl>(entity =>
@@ -9395,6 +9397,8 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv2hFv1hPkRefNo).HasColumnName("FV2H_FV1H_PK_Ref_No");
+
                 entity.Property(e => e.Fv2hModBy).HasColumnName("FV2H_Mod_By");
 
                 entity.Property(e => e.Fv2hModDt)
@@ -9468,6 +9472,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV2H_Verifier")
                     .HasMaxLength(250)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Fv2hFv1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormV2Hdr)
+                    .HasForeignKey(d => d.Fv2hFv1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormV2_HDR_RM_FormV2_HDR");
             });
 
             modelBuilder.Entity<RmFormV2Lab>(entity =>
@@ -9570,6 +9579,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV2M_Unit")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Fv2mFv2hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormV2Mat)
+                    .HasForeignKey(d => d.Fv2mFv2hPkRefNo)
+                    .HasConstraintName("FK_RM_FormV2_MAT_RM_FormV2_HDR");
             });
 
             modelBuilder.Entity<RmFormV3Dtl>(entity =>
@@ -12782,6 +12796,7 @@ namespace RAMMS.Domain.Models
 
             OnModelCreatingPartial(modelBuilder);
         }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

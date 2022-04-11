@@ -2,6 +2,7 @@
 @model RAMMS.Web.UI.Models.FormV2Model;
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @{
+    var v2PkRefNo = Model.SaveFormV2Model.PkRefNo;
     var rights = security;
     var vd = Model.SaveFormV2Model.DtAck;
     string _DtAck = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd");
@@ -17,8 +18,7 @@
         <div class="col-lg-10 offset-lg-1 mt-2" id="div-addformv2">
             <div class="col-lg-10 offset-lg-1 mt-2">
                 <div class="row" useridgroup="">
-
-
+                    
                     <div class="bg-white rounded landing-division w-100 float-left  my-2">
                         <div class="col-lg-12 border-bottom py-2 my-2">
                             <span class="font-14 font-weight-bold">
@@ -36,7 +36,7 @@
                             <label for="Name">
                                 Recorded by
                             </label>
-                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2RecordedBy", "Select Users", new { Id = "formV2RecordedBy", @class = "form-control   {required, Recorded by} "})
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2RecordedBy", "Select Users", new { Id = "formV2RecordedBy", @class = "form-control   {required, Recorded by} ", @disabled=true})
 
                         </div>
                         <div class="form-group col-lg-2 float-left">
@@ -49,7 +49,7 @@
                         </div>
                         <div class="form-group col-lg-3 float-left">
                             @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                            <input type="date" class="datepicker form-control  ssvalidate {required, Recorded by date}" id="formW2RecordedDate" value="@_DtSch" />
+                            <input type="date" class="datepicker form-control  ssvalidate {required, Recorded by date}" id="formV2RecordedDate" value="@_DtSch" />
                         </div>
                         <div class="form-group col-lg-1 float-left">
                             @Html.Label("Signature", "Signature")
@@ -78,7 +78,7 @@
                             <label for="Name">
                                 Vetted by:
                             </label>
-                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2VettedBy", "Select Users", new { Id = "formV2VettedBy", @class = "form-control   {required, Vetted by} "})
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2VettedBy", "Select Users", new { Id = "formV2VettedBy", @class = "form-control   {required, Vetted by} ", @disabled=true})
                         </div>
                         <div class="form-group col-lg-2 float-left">
                             @Html.Label("Name", "Name")
@@ -90,7 +90,7 @@
                         </div>
                         <div class="form-group col-lg-3 float-left">
                             @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                            <input type="date" class="datepicker form-control  ssvalidate {required, Vetted by date}" id="formW2VettedDate" value="@_DtAgr" />
+                            <input type="date" class="datepicker form-control  ssvalidate {required, Vetted by date}" id="formV2VettedDate" value="@_DtAgr" />
                         </div>
                         <div class="form-group col-lg-1 float-left">
                             @Html.Label("Signature", "Signature")
@@ -117,7 +117,7 @@
                         </div>
                         <div class="form-group col-lg-2 float-left mb-0">
                             <label for="Name">Facilitated by</label>
-                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2FacilitatedBy", "Select Users", new { @id = "formV2FacilitatedBy", @class = "form-control   {required, Facilitated by} "})
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2FacilitatedBy", "Select Users", new { @id = "formV2FacilitatedBy", @class = "form-control   {required, Facilitated by} ", @disabled=true})
                         </div>
                         <div class="form-group col-lg-2 float-left">
                             @Html.Label("Name", "Name")
@@ -155,129 +155,131 @@
 
     $(document).ready(function () {
 
-        if ($("#formV2RecordedBy").val() != "99999999") {
-            $("#formV2RecordedName").prop("disabled", true);
-            $("#formV2RecordedDesig").prop("disabled", true);
-        }
+       
 
-        if ($("#formV2VettedBy").val() != "99999999") {
-            $("#formV2VettedName").prop("disabled", true);
-            $("#formV2VettedDesig").prop("disabled", true);
-        }
+        //if ($("#formV2RecordedBy").val() != "99999999") {
+        //    $("#formV2RecordedName").prop("disabled", true);
+        //    $("#formV2RecordedDesig").prop("disabled", true);
+        //}
 
-        if ($("#formV2FacilitatedBy").val() != "99999999") {
-            $("#formV2FacilitatedName").prop("disabled", true);
-            $("#formV2FacilitatedDesig").prop("disabled", true);
-        }
+        //if ($("#formV2VettedBy").val() != "99999999") {
+        //    $("#formV2VettedName").prop("disabled", true);
+        //    $("#formV2VettedDesig").prop("disabled", true);
+        //}
+
+        //if ($("#formV2FacilitatedBy").val() != "99999999") {
+        //    $("#formV2FacilitatedName").prop("disabled", true);
+        //    $("#formV2FacilitatedDesig").prop("disabled", true);
+        //}
 
 
-        $("#formV2RecordedBy").on("change", function () {
-            var id = $("#formV2RecordedBy option:selected").val();
-            if (id != "99999999" && id != "") {
-                $.ajax({
-                    url: '/MAM/GetUserById',
-                    dataType: 'JSON',
-                    data: { id },
-                    type: 'Post',
-                    success: function (data) {
-                        $("#formV2RecordedName").val(data.userName);
-                        $("#formV2RecordedDesig").val(data.position);
-                        $("#formV2RecordedName").prop("disabled", true);
-                        $("#formV2RecordedDesig").prop("disabled", true);
-                    },
-                    error: function (data) {
-                        console.error(data);
-                    }
-                });
-            }
-            else if (id == "99999999") {
-                $("#formV2RecordedName").prop("disabled", false);
-                $("#formV2RecordedName").val('');
-                $("#formV2RecordedDesig").prop("disabled", false);
-                $("#formV2RecordedDesig").val('');
-            }
-            else {
-                $("#formV2RecordedName").prop("disabled", true);
-                $("#formV2RecordedName").val('');
-                $("#formV2RecordedDesig").prop("disabled", true);
-                $("#formV2RecordedDesig").val('');
-            }
+        //$("#formV2RecordedBy").on("change", function () {
+        //    var id = $("#formV2RecordedBy option:selected").val();
+        //    if (id != "99999999" && id != "") {
+        //        $.ajax({
+        //            url: '/MAM/GetUserById',
+        //            dataType: 'JSON',
+        //            data: { id },
+        //            type: 'Post',
+        //            success: function (data) {
+        //                $("#formV2RecordedName").val(data.userName);
+        //                $("#formV2RecordedDesig").val(data.position);
+        //                $("#formV2RecordedName").prop("disabled", true);
+        //                $("#formV2RecordedDesig").prop("disabled", true);
+        //            },
+        //            error: function (data) {
+        //                console.error(data);
+        //            }
+        //        });
+        //    }
+        //    else if (id == "99999999") {
+        //        $("#formV2RecordedName").prop("disabled", false);
+        //        $("#formV2RecordedName").val('');
+        //        $("#formV2RecordedDesig").prop("disabled", false);
+        //        $("#formV2RecordedDesig").val('');
+        //    }
+        //    else {
+        //        $("#formV2RecordedName").prop("disabled", true);
+        //        $("#formV2RecordedName").val('');
+        //        $("#formV2RecordedDesig").prop("disabled", true);
+        //        $("#formV2RecordedDesig").val('');
+        //    }
 
-            return false;
-        });
+        //    return false;
+        //});
 
-        $("#formV2VettedBy").on("change", function () {
-            var id = $("#formV2VettedBy option:selected").val();
-            if (id != "99999999" && id != "") {
-                $.ajax({
-                    url: '/MAM/GetUserById',
-                    dataType: 'JSON',
-                    data: { id },
-                    type: 'Post',
-                    success: function (data) {
-                        $("#formV2VettedName").val(data.userName);
-                        $("#formV2VettedName").prop("disabled", true);
-                        $("#formV2VettedDesig").val(data.position);
-                        $("#formV2VettedDesig").prop("disabled", true);
-                    },
-                    error: function (data) {
-                        console.error(data);
-                    }
-                });
-            }
-            else if (id == "99999999") {
-                $("#formV2VettedName").prop("disabled", false);
-                $("#formV2VettedName").val('');
-                $("#formV2VettedDesig").val('');
-                $("#formV2VettedDesig").prop("disabled", false);
-            }
-            else {
-                $("#formV2VettedName").prop("disabled", true);
-                $("#formV2VettedName").val('');
-                $("#formV2VettedDesig").val('');
-                $("#formV2VettedDesig").prop("disabled", true);
-            }
+        //$("#formV2VettedBy").on("change", function () {
+        //    var id = $("#formV2VettedBy option:selected").val();
+        //    if (id != "99999999" && id != "") {
+        //        $.ajax({
+        //            url: '/MAM/GetUserById',
+        //            dataType: 'JSON',
+        //            data: { id },
+        //            type: 'Post',
+        //            success: function (data) {
+        //                $("#formV2VettedName").val(data.userName);
+        //                $("#formV2VettedName").prop("disabled", true);
+        //                $("#formV2VettedDesig").val(data.position);
+        //                $("#formV2VettedDesig").prop("disabled", true);
+        //            },
+        //            error: function (data) {
+        //                console.error(data);
+        //            }
+        //        });
+        //    }
+        //    else if (id == "99999999") {
+        //        $("#formV2VettedName").prop("disabled", false);
+        //        $("#formV2VettedName").val('');
+        //        $("#formV2VettedDesig").val('');
+        //        $("#formV2VettedDesig").prop("disabled", false);
+        //    }
+        //    else {
+        //        $("#formV2VettedName").prop("disabled", true);
+        //        $("#formV2VettedName").val('');
+        //        $("#formV2VettedDesig").val('');
+        //        $("#formV2VettedDesig").prop("disabled", true);
+        //    }
 
-            return false;
-        });
+        //    return false;
+        //});
 
-        $("#formV2FacilitatedBy").on("change", function () {
-            var id = $("#formV2FacilitatedBy option:selected").val();
-            if (id != "99999999" && id != "") {
-                $.ajax({
-                    url: '/MAM/GetUserById',
-                    dataType: 'JSON',
-                    data: { id },
-                    type: 'Post',
-                    success: function (data) {
-                        $("#formV2FacilitatedName").val(data.userName);
-                        $("#formV2FacilitatedName").prop("disabled", true);
+        //$("#formV2FacilitatedBy").on("change", function () {
+        //    var id = $("#formV2FacilitatedBy option:selected").val();
+        //    if (id != "99999999" && id != "") {
+        //        $.ajax({
+        //            url: '/MAM/GetUserById',
+        //            dataType: 'JSON',
+        //            data: { id },
+        //            type: 'Post',
+        //            success: function (data) {
+        //                $("#formV2FacilitatedName").val(data.userName);
+        //                $("#formV2FacilitatedName").prop("disabled", true);
 
-                        $("#formV2FacilitatedDesig").prop("disabled", true);
-                        $("#formV2FacilitatedDesig").val(data.position);
-                    },
-                    error: function (data) {
-                        console.error(data);
-                    }
-                });
-            }
-            else if (id == "99999999") {
-                $("#formV2FacilitatedName").prop("disabled", false);
-                $("#formV2FacilitatedName").val('');
+        //                $("#formV2FacilitatedDesig").prop("disabled", true);
+        //                $("#formV2FacilitatedDesig").val(data.position);
+        //            },
+        //            error: function (data) {
+        //                console.error(data);
+        //            }
+        //        });
+        //    }
+        //    else if (id == "99999999") {
+        //        $("#formV2FacilitatedName").prop("disabled", false);
+        //        $("#formV2FacilitatedName").val('');
 
-                $("#formV2FacilitatedDesig").prop("disabled", false);
-                $("#formV2FacilitatedDesig").val('');
-            }
-            else {
-                $("#formV2FacilitatedName").prop("disabled", true);
-                $("#formV2FacilitatedName").val('');
+        //        $("#formV2FacilitatedDesig").prop("disabled", false);
+        //        $("#formV2FacilitatedDesig").val('');
+        //    }
+        //    else {
+        //        $("#formV2FacilitatedName").prop("disabled", true);
+        //        $("#formV2FacilitatedName").val('');
 
-                $("#formV2FacilitatedDesig").prop("disabled", true);
-                $("#formV2FacilitatedDesig").val('');
-            }
+        //        $("#formV2FacilitatedDesig").prop("disabled", true);
+        //        $("#formV2FacilitatedDesig").val('');
+        //    }
 
-            return false;
-        });
+        //    return false;
+        //});
 
     });
 </script>

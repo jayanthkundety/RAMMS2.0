@@ -1,24 +1,14 @@
-﻿$(document).ready(function () {
-
+﻿var currentDate = new Date();
+$(document).ready(function () {
+    currentDate = formatDate(currentDate);
     var val = $("#FV2PkRefNo").val();
 
     $("#formV2CrewCode").on("change", function () {
         var id = $("#formV2CrewCode option:selected").val();
+        var ctrl = $(this);
+        $("#hdnCrew").val(id);
         if (id != "99999999" && id != "") {
-            $.ajax({
-                url: '/MAM/GetUserById',
-                dataType: 'JSON',
-                data: { id },
-                type: 'Post',
-                success: function (data) {
-                    $("#formV2CrewName").val(data.userName);
-                    $("#formV2CrewName").prop("disabled", true);
-
-                },
-                error: function (data) {
-                    console.error(data);
-                }
-            });
+            $("#formV2CrewName").val(ctrl.find("option:selected").attr("Item1"));
         }
         else if (id == "99999999") {
             $("#formV2CrewName").prop("disabled", false);
@@ -28,13 +18,12 @@
             $("#formV2CrewName").prop("disabled", true);
             $("#formV2CrewName").val('');
         }
-
         return false;
     });
 
     $("#formV2SectionCode").on("change", function () {
         var ddldata = $(this).val();
-
+        $("#hdnSecCode").val(ddldata);
         if (ddldata != "") {
             $.ajax({
                 url: '/MAM/GetAllRoadCodeDataBySectionCode',
@@ -44,9 +33,10 @@
                 success: function (data) {
                     if (data != null) {
                         if (data._RMAllData != undefined && data._RMAllData != null) {
+                            
                             $("#formV2SectionName").val(data._RMAllData.secName);
-                            $("#hdnFormV2Roadcode").val($("#formV2SectionCode option:selected").text().split("-")[0]);
                             $("#formV2DivCode").val(data._RMAllData.divisionCode);
+                            $("#formV2DivCodeName").val(data._RMAllData.DivisionName);
                         }
                         document.getElementById("formV2DivCode").disabled = true;
                     } else {
@@ -65,9 +55,7 @@
         }
         return false;
     });
-    $("#formV2rmu").trigger("change");
-    $("#formV2CrewCode").trigger("change");
-
+   
     $("#formV2rmu").on("change", function () {
         var val = $(this).find(":selected").text();
         val = val.split("-").length > 0 ? val.split("-")[1] : val;
@@ -89,7 +77,6 @@
                     $.each(data.section, function (index, v) {
                         $("#formV2SectionCode").append($("<option></option>").val(v.value).html(v.text));
                     });
-                    // var hdnRoadcode = $('#hdnRoadcode').val();
                     $.each(data.section, function (index, v) {
                         if (v != null) {
                             var splittedVal = v.value;
@@ -99,9 +86,8 @@
                             }
                         }
                     });
-                    $('#formV2SectionCode').trigger("chosen:updated");
                     $("#formV2SectionCode").trigger("change");
-
+                    $('#formV2SectionCode').trigger("chosen:updated");
                     document.getElementById("formV2DivCode").disabled = true;
                 } else {
                     document.getElementById("formV2DivCode").disabled = false;
@@ -114,27 +100,38 @@
         });
     });
 
-    if ($("#hdnView").val() == "1") {
-        $("#saveFormV2Btn").hide();
-        $("#SubmitFormV2Btn").hide();
-        $("#div-addformd *:not(.enblmode)").attr("disabled", "disabled").off('click');
-        $("#formV2rmu").chosen('destroy');
-        $("#btnFrmV2Back").attr("disabled", false);
-        $("#formV2CrewCode").chosen('destroy');
-        $("#formV2MaterialEdit").attr("disabled", "disabled").off('click');
-        $("#formV2EquipmentEdit").attr("disabled", "disabled").off('click');
-        $("#formV2DtlEdit").attr("disabled", "disabled").off('click');
-        userIdDisable();
-    }
-   
-
     if (val != 0 && val != undefined && val != "") {
         gridAddBtnDis()
         $("#formV2rmu").trigger("change");
+        $('#formV2rmu').trigger("chosen:updated");
+        $("#formV2rmu").attr("disabled", "disabled").off('click');
+        $("#formV2rmu").chosen('destroy');
+
         $("#formV2SectionCode").trigger("change");
+        $("#formV2SectionCode").trigger("chosen:updated");
+        $("#formV2SectionCode").attr("disabled", "disabled").off('click');
+        $("#formV2SectionCode").chosen('destroy');
+
+        $("#formV2CrewCode").trigger("change");
+        $("#formV2CrewCode").trigger("chosen:updated");        
+        $("#formV2CrewCode").attr("disabled", "disabled").off('click');
+        $("#formV2CrewCode").chosen('destroy');
+
+        
+        $("#formV2ActivityCode").trigger("change");
+        $("#formV2ActivityCode").trigger("chosen:updated");
+        $("#formV2ActivityCode").attr("disabled", "disabled").off('click');
+        $("#formV2ActivityCode").chosen('destroy');
+
+        $("#formV2Date").attr("disabled", "disabled");
+        $("#formV2FindDetailsBtn").hide();
+        
+        $("#saveFormV2Btn").show();
+        $("#SubmitFormV2Btn").show();
     }
     else {
-
+        $("#saveFormV2Btn").hide();
+        $("#SubmitFormV2Btn").hide();
         document.getElementById("btnEquipAdd").disabled = true;
         document.getElementById("btnLabourAdd").disabled = true;
         document.getElementById("btnMaterialAdd").disabled = true;
@@ -148,55 +145,39 @@
 
     $("#hdnisAdd").val($("#FV2PkRefNo").val());
 
-    if ($("#FV2PkRefNo").val() != "0") {
-        $("#formV2rmu").attr("disabled", "disabled").off('click');
+    if ($("#hdnView").val() == "1") {
+        $("#saveFormV2Btn").hide();
+        $("#SubmitFormV2Btn").hide();
+        $("#div-addformd *:not(.enblmode)").attr("disabled", "disabled").off('click');
         $("#formV2rmu").chosen('destroy');
-        $("#formV2CrewCode").attr("disabled", "disabled").off('click');
+        $("#btnFrmV2Back").attr("disabled", false);
         $("#formV2CrewCode").chosen('destroy');
-        $("#formV2FindDetailsBtn").hide();
+        $("#formV2MaterialEdit").attr("disabled", "disabled").off('click');
+        $("#formV2EquipmentEdit").attr("disabled", "disabled").off('click');
+        $("#formV2DtlEdit").attr("disabled", "disabled").off('click');
+        userIdDisable();
     }
-
-
-    if ($("#formV2RecordedBy").val() != "99999999") {
-        $("#formV2RecordedName").prop("disabled", true);
-        $("#formV2RecordedDesig").prop("disabled", true);
-    }
-
-    if ($("#formV2VettedBy").val() != "99999999") {
-        $("#formV2VettedName").prop("disabled", true);
-        $("#formV2VettedDesig").prop("disabled", true);
-    }
-
-    if ($("#formV2FacilitatedBy").val() != "99999999") {
-        $("#formV2FacilitatedName").prop("disabled", true);
-        $("#formV2FacilitatedDesig").prop("disabled", true);
-    }
+    //else {
+    //    $("#saveFormV2Btn").hide();
+    //    $("#SubmitFormV2Btn").hide();
+    //}
 
 
     $("#formV2RecordedBy").on("change", function () {
         var id = $("#formV2RecordedBy option:selected").val();
+        var ctrl = $(this);
         if (id != "99999999" && id != "") {
-            $.ajax({
-                url: '/MAM/GetUserById',
-                dataType: 'JSON',
-                data: { id },
-                type: 'Post',
-                success: function (data) {
-                    $("#formV2RecordedName").val(data.userName);
-                    $("#formV2RecordedDesig").val(data.position);
-                    $("#formV2RecordedName").prop("disabled", true);
-                    $("#formV2RecordedDesig").prop("disabled", true);
-                },
-                error: function (data) {
-                    console.error(data);
-                }
-            });
+            $("#formV2RecordedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formV2RecordedDesig").val(ctrl.find("option:selected").attr("Item2"));
+            $("#formV2SignRecorded").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formV2RecordedName").prop("disabled", false);
             $("#formV2RecordedName").val('');
             $("#formV2RecordedDesig").prop("disabled", false);
             $("#formV2RecordedDesig").val('');
+            $("#formV2SignRecorded").prop("checked", true);
+
         }
         else {
             $("#formV2RecordedName").prop("disabled", true);
@@ -204,80 +185,59 @@
             $("#formV2RecordedDesig").prop("disabled", true);
             $("#formV2RecordedDesig").val('');
         }
-
+        $("#formV2RecordedDate").val(currentDate);
         return false;
     });
 
     $("#formV2VettedBy").on("change", function () {
         var id = $("#formV2VettedBy option:selected").val();
+        var ctrl = $(this);
         if (id != "99999999" && id != "") {
-            $.ajax({
-                url: '/MAM/GetUserById',
-                dataType: 'JSON',
-                data: { id },
-                type: 'Post',
-                success: function (data) {
-                    $("#formV2VettedName").val(data.userName);
-                    $("#formV2VettedName").prop("disabled", true);
-                    $("#formV2VettedDesig").val(data.position);
-                    $("#formV2VettedDesig").prop("disabled", true);
-                },
-                error: function (data) {
-                    console.error(data);
-                }
-            });
+            $("#formV2VettedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formV2VettedDesig").val(ctrl.find("option:selected").attr("Item2"));
+            $("#formV2SignVetted").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formV2VettedName").prop("disabled", false);
             $("#formV2VettedName").val('');
-            $("#formV2VettedDesig").val('');
             $("#formV2VettedDesig").prop("disabled", false);
+            $("#formV2VettedDesig").val('');
+            $("#formV2SignVetted").prop("checked", true);
+
         }
         else {
             $("#formV2VettedName").prop("disabled", true);
             $("#formV2VettedName").val('');
-            $("#formV2VettedDesig").val('');
             $("#formV2VettedDesig").prop("disabled", true);
+            $("#formV2VettedDesig").val('');
         }
-
+        $("#formV2VettedDate").val(currentDate);
         return false;
     });
 
     $("#formV2FacilitatedBy").on("change", function () {
         var id = $("#formV2FacilitatedBy option:selected").val();
+        var ctrl = $(this);
         if (id != "99999999" && id != "") {
-            $.ajax({
-                url: '/MAM/GetUserById',
-                dataType: 'JSON',
-                data: { id },
-                type: 'Post',
-                success: function (data) {
-                    $("#formV2FacilitatedName").val(data.userName);
-                    $("#formV2FacilitatedName").prop("disabled", true);
-
-                    $("#formV2FacilitatedDesig").prop("disabled", true);
-                    $("#formV2FacilitatedDesig").val(data.position);
-                },
-                error: function (data) {
-                    console.error(data);
-                }
-            });
+            $("#formV2FacilitatedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formV2FacilitatedDesig").val(ctrl.find("option:selected").attr("Item2"));
+            $("#formV2SignFacilitated").prop("checked", true);
         }
         else if (id == "99999999") {
             $("#formV2FacilitatedName").prop("disabled", false);
             $("#formV2FacilitatedName").val('');
-
             $("#formV2FacilitatedDesig").prop("disabled", false);
             $("#formV2FacilitatedDesig").val('');
+            $("#formV2SignFacilitated").prop("checked", true);
+
         }
         else {
             $("#formV2FacilitatedName").prop("disabled", true);
             $("#formV2FacilitatedName").val('');
-
             $("#formV2FacilitatedDesig").prop("disabled", true);
             $("#formV2FacilitatedDesig").val('');
         }
-
+        $("#formV2FacilitatedDate").val(currentDate);
         return false;
     });
 });
@@ -289,58 +249,94 @@ $(document).on("click", "#formV2FindDetailsBtn", function () {
         GetResponseValue("FindDetails", "MAM", FormValueCollection("#FormV2Headers"), function (data) {
             HideAjaxLoading();
             if (data != undefined && data != null) {
-
-                $("#formV2rmu").prop("disabled", true).trigger("chosen:updated");
-                $("#formV2SectionCode").prop("disabled", true).trigger("chosen:updated");
-                $("#formV2CrewCode").prop("disabled", true).trigger("chosen:updated");
-                $("#formV2ActivityCode").prop("disabled", true).trigger("chosen:updated");
-                $('#formV2Date').prop("disabled", true);
-                $("#formV2ReferenceNo").val(data.RefId)
-                $("#formV2FindDetailsBtn").hide();
-                if (!data.SubmitSts) {
-                    $("#saveFormV2Btn").show();
-                    $("#SubmitFormV2Btn").show();
-                    gridAddBtnDis();
-                }
-                else {
-                    userIdDisable()
-                    UserDtDisable()
-                }
-                $("#FV2PkRefNo").val(data.PkRefNo);
-
-                DtlGridLoad(data.PkRefNo);
-
-                $("#formV2RecordedBy").val(data.UserIdSch).trigger("chosen:updated");
-                $("#formV2VettedBy").val(data.UseridAgr).trigger("chosen:updated");
-                $("#formV2FacilitatedBy").val(data.UseridAck).trigger("chosen:updated");
-
-                $("#formV2RecordedName").val(data.UsernameSch);
-                $("#formV2RecordedDesig").val(data.DesignationSch);
-                var Format = "YYYY-MM-DD";
-                if (data.DateReported != null) {
-                    var date = new Date(data.DtSch);
-                    $("#formW2RecordedDate").val(date.ToString(Format));
+                if (data.status == 'V1NotExisit') {
+                    app.ShowErrorMessage("Form V1 details not found")
+                    return;
                 }
 
-                $("#formV2VettedName").val(data.UsernameAgr);
-                $("#formV2VettedDesig").val(data.DesignationAgr);
-                if (data.DtVer != null) {
-                    date = new Date(data.DtAgr);
-                    $("#formW2VettedDate").val(date.ToString(Format));
+                if (data.status == 'V2Exisit') {
+                    if (app.Confirm("Form V2 for this record has exist, Do you want to proceed with another Form V2", function (e) {
+                        if (e) {
+                            $("#hdnV1PkRefNo").val(data.v1id);
+                            $.ajax({
+                                url: '/MAM/CreateV2',
+                                data: FormValueCollection("#FormV2Headers"),
+                                type: 'POST',
+                                success: function (data) {
+                                    $("#div-lab-container").html(data);
+                                    if (view == 1 || $("#hdnView").val() == "1") {
+                                        $("#hdnLabView").val(1);
+                                        $("#FormV2LabourModalid").html("View Labour")
+                                        $("#div-lab-container *").attr("disabled", "disabled").off('click');
+                                        $("#saveFormV2LabBtn").css("display", "none");
+                                        $("#cancelAddModelBtn").attr("disabled", false);
+                                        $("#saveContinueFormV2LabBtn").css("display", "none");
+                                    } else if ($("#hdnLabid").val() != "") {
+                                        $("#FormV2LabourModalid").html("Edit Labour")
+                                        //$("#hdnLabView").val(0);
+                                    }
+                                    HideAjaxLoading();
+                                    //$("body").removeClass("loading");
+                                }
+                            })
+                            createV2(data);
+                        }
+                    }));
+                    return;
                 }
-                $("#formV2FacilitatedName").val(data.UsernameAck);
-                $("#formV2FacilitatedDesig").val(data.DesignationAck);
-                if (data.DtVet != null) {
-                    date = new Date(data.DtAck);
-                    $("#formV2FacilitatedDate").val(date.ToString(Format));
-                }
-
-
+                createV2(data);
             }
         }, "Finding");
     }
     //saveHdr(false);
 });
+
+function createV2(data) {
+    $("#formV2rmu").prop("disabled", true).trigger("chosen:updated");
+    $("#formV2SectionCode").prop("disabled", true).trigger("chosen:updated");
+    $("#formV2CrewCode").prop("disabled", true).trigger("chosen:updated");
+    $("#formV2ActivityCode").prop("disabled", true).trigger("chosen:updated");
+    $('#formV2Date').prop("disabled", true);
+    $("#formV2ReferenceNo").val(data.RefId)
+    $("#formV2FindDetailsBtn").hide();
+    if (!data.SubmitSts) {
+        $("#saveFormV2Btn").show();
+        $("#SubmitFormV2Btn").show();
+        gridAddBtnDis();
+    }
+    else {
+        userIdDisable()
+        UserDtDisable()
+    }
+    $("#FV2PkRefNo").val(data.PkRefNo);
+
+    DtlGridLoad(data.PkRefNo);
+
+    $("#formV2RecordedBy").val(data.UserIdSch).trigger("chosen:updated");
+    $("#formV2VettedBy").val(data.UseridAgr).trigger("chosen:updated");
+    $("#formV2FacilitatedBy").val(data.UseridAck).trigger("chosen:updated");
+
+    $("#formV2RecordedName").val(data.UsernameSch);
+    $("#formV2RecordedDesig").val(data.DesignationSch);
+    var Format = "YYYY-MM-DD";
+    if (data.DateReported != null) {
+        var date = new Date(data.DtSch);
+        $("#formW2RecordedDate").val(date.ToString(Format));
+    }
+
+    $("#formV2VettedName").val(data.UsernameAgr);
+    $("#formV2VettedDesig").val(data.DesignationAgr);
+    if (data.DtVer != null) {
+        date = new Date(data.DtAgr);
+        $("#formW2VettedDate").val(date.ToString(Format));
+    }
+    $("#formV2FacilitatedName").val(data.UsernameAck);
+    $("#formV2FacilitatedDesig").val(data.DesignationAck);
+    if (data.DtVet != null) {
+        date = new Date(data.DtAck);
+        $("#formV2FacilitatedDate").val(date.ToString(Format));
+    }
+}
 
 function GoBack() {
     if ($("#hdnView").val() == "0") {
@@ -531,7 +527,7 @@ function EditFormV2Material(id, view) {
                 $("#saveFormV2MtBtn").css("display", "none");
                 $("#cancelAddModelBtn").attr("disabled", false);
                 $("#saveContinueFormV2MtBtn").css("display", "none");
-            } else if ($("#FormV2MaterialNo").val() != "")
+            } else if ($("#hdnMaterialNo").val() != "")
                 $("#FormV2MaterialModalid").html("Edit Material")
             HideAjaxLoading();
         }
@@ -617,7 +613,6 @@ $(document).on("click", "#saveFormV2UserBtn", function () {
     saveUserDetails(false);
 });
 
-
 function saveHdr(isSubmit) {
 
     if ((!isSubmit && ValidatePage('#AccordPage0')) || (isSubmit && ValidatePage('#AccordPage0,#div-addformV2'))) {
@@ -635,49 +630,62 @@ function saveHdr(isSubmit) {
 
         saveObj.PkRefNo = $("#FV2PkRefNo").val();
         saveObj.RefId = $("#formV2ReferenceNo").val();
+        //saveObj.Fv1hPkRefNo = $("#hdnV1PkRefNo").val();
         saveObj.ContNo = "";
-        saveObj.Rmu = $("#formV2rmu").find(":selected").val();
-        saveObj.SecCode = "";
-        saveObj.SecName = "";
-        saveObj.Crew = $("#formV2CrewUnit").find(":selected").val();
+        saveObj.Rmu = $("#formV2rmu").val();
+        saveObj.SecCode = $("#formV2SectionCode").val();
+        saveObj.SecName = $("#formV2SectionName").val();
+        saveObj.Crew = $("#formV2CrewCode").val();
         saveObj.Crewname = $("#formV2CrewName").val();
-        saveObj.DivCode = ""
-        saveObj.DivisionName = $("#formV2DivisionDesc").val();
-        saveObj.ActCode
-        saveObj.ActName
-        saveObj.Dt = $("#formV2Day").find(":selected").val();
+        saveObj.DivCode = $("#formV2DivCode").val();
+        saveObj.DivisionName = $("#formV2DivCodeName").val();
+        saveObj.ActCode = $("#formV2ActivityCode").val();
+        saveObj.ActName = $("#formV2ActivityName").val();
+        saveObj.Dt = $("#formV2Date").val();
+        saveObj.Remarks = $("#formV2Remarks").val();        //Recorded by
+        if ($("#formV2RecordedBy").find(":selected").val() != "") saveObj.UseridSch = $("#formV2RecordedBy").find(":selected").val();
 
-        //Reportedby
-        if ($("#formV2ReportedByUserId").find(":selected").val() != "") saveObj.UseridSch = $("#formV2ReportedByUserId").find(":selected").val();
+        if ($("#formV2RecordedName").val() != "") saveObj.UsernameSch = $("#formV2RecordedName").val();
 
-        if ($("#FormV2ReportedByName").val() != "") saveObj.UsernameSch = $("#FormV2ReportedByName").val();
+        if ($("#formV2RecordedDesig").val() != "") saveObj.DesignationSch = $("#formV2RecordedDesig").val();
 
-        if ($("#FormV2ReportedByDesign").val() != "") saveObj.DesignationSch = $("#FormV2ReportedByDesign").val();
+        if ($("#formV2RecordedDate").val() != "mm/dd/yyyy") saveObj.DtSch = $("#formV2RecordedDate").val();
 
-        if ($("#FormV2ReportedByDate").val() != "mm/dd/yyyy") saveObj.DtSch = $("#FormV2ReportedByDate").val();
+        saveObj.SignSch = $("formV2SignRecorded").prop("checked");
 
-        if ($("#formV2UseridVer").find(":selected").val() != "") saveObj.UseridAgr = $("#formV2UseridVer").find(":selected").val();
+        //Vetted By
+        if ($("#formV2VettedBy").find(":selected").val() != "") saveObj.UseridAgr = $("#formV2VettedBy").find(":selected").val();
 
-        if ($("#FormV2VettedByName").val() != "") saveObj.UsernameAgr = $("#FormV2VettedByName").val();
+        if ($("#formV2VettedName").val() != "") saveObj.UsernameAgr = $("#formV2VettedName").val();
 
-        if ($("#FormV2VettedDesign").val() != "") saveObj.DesignationAgr = $("#FormV2VettedDesign").val();
+        if ($("#formV2VettedDesig").val() != "") saveObj.DesignationAgr = $("#formV2VettedDesig").val();
 
-        if ($("#FormV2VettedByDate").val() != "mm/dd/yyyy") saveObj.DtAgr = $("#FormV2VettedByDate").val();
+        if ($("#formV2VettedDate").val() != "mm/dd/yyyy") saveObj.DtAgr = $("#formV2VettedDate").val();
 
-        if ($("#formV2UseridVer").find(":selected").text() != "") saveObj.UseridAck = $("#formV2UseridVer").find(":selected").val();
+        saveObj.SignAgr = $("#formV2SignVetted").prop("checked");
 
-        if ($("#FormV2VerifiedByName").val() != "") saveObj.UsernameAck = $("#FormV2VerifiedByName").val();
+        //Facilitator
 
-        if ($("#FormV2VerifiedDesign").val() != "") saveObj.DesignationAck = $("#FormV2VerifiedDesign").val();
+        if ($("#formV2FacilitatedBy").find(":selected").text() != "") saveObj.UseridAck = $("#formV2FacilitatedBy").find(":selected").val();
 
-        if ($("#FormV2VerifiedDate").val() != "mm/dd/yyyy") saveObj.DtAck = $("#FormV2VerifiedDate").val();
+        if ($("#formV2FacilitatedName").val() != "") saveObj.UsernameAck = $("#formV2FacilitatedName").val();
+
+        if ($("#formV2FacilitatedDesig").val() != "") saveObj.DesignationAck = $("#formV2FacilitatedDesig").val();
+
+        if ($("#formV2FacilitatedDate").val() != "mm/dd/yyyy") saveObj.DtAck = $("#formV2FacilitatedDate").val();
+
+        saveObj.SignAck = $("formV2SignFacilitated").prop("checked");
 
         //Created by
 
-        if ($("#formV2ReportedByUserId").find(":selected").val() != "") saveObj.ModBy = $("#formV2ReportedByUserId").find(":selected").val();
-        if ($("#FormV2ReportedByDate").val() != "mm/dd/yyyy") saveObj.ModDt = $("#FormV2ReportedByDate").val();
-        if ($("#formV2ReportedByUserId").find(":selected").val() != "") saveObj.CrBy = $("#formV2ReportedByUserId").find(":selected").val();
-        if ($("#FormV2ReportedByDate").val() != "mm/dd/yyyy") saveObj.CrDt = $("#FormV2ReportedByDate").val();
+        //if (saveObj.PkRefNo == 0) {
+        //    if ($("#formV2RecordedBy").find(":selected").val() != "") saveObj.CrBy = $("#formV2RecordedBy").find(":selected").val();
+        //    if ($("#formV2RecordedDate").val() != "mm/dd/yyyy") saveObj.CrDt = $("#formV2RecordedDate").val();
+        //}
+
+        //if ($("#formV2ReportedByUserId").find(":selected").val() != "") saveObj.ModBy = $("#formV2ReportedByUserId").find(":selected").val();
+        //if ($("#FormV2ReportedByDate").val() != "mm/dd/yyyy") saveObj.ModDt = $("#FormV2ReportedByDate").val();
+        
 
         saveObj.ActiveYn = true;
         saveObj.SubmitSts = isSubmit;
@@ -708,6 +716,7 @@ function saveHdr(isSubmit) {
                         $("#saveFormV2Btn").show();
                         $("#SubmitFormV2Btn").show();
                         app.ShowSuccessMessage('Successfully Saved', false);
+                        location.href = "/MAM/FormV2";
                     }
                 }
             },
@@ -719,7 +728,6 @@ function saveHdr(isSubmit) {
         });
     }
 }
-
 
 function saveEquipment(isSubmit, cont) {
     if (ValidatePage('#FormAddEquipDetails')) {
@@ -735,10 +743,10 @@ function saveEquipment(isSubmit, cont) {
         saveObj.PkRefNo = $("#hdnEquipid").val();
         saveObj.Fv2hPkRefNo = $("#FV2PkRefNo").val();
         saveObj.EqpRefCode = $("#formV2EquipCode").find(":selected").val();
-        saveObj.Desc = $("#formV2EquipDesc").val();
+        saveObj.Desc = $("#FormV2EquipDescription").val();
         saveObj.Capacity = $("#formV2EquipCapacity").val();
         saveObj.Cond = $("#formV2EquipCond").val();
-        saveObj.Model = $("#formV2EquipModel").find(":selected").val();
+        saveObj.Model = $("#formV2EquipModel").val();
 
         saveObj.CrDt = output
         saveObj.ModDt = output
@@ -849,7 +857,7 @@ function saveMaterial(isSubmit, cont) {
         //saveObj.Desc = $("#formV2MatDesc").val();
         saveObj.Qnty = $("#formV2MatQuantity").val();
         saveObj.Unit = $("#formV2MatUnit").find(":selected").val();
-        saveObj.Remark = $("#formV2MatDesc").val();
+        saveObj.Remark = $("#FormV2MatDescription").val();
         saveObj.ModDt = output
         saveObj.CrDt = output
         saveObj.ActiveYn = true;
@@ -867,7 +875,7 @@ function saveMaterial(isSubmit, cont) {
                     $("#hdnMaterialNo").val('');
                     $("#formV2MatCode").val('').trigger('chosen:updated');
                     $("#formV2MatQuantity").val("");
-                    $("#formV2MatUnit").val("");
+                    $("#formV2MatUnit").val('').trigger('chosen:updated');
                     $("#FormV2MatDescription").val("");
                 }
                 FormMatGridRefresh();
@@ -883,4 +891,34 @@ function saveMaterial(isSubmit, cont) {
     } else {
         $("#val-summary-displayer-material").css("display", "block");
     }
+}
+
+function DataBind() {
+
+    $("#formDFindDetailsBtn").hide();
+
+    $("#val-summary-displayer").css("display", "none");
+    $("#formV2rmu").chosen('destroy');
+    $("#formV2SectionCode").chosen('destroy');
+    $("#formV2CrewCode").chosen('destroy');
+    $("#formV2ActivityCode").chosen('destroy');
+
+    $("#formV2rmu").attr("disabled", "disabled").off('click');
+    $("#formV2SectionCode").attr("disabled", "disabled").off('click');
+    $("#formV2CrewCode").attr("disabled", "disabled").off('click');
+    $("#formV2ActivityCode").attr("disabled", "disabled").off('click');
+
+    $("#btnEquipAdd,#btnLabourAdd,#btnMaterialAdd").prop("disabled", false);
+}
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
 }

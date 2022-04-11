@@ -1186,28 +1186,58 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> FindDetails(FormV2Model header)
+        public async Task<JsonResult> FindDetails(FormV2Model header, bool create = false)
         {
+            FormV1ResponseDTO formV1Res = new FormV1ResponseDTO();
             FormV2HeaderResponseDTO formV2 = new FormV2HeaderResponseDTO();
             FormV2HeaderResponseDTO formV2Res = new FormV2HeaderResponseDTO();
-
+            var formV1PkRefNo = 0;
             formV2 = header.SaveFormV2Model;
-            //formV2.DivisionName = header.DivisionName;
-            //formV2.RoadCode = header.RoadCode;
-            formV2Res = await _formV2Service.FindDetails(formV2);
-            if (formV2Res == null || formV2Res.PkRefNo == 0)
-            {
+            formV2.Dt = header.formV2Date;
 
+            formV1Res = await _formV2Service.FindV1Details(formV2);
+            //V1 Exisit
+            if (formV1Res != null)
+            {
+                formV1PkRefNo = formV1Res.Fv1hPkRefNo;
+                formV2Res = await _formV2Service.FindDetails(formV2);
+                //V2 not Exist , Create V2
+                if (formV2Res == null || formV2Res.PkRefNo == 0)
+                {
+                    header.SaveFormV2Model.Fv1hPkRefNo = formV1PkRefNo;
+                    formV2Res = await CreateV2(header);
+                }// V2 Exist, Alert
+                else if (formV2Res != null || formV2Res.PkRefNo == 0)
+                {
+                    return Json(new { status = "V2Exisit" , v1id = formV1PkRefNo }, JsonOption());
+                }
+            }
+            else
+            {
+                return Json(new { status = "V1NotExisit" }, JsonOption());
+            }
+            return Json(formV2Res, JsonOption());
+        }
+
+        public async Task<FormV2HeaderResponseDTO> CreateV2(FormV2Model header)
+        {
+            var formV2 = header.SaveFormV2Model;
+            //var formV2Res = await _formV2Service.FindDetails(formV2);
+            if (formV2 != null || formV2.PkRefNo == 0)
+            {
+                formV2.UseridSch = _security.UserID;
+                formV2.UsernameSch = _security.UserName;
+                formV2.DtSch = DateTime.Today;
                 formV2.CrBy = _security.UserID;
                 formV2.ModBy = _security.UserID;
                 formV2.ModDt = DateTime.Now;
                 formV2.CrDt = DateTime.Now;
-
-                formV2Res = await _formV2Service.FindAndSaveFormV2Hdr(formV2, false);
+                formV2 = await _formV2Service.FindAndSaveFormV2Hdr(formV2, false);
+                header.SaveFormV2Model = formV2;
             }
-            header.SaveFormV2Model = formV2Res;
-            return Json(formV2Res, JsonOption());
+            return formV2;
         }
+
 
         [HttpPost]
         public async Task<IActionResult> LoadFormV2EquipmentList(DataTableAjaxPostModel<FormV2SearchGridDTO> FormV2Filter, string id)
@@ -1247,7 +1277,6 @@ namespace RAMMS.Web.UI.Controllers
 
             return Json(new { draw = FormV2Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
-
 
         public async Task<IActionResult> EditFormV2(int id, string view)
         {
@@ -1290,28 +1319,51 @@ namespace RAMMS.Web.UI.Controllers
 
             if (id > 0)
             {
+
+
                 var result = await _formV2Service.GetFormV2WithDetailsByNoAsync(id);
+
+                if ((_security.IsJKRSHQ || _security.IsDivisonalEngg || _security.IsJKRSSuperiorOfficer ||
+                    _security.isOperRAMSExecutive || _security.IsExecutive || _security.IsHeadMaintenance ||
+                    _security.IsRegionManager) &&
+                    (string.IsNullOrEmpty(result.Status) || result.Status == RAMMS.Common.StatusList.FormV2Submitted))
+                {
+                    if (_formV2Model.SaveFormV2Model.DtAgr == null)
+                    {
+                        result.UseridAgr = _security.UserID;
+                        result.UsernameAgr = _security.UserName;
+                        result.DtAgr = DateTime.Today;
+                    }
+                }
+
+
+                if ((_security.IsJKRSHQ || _security.IsDivisonalEngg || _security.IsJKRSSuperiorOfficer)
+                    && result.Status == RAMMS.Common.StatusList.FormV2Verified)
+                {
+                    if (_formV2Model.SaveFormV2Model.DtAck == null)
+                    {
+                        result.UseridAck = _security.UserID;
+                        result.UsernameAck = _security.UserName;
+                        result.DtAck = DateTime.Today;
+                    }
+                }
+
+
                 _formV2Model.SaveFormV2Model = result;
                 _formV2Model.viewm = result.SubmitSts == true ? "1" : view;
 
             }
             else
             {
-                _formV2Model.SaveFormV2Model.UseridAck = _security.UserID;
                 _formV2Model.SaveFormV2Model.UseridSch = _security.UserID;
-                _formV2Model.SaveFormV2Model.UseridAgr = _security.UserID;
-
-                _formV2Model.SaveFormV2Model.DtAgr = DateTime.Today;
+                _formV2Model.SaveFormV2Model.UsernameSch = _security.UserName;
                 _formV2Model.SaveFormV2Model.DtSch = DateTime.Today;
-                _formV2Model.SaveFormV2Model.DtAck = DateTime.Today;
-
                 _formV2Model.viewm = view != null ? view : "0";
             }
             ViewBag.view = view;
 
             return PartialView("~/Views/MAM/FormV2/_AddFormV2.cshtml", _formV2Model);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> GetAllRoadCodeDataBySectionCode(string secCode)

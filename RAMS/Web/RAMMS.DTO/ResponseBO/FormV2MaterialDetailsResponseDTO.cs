@@ -13,7 +13,7 @@ namespace RAMMS.DTO.ResponseBO
         public string MatRefCode { get; set; }
         public string Desc { get; set; }
         public decimal? Qnty { get; set; }
-        public int? Unit { get; set; }
+        public string Unit { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -21,7 +21,7 @@ namespace RAMMS.DTO.ResponseBO
         public bool SubmitSts { get; set; }
         public bool ActiveYn { get; set; }
 
-        public virtual FormV2HeaderResponseDTO Fv2hPkRefNoNavigation { get; set; }
+        public virtual FormV2HeaderResponseDTO FormV2 { get; set; }
 
 
     }

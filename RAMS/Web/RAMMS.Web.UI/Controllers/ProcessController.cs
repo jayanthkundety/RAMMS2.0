@@ -23,12 +23,15 @@ namespace RAMMS.Web.UI.Controllers
         }
         public IActionResult ViewApprove(string group)
         {
+            if (group == "admin") group = "User";
             ViewBag.GroupName = group;
             base.LoadLookupService(group);
             var user = (List<CSelectListItem>)ViewData[group];
             if (user != null)
             {
-                user.Find(c => c.Value == _security.UserID.ToString()).Selected = true;
+                var cs = user.Find(c => c.Value == _security.UserID.ToString());
+                if (cs != null)
+                     cs.Selected = true;
             }
             return PartialView("~/Views/Process/ViewApprove.cshtml");
         }

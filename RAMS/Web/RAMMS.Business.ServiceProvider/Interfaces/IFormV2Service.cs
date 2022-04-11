@@ -92,6 +92,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<int> UpdateFormV2Signature(FormV2HeaderResponseDTO formDDTO);
 
-        public Task<string> CheckAlreadyExists(DateTime? date, string crewUnit, string day, string rmu, string secCode);
+        Task<string> CheckAlreadyExists(DateTime? date, string crewUnit, string day, string rmu, string secCode);
+
+        Task<FormV1ResponseDTO> FindV1Details(FormV2HeaderResponseDTO header);
     }
 }

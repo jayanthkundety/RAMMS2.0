@@ -86,7 +86,7 @@
                 @Html.TextBoxFor(Adtl => Adtl.SaveFormV2EquipModel.Cond , new { @Id = "formV2EquipCond", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required, Cond}", @rows = 1 })
             </div>
             <div class="form-group col-lg-3 pl-0">
-                <label for="Unit">Model</label>
+                @Html.Label("Model", "Model")
                 @Html.TextBoxFor(Adtl => Adtl.SaveFormV2EquipModel.Model , new { @Id = "formV2EquipModel", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Model}", @rows = 1 })
             </div>
             <div class="form-group col-lg-12 txtarea-107">

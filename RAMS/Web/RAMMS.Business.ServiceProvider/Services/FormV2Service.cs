@@ -142,40 +142,31 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             if (form.Fv2hPkRefNo > 0)
             {
-                var existsObj = _repoUnit.FormV2Repository._context.RmFormV2Hdr.Where(x => x.Fv2hPkRefNo == form.Fv2hPkRefNo).Select(x => new { Status = x.Fv2hStatus, Log = x.Fv2hAuditLog }).FirstOrDefault();
+                var existsObj = _repoUnit.FormDRepository._context.RmFormV2Hdr.Where(x => x.Fv2hPkRefNo == form.Fv2hPkRefNo).Select(x => new { Status = x.Fv2hStatus, Log = x.Fv2hAuditLog }).FirstOrDefault();
                 if (existsObj != null)
                 {
                     form.Fv2hAuditLog = existsObj.Log;
                     form.Fv2hStatus = existsObj.Status;
                 }
-
             }
-            if (form.Fv2hStatus == Common.StatusList.Executive)
-                form.Fv2hStatus = Common.StatusList.HeadMaintenance;
-            else if (form.Fv2hStatus == Common.StatusList.HeadMaintenance)
-                form.Fv2hStatus = Common.StatusList.ProcessedJKRSSuperior;
-            else if (form.Fv2hStatus == Common.StatusList.ProcessedJKRSSuperior)
-                form.Fv2hStatus = Common.StatusList.AgreedJKRSSuperior;
-            else if (form.Fv2hStatus == Common.StatusList.AgreedJKRSSuperior)
-                form.Fv2hStatus = Common.StatusList.Completed;
-            else if (form.Fv2hSubmitSts && (string.IsNullOrEmpty(form.Fv2hStatus) || form.Fv2hStatus == Common.StatusList.Supervisor))
+
+            if (form.Fv2hStatus == "Initialize" || string.IsNullOrEmpty(form.Fv2hStatus))
+                form.Fv2hStatus = Common.StatusList.FormV2Saved;
+            else if (form.Fv2hSubmitSts)
             {
-                form.Fv2hStatus = Common.StatusList.Executive;
-                form.Fv2hAuditLog = Utility.ProcessLog(form.Fv2hAuditLog, "Recorded By", "Approved", form.Fv2hUsernameAck, string.Empty, form.Fv2hDtAck, _security.UserName);
+                form.Fv2hStatus = Common.StatusList.FormV2Submitted;
+                form.Fv2hAuditLog = Utility.ProcessLog(form.Fv2hAuditLog, "Recorded By", "Submitted", form.Fv2hUsernameSch, string.Empty, form.Fv2hDtSch, _security.UserName);
                 processService.SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = _security.UserName,
                     RmNotGroup = GroupNames.OperationsExecutive,
-                    RmNotMessage = "Recorded By:" + form.Fv2hUsernameAck + " - Form V2 (" + form.Fv2hRefId + ")",
+                    RmNotMessage = "Recorded By:" + form.Fv2hUsernameSch + " - Form V2 (" + form.Fv2hRefId + ")",
                     RmNotOn = DateTime.Now,
                     RmNotUrl = "/MAM/EditFormV2?id=" + form.Fv2hPkRefNo.ToString() + "&view=1",
                     RmNotUserId = "",
                     RmNotViewed = ""
                 }, true);
             }
-            else if (string.IsNullOrEmpty(form.Fv2hStatus))
-                form.Fv2hStatus = Common.StatusList.Supervisor;
-
             return form;
         }
         public async Task<int> SaveFormV2Async(FormV2HeaderResponseDTO FormV2HeaderBO)
@@ -184,6 +175,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormV2 = _mapper.Map<RmFormV2Hdr>(FormV2HeaderBO);
+                domainModelFormV2.Fv2hPkRefNo = FormV2HeaderBO.PkRefNo;
+                domainModelFormV2.Fv2hFv1hPkRefNo = FormV2HeaderBO.Fv1hPkRefNo;
                 domainModelFormV2 = UpdateStatus(domainModelFormV2);
                 var entity = _repoUnit.FormV2Repository.CreateReturnEntity(domainModelFormV2);
                 formDRequest = _mapper.Map<FormV2HeaderResponseDTO>(entity);
@@ -347,33 +340,37 @@ namespace RAMMS.Business.ServiceProvider.Services
             return formD;
         }
 
-        public async Task<int> UpdateFormV2Async(FormV2HeaderResponseDTO formDDtlDTO)
+        public async Task<int> UpdateFormV2Async(FormV2HeaderResponseDTO formV2DTO)
         {
             int rowsAffected;
             try
             {
-                var domainModelformD = _mapper.Map<RmFormV2Hdr>(formDDtlDTO);
-                domainModelformD.Fv2hActiveYn = true;
-                domainModelformD = UpdateStatus(domainModelformD);
-                _repoUnit.FormV2Repository.Update(domainModelformD);
+                var domainModelformV2 = _mapper.Map<RmFormV2Hdr>(formV2DTO);
+                domainModelformV2.Fv2hPkRefNo = formV2DTO.PkRefNo;
+                //domainModelformV2.Fv2hFv1hPkRefNo= formV2DTO.PkRefNo;
+                domainModelformV2.Fv2hModBy = _security.UserID;
+                domainModelformV2.Fv2hModDt = DateTime.Today;
+                domainModelformV2.Fv2hActiveYn = true;
+                domainModelformV2 = UpdateStatus(domainModelformV2);
+                _repoUnit.FormV2Repository.Update(domainModelformV2);
 
-                if (domainModelformD.Fv2hSubmitSts)
+                if (domainModelformV2.Fv2hSubmitSts)
                 {
-                    var formDLabour = await _repoUnit.FormV2LabourRepository.GetAllLabourById(domainModelformD.Fv2hPkRefNo);
+                    var formDLabour = await _repoUnit.FormV2LabourRepository.GetAllLabourById(domainModelformV2.Fv2hPkRefNo);
                     foreach (var labour in formDLabour)
                     {
                         labour.Fv2lSubmitSts = true;
                         _repoUnit.FormV2LabourRepository.Update(labour);
                     }
 
-                    var formDMaterial = await _repoUnit.FormV2MaterialRepository.GetAllMaterialById(domainModelformD.Fv2hPkRefNo);
+                    var formDMaterial = await _repoUnit.FormV2MaterialRepository.GetAllMaterialById(domainModelformV2.Fv2hPkRefNo);
                     foreach (var material in formDMaterial)
                     {
                         material.Fv2mSubmitSts = true;
                         _repoUnit.FormV2MaterialRepository.Update(material);
                     }
 
-                    var formDEquipment = await _repoUnit.FormV2EquipmentRepository.GetAllEquipmentById(domainModelformD.Fv2hPkRefNo);
+                    var formDEquipment = await _repoUnit.FormV2EquipmentRepository.GetAllEquipmentById(domainModelformV2.Fv2hPkRefNo);
                     foreach (var equip in formDEquipment)
                     {
                         equip.Fv2eSubmitSts = true;
@@ -487,6 +484,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormV2 = _mapper.Map<RmFormV2Lab>(FormV2LabourBO);
+                domainModelFormV2.Fv2lPkRefNo = FormV2LabourBO.PkRefNo;
+                domainModelFormV2.Fv2lFv2hPkRefNo = FormV2LabourBO.Fv2hPkRefNo;
                 _repoUnit.FormV2LabourRepository.Update(domainModelFormV2);
 
                 rowsAffected = await _repoUnit.CommitAsync();
@@ -501,12 +500,14 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
-        public async Task<int> UpdateFormV2MaterialAsync(FormV2MaterialDetailsResponseDTO FormV2LabourBO)
+        public async Task<int> UpdateFormV2MaterialAsync(FormV2MaterialDetailsResponseDTO FormV2MatBO)
         {
             int rowsAffected;
             try
             {
-                var domainModelFormV2 = _mapper.Map<RmFormV2Mat>(FormV2LabourBO);
+                var domainModelFormV2 = _mapper.Map<RmFormV2Mat>(FormV2MatBO);
+                domainModelFormV2.Fv2mPkRefNo = FormV2MatBO.PkRefNo;
+                domainModelFormV2.Fv2mFv2hPkRefNo = FormV2MatBO.Fv2hPkRefNo;
                 _repoUnit.FormV2MaterialRepository.Update(domainModelFormV2);
 
                 rowsAffected = await _repoUnit.CommitAsync();
@@ -527,6 +528,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormV2 = _mapper.Map<RmFormV2Eqp>(FormV2LabourBO);
+                domainModelFormV2.Fv2ePkRefNo = FormV2LabourBO.PkRefNo;
+                domainModelFormV2.Fv2eFv2hPkRefNo = FormV2LabourBO.Fv2hPkRefNo;
                 _repoUnit.FormV2EquipmentRepository.Update(domainModelFormV2);
 
                 rowsAffected = await _repoUnit.CommitAsync();
@@ -911,9 +914,16 @@ namespace RAMMS.Business.ServiceProvider.Services
         public async Task<FormV2HeaderResponseDTO> FindDetails(FormV2HeaderResponseDTO headerDTO)
         {
             RmFormV2Hdr header = _mapper.Map<RmFormV2Hdr>(headerDTO);
-            var obj = _repoUnit.FormV2Repository.FindAsync(x => x.Fv2hRmu == header.Fv2hRmu && x.Fv2hSecCode == header.Fv2hSecCode && x.Fv2hActCode == header.Fv2hActCode && x.Fv2hDt == header.Fv2hDt && x.Fv2hCrew == header.Fv2hCrew && x.Fv2hActiveYn == true).Result;
+            var obj =  _repoUnit.FormV2Repository.FindAsync(x => x.Fv2hRmu == header.Fv2hRmu && x.Fv2hSecCode == header.Fv2hSecCode && x.Fv2hActCode == header.Fv2hActCode && x.Fv2hDt == header.Fv2hDt && x.Fv2hCrew == header.Fv2hCrew && x.Fv2hActiveYn == true).Result;
             return _mapper.Map<FormV2HeaderResponseDTO>(obj);
         }
+
+        public async Task<FormV1ResponseDTO> FindV1Details(FormV2HeaderResponseDTO header)
+        {
+            var obj =  _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == header.Rmu && x.Fv1hSecCode == header.SecCode && x.Fv1hActCode == header.ActCode && x.Fv1hDt.Value.Year == header.Dt.Value.Year && x.Fv1hDt.Value.Month == header.Dt.Value.Month && x.Fv1hDt.Value.Day == header.Dt.Value.Day && x.Fv1hCrew == header.Crew && x.Fv1hActiveYn == true).Result;
+            return _mapper.Map<FormV1ResponseDTO>(obj);
+        }
+
         public async Task<IEnumerable<SelectListItem>> GetRoadCodesByRMU(string rmu)
         {
             try
@@ -1028,8 +1038,10 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
         public async Task<FormV2HeaderResponseDTO> FindAndSaveFormV2Hdr(FormV2HeaderResponseDTO header, bool updateSubmit)
         {
-            var formD = _mapper.Map<RmFormV2Hdr>(header);
-            var response = await _repoUnit.FormV2Repository.FindSaveFormV2Hdr(formD, updateSubmit);
+            var formV2 = _mapper.Map<RmFormV2Hdr>(header);
+            formV2.Fv2hPkRefNo = header.PkRefNo;
+            formV2.Fv2hFv1hPkRefNo = header.Fv1hPkRefNo;
+            var response = await _repoUnit.FormV2Repository.FindSaveFormV2Hdr(formV2, updateSubmit);
             return _mapper.Map<FormV2HeaderResponseDTO>(response);
         }
     }
