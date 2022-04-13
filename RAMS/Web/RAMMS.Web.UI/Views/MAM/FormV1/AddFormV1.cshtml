@@ -8,9 +8,12 @@
 <link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
 <script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
 <script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
+<script src="~/js/FormV1.js"></script>
+
 
 @using (Html.BeginForm())
 {
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
@@ -19,15 +22,13 @@
                     <div class="form-group mb-0" style="width:400px; float:left">
                         <span style="width:100px;float:left;"> <label for="Form_C1_C2_No_" style="padding: .5rem .5rem 0 !important;">Reference No</label></span>
                         <span style="width:300px; float:left">
-                            @Html.TextBoxFor(m => m.FormV1.RefId, new { @Id = "formV1ReferenceNo", @disabled = true, @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
+                            @Html.TextBoxFor(m => m.FormV1.RefId, new { @disabled = true, @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
                         </span>
 
                     </div>
                 </div>
             </div>
             <div class="modal-body mh-182 pt-0 pb-0">
-
-
                 <div class="col-lg-12">
                     <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
                         <div id="accordion" class="col-lg-12">
@@ -56,12 +57,12 @@
                                                                 <div class="col-6 form-group pr-lg-0">
                                                                     <label for="RMU">RMU</label>
                                                                     @Html.DropDownListFor(Adtl => Adtl.FormV1.Rmu, (IEnumerable
-<SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV1rmu", @class = "form-control validate {required, RMU}" })
+<SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "ddlrmu", @class = "form-control validate {required, RMU}" })
 
                                                                 </div>
                                                                 <div class="form-group col-lg-6 mb-0">
                                                                     <label for="RMU_Name">RMU Name</label>
-                                                                    @Html.TextBoxFor(m => m.FormV1.RmuName, new { @Id = "formV1rmuDesc", @readonly = "readonly", @class = "form-control" })
+                                                                    @Html.TextBoxFor(m => m.FormV1.RmuName, new { @Id = "ddlrmuDesc", @readonly = "readonly", @class = "form-control" })
                                                                 </div>
                                                             </div>
 
@@ -70,9 +71,8 @@
                                                             <div class="row">
                                                                 <div class="col-6 form-group px-0">
                                                                     <label for="RMU">Section Code</label>
-                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV1.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "formV1SecCode", @class = "form-control validate {required, Section Code}" })
-                                                                    @Html.HiddenFor(Ahdr => Ahdr.FormV1.SecCode, new { @id = "hdnSecCode", @class = "form-control" })
-                                                                    @Html.HiddenFor(m => m.SecCode, new { @id = "hdnFormV1SecCode", @class = "form-control" })
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV1.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "ddlSecCode", @class = "form-control validate {required, Section Code}" })
+
                                                                 </div>
                                                                 <div class="form-group col-lg-6 mb-0">
                                                                     <label for="RMU_Name">Section Name</label>
@@ -92,12 +92,12 @@
                                                                 <div class="form-group col-lg-6">
                                                                     <label for="Name_of_Crew_Supervisor">Crew</label>
                                                                     @Html.DropDownListFor(Ahdr => Ahdr.FormV1.Crew, (IEnumerable
-<SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "formV1Crew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
+<SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "ddlCrew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
 
                                                                 </div>
                                                                 <div class="form-group col-lg-6">
                                                                     <label for="Name_of_Crew_Supervisor">Crew Name</label>
-                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Crewname, "", new { @id = "formV1CrewName", @class = "form-control" })
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Crewname, "", new { @id = "ddlCrewName", @class = "form-control" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -106,12 +106,12 @@
                                                                 <div class="col-lg-6 form-group px-0">
                                                                     <label for="Ref_No_">Activity Code</label>
                                                                     @Html.DropDownListFor(Adtl => Adtl.FormV1.ActCode, (IEnumerable
-<SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "formV1Activity", @class = "form-control validate {required, Activity}" })
+<SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "ddlActCode", @class = "form-control validate {required, Activity}" })
 
                                                                 </div>
                                                                 <div class="col-lg-6 form-group">
                                                                     <label for="Ref_No_">Activity Name</label>
-                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.ActName, "", new { @id = "formV1ActName", @class = "form-control" })
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.ActName, "", new { @class = "form-control" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -121,13 +121,13 @@
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <div class="row">
-                                                                <div class="col-6 form-group">
+                                                                <div class="col-6 form-group divsource">
                                                                     <label for="">Source</label>
-                                                                    @Html.DropDownList("Source", (new List<SelectListItem> { new SelectListItem { Text = "S1", Value = "1" }, new SelectListItem { Text = "V1", Value = "2" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control" })
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.Source, (new List<SelectListItem> { new SelectListItem { Text = "Form S1", Value = "S1" }, new SelectListItem { Text = "New", Value = "V1" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control" })
                                                                 </div>
-                                                                <div class="form-group col-lg-6 mb-0">
+                                                                <div class="form-group col-lg-6 mb-0 divRefno">
                                                                     <label for="">Reference No</label>
-                                                                    @Html.DropDownList("RefNo", (new List<SelectListItem> { }), "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control" })
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.S1HPkRefNo, (new List<SelectListItem> { }), "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control" })
                                                                 </div>
                                                             </div>
 
@@ -148,7 +148,9 @@
                                 @{
                                     Html.RenderPartial("_AddFormV1Content.cshtml", Model);
                                 }
+                                
                             </div>
+
                         </div>
 
                     </div>
@@ -179,14 +181,21 @@
 
     var onloadFlag = true;
     $(document).ready(function () {
-
          process.Init("FormV1", "@Model.FormV1.Status", @Model.FormV1.PkRefNo);
+    });
 
-        $('#formV1ReferenceNo').val("@Model.FormV1.Rmu");
-        $('#formV1ReferenceNo').trigger('chosen:updated');
 
-        $('#formV1SecCode').val("@Model.FormV1.SecCode");
-        $('#formV1SecCode').trigger('chosen:updated');
+        $('#ddlrmu').val("@Model.FormV1.Rmu");
+        $('#ddlrmu').trigger('chosen:updated');
+
+        $('#dllSecCode').val("@Model.FormV1.SecCode");
+        $('#dllSecCode').trigger('chosen:updated');
+
+        $('#ddlActCode').val("@Model.FormV1.ActCode");
+        $('#ddlActCode').trigger('chosen:updated');
+
+        $('#ddlCrew').val("@Model.FormV1.Crew");
+        $('#ddlCrew').trigger('chosen:updated');
 
         $('#ddlAcknowledgedby').val("@Model.FormV1.UseridAck");
         $('#ddlAcknowledgedby').trigger('chosen:updated');
@@ -196,7 +205,5 @@
 
         $('#ddlScheduledby').val("@Model.FormV1.UseridSch");
         $('#ddlScheduledby').trigger('chosen:updated');
-
-    });
 
 </script>

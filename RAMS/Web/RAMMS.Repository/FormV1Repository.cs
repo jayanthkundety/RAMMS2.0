@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using RAMMS.Domain.Models;
 using RAMMS.DTO;
 using RAMMS.DTO.ResponseBO;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RAMMS.Repository
@@ -163,6 +165,92 @@ namespace RAMMS.Repository
             return await _context.RmFormV1Hdr.Where(x => x.Fv1hPkRefNo == id && x.Fv1hActiveYn == true).FirstOrDefaultAsync();
         }
 
+
+        public string FindRefNoFromS1(FormV1ResponseDTO FormV1)
+        {
+
+          
+
+            var res = (from hdr in _context.RmFormS1Hdr
+                       join dtl in _context.RmFormS1Dtl on hdr.FsihPkRefNo equals dtl.FsidFsihPkRefNo
+                       where hdr.FsihDt == FormV1.Dt && hdr.FsihRmu == FormV1.Rmu && Convert.ToInt32(dtl.FsidActCode) == Convert.ToInt32(FormV1.ActCode) && dtl.FsidActiveYn == true && hdr.FsihActiveYn == true
+                       orderby hdr.FsihPkRefNo descending
+                       select new
+                       {
+                           hdr.FsihRefId,
+                           hdr.FsihPkRefNo
+                       }).Distinct();
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var item in res)
+            {
+                list.Add(new SelectListItem { Text = item.FsihRefId.ToString(), Value = item.FsihPkRefNo.ToString() });
+            }
+
+            return JsonSerializer.Serialize(list);
+        }
+
+
+        public int LoadS1Data(int PKRefNo, int S1PKRefNo, string ActCode)
+        {
+
+            IList<RmFormV1Dtl> del = (from r in _context.RmFormV1Dtl where r.Fv1dFv1hPkRefNo == PKRefNo && r.Fv1dS1dPkRefNo != 0 select r).ToList();
+
+            foreach (var item in del)
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
+
+            var res = (from dtl in _context.RmFormS1Dtl
+                       where dtl.FsidFsihPkRefNo == S1PKRefNo && dtl.FsidActCode == ActCode && dtl.FsidActiveYn == true
+                       orderby dtl.FsidPkRefNo descending
+                       select new RmFormV1Dtl
+                       {
+                           Fv1dFv1hPkRefNo = PKRefNo,
+                           Fv1dS1dPkRefNo = dtl.FsidPkRefNo,
+                           Fv1dActiveYn = true,
+                           Fv1dCrDt = dtl.FsidCrDt,
+                           Fv1dFrmCh = dtl.FsidFrmChKm,
+                           Fv1dRemarks = dtl.FsidRemarks,
+                           Fv1dRoadCode = dtl.FsiidRoadCode,
+                           Fv1dRoadName = dtl.FsiidRoadName,
+                           Fv1dFrmChDeci = dtl.FsidFrmChM == "" ? 0 : Convert.ToInt32(dtl.FsidFrmChM),
+                           Fv1dSiteRef = dtl.FsidFormASiteRef,
+                           Fv1dStartTime = "",
+                           Fv1dToCh = dtl.FsidToChKm,
+                           Fv1dToChDeci = dtl.FsidToChM == "" ? 0 : Convert.ToInt32(dtl.FsidToChM),
+                       }).ToList();
+
+            //var res = (from hdr in _context.RmFormS1Hdr
+            //           join dtl in _context.RmFormS1Dtl on hdr.FsihPkRefNo equals dtl.FsidFsihPkRefNo
+            //           where hdr.FsihDt == Dt && hdr.FsihRmu == Rmu && dtl.FsidActCode == ActCode && dtl.FsidActiveYn == true && hdr.FsihActiveYn == true
+            //           orderby dtl.FsidFsihPkRefNo descending
+            //           select new RmFormV1Dtl
+            //           {
+            //               Fv1dFv1hPkRefNo = PKRefNo,
+            //               Fv1dS1dPkRefNo = dtl.FsidPkRefNo,
+            //               Fv1dActiveYn = true,
+            //               Fv1dCrDt = dtl.FsidCrDt,
+            //               Fv1dFrmCh = dtl.FsidFrmChKm,
+            //               Fv1dRemarks = dtl.FsidRemarks,
+            //               Fv1dRoadCode = dtl.FsiidRoadCode,
+            //               Fv1dRoadName = dtl.FsiidRoadName,
+            //               Fv1dFrmChDeci = dtl.FsidFrmChM == "" ? 0 : Convert.ToInt32(dtl.FsidFrmChM),
+            //               Fv1dSiteRef = dtl.FsidFormASiteRef,
+            //               Fv1dStartTime = "",
+            //               Fv1dToCh = dtl.FsidToChKm,
+            //               Fv1dToChDeci = dtl.FsidToChM == "" ? 0 : Convert.ToInt32(dtl.FsidToChM),
+            //           }).ToList();
+
+            foreach (var item in res)
+            {
+                _context.RmFormV1Dtl.Add(item);
+                _context.SaveChanges();
+            }
+
+            return 1;
+        }
 
         public int? SaveFormV1WorkSchedule(RmFormV1Dtl FormV1Dtl)
         {

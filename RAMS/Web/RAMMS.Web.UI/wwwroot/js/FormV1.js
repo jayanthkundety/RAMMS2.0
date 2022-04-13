@@ -1,83 +1,82 @@
 ﻿$(document).ready(function () {
-  
-   
-});
 
+    debugger
+    $("#ddlActCode").on("change", function () {
+         
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+        $("#FormV1_ActName").val(val);
+    });
 
+    $("#ddlSource").on("change", function () {
 
-
-
-$("#formV1rmu").on("change", function () {
-    var val = $(this).find(":selected").text();
-    val = val.split("-").length > 0 ? val.split("-")[1] : val;
-    $("#formV1rmuDesc").val(val);
-    var req = {};
-    req.Section = '';
-    req.RoadCode = '';
-    req.RMU = $("#formV1rmu option:selected").text().split("-")[1];
-
-    debugger;
-    //RM_div_RMU_Sec_Master
-    $.ajax({
-        url: '/ERT/RMUSecRoad',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-            if (data != null) {
-                $("#formV1SecCode").empty();
-                $("#formV1SecCode").append($("<option></option>").val("").html("Select Section Code"));
-                $.each(data.section, function (index, v) {
-                    $("#formV1SecCode").append($("<option></option>").val(v.value).html(v.text));
-                });
-
-                if (onloadFlag) {
-                    $("#formV1SecCode").val($("#hdnSecCode").val());
-                    onloadFlag = false;
-                }
-
-                $('#formV1SecCode').trigger("chosen:updated");
-                $("#formV1SecCode").trigger("change");
-                document.getElementById("formV1SecDesc").disabled = true;
-
-
-            } else {
-                document.getElementById("formV1SecDesc").disabled = false;
-            }
-        },
-        error: function (data) {
-
-            console.error(data);
+         
+        if ($(this).val() == "S1") {
+            $(".divRefno").show();
+        } else {
+            $(".divRefno").hide();
         }
     });
 
+    $("#ddlRefNo").on("change", function () {
 
-});
-
-$("#formV1rmu").trigger("change");
-
-
-$("#formV1SecCode").on("change", function () {
-    //var d = new Date();
-    var ddldata = $(this).val();
-
-    if (ddldata != "") {
+        InitAjaxLoading();
+        $("#AccordPage0 * :not(.divsource *)").prop("disabled", false);
+        
         $.ajax({
-            url: '/ERT/GetAllRoadCodeDataBySectionCode',
+            url: '/MAM/LoadS1Data',
             dataType: 'JSON',
-            data: { secCode: $("#formV1SecCode option:selected").text().split("-")[0] },
+            data: { PKRefNo: $("#FormV1_PkRefNo").val(), S1PKRefNo: $(this).val() , ActCode: $("#ddlActCode").val()},
+            type: 'Post',
+            success: function (data) {
+                $("#AccordPage0 * :not(.divsource *)").prop("disabled", true)
+                HideAjaxLoading();
+                InitializeGrid();
+            },
+            error: function (data) {
+                console.error(data);
+            }
+        });
+        
+    });
+
+
+    $("#ddlrmu").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+        $("#ddlrmuDesc").val(val);
+        var req = {};
+        req.Section = '';
+        req.RoadCode = '';
+        req.RMU = $("#ddlrmu option:selected").text().split("-")[1];
+
+         ;
+        //RM_div_RMU_Sec_Master
+        $.ajax({
+            url: '/ERT/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
             type: 'Post',
             success: function (data) {
                 if (data != null) {
-                    if (data._RMAllData != undefined && data._RMAllData != null) {
-                        $("#formV1SecDesc").val(data._RMAllData.secName);
-                        $("#hdnformV1SecCode").val($("#formV1SecCode option:selected").text().split("-")[0]);
-                        $("#formV1DivisionDesc").val(data._RMAllData.divisionCode);
+                    $("#ddlSecCode").empty();
+                    $("#ddlSecCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#ddlSecCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
 
+                    if (onloadFlag) {
+                        $("#ddlSecCode").val($("#hdnSecCode").val());
+                        onloadFlag = false;
                     }
-                    document.getElementById("formV1DivisionDesc").disabled = true;
+
+                    $('#ddlSecCode').trigger("chosen:updated");
+                    $("#ddlSecCode").trigger("change");
+                    document.getElementById("formV1SecDesc").disabled = true;
+
+
                 } else {
-                    document.getElementById("formV1DivisionDesc").disabled = false;
+                    document.getElementById("formV1SecDesc").disabled = false;
                 }
             },
             error: function (data) {
@@ -85,52 +84,86 @@ $("#formV1SecCode").on("change", function () {
                 console.error(data);
             }
         });
-    }
-    else {
-        $("#formV1SecDesc").val("");
-        $("#formV1DivisionDesc").val("");
-    }
 
-    return false;
+
+    });
+
+    $("#ddlrmu").trigger("change");
+
+
+    $("#ddlSecCode").on("change", function () {
+        //var d = new Date();
+        var ddldata = $(this).val();
+
+        if (ddldata != "") {
+            $.ajax({
+                url: '/ERT/GetAllRoadCodeDataBySectionCode',
+                dataType: 'JSON',
+                data: { secCode: $("#ddlSecCode option:selected").text().split("-")[0] },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        if (data._RMAllData != undefined && data._RMAllData != null) {
+                            $("#formV1SecDesc").val(data._RMAllData.secName);
+                           
+                            $("#formV1DivisionDesc").val(data._RMAllData.divisionCode);
+
+                        }
+                        document.getElementById("formV1DivisionDesc").disabled = true;
+                    } else {
+                        document.getElementById("formV1DivisionDesc").disabled = false;
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        }
+        else {
+            $("#formV1SecDesc").val("");
+            $("#formV1DivisionDesc").val("");
+        }
+
+        return false;
+    });
+
+
+    $("#ddlCrew").on("change", function () {
+        var id = $("#ddlCrew option:selected").val();
+        if (id != "99999999" && id != "") {
+            $.ajax({
+                url: '/ERT/GetUserById',
+                dataType: 'JSON',
+                data: { id },
+                type: 'Post',
+                success: function (data) {
+                    $("#ddlCrewName").val(data.userName);
+                    $("#ddlCrewName").prop("disabled", true);
+                   
+                },
+                error: function (data) {
+                    console.error(data);
+                }
+            });
+        }
+        else if (id == "99999999") {
+            $("#ddlCrewName").prop("disabled", false);
+            $("#ddlCrewName").val('');
+        }
+        else {
+            $("#ddlCrewName").prop("disabled", true);
+            $("#ddlCrewName").val('');
+        }
+
+        return false;
+    });
+
+    $("#ddlCrew").trigger("change");
+
+
 });
 
-
-$("#formV1Crew").on("change", function () {
-    var id = $("#formV1Crew option:selected").val();
-    if (id != "99999999" && id != "") {
-        $.ajax({
-            url: '/ERT/GetUserById',
-            dataType: 'JSON',
-            data: { id },
-            type: 'Post',
-            success: function (data) {
-                $("#formV1CrewName").val(data.userName);
-                $("#formV1CrewName").prop("disabled", true);
-
-                //if ($("#FDHRef_No").val() == "0" || $("#FDHRef_No").val() == "") {
-
-                //var text = "ERT/Form D/" + $("#formDroadCode").val() + "/" + month + "/" + maxcount + "-" + year
-                SetReferenceId();
-                //}
-            },
-            error: function (data) {
-                console.error(data);
-            }
-        });
-    }
-    else if (id == "99999999") {
-        $("#formV1CrewName").prop("disabled", false);
-        $("#formV1CrewName").val('');
-    }
-    else {
-        $("#formV1CrewName").prop("disabled", true);
-        $("#formV1CrewName").val('');
-    }
-
-    return false;
-});
-
-$("#formV1Crew").trigger("change");
 
 
 
@@ -253,7 +286,7 @@ function OnScheduledbyChange(tis) {
 
 function Save(GroupName, SubmitType) {
 
-    debugger;
+     ;
 
     $("#ddlUseridReq").removeClass("validate");
     $("#ddlUseridVer").removeClass("validate");
@@ -296,7 +329,9 @@ function Save(GroupName, SubmitType) {
 
     if (ValidatePage('#FormW1page')) {
         InitAjaxLoading();
-        $.post('/MAM/SaveFormV1', $("form").serialize(), function (data) {
+        $("#AccordPage0 * :not(.divsource *)").prop("disabled", false);
+        $.get('/MAM/SaveFormV1', $("form").serialize(), function (data) {
+            $("#AccordPage0 * :not(.divsource *)").prop("disabled", true)
             HideAjaxLoading();
             if (data == -1) {
                 app.ShowErrorMessage(data.errorMessage);
@@ -311,6 +346,7 @@ function Save(GroupName, SubmitType) {
                 if (SubmitType == "") {
                     app.ShowSuccessMessage('Saved Successfully', false);
                     $("#divFormV1Content").html(data);
+                    debugger
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
@@ -335,7 +371,7 @@ function Save(GroupName, SubmitType) {
 
 function SaveFormV1WorkSchedule() {
 
-    debugger;
+     ;
 
     if (ValidatePage('#FormW1page')) {
         InitAjaxLoading();

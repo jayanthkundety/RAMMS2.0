@@ -16,7 +16,7 @@ namespace RAMMS.Web.UI.Models
 
         public FormV1DtlResponseDTO FormV1Dtl { get; set; }
 
-        public string Source { get; set; }
+        public string RefNoDS { get; set; }
 
         public string SectionName { get; set; }
 
@@ -29,7 +29,7 @@ namespace RAMMS.Web.UI.Models
 
         public FormV1Model()
         {
-            Source = "";
+            RefNoDS = "[]";
         }
     }
 }

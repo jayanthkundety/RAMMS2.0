@@ -50,6 +50,7 @@ namespace RAMMS.DTO.ResponseBO
         public string Verifier { get; set; }
         public string Facilitator { get; set; }
         public string Remarks { get; set; }
+        public string Source { get; set; }
         public string ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public string CrBy { get; set; }
@@ -58,7 +59,8 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
-        public string S1RefNoDetails { get; set; }
+        public int S1HPkRefNo { get; set; }
+
 
         //   public virtual ICollection<RmFormV1Dtl> RmFormV1Dtl { get; set; }
 

@@ -2,10 +2,21 @@
 
 <div class="main-container" id="container">
     <div id="content">
+        @*<div class="w-100 position-relative in-tbl-btns custom-tbl">
+            <div class="grid-btns">
+                <button type="button" id="btnWorkScheduleAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#WorkScheduleModal">
+                    <span class="intbl-add-icon"></span>
+                </button>
+            </div>
+            <table id="WorkScheduleGridView" class="table w-100 nowrap">
+            </table>
+        </div>*@
         <table id="WorkScheduleGridView" class="table w-100 nowrap">
         </table>
     </div>
 </div>
+
+
 <!-- Jquery DataTable JS library -->
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
@@ -25,7 +36,7 @@
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
-    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: false, width: 250, sortable: true };
+    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true,  sortable: true };
     var roadNameCol = { data: "roadName", name: "RoadName", title: "Road Name", autoWidth: true, sortable: true };
     var chainageCol = { data: "chainage", name: "Chainage", title: "Chainage Location", autoWidth: true, sortable: true };
     var siteRefCol = { data: "siteRef", name: "SiteRef", title: "Site Reference", autoWidth: true, sortable: true };
@@ -50,16 +61,16 @@
         var _currentGridSettings = new CustomGridSettings();
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
-        if (table != null) {
-            table.destroy();
-            $('#WorkScheduleGridView').empty();
-        }
+        //if (table != null) {
+        //    table.destroy();
+        //    $('#WorkScheduleGridView').empty();
+        //}
 
         debugger;
 
         table =  $('#WorkScheduleGridView').DataTable({
             ajax: {
-                url: "/MAM/GetWorkScheduleGridList?V1PkRefNo=" + $("#FormV1_PkRefNo").val(),
+                url: "/MAM/GetWorkScheduleGridList?V1PkRefNo=" + 21,
                 type: "POST",
                 datatype: "json",
                 data: {
@@ -69,7 +80,7 @@
             columns: table_columns
         });
 
-        table.columns.adjust().draw();
+       // table.columns.adjust().draw();
     }
 
     $(document).ready(function () {

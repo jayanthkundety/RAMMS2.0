@@ -193,7 +193,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             catch (Exception ex)
             {
-                  _repoUnit.RollbackAsync();
+                _repoUnit.RollbackAsync();
                 throw ex;
             }
 
@@ -264,6 +264,16 @@ namespace RAMMS.Business.ServiceProvider.Services
             RmFormV1Hdr formV1 = await _repo.FindFormV1ByID(id);
             return _mapper.Map<FormV1ResponseDTO>(formV1);
 
+        }
+
+        public string FindRefNoFromS1(FormV1ResponseDTO FormV1)
+        {
+            return _repo.FindRefNoFromS1(FormV1);
+        }
+
+        public int LoadS1Data(int PKRefNo, int S1PKRefNo, string ActCode)
+        {
+            return _repo.LoadS1Data(PKRefNo, S1PKRefNo, ActCode);
         }
 
         //public async Task<int> DeActivateFormWD(int formNo)
