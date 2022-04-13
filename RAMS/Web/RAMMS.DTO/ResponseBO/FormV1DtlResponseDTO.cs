@@ -26,6 +26,7 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? CrDt { get; set; }
         public bool SubmitSts { get; set; }
         public bool ActiveYn { get; set; }
+        public int S1DPkRefNo { get; set; }
 
     }
 }

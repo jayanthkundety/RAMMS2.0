@@ -23,6 +23,10 @@ namespace RAMMS.Repository.Interfaces
 
         int? DeleteFormV1WorkSchedule(int id);
 
+        string FindRefNoFromS1(FormV1ResponseDTO FormV1);
+
+        int LoadS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
+
         //int SaveFormWD(RmIwFormWd FormWD);
         //int? DeleteFormWDClause(int Id);
 
