@@ -33,7 +33,7 @@ namespace RAMMS.Web.UI.Models
 
         public FormV2LabourDtlModel FormV2Labour { get; set; }
 
-        public FormV2UserDetailsModel FormV2Users { get; set; }
+        //public FormV2UserDetailsModel FormV2Users { get; set; }
 
         public FormV2HeaderResponseDTO SaveUserModel { get; set; }
 

@@ -2,7 +2,7 @@
 
 <div class="main-container" id="container">
     <div id="content">
-        <table id="FormDGridView" class="table w-100 nowrap">
+        <table id="FormV2GridView" class="table w-100 nowrap">
         </table>
     </div>
 </div>
@@ -12,122 +12,97 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isModifyPerm =@security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
-    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
+        var isModifyPerm =@security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
+        var isDeletePerm =@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
 
-    var table_columns = [];
-    var actionCol = {
-        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV2HeaderEdit'" + isModifyPerm + " onclick='javascript:EditFormV2(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV2(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            return full["submitSts"] == true ? viewaction : actionSection;
+        var table_columns = [];
+        var actionCol = {
+            data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV2HeaderEdit'" + isModifyPerm + " onclick='javascript:EditFormV2(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV2(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return full["submitSts"] == true ? viewaction : actionSection;
+            }
+        };
+        var refNoCol = { data: "refId", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
+        var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
+        var divisionCol = { data: "divCode", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
+        var actCodeCol = { data: "actCode", name: "actCode", title: "Activity Code", autoWidth: true, sortable: true };
+        var secCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
+        var crewCol = { data: "crewname", name: "Crew ID", title: "Crew Supervisor", autoWidth: true, sortable: true };
+      //  var dtCol = { data: "dt", name: "dt", title: "Date", autoWidth: true, sortable: true };
+
+        var dtCol = {
+             data: "dt", name: "dt", title: "Date", autoWidth: true, sortable: true ,
+            render: function (data) {
+                if (data != null) {
+                    var d = new Date(data);
+                    var day = d.getDate();
+                    var month = d.getMonth() + 1;
+                    var year = d.getFullYear();
+                    if (day < 10) {
+                        day = "0" + day;
+                    }
+                    if (month < 10) {
+                        month = "0" + month;
+                    }
+                    var date = day + "/" + month + "/" + year;
+                    return date;
+                }
+                else {
+                    return "";
+                }
+            }
+        };
+
+        var submitStsCol = { data: "status", name: "Status", title: "Status", autoWidth: true, sortable: true };
+
+        table_columns.push(actionCol);
+        table_columns.push(refNoCol);
+        table_columns.push(rmuRmuCol);
+        table_columns.push(divisionCol);
+        table_columns.push(actCodeCol);
+        table_columns.push(secCodeCol);
+        table_columns.push(crewCol);
+        table_columns.push(dtCol);
+        table_columns.push(submitStsCol);
+
+        function PrintForm(id) {
+            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
         }
-    };
-    var refNoCol = { data: "contNo", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
-    var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
-    var divisionCol = { data: "divName", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
-    var actCodeCol = { data: "actCode", name: "SectionCode", title: "Activity Code", autoWidth: true, sortable: true };    
-    var secCodeCol = { data: "secName", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
-    var crewCol = { data: "crewname", name: "Crew ID", title: "Crew Supervisor", autoWidth: true, sortable: true };
-  //  var dtCol = { data: "dt", name: "dt", title: "Date", autoWidth: true, sortable: true };
-    
-    var dtCol = {
-         data: "dt", name: "dt", title: "Date", autoWidth: true, sortable: true ,
-        render: function (data) {
-            if (data != null) {
-                var d = new Date(data);
-                var day = d.getDate();
-                var month = d.getMonth() + 1;
-                var year = d.getFullYear();
-                if (day < 10) {
-                    day = "0" + day;
-                }
-                if (month < 10) {
-                    month = "0" + month;
-                }
-                var date = day + "/" + month + "/" + year;
-                return date;
-            }
-            else {
-                return "";
-            }
+
+        var filterData = new Object();
+        function InitializeGrid() {
+            var _currentGridSettings = new CustomGridSettings();
+            $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+            filterData.SmartInputValue = $("#FormV2SmartSearch").val();
+            filterData.RMU = $("#formV2DetSrchRMU  option:selected").text().split("-")[0];
+            filterData.Section =  $("#formV2DetSrchSectionCode option:selected").text().split("-")[0];
+            filterData.Crew = $("#formV2DetSrchCrew  option:selected").text().split("-")[0];
+            //filterData.ActivityCode = $("#formV2DetSrchActivityCode option:selected").text().split("-")[0];
+            //filterData.ByFromdate = $("#FormV2SrchByFromDate").val()
+            //filterData.ByTodate = $("#FormV2SrchByToDate").val()
+
+            $('#FormV2GridView').DataTable({
+                ajax: {
+                    url: "/MAM/LoadFormV2List",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                        filterData
+                    }
+                },
+                columns: table_columns
+            });
         }
-    };
-    
-    var submitStsCol = { data: "status", name: "Status", title: "Status", autoWidth: true, sortable: true };
 
+      
+        $(document).ready(function () {
+            InitializeGrid();
 
+             $('#formV2SearchBtn').click(function () {
+                FormV2GridRefresh();
+            });
 
-
-    table_columns.push(actionCol);
-    table_columns.push(refNoCol);
-    table_columns.push(rmuRmuCol);
-    table_columns.push(divisionCol);
-    table_columns.push(actCodeCol);
-    table_columns.push(secCodeCol);
-    table_columns.push(crewCol);
-    table_columns.push(dtCol);
-    table_columns.push(submitStsCol);
-
-    function PrintForm(id) {
-        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
-    }
-
-    var filterData = new Object();
-    function InitializeGrid() {
-        var _currentGridSettings = new CustomGridSettings();
-        $.extend($.fn.dataTable.defaults, _currentGridSettings);
-
-        filterData.SmartInputValue = $("#FormV2SmartSearch").val();
-        filterData.RMU = $("#formV2DetSrchRMU  option:selected").text().split("-")[0];
-        filterData.Section =  $("#formV2DetSrchSectionCode option:selected").text().split("-")[0];
-        filterData.Crew = $("#formV2DetSrchCrew  option:selected").text().split("-")[0];
-        filterData.ActivityCode = $("#formV2DetSrchActivityCode option:selected").text().split("-")[0];
-        filterData.ByFromdate = $("#FormV2SrchByFromDate").val()
-        filterData.ByTodate = $("#FormV2SrchByToDate").val()
-
-        $('#FormDGridView').DataTable({
-            ajax: {
-                url: "/MAM/LoadFormV2List",
-                type: "POST",
-                datatype: "json",
-                data: {
-                    filterData
-                }
-            },
-            columns: table_columns
         });
-    }
-
-    $(document).ready(function () {
-        InitializeGrid();
-
-        //Apply Custom search on jQuery DataTables here
-        oTable = $('#FormDGridView').DataTable();
-        $('#formDSearchBtn').click(function () {
-            oTable.columns(0).search($("#FormV2SmartSearch").val().trim());
-            oTable.columns(1).search( $("#formV2DetSrchRMU").val().trim());
-           
-            var secCode = $("#formV2DetSrchSectionCode").val();
-            if (secCode >= 0) {
-                oTable.columns(2).search(secCode);
-            } else {
-                 oTable.columns(2).search("");
-            }
-
-            var activityCode = $("#formV2DetSrchActivityCode").val().trim();
-
-            if (activityCode >=0 ){
-                oTable.columns(3).search(activityCode);
-            }
-            else {
-                oTable.columns(3).search("");
-            }
-          
-            oTable.columns(4).search($("#FormV2SrchByFromDate").val().trim());
-            oTable.columns(5).search($("#FormV2SrchByToDate").val().trim());
-            oTable.data = filterData;
-            oTable.draw();
-        });
-    });
 </script>

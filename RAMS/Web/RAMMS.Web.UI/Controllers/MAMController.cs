@@ -1123,10 +1123,7 @@ namespace RAMMS.Web.UI.Controllers
             rowsAffected = _formV1Service.DeleteFormV1WorkSchedule(id);
             return Json(rowsAffected);
         }
-
-
         #endregion
-
 
         #region Form V2
 
@@ -1156,18 +1153,18 @@ namespace RAMMS.Web.UI.Controllers
             {
                 formV2Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
             }
-            if (Request.Form.ContainsKey("columns[4][search][value]"))
-            {
-                formV2Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[5][search][value]"))
-            {
-                formV2Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
-            }
-            if (Request.Form.ContainsKey("columns[6][search][value]"))
-            {
-                formV2Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
-            }
+            //if (Request.Form.ContainsKey("columns[4][search][value]"))
+            //{
+            //    formV2Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
+            //}
+            //if (Request.Form.ContainsKey("columns[5][search][value]"))
+            //{
+            //    formV2Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
+            //}
+            //if (Request.Form.ContainsKey("columns[6][search][value]"))
+            //{
+            //    formV2Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
+            //}
 
             FilteredPagingDefinition<FormV2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV2SearchGridDTO>();
             filteredPagingDefinition.Filters = formV2Filter.filterData;
@@ -1219,12 +1216,13 @@ namespace RAMMS.Web.UI.Controllers
             return Json(formV2Res, JsonOption());
         }
 
-        public async Task<FormV2HeaderResponseDTO> CreateV2(FormV2Model header)
+        private async Task<FormV2HeaderResponseDTO> CreateV2(FormV2Model header)
         {
             var formV2 = header.SaveFormV2Model;
             //var formV2Res = await _formV2Service.FindDetails(formV2);
             if (formV2 != null || formV2.PkRefNo == 0)
             {
+                formV2.Dt = header.formV2Date;
                 formV2.UseridSch = _security.UserID;
                 formV2.UsernameSch = _security.UserName;
                 formV2.DtSch = DateTime.Today;
@@ -1233,11 +1231,19 @@ namespace RAMMS.Web.UI.Controllers
                 formV2.ModDt = DateTime.Now;
                 formV2.CrDt = DateTime.Now;
                 formV2 = await _formV2Service.FindAndSaveFormV2Hdr(formV2, false);
-                header.SaveFormV2Model = formV2;
+                formV2.FormV2Lab = new List<FormV2LabourDetailsResponseDTO>();
+                formV2.FormV2Eqp = new List<FormV2EquipDetailsResponseDTO>();
+                formV2.FormV2Mat = new List<FormV2MaterialDetailsResponseDTO>();
             }
             return formV2;
         }
 
+        [HttpPost]
+        public async Task<JsonResult> CreateFormV2(FormV2Model header)
+        {
+            var obj = await CreateV2(header);
+            return Json(obj, JsonOption());
+        }
 
         [HttpPost]
         public async Task<IActionResult> LoadFormV2EquipmentList(DataTableAjaxPostModel<FormV2SearchGridDTO> FormV2Filter, string id)
@@ -1311,7 +1317,7 @@ namespace RAMMS.Web.UI.Controllers
             FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
             _formV2Model.MaxNo = await _formV2Service.GetMaxIdLength();
 
-            _formV2Model.FormV2Users = new FormV2UserDetailsModel();
+            //_formV2Model.FormV2Users = new FormV2UserDetailsModel();
             _formV2Model.SaveFormV2Model = new FormV2HeaderResponseDTO();
             _formV2Model.SaveFormV2Model.FormV2Lab = new List<FormV2LabourDetailsResponseDTO>();
             _formV2Model.SaveFormV2Model.FormV2Eqp = new List<FormV2EquipDetailsResponseDTO>();

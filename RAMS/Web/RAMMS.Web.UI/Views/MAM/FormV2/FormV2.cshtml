@@ -16,34 +16,41 @@
         $("#formV2AdvSearch").hide();
 
         $("#formV2DetSrchRMU").on("change", function () {
-            var req = {};
-            req.Section = '';
-            req.RoadCode = '';
-            req.RMU = $("#formV2DetSrchRMU option:selected").text().split("-")[1];
-
-            $.ajax({
-                url: '/MAM/RMUSecRoad',
-                dataType: 'JSON',
-                data: req,
-                type: 'Post',
-                success: function (data) {
-                    if (data != null) {
-                        $("#formV2DetSrchSectionCode").empty();
-                        $("#formV2DetSrchSectionCode").append($("<option></option>").val("").html("Select Section Code"));
-                        $.each(data.section, function (index, v) {
-                            $("#formV2DetSrchSectionCode").append($("<option></option>").val(v.value).html(v.text));
-                        });
-                        $('#formV2DetSrchSectionCode').trigger("chosen:updated")
-
-                    }
-                },
-                error: function (data) {
-
-                    console.error(data);
-                }
-            });
+            var rmu = $("#formV2DetSrchRMU").find("option:selected").text();
+            var rmuName = rmu.split("-")[1];
+           $("#txtRmuName").val(rmuName);
         });
-         $("#formV2DetSrchRMU").trigger("change");
+        
+        //$("#formV2DetSrchRMU").trigger("change");
+
+        $("#formV2DetSrchCrew").on("change", function () {
+            var val = $("#formV2DetSrchCrew option:selected").text();
+            var Name = val.split("-")[1];
+            var ctrl = $(this);
+            if (val != "99999999" && val != "") {
+                $("#txtCrewName").val(Name);
+            }
+            else if (val == "99999999") {
+                $("#txtCrewName").prop("disabled", false);
+                $("#txtCrewName").val('');
+            }
+            else {
+                $("#txtCrewName").prop("disabled", true);
+                $("#txtCrewName").val('');
+            }
+            return false;
+        });
+
+        $("#formV2DetSrchSectionCode").on("change", function () {
+            var ddldata = $(this).val();
+            if (ddldata != "") {
+               $("#txtSectionName").val(ddldata);
+            }
+            else {
+                $("#txtSectionName").val("");
+            }
+            return false;
+        });
     });
 
     function clearHeaderSearch() {
@@ -51,9 +58,9 @@
         $("#formV2DetSrchRMU").val("").trigger("chosen:updated");
         $('#formV2DetSrchSectionCode').val("").trigger("chosen:updated");
         $("#formV2DetSrchCrew").val("").trigger("chosen:updated");
-        $("#formV2DetSrchActivityCode").val("").trigger("chosen:updated");
-        $("#FormV2SrchByFromDate").val('');
-        $("#FormV2SrchByToDate").val('');
+        //$("#formV2DetSrchActivityCode").val("").trigger("chosen:updated");
+        //$("#FormV2SrchByFromDate").val('');
+        //$("#FormV2SrchByToDate").val('');
 
         var req = {};
         var _rmu = $("#formV2DetSrchRMU");
@@ -98,17 +105,37 @@
     }
 
     function FormV2GridRefresh() {
+
         oTable = $('#FormV2GridView').DataTable();
         oTable.columns(0).search($("#FormV2SmartSearch").val().trim());
-        oTable.columns(1).search($("#formV2DetSrchRMU").val().trim());
-        oTable.columns(2).search($("#formV2DetSrchSectionCode").val().trim());
-        otable.columns(3).search($("#formV2DetSrchCrew").val().trim());
-        otable.columns(4).search($("#formV2DetSrchActivityCode").val().trim());
-        oTable.columns(5).search($("#FormV2SrchByFromDate").val().trim());
-        oTable.columns(6).search($("#FormV2SrchByToDate").val().trim());
+
+        var rmuCode = $("#formV2DetSrchRMU").val();
+        if (rmuCode != "") {
+            oTable.columns(1).search(rmuCode);
+        } else {
+                oTable.columns(1).search("");
+        }
+
+        var secCode = $("#formV2DetSrchSectionCode").val();
+        if (secCode != "") {
+            oTable.columns(2).search(secCode);
+        } else {
+                oTable.columns(2).search("");
+        }
+
+        var crewCode = $("#formV2DetSrchCrew").val().trim();
+
+        if (crewCode != "" ){
+            oTable.columns(3).search(crewCode);
+        }
+        else {
+            oTable.columns(3).search("");
+        }
+
         oTable.data = filterData;
         oTable.draw();
     }
+
 
     function EditFormV2(pid,view) {
         window.location = "@Url.Action("EditFormV2", "MAM")" +
@@ -147,10 +174,12 @@
                 "?headerId=" + headerId;
     }
 
+   
+
 </script>
 
 @using (Html.BeginForm())
-{
+@*{*@
                 //BreadCrumbs
     <div class="row">
         <div class="body-header w-100">
@@ -182,7 +211,7 @@
                             <div class="btn-group">
                                 <button id="formV2SearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
                                 <button id="formV2SearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
-                                <button id="formBSearchClearBtn" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                                <button id="formV2SearchClearBtn" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
                             </div>
                         </div>
                     </div>
@@ -219,31 +248,10 @@
                                     @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
                                 <CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formV2DetSrchCrew", @class = "form-control widget-content-area" })
                                 </div>
-                                <div class="form-group col-lg-2">
+                                <div class="form-group col-lg-4">
                                     @Html.Label("Crew Name", "Crew Name")
                                     <input type="text" class="form-control" id="txtCrewName" disabled />
                                 </div>
-                            </div>
-                            <div class="row" style="display:none">
-                                <div class="form-group col-lg-2">
-                                    @Html.Label("Activity Code", "Activity Code")
-                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.ActivityCode, (IEnumerable
-                                <SelectListItem>)ViewData["Activity"], "WeekNo", new { @Id = "formV2DetSrchActivityCode", @class = "form-control" })
-                                </div>
-                                <div class="form-group col-lg-2">
-                                    @Html.Label("Activity Name", "Activity Name")
-                                    <input type="text" class="form-control" id="txtCrewName" disabled />
-                                </div>
-                                <div class="form-group col-lg-2">
-                                    <label for="Start Date">Start Date(DD-MM-YYY)</label>
-                                    <input class="form-control" type="date" id="FormV2SrchByFromDate">
-                                </div>
-                                <div class="form-group col-lg-2">
-                                    <label for="End Date">End Date(DD-MM-YYY)</label>
-                                    <input class="form-control" type="date" id="FormV2SrchByToDate">
-                                </div>
-                                <div class="form-group col-lg-2"></div>
-                                <div class="form-group col-lg-2"></div>
                             </div>
                         </div>
                     </div>
@@ -271,24 +279,5 @@
             </div>
         </div>
     </main>
-    <script type="text/javascript">
-        function onFocusOut() {
-            //debugger;
 
-            var frmdate = $("#FormV2SrchByToDate").val();
-            if (frmdate != "") {
-                d = new Date(frmdate);
-                var frmYear = d.getFullYear();
-                if (frmYear < 2019 || frmYear > 2099) {
-                    app.ShowErrorMessage('Year should between 2019 to 2099')
-                    //$("#dtFromDate").val('');
-                    $("#FormV2SrchByFromDate").focus();
-                    $('#formV2SearchBtn').attr("disabled", true);
-                }
-                else {
-                    $('#formV2SearchBtn').attr("disabled", false);
-                }
-            }
-        }
-    </script>
 }

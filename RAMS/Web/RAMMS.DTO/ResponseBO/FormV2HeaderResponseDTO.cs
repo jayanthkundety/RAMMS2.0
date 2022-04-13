@@ -67,9 +67,9 @@ namespace RAMMS.DTO.ResponseBO
         public string Status { get; set; }
         public string AuditLog { get; set; }
 
-        public virtual FormV1ResponseDTO FormV1 { get; set; }
-        public virtual List<FormV2EquipDetailsResponseDTO> FormV2Eqp { get; set; }
-        public virtual List<FormV2LabourDetailsResponseDTO> FormV2Lab { get; set; }
-        public virtual List<FormV2MaterialDetailsResponseDTO> FormV2Mat { get; set; }
+        public FormV1ResponseDTO FormV1 { get; set; }
+        public List<FormV2EquipDetailsResponseDTO> FormV2Eqp { get; set; }
+        public List<FormV2LabourDetailsResponseDTO> FormV2Lab { get; set; }
+        public List<FormV2MaterialDetailsResponseDTO> FormV2Mat { get; set; }
     }
 }

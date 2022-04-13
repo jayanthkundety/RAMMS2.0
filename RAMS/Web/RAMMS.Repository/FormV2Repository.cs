@@ -115,7 +115,7 @@ namespace RAMS.Repository
             List<RmFormV2Hdr> result = new List<RmFormV2Hdr>();
             var query = (from x in _context.RmFormV2Hdr
                          let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv2hRmu || s.DdlTypeDesc == x.Fv2hRmu))
-                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv2hSecCode || s.DdlTypeCode == x.Fv2hSecCode))
+                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv2hSecCode || s.DdlTypeValue == x.Fv2hSecCode))
                          let div = _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv2hSecCode)
                          select new { rmu, sec, x, div });
 
@@ -125,43 +125,45 @@ namespace RAMS.Repository
             if (filterOptions.Filters != null)
             {
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
-                {
-                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeCode == filterOptions.Filters.Section);
-                }
-
+              
                 if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
                 {
                     query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
                 }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeValue == filterOptions.Filters.Section);
+                }
+
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
                 {
                     query = query.Where(x => x.x.Fv2hCrewname == filterOptions.Filters.Crew || (x.x.Fv2hCrew.HasValue ? x.x.Fv2hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv2hCrew.ToString() == ""));
                 }
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
-                {
-                    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode);
-                }
+                //if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                //{
+                //    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode);
+                //}
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
-                {
-                    DateTime dt;
-                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
-                    {
-                        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
-                    }
-                }
+                //if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                //{
+                //    DateTime dt;
+                //    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                //    {
+                //        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
+                //    }
+                //}
 
-                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
-                {
-                    DateTime dt;
-                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
-                    {
-                        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
-                    }
-                }
+                //if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                //{
+                //    DateTime dt;
+                //    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                //    {
+                //        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
+                //    }
+                //}
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
                 {
