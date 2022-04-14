@@ -3,7 +3,6 @@
 
 
 
-
 <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
     <div class="card mb-0">
         <div class="card-header" id="headingOne">
@@ -21,12 +20,9 @@
         </div>
         <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
             <div class="card-body">
-                <div class="w-100 dt-tbl-section">
-                    @{
-                        Html.RenderPartial("_WorkScheduleGrid.cshtml");
-                    }
-                </div>
-              
+                @{
+                    Html.RenderPartial("_WorkScheduleGrid.cshtml");
+                }
             </div>
         </div>
     </div>
@@ -349,11 +345,12 @@
 
         $("#FormV1_RefId").val("@Model.FormV1.RefId");
 
+      
     });
 
 
     if ("@Model.FormV1.PkRefNo" != "0") {
-        $("#AccordPage0 * :not(.divsource *)").prop("disabled", true);
+        $("#AccordPage0 * :not(.divsource *,.divRefno *)").prop("disabled", true);
         $("#btnFindDetails").hide();
         $("#btnWorkScheduleAdd").show();
         if ("@Model.FormV1.Status" == "Initialize") {
@@ -392,11 +389,6 @@
                }
 
 
-
-
-
-    $(document).ready(function () {
-        $("#FormV1Dtl_StartTime").timeEntry();
-       });
+    
 
 </script>

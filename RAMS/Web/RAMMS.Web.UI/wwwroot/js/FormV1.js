@@ -1,8 +1,50 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
 
-    debugger
+    HeaderLogic();
+
+    if ($("#FormV1_Status").val() == "") {
+        $("#btnWorkScheduleAdd").hide();
+    }
+     
+    if ($("#FormV1_Status").val() == "" || $("#FormV1_Status").val( ) == "Initialize" || $("#FormV1_Status").val() == "Saved") {
+        $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
+        $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+        $('#FormV1_DtAgr').attr("readonly", "true");
+        $('#FormV1_DtAck').attr("readonly", "true");
+        $('#FormV1_SignAgr').prop('disabled', true);
+        $('#FormV1_SignAck').prop('disabled', true);
+    }
+    else if ($("#FormV1_Status").val() == "Submitted") {
+        $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
+        $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+        $('#FormV1_DtAgr').attr("readonly", "true");
+        $('#FormV1_DtSch').attr("readonly", "true");
+        $('#FormV1_SignAgr').prop('disabled', true);
+        $('#FormV1_SignSch').prop('disabled', true);
+    }
+    else if ($("#FormV1_Status").val() == "Verified") {
+        $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
+        $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
+        $('#FormV1_DtAck').attr("readonly", "true");
+        $('#FormV1_DtSch').attr("readonly", "true");
+        $('#FormV1_SignAck').prop('disabled', true);
+        $('#FormV1_SignSch').prop('disabled', true);
+    }
+    else if ($("#FormV1_Status").val() == "Approved") {
+        $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
+        $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+        $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
+        $('#FormV1_DtAgr').attr("readonly", "true");
+        $('#FormV1_DtAck').attr("readonly", "true");
+        $('#FormV1_DtSch').attr("readonly", "true");
+        $('#FormV1_SignAck').prop('disabled', true);
+        $('#FormV1_SignSch').prop('disabled', true);
+        $('#FormV1_SignAgr').prop('disabled', true);
+    }
+
     $("#ddlActCode").on("change", function () {
-         
+
         var val = $(this).find(":selected").text();
         val = val.split("-").length > 0 ? val.split("-")[1] : val;
         $("#FormV1_ActName").val(val);
@@ -10,35 +52,27 @@
 
     $("#ddlSource").on("change", function () {
 
-         
+
         if ($(this).val() == "S1") {
             $(".divRefno").show();
+            $("#btnWorkScheduleAdd").hide();
         } else {
             $(".divRefno").hide();
+            $("#ddlRefNo").val(0);
+            $('#ddlRefNo').trigger('chosen:updated');
+            $("#btnWorkScheduleAdd").show();
+            LoadS1(0);
         }
     });
 
     $("#ddlRefNo").on("change", function () {
 
         InitAjaxLoading();
-        $("#AccordPage0 * :not(.divsource *)").prop("disabled", false);
-        
-        $.ajax({
-            url: '/MAM/LoadS1Data',
-            dataType: 'JSON',
-            data: { PKRefNo: $("#FormV1_PkRefNo").val(), S1PKRefNo: $(this).val() , ActCode: $("#ddlActCode").val()},
-            type: 'Post',
-            success: function (data) {
-                $("#AccordPage0 * :not(.divsource *)").prop("disabled", true)
-                HideAjaxLoading();
-                InitializeGrid();
-            },
-            error: function (data) {
-                console.error(data);
-            }
-        });
-        
+        EnableDisableElements(false);
+        LoadS1($(this).val());
     });
+
+
 
 
     $("#ddlrmu").on("change", function () {
@@ -50,7 +84,7 @@
         req.RoadCode = '';
         req.RMU = $("#ddlrmu option:selected").text().split("-")[1];
 
-         ;
+        ;
         //RM_div_RMU_Sec_Master
         $.ajax({
             url: '/ERT/RMUSecRoad',
@@ -87,8 +121,8 @@
 
 
     });
+    $("#ddlrmu").trigger('change');
 
-    $("#ddlrmu").trigger("change");
 
 
     $("#ddlSecCode").on("change", function () {
@@ -105,7 +139,7 @@
                     if (data != null) {
                         if (data._RMAllData != undefined && data._RMAllData != null) {
                             $("#formV1SecDesc").val(data._RMAllData.secName);
-                           
+
                             $("#formV1DivisionDesc").val(data._RMAllData.divisionCode);
 
                         }
@@ -127,7 +161,7 @@
 
         return false;
     });
-
+    $("#ddlSecCode").trigger('change');
 
     $("#ddlCrew").on("change", function () {
         var id = $("#ddlCrew option:selected").val();
@@ -140,7 +174,7 @@
                 success: function (data) {
                     $("#ddlCrewName").val(data.userName);
                     $("#ddlCrewName").prop("disabled", true);
-                   
+
                 },
                 error: function (data) {
                     console.error(data);
@@ -158,9 +192,7 @@
 
         return false;
     });
-
-    $("#ddlCrew").trigger("change");
-
+    $("#ddlCrew").trigger('change');
 
 });
 
@@ -285,71 +317,41 @@ function OnScheduledbyChange(tis) {
 
 
 function Save(GroupName, SubmitType) {
-
-     ;
-
+    debugger
     $("#ddlUseridReq").removeClass("validate");
     $("#ddlUseridVer").removeClass("validate");
     $("#ddlUseridRep").removeClass("validate");
     $("#ddlRMU").removeClass("validate");
-
     $("#FormW1_SignReq").removeClass("validate");
     $("#FormW1_SignVer").removeClass("validate");
     $("#FormW1_SignRep").removeClass("validate");
 
-    if (SubmitType != "") {
 
-        $("#FormW1page .svalidate").addClass("validate");
+    if ($("#FormV1_Status").val() == "")
+        $("#FormV1_Status").val("Initialize");
+    else if ($("#FormV1_Status").val() == "Initialize")
+        $("#FormV1_Status").val("Saved");
 
-        if (SubmitType == "Submitted") {
-            $("#FormW1_Status").val("Submitted");
-            $("#FormW1_SubmitSts").val(true);
-            $("#ddlUseridReq").addClass("validate");
-            $("#FormW1_SignReq").addClass("validate");
-
-
-        }
-        else if (SubmitType == "Verified") {
-            $("#ddlUseridReq").addClass("validate");
-            $("#ddlUseridVer").addClass("validate");
-            $("#ddlRMU").addClass("validate");
-            $("#ddlRMU").addClass("validate");
-            $("#FormW1_IwRefNo").addClass("validate");
-            $("#FormW1_SignVer").removeClass("validate");
-
-            if ($("#hdnRecommondedValue").val() == 1 || $("#hdnRecommondedValue").val() == 2) {
-                $("#ddlUseridRep").addClass("validate");
-                $("#FormW1_SignRep").removeClass("validate");
-            }
-        }
-    }
-    else {
-        $("#FormW1_Status").val("Saved");
-    }
-
-    if (ValidatePage('#FormW1page')) {
+    if (ValidatePage('#AccordPage0')) {
         InitAjaxLoading();
-        $("#AccordPage0 * :not(.divsource *)").prop("disabled", false);
+        EnableDisableElements(false);
         $.get('/MAM/SaveFormV1', $("form").serialize(), function (data) {
-            $("#AccordPage0 * :not(.divsource *)").prop("disabled", true)
+            EnableDisableElements(true)
             HideAjaxLoading();
             if (data == -1) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
 
-                if ($("#FormV1_PkRefNo").val() == "" || $("#FormV1_PkRefNo").val() == "0") {
-                    $("#FormV1_PkRefNo").val(data);
-                    $("#hdnPkRefNo").val(data);
-                }
-
                 if (SubmitType == "") {
-                    app.ShowSuccessMessage('Saved Successfully', false);
-                    $("#divFormV1Content").html(data);
                     debugger
+                    UpdateFormAfterSave(data);
+                    app.ShowSuccessMessage('Saved Successfully', false);
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
+                    $('#ddlSource').prop('disabled', true).trigger("chosen:updated");
+                    $('#ddlRefNo').prop('disabled', true).trigger("chosen:updated");
                     location.href = "/MAM/FormV1";
                 }
                 else if (SubmitType == "Submitted") {
@@ -363,15 +365,11 @@ function Save(GroupName, SubmitType) {
         });
     }
 
-
-
 }
 
 
 
 function SaveFormV1WorkSchedule() {
-
-     ;
 
     if (ValidatePage('#FormW1page')) {
         InitAjaxLoading();
@@ -383,15 +381,38 @@ function SaveFormV1WorkSchedule() {
             else {
                 ClearWorkSchedule()
 
-                //if (data != 0)
-                //    $("#FormV1Dtl_PkRefNo").val(data)
                 InitializeGrid();
                 app.ShowSuccessMessage('Saved Successfully', false);
             }
         });
     }
 
+}
 
+function UpdateFormAfterSave(data) {
+
+    $("#FormV1_PkRefNo").val(data.pkRefNo);
+    $("#FormV1_RefId").val(data.refId);
+    $("FormV1_Status").val(data.status)
+    $("#hdnPkRefNo").val(data.pkRefNo);
+  //  $("#btnWorkScheduleAdd").show();
+    $("#btnFindDetails").hide();
+    HeaderLogic();
+
+    var dsRefNo = data.refNoDS;
+
+    if (dsRefNo.length > 0) {
+        $("#ddlRefNo").empty();
+        $("#ddlRefNo").append($("<option></option>").val("0").html("Select Reference No"));
+        $.each(dsRefNo, function (index, v) {
+            $("#ddlRefNo").append($("<option></option>").val(v.value).html(v.text));
+        });
+        $('#ddlRefNo').trigger("chosen:updated");
+
+        //if ($("#FormV1_Status").val() == "Initialize" || $("#FormV1_Status").val() == "") {
+        //    $(".divRefno > select").attr('disabled', false).trigger("chosen:updated")
+        //}
+    }
 }
 
 function ClearWorkSchedule() {
@@ -420,4 +441,146 @@ function DeleteV1WorkSchedule(id) {
             app.ShowErrorMessage('Deleted Successfully', false);
         }
     });
+}
+
+
+function LoadS1(S1PKRefNo) {
+
+    $.ajax({
+        url: '/MAM/LoadS1Data',
+        dataType: 'JSON',
+        data: { PKRefNo: $("#FormV1_PkRefNo").val(), S1PKRefNo: S1PKRefNo, ActCode: $("#ddlActCode").val() },
+        type: 'Post',
+        success: function (data) {
+            EnableDisableElements(true)
+            HideAjaxLoading();
+            InitializeGrid();
+        },
+        error: function (data) {
+            console.error(data);
+        }
+    });
+}
+
+function HeaderLogic() {
+    if ($("#FormV1_PkRefNo").val() != "0") {
+
+        $("#FormV1_Dt").prop("disabled", true);
+        $("#AccordPage0 * > select").attr('disabled', true).trigger("chosen:updated");
+
+        $("#btnFindDetails").hide();
+     //   $("#btnWorkScheduleAdd").show();
+
+        if ($("#FormV1_Source").val() == "S1") {
+            $("#btnWorkScheduleAdd").hide();
+        }
+        else if ($("#hdnView").val() != "1") {
+            $("#btnWorkScheduleAdd").show();
+        }
+
+        if ($("#FormV1_Status").val() == "Initialize") {
+            $(".divRefno").hide();
+            $("#ddlRefNo").prop("disabled", false);
+            if ($("#FormV1_Source").val() == "") {
+                $('#ddlSource').val("V1");
+                $('#ddlSource').trigger('chosen:updated');
+
+            }
+
+            $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
+            $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
+        }
+        //else if ($("#FormV1_Status").val() == "Saved") {
+        //    ///* $("#ddlSource").prop("disabled", true);*/
+        //    //if ($("#FormV1_Source").val() == "S1") {
+        //    //    $('#ddlSource').val("S1");
+        //    //    $('#ddlSource').trigger('chosen:updated');
+        //    //    $(".divRefno").show();
+        //    //}
+
+        //    $('#ddlSource').prop('disabled', true).trigger("chosen:updated");
+        //    $('#ddlRefNo').prop('disabled', true).trigger("chosen:updated");
+        //}
+        else {
+            $('#ddlSource').prop('disabled', true).trigger("chosen:updated");
+            $('#ddlRefNo').prop('disabled', true).trigger("chosen:updated");
+            //  $("select").attr('disabled', true).trigger("chosen:updated")
+        }
+
+    }
+    else {
+        $("#btnWorkScheduleAdd").hide();
+    }
+
+}
+
+function EnableDisableElements(state) {
+
+    // $("#AccordPage0 * :not(.divsource *.divrefno *)").prop("disabled", state);
+    $('#AccordPage0 * > select').prop('disabled', state).trigger("chosen:updated");
+    $("#FormV1_Dt").prop("disabled", state);
+    $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
+    $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
+}
+
+
+function EditFormV1WorkSchedule(obj, view) {
+
+    var currentRow = $(obj).closest("tr");
+    var data = $('#WorkScheduleGridView').DataTable().row(currentRow).data();
+
+    $("#ddlRoadCode").val(data.roadCode);
+    $("#ddlRoadCode").trigger('chosen:updated');
+    $("#ddlRoadCode").trigger('change');
+    $("#FormV1Dtl_StartTime").val(data.startTime);
+    $("#FormV1Dtl_Remarks").val(data.remarks);
+    $("#ddlSiteRef").val(data.siteRef);
+    $("#ddlSiteRef").trigger('chosen:updated');
+    $("#ddlSiteRef").trigger('change');
+
+    if (view == 0) {
+        if (data.fs1dPkRefNo != 0) {
+            $('#ddlRoadCode').prop('disabled', true).trigger("chosen:updated");
+            $('#FormV1Dtl_FrmCh').attr("readonly", true);
+            $('#FormV1Dtl_FrmChDeci').attr("readonly", true);
+            $('#FormV1Dtl_ToCh').attr("readonly", true);
+            $('#FormV1Dtl_ToChDeci').attr("readonly", true);
+            $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
+
+        }
+        else {
+            $('#ddlRoadCode').prop('disabled', false).trigger("chosen:updated");
+            $('#FormV1Dtl_FrmCh').attr("readonly", false);
+            $('#FormV1Dtl_FrmChDeci').attr("readonly", false);
+            $('#FormV1Dtl_ToCh').attr("readonly", false);
+            $('#FormV1Dtl_ToChDeci').attr("readonly", false);
+            $('#ddlSiteRef').prop('disabled', false).trigger("chosen:updated");
+        }
+    }
+    else {
+        $('#ddlRoadCode').prop('disabled', true).trigger("chosen:updated");
+        $('#FormV1Dtl_FrmCh').attr("readonly", true);
+        $('#FormV1Dtl_FrmChDeci').attr("readonly", true);
+        $('#FormV1Dtl_ToCh').attr("readonly", true);
+        $('#FormV1Dtl_ToChDeci').attr("readonly", true);
+        $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
+        $("#FormV1Dtl_Remarks").attr("readonly", true);
+        $("#saveFormV1DtlBtn").hide();
+    }
+
+
+}
+
+
+function GoBack() {
+    if ($("#hdnView").val() == "0") {
+        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+            if (e) {
+                location.href = "/MAM/FormV1";
+
+            }
+        }));
+    }
+    else
+        location.href = "/MAM/FormV1";
 }

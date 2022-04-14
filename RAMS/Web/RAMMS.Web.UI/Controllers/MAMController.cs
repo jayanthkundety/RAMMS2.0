@@ -1036,7 +1036,7 @@ namespace RAMMS.Web.UI.Controllers
             LoadLookupService("RD_Code", "User", "Site Ref");
             return 1;
         }
-        public async Task<IActionResult> AddFormV1(int id, int view)
+        public async Task<IActionResult> AddFormV1(int id, int view=0)
         {
             var _formV1Model = new FormV1Model();
             _formV1Model.FormV1 = new FormV1ResponseDTO();
@@ -1045,6 +1045,8 @@ namespace RAMMS.Web.UI.Controllers
 
             if (_formV1Model.FormV1.UseridSch == 0)
                 _formV1Model.FormV1.UseridSch = _security.UserID;
+
+            _formV1Model.view = view;
 
             //if (_formV1Model.FormV1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
             //{
@@ -1060,7 +1062,7 @@ namespace RAMMS.Web.UI.Controllers
 
 
 
-        public async Task<IActionResult> EditFormV1(int Id)
+        public async Task<IActionResult> EditFormV1(int Id,int view=0)
         {
             await LoadFormV1DropDown();
             var _formV1Model = new FormV1Model();
@@ -1069,11 +1071,11 @@ namespace RAMMS.Web.UI.Controllers
 
             _formV1Model.FormV1.Source = _formV1Model.FormV1.Source == null ? "" : _formV1Model.FormV1.Source;
 
-            if (_formV1Model.FormV1.Status == "Initialize")
-                _formV1Model.RefNoDS = _formV1Service.FindRefNoFromS1(_formV1Model.FormV1);
+            _formV1Model.RefNoDS = _formV1Service.FindRefNoFromS1(_formV1Model.FormV1);
 
             if (_formV1Model.FormV1.UseridSch == 0)
                 _formV1Model.FormV1.UseridSch = _security.UserID;
+            _formV1Model.view = view;
 
             return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
         }
@@ -1085,8 +1087,14 @@ namespace RAMMS.Web.UI.Controllers
             return Json(1);
         }
 
+        public async Task<IActionResult> PullS1Data(int PKRefNo, int S1PKRefNo, string ActCode)
+        {
+            _formV1Service.PullS1Data(PKRefNo, S1PKRefNo, ActCode);
+            return Json(1);
+        }
 
-        
+
+
         public async Task<IActionResult> SaveFormV1(FormV1Model frm)
         {
             int refNo = 0;
@@ -1095,9 +1103,10 @@ namespace RAMMS.Web.UI.Controllers
             {
                 frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
                 frm.RefNoDS = _formV1Service.FindRefNoFromS1(frm.FormV1);
-                frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
-                await LoadFormV1DropDown();
-                return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
+                //frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
+                //await LoadFormV1DropDown();
+                // return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
+                return Json(new { RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS });
             }
             else
             {
@@ -1110,7 +1119,7 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-       
+
         public async Task<IActionResult> SaveFormV1WorkSchedule(FormV1Model frm)
         {
             int? refNo = 0;
@@ -1130,7 +1139,13 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-        
+        public async Task<IActionResult> DeleteFormV1(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formV1Service.DeleteFormV1(id);
+            return Json(rowsAffected);
+        }
+
         public async Task<IActionResult> DeleteFormV1WorkSchedule(int id)
         {
             int? rowsAffected = 0;

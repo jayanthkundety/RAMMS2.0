@@ -27,13 +27,15 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         int? UpdateFormV1WorkSchedule(FormV1DtlResponseDTO FormV1Dtl);
 
+        int? DeleteFormV1(int id);
         int? DeleteFormV1WorkSchedule(int id);
 
 
-        string FindRefNoFromS1(FormV1ResponseDTO FormV1);
+
+        List<SelectListItem> FindRefNoFromS1(FormV1ResponseDTO FormV1);
 
         int LoadS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
 
-
+        int PullS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
     }
 }

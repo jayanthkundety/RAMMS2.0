@@ -16,7 +16,7 @@ namespace RAMMS.Web.UI.Models
 
         public FormV1DtlResponseDTO FormV1Dtl { get; set; }
 
-        public string RefNoDS { get; set; }
+        public List<SelectListItem> RefNoDS { get; set; }
 
         public string SectionName { get; set; }
 
@@ -27,9 +27,13 @@ namespace RAMMS.Web.UI.Models
         public string SecDescription { get; set; }
         public string SecCode { get; set; }
 
+        public int view { get; set; }
+
         public FormV1Model()
         {
-            RefNoDS = "[]";
+            RefNoDS = new List<SelectListItem>();
         }
+
+
     }
 }
