@@ -64,7 +64,7 @@ namespace RAMMS.Repository.Interfaces
         public FormV2EquipmentRepository FormV2EquipmentRepository { get; }
         public FormV2MaterialRepository FormV2MaterialRepository { get; }
 
-
+        public FormQa1Repository FormQa1Repository { get; } 
         //End Vforms
 
         FormS2QuarterDtlRepository FormS2QuarterDtlRepository { get; }
