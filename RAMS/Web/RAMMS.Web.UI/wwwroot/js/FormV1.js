@@ -5,43 +5,71 @@ $(document).ready(function () {
 
     if ($("#FormV1_Status").val() == "") {
         $("#btnWorkScheduleAdd").hide();
+        $("#btnWorkSchedulePull").hide();
     }
-     
-    if ($("#FormV1_Status").val() == "" || $("#FormV1_Status").val( ) == "Initialize" || $("#FormV1_Status").val() == "Saved") {
-        $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
-        $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
-        $('#FormV1_DtAgr').attr("readonly", "true");
-        $('#FormV1_DtAck').attr("readonly", "true");
-        $('#FormV1_SignAgr').prop('disabled', true);
-        $('#FormV1_SignAck').prop('disabled', true);
+    else if ($("#FormV1_Status").val() == "Initialize" || $("#FormV1_Status").val() == "Saved") {
+        $("#btnWorkScheduleAdd").hide();
+        $("#btnWorkSchedulePull").hide();
+        $("#saveFormV1Btn").show();
+        $("#SubmitFormV1Btn").show();
+    } else {
+
+        $("#saveFormV1Btn").hide();
+        $("#SubmitFormV1Btn").hide();
     }
-    else if ($("#FormV1_Status").val() == "Submitted") {
-        $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
-        $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
-        $('#FormV1_DtAgr').attr("readonly", "true");
-        $('#FormV1_DtSch').attr("readonly", "true");
-        $('#FormV1_SignAgr').prop('disabled', true);
-        $('#FormV1_SignSch').prop('disabled', true);
+
+    if ($("#hdnView").val() == "1") {
+        $("#btnWorkScheduleAdd").hide();
+        $("#btnWorkSchedulePull").hide();
+        $('#FormV1_Remarks').attr("readonly", "true");
     }
-    else if ($("#FormV1_Status").val() == "Verified") {
-        $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
-        $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
-        $('#FormV1_DtAck').attr("readonly", "true");
-        $('#FormV1_DtSch').attr("readonly", "true");
-        $('#FormV1_SignAck').prop('disabled', true);
-        $('#FormV1_SignSch').prop('disabled', true);
-    }
-    else if ($("#FormV1_Status").val() == "Approved") {
-        $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
-        $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
-        $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
-        $('#FormV1_DtAgr').attr("readonly", "true");
-        $('#FormV1_DtAck').attr("readonly", "true");
-        $('#FormV1_DtSch').attr("readonly", "true");
-        $('#FormV1_SignAck').prop('disabled', true);
-        $('#FormV1_SignSch').prop('disabled', true);
-        $('#FormV1_SignAgr').prop('disabled', true);
-    }
+
+
+    $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
+    $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+    $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
+    $('#FormV1_DtAgr').attr("readonly", "true");
+    $('#FormV1_DtAck').attr("readonly", "true");
+    $('#FormV1_DtSch').attr("readonly", "true");
+    $('#FormV1_SignAck').prop('disabled', true);
+    $('#FormV1_SignSch').prop('disabled', true);
+    $('#FormV1_SignAgr').prop('disabled', true);
+
+    //if ($("#FormV1_Status").val() == "" || $("#FormV1_Status").val( ) == "Initialize" || $("#FormV1_Status").val() == "Saved") {
+    //    $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#FormV1_DtAgr').attr("readonly", "true");
+    //    $('#FormV1_DtAck').attr("readonly", "true");
+    //    $('#FormV1_SignAgr').prop('disabled', true);
+    //    $('#FormV1_SignAck').prop('disabled', true);
+    //}
+    //else if ($("#FormV1_Status").val() == "Submitted") {
+    //    $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#FormV1_DtAgr').attr("readonly", "true");
+    //    $('#FormV1_DtSch').attr("readonly", "true");
+    //    $('#FormV1_SignAgr').prop('disabled', true);
+    //    $('#FormV1_SignSch').prop('disabled', true);
+    //}
+    //else if ($("#FormV1_Status").val() == "Verified") {
+    //    $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#FormV1_DtAck').attr("readonly", "true");
+    //    $('#FormV1_DtSch').attr("readonly", "true");
+    //    $('#FormV1_SignAck').prop('disabled', true);
+    //    $('#FormV1_SignSch').prop('disabled', true);
+    //}
+    //else if ($("#FormV1_Status").val() == "Approved") {
+    //    $('#ddlAcknowledgedby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#ddlScheduledby').prop('disabled', true).trigger("chosen:updated");
+    //    $('#FormV1_DtAgr').attr("readonly", "true");
+    //    $('#FormV1_DtAck').attr("readonly", "true");
+    //    $('#FormV1_DtSch').attr("readonly", "true");
+    //    $('#FormV1_SignAck').prop('disabled', true);
+    //    $('#FormV1_SignSch').prop('disabled', true);
+    //    $('#FormV1_SignAgr').prop('disabled', true);
+    //}
 
     $("#ddlActCode").on("change", function () {
 
@@ -56,11 +84,14 @@ $(document).ready(function () {
         if ($(this).val() == "S1") {
             $(".divRefno").show();
             $("#btnWorkScheduleAdd").hide();
-        } else {
+            $("#btnWorkSchedulePull").show();
+
+        } else if ($(this).val() == "V1") {
             $(".divRefno").hide();
             $("#ddlRefNo").val(0);
             $('#ddlRefNo').trigger('chosen:updated');
             $("#btnWorkScheduleAdd").show();
+            $("#btnWorkSchedulePull").hide();
             LoadS1(0);
         }
     });
@@ -106,11 +137,7 @@ $(document).ready(function () {
 
                     $('#ddlSecCode').trigger("chosen:updated");
                     $("#ddlSecCode").trigger("change");
-                    document.getElementById("formV1SecDesc").disabled = true;
 
-
-                } else {
-                    document.getElementById("formV1SecDesc").disabled = false;
                 }
             },
             error: function (data) {
@@ -138,14 +165,12 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data != null) {
                         if (data._RMAllData != undefined && data._RMAllData != null) {
-                            $("#formV1SecDesc").val(data._RMAllData.secName);
+                            $("#FormV1_SecName").val(data._RMAllData.secName);
 
-                            $("#formV1DivisionDesc").val(data._RMAllData.divisionCode);
+                            $("#FormV1_DivCode").val(data._RMAllData.divisionCode);
 
                         }
-                        document.getElementById("formV1DivisionDesc").disabled = true;
-                    } else {
-                        document.getElementById("formV1DivisionDesc").disabled = false;
+
                     }
                 },
                 error: function (data) {
@@ -155,8 +180,8 @@ $(document).ready(function () {
             });
         }
         else {
-            $("#formV1SecDesc").val("");
-            $("#formV1DivisionDesc").val("");
+            $("#FormV1_SecName").val("");
+            $("#FormV1_DivCode").val("");
         }
 
         return false;
@@ -172,8 +197,7 @@ $(document).ready(function () {
                 data: { id },
                 type: 'Post',
                 success: function (data) {
-                    $("#ddlCrewName").val(data.userName);
-                    $("#ddlCrewName").prop("disabled", true);
+                    $("#FormV1_Crewname").val(data.userName);
 
                 },
                 error: function (data) {
@@ -182,12 +206,12 @@ $(document).ready(function () {
             });
         }
         else if (id == "99999999") {
-            $("#ddlCrewName").prop("disabled", false);
-            $("#ddlCrewName").val('');
+
+            $("#FormV1_Crewname").val('');
         }
         else {
-            $("#ddlCrewName").prop("disabled", true);
-            $("#ddlCrewName").val('');
+
+            $("#FormV1_Crewname").val('');
         }
 
         return false;
@@ -317,22 +341,19 @@ function OnScheduledbyChange(tis) {
 
 
 function Save(GroupName, SubmitType) {
-    debugger
-    $("#ddlUseridReq").removeClass("validate");
-    $("#ddlUseridVer").removeClass("validate");
-    $("#ddlUseridRep").removeClass("validate");
-    $("#ddlRMU").removeClass("validate");
-    $("#FormW1_SignReq").removeClass("validate");
-    $("#FormW1_SignVer").removeClass("validate");
-    $("#FormW1_SignRep").removeClass("validate");
 
-
-    if ($("#FormV1_Status").val() == "")
-        $("#FormV1_Status").val("Initialize");
-    else if ($("#FormV1_Status").val() == "Initialize")
-        $("#FormV1_Status").val("Saved");
+    
+    if (SubmitType == "Submitted") {
+        $("#FormV1_SubmitSts").val(true);
+    }
 
     if (ValidatePage('#AccordPage0')) {
+
+        if ($("#FormV1_Status").val() == "")
+            $("#FormV1_Status").val("Initialize");
+        else if ($("#FormV1_Status").val() == "Initialize")
+            $("#FormV1_Status").val("Saved");
+
         InitAjaxLoading();
         EnableDisableElements(false);
         $.get('/MAM/SaveFormV1', $("form").serialize(), function (data) {
@@ -344,7 +365,6 @@ function Save(GroupName, SubmitType) {
             else {
 
                 if (SubmitType == "") {
-                    debugger
                     UpdateFormAfterSave(data);
                     app.ShowSuccessMessage('Saved Successfully', false);
                 }
@@ -371,7 +391,7 @@ function Save(GroupName, SubmitType) {
 
 function SaveFormV1WorkSchedule() {
 
-    if (ValidatePage('#FormW1page')) {
+    if (ValidatePage('#WorkScheduleModal')) {
         InitAjaxLoading();
         $.post('/MAM/SaveFormV1WorkSchedule', $("form").serialize(), function (data) {
             HideAjaxLoading();
@@ -393,9 +413,13 @@ function UpdateFormAfterSave(data) {
 
     $("#FormV1_PkRefNo").val(data.pkRefNo);
     $("#FormV1_RefId").val(data.refId);
-    $("FormV1_Status").val(data.status)
+    $("#FormV1_Status").val(data.status)
     $("#hdnPkRefNo").val(data.pkRefNo);
-  //  $("#btnWorkScheduleAdd").show();
+    $("#saveFormV1Btn").show();
+    $("#SubmitFormV1Btn").show();
+
+
+    //  $("#btnWorkScheduleAdd").show();
     $("#btnFindDetails").hide();
     HeaderLogic();
 
@@ -413,6 +437,10 @@ function UpdateFormAfterSave(data) {
         //    $(".divRefno > select").attr('disabled', false).trigger("chosen:updated")
         //}
     }
+
+
+    InitializeGrid();
+
 }
 
 function ClearWorkSchedule() {
@@ -445,13 +473,14 @@ function DeleteV1WorkSchedule(id) {
 
 
 function LoadS1(S1PKRefNo) {
-
+    InitAjaxLoading();
     $.ajax({
         url: '/MAM/LoadS1Data',
         dataType: 'JSON',
         data: { PKRefNo: $("#FormV1_PkRefNo").val(), S1PKRefNo: S1PKRefNo, ActCode: $("#ddlActCode").val() },
         type: 'Post',
         success: function (data) {
+            HideAjaxLoading();
             EnableDisableElements(true)
             HideAjaxLoading();
             InitializeGrid();
@@ -469,19 +498,24 @@ function HeaderLogic() {
         $("#AccordPage0 * > select").attr('disabled', true).trigger("chosen:updated");
 
         $("#btnFindDetails").hide();
-     //   $("#btnWorkScheduleAdd").show();
+        //   $("#btnWorkScheduleAdd").show();
 
-        if ($("#FormV1_Source").val() == "S1") {
+        if ($("#ddlSource").val() == "S1") {
             $("#btnWorkScheduleAdd").hide();
+            $("#btnWorkSchedulePull").show();
         }
-        else if ($("#hdnView").val() != "1") {
-            $("#btnWorkScheduleAdd").show();
+        else {
+            $(".divRefno").hide();
+            if ($("#hdnView").val() != "1") {
+                $("#btnWorkScheduleAdd").show();
+                $("#btnWorkSchedulePull").hide();
+            }
         }
 
-        if ($("#FormV1_Status").val() == "Initialize") {
-            $(".divRefno").hide();
+        if ($("#FormV1_Status").val() == "Initialize" || $("#FormV1_Status").val() == "Saved") {
+
             $("#ddlRefNo").prop("disabled", false);
-            if ($("#FormV1_Source").val() == "") {
+            if ($("#ddlSource").val() == "") {
                 $('#ddlSource').val("V1");
                 $('#ddlSource').trigger('chosen:updated');
 
@@ -492,7 +526,7 @@ function HeaderLogic() {
         }
         //else if ($("#FormV1_Status").val() == "Saved") {
         //    ///* $("#ddlSource").prop("disabled", true);*/
-        //    //if ($("#FormV1_Source").val() == "S1") {
+        //    //if ($("#ddlSource").val() == "S1") {
         //    //    $('#ddlSource').val("S1");
         //    //    $('#ddlSource').trigger('chosen:updated');
         //    //    $(".divRefno").show();
@@ -510,6 +544,7 @@ function HeaderLogic() {
     }
     else {
         $("#btnWorkScheduleAdd").hide();
+        $("#btnWorkSchedulePull").hide();
     }
 
 }
@@ -569,6 +604,31 @@ function EditFormV1WorkSchedule(obj, view) {
     }
 
 
+}
+
+function PullS1Data() {
+   
+    if ($("#ddlRefNo").val() != "0" && $("#ddlRefNo").val() != "") {
+        InitAjaxLoading();
+        $.ajax({
+            url: '/MAM/PullS1Data',
+            dataType: 'JSON',
+            data: { PKRefNo: $("#FormV1_PkRefNo").val(), S1PKRefNo: $("#ddlRefNo").val(), ActCode: $("#ddlActCode").val() },
+            type: 'Post',
+            success: function (data) {
+                HideAjaxLoading();
+                EnableDisableElements(true)
+                HideAjaxLoading();
+                InitializeGrid();
+            },
+            error: function (data) {
+                console.error(data);
+            }
+        });
+    }
+    else {
+        app.ShowWarningMessage('Please select Refrence No', false);
+    }
 }
 
 
