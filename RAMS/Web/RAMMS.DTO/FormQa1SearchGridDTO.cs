@@ -10,13 +10,18 @@ namespace RAMMS.DTO
         public string Reference_No { get; set; }
         public string RMU { get; set; }
       
-        public string Road_Code { get; set; }
+        public string Section { get; set; } 
+        public string RoadCode { get; set; }
 
         public string RoadName { get; set; }
 
+        public string Crew { get; set; }
+
         public string  ActivityCode { get; set; }
 
-        public string WWS { get; set; }
+        public string ByFromdate { get; set; }
+
+        public string ByTodate { get; set; }
 
         public string SmartInputValue { get; set; }
         public string sortOrder { get; set; }

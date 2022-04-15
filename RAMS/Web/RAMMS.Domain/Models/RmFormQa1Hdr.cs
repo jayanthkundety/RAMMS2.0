@@ -7,6 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public RmFormQa1Hdr()
         {
+            RmFormQa1EqVh = new HashSet<RmFormQa1EqVh>();
             RmFormQa1Gc = new HashSet<RmFormQa1Gc>();
             RmFormQa1Gen = new HashSet<RmFormQa1Gen>();
             RmFormQa1Lab = new HashSet<RmFormQa1Lab>();
@@ -64,6 +65,7 @@ namespace RAMMS.Domain.Models
         public string Fqa1hStatus { get; set; }
         public string Fqa1hAuditLog { get; set; }
 
+        public virtual ICollection<RmFormQa1EqVh> RmFormQa1EqVh { get; set; }
         public virtual ICollection<RmFormQa1Gc> RmFormQa1Gc { get; set; }
         public virtual ICollection<RmFormQa1Gen> RmFormQa1Gen { get; set; }
         public virtual ICollection<RmFormQa1Lab> RmFormQa1Lab { get; set; }

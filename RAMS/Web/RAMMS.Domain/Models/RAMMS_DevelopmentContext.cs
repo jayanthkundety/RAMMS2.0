@@ -148,7 +148,6 @@ namespace RAMMS.Domain.Models
             }
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AssetFieldDtl>(entity =>
@@ -8182,6 +8181,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FQA1EV_V_No")
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1evFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1EqVh)
+                    .HasForeignKey(d => d.Fqa1evFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_EQ_VH_RM_FormQA1_HDR");
             });
 
             modelBuilder.Entity<RmFormQa1Gc>(entity =>
@@ -8289,6 +8293,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fqa1hActName)
+                    .HasColumnName("FQA1H_ACT_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fqa1hActiveYn).HasColumnName("FQA1H_Active_YN");
 
                 entity.Property(e => e.Fqa1hAuditLog).HasColumnName("FQA1H_AuditLog");
@@ -8302,6 +8311,29 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fqa1hCrew).HasColumnName("FQA1H_Crew");
+
+                entity.Property(e => e.Fqa1hCrewname)
+                    .HasColumnName("FQA1H_Crewname")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hDateAudit)
+                    .HasColumnName("FQA1H_Date_AUDIT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hDateWit)
+                    .HasColumnName("FQA1H_Date_WIT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hDesignationAudit)
+                    .HasColumnName("FQA1H_Designation_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hDesignationWit)
+                    .HasColumnName("FQA1H_Designation_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1hDt)
                     .HasColumnName("FQA1H_DT")
@@ -8340,6 +8372,16 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FQA1H_Mod_DT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Fqa1hOfAudit)
+                    .HasColumnName("FQA1H_Of_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hOfWit)
+                    .HasColumnName("FQA1H_Of_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fqa1hRefId)
                     .HasColumnName("FQA1H_Ref_ID")
                     .HasMaxLength(100)
@@ -8375,6 +8417,10 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fqa1hSignAudit).HasColumnName("FQA1H_Sign_AUDIT");
+
+                entity.Property(e => e.Fqa1hSignWit).HasColumnName("FQA1H_Sign_WIT");
+
                 entity.Property(e => e.Fqa1hStatus)
                     .HasColumnName("FQA1H_Status")
                     .HasMaxLength(30);
@@ -8383,13 +8429,22 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1hUseridAssgn).HasColumnName("FQA1H_Userid_Assgn");
 
+                entity.Property(e => e.Fqa1hUseridAudit).HasColumnName("FQA1H_Userid_AUDIT");
+
                 entity.Property(e => e.Fqa1hUseridChked).HasColumnName("FQA1H_Userid_Chked");
 
                 entity.Property(e => e.Fqa1hUseridExec).HasColumnName("FQA1H_Userid_Exec");
 
+                entity.Property(e => e.Fqa1hUseridWit).HasColumnName("FQA1H_Userid_WIT");
+
                 entity.Property(e => e.Fqa1hUsernameAssgn)
                     .HasColumnName("FQA1H_Username_Assgn")
                     .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hUsernameAudit)
+                    .HasColumnName("FQA1H_Username_AUDIT")
+                    .HasMaxLength(250)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1hUsernameChked)
@@ -8400,47 +8455,6 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fqa1hUsernameExec)
                     .HasColumnName("FQA1H_Username_Exec")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fqa1hDateAudit)
-                    .HasColumnName("FQA1H_Date_AUDIT")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fqa1hDateWit)
-                    .HasColumnName("FQA1H_Date_WIT")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fqa1hDesignationAudit)
-                    .HasColumnName("FQA1H_Designation_AUDIT")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fqa1hDesignationWit)
-                    .HasColumnName("FQA1H_Designation_WIT")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fqa1hOfAudit)
-                    .HasColumnName("FQA1H_Of_AUDIT")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fqa1hOfWit)
-                    .HasColumnName("FQA1H_Of_WIT")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fqa1hSignAudit).HasColumnName("FQA1H_Sign_AUDIT");
-
-                entity.Property(e => e.Fqa1hSignWit).HasColumnName("FQA1H_Sign_WIT");
-
-                entity.Property(e => e.Fqa1hUseridAudit).HasColumnName("FQA1H_Userid_AUDIT");
-
-                entity.Property(e => e.Fqa1hUseridWit).HasColumnName("FQA1H_Userid_WIT");
-
-                entity.Property(e => e.Fqa1hUsernameAudit)
-                    .HasColumnName("FQA1H_Username_AUDIT")
-                    .HasMaxLength(250)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1hUsernameWit)
@@ -13626,7 +13640,6 @@ namespace RAMMS.Domain.Models
 
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

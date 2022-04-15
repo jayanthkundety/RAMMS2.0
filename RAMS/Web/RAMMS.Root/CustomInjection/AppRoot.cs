@@ -95,7 +95,7 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IFormWNService, FormWNService>();
             services.AddTransient<IFormV1Service, FormV1Service>();
             services.AddTransient<IFormV2Service, FormV2Service>();
-
+            services.AddTransient<IFormQa1Service, FormQa1Service>();
 
         }
 

@@ -8185,6 +8185,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FQA1EV_V_No")
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1evFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1EqVh)
+                    .HasForeignKey(d => d.Fqa1evFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_EQ_VH_RM_FormQA1_HDR");
             });
 
             modelBuilder.Entity<RmFormQa1Gc>(entity =>

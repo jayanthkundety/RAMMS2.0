@@ -48,20 +48,51 @@ namespace RAMMS.Repository
 
             if (filterOptions.Filters != null)
             {
-                if (!string.IsNullOrEmpty(filterOptions.Filters.Road_Code))
-                {
-                    query = query.Where(x => x.Fqa1hRoadCode == filterOptions.Filters.Road_Code);
-                }
 
-                if (!string.IsNullOrEmpty(filterOptions.Filters.RoadName))
-                {
-                    query = query.Where(x => x.Fqa1hRoadName == filterOptions.Filters.RoadName);
-                }
-
+               
                 if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
                 {
                     query = query.Where(x => x.Fqa1hRmu == filterOptions.Filters.RMU);
                 }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.Fqa1hSecCode == filterOptions.Filters.Section);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.RoadCode))
+                {
+                    query = query.Where(x => x.Fqa1hRoadCode == filterOptions.Filters.RoadCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
+                {
+                    query = query.Where(x => x.Fqa1hCrew.HasValue ? x.Fqa1hCrew == Convert.ToInt32(filterOptions.Filters.Crew) : x.Fqa1hCrew == null);
+
+                }
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.Fqa1hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.Fqa1hDt.HasValue ? (x.Fqa1hDt.Value.Year == dt.Year && x.Fqa1hDt.Value.Month == dt.Month && x.Fqa1hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.Fqa1hDt.HasValue ? (x.Fqa1hDt.Value.Year == dt.Year && x.Fqa1hDt.Value.Month == dt.Month && x.Fqa1hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
                 {

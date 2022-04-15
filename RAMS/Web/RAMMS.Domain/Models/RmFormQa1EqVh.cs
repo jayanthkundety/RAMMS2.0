@@ -17,5 +17,7 @@ namespace RAMMS.Domain.Models
         public DateTime? Fqa1evModDt { get; set; }
         public int? Fqa1evCrBy { get; set; }
         public DateTime? Fqa1evCrDt { get; set; }
+
+        public virtual RmFormQa1Hdr Fqa1evFqa1hPkRefNoNavigation { get; set; }
     }
 }
