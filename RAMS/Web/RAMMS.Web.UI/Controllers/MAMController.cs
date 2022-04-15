@@ -947,43 +947,52 @@ namespace RAMMS.Web.UI.Controllers
 
         public async Task<IActionResult> FormV1()
         {
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "RMU";
+            ViewData["RMU"] = await _formN1Service.GetRMU();
+
+            ddLookup.Type = "Act-FormD";
+            ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
+
+            LoadLookupService("User");
+
+            FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+
+            ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
             return View("~/Views/MAM/FormV1/FormV1.cshtml");
         }
 
-        //  [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> LoadFormV1List(DataTableAjaxPostModel<FormV1SearchGridDTO> formV1Filter)
         {
 
-            if (formV1Filter.filterData != null)
+            if (Request.Form.ContainsKey("columns[0][search][value]"))
             {
-                if (Request.Form.ContainsKey("columns[0][search][value]"))
-                {
-                    formV1Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[1][search][value]"))
-                {
-                    formV1Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[2][search][value]"))
-                {
-                    formV1Filter.filterData.Section_Code = Request.Form["columns[2][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[3][search][value]"))
-                {
-                    formV1Filter.filterData.Crew_Supervisor = Request.Form["columns[3][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[4][search][value]"))
-                {
-                    formV1Filter.filterData.Activity_Code = Request.Form["columns[4][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[5][search][value]"))
-                {
-                    formV1Filter.filterData.DateFrom = Request.Form["columns[5][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[6][search][value]"))
-                {
-                    formV1Filter.filterData.DateFrom = Request.Form["columns[6][search][value]"].ToString();
-                }
+                formV1Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[1][search][value]"))
+            {
+                formV1Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                formV1Filter.filterData.Section = Request.Form["columns[2][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[3][search][value]"))
+            {
+                formV1Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                formV1Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                formV1Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                formV1Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
             }
 
             FilteredPagingDefinition<FormV1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1SearchGridDTO>();
@@ -1036,7 +1045,7 @@ namespace RAMMS.Web.UI.Controllers
             LoadLookupService("RD_Code", "User", "Site Ref");
             return 1;
         }
-        public async Task<IActionResult> AddFormV1(int id, int view)
+        public async Task<IActionResult> AddFormV1(int id, int view=0)
         {
             var _formV1Model = new FormV1Model();
             _formV1Model.FormV1 = new FormV1ResponseDTO();
@@ -1045,6 +1054,8 @@ namespace RAMMS.Web.UI.Controllers
 
             if (_formV1Model.FormV1.UseridSch == 0)
                 _formV1Model.FormV1.UseridSch = _security.UserID;
+
+            _formV1Model.view = view;
 
             //if (_formV1Model.FormV1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
             //{
@@ -1060,7 +1071,7 @@ namespace RAMMS.Web.UI.Controllers
 
 
 
-        public async Task<IActionResult> EditFormV1(int Id)
+        public async Task<IActionResult> EditFormV1(int Id,int view=0)
         {
             await LoadFormV1DropDown();
             var _formV1Model = new FormV1Model();
@@ -1069,11 +1080,27 @@ namespace RAMMS.Web.UI.Controllers
 
             _formV1Model.FormV1.Source = _formV1Model.FormV1.Source == null ? "" : _formV1Model.FormV1.Source;
 
-            if (_formV1Model.FormV1.Status == "Initialize")
-                _formV1Model.RefNoDS = _formV1Service.FindRefNoFromS1(_formV1Model.FormV1);
+            _formV1Model.RefNoDS = _formV1Service.FindRefNoFromS1(_formV1Model.FormV1);
 
             if (_formV1Model.FormV1.UseridSch == 0)
+            {
                 _formV1Model.FormV1.UseridSch = _security.UserID;
+                _formV1Model.FormV1.DtSch = DateTime.Today;
+            }
+            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Submitted)
+            {
+                _formV1Model.FormV1.UseridAgr = _security.UserID;
+                _formV1Model.FormV1.DtAgr = DateTime.Today;
+            }
+            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Verified)
+            {
+                _formV1Model.FormV1.UseridAck = _security.UserID;
+                _formV1Model.FormV1.DtAck = DateTime.Today;
+            }
+
+
+
+            _formV1Model.view = view;
 
             return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
         }
@@ -1085,8 +1112,14 @@ namespace RAMMS.Web.UI.Controllers
             return Json(1);
         }
 
+        public async Task<IActionResult> PullS1Data(int PKRefNo, int S1PKRefNo, string ActCode)
+        {
+            _formV1Service.PullS1Data(PKRefNo, S1PKRefNo, ActCode);
+            return Json(1);
+        }
 
-        
+
+
         public async Task<IActionResult> SaveFormV1(FormV1Model frm)
         {
             int refNo = 0;
@@ -1095,9 +1128,10 @@ namespace RAMMS.Web.UI.Controllers
             {
                 frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
                 frm.RefNoDS = _formV1Service.FindRefNoFromS1(frm.FormV1);
-                frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
-                await LoadFormV1DropDown();
-                return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
+                //frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
+                //await LoadFormV1DropDown();
+                // return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
+                return Json(new { RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS });
             }
             else
             {
@@ -1110,7 +1144,7 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-       
+
         public async Task<IActionResult> SaveFormV1WorkSchedule(FormV1Model frm)
         {
             int? refNo = 0;
@@ -1130,7 +1164,13 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-        
+        public async Task<IActionResult> DeleteFormV1(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formV1Service.DeleteFormV1(id);
+            return Json(rowsAffected);
+        }
+
         public async Task<IActionResult> DeleteFormV1WorkSchedule(int id)
         {
             int? rowsAffected = 0;

@@ -1,4 +1,5 @@
-﻿using RAMMS.Domain.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using RAMMS.Domain.Models;
 using RAMMS.DTO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
@@ -14,6 +15,8 @@ namespace RAMMS.Repository.Interfaces
 
         Task<List<RmFormV1Hdr>> GetFilteredRecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
+        Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+
         Task<List<RmFormV1Dtl>> GetFormV1WorkScheduleGridList(FilteredPagingDefinition<FormV1WorkScheduleGridDTO> filterOptions, int V1PkRefNo);
 
         Task<RmFormV1Hdr> FindFormV1ByID(int id);
@@ -21,15 +24,15 @@ namespace RAMMS.Repository.Interfaces
         int? SaveFormV1WorkSchedule(RmFormV1Dtl FormV1Dtl);
         int? UpdateFormV1WorkSchedule(RmFormV1Dtl FormV1Dtl);
 
+        int? DeleteFormV1(int id);
         int? DeleteFormV1WorkSchedule(int id);
 
-        string FindRefNoFromS1(FormV1ResponseDTO FormV1);
+        List<SelectListItem> FindRefNoFromS1(FormV1ResponseDTO FormV1);
 
         int LoadS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
 
-        //int SaveFormWD(RmIwFormWd FormWD);
-        //int? DeleteFormWDClause(int Id);
-
+        int PullS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
+ 
 
     }
 }

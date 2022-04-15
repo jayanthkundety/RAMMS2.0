@@ -44,21 +44,22 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             PagingResult<FormV1ResponseDTO> result = new PagingResult<FormV1ResponseDTO>();
 
-            List<FormV1ResponseDTO> formV1List = new List<FormV1ResponseDTO>();
+            List<FormV1ResponseDTO> formDList = new List<FormV1ResponseDTO>();
             try
             {
                 var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredRecordList(filterOptions);
 
-                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                result.TotalRecords = await _repoUnit.FormV1Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
 
                 foreach (var listData in filteredRecords)
                 {
                     var _ = _mapper.Map<FormV1ResponseDTO>(listData);
-                    // _.ProcessStatus = listData.FdhStatus;
-                    formV1List.Add(_);
+                    // _.ProcessStatus = listData.FV1hStatus;
+
+                    formDList.Add(_);
                 }
 
-                result.PageResult = formV1List;
+                result.PageResult = formDList;
 
                 result.PageNo = filterOptions.StartPageNo;
                 result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
@@ -88,7 +89,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                     FormV1WorkScheduleGridDTO obj = new FormV1WorkScheduleGridDTO();
 
                     obj.Fv1hPkRefNo = listData.Fv1dFv1hPkRefNo;
+                    obj.Fs1dPkRefNo = listData.Fv1dS1dPkRefNo;
                     obj.Chainage = Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageFrom = Convert.ToString(listData.Fv1dFrmCh);
+                    obj.ChainageFromDec = Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageTo = Convert.ToString(listData.Fv1dToCh);
+                    obj.ChainageToDec = Convert.ToString(listData.Fv1dToChDeci);
                     obj.PkRefNo = listData.Fv1dPkRefNo;
                     obj.Remarks = listData.Fv1dRemarks;
                     obj.RoadCode = listData.Fv1dRoadCode;
@@ -133,13 +139,8 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormV1);
                 FormV1.PkRefNo = _mapper.Map<FormV1ResponseDTO>(entity).PkRefNo;
-
-
-                //var objS1 = _repoUnit.formS1Repository.FindAsync(x => x.FsihRmu == domainModelFormV1.Fv1hRmu && x.a == domainModelFormV1.Fv1hActCode && x.sec == domainModelFormV1.Fv1hSecCode && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hActiveYn == true).Result;
-                //if (obj != null)
-
-                //    FormV1.S1RefNoDetails = JsonSerializer.Serialize(new List<SelectListItem> { new SelectListItem { Text = "S1", Value = "1" }, new SelectListItem { Text = "V1", Value = "2" } });
-
+                FormV1.RefId = domainModelFormV1.Fv1hRefId;
+                FormV1.Status = domainModelFormV1.Fv1hStatus;
 
                 return FormV1;
             }
@@ -183,6 +184,23 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw ex;
             }
         }
+
+        public int? DeleteFormV1(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormV1(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
 
         public int? DeleteFormV1WorkSchedule(int id)
         {
@@ -232,7 +250,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (existsObj != null)
                 {
                     form.Fv1hAuditLog = existsObj.Log;
-                    form.Fv1hStatus = existsObj.Status;
+                   // form.Fv1hStatus = existsObj.Status;
 
                 }
 
@@ -266,7 +284,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         }
 
-        public string FindRefNoFromS1(FormV1ResponseDTO FormV1)
+        public List<SelectListItem> FindRefNoFromS1(FormV1ResponseDTO FormV1)
         {
             return _repo.FindRefNoFromS1(FormV1);
         }
@@ -276,24 +294,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _repo.LoadS1Data(PKRefNo, S1PKRefNo, ActCode);
         }
 
-        //public async Task<int> DeActivateFormWD(int formNo)
-        //{
-        //    int rowsAffected;
-        //    try
-        //    {
-        //        var domainModelFormV1 = await _repoUnit.FormWDRepository.GetByIdAsync(formNo);
-        //        domainModelFormV1.FwdActiveYn = false;
-        //        _repoUnit.FormWDRepository.Update(domainModelFormV1);
-        //        rowsAffected = await _repoUnit.CommitAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
 
-        //    return rowsAffected;
-        //}
+        public int PullS1Data(int PKRefNo, int S1PKRefNo, string ActCode)
+        {
+            return _repo.PullS1Data(PKRefNo, S1PKRefNo, ActCode);
+        }
 
     }
 }
