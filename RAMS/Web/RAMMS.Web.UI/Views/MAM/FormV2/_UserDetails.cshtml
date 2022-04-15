@@ -5,13 +5,13 @@
     var v2PkRefNo = Model.SaveFormV2Model.PkRefNo;
     var rights = security;
     var vd = Model.SaveFormV2Model.DtAck;
-    string _DtAck = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd");
+    string _DtAck = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 
     var _id = Model.SaveFormV2Model.DtAgr;
-    string _DtAgr = _id.HasValue ? _id.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd");
+    string _DtAgr = _id.HasValue ? _id.Value.ToString("yyyy-MM-dd") : "";
 
     vd = Model.SaveFormV2Model.DtSch;
-    string _DtSch = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd");
+    string _DtSch = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
 }
 <div class="main-container" id="container">
     <div id="content">

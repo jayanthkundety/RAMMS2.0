@@ -305,8 +305,6 @@ namespace RAMMS.Business.ServiceProvider.Services
                 foreach (var listData in filteredRecords)
                 {
                     var _ = _mapper.Map<FormV2HeaderResponseDTO>(listData);
-                    // _.ProcessStatus = listData.Fv2hStatus;
-
                     formDList.Add(_);
                 }
 
@@ -914,13 +912,13 @@ namespace RAMMS.Business.ServiceProvider.Services
         public async Task<FormV2HeaderResponseDTO> FindDetails(FormV2HeaderResponseDTO headerDTO)
         {
             RmFormV2Hdr header = _mapper.Map<RmFormV2Hdr>(headerDTO);
-            var obj =  _repoUnit.FormV2Repository.FindAsync(x => x.Fv2hRmu == header.Fv2hRmu && x.Fv2hSecCode == header.Fv2hSecCode && x.Fv2hActCode == header.Fv2hActCode && x.Fv2hDt == header.Fv2hDt && x.Fv2hCrew == header.Fv2hCrew && x.Fv2hActiveYn == true).Result;
-            return _mapper.Map<FormV2HeaderResponseDTO>(obj);
+            var obj = _repoUnit.FormV2Repository.FindAllAsync(x => x.Fv2hRmu == header.Fv2hRmu && x.Fv2hSecCode == header.Fv2hSecCode && x.Fv2hActCode == header.Fv2hActCode && x.Fv2hDt == header.Fv2hDt && x.Fv2hCrew == header.Fv2hCrew && x.Fv2hActiveYn == true).Result;
+            return _mapper.Map<FormV2HeaderResponseDTO>(obj.FirstOrDefault());
         }
 
         public async Task<FormV1ResponseDTO> FindV1Details(FormV2HeaderResponseDTO header)
         {
-            var obj =  _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == header.Rmu && x.Fv1hSecCode == header.SecCode && x.Fv1hActCode == header.ActCode && x.Fv1hDt.Value.Year == header.Dt.Value.Year && x.Fv1hDt.Value.Month == header.Dt.Value.Month && x.Fv1hDt.Value.Day == header.Dt.Value.Day && x.Fv1hCrew == header.Crew && x.Fv1hActiveYn == true).Result;
+            var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == header.Rmu && x.Fv1hSecCode == header.SecCode && x.Fv1hActCode == header.ActCode && x.Fv1hDt.Value.Year == header.Dt.Value.Year && x.Fv1hDt.Value.Month == header.Dt.Value.Month && x.Fv1hDt.Value.Day == header.Dt.Value.Day && x.Fv1hCrew == header.Crew && x.Fv1hActiveYn == true).Result;
             return _mapper.Map<FormV1ResponseDTO>(obj);
         }
 
@@ -1012,14 +1010,14 @@ namespace RAMMS.Business.ServiceProvider.Services
                 getHeader.Fv2hUseridSch = formDDto.UseridSch ?? getHeader.Fv2hUseridSch ?? null;
                 getHeader.Fv2hUsernameSch = formDDto.UsernameSch ?? getHeader.Fv2hUsernameSch ?? null;
                 getHeader.Fv2hDesignationSch = formDDto.DesignationSch ?? getHeader.Fv2hDesignationSch ?? null;
-                getHeader.Fv2hDtSch = formDDto.DtSch ?? getHeader.Fv2hDtSch ?? null;                
+                getHeader.Fv2hDtSch = formDDto.DtSch ?? getHeader.Fv2hDtSch ?? null;
 
                 getHeader.Fv2hUseridAgr = formDDto.UseridAgr ?? getHeader.Fv2hUseridAgr ?? null;
                 getHeader.Fv2hUsernameAgr = formDDto.UsernameAgr ?? getHeader.Fv2hUsernameAgr ?? null;
                 getHeader.Fv2hDesignationAgr = formDDto.DesignationAgr ?? getHeader.Fv2hDesignationAgr ?? null;
                 getHeader.Fv2hDtAgr = formDDto.DtAgr ?? getHeader.Fv2hDtAgr ?? null;
 
-               
+
                 var formD = _mapper.Map<RmFormV2Hdr>(getHeader);
 
 

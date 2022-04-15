@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     $("#formV2SectionCode").on("change", function () {
         var ddldata = $(this).val();
-        $("#hdnSecCode").val(ddldata);
+        //$("#hdnSecCode").val(ddldata);
         if (ddldata != "") {
             $.ajax({
                 url: '/MAM/GetAllRoadCodeDataBySectionCode',
@@ -32,8 +32,9 @@ $(document).ready(function () {
                 type: 'Post',
                 success: function (data) {
                     if (data != null) {
+                        $("#hdnSecCode").val(data._RMAllData.secName);
                         if (data._RMAllData != undefined && data._RMAllData != null) {
-                            
+
                             $("#formV2SectionName").val(data._RMAllData.secName);
                             $("#formV2DivCode").val(data._RMAllData.divisionCode);
                             $("#formV2DivCodeName").val(data._RMAllData.DivisionName);
@@ -55,7 +56,7 @@ $(document).ready(function () {
         }
         return false;
     });
-   
+
     $("#formV2rmu").on("change", function () {
         var val = $(this).find(":selected").text();
         val = val.split("-").length > 0 ? val.split("-")[1] : val;
@@ -113,11 +114,11 @@ $(document).ready(function () {
         $("#formV2SectionCode").chosen('destroy');
 
         $("#formV2CrewCode").trigger("change");
-        $("#formV2CrewCode").trigger("chosen:updated");        
+        $("#formV2CrewCode").trigger("chosen:updated");
         $("#formV2CrewCode").attr("disabled", "disabled").off('click');
         $("#formV2CrewCode").chosen('destroy');
 
-        
+
         $("#formV2ActivityCode").trigger("change");
         $("#formV2ActivityCode").trigger("chosen:updated");
         $("#formV2ActivityCode").attr("disabled", "disabled").off('click');
@@ -125,7 +126,7 @@ $(document).ready(function () {
 
         $("#formV2Date").attr("disabled", "disabled");
         $("#formV2FindDetailsBtn").hide();
-        
+
         $("#saveFormV2Btn").show();
         $("#SubmitFormV2Btn").show();
     }
@@ -259,32 +260,19 @@ $(document).on("click", "#formV2FindDetailsBtn", function () {
                         if (e) {
                             $("#hdnV1PkRefNo").val(data.v1id);
                             $.ajax({
-                                url: '/MAM/CreateV2',
+                                url: '/MAM/CreateFormV2',
                                 data: FormValueCollection("#FormV2Headers"),
                                 type: 'POST',
                                 success: function (data) {
-                                    $("#div-lab-container").html(data);
-                                    if (view == 1 || $("#hdnView").val() == "1") {
-                                        $("#hdnLabView").val(1);
-                                        $("#FormV2LabourModalid").html("View Labour")
-                                        $("#div-lab-container *").attr("disabled", "disabled").off('click');
-                                        $("#saveFormV2LabBtn").css("display", "none");
-                                        $("#cancelAddModelBtn").attr("disabled", false);
-                                        $("#saveContinueFormV2LabBtn").css("display", "none");
-                                    } else if ($("#hdnLabid").val() != "") {
-                                        $("#FormV2LabourModalid").html("Edit Labour")
-                                        //$("#hdnLabView").val(0);
-                                    }
-                                    HideAjaxLoading();
-                                    //$("body").removeClass("loading");
+                                    createV2(data);
                                 }
                             })
-                            createV2(data);
+
                         }
                     }));
                     return;
-                }
-                createV2(data);
+                } else
+                    createV2(data);
             }
         }, "Finding");
     }
@@ -312,27 +300,31 @@ function createV2(data) {
 
     DtlGridLoad(data.PkRefNo);
 
-    $("#formV2RecordedBy").val(data.UserIdSch).trigger("chosen:updated");
-    $("#formV2VettedBy").val(data.UseridAgr).trigger("chosen:updated");
-    $("#formV2FacilitatedBy").val(data.UseridAck).trigger("chosen:updated");
 
-    $("#formV2RecordedName").val(data.UsernameSch);
-    $("#formV2RecordedDesig").val(data.DesignationSch);
+    $("#formV2RecordedBy").val(data.UseridSch).trigger("chosen:updated");
+    $("#formV2RecordedBy").trigger("change");
+    $("#formV2VettedBy").val(data.UseridAgr).trigger("chosen:updated");
+    $("#formV2VettedBy").trigger("change");
+    $("#formV2FacilitatedBy").val(data.UseridAck).trigger("chosen:updated");
+    $("#formV2FacilitatedBy").trigger("change");
+
+    //$("#formV2RecordedName").val(data.UsernameSch);
+    //$("#formV2RecordedDesig").val(data.DesignationSch);
     var Format = "YYYY-MM-DD";
-    if (data.DateReported != null) {
+    if (data.DtSch != null) {
         var date = new Date(data.DtSch);
         $("#formW2RecordedDate").val(date.ToString(Format));
     }
 
-    $("#formV2VettedName").val(data.UsernameAgr);
-    $("#formV2VettedDesig").val(data.DesignationAgr);
-    if (data.DtVer != null) {
-        date = new Date(data.DtAgr);
+    //$("#formV2VettedName").val(data.UsernameAgr);
+    //$("#formV2VettedDesig").val(data.DesignationAgr);
+    if (data.DtAgr != null) {
+        date = new Date(data.DtAgr);    
         $("#formW2VettedDate").val(date.ToString(Format));
     }
-    $("#formV2FacilitatedName").val(data.UsernameAck);
-    $("#formV2FacilitatedDesig").val(data.DesignationAck);
-    if (data.DtVet != null) {
+    //$("#formV2FacilitatedName").val(data.UsernameAck);
+    //$("#formV2FacilitatedDesig").val(data.DesignationAck);
+    if (data.DtAck != null) {
         date = new Date(data.DtAck);
         $("#formV2FacilitatedDate").val(date.ToString(Format));
     }
@@ -548,12 +540,12 @@ function FormMatGridRefresh() {
     oTable.draw();
 }
 
-function FormV2DtlGridRefresh() {
-    var filterData = new Object();
-    oTable = $('#FormV2DetailsGridView').DataTable();
-    oTable.data = filterData;
-    oTable.draw();
-}
+//function FormV2DtlGridRefresh() {
+//    var filterData = new Object();
+//    oTable = $('#FormV2DetailsGridView').DataTable();
+//    oTable.data = filterData;
+//    oTable.draw();
+//}
 
 function FormEquipGridRefresh() {
     var filterData = new Object();
@@ -685,7 +677,7 @@ function saveHdr(isSubmit) {
 
         //if ($("#formV2ReportedByUserId").find(":selected").val() != "") saveObj.ModBy = $("#formV2ReportedByUserId").find(":selected").val();
         //if ($("#FormV2ReportedByDate").val() != "mm/dd/yyyy") saveObj.ModDt = $("#FormV2ReportedByDate").val();
-        
+
 
         saveObj.ActiveYn = true;
         saveObj.SubmitSts = isSubmit;

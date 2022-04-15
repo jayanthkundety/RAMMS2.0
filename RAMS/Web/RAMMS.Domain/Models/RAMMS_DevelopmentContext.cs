@@ -11,10 +11,6 @@ namespace RAMMS.Domain.Models
         {
         }
 
-        public RAMMS_DevelopmentContext(DbContextOptions<RAMMS_DevelopmentContext> options)
-            : base(options)
-        {
-        }
         public virtual DbSet<AssetFieldDtl> AssetFieldDtl { get; set; }
         public virtual DbSet<AssetImport> AssetImport { get; set; }
         public virtual DbSet<ImportAssetUse> ImportAssetUse { get; set; }
@@ -77,6 +73,16 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmFormJHdr> RmFormJHdr { get; set; }
         public virtual DbSet<RmFormN1Hdr> RmFormN1Hdr { get; set; }
         public virtual DbSet<RmFormN2Hdr> RmFormN2Hdr { get; set; }
+        public virtual DbSet<RmFormQa1EqVh> RmFormQa1EqVh { get; set; }
+        public virtual DbSet<RmFormQa1Gc> RmFormQa1Gc { get; set; }
+        public virtual DbSet<RmFormQa1Gen> RmFormQa1Gen { get; set; }
+        public virtual DbSet<RmFormQa1Hdr> RmFormQa1Hdr { get; set; }
+        public virtual DbSet<RmFormQa1Lab> RmFormQa1Lab { get; set; }
+        public virtual DbSet<RmFormQa1Mat> RmFormQa1Mat { get; set; }
+        public virtual DbSet<RmFormQa1Ssc> RmFormQa1Ssc { get; set; }
+        public virtual DbSet<RmFormQa1Tes> RmFormQa1Tes { get; set; }
+        public virtual DbSet<RmFormQa1Wcq> RmFormQa1Wcq { get; set; }
+        public virtual DbSet<RmFormQa1We> RmFormQa1We { get; set; }
         public virtual DbSet<RmFormQa2Dtl> RmFormQa2Dtl { get; set; }
         public virtual DbSet<RmFormQa2Hdr> RmFormQa2Hdr { get; set; }
         public virtual DbSet<RmFormS1Dtl> RmFormS1Dtl { get; set; }
@@ -133,7 +139,6 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmWeekLookup> RmWeekLookup { get; set; }
         public virtual DbSet<TestColumns> TestColumns { get; set; }
         public virtual DbSet<UvwSearchData> UvwSearchData { get; set; }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -8127,6 +8132,835 @@ namespace RAMMS.Domain.Models
                     .HasConstraintName("FK_RM_FormN2_HDR_N1");
             });
 
+            modelBuilder.Entity<RmFormQa1EqVh>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1evPkRefNo);
+
+                entity.ToTable("RM_FormQA1_EQ_VH");
+
+                entity.Property(e => e.Fqa1evPkRefNo)
+                    .HasColumnName("FQA1EV_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1evCapacity)
+                    .HasColumnName("FQA1EV_Capacity")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1evCondition)
+                    .HasColumnName("FQA1EV_Condition")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1evCrBy).HasColumnName("FQA1EV_CR_By");
+
+                entity.Property(e => e.Fqa1evCrDt)
+                    .HasColumnName("FQA1EV_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1evFqa1hPkRefNo).HasColumnName("FQA1EV_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1evLabourRemark)
+                    .HasColumnName("FQA1EV_Labour_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1evModBy).HasColumnName("FQA1EV_Mod_By");
+
+                entity.Property(e => e.Fqa1evModDt)
+                    .HasColumnName("FQA1EV_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1evType)
+                    .HasColumnName("FQA1EV_Type")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1evUnit).HasColumnName("FQA1EV_Unit");
+
+                entity.Property(e => e.Fqa1evVNo)
+                    .HasColumnName("FQA1EV_V_No")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1evFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1EqVh)
+                    .HasForeignKey(d => d.Fqa1evFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_EQ_VH_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1Gc>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1gcPkRefNo);
+
+                entity.ToTable("RM_FormQA1_GC");
+
+                entity.Property(e => e.Fqa1gcPkRefNo)
+                    .HasColumnName("FQA1GC_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1gcCrBy).HasColumnName("FQA1GC_CR_By");
+
+                entity.Property(e => e.Fqa1gcCrDt)
+                    .HasColumnName("FQA1GC_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1gcFqa1hPkRefNo).HasColumnName("FQA1GC_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1gcModBy).HasColumnName("FQA1GC_Mod_By");
+
+                entity.Property(e => e.Fqa1gcModDt)
+                    .HasColumnName("FQA1GC_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1gcQualityRating)
+                    .HasColumnName("FQA1GC_Quality_Rating")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1gcQualityRemarks)
+                    .HasColumnName("FQA1GC_Quality_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1gcUsRatingReason)
+                    .HasColumnName("FQA1GC_US_Rating_Reason")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1gcFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Gc)
+                    .HasForeignKey(d => d.Fqa1gcFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_GC_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1Gen>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1genPkRefNo);
+
+                entity.ToTable("RM_FormQA1_GEN");
+
+                entity.Property(e => e.Fqa1genPkRefNo)
+                    .HasColumnName("FQA1GEN_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1genAttRemarks)
+                    .HasColumnName("FQA1GEN_Att_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1genAttTo)
+                    .HasColumnName("FQA1GEN_Att_To")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1genCrBy).HasColumnName("FQA1GEN_CR_By");
+
+                entity.Property(e => e.Fqa1genCrDt)
+                    .HasColumnName("FQA1GEN_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1genFqa1hPkRefNo).HasColumnName("FQA1GEN_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1genItem)
+                    .HasColumnName("FQA1GEN_Item")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1genModBy).HasColumnName("FQA1GEN_Mod_By");
+
+                entity.Property(e => e.Fqa1genModDt)
+                    .HasColumnName("FQA1GEN_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.Fqa1genFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Gen)
+                    .HasForeignKey(d => d.Fqa1genFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_GEN_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1Hdr>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1hPkRefNo);
+
+                entity.ToTable("RM_FormQA1_HDR");
+
+                entity.Property(e => e.Fqa1hPkRefNo)
+                    .HasColumnName("FQA1H_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1hActCode)
+                    .HasColumnName("FQA1H_ACT_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hActName)
+                    .HasColumnName("FQA1H_ACT_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hActiveYn).HasColumnName("FQA1H_Active_YN");
+
+                entity.Property(e => e.Fqa1hAuditLog).HasColumnName("FQA1H_AuditLog");
+
+                entity.Property(e => e.Fqa1hContNo).HasColumnName("FQA1H_CONT_No");
+
+                entity.Property(e => e.Fqa1hCrBy).HasColumnName("FQA1H_CR_By");
+
+                entity.Property(e => e.Fqa1hCrDt)
+                    .HasColumnName("FQA1H_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hCrew).HasColumnName("FQA1H_Crew");
+
+                entity.Property(e => e.Fqa1hCrewname)
+                    .HasColumnName("FQA1H_Crewname")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hDateAudit)
+                    .HasColumnName("FQA1H_Date_AUDIT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hDateWit)
+                    .HasColumnName("FQA1H_Date_WIT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hDesignationAudit)
+                    .HasColumnName("FQA1H_Designation_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hDesignationWit)
+                    .HasColumnName("FQA1H_Designation_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hDt)
+                    .HasColumnName("FQA1H_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hDtAssgn)
+                    .HasColumnName("FQA1H_DT_Assgn")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hDtChked)
+                    .HasColumnName("FQA1H_DT_Chked")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hDtExec)
+                    .HasColumnName("FQA1H_DT_Exec")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hInitialAssgn)
+                    .HasColumnName("FQA1H_Initial_Assgn")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hInitialChked)
+                    .HasColumnName("FQA1H_Initial_Chked")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hInitialExec)
+                    .HasColumnName("FQA1H_Initial_Exec")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hModBy).HasColumnName("FQA1H_Mod_By");
+
+                entity.Property(e => e.Fqa1hModDt)
+                    .HasColumnName("FQA1H_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1hOfAudit)
+                    .HasColumnName("FQA1H_Of_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hOfWit)
+                    .HasColumnName("FQA1H_Of_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hRefId)
+                    .HasColumnName("FQA1H_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hRemarks)
+                    .HasColumnName("FQA1H_Remarks")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hRmu)
+                    .HasColumnName("FQA1H_RMU")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hRoadCode)
+                    .HasColumnName("FQA1H_Road_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hRoadName)
+                    .HasColumnName("FQA1H_Road_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hSecCode)
+                    .HasColumnName("FQA1H_Sec_Code")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hSecName)
+                    .HasColumnName("FQA1H_Sec_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hSignAudit).HasColumnName("FQA1H_Sign_AUDIT");
+
+                entity.Property(e => e.Fqa1hSignWit).HasColumnName("FQA1H_Sign_WIT");
+
+                entity.Property(e => e.Fqa1hStatus)
+                    .HasColumnName("FQA1H_Status")
+                    .HasMaxLength(30);
+
+                entity.Property(e => e.Fqa1hSubmitSts).HasColumnName("FQA1H_SUBMIT_STS");
+
+                entity.Property(e => e.Fqa1hUseridAssgn).HasColumnName("FQA1H_Userid_Assgn");
+
+                entity.Property(e => e.Fqa1hUseridAudit).HasColumnName("FQA1H_Userid_AUDIT");
+
+                entity.Property(e => e.Fqa1hUseridChked).HasColumnName("FQA1H_Userid_Chked");
+
+                entity.Property(e => e.Fqa1hUseridExec).HasColumnName("FQA1H_Userid_Exec");
+
+                entity.Property(e => e.Fqa1hUseridWit).HasColumnName("FQA1H_Userid_WIT");
+
+                entity.Property(e => e.Fqa1hUsernameAssgn)
+                    .HasColumnName("FQA1H_Username_Assgn")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hUsernameAudit)
+                    .HasColumnName("FQA1H_Username_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hUsernameChked)
+                    .HasColumnName("FQA1H_Username_Chked")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hUsernameExec)
+                    .HasColumnName("FQA1H_Username_Exec")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1hUsernameWit)
+                    .HasColumnName("FQA1H_Username_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RmFormQa1Lab>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1lPkRefNo);
+
+                entity.ToTable("RM_FormQA1_LAB");
+
+                entity.Property(e => e.Fqa1lPkRefNo)
+                    .HasColumnName("FQA1L_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1lCrBy).HasColumnName("FQA1L_CR_By");
+
+                entity.Property(e => e.Fqa1lCrDt)
+                    .HasColumnName("FQA1L_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1lFqa1hPkRefNo).HasColumnName("FQA1L_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1lLabour)
+                    .HasColumnName("FQA1L_Labour")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabourOnLeave).HasColumnName("FQA1L_Labour_On_Leave");
+
+                entity.Property(e => e.Fqa1lLabourOnSite).HasColumnName("FQA1L_Labour_On_Site");
+
+                entity.Property(e => e.Fqa1lLabourPerformanceStd).HasColumnName("FQA1L_Labour_Performance_Std");
+
+                entity.Property(e => e.Fqa1lLabourRemark)
+                    .HasColumnName("FQA1L_Labour_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lModBy).HasColumnName("FQA1L_Mod_By");
+
+                entity.Property(e => e.Fqa1lModDt)
+                    .HasColumnName("FQA1L_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.Fqa1lFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Lab)
+                    .HasForeignKey(d => d.Fqa1lFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_LAB_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1Mat>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1mPkRefNo);
+
+                entity.ToTable("RM_FormQA1_MAT");
+
+                entity.Property(e => e.Fqa1mPkRefNo)
+                    .HasColumnName("FQA1M_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1mCrBy).HasColumnName("FQA1M_CR_By");
+
+                entity.Property(e => e.Fqa1mCrDt)
+                    .HasColumnName("FQA1M_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1mFqa1hPkRefNo).HasColumnName("FQA1M_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1mModBy).HasColumnName("FQA1M_Mod_By");
+
+                entity.Property(e => e.Fqa1mModDt)
+                    .HasColumnName("FQA1M_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1mQty)
+                    .HasColumnName("FQA1M_Qty")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1mRemark)
+                    .HasColumnName("FQA1M_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1mSpec).HasColumnName("FQA1M_Spec");
+
+                entity.Property(e => e.Fqa1mType)
+                    .HasColumnName("FQA1M_Type")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1mUnit).HasColumnName("FQA1M_Unit");
+
+                entity.HasOne(d => d.Fqa1mFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Mat)
+                    .HasForeignKey(d => d.Fqa1mFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_MAT_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1Ssc>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1sscPkRefNo)
+                    .HasName(@"PK_RM_FormQA1_SSC
+");
+
+                entity.ToTable("RM_FormQA1_SSC");
+
+                entity.Property(e => e.Fqa1sscPkRefNo)
+                    .HasColumnName("FQA1SSC_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1sscAsd)
+                    .HasColumnName("FQA1SSC__ASD")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscAsdRemark)
+                    .HasColumnName("FQA1SSC__ASD_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscCrBy).HasColumnName("FQA1SSC_CR_By");
+
+                entity.Property(e => e.Fqa1sscCrDt)
+                    .HasColumnName("FQA1SSC_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1sscEd)
+                    .HasColumnName("FQA1SSC__ED")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscEdRemark)
+                    .HasColumnName("FQA1SSC__ED_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscFqa1hPkRefNo).HasColumnName("FQA1SSC_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1sscIms)
+                    .HasColumnName("FQA1SSC__IMS")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscImsRemark)
+                    .HasColumnName("FQA1SSC__IMS_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscModBy).HasColumnName("FQA1SSC_Mod_By");
+
+                entity.Property(e => e.Fqa1sscModDt)
+                    .HasColumnName("FQA1SSC_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1sscSp)
+                    .HasColumnName("FQA1SSC__SP")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscSpRemark)
+                    .HasColumnName("FQA1SSC__SP_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscWpe)
+                    .HasColumnName("FQA1SSC__WPE")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1sscWpeRemark)
+                    .HasColumnName("FQA1SSC__WPE_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1sscFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Ssc)
+                    .HasForeignKey(d => d.Fqa1sscFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_SSC_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1Tes>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1tesPkRefNo);
+
+                entity.ToTable("RM_FormQA1_TES");
+
+                entity.Property(e => e.Fqa1tesPkRefNo)
+                    .HasColumnName("FQA1TES_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1tesCbrCs)
+                    .HasColumnName("FQA1TES_CBR_CS")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesCbrCsA).HasColumnName("FQA1TES_CBR_CS_A");
+
+                entity.Property(e => e.Fqa1tesCbrCsRemark)
+                    .HasColumnName("FQA1TES_CBR_CS_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesCrBy).HasColumnName("FQA1TES_CR_By");
+
+                entity.Property(e => e.Fqa1tesCrDt)
+                    .HasColumnName("FQA1TES_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1tesCtCs)
+                    .HasColumnName("FQA1TES_CT_CS")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesCtCsA).HasColumnName("FQA1TES_CT_CS_A");
+
+                entity.Property(e => e.Fqa1tesCtCsRemark)
+                    .HasColumnName("FQA1TES_CT_CS_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesDtCs)
+                    .HasColumnName("FQA1TES_DT_CS")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesDtCsA).HasColumnName("FQA1TES_DT_CS_A");
+
+                entity.Property(e => e.Fqa1tesDtCsRemark)
+                    .HasColumnName("FQA1TES_DT_CS_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesFqa1hPkRefNo).HasColumnName("FQA1TES_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1tesMgtCs)
+                    .HasColumnName("FQA1TES_MGT_CS")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesMgtCsA).HasColumnName("FQA1TES_MGT_CS_A");
+
+                entity.Property(e => e.Fqa1tesMgtCsRemark)
+                    .HasColumnName("FQA1TES_MGT_CS_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesModBy).HasColumnName("FQA1TES_Mod_By");
+
+                entity.Property(e => e.Fqa1tesModDt)
+                    .HasColumnName("FQA1TES_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1tesOtCs)
+                    .HasColumnName("FQA1TES_OT_CS")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1tesOtCsA).HasColumnName("FQA1TES_OT_CS_A");
+
+                entity.Property(e => e.Fqa1tesOtCsRemark)
+                    .HasColumnName("FQA1TES_OT_CS_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1tesFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Tes)
+                    .HasForeignKey(d => d.Fqa1tesFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_TES_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1Wcq>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1wcqPkRefNo);
+
+                entity.ToTable("RM_FormQA1_WCQ");
+
+                entity.Property(e => e.Fqa1wcqPkRefNo)
+                    .HasColumnName("FQA1WCQ_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1wcqCrBy).HasColumnName("FQA1WCQ_CR_By");
+
+                entity.Property(e => e.Fqa1wcqCrDt)
+                    .HasColumnName("FQA1WCQ_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1wcqFl)
+                    .HasColumnName("FQA1WCQ_FL")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wcqFlRemark)
+                    .HasColumnName("FQA1WCQ_FL_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wcqFlType)
+                    .HasColumnName("FQA1WCQ_FL_Type")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wcqFlUnit).HasColumnName("FQA1WCQ_FL_Unit");
+
+                entity.Property(e => e.Fqa1wcqFqa1hPkRefNo).HasColumnName("FQA1WCQ_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1wcqJRemark)
+                    .HasColumnName("FQA1WCQ_J_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wcqJType)
+                    .HasColumnName("FQA1WCQ_J_Type")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wcqModBy).HasColumnName("FQA1WCQ_Mod_By");
+
+                entity.Property(e => e.Fqa1wcqModDt)
+                    .HasColumnName("FQA1WCQ_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1wcqSrRemark)
+                    .HasColumnName("FQA1WCQ_SR_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wcqSrType)
+                    .HasColumnName("FQA1WCQ_SR_Type")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1wcqFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Wcq)
+                    .HasForeignKey(d => d.Fqa1wcqFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_WCQ_RM_FormQA1_HDR");
+            });
+
+            modelBuilder.Entity<RmFormQa1We>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1wPkRefNo);
+
+                entity.ToTable("RM_FormQA1_WE");
+
+                entity.Property(e => e.Fqa1wPkRefNo)
+                    .HasColumnName("FQA1W_PK_Ref_No")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Fqa1wAcbcPasses).HasColumnName("FQA1W_ACBC_Passes");
+
+                entity.Property(e => e.Fqa1wAcbcRemark)
+                    .HasColumnName("FQA1W_ACBC_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wAcbcTemperature)
+                    .HasColumnName("FQA1W_ACBC_Temperature")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wAcbcTemperatureUnit).HasColumnName("FQA1W_ACBC_Temperature_Unit");
+
+                entity.Property(e => e.Fqa1wAcbcThinkness)
+                    .HasColumnName("FQA1W_ACBC_Thinkness")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wAcbcThinknessUnit).HasColumnName("FQA1W_ACBC_Thinkness_Unit");
+
+                entity.Property(e => e.Fqa1wAcwcPasses).HasColumnName("FQA1W_ACWC_Passes");
+
+                entity.Property(e => e.Fqa1wAcwcRemark)
+                    .HasColumnName("FQA1W_ACWC_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wAcwcTemperature)
+                    .HasColumnName("FQA1W_ACWC_Temperature")
+                    .HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Fqa1wAcwcTemperatureUnit).HasColumnName("FQA1W_ACWC_Temperature_Unit");
+
+                entity.Property(e => e.Fqa1wAcwcThinkness)
+                    .HasColumnName("FQA1W_ACWC_Thinkness")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wAcwcThinknessUnit).HasColumnName("FQA1W_ACWC_Thinkness_Unit");
+
+                entity.Property(e => e.Fqa1wCrBy).HasColumnName("FQA1W_CR_By");
+
+                entity.Property(e => e.Fqa1wCrDt)
+                    .HasColumnName("FQA1W_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1wFqa1hPkRefNo).HasColumnName("FQA1W_FQA1H_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1wModBy).HasColumnName("FQA1W_Mod_By");
+
+                entity.Property(e => e.Fqa1wModDt)
+                    .HasColumnName("FQA1W_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1wPcDRate)
+                    .HasColumnName("FQA1W_PC_D_Rate")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wPcDRateUnit).HasColumnName("FQA1W_PC_D_Rate_Unit");
+
+                entity.Property(e => e.Fqa1wPcEvenlySpread).HasColumnName("FQA1W_PC_Evenly_Spread");
+
+                entity.Property(e => e.Fqa1wPcRemark)
+                    .HasColumnName("FQA1W_PC_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wPcType)
+                    .HasColumnName("FQA1W_PC_Type")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wRbLayers).HasColumnName("FQA1W_RB_Layers");
+
+                entity.Property(e => e.Fqa1wRbPasses).HasColumnName("FQA1W_RB_Passes");
+
+                entity.Property(e => e.Fqa1wRbRemark)
+                    .HasColumnName("FQA1W_RB_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wRbThinkness)
+                    .HasColumnName("FQA1W_RB_Thinkness")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wRbThinknessUnit).HasColumnName("FQA1W_RB_Thinkness_Unit");
+
+                entity.Property(e => e.Fqa1wSbLayers).HasColumnName("FQA1W_SB_Layers");
+
+                entity.Property(e => e.Fqa1wSbPasses).HasColumnName("FQA1W_SB_Passes");
+
+                entity.Property(e => e.Fqa1wSbRemark)
+                    .HasColumnName("FQA1W_SB_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wSbThinkness)
+                    .HasColumnName("FQA1W_SB_Thinkness")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wSbThinknessUnit).HasColumnName("FQA1W_SB_Thinkness_Unit");
+
+                entity.Property(e => e.Fqa1wSgLayers).HasColumnName("FQA1W_SG_Layers");
+
+                entity.Property(e => e.Fqa1wSgPasses).HasColumnName("FQA1W_SG_Passes");
+
+                entity.Property(e => e.Fqa1wSgRemark)
+                    .HasColumnName("FQA1W_SG_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wSgThinkness)
+                    .HasColumnName("FQA1W_SG_Thinkness")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wSgThinknessUnit).HasColumnName("FQA1W_SG_Thinkness_Unit");
+
+                entity.Property(e => e.Fqa1wSsdPp)
+                    .HasColumnName("FQA1W_SSD_PP")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wSsdPpUnit).HasColumnName("FQA1W_SSD_PP_Unit");
+
+                entity.Property(e => e.Fqa1wSsdRemark)
+                    .HasColumnName("FQA1W_SSD_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wSsdSb)
+                    .HasColumnName("FQA1W_SSD_SB")
+                    .HasColumnType("decimal(8, 3)");
+
+                entity.Property(e => e.Fqa1wSsdSbUnit).HasColumnName("FQA1W_SSD_SB_Unit");
+
+                entity.Property(e => e.Fqa1wTcDRate)
+                    .HasColumnName("FQA1W_TC_D_Rate")
+                    .HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Fqa1wTcDRateUnit).HasColumnName("FQA1W_TC_D_Rate_Unit");
+
+                entity.Property(e => e.Fqa1wTcEvenlySpread).HasColumnName("FQA1W_TC_Evenly_Spread");
+
+                entity.Property(e => e.Fqa1wTcRemark)
+                    .HasColumnName("FQA1W_TC_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1wTcType)
+                    .HasColumnName("FQA1W_TC_Type")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Fqa1wFqa1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1We)
+                    .HasForeignKey(d => d.Fqa1wFqa1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_WE_RM_FormQA1_HDR");
+            });
+
             modelBuilder.Entity<RmFormQa2Dtl>(entity =>
             {
                 entity.HasKey(e => e.FqaiidPkRefNo)
@@ -9269,11 +10103,6 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV1H_Verifier")
                     .HasMaxLength(250)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Fv1hS1hPkRefNoNavigation)
-                    .WithMany(p => p.RmFormV1Hdr)
-                    .HasForeignKey(d => d.Fv1hS1hPkRefNo)
-                    .HasConstraintName("FK_RM_FormV1_HDR_RM_FormS1_HDR");
             });
 
             modelBuilder.Entity<RmFormV2Eqp>(entity =>
