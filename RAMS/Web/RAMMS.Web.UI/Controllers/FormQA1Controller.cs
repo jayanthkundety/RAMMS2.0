@@ -48,23 +48,31 @@ namespace RAMMS.Web.UI.Controllers
             _formQa1Service = formQa1Service ?? throw new ArgumentNullException(nameof(formQa1Service));
             _logger = logger;
         }
-        public  async Task<IActionResult> QA1()
+        
+        
+        private async Task LoadDropDown()
         {
-
             DDLookUpDTO ddLookup = new DDLookUpDTO();
-            ddLookup.Type = "Other Follow Up Action";
-            ViewData["Other Follow Up Action"] = await _ddLookupService.GetDdLookup(ddLookup);
-            ddLookup.Type = "RMU";
-            ViewData["RMU"] = await _formN1Service.GetRMU();
+
+            ViewData["RD_Code"] = await _formN1Service.GetRoadCodesByRMU("");
+            //ViewData["RMU"] = await _formN1Service.GetRMU();
 
             ddLookup.Type = "Act-FormD";
             ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
-            ViewData["RD_Code"] = await _formN1Service.GetRoadCodesByRMU("");
-            LoadLookupService("User");
+           
+            LoadLookupService("User","RMU");
 
+            ddLookup.Type = "Week No";
+            ViewData["WeekNo"] = await _ddLookupService.GetDdDescValue(ddLookup);
+            
             FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
 
             ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+        }
+        
+        public async Task<IActionResult> QA1()
+        {
+            await LoadDropDown();
             return View("~/Views/MAM/FormQa1/FormQa1.cshtml");
         }
 
@@ -121,9 +129,11 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        public IActionResult EditFormQa1()
+        public async Task<IActionResult> EditFormQa1()
         {
-            return View("~/Views/MAM/FormQa1/_AddFormQA1.cshtml");
+            await LoadDropDown();
+            _formQa1Model.SaveFormQa1Model = new FormQa1HeaderDTO();
+            return View("~/Views/MAM/FormQa1/_AddFormQA1.cshtml",_formQa1Model);
         }
     }
 }

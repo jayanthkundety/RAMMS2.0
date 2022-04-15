@@ -1,4 +1,6 @@
-﻿@{
+﻿@using RAMMS.Business.ServiceProvider
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
     ViewBag.TabTitle = "INSTRUCTED WORKS";
     ViewData["Title"] = "INSTRUCTED WORKS";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
@@ -10,23 +12,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormQa1", "@Model.SaveFormQa1Model.Status", @Model.SaveFormQa1Model.PkRefNo);
-
-        $('#formV2RecordedBy').val("@Model.SaveFormQa1Model.UseridSch");
-        $('#formV2RecordedBy').trigger('chosen:updated');
-        $("#formV2RecordedBy").trigger("change");
-
-        $('#formV2VettedBy').val("@Model.SaveFormQa1Model.UseridAgr");
-        $('#formV2VettedBy').trigger('chosen:updated');
-        $("#formV2VettedBy").trigger("change");
-
-        $('#formV2FacilitatedBy').val("@Model.SaveFormQa1Model.UseridAck");
-        $('#formV2FacilitatedBy').trigger('chosen:updated');
-        $("#formV2FacilitatedBy").trigger("change");
-
-        $('#formV2CrewCode').val("@Model.SaveFormQa1Model.Crew");
-        $('#formV2CrewCode').trigger('chosen:updated');
-        $("#formV2CrewCode").trigger("change");
-
         
     });
 </script>
@@ -71,7 +56,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-6">
                                                                 @Html.Label("RMU", "RMU")
-                                                                @Html.DropDownListFor(Adtl => Adtl.SaveFormV2Model.Rmu, (IEnumerable
+                                                                @Html.DropDownListFor(Adtl => Adtl.SaveFormQa1Model.Rmu, (IEnumerable
                                                                 <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formQa1rmu", @class = "form-control validate {required, RMU}" })
                                                             </div>
                                                             <div class="form-group col-lg-6 mb-0 pl-0">
@@ -117,7 +102,7 @@
                                                             </div>
                                                             <div class="col-lg-6 form-group pl-0">
                                                                 @Html.Label("Activity Name ", "Activity Name")
-                                                                @Html.TextBoxFor(m => m.SaveFormQa1Model.ActName, new { @id="formQa1ActivityName", @class = "form-control" })
+                                                                @Html.TextBoxFor(m => m.SaveFormQa1Model.ActName, new { @id="formQa1ActivityName", @readonly = "readonly", @class = "form-control" })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -131,33 +116,28 @@
                                                             </div>
                                                             <div class="form-group col-lg-6">
                                                                 @Html.Label("Crew Name", "Crew Name")
-                                                                @Html.TextBoxFor(m => m.SaveFormQa1Model.Crewname, new { @id="formQa1CrewName", @class = "form-control" })
+                                                                @Html.TextBoxFor(m => m.SaveFormQa1Model.Crewname, new { @id="formQa1CrewName", @readonly = "readonly", @class = "form-control" })
                                                             </div>
                                                         </div>
                                                     </div>   <div class="col-lg-3">
                                                         <div class="row">
                                                             <div class="form-group col-lg-6 pl-0">
                                                                 @Html.Label("Week From", "Week From")
-                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormDModel.WeekNo, (IEnumerable
+                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa1Model.WeekNo, (IEnumerable
                                                                 <SelectListItem>)ViewData["WeekNo"], "Select Week", new { @Id = "formQa1WeekFrom", @class = "form-control  validate {required, Week No}" })
                                                             </div>
                                                             <div class="form-group col-lg-6 pl-0 pr-0">
                                                                 <label for="Name_of_Crew_Supervisor">Week To</label>
-                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa1Model.W, (IEnumerable
-                                                                <SelectListItem>)ViewData["WeekNo"], "Select Week", new { @Id = "formQa1WeekTo", @class = "form-control  validate {required, Week No}" })
+                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormQa1Model.WeekNo, (IEnumerable
+                                                                <SelectListItem>)ViewData["WeekNo"], "Select Week", new { @Id = "formQa1WeekTo",  @class = "form-control  validate {required, Week No}" })
                                                             </div>
                                                         </div>
                                                     </div><div class="form-group col-lg-2">
                                                         <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mt-4 mr-lg-1 float-right">Find Details</button>
                                                     </div>
-
-
                                                 </div>
-
                                             </div>
-
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

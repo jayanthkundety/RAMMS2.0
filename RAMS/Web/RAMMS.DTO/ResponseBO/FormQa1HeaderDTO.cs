@@ -18,6 +18,8 @@ namespace RAMMS.DTO.ResponseBO
         public string RefId { get; set; }
         public int? Crew { get; set; }
 
+        public int? WeekNo { get; set; }
+
         public string Crewname { get; set; }
         public string ActCode { get; set; }
 
