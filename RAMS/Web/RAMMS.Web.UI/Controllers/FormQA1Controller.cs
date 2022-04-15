@@ -57,7 +57,7 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["RD_Code"] = await _formN1Service.GetRoadCodesByRMU("");
             //ViewData["RMU"] = await _formN1Service.GetRMU();
 
-            ddLookup.Type = "Act-FormD";
+            ddLookup.Type = "ACT-CWF";
             ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
            
             LoadLookupService("User","RMU");

@@ -157,6 +157,9 @@ $(document).ready(function () {
         $("#formV2EquipmentEdit").attr("disabled", "disabled").off('click');
         $("#formV2DtlEdit").attr("disabled", "disabled").off('click');
         userIdDisable();
+        document.getElementById("btnEquipAdd").disabled = true;
+        document.getElementById("btnLabourAdd").disabled = true;
+        document.getElementById("btnMaterialAdd").disabled = true;
     }
     //else {
     //    $("#saveFormV2Btn").hide();
@@ -539,13 +542,6 @@ function FormMatGridRefresh() {
     oTable.data = filterData;
     oTable.draw();
 }
-
-//function FormV2DtlGridRefresh() {
-//    var filterData = new Object();
-//    oTable = $('#FormV2DetailsGridView').DataTable();
-//    oTable.data = filterData;
-//    oTable.draw();
-//}
 
 function FormEquipGridRefresh() {
     var filterData = new Object();
