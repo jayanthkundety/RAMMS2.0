@@ -159,6 +159,21 @@ namespace RAMMS.Business.ServiceProvider.Services
                 roadmaster = _mapper.Map<RoadMasterResponseDTO>(CurrentItem);
                 return roadmaster;
         }
+
+        public async Task<IEnumerable<SelectListItem>> GetRoadCodeBySectionCode(int secCode)
+        {
+            var result = new List<SelectListItem>();
+            var roadMasters = await _repoUnit.RoadmasterRepository.GetRoadCodeBySectionCode(secCode);
+            foreach (var road in roadMasters)
+            {
+                result.Add(new SelectListItem
+                {
+                    Value = road.RdmRdCode.ToString(),
+                    Text = (road.RdmRdCode + "-" + road.RdmRdName).ToString()
+                });
+            }
+            return result;
+        }
     }
 }
 

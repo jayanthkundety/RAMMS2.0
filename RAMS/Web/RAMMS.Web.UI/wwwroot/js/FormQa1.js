@@ -54,8 +54,34 @@
 
     $("#formQa1SectionCode").on("change", function () {
         var ddldata = $(this).val();
+        var secCode = $("#formQa1SectionCode option:selected").text().split("-")[0];
         if (ddldata != "") {
             $("#formQa1SectionName").val(ddldata);
+            //GetAllRoadCodeDataBySectionCode
+            $.ajax({
+                url: '/FormQa1/GetRoadCodeBySection',
+                dataType: 'JSON',
+                data: { secCode},
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $("#formQa1RoadCode").empty();
+                        $("#formQa1RoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                        $.each(data.section, function (index, v) {
+                            $("#formQa1RoadCode").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                        $("#formQa1RoadCode").trigger("change");
+                        $('#formQa1RoadCode').trigger("chosen:updated");
+
+                    } else {
+
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
         }
         else {
             $("#formQa1SectionName").val("");
@@ -67,6 +93,13 @@
         var val = $(this).find(":selected").text();
         val = val.split("-").length > 0 ? val.split("-")[1] : val;
         $("#formQa1ActivityName").val(val);
+    });
+
+
+    $("#formQa1RoadCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+        $("#formQa12RoadName").val(val);
     });
 
 });

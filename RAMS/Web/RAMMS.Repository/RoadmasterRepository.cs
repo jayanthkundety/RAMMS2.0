@@ -135,6 +135,12 @@ namespace RAMMS.Repository
 
         }
 
+        public async Task<IEnumerable<RmRoadMaster>> GetRoadCodeBySectionCode(int secCode)
+        {
+            return await _context.RmRoadMaster.Where(x => x.RdmSecCode == secCode).ToListAsync();
+
+        }
+
 
         public async Task<AssetDDLResponseDTO> GetFilteredList(AssetDDLRequestDTO roadMaster)
         {

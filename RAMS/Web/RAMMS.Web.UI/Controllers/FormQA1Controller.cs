@@ -26,6 +26,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormN1Service _formN1Service;
         private readonly IFormJServices _formJService;
         private readonly IFormQa1Service _formQa1Service;
+        private readonly IRoadMasterService _roadMasterService;
 
         FormQa1Model _formQa1Model = new FormQa1Model();
         public FormQA1Controller(IHostingEnvironment _environment,
@@ -128,12 +129,20 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formQa1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
-
         public async Task<IActionResult> EditFormQa1()
         {
             await LoadDropDown();
             _formQa1Model.SaveFormQa1Model = new FormQa1HeaderDTO();
             return View("~/Views/MAM/FormQa1/_AddFormQA1.cshtml",_formQa1Model);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> GetRoadCodeBySection(int secCode)
+        {
+            var obj = await _roadMasterService.GetRoadCodeBySectionCode(secCode); 
+            return Json(obj);
+        }
+
     }
 }
