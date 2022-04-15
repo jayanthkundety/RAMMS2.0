@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RAMMS.Common.Extensions;
 using RAMMS.Domain.Models;
 using RAMMS.DTO;
 using RAMMS.DTO.ResponseBO;
@@ -28,7 +29,10 @@ namespace RAMMS.Repository
         {
             List<RmFormV1Hdr> result = new List<RmFormV1Hdr>();
             var query = (from x in _context.RmFormV1Hdr
-                         select new { x });
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv1hRmu || s.DdlTypeDesc == x.Fv1hRmu))
+                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv1hSecCode || s.DdlTypeCode == x.Fv1hSecCode))
+                         let div = _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv1hSecCode)
+                         select new { rmu, sec, x, div });
 
 
 
@@ -36,31 +40,59 @@ namespace RAMMS.Repository
             if (filterOptions.Filters != null)
             {
 
-                //if (!string.IsNullOrEmpty(filterOptions.Filters.Section_Code))
-                //{
-                //    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section_Code || x.sec.DdlTypeCode == filterOptions.Filters.Section_Code);
-                //}
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeCode == filterOptions.Filters.Section);
+                }
 
-                //if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
-                //{
-                //    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
-                //}
+                if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+                {
+                    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                }
 
-                //if (!string.IsNullOrEmpty(filterOptions.Filters.Crew_Supervisor))
-                //{
-                //    query = query.Where(x => x.x.Fv1hCrew == filterOptions.Filters.Crew_Supervisor);
-                //}
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
+                {
+                    query = query.Where(x => x.x.Fv1hCrewname == filterOptions.Filters.Crew || (x.x.Fv1hCrew.HasValue ? x.x.Fv1hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv1hCrew.ToString() == ""));
+                }
 
-                //if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
-                //{
-                //    query = query.Where(x => x.x.Fv1hRmu.Contains(filterOptions.Filters.SmartInputValue)
-                //                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
-                //                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
-                //                        || x.x.Fv1hCrew.Contains(filterOptions.Filters.SmartInputValue)
-                //                        || x.x.Fv1hRefId.Contains(filterOptions.Filters.SmartInputValue)
-                //                        );
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.x.Fv1hActCode == filterOptions.Filters.ActivityCode);
+                }
 
-                //}
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv1hDt.HasValue ? (x.x.Fv1hDt.Value.Year == dt.Year && x.x.Fv1hDt.Value.Month == dt.Month && x.x.Fv1hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv1hDt.HasValue ? (x.x.Fv1hDt.Value.Year == dt.Year && x.x.Fv1hDt.Value.Month == dt.Month && x.x.Fv1hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+                {
+                    query = query.Where(x => x.x.Fv1hRmu.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || x.x.Fv1hCrewname.Contains(filterOptions.Filters.SmartInputValue)
+                                        || ((bool)x.x.Fv1hSubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hRefId.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hSecCode.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hUsernameSch.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hUsernameAgr.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hUsernameAck.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (filterOptions.Filters.SmartInputValue.IsInt() && x.x.Fv1hPkRefNo.Equals(filterOptions.Filters.SmartInputValue.AsInt())));
+
+                }
             }
 
 
@@ -68,37 +100,54 @@ namespace RAMMS.Repository
             {
 
                 if (filterOptions.ColumnIndex == 1)
-                    query = query.OrderBy(x => x.x.Fv1hRefId);
+                    query = query.OrderBy(x => x.x.Fv1hPkRefNo);
                 if (filterOptions.ColumnIndex == 2)
                     query = query.OrderBy(x => x.x.Fv1hRmu);
                 if (filterOptions.ColumnIndex == 3)
-                    //  query = query.OrderBy(x => x.div.RdsmDivision);
-                    if (filterOptions.ColumnIndex == 4)
-                        query = query.OrderBy(x => x.x.Fv1hActCode);
+                    query = query.OrderBy(x => x.div.RdsmDivCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(x => x.x.Fv1hActCode);
                 if (filterOptions.ColumnIndex == 5)
                     query = query.OrderBy(x => x.x.Fv1hSecCode);
                 if (filterOptions.ColumnIndex == 6)
-                    query = query.OrderBy(x => x.x.Fv1hCrew);
+                    query = query.OrderBy(x => x.x.Fv1hCrewname);
                 if (filterOptions.ColumnIndex == 7)
                     query = query.OrderBy(x => x.x.Fv1hDt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(x => x.x.Fv1hUsernameAck);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderBy(x => x.x.Fv1hUsernameAgr);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderBy(x => x.x.Fv1hUsernameSch);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderBy(x => x.x.Fv1hSubmitSts);
+
 
             }
             else if (filterOptions.sortOrder == SortOrder.Descending)
             {
                 if (filterOptions.ColumnIndex == 1)
-                    query = query.OrderByDescending(x => x.x.Fv1hRefId);
+                    query = query.OrderByDescending(x => x.x.Fv1hPkRefNo);
                 if (filterOptions.ColumnIndex == 2)
                     query = query.OrderByDescending(x => x.x.Fv1hRmu);
                 if (filterOptions.ColumnIndex == 3)
-                    //   query = query.OrderByDescending(x => x.div.RdsmDivision);
-                    if (filterOptions.ColumnIndex == 4)
-                        query = query.OrderByDescending(x => x.x.Fv1hActCode);
+                    query = query.OrderByDescending(x => x.div.RdsmDivCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(x => x.x.Fv1hActCode);
                 if (filterOptions.ColumnIndex == 5)
                     query = query.OrderByDescending(x => x.x.Fv1hSecCode);
                 if (filterOptions.ColumnIndex == 6)
-                    query = query.OrderByDescending(x => x.x.Fv1hCrew);
+                    query = query.OrderByDescending(x => x.x.Fv1hCrewname);
                 if (filterOptions.ColumnIndex == 7)
                     query = query.OrderByDescending(x => x.x.Fv1hDt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(x => x.x.Fv1hUsernameAck);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderByDescending(x => x.x.Fv1hUsernameAgr);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderByDescending(x => x.x.Fv1hUsernameSch);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderByDescending(x => x.x.Fv1hSubmitSts);
             }
 
 
@@ -107,6 +156,79 @@ namespace RAMMS.Repository
                     .Take(filterOptions.RecordsPerPage)
                     .ToListAsync();
             return result;
+        }
+
+        public async Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            List<RmFormV1Hdr> result = new List<RmFormV1Hdr>();
+            var query = (from x in _context.RmFormV1Hdr
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv1hRmu || s.DdlTypeDesc == x.Fv1hRmu))
+                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv1hSecCode || s.DdlTypeCode == x.Fv1hSecCode))
+                         let div = _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv1hSecCode)
+                         select new { rmu, sec, x, div });
+
+
+
+            query = query.Where(x => x.x.Fv1hActiveYn == true).OrderByDescending(x => x.x.Fv1hPkRefNo);
+            if (filterOptions.Filters != null)
+            {
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeCode == filterOptions.Filters.Section);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+                {
+                    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
+                {
+                    query = query.Where(x => x.x.Fv1hCrewname == filterOptions.Filters.Crew || (x.x.Fv1hCrew.HasValue ? x.x.Fv1hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv1hCrew.ToString() == ""));
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.x.Fv1hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv1hDt.HasValue ? (x.x.Fv1hDt.Value.Year == dt.Year && x.x.Fv1hDt.Value.Month == dt.Month && x.x.Fv1hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv1hDt.HasValue ? (x.x.Fv1hDt.Value.Year == dt.Year && x.x.Fv1hDt.Value.Month == dt.Month && x.x.Fv1hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+                {
+                    query = query.Where(x => x.x.Fv1hRmu.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || x.x.Fv1hCrewname.Contains(filterOptions.Filters.SmartInputValue)
+                                        || ((bool)x.x.Fv1hSubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hRefId.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hSecCode.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hUsernameSch.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hUsernameAgr.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv1hUsernameAck.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (filterOptions.Filters.SmartInputValue.IsInt() && x.x.Fv1hPkRefNo.Equals(filterOptions.Filters.SmartInputValue.AsInt())));
+
+                }
+            }
+
+            return await query.CountAsync().ConfigureAwait(false);
         }
 
 

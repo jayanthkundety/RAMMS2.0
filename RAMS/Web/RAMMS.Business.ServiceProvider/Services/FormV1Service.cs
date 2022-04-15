@@ -44,21 +44,22 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             PagingResult<FormV1ResponseDTO> result = new PagingResult<FormV1ResponseDTO>();
 
-            List<FormV1ResponseDTO> formV1List = new List<FormV1ResponseDTO>();
+            List<FormV1ResponseDTO> formDList = new List<FormV1ResponseDTO>();
             try
             {
                 var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredRecordList(filterOptions);
 
-                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                result.TotalRecords = await _repoUnit.FormV1Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
 
                 foreach (var listData in filteredRecords)
                 {
                     var _ = _mapper.Map<FormV1ResponseDTO>(listData);
-                    // _.ProcessStatus = listData.FdhStatus;
-                    formV1List.Add(_);
+                    // _.ProcessStatus = listData.FV1hStatus;
+
+                    formDList.Add(_);
                 }
 
-                result.PageResult = formV1List;
+                result.PageResult = formDList;
 
                 result.PageNo = filterOptions.StartPageNo;
                 result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;

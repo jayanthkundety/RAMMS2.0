@@ -947,43 +947,52 @@ namespace RAMMS.Web.UI.Controllers
 
         public async Task<IActionResult> FormV1()
         {
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "RMU";
+            ViewData["RMU"] = await _formN1Service.GetRMU();
+
+            ddLookup.Type = "Act-FormD";
+            ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
+
+            LoadLookupService("User");
+
+            FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+
+            ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
             return View("~/Views/MAM/FormV1/FormV1.cshtml");
         }
 
-        //  [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> LoadFormV1List(DataTableAjaxPostModel<FormV1SearchGridDTO> formV1Filter)
         {
 
-            if (formV1Filter.filterData != null)
+            if (Request.Form.ContainsKey("columns[0][search][value]"))
             {
-                if (Request.Form.ContainsKey("columns[0][search][value]"))
-                {
-                    formV1Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[1][search][value]"))
-                {
-                    formV1Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[2][search][value]"))
-                {
-                    formV1Filter.filterData.Section_Code = Request.Form["columns[2][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[3][search][value]"))
-                {
-                    formV1Filter.filterData.Crew_Supervisor = Request.Form["columns[3][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[4][search][value]"))
-                {
-                    formV1Filter.filterData.Activity_Code = Request.Form["columns[4][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[5][search][value]"))
-                {
-                    formV1Filter.filterData.DateFrom = Request.Form["columns[5][search][value]"].ToString();
-                }
-                if (Request.Form.ContainsKey("columns[6][search][value]"))
-                {
-                    formV1Filter.filterData.DateFrom = Request.Form["columns[6][search][value]"].ToString();
-                }
+                formV1Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[1][search][value]"))
+            {
+                formV1Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                formV1Filter.filterData.Section = Request.Form["columns[2][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[3][search][value]"))
+            {
+                formV1Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                formV1Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                formV1Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                formV1Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
             }
 
             FilteredPagingDefinition<FormV1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1SearchGridDTO>();
@@ -1074,7 +1083,23 @@ namespace RAMMS.Web.UI.Controllers
             _formV1Model.RefNoDS = _formV1Service.FindRefNoFromS1(_formV1Model.FormV1);
 
             if (_formV1Model.FormV1.UseridSch == 0)
+            {
                 _formV1Model.FormV1.UseridSch = _security.UserID;
+                _formV1Model.FormV1.DtSch = DateTime.Today;
+            }
+            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Submitted)
+            {
+                _formV1Model.FormV1.UseridAgr = _security.UserID;
+                _formV1Model.FormV1.DtAgr = DateTime.Today;
+            }
+            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Verified)
+            {
+                _formV1Model.FormV1.UseridAck = _security.UserID;
+                _formV1Model.FormV1.DtAck = DateTime.Today;
+            }
+
+
+
             _formV1Model.view = view;
 
             return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);

@@ -12,40 +12,65 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isModifyPerm =@security.IsPCModify(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
-    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
-
-    
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : 'hidden';
 
     var table_columns = [];
     var actionCol = {
-        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data, type, full) {
-            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV1Edit'" + isModifyPerm + " onclick='javascript:EditFormV1(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV1(" + data.no + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV1(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintFormV1(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV1(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV1(" + data.no + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintFormV1(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV1HeaderEdit'" + isModifyPerm + " onclick='javascript:EditFormV1(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV1(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV1(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
-    var refNoCol = { data: "refId", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
+    var refNoCol = { data: "contNo", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
     var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
-    var divisionCol = { data: "divCode", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
-    var ActivityCodeCol = { data: "actCode", name: "ActivityCode", title: "Activity Code", autoWidth: true, sortable: true };
-    var SectionCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
-    var crewCol = { data: "crew", name: "Crew", title: "Crew Supervisor", autoWidth: true, sortable: true };
-    var DtCol = { data: "dt", name: "Date", title: "Date", autoWidth: true, sortable: true };
-    
+    var divisionCol = { data: "divName", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
+    var actCodeCol = { data: "actCode", name: "SectionCode", title: "Activity Code", autoWidth: true, sortable: true };
+    var secCodeCol = { data: "secName", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
+    var crewCol = { data: "crewname", name: "Crew ID", title: "Crew Supervisor", autoWidth: true, sortable: true };
+  //  var dtCol = { data: "dt", name: "dt", title: "Date", autoWidth: true, sortable: true };
+
+    var dtCol = {
+         data: "dt", name: "dt", title: "Date", autoWidth: true, sortable: true ,
+        render: function (data) {
+            if (data != null) {
+                var d = new Date(data);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else {
+                return "";
+            }
+        }
+    };
+
+    var submitStsCol = { data: "status", name: "Status", title: "Status", autoWidth: true, sortable: true };
+
+
+
 
     table_columns.push(actionCol);
     table_columns.push(refNoCol);
     table_columns.push(rmuRmuCol);
     table_columns.push(divisionCol);
-    table_columns.push(ActivityCodeCol);
-    table_columns.push(SectionCodeCol);
+    table_columns.push(actCodeCol);
+    table_columns.push(secCodeCol);
     table_columns.push(crewCol);
-    table_columns.push(DtCol);
-    
+    table_columns.push(dtCol);
+    table_columns.push(submitStsCol);
 
-    function PrintFormV1(id) {
-        window.location.href = '/download/PrintFormV1?id=' + id + "&formname=FormD";
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormV1";
     }
 
     var filterData = new Object();
@@ -53,11 +78,13 @@
         var _currentGridSettings = new CustomGridSettings();
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
-        //filterData.SmartInputValue = $("#FormDSmartSearch").val();
-        //filterData.RMU = $("#formDDetSrchRMU").val();
-        //filterData.Road_Code =  $("#formDDetSrchRoadCode option:selected").text().split("-")[0];
-        //filterData.Bydate = $("#FormDSrchByDate").val().trim();
-        
+        filterData.SmartInputValue = $("#FormV1SmartSearch").val();
+        filterData.RMU = $("#formV1DetSrchRMU  option:selected").text().split("-")[0];
+        filterData.Section =  $("#formV1DetSrchSectionCode option:selected").text().split("-")[0];
+        filterData.Crew = $("#formV1DetSrchCrew  option:selected").text().split("-")[0];
+        filterData.ActivityCode = $("#formV1DetSrchActivityCode option:selected").text().split("-")[0];
+        filterData.ByFromdate = $("#FormV1SrchByFromDate").val()
+        filterData.ByTodate = $("#FormV1SrchByToDate").val()
 
         $('#FormV1GridView').DataTable({
             ajax: {
@@ -77,26 +104,30 @@
 
         //Apply Custom search on jQuery DataTables here
         oTable = $('#FormV1GridView').DataTable();
-        $('#formDSearchBtn').click(function () {
-            oTable.columns(0).search($("#FormDSmartSearch").val().trim());
-            oTable.columns(1).search($("#formDDetSrchRMU").val().trim());
-            var secCode = $("#formDDetSrchRoadCode option:selected").text().split("-")[0];
+        $('#FormV1SearchBtn').click(function () {
+            oTable.columns(0).search($("#FormV1SmartSearch").val().trim());
+            oTable.columns(1).search( $("#formV1DetSrchRMU").val().trim());
+
+            var secCode = $("#formV1DetSrchSectionCode").val();
             if (secCode >= 0) {
                 oTable.columns(2).search(secCode);
             } else {
                  oTable.columns(2).search("");
             }
 
-            oTable.columns(3).search($("#FormDSrchByDate").val().trim());
-            //oTable.columns(4).search($("#formDDetSrchYear").val().trim());
+            var activityCode = $("#formV1DetSrchActivityCode").val().trim();
+
+            if (activityCode >=0 ){
+                oTable.columns(3).search(activityCode);
+            }
+            else {
+                oTable.columns(3).search("");
+            }
+
+            oTable.columns(4).search($("#FormV1SrchByFromDate").val().trim());
+            oTable.columns(5).search($("#FormV1SrchByToDate").val().trim());
             oTable.data = filterData;
             oTable.draw();
         });
     });
-
-    
-    function EditFormV1(pid, view) {
-        window.location = "/MAM/EditFormV1" + "?Id=" + pid + "&view=" + view;
-    }
-
 </script>

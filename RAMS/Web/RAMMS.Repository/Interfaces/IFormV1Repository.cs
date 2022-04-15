@@ -15,6 +15,8 @@ namespace RAMMS.Repository.Interfaces
 
         Task<List<RmFormV1Hdr>> GetFilteredRecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
+        Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+
         Task<List<RmFormV1Dtl>> GetFormV1WorkScheduleGridList(FilteredPagingDefinition<FormV1WorkScheduleGridDTO> filterOptions, int V1PkRefNo);
 
         Task<RmFormV1Hdr> FindFormV1ByID(int id);

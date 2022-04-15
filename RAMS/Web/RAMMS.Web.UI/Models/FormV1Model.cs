@@ -12,6 +12,8 @@ namespace RAMMS.Web.UI.Models
 {
     public class FormV1Model
     {
+
+        public FormV1SearchGridDTO SearchObj { get; set; }
         public FormV1ResponseDTO FormV1 { get; set; }
 
         public FormV1DtlResponseDTO FormV1Dtl { get; set; }
