@@ -15,11 +15,11 @@ namespace RAMMS.Domain.Models
         public int? Fv3dToChDeci { get; set; }
         public int? Fv3dLength { get; set; }
         public int? Fv3dWidth { get; set; }
-        public DateTime? Fv3dTimetakenFrm { get; set; }
-        public DateTime? Fv3dTimeTakenTo { get; set; }
+        public string Fv3dTimetakenFrm { get; set; }
+        public string Fv3dTimeTakenTo { get; set; }
         public decimal? Fv3dTimeTakenTotal { get; set; }
-        public DateTime? Fv3dTransitTimeFrm { get; set; }
-        public DateTime? Fv3dTransitTimeTo { get; set; }
+        public string Fv3dTransitTimeFrm { get; set; }
+        public string Fv3dTransitTimeTo { get; set; }
         public decimal? Fv3dTransitTimeTotal { get; set; }
         public int? Fv3dAdp { get; set; }
         public int? Fv3dModBy { get; set; }

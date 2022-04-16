@@ -17,7 +17,7 @@ namespace RAMMS.Domain.Models
         public string Fv3hCrewname { get; set; }
         public string Fv3hSecCode { get; set; }
         public string Fv3hRefId { get; set; }
-        public int? Fv3hActCode { get; set; }
+        public string Fv3hActCode { get; set; }
         public DateTime? Fv3hDt { get; set; }
         public bool? Fv3hSignFac { get; set; }
         public int? Fv3hUseridFac { get; set; }
