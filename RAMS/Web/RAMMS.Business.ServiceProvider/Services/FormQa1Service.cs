@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.Business.ServiceProvider.Interfaces;
 using RAMMS.DTO;
 using RAMMS.DTO.ResponseBO;
@@ -6,6 +7,7 @@ using RAMMS.DTO.Wrappers;
 using RAMMS.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +23,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-
 
         public async Task<PagingResult<FormQa1HeaderDTO>> GetFilteredFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions)
         {

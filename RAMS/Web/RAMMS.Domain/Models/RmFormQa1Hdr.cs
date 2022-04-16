@@ -21,6 +21,7 @@ namespace RAMMS.Domain.Models
         public int Fqa1hPkRefNo { get; set; }
         public int? Fqa1hContNo { get; set; }
         public string Fqa1hRmu { get; set; }
+        public string Fqa1hRmuName { get; set; }
         public string Fqa1hSecCode { get; set; }
         public string Fqa1hSecName { get; set; }
         public string Fqa1hRoadCode { get; set; }

@@ -1581,6 +1581,15 @@ namespace RAMMS.Web.UI.Controllers
             return Json(refNo);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> HeaderListFormV2Delete(int headerId)
+        {
+            int RowsAffected = 0;
+            RowsAffected = await _formV2Service.DeActivateFormV2Async(headerId);
+            return Json(RowsAffected);
+
+        }
+
 
         #endregion
 

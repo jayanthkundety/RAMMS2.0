@@ -8401,6 +8401,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fqa1hRmuName)
+                    .HasColumnName("FQA1H_RMU_Name")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fqa1hRoadCode)
                     .HasColumnName("FQA1H_Road_Code")
                     .HasMaxLength(16)
@@ -10176,8 +10181,9 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16);
 
                 entity.Property(e => e.Fv2hActName)
+                    .IsRequired()
                     .HasColumnName("FV2H_ACT_Name")
-                    .HasMaxLength(16)
+                    .HasMaxLength(250)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fv2hActiveYn).HasColumnName("FV2H_Active_YN");
@@ -10480,7 +10486,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dTimeTakenTo)
                     .HasColumnName("FV3D_TimeTaken_TO")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Fv3dTimeTakenTotal)
                     .HasColumnName("FV3D_TimeTaken_Total")
@@ -10488,7 +10494,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dTimetakenFrm)
                     .HasColumnName("FV3D_Timetaken_FRM")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Fv3dToCh).HasColumnName("FV3D_To_CH");
 
@@ -10496,11 +10502,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dTransitTimeFrm)
                     .HasColumnName("FV3D_Transit_Time_FRM")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Fv3dTransitTimeTo)
                     .HasColumnName("FV3D_Transit_Time_To")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Fv3dTransitTimeTotal)
                     .HasColumnName("FV3D_Transit_Time_Total")
@@ -10522,7 +10528,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3hPkRefNo).HasColumnName("FV3H_PK_Ref_No");
 
-                entity.Property(e => e.Fv3hActCode).HasColumnName("FV3H_ACT_Code");
+                entity.Property(e => e.Fv3hActCode)
+                    .HasColumnName("FV3H_ACT_Code")
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Fv3hActiveYn).HasColumnName("FV3H_Active_YN");
 

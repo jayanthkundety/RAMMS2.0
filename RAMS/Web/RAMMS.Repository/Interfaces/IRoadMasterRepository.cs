@@ -29,6 +29,8 @@ namespace RAMMS.Repository.Interfaces
         Task<int?> GetRoadNo(string roadCode);
         Task<RmRoadMaster> GetByRdCode(string roadCode);
 
-  
+        Task<IEnumerable<RmRoadMaster>> GetRoadCodeBySectionCode(int secCode);
+
+
     }
 }
