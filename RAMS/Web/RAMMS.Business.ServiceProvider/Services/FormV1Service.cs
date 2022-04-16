@@ -30,6 +30,8 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IMapper _mapper;
         private readonly ISecurity _security;
         private readonly IProcessService processService;
+
+        #region FormV1
         public FormV1Service(IRepositoryUnit repoUnit, IFormV1Repository repo, IMapper mapper, ISecurity security, IProcessService process)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
@@ -299,6 +301,91 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             return _repo.PullS1Data(PKRefNo, S1PKRefNo, ActCode);
         }
+
+        #endregion
+
+        #region FormV3
+
+
+        public async Task<PagingResult<FormV3ResponseDTO>> GetFilteredFormV3Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            PagingResult<FormV3ResponseDTO> result = new PagingResult<FormV3ResponseDTO>();
+
+            List<FormV3ResponseDTO> formDList = new List<FormV3ResponseDTO>();
+            try
+            {
+                var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredRecordList(filterOptions);
+
+                result.TotalRecords = await _repoUnit.FormV1Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+
+                foreach (var listData in filteredRecords)
+                {
+                    var _ = _mapper.Map<FormV3ResponseDTO>(listData);
+                   
+                    formDList.Add(_);
+                }
+
+                result.PageResult = formDList;
+
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return result;
+        }
+
+
+
+        public async Task<PagingResult<FormV3DtlGridDTO>> GetFormV3DtlGridList(FilteredPagingDefinition<FormV3DtlGridDTO> filterOptions, int V3PkRefNo)
+        {
+            PagingResult<FormV3DtlGridDTO> result = new PagingResult<FormV3DtlGridDTO>();
+
+            List<FormV3DtlGridDTO> formV1WorkScheduleList = new List<FormV3DtlGridDTO>();
+            try
+            {
+                var filteredRecords = await _repoUnit.FormV1Repository.GetFormV1WorkScheduleGridList(filterOptions, V3PkRefNo);
+
+                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+
+                foreach (var listData in filteredRecords)
+                {
+                    FormV3DtlGridDTO obj = new FormV3DtlGridDTO();
+
+                    obj.Fv1hPkRefNo = listData.Fv1dFv1hPkRefNo;
+                    obj.Fs1dPkRefNo = listData.Fv1dS1dPkRefNo;
+                    obj.Chainage = Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageFrom = Convert.ToString(listData.Fv1dFrmCh);
+                    obj.ChainageFromDec = Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageTo = Convert.ToString(listData.Fv1dToCh);
+                    obj.ChainageToDec = Convert.ToString(listData.Fv1dToChDeci);
+                    obj.PkRefNo = listData.Fv1dPkRefNo;
+                    obj.Remarks = listData.Fv1dRemarks;
+                    obj.RoadCode = listData.Fv1dRoadCode;
+                    obj.RoadName = listData.Fv1dRoadName;
+                    obj.SiteRef = listData.Fv1dSiteRef;
+                    obj.StartTime = listData.Fv1dStartTime;
+
+                    formV1WorkScheduleList.Add(obj);
+                }
+
+                result.PageResult = formV1WorkScheduleList;
+
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return result;
+        }
+
+        #endregion
 
     }
 }

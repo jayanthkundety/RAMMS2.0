@@ -24,7 +24,7 @@ namespace RAMMS.Repository
             _context = context;
         }
 
-
+        #region FormV1
         public async Task<List<RmFormV1Hdr>> GetFilteredRecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
         {
             List<RmFormV1Hdr> result = new List<RmFormV1Hdr>();
@@ -458,6 +458,275 @@ namespace RAMMS.Repository
             }
         }
 
+        #endregion
+
+        #region FormV3
+
+        public async Task<List<RmFormV3Hdr>> GetFilteredV3RecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            List<RmFormV3Hdr> result = new List<RmFormV3Hdr>();
+            var query = (from x in _context.RmFormV3Hdr
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv3hRmu || s.DdlTypeDesc == x.Fv3hRmu))
+                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv3hSecCode || s.DdlTypeCode == x.Fv3hSecCode))
+                         let div = _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv3hSecCode)
+                         select new { rmu, sec, x, div });
+
+
+
+            query = query.Where(x => x.x.Fv3hActiveYn == true).OrderByDescending(x => x.x.Fv3hPkRefNo);
+            if (filterOptions.Filters != null)
+            {
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeCode == filterOptions.Filters.Section);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+                {
+                    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
+                {
+                    query = query.Where(x => x.x.Fv3hCrewname == filterOptions.Filters.Crew || (x.x.Fv3hCrew.HasValue ? x.x.Fv3hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv3hCrew.ToString() == ""));
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.x.Fv3hActCode ==  filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv3hDt.HasValue ? (x.x.Fv3hDt.Value.Year == dt.Year && x.x.Fv3hDt.Value.Month == dt.Month && x.x.Fv3hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv3hDt.HasValue ? (x.x.Fv3hDt.Value.Year == dt.Year && x.x.Fv3hDt.Value.Month == dt.Month && x.x.Fv3hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+                {
+                    query = query.Where(x => x.x.Fv3hRmu.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || x.x.Fv3hCrewname.Contains(filterOptions.Filters.SmartInputValue)
+                                        || ((bool)x.x.Fv3hSubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hRefId.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hSecCode.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hUsernameRec.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hUsernameAgr.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hUsernameFac.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (filterOptions.Filters.SmartInputValue.IsInt() && x.x.Fv3hPkRefNo.Equals(filterOptions.Filters.SmartInputValue.AsInt())));
+
+                }
+            }
+
+
+            if (filterOptions.sortOrder == SortOrder.Ascending)
+            {
+
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderBy(x => x.x.Fv3hPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderBy(x => x.x.Fv3hRmu);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(x => x.div.RdsmDivCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(x => x.x.Fv3hActCode);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(x => x.x.Fv3hSecCode);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderBy(x => x.x.Fv3hCrewname);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderBy(x => x.x.Fv3hDt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(x => x.x.Fv3hUsernameRec);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderBy(x => x.x.Fv3hUsernameAgr);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderBy(x => x.x.Fv3hUsernameFac);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderBy(x => x.x.Fv3hSubmitSts);
+
+
+            }
+            else if (filterOptions.sortOrder == SortOrder.Descending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderByDescending(x => x.x.Fv3hPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderByDescending(x => x.x.Fv3hRmu);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(x => x.div.RdsmDivCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(x => x.x.Fv3hActCode);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(x => x.x.Fv3hSecCode);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderByDescending(x => x.x.Fv3hCrewname);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderByDescending(x => x.x.Fv3hDt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(x => x.x.Fv3hUsernameRec);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderByDescending(x => x.x.Fv3hUsernameAgr);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderByDescending(x => x.x.Fv3hUsernameFac);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderByDescending(x => x.x.Fv3hSubmitSts);
+            }
+
+
+            result = await query.Select(s => s.x)
+                    .Skip(filterOptions.StartPageNo)
+                    .Take(filterOptions.RecordsPerPage)
+                    .ToListAsync();
+            return result;
+        }
+
+        public async Task<int> GetFilteredV3RecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            List<RmFormV3Hdr> result = new List<RmFormV3Hdr>();
+            var query = (from x in _context.RmFormV3Hdr
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv3hRmu || s.DdlTypeDesc == x.Fv3hRmu))
+                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv3hSecCode || s.DdlTypeCode == x.Fv3hSecCode))
+                         let div = _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv3hSecCode)
+                         select new { rmu, sec, x, div });
+
+
+
+            query = query.Where(x => x.x.Fv3hActiveYn == true).OrderByDescending(x => x.x.Fv3hPkRefNo);
+            if (filterOptions.Filters != null)
+            {
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeCode == filterOptions.Filters.Section);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+                {
+                    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
+                {
+                    query = query.Where(x => x.x.Fv3hCrewname == filterOptions.Filters.Crew || (x.x.Fv3hCrew.HasValue ? x.x.Fv3hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv3hCrew.ToString() == ""));
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.x.Fv3hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv3hDt.HasValue ? (x.x.Fv3hDt.Value.Year == dt.Year && x.x.Fv3hDt.Value.Month == dt.Month && x.x.Fv3hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv3hDt.HasValue ? (x.x.Fv3hDt.Value.Year == dt.Year && x.x.Fv3hDt.Value.Month == dt.Month && x.x.Fv3hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+                {
+                    query = query.Where(x => x.x.Fv3hRmu.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || x.x.Fv3hCrewname.Contains(filterOptions.Filters.SmartInputValue)
+                                        || ((bool)x.x.Fv3hSubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hRefId.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hSecCode.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hUsernameRec.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hUsernameAgr.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv3hUsernameFac.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (filterOptions.Filters.SmartInputValue.IsInt() && x.x.Fv3hPkRefNo.Equals(filterOptions.Filters.SmartInputValue.AsInt())));
+
+                }
+            }
+
+            return await query.CountAsync().ConfigureAwait(false);
+        }
+
+        public async Task<List<RmFormV3Dtl>> GetFormv3DtlGridList(FilteredPagingDefinition<FormV3DtlGridDTO> filterOptions, int V3PkRefNo)
+        {
+            List<RmFormV3Dtl> result = new List<RmFormV3Dtl>();
+            var query = (from x in _context.RmFormV3Dtl
+                         where x.Fv3dFv3hPkRefNo == V3PkRefNo && x.Fv3dActiveYn == true
+                         select new { x }).OrderByDescending(x => x.x.Fv3dPkRefNo);
+
+
+            if (filterOptions.sortOrder == SortOrder.Ascending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderBy(x => x.x.Fv3dRoadCode);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderBy(x => x.x.Fv3dRoadName);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(x => x.x.Fv3dFrmCh);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(x => x.x.Fv3dToCh);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(x => x.x.Fv3dLength);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderBy(x => x.x.Fv3dWidth);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderBy(x => x.x.Fv3dTimetakenFrm);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(x => x.x.Fv3dTimeTakenTo);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderBy(x => x.x.Fv3dTimeTakenTotal);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderBy(x => x.x.Fv3dTimeTakenTotal);
+
+            }
+            else if (filterOptions.sortOrder == SortOrder.Descending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderByDescending(x => x.x.Fv3dRoadCode);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderByDescending(x => x.x.Fv3dRoadName);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(x => x.x.Fv3dFrmCh);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(x => x.x.Fv3dSiteRef);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(x => x.x.Fv3dStartTime);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderByDescending(x => x.x.Fv3dRemarks);
+            }
+
+
+            result = await query.Select(s => s.x)
+                    .Skip(filterOptions.StartPageNo)
+                    .Take(filterOptions.RecordsPerPage)
+                    .ToListAsync();
+
+            return result;
+        }
+
+
+        #endregion
 
     }
 }

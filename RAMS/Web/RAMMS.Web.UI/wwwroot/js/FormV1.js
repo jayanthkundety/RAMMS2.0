@@ -6,6 +6,8 @@ $(document).ready(function () {
     if ($("#FormV1_Status").val() == "") {
         $("#btnWorkScheduleAdd").hide();
         $("#btnWorkSchedulePull").hide();
+        $("#saveFormV1Btn").hide();
+        $("#SubmitFormV1Btn").hide();
     }
     else if ($("#FormV1_Status").val() == "Initialize" || $("#FormV1_Status").val() == "Saved") {
         $("#btnWorkScheduleAdd").hide();
@@ -414,6 +416,8 @@ function UpdateFormAfterSave(data) {
     $("#FormV1_PkRefNo").val(data.pkRefNo);
     $("#FormV1_RefId").val(data.refId);
     $("#FormV1_Status").val(data.status)
+    $("#ddlSource").val(data.source)
+   
     $("#hdnPkRefNo").val(data.pkRefNo);
     $("#saveFormV1Btn").show();
     $("#SubmitFormV1Btn").show();
@@ -431,6 +435,7 @@ function UpdateFormAfterSave(data) {
         $.each(dsRefNo, function (index, v) {
             $("#ddlRefNo").append($("<option></option>").val(v.value).html(v.text));
         });
+        $("#ddlRefNo").val(data.s1RefNo)
         $('#ddlRefNo').trigger("chosen:updated");
 
         //if ($("#FormV1_Status").val() == "Initialize" || $("#FormV1_Status").val() == "") {

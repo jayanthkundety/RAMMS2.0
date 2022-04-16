@@ -13,6 +13,7 @@ namespace RAMMS.Repository.Interfaces
     public interface IFormV1Repository : IRepositoryBase<RmFormV1Hdr>
     {
 
+        #region FormV1
         Task<List<RmFormV1Hdr>> GetFilteredRecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
         Task<int> GetFilteredRecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
@@ -32,7 +33,13 @@ namespace RAMMS.Repository.Interfaces
         int LoadS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
 
         int PullS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
- 
+
+
+        #endregion
+        #region FormV3
+        Task<List<RmFormV3Hdr>> GetFilteredV3RecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+        Task<int> GetFilteredV3RecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+        #endregion
 
     }
 }

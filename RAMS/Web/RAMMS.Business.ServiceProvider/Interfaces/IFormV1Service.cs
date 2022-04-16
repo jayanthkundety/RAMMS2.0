@@ -12,10 +12,10 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 {
     public interface IFormV1Service
     {
-
+        #region Formv1
         Task<PagingResult<FormV1ResponseDTO>> GetFilteredFormV1Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
         Task<PagingResult<FormV1WorkScheduleGridDTO>> GetFormV1WorkScheduleGridList(FilteredPagingDefinition<FormV1WorkScheduleGridDTO> filterOptions, int V1PkRefNo);
-
+      
         Task<FormV1ResponseDTO> SaveFormV1(FormV1ResponseDTO FormV1);
         Task<int> Update(FormV1ResponseDTO FormV1);
 
@@ -36,5 +36,15 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         int LoadS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
 
         int PullS1Data(int PKRefNo, int S1PKRefNo, string ActCode);
+        #endregion
+
+        #region FormV3
+
+        Task<PagingResult<FormV3ResponseDTO>> GetFilteredFormV3Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+
+        Task<PagingResult<FormV3DtlGridDTO>> GetFormV3DtlGridList(FilteredPagingDefinition<FormV3DtlGridDTO> filterOptions, int V3PkRefNo);
+       
+        #endregion
+
     }
 }

@@ -1045,7 +1045,7 @@ namespace RAMMS.Web.UI.Controllers
             LoadLookupService("RD_Code", "User", "Site Ref");
             return 1;
         }
-        public async Task<IActionResult> AddFormV1(int id, int view=0)
+        public async Task<IActionResult> AddFormV1(int id, int view = 0)
         {
             var _formV1Model = new FormV1Model();
             _formV1Model.FormV1 = new FormV1ResponseDTO();
@@ -1071,7 +1071,7 @@ namespace RAMMS.Web.UI.Controllers
 
 
 
-        public async Task<IActionResult> EditFormV1(int Id,int view=0)
+        public async Task<IActionResult> EditFormV1(int Id, int view = 0)
         {
             await LoadFormV1DropDown();
             var _formV1Model = new FormV1Model();
@@ -1131,7 +1131,7 @@ namespace RAMMS.Web.UI.Controllers
                 //frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
                 //await LoadFormV1DropDown();
                 // return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
-                return Json(new { RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS });
+                return Json(new { RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormV1.S1HPkRefNo });
             }
             else
             {
@@ -1582,6 +1582,217 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
+        #endregion
+
+        #region Form V3
+
+        public async Task<IActionResult> FormV3()
+        {
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "RMU";
+            ViewData["RMU"] = await _formN1Service.GetRMU();
+
+            ddLookup.Type = "Act-FormD";
+            ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
+
+            LoadLookupService("User");
+
+            FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+
+            ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+            return View("~/Views/MAM/FormV3/FormV3.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoadFormV3List(DataTableAjaxPostModel<FormV1SearchGridDTO> formV3Filter)
+        {
+
+            if (Request.Form.ContainsKey("columns[0][search][value]"))
+            {
+                formV3Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[1][search][value]"))
+            {
+                formV3Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                formV3Filter.filterData.Section = Request.Form["columns[2][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[3][search][value]"))
+            {
+                formV3Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                formV3Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                formV3Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                formV3Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
+            }
+
+            FilteredPagingDefinition<FormV1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1SearchGridDTO>();
+            filteredPagingDefinition.Filters = formV3Filter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV3Filter.length;
+            filteredPagingDefinition.StartPageNo = formV3Filter.start;
+
+            if (formV3Filter.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = formV3Filter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV3Filter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+
+            var result = await _formV1Service.GetFilteredFormV3Grid(filteredPagingDefinition).ConfigureAwait(false);
+
+            return Json(new { draw = formV3Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+        public async Task<IActionResult> GetV3DtlGridList(DataTableAjaxPostModel<FormV3DtlGridDTO> formV3WorkScheduleFilter, int V3PkRefNo)
+        {
+
+
+            FilteredPagingDefinition<FormV3DtlGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV3DtlGridDTO>();
+            filteredPagingDefinition.Filters = formV3WorkScheduleFilter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV3WorkScheduleFilter.length;
+            filteredPagingDefinition.StartPageNo = formV3WorkScheduleFilter.start;
+
+            if (formV3WorkScheduleFilter.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = formV3WorkScheduleFilter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV3WorkScheduleFilter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+
+            var result = await _formV1Service.GetFormV1WorkScheduleGridList(filteredPagingDefinition, V3PkRefNo).ConfigureAwait(false);
+
+            return Json(new { draw = formV3WorkScheduleFilter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
+
+
+         public async Task<IActionResult> AddFormV3(int id, int view = 0)
+        {
+            var _formV1Model = new FormV1Model();
+            _formV1Model.FormV1 = new FormV1ResponseDTO();
+            _formV1Model.FormV1Dtl = new FormV1DtlResponseDTO();
+            await LoadFormV1DropDown();
+
+            if (_formV1Model.FormV1.UseridSch == 0)
+                _formV1Model.FormV1.UseridSch = _security.UserID;
+
+            _formV1Model.view = view;
+
+            //if (_formV1Model.FormV1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
+            //{
+            //    if (_formV1Model.FormV1.UseridVer == null || _formV1Model.FormV1.UseridVer == 0)
+            //    {
+            //        _formV1Model.FormV1.UseridVer = _security.UserID;
+            //        _formV1Model.FormV1.DtVer = DateTime.Today;
+            //    }
+            //}
+
+            return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
+        }
+
+
+
+        public async Task<IActionResult> EditFormV3(int Id, int view = 0)
+        {
+            await LoadFormV1DropDown();
+            var _formV1Model = new FormV1Model();
+
+            _formV1Model.FormV1 = await _formV1Service.FindFormV1ByID(Id);
+
+            _formV1Model.FormV1.Source = _formV1Model.FormV1.Source == null ? "" : _formV1Model.FormV1.Source;
+
+            _formV1Model.RefNoDS = _formV1Service.FindRefNoFromS1(_formV1Model.FormV1);
+
+            if (_formV1Model.FormV1.UseridSch == 0)
+            {
+                _formV1Model.FormV1.UseridSch = _security.UserID;
+                _formV1Model.FormV1.DtSch = DateTime.Today;
+            }
+            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Submitted)
+            {
+                _formV1Model.FormV1.UseridAgr = _security.UserID;
+                _formV1Model.FormV1.DtAgr = DateTime.Today;
+            }
+            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Verified)
+            {
+                _formV1Model.FormV1.UseridAck = _security.UserID;
+                _formV1Model.FormV1.DtAck = DateTime.Today;
+            }
+
+
+
+            _formV1Model.view = view;
+
+            return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
+        }
+
+
+      
+
+        public async Task<IActionResult> SaveFormV3(FormV1Model frm)
+        {
+            int refNo = 0;
+            frm.FormV1.ActiveYn = true;
+            if (frm.FormV1.PkRefNo == 0)
+            {
+                frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
+                frm.RefNoDS = _formV1Service.FindRefNoFromS1(frm.FormV1);
+                //frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
+                //await LoadFormV1DropDown();
+                // return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
+                return Json(new { RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormV1.S1HPkRefNo });
+            }
+            else
+            {
+                if (frm.FormV1.Status == "Initialize")
+                    frm.FormV1.Status = "Saved";
+                refNo = await _formV1Service.Update(frm.FormV1);
+            }
+            return Json(refNo);
+
+
+        }
+
+
+        public async Task<IActionResult> SaveFormV3Dtl(FormV1Model frm)
+        {
+            int? refNo = 0;
+            frm.FormV1Dtl.ActiveYn = true;
+            frm.FormV1Dtl.Fv1hPkRefNo = frm.FormV1.PkRefNo;
+            if (frm.FormV1Dtl.PkRefNo == 0)
+            {
+                refNo = _formV1Service.SaveFormV1WorkSchedule(frm.FormV1Dtl);
+
+            }
+            else
+            {
+                _formV1Service.UpdateFormV1WorkSchedule(frm.FormV1Dtl);
+            }
+            return Json(refNo);
+
+
+        }
+
+        public async Task<IActionResult> DeleteFormV3(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formV1Service.DeleteFormV1(id);
+            return Json(rowsAffected);
+        }
+
+        public async Task<IActionResult> DeleteFormV3Dtl(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formV1Service.DeleteFormV1WorkSchedule(id);
+            return Json(rowsAffected);
+        }
         #endregion
 
     }
