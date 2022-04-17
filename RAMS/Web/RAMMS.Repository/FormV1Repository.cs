@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using RAMMS.Common;
 using RAMMS.Common.Extensions;
+using RAMMS.Common.RefNumber;
 using RAMMS.Domain.Models;
 using RAMMS.DTO;
 using RAMMS.DTO.ResponseBO;
@@ -19,9 +22,11 @@ namespace RAMMS.Repository
 {
     public class FormV1Repository : RepositoryBase<RmFormV1Hdr>, IFormV1Repository
     {
-        public FormV1Repository(RAMMSContext context) : base(context)
+        private readonly IMapper _mapper;
+        public FormV1Repository(RAMMSContext context, IMapper mapper) : base(context)
         {
             _context = context;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         #region FormV1
@@ -696,8 +701,15 @@ namespace RAMMS.Repository
                     query = query.OrderBy(x => x.x.Fv3dTimeTakenTo);
                 if (filterOptions.ColumnIndex == 9)
                     query = query.OrderBy(x => x.x.Fv3dTimeTakenTotal);
-                if (filterOptions.ColumnIndex == 9)
-                    query = query.OrderBy(x => x.x.Fv3dTimeTakenTotal);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderBy(x => x.x.Fv3dAdp);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderBy(x => x.x.Fv3dTransitTimeFrm);
+                if (filterOptions.ColumnIndex == 12)
+                    query = query.OrderBy(x => x.x.Fv3dTransitTimeTo);
+                if (filterOptions.ColumnIndex == 13)
+                    query = query.OrderBy(x => x.x.Fv3dTransitTimeTotal);
+                 
 
             }
             else if (filterOptions.sortOrder == SortOrder.Descending)
@@ -709,11 +721,25 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 3)
                     query = query.OrderByDescending(x => x.x.Fv3dFrmCh);
                 if (filterOptions.ColumnIndex == 4)
-                    query = query.OrderByDescending(x => x.x.Fv3dSiteRef);
+                    query = query.OrderByDescending(x => x.x.Fv3dToCh);
                 if (filterOptions.ColumnIndex == 5)
-                    query = query.OrderByDescending(x => x.x.Fv3dStartTime);
+                    query = query.OrderByDescending(x => x.x.Fv3dLength);
                 if (filterOptions.ColumnIndex == 6)
-                    query = query.OrderByDescending(x => x.x.Fv3dRemarks);
+                    query = query.OrderByDescending(x => x.x.Fv3dWidth);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderByDescending(x => x.x.Fv3dTimetakenFrm);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(x => x.x.Fv3dTimeTakenTo);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderByDescending(x => x.x.Fv3dTimeTakenTotal);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderByDescending(x => x.x.Fv3dAdp);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderByDescending(x => x.x.Fv3dTransitTimeFrm);
+                if (filterOptions.ColumnIndex == 12)
+                    query = query.OrderByDescending(x => x.x.Fv3dTransitTimeTo);
+                if (filterOptions.ColumnIndex == 13)
+                    query = query.OrderByDescending(x => x.x.Fv3dTransitTimeTotal);
             }
 
 
@@ -725,6 +751,42 @@ namespace RAMMS.Repository
             return result;
         }
 
+
+        public async Task<RmFormV3Hdr> FindFormV3ByID(int id)
+        {
+            return await _context.RmFormV3Hdr.Where(x => x.Fv3hPkRefNo == id && x.Fv3hActiveYn == true).FirstOrDefaultAsync();
+        }
+
+        public async Task<FormV3ResponseDTO> SaveFormV3(FormV3ResponseDTO Formv3)
+        {
+            try
+            {
+                var domainModelFormv3 = _mapper.Map<RmFormV3Hdr>(Formv3);
+                domainModelFormv3.Fv3hPkRefNo = 0;
+
+                var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hSecCode == domainModelFormv3.Fv3hSecCode && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hActiveYn == true).ToList();
+                if (obj != null)
+                    return _mapper.Map<FormV3ResponseDTO>(obj);
+
+                IDictionary<string, string> lstData = new Dictionary<string, string>();
+                lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
+                lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
+                lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
+                domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.Formv3Header, lstData);
+
+                var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormv3);
+                Formv3.PkRefNo = _mapper.Map<Formv3ResponseDTO>(entity).PkRefNo;
+                Formv3.RefId = domainModelFormv3.Fv3hRefId;
+                Formv3.Status = domainModelFormv3.Fv3hStatus;
+
+                return Formv3;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
 
         #endregion
 

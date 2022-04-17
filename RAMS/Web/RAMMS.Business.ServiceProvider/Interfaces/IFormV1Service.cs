@@ -43,7 +43,12 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<PagingResult<FormV3ResponseDTO>> GetFilteredFormV3Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
         Task<PagingResult<FormV3DtlGridDTO>> GetFormV3DtlGridList(FilteredPagingDefinition<FormV3DtlGridDTO> filterOptions, int V3PkRefNo);
-       
+
+        Task<FormV3ResponseDTO> FindFormV3ByID(int id);
+
+        Task<FormV3ResponseDTO> SaveFormV3(FormV3ResponseDTO FormV3);
+        Task<int> UpdateV3(FormV3ResponseDTO FormV3);
+
         #endregion
 
     }

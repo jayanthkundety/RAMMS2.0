@@ -39,6 +39,10 @@ namespace RAMMS.Repository.Interfaces
         #region FormV3
         Task<List<RmFormV3Hdr>> GetFilteredV3RecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
         Task<int> GetFilteredV3RecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+
+        Task<RmFormV3Hdr> FindFormV3ByID(int id);
+
+        Task<FormV3ResponseDTO> SaveFormV3(FormV3ResponseDTO Formv3);
         #endregion
 
     }

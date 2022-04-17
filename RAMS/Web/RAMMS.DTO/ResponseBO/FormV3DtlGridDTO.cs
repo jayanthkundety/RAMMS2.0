@@ -21,8 +21,8 @@ namespace RAMMS.DTO.ResponseBO
         public string  TimeTakenTo { get; set; }
         public decimal? TimeTakenTotal { get; set; }
         public string TransitTimeFrm { get; set; }
-        public DateTime? TransitTimeTo { get; set; }
-        public string TransitTimeTotal { get; set; }
+        public string TransitTimeTo { get; set; }
+        public decimal? TransitTimeTotal { get; set; }
         public int? Adp { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }

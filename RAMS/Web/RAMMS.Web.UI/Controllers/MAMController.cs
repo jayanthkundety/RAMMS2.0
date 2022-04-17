@@ -1661,108 +1661,91 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formV3Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
-        public async Task<IActionResult> GetV3DtlGridList(DataTableAjaxPostModel<FormV3DtlGridDTO> formV3WorkScheduleFilter, int V3PkRefNo)
+        public async Task<IActionResult> GetV3DtlGridList(DataTableAjaxPostModel<FormV3DtlGridDTO> formV3DtlFilter, int V3PkRefNo)
         {
 
 
             FilteredPagingDefinition<FormV3DtlGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV3DtlGridDTO>();
-            filteredPagingDefinition.Filters = formV3WorkScheduleFilter.filterData;
-            filteredPagingDefinition.RecordsPerPage = formV3WorkScheduleFilter.length;
-            filteredPagingDefinition.StartPageNo = formV3WorkScheduleFilter.start;
+            filteredPagingDefinition.Filters = formV3DtlFilter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV3DtlFilter.length;
+            filteredPagingDefinition.StartPageNo = formV3DtlFilter.start;
 
-            if (formV3WorkScheduleFilter.order != null)
+            if (formV3DtlFilter.order != null)
             {
-                filteredPagingDefinition.ColumnIndex = formV3WorkScheduleFilter.order[0].column;
-                filteredPagingDefinition.sortOrder = formV3WorkScheduleFilter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+                filteredPagingDefinition.ColumnIndex = formV3DtlFilter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV3DtlFilter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
             }
 
-            var result = await _formV1Service.GetFormV1WorkScheduleGridList(filteredPagingDefinition, V3PkRefNo).ConfigureAwait(false);
+            var result = await _formV1Service.GetFormV3DtlGridList(filteredPagingDefinition, V3PkRefNo).ConfigureAwait(false);
 
-            return Json(new { draw = formV3WorkScheduleFilter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+            return Json(new { draw = formV3DtlFilter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
 
          public async Task<IActionResult> AddFormV3(int id, int view = 0)
         {
-            var _formV1Model = new FormV1Model();
-            _formV1Model.FormV1 = new FormV1ResponseDTO();
-            _formV1Model.FormV1Dtl = new FormV1DtlResponseDTO();
+            var _formV3Model = new FormV3Model();
+            _formV3Model.FormV3 = new FormV3ResponseDTO();
+            _formV3Model.FormV3Dtl = new FormV3DtlGridDTO();
             await LoadFormV1DropDown();
 
-            if (_formV1Model.FormV1.UseridSch == 0)
-                _formV1Model.FormV1.UseridSch = _security.UserID;
+            if (_formV3Model.FormV3.UseridRec == 0)
+                _formV3Model.FormV3.UseridRec = _security.UserID;
 
-            _formV1Model.view = view;
+            _formV3Model.view = view;
 
-            //if (_formV1Model.FormV1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
-            //{
-            //    if (_formV1Model.FormV1.UseridVer == null || _formV1Model.FormV1.UseridVer == 0)
-            //    {
-            //        _formV1Model.FormV1.UseridVer = _security.UserID;
-            //        _formV1Model.FormV1.DtVer = DateTime.Today;
-            //    }
-            //}
-
-            return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
+            return View("~/Views/MAM/FormV1/AddFormV3.cshtml", _formV3Model);
         }
-
 
 
         public async Task<IActionResult> EditFormV3(int Id, int view = 0)
         {
             await LoadFormV1DropDown();
-            var _formV1Model = new FormV1Model();
+            var _formV3Model = new FormV3Model();
 
-            _formV1Model.FormV1 = await _formV1Service.FindFormV1ByID(Id);
+            _formV3Model.FormV3 = await _formV1Service.FindFormV3ByID(Id);
 
-            _formV1Model.FormV1.Source = _formV1Model.FormV1.Source == null ? "" : _formV1Model.FormV1.Source;
+            
 
-            _formV1Model.RefNoDS = _formV1Service.FindRefNoFromS1(_formV1Model.FormV1);
-
-            if (_formV1Model.FormV1.UseridSch == 0)
+            if (_formV3Model.FormV3.UseridRec == 0)
             {
-                _formV1Model.FormV1.UseridSch = _security.UserID;
-                _formV1Model.FormV1.DtSch = DateTime.Today;
+                _formV3Model.FormV3.UseridRec = _security.UserID;
+                _formV3Model.FormV3.DtSch = DateTime.Today;
             }
-            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Submitted)
+            if (_formV3Model.FormV3.UseridAgr == 0 && _formV3Model.FormV3.Status == RAMMS.Common.StatusList.FormV1Submitted)
             {
-                _formV1Model.FormV1.UseridAgr = _security.UserID;
-                _formV1Model.FormV1.DtAgr = DateTime.Today;
+                _formV3Model.FormV3.UseridAgr = _security.UserID;
+                _formV3Model.FormV3.DtAgr = DateTime.Today;
             }
-            if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Verified)
+            if (_formV3Model.FormV3.UseridAgr == 0 && _formV3Model.FormV3.Status == RAMMS.Common.StatusList.FormV1Verified)
             {
-                _formV1Model.FormV1.UseridAck = _security.UserID;
-                _formV1Model.FormV1.DtAck = DateTime.Today;
+                _formV3Model.FormV3.UseridFac = _security.UserID;
+                _formV3Model.FormV3.DtRec = DateTime.Today;
             }
 
 
 
-            _formV1Model.view = view;
+            _formV3Model.view = view;
 
-            return View("~/Views/MAM/FormV1/AddFormV1.cshtml", _formV1Model);
+            return View("~/Views/MAM/FormV3/AddFormV3.cshtml", _formV3Model);
         }
 
 
-      
-
-        public async Task<IActionResult> SaveFormV3(FormV1Model frm)
+        public async Task<IActionResult> SaveFormV3(FormV3Model frm)
         {
             int refNo = 0;
-            frm.FormV1.ActiveYn = true;
-            if (frm.FormV1.PkRefNo == 0)
+            frm.FormV3.ActiveYn = true;
+            if (frm.FormV3.PkRefNo == 0)
             {
-                frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
-                frm.RefNoDS = _formV1Service.FindRefNoFromS1(frm.FormV1);
-                //frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
-                //await LoadFormV1DropDown();
-                // return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
-                return Json(new { RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormV1.S1HPkRefNo });
+                refNo = frm.FormV3 = await _formV1Service.SaveFormV1(frm.FormV3);
+
+                 
             }
             else
             {
-                if (frm.FormV1.Status == "Initialize")
-                    frm.FormV1.Status = "Saved";
-                refNo = await _formV1Service.Update(frm.FormV1);
+                if (frm.FormV3.Status == "Initialize")
+                    frm.FormV3.Status = "Saved";
+                refNo = await _formV3Service.Update(frm.FormV3);
             }
             return Json(refNo);
 
