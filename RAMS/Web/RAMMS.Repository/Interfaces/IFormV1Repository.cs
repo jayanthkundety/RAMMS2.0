@@ -43,6 +43,8 @@ namespace RAMMS.Repository.Interfaces
         Task<RmFormV3Hdr> FindFormV3ByID(int id);
 
         Task<FormV3ResponseDTO> SaveFormV3(FormV3ResponseDTO Formv3);
+
+        Task<int> UpdateFormV3(RmFormV3Hdr FormV3);
         #endregion
 
     }

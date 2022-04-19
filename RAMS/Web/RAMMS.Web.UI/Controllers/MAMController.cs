@@ -1739,14 +1739,13 @@ namespace RAMMS.Web.UI.Controllers
             {
                 var v3 = new FormV3ResponseDTO();
                frm.FormV3 = await _formV1Service.SaveFormV3(v3);
-
-                 
+                
             }
             else
             {
                 if (frm.FormV3.Status == "Initialize")
                     frm.FormV3.Status = "Saved";
-               // refNo = await _formV3Service.Update(frm.FormV3);
+                 refNo = await _formV1Service.UpdateV3(frm.FormV3);
             }
             return Json(refNo);
 
@@ -1754,19 +1753,19 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        public async Task<IActionResult> SaveFormV3Dtl(FormV1Model frm)
+        public async Task<IActionResult> SaveFormV3Dtl(FormV3Model frm)
         {
             int? refNo = 0;
-            frm.FormV1Dtl.ActiveYn = true;
-            frm.FormV1Dtl.Fv1hPkRefNo = frm.FormV1.PkRefNo;
-            if (frm.FormV1Dtl.PkRefNo == 0)
+            frm.FormV3Dtl.ActiveYn = true;
+            frm.FormV3Dtl.Fv3hPkRefNo = frm.FormV3.PkRefNo;
+            if (frm.FormV3Dtl.PkRefNo == 0)
             {
-                refNo = _formV1Service.SaveFormV1WorkSchedule(frm.FormV1Dtl);
+              //  refNo = _formV1Service.SaveFormV3WorkSchedule(frm.FormV3Dtl);
 
             }
             else
             {
-                _formV1Service.UpdateFormV1WorkSchedule(frm.FormV1Dtl);
+               // _formV1Service.UpdateFormV3WorkSchedule(frm.FormV3Dtl);
             }
             return Json(refNo);
 

@@ -252,7 +252,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (existsObj != null)
                 {
                     form.Fv1hAuditLog = existsObj.Log;
-                   // form.Fv1hStatus = existsObj.Status;
+                    // form.Fv1hStatus = existsObj.Status;
 
                 }
 
@@ -275,7 +275,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return form;
         }
- 
+
         public async Task<FormV1ResponseDTO> FindFormV1ByID(int id)
         {
             RmFormV1Hdr formV1 = await _repo.FindFormV1ByID(id);
@@ -318,7 +318,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 foreach (var listData in filteredRecords)
                 {
                     var _ = _mapper.Map<FormV3ResponseDTO>(listData);
-                   
+
                     formDList.Add(_);
                 }
 
@@ -354,7 +354,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                     obj.Fv3hPkRefNo = listData.Fv3dFv3hPkRefNo;
                     obj.PkRefNo = listData.Fv3dPkRefNo;
-                    obj.FrmCh=  listData.Fv3dFrmCh;
+                    obj.FrmCh = listData.Fv3dFrmCh;
                     obj.ToCh = listData.Fv3dToCh;
                     obj.RoadCode = listData.Fv3dRoadCode;
                     obj.RoadName = listData.Fv3dRoadName;
@@ -395,23 +395,8 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             try
             {
+                return await _repo.SaveFormV3(Formv3);
 
-                var Formv13 = new FormV3ResponseDTO();
-                Formv13.Crewname = "ctrrrree";
-                var domainModelFormv3 = _mapper.Map<RmFormV3Hdr>(Formv13);
-
-                var Formv1 = new FormV1ResponseDTO();
-                Formv1.Crewname = "v1111111";
-                var domainModelFormv1 = _mapper.Map<RmFormV1Hdr>(Formv1);
-
-                var Formv2 = new FormV2HeaderResponseDTO();
-                Formv2.Crewname = "v222222222";
-                var domainModelFormv2 = _mapper.Map<RmFormV2Hdr>(Formv2);
-
-
-                domainModelFormv3.Fv3hPkRefNo = 0;
-                return await _repo.SaveFormV3( Formv3);
- 
             }
             catch (Exception ex)
             {
@@ -430,9 +415,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelFormV3 = _mapper.Map<RmFormV3Hdr>(FormV3);
                 domainModelFormV3.Fv3hPkRefNo = PkRefNo;
                 domainModelFormV3.Fv3hActiveYn = true;
-                //domainModelFormV3 = UpdateStatus(domainModelFormV3);
-                //_repoUnit.FormV1Repository.Update(domainModelFormV3);
-                rowsAffected = await _repoUnit.CommitAsync();
+                domainModelFormV3 = UpdateV3Status(domainModelFormV3);
+                rowsAffected =  await  _repoUnit.FormV1Repository.UpdateFormV3(domainModelFormV3);
+                
             }
             catch (Exception ex)
             {
@@ -443,30 +428,30 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
-        public RmFormV1Hdr UpdateV3Status(RmFormV1Hdr form)
+        public RmFormV3Hdr UpdateV3Status(RmFormV3Hdr form)
         {
-            if (form.Fv1hPkRefNo > 0)
+            if (form.Fv3hPkRefNo > 0)
             {
-                var existsObj = _repoUnit.FormV1Repository._context.RmFormV1Hdr.Where(x => x.Fv1hPkRefNo == form.Fv1hPkRefNo).Select(x => new { Status = x.Fv1hStatus, Log = x.Fv1hAuditLog }).FirstOrDefault();
+                var existsObj = _repoUnit.FormV1Repository._context.RmFormV3Hdr.Where(x => x.Fv3hPkRefNo == form.Fv3hPkRefNo).Select(x => new { Status = x.Fv3hStatus, Log = x.Fv3hAuditLog }).FirstOrDefault();
                 if (existsObj != null)
                 {
-                    form.Fv1hAuditLog = existsObj.Log;
-                    // form.Fv1hStatus = existsObj.Status;
+                    form.Fv3hAuditLog = existsObj.Log;
+                    // form.Fv3hStatus = existsObj.Status;
 
                 }
 
             }
-            if (form.Fv1hSubmitSts && form.Fv1hStatus == "Saved")
+            if (form.Fv3hSubmitSts && form.Fv3hStatus == "Saved")
             {
-                form.Fv1hStatus = Common.StatusList.FormW2Submitted;
-                form.Fv1hAuditLog = Utility.ProcessLog(form.Fv1hAuditLog, "Submitted By", "Submitted", form.Fv1hUsernameSch, string.Empty, form.Fv1hDtSch, _security.UserName);
+                form.Fv3hStatus = Common.StatusList.FormW2Submitted;
+                form.Fv3hAuditLog = Utility.ProcessLog(form.Fv3hAuditLog, "Submitted By", "Submitted", form.Fv3hUsernameRec, string.Empty, form.Fv3hDtSch, _security.UserName);
                 processService.SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = _security.UserName,
                     RmNotGroup = GroupNames.OperationsExecutive,
-                    RmNotMessage = "Recorded By:" + form.Fv1hUsernameSch + " - Form WN (" + form.Fv1hPkRefNo + ")",
+                    RmNotMessage = "Recorded By:" + form.Fv3hUsernameRec + " - Form WN (" + form.Fv3hPkRefNo + ")",
                     RmNotOn = DateTime.Now,
-                    RmNotUrl = "/MAM/EditFormV1?id=" + form.Fv1hPkRefNo.ToString(),
+                    RmNotUrl = "/MAM/EditFormv3?id=" + form.Fv3hPkRefNo.ToString(),
                     RmNotUserId = "",
                     RmNotViewed = ""
                 }, true);

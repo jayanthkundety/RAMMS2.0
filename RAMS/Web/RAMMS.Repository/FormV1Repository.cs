@@ -18,15 +18,18 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+
 namespace RAMMS.Repository
 {
     public class FormV1Repository : RepositoryBase<RmFormV1Hdr>, IFormV1Repository
     {
         private readonly IMapper _mapper;
-        public FormV1Repository(RAMMSContext context ) : base(context)
+
+
+        public FormV1Repository(RAMMSContext context, IMapper mapper = null) : base(context)
         {
             _context = context;
-            
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         #region FormV1
@@ -350,7 +353,7 @@ namespace RAMMS.Repository
                                Fv1dToCh = dtl.FsidToChKm,
                                Fv1dToChDeci = dtl.FsidToChM == "" ? 0 : Convert.ToInt32(dtl.FsidToChM),
                            }).ToList();
-              
+
 
                 foreach (var item in res)
                 {
@@ -385,7 +388,7 @@ namespace RAMMS.Repository
                               Fv1dToCh = dtl.FsidToChKm,
                               Fv1dToChDeci = dtl.FsidToChM == "" ? 0 : Convert.ToInt32(dtl.FsidToChM),
                           }).ToList();
-                        
+
 
             foreach (var item in FromS1)
             {
@@ -499,7 +502,7 @@ namespace RAMMS.Repository
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
-                    query = query.Where(x => x.x.Fv3hActCode ==  filterOptions.Filters.ActivityCode);
+                    query = query.Where(x => x.x.Fv3hActCode == filterOptions.Filters.ActivityCode);
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
@@ -709,7 +712,7 @@ namespace RAMMS.Repository
                     query = query.OrderBy(x => x.x.Fv3dTransitTimeTo);
                 if (filterOptions.ColumnIndex == 13)
                     query = query.OrderBy(x => x.x.Fv3dTransitTimeTotal);
-                 
+
 
             }
             else if (filterOptions.sortOrder == SortOrder.Descending)
@@ -765,18 +768,23 @@ namespace RAMMS.Repository
                 domainModelFormv3.Fv3hPkRefNo = 0;
 
                 var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hSecCode == domainModelFormv3.Fv3hSecCode && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hActiveYn == true).ToList();
-                if (obj != null)
+                if (obj.Count > 0)
                     return _mapper.Map<FormV3ResponseDTO>(obj);
+
+
+                // var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormv3);
+                _context.Set<RmFormV3Hdr>().Add(domainModelFormv3);
+                _context.SaveChanges();
 
                 IDictionary<string, string> lstData = new Dictionary<string, string>();
                 lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                 lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
                 lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
+                lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv3.Fv3hPkRefNo));
                 domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV3Header, lstData);
-
-               // var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormv3);
-                _context.Set<RmFormV3Hdr>().Add(domainModelFormv3);
                 _context.SaveChanges();
+
+
                 Formv3.PkRefNo = _mapper.Map<FormV3ResponseDTO>(domainModelFormv3).PkRefNo;
                 Formv3.RefId = domainModelFormv3.Fv3hRefId;
                 Formv3.Status = domainModelFormv3.Fv3hStatus;
@@ -789,6 +797,24 @@ namespace RAMMS.Repository
                 throw ex;
             }
         }
+
+
+        public async Task<int> UpdateFormV3(RmFormV3Hdr FormV3)
+        {
+            try
+            {
+                _context.Set<RmFormV3Hdr>().Attach(FormV3);
+                _context.Entry<RmFormV3Hdr>(FormV3).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+
 
         #endregion
 

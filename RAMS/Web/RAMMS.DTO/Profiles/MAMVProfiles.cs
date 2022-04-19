@@ -11,7 +11,7 @@ namespace RAMMS.DTO.Profiles
     {
         public MAMVProfiles()
         {
-            string[] arrPrefix = new string[] { "Fv1h", "Fv1d", "Fv2h", "Fv2e", "Fv2l", "Fv2m,Fv3h,Fv3d" };
+            string[] arrPrefix = new string[] { "Fv1h", "Fv1d", "Fv2h", "Fv2e", "Fv2l", "Fv2m","Fv3h","Fv3d" };
             this.RecognizeDestinationPrefixes(arrPrefix);
             this.RecognizePrefixes(arrPrefix);
 
