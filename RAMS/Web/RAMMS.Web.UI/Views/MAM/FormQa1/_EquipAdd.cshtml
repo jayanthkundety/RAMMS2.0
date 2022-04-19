@@ -1,4 +1,4 @@
-﻿@model RAMMS.Web.UI.Models.FormV2EquipDetailsModel;
+﻿@model RAMMS.DTO.ResponseBO.FormQa1EqVhDTO;
 <script type="text/javascript">
     var val = $("#hdnEquipid").val();
     var equipDesc = "";
@@ -75,16 +75,14 @@
 
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <label for="Code"> Code</label>
-                        <select class="form-control  validate {required, Equipment Code}" id="formDEquipCode" name="SaveFormDEquipModel.EquipmentCode">
-                            <option value="">Select Code</option>
-                            <option value="E01">E01-Air Compressor (200 CFM min.)</option>
-                            <option value="E02">E02-Asphalt Paver-Finesher (140 HP min.)</option>
-                        </select>
+                        @Html.Label("Code", "Code")
+                        @Html.DropDownListFor(Ahdr => Ahdr.Capacity, (IEnumerable
+                        <SelectListItem>)ViewData["EQPList"], "Select Code", new { @Id = "formQa1EquipCode", @class = "form-control  validate {required, Equipment Code}" })
+                        @Html.HiddenFor(Ahdr => Ahdr.Type, new { @id = "hdnformQa1EquipCode", @class = "form-control" })
                     </div>
                     <div class="form-group col-lg-6">
                         <label for="Code"> Name</label>
-                        <input class="form-control" id="formDlabDesc" name="SaveFormDLabourModel.CodeDesc" readonly="readonly" rows="1" type="text" value="">
+                        @Html.TextBoxFor(Adtl => Adtl.Capacity, new { @Id = "formV2EquipCapacity", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Equipment Name}", @rows = 1 })
                     </div>
                 </div>
             </div>
