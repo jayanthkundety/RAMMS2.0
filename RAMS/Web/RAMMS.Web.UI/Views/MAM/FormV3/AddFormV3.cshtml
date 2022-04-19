@@ -68,7 +68,7 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-6 mb-0">
                                                                     <label for="RMU_Name">RMU Name</label>
-                                                                    @Html.TextBoxFor(m => m.FormV3.RmuName, new { @Id = "ddlrmuDesc", @readonly = "readonly", @class = "form-control" })
+                                                                    @Html.TextBoxFor(m => m.FormV3.Rmuname, new { @Id = "ddlrmuDesc", @readonly = "readonly", @class = "form-control" })
                                                                 </div>
                                                             </div>
 
@@ -82,7 +82,7 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-6 mb-0">
                                                                     <label for="RMU_Name">Section Name</label>
-                                                                    @Html.TextBoxFor(m => m.FormV3.SecName, new { @readonly = "readonly", @class = "form-control " })
+                                                                    @Html.TextBoxFor(m => m.FormV3.Secname, new { @readonly = "readonly", @class = "form-control " })
                                                                 </div>
                                                             </div>
 
@@ -117,26 +117,13 @@
                                                                 </div>
                                                                 <div class="col-lg-6 form-group">
                                                                     <label for="Ref_No_">Activity Name</label>
-                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV3.ActName, "", new { @readonly = "readonly", @class = "form-control" })
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV3.Actname, "", new { @readonly = "readonly", @class = "form-control" })
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-2 form-group px-0">
                                                             <label for="Division_Code">Date </label>
                                                             @Html.EditorFor(m => m.FormV3.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
-                                                        </div>
-                                                        <div class="col-lg-5">
-                                                            <div class="row">
-                                                                <div class="col-6 form-group divsource">
-                                                                    <label for="">Source</label>
-                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV3.Source, (new List<SelectListItem> { new SelectListItem { Text = "Form S1", Value = "S1" }, new SelectListItem { Text = "New", Value = "V3" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control" })
-                                                                </div>
-                                                                <div class="form-group col-lg-6 mb-0 divRefno">
-                                                                    <label for="">Reference No</label>
-                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV3.S1HPkRefNo, Model.RefNoDS, "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control" })
-                                                                </div>
-                                                            </div>
-
                                                         </div>
                                                     </div>
 
@@ -222,15 +209,15 @@
                                                                 <label for="User_Id">
                                                                     Name
                                                                 </label>
-                                                                @Html.TextBoxFor(model => model.FormV3.UsernameSch, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV3.UsernameRec, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="Designation">Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormV3.DesignationSch, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV3.DesignationRec, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-3 float-left">
                                                                 <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                @Html.EditorFor(m => m.FormV3.DtSch, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                @Html.EditorFor(m => m.FormV3.DtRec, new { type = "date", htmlAttributes = new { @class = "form-control" } })
                                                             </div>
                                                             <div class="form-group col-lg-1 float-left">
                                                                 <label>
@@ -238,7 +225,7 @@
 
                                                                 </label>
                                                                 <div class="clear-b mt-2">
-                                                                    @Html.CheckBoxFor(model => model.FormV3.SignSch, new { @class = "{required, Scheduled by Signature}" })
+                                                                    @Html.CheckBoxFor(model => model.FormV3.SignRec, new { @class = "{required, Scheduled by Signature}" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -307,22 +294,22 @@
                                                                 <label for="User_Id">
                                                                     Name
                                                                 </label>
-                                                                @Html.TextBoxFor(model => model.FormV3.UsernameAck, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV3.UsernameFac, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="Designation">Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormV3.DesignationAck, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV3.DesignationFac, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-3 float-left">
                                                                 <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                @Html.EditorFor(m => m.FormV3.DtAck, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                @Html.EditorFor(m => m.FormV3.DtFac, new { type = "date", htmlAttributes = new { @class = "form-control" } })
                                                             </div>
                                                             <div class="form-group col-lg-1 float-left">
                                                                 <label>
                                                                     Sign
                                                                 </label>
                                                                 <div class="clear-b mt-2">
-                                                                    @Html.CheckBoxFor(model => model.FormV3.SignAck, new { @class = "{required, Acknowledged by Signature}" })
+                                                                    @Html.CheckBoxFor(model => model.FormV3.SignFac, new { @class = "{required, Acknowledged by Signature}" })
                                                                 </div>
                                                             </div>
                                                         </div>
