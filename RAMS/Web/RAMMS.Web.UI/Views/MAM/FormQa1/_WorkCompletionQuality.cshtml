@@ -1,0 +1,348 @@
+﻿@model RAMMS.DTO.ResponseBO.FormQa1WcqDTO
+
+<div class="card-body px-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 bg-white rounded landing-division float-left border  my-2">
+                <div class="row">
+                    <div class="col-12  border-bottom py-2 my-2">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <span class="font-14 font-weight-bold">Finish Level</span>
+                            </div>
+                            <div class="col-lg-9">
+                                <span class="font-14 font-weight-bold">Remarks</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-lg-3 float-left">
+
+                        <div class="row">
+                            <div class="col-lg-5 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _FlFlushType = Model.FlFlushType == null || Model.FlFlushType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_FlFlushType" class="position-relative mr-1" id="formQa1FlushType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Flush
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 form-group">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.FlFlush , new { @id="formQa1FlFlush" , @class ="form-control allow_numeric svalidate {required, Flush}", @style="height:35px", @maxlength="6" })
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="height: 35px;">
+                                            mm
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.FlFlushRemark , new { @id="formQa1FlFlushRemark", @class="form-control svalidate  {required,  Flush  Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+
+                        <div class="row">
+                            <div class="col-lg-5 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _FlThType = Model.FlThType == null || Model.FlThType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_FlThType" class="position-relative mr-1" id="formQa1FlThType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Too High
+
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 form-group">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.FlTh , new { @id="formQa1FlTh" , @class ="form-control allow_numeric svalidate {required, Too High}", @style="height:35px", @maxlength="6" })
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="height: 35px;">
+                                            mm
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.FlThRemark , new { @id="formQa1FlThRemark", @class="form-control svalidate  {required,  Too High  Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-5 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _FlTlType = Model.FlTlType == null || Model.FlTlType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_FlTlType" class="position-relative mr-1" id="formQa1FlTlType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Too Low
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 form-group">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.FlTl , new { @id="formQa1FlTl" , @class ="form-control allow_numeric svalidate {required, Too Low}", @style="height:35px", @maxlength="6" })
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="height: 35px;">
+                                            mm
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.FlTlRemark , new { @id="formQa1FlTlRemark", @class="form-control svalidate  {required,  Too Low  Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _FlScType = Model.FlScType == null || Model.FlScType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_FlScType" class="position-relative mr-1" id="formQa1FlScType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Satisfactory Crossfall
+
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.FlScRemark , new { @id="formQa1FlScRemark", @class="form-control svalidate  {required,  Satisfactory Crossfail Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _FlUcType = Model.FlUcType == null || Model.FlUcType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_FlUcType" class="position-relative mr-1" id="formQa1FlUcType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Unsatisfactory Crossfall
+
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.FlUcRemark , new { @id="formQa1FlUcRemark", @class="form-control svalidate  {required,  Unsatisfactory Crossfail Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 bg-white rounded landing-division float-left border  my-2">
+                <div class="row">
+                    <div class="col-12  border-bottom py-2 my-2">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <span class="font-14 font-weight-bold">
+                                    Jointing
+                                </span>
+                            </div>
+                            <div class="col-lg-9">
+                                <span class="font-14 font-weight-bold">Remarks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _JnType = Model.JnType == null || Model.JnType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_JnType" class="position-relative mr-1" id="formQa1JnType">
+
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Neat
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.JnRemark , new { @id="formQa1JnRemark", @class="form-control svalidate  {required, Jointing Neat Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _JiType = Model.JiType == null || Model.JiType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_JiType" class="position-relative mr-1" id="formQa1JiType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Irregular
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.JiRemark , new { @id="formQa1JiRemark", @class="form-control svalidate  {required,  Irregular Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 bg-white rounded landing-division float-left border  my-2">
+                <div class="row">
+                    <div class="col-12  border-bottom py-2 my-2">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <span class="font-14 font-weight-bold">
+                                    Surface Regularity
+
+                                </span>
+                            </div>
+                            <div class="col-lg-9">
+                                <span class="font-14 font-weight-bold">Remarks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _SrevType = Model.SrevType == null || Model.SrevType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_SrevType" class="position-relative mr-1" id="formQa1SrevType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Even
+
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.SrevRemark , new { @id="formQa1SrEvenRemark", @class="form-control svalidate  {required, Surface Regularity Even Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _SruevType = Model.SruevType == null || Model.SruevType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_SruevType" class="position-relative mr-1" id="formQa1SruevType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Uneven
+
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.SruevRemark , new { @id="formQa1SrUnEvenRemark", @class="form-control svalidate  {required, Surface Regularity Uneven Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <div class="row">
+                            <div class="col-lg-12 form-group">
+                                <div class="float-left  mb-0 mt-lg-1 w-100">
+                                    <span class="float-left">
+                                        @{
+                                            var _SrprType = Model.SrprType == null || Model.SrprType == false ? false : true;
+                                        }
+                                        <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_SrprType" class="position-relative mr-1" id="formQa1SrprType">
+                                    </span>
+                                    <span class="float-left">
+                                        <label class="float-left py-1">
+                                            Poor
+
+                                        </label>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-9 float-left">
+                        @Html.TextAreaFor(m => m.SrprRemark , new { @id="formQa1SrPoorRemark", @class="form-control svalidate  {required, Surface Regularity Poor Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

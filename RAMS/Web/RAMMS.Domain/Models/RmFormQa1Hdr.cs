@@ -26,6 +26,9 @@ namespace RAMMS.Domain.Models
         public string Fqa1hSecName { get; set; }
         public string Fqa1hRoadCode { get; set; }
         public string Fqa1hRoadName { get; set; }
+        public int? Fqa1hWeekNo { get; set; }
+        public string Fqa1hDay { get; set; }
+        public int? Fqa1hYear { get; set; }
         public string Fqa1hRefId { get; set; }
         public int? Fqa1hCrew { get; set; }
         public string Fqa1hCrewname { get; set; }
@@ -53,14 +56,14 @@ namespace RAMMS.Domain.Models
         public int? Fqa1hUseridAudit { get; set; }
         public string Fqa1hUsernameAudit { get; set; }
         public string Fqa1hDesignationAudit { get; set; }
-        public DateTime? Fqa1hDateAudit { get; set; }
-        public string Fqa1hOfAudit { get; set; }
+        public DateTime? Fqa1hDtAudit { get; set; }
+        public string Fqa1hOfficeAudit { get; set; }
         public bool? Fqa1hSignWit { get; set; }
         public int? Fqa1hUseridWit { get; set; }
         public string Fqa1hUsernameWit { get; set; }
         public string Fqa1hDesignationWit { get; set; }
-        public DateTime? Fqa1hDateWit { get; set; }
-        public string Fqa1hOfWit { get; set; }
+        public DateTime? Fqa1hDtWit { get; set; }
+        public string Fqa1hOfficeWit { get; set; }
         public string Fqa1hRemarks { get; set; }
         public bool Fqa1hActiveYn { get; set; }
         public string Fqa1hStatus { get; set; }

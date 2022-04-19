@@ -12,5 +12,21 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     {
         Task<PagingResult<FormQa1HeaderDTO>> GetFilteredFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions);
 
+        Task<FormQa1HeaderDTO> FindQa1Details(FormQa1HeaderDTO header);
+
+        Task<FormQa1HeaderDTO> FindAndSaveFormQA1Hdr(FormQa1HeaderDTO header, bool updateSubmit);
+
+
+        Task<List<FormQa1LabDTO>> InsertLabourDetails(int qa1Id);
+
+        Task<FormQa1HeaderDTO> FindQa1Details(int pkRefNo);
+
+        Task<PagingResult<FormQa1EqVhDTO>> GetEquipmentFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id);
+
+        Task<PagingResult<FormQa1MatDTO>> GetMaterialFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id);
+
+        Task<PagingResult<FormQa1GenDTO>> GetGeneralFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id);
+
+
     }
 }

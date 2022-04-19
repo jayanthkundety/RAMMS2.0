@@ -1,0 +1,453 @@
+﻿@model RAMMS.DTO.ResponseBO.FormQa1WeDTO
+<div class="card-body px-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold"> Premix ACWC</span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Compacted thickness
+
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                mm
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.AcwcThinkness , new { @id="formQa1AcwcThinkness" , @class ="form-control allow_numeric svalidate {required, Compacted thickness}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Delivery Temperature
+
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                <sup> o </sup>C
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.AcwcTemperature , new { @id="formQa1AcwcTemperature" , @class ="form-control allow_numeric svalidate {required, Delivery Temperature}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        No. of Passes
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.AcwcPasses , new { @id="formQa1AcwcPasses" , @class ="form-control allow_numeric svalidate {required,No. of Passes}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.AcwcRemark , new { @id="formQa1AcwcRemark", @class="form-control svalidate  {required,  Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold">
+                        Tack Coat
+                    </span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Distribution Rate
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                L/m <sup> 2</sup>
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.TcDRate , new { @id="formQa1TcDRate" , @class ="form-control allow_numeric svalidate {required, Distribution Rate}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Type
+
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.TcType , new { @id="formQa1TcType" , @class ="form-control allow_numeric svalidate {required, Type}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Evenly Spread/No
+
+                    </label>
+                    <div class="input-group">
+                        @Html.DropDownListFor(Adtl => Adtl.TcEvenlySpread , (IEnumerable
+                        <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1TcEvSpNo", @class = "form-control validate {required, Compaction Test - Evenly Spread/No}" })
+
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.TcRemark , new { @id="formQa1TcRemark", @class="form-control svalidate  {required, Evenly Spread/No  Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold">
+                        Premix ACBC
+
+                    </span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Compacted thickness
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                mm
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.AcbcThinkness , new { @id="formQa1AcbcThinkness" , @class ="form-control allow_numeric svalidate {required, Premix Acbc Compacted Thinkness}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Delivery Temperature
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                <sup> o</sup>c
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.AcbcTemperature , new { @id="formQa1AcbcTemperature" , @class ="form-control allow_numeric svalidate {required, Premix Acbc Delivery Temperature}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        No. of Passes
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.AcbcPasses , new { @id="formQa1AcbcPasses" , @class ="form-control allow_numeric svalidate {required, Premix Acbc No. of Passes}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.AcbcRemark , new { @id="formQa1AcbcRemark", @class="form-control svalidate  {required, Premix Acbc Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold">
+                        Prime Coat
+
+                    </span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Distribution Rate
+
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                L/m <sup>2</sup>
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.PcDRate , new { @id="formQa1PcDRate" , @class ="form-control allow_numeric svalidate {required, Prime Coat - Distribution Rate}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Type
+
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.PcType , new { @id="formQa1PcType" , @class ="form-control allow_numeric svalidate {required, Prime Coat - Type}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Evenly Spread/No
+                    </label>
+                    <div class="input-group">
+                        @Html.DropDownListFor(Adtl => Adtl.TcEvenlySpread , (IEnumerable
+                        <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1PcEvSpNo", @class = "form-control validate {required, Prime Coat - Evenly Spread/No}" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.PcRemark , new { @id="formQa1PcRemark", @class="form-control svalidate  {required, Prime Coat - Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold">
+                        Roadbase
+
+                    </span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Compacted thickness
+
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                mm
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.RbThinkness , new { @id="formQa1RbThinkness" , @class ="form-control allow_numeric svalidate {required, Roadbase Compacted thickness}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Nos.of Layers
+
+
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.RbLayers , new { @id="formQa1RbLayers" , @class ="form-control allow_numeric svalidate {required, Roadbase Layers}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        No. of Passes
+
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.RbPasses , new { @id="formQa1RbPasses" , @class ="form-control allow_numeric svalidate {required, Roadbase Passes}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.RbRemark , new { @id="formQa1RbRemark", @class="form-control svalidate  {required, Roadbase Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold">
+                        Subbase
+
+                    </span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Compacted Thickness
+
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                mm
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.SbThinkness , new { @id="formQa1SbThinkness" , @class ="form-control allow_numeric svalidate {required, Subbase Thickness}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Nos.of Layers
+
+
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SbLayers , new { @id="formQa1SbLayers" , @class ="form-control allow_numeric svalidate {required, Subbase Layers}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        No. of Passes
+
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SbPasses , new { @id="formQa1SbPasses" , @class ="form-control allow_numeric svalidate {required, Subbase Passes}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.SbRemark , new { @id="formQa1SbRemark", @class="form-control svalidate  {required, Subbase Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold">
+                        Subgrade
+                    </span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Compacted Thickness
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                mm
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.SgThinkness , new { @id="formQa1SgThinkness" , @class ="form-control allow_numeric svalidate {required, Subgrade Thickness}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Nos.of Layers
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SgLayers , new { @id="formQa1SgLayers" , @class ="form-control allow_numeric svalidate {required, Subgrade Nos.of Layers}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        No. of Passes
+
+                    </label>
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.SgPasses , new { @id="formQa1SgPasses" , @class ="form-control allow_numeric svalidate {required, Subgrade Passes}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-6 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.SgRemark , new { @id="formQa1SgRemark", @class="form-control svalidate  {required, Subgrade Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12 border-bottom py-2 my-2">
+                    <span class="font-14 font-weight-bold">
+                        Sub-Soil Drainage
+
+                    </span>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Sand Blanket
+
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                mm
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.SsdSb, new { @id="formQa1SsdSb" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - Sand Blanket}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-2 float-left">
+                    <label for="User_Id">
+                        Perforated pipe
+
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" style="height: 35px;">
+                                m
+                            </span>
+                        </div>
+                        @Html.TextBoxFor(m => m.SsdPp, new { @id="formQa1SsdPp" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - Perforated pipe}", @style="height:35px", @maxlength="6" })
+                    </div>
+                </div>
+                <div class="form-group col-lg-8 float-left">
+                    <label>Remarks</label>
+                    @Html.TextAreaFor(m => m.SsdRemark , new { @id="formQa1SsdRemark", @class="form-control svalidate  {required, Sub-Soil Drainage - Remark}" , @style="height: 40px;" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-lg-4 mb-0">
+            <label>
+                CH
+            </label>
+            <div class="row">
+                <div class="input-group col-lg-5 pr-0">
+
+                    @Html.TextBoxFor(m => m.SsdCh, new { @id="formQa1SsdCh" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - Chainage}", @style="height:35px", @maxlength="6" })
+                </div>
+                <div class="input-group col-lg-1 text-center pt-2">+</div>
+                <div class="input-group col-lg-5 px-0">
+
+                    @Html.TextBoxFor(m => m.SsdChDeci, new { @id="formQa1SsdChDeci" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - Chainage Deci}", @style="height:35px", @maxlength="6" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-lg-4 mb-0">
+            <label>
+                RHS
+            </label>
+            <div class="row">
+                <div class="input-group col-lg-5 pr-0">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="height: 35px;">
+                            L
+                        </span>
+                    </div>
+                    @Html.TextBoxFor(m => m.SsdRhsL, new { @id="formQa1SsdRhsL" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - RHS Length}", @style="height:35px", @maxlength="6" })
+                </div>
+                <div class="input-group col-lg-1 text-center pt-2">X</div>
+                <div class="input-group col-lg-5 px-0">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="height: 35px;">
+                            W
+                        </span>
+                    </div>
+                    @Html.TextBoxFor(m => m.SsdRhsW, new { @id="formQa1SsdRhsW" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - RHS Width}", @style="height:35px", @maxlength="6" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-lg-4 mb-0">
+            <label>
+                LHS
+            </label>
+            <div class="row">
+                <div class="input-group col-lg-5 pr-0">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="height: 35px;">
+                            L
+                        </span>
+                    </div>
+                    @Html.TextBoxFor(m => m.SsdLhsL, new { @id="formQa1SsdLhsL" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - LHS Length}", @style="height:35px", @maxlength="6" })
+                </div>
+                <div class="input-group col-lg-1 text-center pt-2">X</div>
+                <div class="input-group col-lg-5 px-0">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="height: 35px;">
+                            W
+                        </span>
+                    </div>
+                    @Html.TextBoxFor(m => m.SsdLhsW, new { @id="formQa1SsdLhsW" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - LHS Width}", @style="height:35px", @maxlength="6" })
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

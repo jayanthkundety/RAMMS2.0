@@ -11,13 +11,18 @@ namespace RAMMS.Domain.Models
         }
 
         public int Fv3hPkRefNo { get; set; }
+        public int? Fv3hFv1PkRefNo { get; set; }
         public int? Fv3hContNo { get; set; }
         public string Fv3hRmu { get; set; }
+        public string Fv3hRmuname { get; set; }
         public int? Fv3hCrew { get; set; }
         public string Fv3hCrewname { get; set; }
         public string Fv3hSecCode { get; set; }
+        public string Fv3hSecname { get; set; }
+        public string Fv3hDivCode { get; set; }
         public string Fv3hRefId { get; set; }
         public string Fv3hActCode { get; set; }
+        public string Fv3hActname { get; set; }
         public DateTime? Fv3hDt { get; set; }
         public bool? Fv3hSignFac { get; set; }
         public int? Fv3hUseridFac { get; set; }

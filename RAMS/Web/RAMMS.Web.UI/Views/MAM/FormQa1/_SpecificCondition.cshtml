@@ -1,0 +1,124 @@
+﻿@model RAMMS.DTO.ResponseBO.FormQa1SscDTO
+
+<div class="card-body px-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+
+                    <div class="form-group col-lg-3 float-left">
+                        <label for="User_Id">
+                            Site preparation
+                        </label>
+                        @Html.DropDownListFor(m => m.Sp , (IEnumerable
+                        <SelectListItem>)ViewData["WELLNO"], "Select", new { @Id = "formQa1Sp", @class = "form-control svalidate {required, Site preparation}" })
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        <label>Remarks</label>
+                        @Html.TextAreaFor(m => m.SpRemark , new { @id="formQa1SpRemark", @class="form-control svalidate  {required,  Site preparation Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <label for="User_Id">
+                            Excavation Depth
+
+                        </label>
+                        @Html.DropDownListFor(m => m.Ed , (IEnumerable
+                        <SelectListItem>)ViewData["ADENO"], "Select", new { @Id = "formQa1Ed", @class = "form-control svalidate {required, Excavation Depth}" })
+                        @*<select class="form-control">
+                            <option>Select</option>
+                            <option>
+                                Adequate
+                            </option>
+                            <option> No</option>
+                        </select>*@
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        <label>Remarks</label>
+                        @Html.TextAreaFor(m => m.EdRemark , new { @id="formQa1EdRemark", @class="form-control svalidate  {required,  Site preparation Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <label for="User_Id">
+                            Water presence in excavation
+
+                        </label>
+                         @Html.DropDownListFor(m => m.Wpe , (IEnumerable
+                        <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1Wpe", @class = "form-control svalidate {required, Water presence in excavation}" })
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        <label>Remarks</label>
+                        @Html.TextAreaFor(m => m.WpeRemark , new { @id="formQa1WpeRemark", @class="form-control svalidate  {required,  Water presence in excavation Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <label for="User_Id">
+                            Insitu material strength
+
+                        </label>
+                        @Html.DropDownListFor(m => m.Ims , (IEnumerable
+                        <SelectListItem>)ViewData["STHD"], "Select", new { @Id = "formQa1Ims", @class = "form-control svalidate {required, Insitu material strength}" })
+                        @*<select class="form-control">
+                            <option>Select</option>
+                            <option>
+                                Soft
+
+                            </option>
+                            <option> Hard</option>
+                        </select>*@
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        <label>Remarks</label>
+                        @Html.TextAreaFor(m => m.ImsRemark , new { @id="formQa1ImsRemark", @class="form-control svalidate  {required,  Insitu material strength Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="form-group col-lg-3 float-left">
+                        <label for="User_Id">
+                            Adjacent Surface Drain
+
+                        </label>
+                        @Html.DropDownListFor(m => m.Asd , (IEnumerable
+                        <SelectListItem>)ViewData["ADENO"], "Select", new { @Id = "formQa1Asd", @class = "form-control svalidate {required, Adjacent Surface Drain}" })
+                        @*<select class="form-control">
+                            <option>Select</option>
+                            <option>
+                                Adequate
+                            </option>
+                            <option> No</option>
+                        </select>*@
+                    </div>
+
+                    <div class="form-group col-lg-9 float-left">
+                        <label>Remarks</label>
+                        @Html.TextAreaFor(m => m.AsdRemark , new { @id="formQa1AsdRemark", @class="form-control svalidate  {required,  Adjacent Surface Drain Remark}" , @style="height: 40px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

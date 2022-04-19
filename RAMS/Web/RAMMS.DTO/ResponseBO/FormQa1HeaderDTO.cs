@@ -9,20 +9,19 @@ namespace RAMMS.DTO.ResponseBO
         public int PkRefNo { get; set; }
         public int? ContNo { get; set; }
         public string Rmu { get; set; }
-
         public string RmuName { get; set; }
         public string SecCode { get; set; }
         public string SecName { get; set; }
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
-        public string RefId { get; set; }
-        public int? Crew { get; set; }
 
         public int? WeekNo { get; set; }
-
+        public string Day { get; set; }
+        public int? Year { get; set; }
+        public string RefId { get; set; }
+        public int? Crew { get; set; }
         public string Crewname { get; set; }
         public string ActCode { get; set; }
-
         public string ActName { get; set; }
         public DateTime? Dt { get; set; }
         public int? UseridAssgn { get; set; }
@@ -46,31 +45,33 @@ namespace RAMMS.DTO.ResponseBO
         public int? UseridAudit { get; set; }
         public string UsernameAudit { get; set; }
         public string DesignationAudit { get; set; }
-        public DateTime? DateAudit { get; set; }
-        public string OfAudit { get; set; }
+        public DateTime? DtAudit { get; set; }
+        public string OfficeAudit { get; set; }
         public bool? SignWit { get; set; }
         public int? UseridWit { get; set; }
         public string UsernameWit { get; set; }
         public string DesignationWit { get; set; }
-        public DateTime? DateWit { get; set; }
-        public string OfWit { get; set; }
+        public DateTime? DtWit { get; set; }
+        public string OfficeWit { get; set; }
         public string Remarks { get; set; }
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
 
-        public virtual ICollection<FormQa1EqVh> FormQa1EqVh { get; set; }
-        public virtual ICollection<FormQa1GCdDTO> FormQa1Gc { get; set; }
-        public virtual ICollection<FormQa1GenDTO> FormQa1Gen { get; set; }
-        public virtual ICollection<FormQa1LabDTO> FormQa1Lab { get; set; }
-        public virtual ICollection<FormQa1MatDTO> FormQa1Mat { get; set; }
-        public virtual ICollection<FormQa1SscDTO> FormQa1Ssc { get; set; }
-        public virtual ICollection<FormQa1TesDTO> FormQa1Tes { get; set; }
-        public virtual ICollection<FormQa1WcqDTO> FormQa1Wcq { get; set; }
-        public virtual ICollection<FormQa1WeDTO> FormQa1We { get; set; }
+
+        public virtual FormQa1EqVhDTO Equipment_Vehicle { get; set; }
+        public virtual FormQa1GCDTO GeneralComments { get; set; }
+        public virtual FormQa1GenDTO GeneralQA1 { get; set; }
+
+        public virtual List<FormQa1LabDTO> Labour { get; set; }
+        public virtual FormQa1MatDTO Material { get; set; }
+        public virtual FormQa1SscDTO SpecificSiteCondition { get; set; }
+        public virtual FormQa1TesDTO Testing { get; set; }
+        public virtual FormQa1WcqDTO WorkCompletionQuality { get; set; }
+        public virtual FormQa1WeDTO WorkExecution { get; set; }
     }
 
-    public class FormQa1EqVh
+    public class FormQa1EqVhDTO
     {
         //Fqa1ev
         public int PkRefNo { get; set; }
@@ -89,14 +90,27 @@ namespace RAMMS.DTO.ResponseBO
         public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
     }
 
-    public class FormQa1GCdDTO
+    public class FormQa1GCDTO
     {
         //Fqa1gc
         public int PkRefNo { get; set; }
         public int? Fqa1hPkRefNo { get; set; }
-        public string QualityRating { get; set; }
-        public string QualityRemarks { get; set; }
-        public string UsRatingReason { get; set; }
+        public bool? Whs { get; set; }
+        public string WhsRemark { get; set; }
+        public string WhsReason { get; set; }
+        public bool? Wis { get; set; }
+        public string WisRemark { get; set; }
+        public string WisReason { get; set; }
+        public bool? Wius { get; set; }
+        public bool? WiusMat { get; set; }
+        public string WiusMatRemark { get; set; }
+        public string WiusMatReason { get; set; }
+        public bool? WiusEqp { get; set; }
+        public string WiusEqpReason { get; set; }
+        public string WiusEqpRemark { get; set; }
+        public bool? WiusWrk { get; set; }
+        public string WiusWrkRemark { get; set; }
+        public string WiusWrkReason { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -177,7 +191,7 @@ namespace RAMMS.DTO.ResponseBO
         public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
     }
 
-    public class FormQa1TesDTO 
+    public class FormQa1TesDTO
     {
         //Fqa1tes
         public int PkRefNo { get; set; }
@@ -205,20 +219,34 @@ namespace RAMMS.DTO.ResponseBO
         public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
     }
 
-
-    public class FormQa1WcqDTO 
+    public class FormQa1WcqDTO
     {
-        //Fqa1wcq
+        //
         public int PkRefNo { get; set; }
         public int? Fqa1hPkRefNo { get; set; }
-        public string FlType { get; set; }
-        public decimal? Fl { get; set; }
-        public int? FlUnit { get; set; }
-        public string FlRemark { get; set; }
-        public string JType { get; set; }
-        public string JRemark { get; set; }
-        public string SrType { get; set; }
-        public string SrRemark { get; set; }
+        public bool? FlFlushType { get; set; }
+        public decimal? FlFlush { get; set; }
+        public string FlFlushRemark { get; set; }
+        public bool? FlThType { get; set; }
+        public decimal? FlTh { get; set; }
+        public string FlThRemark { get; set; }
+        public bool? FlTlType { get; set; }
+        public decimal? FlTl { get; set; }
+        public string FlTlRemark { get; set; }
+        public bool? FlScType { get; set; }
+        public string FlScRemark { get; set; }
+        public bool? FlUcType { get; set; }
+        public string FlUcRemark { get; set; }
+        public bool? JnType { get; set; }
+        public string JnRemark { get; set; }
+        public bool? JiType { get; set; }
+        public string JiRemark { get; set; }
+        public bool? SrevType { get; set; }
+        public string SrevRemark { get; set; }
+        public bool? SruevType { get; set; }
+        public string SruevRemark { get; set; }
+        public bool? SrprType { get; set; }
+        public string SrprRemark { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -226,7 +254,8 @@ namespace RAMMS.DTO.ResponseBO
 
         public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
     }
-    public class FormQa1WeDTO 
+
+    public class FormQa1WeDTO
     {
         //Fqa1w
         public int PkRefNo { get; set; }
@@ -273,6 +302,13 @@ namespace RAMMS.DTO.ResponseBO
         public decimal? SsdPp { get; set; }
         public int? SsdPpUnit { get; set; }
         public string SsdRemark { get; set; }
+
+        public decimal? SsdCh { get; set; }
+        public decimal? SsdChDeci { get; set; }
+        public decimal? SsdRhsL { get; set; }
+        public decimal? SsdRhsW { get; set; }
+        public decimal? SsdLhsL { get; set; }
+        public decimal? SsdLhsW { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }

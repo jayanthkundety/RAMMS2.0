@@ -160,16 +160,16 @@ namespace RAMMS.Business.ServiceProvider.Services
                 return roadmaster;
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetRoadCodeBySectionCode(int secCode)
+        public async Task<List<RoadMasterRequestDTO>> GetRoadCodeBySectionCode(int secCode)
         {
-            var result = new List<SelectListItem>();
+            var result = new List<RoadMasterRequestDTO>();
             var roadMasters = await _repoUnit.RoadmasterRepository.GetRoadCodeBySectionCode(secCode);
             foreach (var road in roadMasters)
             {
-                result.Add(new SelectListItem
+                result.Add(new RoadMasterRequestDTO
                 {
-                    Value = road.RdmRdCode.ToString(),
-                    Text = (road.RdmRdCode + "-" + road.RdmRdName).ToString()
+                    RoadCode  = road.RdmRdCode.ToString(),
+                    RoadName  =  road.RdmRdName,
                 });
             }
             return result;
