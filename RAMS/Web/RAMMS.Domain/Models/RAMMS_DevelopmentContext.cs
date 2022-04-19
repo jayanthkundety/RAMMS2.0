@@ -10585,6 +10585,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dFrmChDeci).HasColumnName("FV3D_FRM_CH_Deci");
 
+                entity.Property(e => e.Fv3dFv1dPkRefNo).HasColumnName("FV3D_FV1D_PK_Ref_No");
+
                 entity.Property(e => e.Fv3dFv3hPkRefNo).HasColumnName("FV3D_FV3H_PK_Ref_No");
 
                 entity.Property(e => e.Fv3dLength).HasColumnName("FV3D_Length");
@@ -10657,6 +10659,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3hActiveYn).HasColumnName("FV3H_Active_YN");
 
+                entity.Property(e => e.Fv3hActname)
+                    .HasColumnName("FV3H_ACTname")
+                    .HasMaxLength(250);
+
                 entity.Property(e => e.Fv3hAuditLog).HasColumnName("FV3H_AuditLog");
 
                 entity.Property(e => e.Fv3hContNo).HasColumnName("FV3H_CONT_No");
@@ -10688,6 +10694,10 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv3hDivCode)
+                    .HasColumnName("FV3H_DivCode")
+                    .HasMaxLength(16);
+
                 entity.Property(e => e.Fv3hDt)
                     .HasColumnName("FV3H_DT")
                     .HasColumnType("datetime");
@@ -10708,6 +10718,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV3H_Facilitator")
                     .HasMaxLength(250)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Fv3hFv1PkRefNo).HasColumnName("FV3H_FV1_PK_Ref_No");
 
                 entity.Property(e => e.Fv3hModBy).HasColumnName("FV3H_Mod_By");
 
@@ -10730,9 +10742,17 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv3hRmuname)
+                    .HasColumnName("FV3H_RMUname")
+                    .HasMaxLength(250);
+
                 entity.Property(e => e.Fv3hSecCode)
                     .HasColumnName("FV3H_Sec_Code")
                     .HasMaxLength(16);
+
+                entity.Property(e => e.Fv3hSecname)
+                    .HasColumnName("FV3H_Secname")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.Fv3hServiceProvider)
                     .HasColumnName("FV3H_Service_Provider")
@@ -13775,7 +13795,6 @@ namespace RAMMS.Domain.Models
 
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
