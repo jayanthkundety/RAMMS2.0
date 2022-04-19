@@ -11,7 +11,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormV2", "@Model.SaveFormV2Model.Status", @Model.SaveFormV2Model.PkRefNo);
-        debugger;
+        
         $('#formV2RecordedBy').val("@Model.SaveFormV2Model.UseridSch");
         $('#formV2RecordedBy').trigger('chosen:updated');
         $("#formV2RecordedBy").trigger("change");

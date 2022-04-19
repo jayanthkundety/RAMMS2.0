@@ -1,0 +1,115 @@
+﻿@using RAMMS.Business.ServiceProvider
+@model RAMMS.Web.UI.Models.FormQa1Model;
+<div class="col-lg-10 offset-lg-1 mt-2">
+
+    <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+        <div class="col-lg-12 py-2">
+            <span class="font-14 font-weight-bold">
+                Assigned by
+            </span>
+        </div>
+        <div class="border-top pt-3 pb-1 float-left w-100">
+
+            <div class="form-group col-lg-6 float-left mb-0">
+                @Html.Label("Name", "Name")
+                <div class="row">
+                    <div class="col-6 form-group">
+                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1AssignedBy", "Select Users", new { Id = "formQa1AssignedBy", @class = "form-control svalidate {required, Assigned by} ", @disabled=true})
+                    </div>
+                    <div class="col-6 form-group">
+                        @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameAssgn, new { @id = "formQa1AssignedName", @class = "form-control svalidate  {required, Assigned by Name}", @disabled = true })
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("Initial", "Initial")
+                @Html.TextBoxFor(w => w.SaveFormQa1Model.InitialAssgn, new { @id = "formQa1AssignedDesig", @class = "form-control svalidate  {required, Assigned by Designation}", @disabled = true })
+            </div>
+
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                @{
+                    var vd = Model.SaveFormQa1Model.DtAssgn;
+                    string _DtAssg = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                }
+                <input type="date" class="datepicker form-control svalidate {required, Assigned by date}" id="formQa1AssignedDate" value="@_DtAssg" />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+        <div class="col-lg-12 py-2">
+            <span class="font-14 font-weight-bold">
+                Executed by
+            </span>
+        </div>
+        <div class="border-top pt-3 pb-1 float-left w-100">
+
+            <div class="form-group col-lg-6 float-left mb-0">
+                @Html.Label("Name", "Name")
+                <div class="row">
+                    <div class="col-6 form-group">
+                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1ExecutedBy", "Select Users", new { Id = "formQa1ExecutedBy", @class = "form-control svalidate {required, Executed by} ", @disabled=true})
+                    </div>
+                    <div class="col-6 form-group">
+                        @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameExec, new { @id = "formQa1ExecutedName", @class = "form-control svalidate  {required, Executed by Name}", @disabled = true })
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("Initial", "Initial")
+                @Html.TextBoxFor(w => w.SaveFormQa1Model.InitialExec, new { @id = "formQa1ExecutedDesig", @class = "form-control svalidate  {required, Executed by Designation}", @disabled = true })
+            </div>
+
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                @{
+                    vd = Model.SaveFormQa1Model.DtExec;
+                    string _DtExec = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                }
+                <input type="date" class="datepicker form-control svalidate {required, Executed by date}" id="formQa1ExecutedDate" value="@_DtExec" />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+        <div class="col-lg-12 py-2">
+            <span class="font-14 font-weight-bold">
+                Checked by
+            </span>
+        </div>
+       <div class="border-top pt-3 pb-1 float-left w-100">
+
+            <div class="form-group col-lg-6 float-left mb-0">
+                @Html.Label("Name", "Name")
+                <div class="row">
+                    <div class="col-6 form-group">
+                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1CheckedBy", "Select Users", new { Id = "formQa1CheckedBy", @class = "form-control svalidate {required, Checked by} ", @disabled=true})
+                    </div>
+                    <div class="col-6 form-group">
+                        @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameChked, new { @id = "formQa1CheckedName", @class = "form-control svalidate  {required, Checked by Name}", @disabled = true })
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("Initial", "Initial")
+                @Html.TextBoxFor(w => w.SaveFormQa1Model.InitialChked, new { @id = "formQa1CheckedDesig", @class = "form-control svalidate  {required, Checked by Designation}", @disabled = true })
+            </div>
+
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                @{
+                    vd = Model.SaveFormQa1Model.DtChked;
+                    string _DtChk = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+                }
+                <input type="date" class="datepicker form-control svalidate {required, Checked by date}" id="formQa1CheckedDate" value="@_DtChk" />
+            </div>
+
+        </div>
+    </div>
+</div>

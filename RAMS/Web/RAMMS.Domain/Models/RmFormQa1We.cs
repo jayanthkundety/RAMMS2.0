@@ -49,6 +49,12 @@ namespace RAMMS.Domain.Models
         public decimal? Fqa1wSsdPp { get; set; }
         public int? Fqa1wSsdPpUnit { get; set; }
         public string Fqa1wSsdRemark { get; set; }
+        public decimal? Fqa1wSsdCh { get; set; }
+        public decimal? Fqa1wSsdChDeci { get; set; }
+        public decimal? Fqa1wSsdRhsL { get; set; }
+        public decimal? Fqa1wSsdRhsW { get; set; }
+        public decimal? Fqa1wSsdLhsL { get; set; }
+        public decimal? Fqa1wSsdLhsW { get; set; }
         public int? Fqa1wModBy { get; set; }
         public DateTime? Fqa1wModDt { get; set; }
         public int? Fqa1wCrBy { get; set; }

@@ -1,0 +1,84 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<div id="content">
+    <div class="w-100 position-relative in-tbl-btns custom-tbl">
+        <div class="w-100 position-relative in-tbl-btns custom-tbl">
+            @if (security.IsPCModify(ModuleNameList.Management_and_Maintanence))
+            {
+                <div class="grid-btns">
+                    <button type="button" id="btnGenAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#generalModal"><span class="intbl-add-icon"></span></button>
+                </div>
+            }
+
+            <table id="FormQa1GenGridView" class="table w-100 nowrap">
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : "hidden";
+    var Gentable_columns = [];
+    var Gentable = null;
+    var GenactionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 20, sortable: false, render: function (data) {
+            if (IsView != "1" && (!data.submitStatus)) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button  type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormQa1GenModal' id='formQa1GenEdit' onclick='javascript:EditFormQa1Gen(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteFormQa1GenRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns'  data-toggle='modal' data-target='#FormQa1GenModal' href='#' onclick='EditFormQa1Gen(" + data.pkRefNo + ",1)'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-toggle='modal' data-target='#FormQa1GenModal' href='#' onclick='EditFormQa1Gen(" + data.pkRefNo + ",1)'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    //var EqrefNoCol = { data: "serialNo", name: "EqsNo", title: "S No", autoWidth: true, width: 20, sortable: false };
+    var GenItemCol = { data: "item", name: "GenItem", title: "Item", autoWidth: true, width: 60, sortable: false };
+    var GenAttnCol = { data: "attTo", name: "GenAttTo", title: "Attention to", autoWidth: true, sortable: false };
+    var GenRemarkCol = { data: "attRemarks", name: "GenRemark", title: "Comment & Remark", autoWidth: true, sortable: false };
+
+    Gentable_columns.push(EqactionCol);
+    Gentable_columns.push(GenItemCol);
+    Gentable_columns.push(GenAttnCol);
+    Gentable_columns.push(GenRemarkCol);
+
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormQa1";
+    }
+
+    var GenfilterData = new Object();
+
+    function GenInitializeGrid() {
+        var _gencurrentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _gencurrentGridSettings);
+        //if (id == undefined) {
+        //    id = "0";
+        //}
+        if (Gentable != null) {
+            Gentable.destroy();
+            $('#FormQa1GenGridView').empty();
+        }
+        Gentable = $('#FormQa1GenGridView').DataTable({
+            ajax: {
+                url: "/FormQA1/LoadFormQa1GenList?id=" + $("#formQaPkRefNo").val(),
+                type: "POST",
+                datatype: "json",
+                data: {
+                    GenfilterData
+                }
+            },
+            columns: Gentable_columns
+        });
+        Gentable.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        GenInitializeGrid();
+        IsView = $("#hdnView").val();
+        goTable = $('#FormQa1GenGridView').DataTable();
+        
+    });
+</script>

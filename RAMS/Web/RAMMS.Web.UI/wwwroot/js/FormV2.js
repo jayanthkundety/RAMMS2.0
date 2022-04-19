@@ -155,7 +155,7 @@ $(document).ready(function () {
         $("#formV2CrewCode").chosen('destroy');
         $("#formV2MaterialEdit").attr("disabled", "disabled").off('click');
         $("#formV2EquipmentEdit").attr("disabled", "disabled").off('click');
-        $("#formV2DtlEdit").attr("disabled", "disabled").off('click');
+        $("#formV2LabourEdit").attr("disabled", "disabled").off('click');
         userIdDisable();
         document.getElementById("btnEquipAdd").disabled = true;
         document.getElementById("btnLabourAdd").disabled = true;

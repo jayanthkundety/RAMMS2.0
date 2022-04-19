@@ -1,0 +1,133 @@
+﻿@model RAMMS.Web.UI.Models.FormV2EquipDetailsModel;
+<script type="text/javascript">
+    var val = $("#hdnEquipid").val();
+    var equipDesc = "";
+    $(document).ready(function () {
+        $("#formV2EquipCode").chosen();
+        //$("#formV2EquipUnit").chosen();
+
+        //if ($("#formV2EquipCode").find(":selected").val() == '99999999') {
+        //    equipDesc = $("#formV2EquipDesc").val();
+        //    $("#formV2EquipDesc").attr('readonly', false);
+        //}
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    $("#formV2EquipCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+
+        //if ($(this).find(":selected").val() == "99999999") {
+        //    $("#formV2EquipDesc").attr('readonly', false);
+        //    $("#formV2EquipDesc").val(equipDesc);
+        //}
+        //else {
+        //    $("#formV2EquipDesc").val(val);
+        //    $("#formV2EquipDesc").attr('readonly', true);
+        //}
+        $("#FormV2EquipDescription").val(val);
+    });
+
+
+    if (val != 0 && val != undefined && val != "") { }//$("#formV2EquipCode").trigger("change");
+
+    function GoBackEquip() {
+         FormEquipGridRefresh()
+        if ($("#hdnEquView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormQa1EquipModal").modal("hide");
+                }
+            }));
+        } else
+            $("#FormQa1EquipModal").modal("hide");
+    }
+
+</script>
+<form id="FormAddEquipDetails" action="/FormQA1/FormQa12SaveEquipment">
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-lg-6 mb-0">
+
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="Code"> Code</label>
+                        <select class="form-control  validate {required, Equipment Code}" id="formDEquipCode" name="SaveFormDEquipModel.EquipmentCode">
+                            <option value="">Select Code</option>
+                            <option value="E01">E01-Air Compressor (200 CFM min.)</option>
+                            <option value="E02">E02-Asphalt Paver-Finesher (140 HP min.)</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="Code"> Name</label>
+                        <input class="form-control" id="formDlabDesc" name="SaveFormDLabourModel.CodeDesc" readonly="readonly" rows="1" type="text" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-2 pl-0">
+                <label for="Quantity">P / V No.</label>
+                <input autocomplete="off" class="form-control " maxlength="3" name="SaveFormDLabourModel.Quantity" rows="1" type="text" value="">
+            </div>
+            <div class="form-group col-lg-2 pl-0">
+                <label for="Quantity">Capacity</label>
+                <input autocomplete="off" class="form-control " maxlength="3" name="SaveFormDLabourModel.Quantity" rows="1" type="text" value="">
+            </div>
+
+            <div class="form-group col-lg-2 pl-0">
+                <label for="Unit">
+                    Apparent Condition
+                </label>
+                <select class="form-control  validate {required, Equipment Code}" id="formDEquipCode" name="SaveFormDEquipModel.EquipmentCode">
+                    <option value="">Select Code</option>
+                    <option>Good</option>
+                    <option> Fair</option>
+                    <option>Inadequate Capacity</option>
+                </select>
+            </div>
+            @*  <div class="form-group col-lg-2 pl-0">
+                <label for="Unit">Model</label>
+                <select class="form-control validate {required, Unit}" id="formDLabUnit" name="SaveFormDLabourModel.Unit">
+                <option value="">Select Unit</option>
+                <option value="Person">NR</option>
+                </select>
+                <input class="form-control " maxlength="3" name="SaveFormDLabourModel.Quantity" rows="1" type="text" value="">
+
+                </div>*@
+            <div class="form-group col-lg-12 txtarea-107">
+                <label for="Description">Remarks</label>
+                <textarea class="form-control  validate {required, Description}" id="formDLabDescription" name="SaveFormDLabourModel.LabourDesc"></textarea>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackEquip()">Cancel</button>
+            <button id="saveFormN2Btn" type="button" class="btn btn-sm btn-themebtn">Save</button>
+        </div>
+    </div>
+</form>
