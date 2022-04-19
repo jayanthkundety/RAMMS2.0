@@ -16,7 +16,7 @@ namespace RAMMS.DTO.ResponseBO
         public string Crewname { get; set; }
         public string SecCode { get; set; }
         public string RefId { get; set; }
-        public int? ActCode { get; set; }
+        public string ActCode { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 

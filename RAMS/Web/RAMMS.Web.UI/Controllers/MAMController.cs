@@ -1737,7 +1737,8 @@ namespace RAMMS.Web.UI.Controllers
             frm.FormV3.ActiveYn = true;
             if (frm.FormV3.PkRefNo == 0)
             {
-                refNo = frm.FormV3 = await _formV1Service.SaveFormV1(frm.FormV3);
+                var v3 = new FormV3ResponseDTO();
+               frm.FormV3 = await _formV1Service.SaveFormV3(v3);
 
                  
             }
@@ -1745,7 +1746,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 if (frm.FormV3.Status == "Initialize")
                     frm.FormV3.Status = "Saved";
-                refNo = await _formV3Service.Update(frm.FormV3);
+               // refNo = await _formV3Service.Update(frm.FormV3);
             }
             return Json(refNo);
 

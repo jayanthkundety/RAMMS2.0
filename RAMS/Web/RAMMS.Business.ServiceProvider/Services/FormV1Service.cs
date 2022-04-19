@@ -395,25 +395,23 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             try
             {
-                var domainModelFormv3 = _mapper.Map<RmFormV3Hdr>(Formv3);
+
+                var Formv13 = new FormV3ResponseDTO();
+                Formv13.Crewname = "ctrrrree";
+                var domainModelFormv3 = _mapper.Map<RmFormV3Hdr>(Formv13);
+
+                var Formv1 = new FormV1ResponseDTO();
+                Formv1.Crewname = "v1111111";
+                var domainModelFormv1 = _mapper.Map<RmFormV1Hdr>(Formv1);
+
+                var Formv2 = new FormV2HeaderResponseDTO();
+                Formv2.Crewname = "v222222222";
+                var domainModelFormv2 = _mapper.Map<RmFormV2Hdr>(Formv2);
+
+
                 domainModelFormv3.Fv3hPkRefNo = 0;
-
-                var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hSecCode == domainModelFormv3.Fv3hSecCode && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hActiveYn == true).Result;
-                if (obj != null)
-                    return _mapper.Map<Formv3ResponseDTO>(obj);
-
-                IDictionary<string, string> lstData = new Dictionary<string, string>();
-                lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
-                lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
-                lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
-                domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.Formv3Header, lstData);
-
-                var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormv3);
-                Formv3.PkRefNo = _mapper.Map<Formv3ResponseDTO>(entity).PkRefNo;
-                Formv3.RefId = domainModelFormv3.Fv3hRefId;
-                Formv3.Status = domainModelFormv3.Fv3hStatus;
-
-                return Formv3;
+                return await _repo.SaveFormV3( Formv3);
+ 
             }
             catch (Exception ex)
             {
@@ -432,8 +430,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelFormV3 = _mapper.Map<RmFormV3Hdr>(FormV3);
                 domainModelFormV3.Fv3hPkRefNo = PkRefNo;
                 domainModelFormV3.Fv3hActiveYn = true;
-                domainModelFormV3 = UpdateStatus(domainModelFormV3);
-                _repoUnit.FormV1Repository.Update(domainModelFormV3);
+                //domainModelFormV3 = UpdateStatus(domainModelFormV3);
+                //_repoUnit.FormV1Repository.Update(domainModelFormV3);
                 rowsAffected = await _repoUnit.CommitAsync();
             }
             catch (Exception ex)

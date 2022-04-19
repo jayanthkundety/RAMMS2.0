@@ -23,10 +23,10 @@ namespace RAMMS.Repository
     public class FormV1Repository : RepositoryBase<RmFormV1Hdr>, IFormV1Repository
     {
         private readonly IMapper _mapper;
-        public FormV1Repository(RAMMSContext context, IMapper mapper) : base(context)
+        public FormV1Repository(RAMMSContext context ) : base(context)
         {
             _context = context;
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            
         }
 
         #region FormV1
@@ -772,10 +772,12 @@ namespace RAMMS.Repository
                 lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                 lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
                 lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
-                domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.Formv3Header, lstData);
+                domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV3Header, lstData);
 
-                var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormv3);
-                Formv3.PkRefNo = _mapper.Map<Formv3ResponseDTO>(entity).PkRefNo;
+               // var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormv3);
+                _context.Set<RmFormV3Hdr>().Add(domainModelFormv3);
+                _context.SaveChanges();
+                Formv3.PkRefNo = _mapper.Map<FormV3ResponseDTO>(domainModelFormv3).PkRefNo;
                 Formv3.RefId = domainModelFormv3.Fv3hRefId;
                 Formv3.Status = domainModelFormv3.Fv3hStatus;
 
@@ -783,7 +785,7 @@ namespace RAMMS.Repository
             }
             catch (Exception ex)
             {
-                await _repoUnit.RollbackAsync();
+                await _context.DisposeAsync();
                 throw ex;
             }
         }
