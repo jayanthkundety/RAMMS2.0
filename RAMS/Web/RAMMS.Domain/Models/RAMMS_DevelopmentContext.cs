@@ -8139,9 +8139,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_EQ_VH");
 
-                entity.Property(e => e.Fqa1evPkRefNo)
-                    .HasColumnName("FQA1EV_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1evPkRefNo).HasColumnName("FQA1EV_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1evCapacity)
                     .HasColumnName("FQA1EV_Capacity")
@@ -8158,12 +8156,12 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FQA1EV_CR_DT")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fqa1evFqa1hPkRefNo).HasColumnName("FQA1EV_FQA1H_PK_Ref_No");
+                entity.Property(e => e.Fqa1evDesc)
+                    .HasColumnName("FQA1EV_Desc")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
 
-                entity.Property(e => e.Fqa1evLabourRemark)
-                    .HasColumnName("FQA1EV_Labour_Remark")
-                    .HasMaxLength(4000)
-                    .IsUnicode(false);
+                entity.Property(e => e.Fqa1evFqa1hPkRefNo).HasColumnName("FQA1EV_FQA1H_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1evModBy).HasColumnName("FQA1EV_Mod_By");
 
@@ -8171,17 +8169,22 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FQA1EV_Mod_DT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Fqa1evPvNo)
+                    .HasColumnName("FQA1EV_PV_No")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1evRemark)
+                    .HasColumnName("FQA1EV_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fqa1evType)
                     .HasColumnName("FQA1EV_Type")
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1evUnit).HasColumnName("FQA1EV_Unit");
-
-                entity.Property(e => e.Fqa1evVNo)
-                    .HasColumnName("FQA1EV_V_No")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
 
                 entity.HasOne(d => d.Fqa1evFqa1hPkRefNoNavigation)
                     .WithMany(p => p.RmFormQa1EqVh)
@@ -8195,9 +8198,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_GC");
 
-                entity.Property(e => e.Fqa1gcPkRefNo)
-                    .HasColumnName("FQA1GC_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1gcPkRefNo).HasColumnName("FQA1GC_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1gcCrBy).HasColumnName("FQA1GC_CR_By");
 
@@ -8287,9 +8288,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_GEN");
 
-                entity.Property(e => e.Fqa1genPkRefNo)
-                    .HasColumnName("FQA1GEN_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1genPkRefNo).HasColumnName("FQA1GEN_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1genAttRemarks)
                     .HasColumnName("FQA1GEN_Att_Remarks")
@@ -8332,9 +8331,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_HDR");
 
-                entity.Property(e => e.Fqa1hPkRefNo)
-                    .HasColumnName("FQA1H_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1hPkRefNo).HasColumnName("FQA1H_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1hActCode)
                     .HasColumnName("FQA1H_ACT_Code")
@@ -8531,9 +8528,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_LAB");
 
-                entity.Property(e => e.Fqa1lPkRefNo)
-                    .HasColumnName("FQA1L_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1lPkRefNo).HasColumnName("FQA1L_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1lCrBy).HasColumnName("FQA1L_CR_By");
 
@@ -8577,9 +8572,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_MAT");
 
-                entity.Property(e => e.Fqa1mPkRefNo)
-                    .HasColumnName("FQA1M_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1mPkRefNo).HasColumnName("FQA1M_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1mCrBy).HasColumnName("FQA1M_CR_By");
 
@@ -8627,9 +8620,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_SSC");
 
-                entity.Property(e => e.Fqa1sscPkRefNo)
-                    .HasColumnName("FQA1SSC_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1sscPkRefNo).HasColumnName("FQA1SSC_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1sscAsd)
                     .HasColumnName("FQA1SSC__ASD")
@@ -8707,9 +8698,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_TES");
 
-                entity.Property(e => e.Fqa1tesPkRefNo)
-                    .HasColumnName("FQA1TES_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1tesPkRefNo).HasColumnName("FQA1TES_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1tesCbrCs)
                     .HasColumnName("FQA1TES_CBR_CS")
@@ -8797,9 +8786,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_WCQ");
 
-                entity.Property(e => e.Fqa1wcqPkRefNo)
-                    .HasColumnName("FQA1WCQ_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1wcqPkRefNo).HasColumnName("FQA1WCQ_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1wcqCrBy).HasColumnName("FQA1WCQ_CR_By");
 
@@ -8909,9 +8896,7 @@ namespace RAMMS.Domain.Models
 
                 entity.ToTable("RM_FormQA1_WE");
 
-                entity.Property(e => e.Fqa1wPkRefNo)
-                    .HasColumnName("FQA1W_PK_Ref_No")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.Fqa1wPkRefNo).HasColumnName("FQA1W_PK_Ref_No");
 
                 entity.Property(e => e.Fqa1wAcbcPasses).HasColumnName("FQA1W_ACBC_Passes");
 
@@ -10706,12 +10691,12 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV3H_DT_AGR")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fv3hDtRec)
-                    .HasColumnName("FV3H_DT_REC")
+                entity.Property(e => e.Fv3hDtFac)
+                    .HasColumnName("FV3H_DT_FAC")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fv3hDtSch)
-                    .HasColumnName("FV3H_DT_SCH")
+                entity.Property(e => e.Fv3hDtRec)
+                    .HasColumnName("FV3H_DT_REC")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fv3hFacilitator)

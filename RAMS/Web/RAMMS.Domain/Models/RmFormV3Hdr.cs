@@ -28,7 +28,7 @@ namespace RAMMS.Domain.Models
         public int? Fv3hUseridFac { get; set; }
         public string Fv3hUsernameFac { get; set; }
         public string Fv3hDesignationFac { get; set; }
-        public DateTime? Fv3hDtSch { get; set; }
+        public DateTime? Fv3hDtFac { get; set; }
         public bool? Fv3hSignAgr { get; set; }
         public int? Fv3hUseridAgr { get; set; }
         public string Fv3hUsernameAgr { get; set; }
