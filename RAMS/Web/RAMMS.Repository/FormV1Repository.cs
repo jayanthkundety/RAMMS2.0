@@ -26,10 +26,10 @@ namespace RAMMS.Repository
         private readonly IMapper _mapper;
 
 
-        public FormV1Repository(RAMMSContext context, IMapper mapper = null) : base(context)
+        public FormV1Repository(RAMMSContext context, IMapper mapper= null) : base(context)
         {
             _context = context;
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mapper = mapper;
         }
 
         #region FormV1

@@ -1710,7 +1710,7 @@ namespace RAMMS.Web.UI.Controllers
             if (_formV3Model.FormV3.UseridRec == 0)
             {
                 _formV3Model.FormV3.UseridRec = _security.UserID;
-                _formV3Model.FormV3.DtSch = DateTime.Today;
+                _formV3Model.FormV3.DtRec = DateTime.Today;
             }
             if (_formV3Model.FormV3.UseridAgr == 0 && _formV3Model.FormV3.Status == RAMMS.Common.StatusList.FormV1Submitted)
             {

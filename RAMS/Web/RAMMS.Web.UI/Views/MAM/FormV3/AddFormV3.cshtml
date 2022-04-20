@@ -103,7 +103,7 @@
                                                                 </div>
                                                                 <div class="form-group col-lg-6">
                                                                     <label for="Name_of_Crew_Supervisor">Crew Name</label>
-                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV3.Crewname, "", new { @readonly = "readonly",  @class = "form-control" })
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV3.Crewname, "", new { @readonly = "readonly", @class = "form-control" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -162,7 +162,7 @@
                                     </div>
                                 </div>
                             </div>
-                          
+
                             <div class="accordion custom-accordion mb-4" id="custom-accordion-five">
                                 <div class="card mb-0">
                                     <div class="card-header" id="headingFive">
@@ -324,13 +324,16 @@
                                 </div>
                             </div>
 
-                            <div class="modal fade" id="WorkScheduleModal" role="dialog">
+                            <div class="modal fade" id="WorkAccompModal" role="dialog">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
 
-                                            <h4 class="modal-title w-100">
-                                                <span class="float-left"> WORK SCHEDULE</span>
+                                            <h4 class="modal-title w-100 float-left">
+                                                <span class="float-left">
+                                                    Work Accomplishment
+
+                                                </span>
                                                 <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
                                             </h4>
                                         </div>
@@ -341,99 +344,182 @@
                                                 <div class="form-group col-lg-6">
                                                     <div class="row">
                                                         <div class="col-6">
-                                                            @Html.Label("Road Code", "Road Code")
-                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @class = "form-control svalidate {required,Road Code}", @onchange = "OnRoadChange(this);" })
-
+                                                            <label for="RoadCode">Road Code</label>
+                                                            <select class="form-control">
+                                                                <option value="">Select Road Code</option>
+                                                            </select>
                                                         </div>
                                                         <div class="col-6">
-                                                            @Html.Label("Road Name", "Road Name")
-                                                            @Html.TextBoxFor(m => m.FormV3Dtl.RoadName, new { @readonly = true, @class = "form-control" })
+                                                            <label for="RoadCode"> Road Name:</label>
+                                                            <input type="text" class="form-control" disabled placeholder="" />
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-3">
-
-                                                    <label for="RoadCode" class="mb-1">
-                                                        Chainage Location From
+                                                <div class="form-group col-lg-3 p-0">
+                                                    <label for="Chainage_From">
+                                                        Chainage  From
                                                     </label>
-                                                    <div class="form-group col-lg-7 p-0">
-
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" style="height: 35px; padding: 4px">CH</span>
-                                                            </div>
-                                                            @Html.TextBoxFor(m => m.FormV3Dtl.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}", style = "height:35px" })
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-lg-1 pt-2 px-0 text-center" style="max-width:4.33%">
-                                                        +
-                                                    </div>
-                                                    <div class="form-group col-lg-4 p-0">
-
-                                                        @Html.TextBoxFor(m => m.FormV3Dtl.FrmChDeci, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage KM fromch}" })
-
-                                                    </div>
-
-                                                </div>
-                                                <div class="form-group col-lg-3">
-
-                                                    <label for="RoadCode" class="mb-1">
-                                                        Chainage Location To
-                                                    </label>
-                                                    <div class="form-group col-lg-7 p-0">
-
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" style="height: 35px;padding:4px">CH</span>
-                                                            </div>
-                                                            @Html.TextBoxFor(m => m.FormV3Dtl.ToCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM To}", style = "height:35px" })
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-lg-1 pt-2 px-0 text-center" style="max-width:4.33%">
-                                                        +
-                                                    </div>
-                                                    <div class="form-group col-lg-4 p-0">
-                                                        @Html.TextBoxFor(m => m.FormV3Dtl.ToChDeci, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage KM Toch}" })
-
-                                                    </div>
-
-                                                </div>
-                                                <div class="form-group col-lg-5">
                                                     <div class="row">
-                                                        <div class="form-group col-lg-6">
-                                                            <label for="RoadCode">  Site Reference</label>
-                                                            @Html.DropDownListFor(Adtl => Adtl.FormV3Dtl.SiteRef, (IEnumerable<CSelectListItem>)ViewData["Site_Ref"], "Select Site Reference", new { @Id = "ddlSiteRef", @class = "form-control validate {required, Site Reference}" })
+                                                        <div class="col-6 float-left pr-0">
+                                                            <input autocomplete="off" class="form-control allow_numeric validate {required,number, Chainage From}" id="formDChinageFrom" maxlength="5" name="SaveFormDDetailsModel.FrmCh" rows="1" type="text" value="">
                                                         </div>
-                                                        <div class="form-group col-lg-6">
-                                                            <label for="RoadCode">
-                                                                Schedule Time to Start
-                                                            </label>
+                                                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> <label for="z">+</label></div>
+                                                        <div class="col-5 float-left pl-0">
+                                                            <input autocomplete="off" class="form-control allow_numeric validate {required,number, Chainage From Deci}" id="formDChinageFromDeci" maxlength="3" name="SaveFormDDetailsModel.FrmChDeci" rows="1" type="text" value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-lg-3">
+                                                    <label for="Chainage_From">
+                                                        Chainage  To
+                                                    </label>
+                                                    <div class="row">
+                                                        <div class="col-6 float-left pr-0">
+                                                            <input autocomplete="off" class="form-control allow_numeric validate {required,number, Chainage From}" id="formDChinageFrom" maxlength="5" name="SaveFormDDetailsModel.FrmCh" rows="1" type="text" value="">
+                                                        </div>
+                                                        <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> <label for="z">+</label></div>
+                                                        <div class="col-5 float-left pl-0">
+                                                            <input autocomplete="off" class="form-control allow_numeric validate {required,number, Chainage From Deci}" id="formDChinageFromDeci" maxlength="3" name="SaveFormDDetailsModel.FrmChDeci" rows="1" type="text" value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.StartTime, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required, Start Time}", @rows = 1 })
+                                                <div class="form-group col-lg-4">
+                                                    <label for="Chainage_From">
+                                                        Dimension
+                                                    </label>
+                                                    <div class="row">
+                                                        <div class="col-6 float-left">
+
+                                                            <div class="form-group in-lbl">
+                                                                <label for="L">L</label>
+                                                                <input autocomplete="off" class="form-control allow_numeric disableFADinput validate {cdecimal,5,5, Length}" data-val="true" data-val-number="The field Length must be a number." id="formDLength" name="SaveFormDDetailsModel.Length" rows="1" type="text" value="" width="60px">
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 float-left pl-0">
+                                                            <div class="form-group in-lbl">
+
+                                                                <label for="W">W</label>
+                                                                <input autocomplete="off" class="form-control allow_numeric disableFADinput validate {cdecimal,5,5, Length}" data-val="true" data-val-number="The field Length must be a number." id="formDLength" name="SaveFormDDetailsModel.Length" rows="1" type="text" value="" width="60px">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group col-2 p-0">
+                                                    <label for="RoadCode">
+                                                        ADP
+                                                        (m2)
+                                                    </label>
+                                                    <input type="text" class="form-control" value="23200" />
+                                                </div>
+                                                <div class="form-group  col-3">
+                                                    <label for="RoadCode">
+                                                        Time Taken From
+                                                    </label>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <select class="form-control px-0 py-2" style="display: none;">
+                                                                <option value="">8:00</option>
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="col">
+                                                            <select class="form-control" style="display: none;">
+                                                                <option value="">AM</option>
+                                                                <option value="">PM</option>
+                                                            </select>
 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group col-lg-7">
+                                                <div class="form-group  col-3">
                                                     <label for="RoadCode">
-                                                        Remarks
+                                                        Time Taken To
                                                     </label>
-                                                    @Html.TextBoxFor(m => m.FormV3Dtl.Remarks, new { @class = "form-control validate {required, Remarks} " })
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <select class="form-control px-0 py-2" style="display: none;">
+                                                                <option value="">8:00</option>
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="col">
+                                                            <select class="form-control" style="display: none;">
+                                                                <option value="">AM</option>
+                                                                <option value="">PM</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <div class="form-group col-3">
+                                                    <label for="RoadCode">
+                                                        Total Time Taken
+                                                    </label>
+                                                    <input type="text" class="form-control" placeholder="" />
+                                                </div>
+                                                <div class="form-group  col-3">
+                                                    <label for="RoadCode">
+                                                        Transit Time From
+                                                    </label>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <select class="form-control px-0 py-2" style="display: none;">
+                                                                <option value="">8:00</option>
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="col">
+                                                            <select class="form-control" style="display: none;">
+                                                                <option value="">AM</option>
+                                                                <option value="">PM</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group  col-3">
+                                                    <label for="RoadCode">
+                                                        Transit Time To
+                                                    </label>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <select class="form-control px-0 py-2" style="display: none;">
+                                                                <option value="">8:00</option>
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="col">
+                                                            <select class="form-control" style="display: none;">
+                                                                <option value="">AM</option>
+                                                                <option value="">PM</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-3">
+                                                    <label for="RoadCode">
+                                                        Total Transit Time
+                                                    </label>
+                                                    <input type="text" class="form-control" placeholder="" />
+                                                </div>
+
                                             </div>
 
 
                                             <!--<div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                    <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
-                                </div>-->
+                        <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                    </div>-->
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-sm btn-themebtn" id="saveFormV3DtlBtn" onclick="SaveFormV3WorkSchedule()">Submit</button>
-
+                                            <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                                            <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Submit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -472,7 +558,7 @@
                 <button id="SubmitFormV3Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
 
 
-                @if (IsApproved && (Model.FormV3.Status == RAMMS.Common.StatusList.FormV3Submitted || Model.FormV3.Status == RAMMS.Common.StatusList.FormV3Rejected))
+                @if (IsApproved && (Model.FormV3.Status == RAMMS.Common.StatusList.FormV1Submitted || Model.FormV3.Status == RAMMS.Common.StatusList.FormV1Rejected))
                 {
                     <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
                 }
@@ -490,9 +576,9 @@
     @Html.HiddenFor(m => m.FormV3.PkRefNo)
     @Html.HiddenFor(m => m.FormV3Dtl.PkRefNo)
     @Html.HiddenFor(m => m.FormV3.SecCode)
-    @Html.HiddenFor(m => m.FormV3.UseridAck)
+    @Html.HiddenFor(m => m.FormV3.UseridFac)
     @Html.HiddenFor(m => m.FormV3.UseridAgr)
-    @Html.HiddenFor(m => m.FormV3.UseridSch)
+    @Html.HiddenFor(m => m.FormV3.UseridRec)
     @Html.HiddenFor(m => m.FormV3.Status)
     @Html.HiddenFor(m => m.FormV3Dtl.RoadCode)
     @Html.HiddenFor(m => m.FormV3.SubmitSts)
@@ -540,7 +626,7 @@
     $('#ddlCrew').trigger('chosen:updated');
     $('#ddlCrew').trigger("change");
 
-    $('#ddlAcknowledgedby').val("@Model.FormV3.UseridAck");
+    $('#ddlAcknowledgedby').val("@Model.FormV3.UseridFac");
     $('#ddlAcknowledgedby').trigger('chosen:updated');
     $('#ddlAcknowledgedby').trigger("change");
 
@@ -548,7 +634,7 @@
     $('#ddlAgreedby').trigger('chosen:updated');
     $('#ddlAgreedby').trigger("change");
 
-    $('#ddlScheduledby').val("@Model.FormV3.UseridSch");
+    $('#ddlScheduledby').val("@Model.FormV3.UseridRec");
     $('#ddlScheduledby').trigger('chosen:updated');
     $('#ddlScheduledby').trigger("change");
 

@@ -311,9 +311,9 @@ namespace RAMMS.Business.ServiceProvider.Services
             List<FormV3ResponseDTO> formDList = new List<FormV3ResponseDTO>();
             try
             {
-                var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredRecordList(filterOptions);
+                var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredV3RecordList(filterOptions);
 
-                result.TotalRecords = await _repoUnit.FormV1Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                result.TotalRecords = await _repoUnit.FormV1Repository.GetFilteredV3RecordCount(filterOptions).ConfigureAwait(false);
 
                 foreach (var listData in filteredRecords)
                 {
