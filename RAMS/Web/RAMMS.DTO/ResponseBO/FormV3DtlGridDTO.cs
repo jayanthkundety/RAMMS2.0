@@ -32,6 +32,8 @@ namespace RAMMS.DTO.ResponseBO
         public bool SubmitSts { get; set; }
         public bool ActiveYn { get; set; }
 
+        public string ChainageFrom { get; set; }
+        public string ChainageTo { get; set; }
 
 
     }

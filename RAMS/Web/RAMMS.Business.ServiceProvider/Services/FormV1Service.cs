@@ -129,7 +129,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelFormV1 = _mapper.Map<RmFormV1Hdr>(FormV1);
                 domainModelFormV1.Fv1hPkRefNo = 0;
 
-                var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormV1.Fv1hRmu && x.Fv1hActCode == domainModelFormV1.Fv1hActCode && x.Fv1hSecCode == domainModelFormV1.Fv1hSecCode && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hActiveYn == true).Result;
+                //var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormV1.Fv1hRmu && x.Fv1hActCode == domainModelFormV1.Fv1hActCode && x.Fv1hSecCode == domainModelFormV1.Fv1hSecCode && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hActiveYn == true).Result;
+                var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormV1.Fv1hRmu && x.Fv1hActCode == domainModelFormV1.Fv1hActCode && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hActiveYn == true).Result;
                 if (obj != null)
                     return _mapper.Map<FormV1ResponseDTO>(obj);
 
@@ -356,6 +357,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                     obj.PkRefNo = listData.Fv3dPkRefNo;
                     obj.FrmCh = listData.Fv3dFrmCh;
                     obj.ToCh = listData.Fv3dToCh;
+                    obj.FrmChDeci = listData.Fv3dFrmChDeci;
+                    obj.ToChDeci = listData.Fv3dToChDeci;
+                    obj.ChainageTo = Convert.ToString(listData.Fv3dToCh) + "+" + Convert.ToString(listData.Fv3dToChDeci);
+                    obj.ChainageFrom = Convert.ToString(listData.Fv3dFrmCh) + "+" + Convert.ToString(listData.Fv3dFrmChDeci);
                     obj.RoadCode = listData.Fv3dRoadCode;
                     obj.RoadName = listData.Fv3dRoadName;
                     obj.Length = listData.Fv3dLength;
@@ -444,7 +449,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             if (form.Fv3hSubmitSts && form.Fv3hStatus == "Saved")
             {
                 form.Fv3hStatus = Common.StatusList.FormW2Submitted;
-                form.Fv3hAuditLog = Utility.ProcessLog(form.Fv3hAuditLog, "Submitted By", "Submitted", form.Fv3hUsernameRec, string.Empty, form.Fv3hDtSch, _security.UserName);
+                form.Fv3hAuditLog = Utility.ProcessLog(form.Fv3hAuditLog, "Submitted By", "Submitted", form.Fv3hUsernameRec, string.Empty, form.Fv3hDtRec, _security.UserName);
                 processService.SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = _security.UserName,
@@ -459,6 +464,188 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return form;
         }
+
+        public async Task<int> UpdateFormV3Dtl(FormV3DtlGridDTO FormV3Dtl)
+        {
+            int? Fv1hPkRefNo = FormV3Dtl.Fv3hPkRefNo;
+            var model = _mapper.Map<RmFormV3Dtl>(FormV3Dtl);
+            model.Fv3dPkRefNo = 0;
+            model.Fv3dFv3hPkRefNo = Fv1hPkRefNo;
+            return await _repo.UpdateFormV3Dtl(model);
+        }
+
+
+        public int? DeleteFormV3(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormV3(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+
+        public int? DeleteFormV3Dtl(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormV3Dtl(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+
+
+
+
+        #endregion
+
+        #region FormV4
+
+
+        public async Task<PagingResult<FormV4ResponseDTO>> GetFilteredFormV4Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            PagingResult<FormV4ResponseDTO> result = new PagingResult<FormV4ResponseDTO>();
+
+            List<FormV4ResponseDTO> formDList = new List<FormV4ResponseDTO>();
+            try
+            {
+                var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredV4RecordList(filterOptions);
+
+                result.TotalRecords = await _repoUnit.FormV1Repository.GetFilteredV4RecordCount(filterOptions).ConfigureAwait(false);
+
+                foreach (var listData in filteredRecords)
+                {
+                    var _ = _mapper.Map<FormV4ResponseDTO>(listData);
+
+                    formDList.Add(_);
+                }
+
+                result.PageResult = formDList;
+
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return result;
+        }
+
+
+
+     
+        public async Task<FormV4ResponseDTO> FindFormV4ByID(int id)
+        {
+            RmFormV4Hdr formV4 = await _repo.FindFormV4ByID(id);
+            return _mapper.Map<FormV4ResponseDTO>(formV4);
+
+        }
+
+        public async Task<FormV4ResponseDTO> SaveFormV4(FormV4ResponseDTO Formv3)
+        {
+            try
+            {
+                return await _repo.SaveFormV4(Formv3);
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+        public async Task<int> UpdateV4(FormV4ResponseDTO FormV4)
+        {
+            int rowsAffected;
+            try
+            {
+                int PkRefNo = FormV4.PkRefNo;
+
+                var domainModelFormV4 = _mapper.Map<RmFormV4Hdr>(FormV4);
+                domainModelFormV4.Fv4hPkRefNo = PkRefNo;
+                domainModelFormV4.Fv4hActiveYn = true;
+                domainModelFormV4 = UpdateV4Status(domainModelFormV4);
+                rowsAffected = await _repoUnit.FormV1Repository.UpdateFormV4(domainModelFormV4);
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+        public RmFormV4Hdr UpdateV4Status(RmFormV4Hdr form)
+        {
+            if (form.Fv4hPkRefNo > 0)
+            {
+                var existsObj = _repoUnit.FormV1Repository._context.RmFormV4Hdr.Where(x => x.Fv4hPkRefNo == form.Fv4hPkRefNo).Select(x => new { Status = x.Fv4hStatus, Log = x.Fv4hAuditLog }).FirstOrDefault();
+                if (existsObj != null)
+                {
+                    form.Fv4hAuditLog = existsObj.Log;
+                    // form.Fv4hStatus = existsObj.Status;
+
+                }
+
+            }
+            if (form.Fv4hSubmitSts && form.Fv4hStatus == "Saved")
+            {
+                form.Fv4hStatus = Common.StatusList.FormW2Submitted;
+                form.Fv4hAuditLog = Utility.ProcessLog(form.Fv4hAuditLog, "Submitted By", "Submitted", form.Fv4hUsernameRec, string.Empty, form.Fv4hDtRec, _security.UserName);
+                processService.SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = _security.UserName,
+                    RmNotGroup = GroupNames.OperationsExecutive,
+                    RmNotMessage = "Recorded By:" + form.Fv4hUsernameRec + " - Form WN (" + form.Fv4hPkRefNo + ")",
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = "/MAM/EditFormv4?id=" + form.Fv4hPkRefNo.ToString(),
+                    RmNotUserId = "",
+                    RmNotViewed = ""
+                }, true);
+            }
+
+            return form;
+        }
+
+
+        public int? DeleteFormV4(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormV4(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+
+      
 
         #endregion
 

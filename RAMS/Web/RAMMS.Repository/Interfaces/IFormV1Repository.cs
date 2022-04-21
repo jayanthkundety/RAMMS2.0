@@ -45,6 +45,25 @@ namespace RAMMS.Repository.Interfaces
         Task<FormV3ResponseDTO> SaveFormV3(FormV3ResponseDTO Formv3);
 
         Task<int> UpdateFormV3(RmFormV3Hdr FormV3);
+
+        Task<int> UpdateFormV3Dtl(RmFormV3Dtl FormV3Dtl);
+
+        int? DeleteFormV3(int id);
+        int? DeleteFormV3Dtl(int id);
+        #endregion
+
+        #region FormV4
+        Task<List<RmFormV4Hdr>> GetFilteredV4RecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+        Task<int> GetFilteredV4RecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+
+        Task<RmFormV4Hdr> FindFormV4ByID(int id);
+
+        Task<FormV4ResponseDTO> SaveFormV4(FormV4ResponseDTO Formv3);
+
+        Task<int> UpdateFormV4(RmFormV4Hdr FormV4);
+
+        int? DeleteFormV4(int id);
+        
         #endregion
 
     }

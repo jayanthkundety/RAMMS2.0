@@ -26,7 +26,7 @@ namespace RAMMS.Repository
         private readonly IMapper _mapper;
 
 
-        public FormV1Repository(RAMMSContext context, IMapper mapper= null) : base(context)
+        public FormV1Repository(RAMMSContext context, IMapper mapper = null) : base(context)
         {
             _context = context;
             _mapper = mapper;
@@ -767,29 +767,72 @@ namespace RAMMS.Repository
                 var domainModelFormv3 = _mapper.Map<RmFormV3Hdr>(Formv3);
                 domainModelFormv3.Fv3hPkRefNo = 0;
 
-                var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hSecCode == domainModelFormv3.Fv3hSecCode && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hActiveYn == true).ToList();
+                //var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hSecCode == domainModelFormv3.Fv3hSecCode && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hActiveYn == true).ToList();
+                var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hActiveYn == true).ToList();
                 if (obj.Count > 0)
+                {
                     return _mapper.Map<FormV3ResponseDTO>(obj);
+                }
+                var objV2 = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hActiveYn == true).ToList();
+                if (objV2.Count == 0)
+                {
+                    Formv3.PkRefNo = -2;
+                    return Formv3;
+                }
+                else
+                {
+                    var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv3.Fv3hRmu && x.Fv1hActCode == domainModelFormv3.Fv3hActCode && x.Fv1hDt == domainModelFormv3.Fv3hDt && x.Fv1hActiveYn == true).ToList();
+                    if (objV1.Count > 0)
+                    {
+                        domainModelFormv3.Fv3hFv1PkRefNo = objV1.Single().Fv1hPkRefNo;
+                        _context.Set<RmFormV3Hdr>().Add(domainModelFormv3);
+                        _context.SaveChanges();
+
+                        IDictionary<string, string> lstData = new Dictionary<string, string>();
+                        lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
+                        lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
+                        lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
+                        lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv3.Fv3hPkRefNo));
+                        domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV3Header, lstData);
+                        _context.SaveChanges();
+                        Formv3.PkRefNo = _mapper.Map<FormV3ResponseDTO>(domainModelFormv3).PkRefNo;
+                        Formv3.RefId = domainModelFormv3.Fv3hRefId;
+                        Formv3.Status = domainModelFormv3.Fv3hStatus;
+
+                        var res = (from dtl in _context.RmFormV1Dtl
+                                   where dtl.Fv1dFv1hPkRefNo == domainModelFormv3.Fv3hFv1PkRefNo  && dtl.Fv1dActiveYn == true
+                                   orderby dtl.Fv1dPkRefNo descending
+                                   select new RmFormV3Dtl
+                                   {
+                                       Fv3dFv3hPkRefNo = Formv3.PkRefNo,
+                                       Fv3dFv1dPkRefNo = dtl.Fv1dPkRefNo, 
+                                       Fv3dActiveYn = true,
+                                       Fv3dFrmChDeci = dtl.Fv1dFrmChDeci,
+                                       Fv3dFrmCh = dtl.Fv1dFrmCh,
+                                       Fv3dToChDeci = dtl.Fv1dToCh,
+                                       Fv3dToCh = dtl.Fv1dToChDeci,
+                                       Fv3dRoadCode = dtl.Fv1dRoadCode,
+                                       Fv3dRoadName = dtl.Fv1dRoadName,
+                                       
+                                   }).ToList();
 
 
-                // var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormv3);
-                _context.Set<RmFormV3Hdr>().Add(domainModelFormv3);
-                _context.SaveChanges();
-
-                IDictionary<string, string> lstData = new Dictionary<string, string>();
-                lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
-                lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
-                lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
-                lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv3.Fv3hPkRefNo));
-                domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV3Header, lstData);
-                _context.SaveChanges();
+                        foreach (var item in res)
+                        {
+                            _context.RmFormV3Dtl.Add(item);
+                            _context.SaveChanges();
+                        }
 
 
-                Formv3.PkRefNo = _mapper.Map<FormV3ResponseDTO>(domainModelFormv3).PkRefNo;
-                Formv3.RefId = domainModelFormv3.Fv3hRefId;
-                Formv3.Status = domainModelFormv3.Fv3hStatus;
-
-                return Formv3;
+                        return Formv3;
+                    }
+                    else
+                    {
+                        Formv3.PkRefNo = -1;
+                        return Formv3;
+                    }
+                   
+                }
             }
             catch (Exception ex)
             {
@@ -814,8 +857,388 @@ namespace RAMMS.Repository
             }
         }
 
+        public async Task<int> UpdateFormV3Dtl(RmFormV3Dtl FormV3Dtl)
+        {
+            try
+            {
+                _context.Set<RmFormV3Dtl>().Attach(FormV3Dtl);
+                _context.Entry<RmFormV3Dtl>(FormV3Dtl).State = EntityState.Modified;
+               await _context.SaveChangesAsync();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteFormV3(int id)
+        {
+            try
+            {
+                var res = _context.Set<RmFormV3Hdr>().FindAsync(id);
+                res.Result.Fv3hActiveYn = false;
+                _context.Set<RmFormV3Hdr>().Attach(res.Result);
+                _context.Entry<RmFormV3Hdr>(res.Result).State = EntityState.Modified;
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
 
 
+        public int? DeleteFormV3Dtl(int id)
+        {
+            try
+            {
+                var res = _context.Set<RmFormV3Dtl>().FindAsync(id);
+                res.Result.Fv3dActiveYn = false;
+                _context.Set<RmFormV3Dtl>().Attach(res.Result);
+                _context.Entry<RmFormV3Dtl>(res.Result).State = EntityState.Modified;
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        #endregion
+
+        #region FormV4
+
+        public async Task<List<RmFormV4Hdr>> GetFilteredV4RecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            List<RmFormV4Hdr> result = new List<RmFormV4Hdr>();
+            var query = (from x in _context.RmFormV4Hdr
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv4hRmu || s.DdlTypeDesc == x.Fv4hRmu))
+                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv4hSecCode || s.DdlTypeCode == x.Fv4hSecCode))
+                         let div = _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv4hSecCode)
+                         select new { rmu, sec, x, div });
+
+
+
+            query = query.Where(x => x.x.Fv4hActiveYn == true).OrderByDescending(x => x.x.Fv4hPkRefNo);
+            if (filterOptions.Filters != null)
+            {
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeCode == filterOptions.Filters.Section);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+                {
+                    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
+                {
+                    query = query.Where(x => x.x.Fv4hCrewname == filterOptions.Filters.Crew || (x.x.Fv4hCrew.HasValue ? x.x.Fv4hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv4hCrew.ToString() == ""));
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.x.Fv4hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv4hDt.HasValue ? (x.x.Fv4hDt.Value.Year == dt.Year && x.x.Fv4hDt.Value.Month == dt.Month && x.x.Fv4hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv4hDt.HasValue ? (x.x.Fv4hDt.Value.Year == dt.Year && x.x.Fv4hDt.Value.Month == dt.Month && x.x.Fv4hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+                {
+                    query = query.Where(x => x.x.Fv4hRmu.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || x.x.Fv4hCrewname.Contains(filterOptions.Filters.SmartInputValue)
+                                        || ((bool)x.x.Fv4hSubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hRefId.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hSecCode.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hUsernameRec.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hUsernameAgr.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hUsernameFac.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (filterOptions.Filters.SmartInputValue.IsInt() && x.x.Fv4hPkRefNo.Equals(filterOptions.Filters.SmartInputValue.AsInt())));
+
+                }
+            }
+
+
+            if (filterOptions.sortOrder == SortOrder.Ascending)
+            {
+
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderBy(x => x.x.Fv4hPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderBy(x => x.x.Fv4hRmu);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(x => x.div.RdsmDivCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(x => x.x.Fv4hActCode);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(x => x.x.Fv4hSecCode);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderBy(x => x.x.Fv4hCrewname);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderBy(x => x.x.Fv4hDt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(x => x.x.Fv4hUsernameRec);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderBy(x => x.x.Fv4hUsernameAgr);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderBy(x => x.x.Fv4hUsernameFac);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderBy(x => x.x.Fv4hSubmitSts);
+
+
+            }
+            else if (filterOptions.sortOrder == SortOrder.Descending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderByDescending(x => x.x.Fv4hPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderByDescending(x => x.x.Fv4hRmu);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(x => x.div.RdsmDivCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(x => x.x.Fv4hActCode);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(x => x.x.Fv4hSecCode);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderByDescending(x => x.x.Fv4hCrewname);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderByDescending(x => x.x.Fv4hDt);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(x => x.x.Fv4hUsernameRec);
+                if (filterOptions.ColumnIndex == 9)
+                    query = query.OrderByDescending(x => x.x.Fv4hUsernameAgr);
+                if (filterOptions.ColumnIndex == 10)
+                    query = query.OrderByDescending(x => x.x.Fv4hUsernameFac);
+                if (filterOptions.ColumnIndex == 11)
+                    query = query.OrderByDescending(x => x.x.Fv4hSubmitSts);
+            }
+
+
+            result = await query.Select(s => s.x)
+                    .Skip(filterOptions.StartPageNo)
+                    .Take(filterOptions.RecordsPerPage)
+                    .ToListAsync();
+            return result;
+        }
+
+        public async Task<int> GetFilteredV4RecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            List<RmFormV4Hdr> result = new List<RmFormV4Hdr>();
+            var query = (from x in _context.RmFormV4Hdr
+                         let rmu = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "RMU" && (s.DdlTypeCode == x.Fv4hRmu || s.DdlTypeDesc == x.Fv4hRmu))
+                         let sec = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Section Code" && (s.DdlTypeDesc == x.Fv4hSecCode || s.DdlTypeCode == x.Fv4hSecCode))
+                         let div = _context.RmDivRmuSecMaster.FirstOrDefault(s => s.RdsmSectionCode == x.Fv4hSecCode)
+                         select new { rmu, sec, x, div });
+
+
+
+            query = query.Where(x => x.x.Fv4hActiveYn == true).OrderByDescending(x => x.x.Fv4hPkRefNo);
+            if (filterOptions.Filters != null)
+            {
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Section))
+                {
+                    query = query.Where(x => x.sec.DdlTypeDesc == filterOptions.Filters.Section || x.sec.DdlTypeCode == filterOptions.Filters.Section);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
+                {
+                    query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.Crew))
+                {
+                    query = query.Where(x => x.x.Fv4hCrewname == filterOptions.Filters.Crew || (x.x.Fv4hCrew.HasValue ? x.x.Fv4hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv4hCrew.ToString() == ""));
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.x.Fv4hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv4hDt.HasValue ? (x.x.Fv4hDt.Value.Year == dt.Year && x.x.Fv4hDt.Value.Month == dt.Month && x.x.Fv4hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv4hDt.HasValue ? (x.x.Fv4hDt.Value.Year == dt.Year && x.x.Fv4hDt.Value.Month == dt.Month && x.x.Fv4hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
+                {
+                    query = query.Where(x => x.x.Fv4hRmu.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (x.rmu.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || (x.sec.DdlTypeDesc.Contains(filterOptions.Filters.SmartInputValue))
+                                        || x.x.Fv4hCrewname.Contains(filterOptions.Filters.SmartInputValue)
+                                        || ((bool)x.x.Fv4hSubmitSts ? "Submitted" : "Saved").Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hRefId.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hSecCode.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hUsernameRec.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hUsernameAgr.Contains(filterOptions.Filters.SmartInputValue)
+                                        || x.x.Fv4hUsernameFac.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (filterOptions.Filters.SmartInputValue.IsInt() && x.x.Fv4hPkRefNo.Equals(filterOptions.Filters.SmartInputValue.AsInt())));
+
+                }
+            }
+
+            return await query.CountAsync().ConfigureAwait(false);
+        }
+
+    
+
+        public async Task<RmFormV4Hdr> FindFormV4ByID(int id)
+        {
+            return await _context.RmFormV4Hdr.Where(x => x.Fv4hPkRefNo == id && x.Fv4hActiveYn == true).FirstOrDefaultAsync();
+        }
+
+        public async Task<FormV4ResponseDTO> SaveFormV4(FormV4ResponseDTO Formv4)
+        {
+            try
+            {
+                var domainModelFormv4 = _mapper.Map<RmFormV4Hdr>(Formv4);
+                domainModelFormv4.Fv4hPkRefNo = 0;
+
+                //var obj = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv4.Fv4hRmu && x.Fv4hActCode == domainModelFormv4.Fv4hActCode && x.Fv4hSecCode == domainModelFormv4.Fv4hSecCode && x.Fv4hCrew == domainModelFormv4.Fv4hCrew && x.Fv4hDt == domainModelFormv4.Fv4hDt && x.Fv4hActiveYn == true).ToList();
+                var obj = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv4.Fv4hRmu && x.Fv4hActCode == domainModelFormv4.Fv4hActCode && x.Fv4hDt == domainModelFormv4.Fv4hDt && x.Fv4hCrew == domainModelFormv4.Fv4hCrew && x.Fv4hActiveYn == true).ToList();
+                if (obj.Count > 0)
+                {
+                    return _mapper.Map<FormV4ResponseDTO>(obj);
+                }
+                var objV2 = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv4.Fv4hRmu && x.Fv4hActCode == domainModelFormv4.Fv4hActCode && x.Fv4hDt == domainModelFormv4.Fv4hDt && x.Fv4hCrew == domainModelFormv4.Fv4hCrew && x.Fv4hActiveYn == true).ToList();
+                if (objV2.Count == 0)
+                {
+                    Formv4.PkRefNo = -2;
+                    return Formv4;
+                }
+                else
+                {
+                    var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv4.Fv4hRmu && x.Fv1hActCode == domainModelFormv4.Fv4hActCode && x.Fv1hDt == domainModelFormv4.Fv4hDt && x.Fv1hActiveYn == true).ToList();
+                    if (objV1.Count > 0)
+                    {
+                        domainModelFormv4.Fv4hFv1PkRefNo = objV1.Single().Fv1hPkRefNo;
+                        _context.Set<RmFormV4Hdr>().Add(domainModelFormv4);
+                        _context.SaveChanges();
+
+                        IDictionary<string, string> lstData = new Dictionary<string, string>();
+                        lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
+                        lstData.Add("Crew", domainModelFormv4.Fv4hCrew.ToString());
+                        lstData.Add("ActivityCode", domainModelFormv4.Fv4hActCode);
+                        lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv4.Fv4hPkRefNo));
+                        domainModelFormv4.Fv4hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV4Header, lstData);
+                        _context.SaveChanges();
+                        Formv4.PkRefNo = _mapper.Map<FormV4ResponseDTO>(domainModelFormv4).PkRefNo;
+                        Formv4.RefId = domainModelFormv4.Fv4hRefId;
+                        Formv4.Status = domainModelFormv4.Fv4hStatus;
+
+                        var res = (from dtl in _context.RmFormV1Dtl
+                                   where dtl.Fv1dFv1hPkRefNo == domainModelFormv4.Fv4hFv1PkRefNo && dtl.Fv1dActiveYn == true
+                                   orderby dtl.Fv1dPkRefNo descending
+                                   select new RmFormV4Dtl
+                                   {
+                                       Fv4dFv4hPkRefNo = Formv4.PkRefNo,
+                                       Fv4dFv1dPkRefNo = dtl.Fv1dPkRefNo,
+                                       Fv4dActiveYn = true,
+                                       Fv4dFrmChDeci = dtl.Fv1dFrmChDeci,
+                                       Fv4dFrmCh = dtl.Fv1dFrmCh,
+                                       Fv4dToChDeci = dtl.Fv1dToCh,
+                                       Fv4dToCh = dtl.Fv1dToChDeci,
+                                       Fv4dRoadCode = dtl.Fv1dRoadCode,
+                                       Fv4dRoadName = dtl.Fv1dRoadName,
+
+                                   }).ToList();
+
+
+                        foreach (var item in res)
+                        {
+                            _context.RmFormV4Dtl.Add(item);
+                            _context.SaveChanges();
+                        }
+
+
+                        return Formv4;
+                    }
+                    else
+                    {
+                        Formv4.PkRefNo = -1;
+                        return Formv4;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                await _context.DisposeAsync();
+                throw ex;
+            }
+        }
+
+
+        public async Task<int> UpdateFormV4(RmFormV4Hdr FormV4)
+        {
+            try
+            {
+                _context.Set<RmFormV4Hdr>().Attach(FormV4);
+                _context.Entry<RmFormV4Hdr>(FormV4).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteFormV4(int id)
+        {
+            try
+            {
+                var res = _context.Set<RmFormV4Hdr>().FindAsync(id);
+                res.Result.Fv4hActiveYn = false;
+                _context.Set<RmFormV4Hdr>().Attach(res.Result);
+                _context.Entry<RmFormV4Hdr>(res.Result).State = EntityState.Modified;
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+ 
         #endregion
 
     }

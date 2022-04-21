@@ -48,6 +48,25 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<FormV3ResponseDTO> SaveFormV3(FormV3ResponseDTO FormV3);
         Task<int> UpdateV3(FormV3ResponseDTO FormV3);
+        Task<int> UpdateFormV3Dtl(FormV3DtlGridDTO FormV3Dtl);
+
+        int? DeleteFormV3(int id);
+
+        int? DeleteFormV3Dtl(int id);
+
+
+        #endregion
+
+        #region FormV4
+
+        Task<PagingResult<FormV4ResponseDTO>> GetFilteredFormV4Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+
+       
+        Task<FormV4ResponseDTO> FindFormV4ByID(int id);
+
+        Task<FormV4ResponseDTO> SaveFormV4(FormV4ResponseDTO FormV4);
+        Task<int> UpdateV4(FormV4ResponseDTO FormV4);
+        int? DeleteFormV4(int id);
 
         #endregion
 

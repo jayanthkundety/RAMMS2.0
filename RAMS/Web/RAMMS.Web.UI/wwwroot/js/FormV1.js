@@ -1,6 +1,33 @@
 ﻿
 $(document).ready(function () {
 
+
+    $('.allow_numeric').keypress(function (event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+            ((event.which < 48 || event.which > 57) &&
+                (event.which != 0 && event.which != 8))) {
+            event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') == -1)) {
+            setTimeout(function () {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+
+        if ((text.indexOf('.') != -1) &&
+            (text.substring(text.indexOf('.')).length > 3) &&
+            (event.which != 0 && event.which != 8) &&
+            ($(this)[0].selectionStart >= text.length - 3)) {
+            event.preventDefault();
+        }
+
+    });
+
     HeaderLogic();
 
     if ($("#FormV1_Status").val() == "") {
@@ -394,6 +421,14 @@ function Save(GroupName, SubmitType) {
 function SaveFormV1WorkSchedule() {
 
     if (ValidatePage('#WorkScheduleModal')) {
+
+        $('#ddlRoadCode').prop('disabled', false).trigger("chosen:updated");
+        $('#FormV1Dtl_FrmCh').attr("readonly", false);
+        $('#FormV1Dtl_FrmChDeci').attr("readonly", false);
+        $('#FormV1Dtl_ToCh').attr("readonly", false);
+        $('#FormV1Dtl_ToChDeci').attr("readonly", false);
+        $('#ddlSiteRef').prop('disabled', false).trigger("chosen:updated");
+
         InitAjaxLoading();
         $.post('/MAM/SaveFormV1WorkSchedule', $("form").serialize(), function (data) {
             HideAjaxLoading();
@@ -456,7 +491,7 @@ function ClearWorkSchedule() {
     $('#ddlSiteRef').trigger('chosen:updated');
     $("#FormV1Dtl_Remarks").val("");
     $("#FormV1Dtl_FrmCh").val("");
-    $("#FormV1Dtl_FrmCh").val("");
+    $("#FormV1Dtl_ToCh").val("");
     $("#FormV1Dtl_RoadName").val("");
     $("#WorkScheduleModal").modal("hide");
 }
@@ -569,6 +604,7 @@ function EditFormV1WorkSchedule(obj, view) {
     var currentRow = $(obj).closest("tr");
     var data = $('#WorkScheduleGridView').DataTable().row(currentRow).data();
 
+    $("#FormV1Dtl_PkRefNo").val(data.pkRefNo);
     $("#ddlRoadCode").val(data.roadCode);
     $("#ddlRoadCode").trigger('chosen:updated');
     $("#ddlRoadCode").trigger('change');
