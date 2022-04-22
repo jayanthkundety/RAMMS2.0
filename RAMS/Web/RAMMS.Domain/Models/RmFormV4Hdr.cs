@@ -18,8 +18,8 @@ namespace RAMMS.Domain.Models
         public string Fv4hActCode { get; set; }
         public string Fv4hActName { get; set; }
         public DateTime? Fv4hDt { get; set; }
-        public DateTime? Fv4hStartTime { get; set; }
-        public DateTime? Fv4hEndTime { get; set; }
+        public string Fv4hStartTime { get; set; }
+        public string Fv4hEndTime { get; set; }
         public decimal? Fv4hTotalProduction { get; set; }
         public string Fv4hRemarks { get; set; }
         public bool? Fv4hSignFac { get; set; }

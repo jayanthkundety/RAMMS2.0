@@ -54,13 +54,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             return result;
         }
 
-
         public async Task<FormQa1HeaderDTO> FindQa1Details(FormQa1HeaderDTO header)
         {
             var obj = _repoUnit.FormQa1Repository.FindAsync(x => x.Fqa1hRmu == header.Rmu && x.Fqa1hSecCode == header.SecCode && x.Fqa1hActCode == header.ActCode && x.Fqa1hDt.Value.Year == header.Dt.Value.Year && x.Fqa1hDt.Value.Month == header.Dt.Value.Month && x.Fqa1hDt.Value.Day == header.Dt.Value.Day && x.Fqa1hCrew == header.Crew && x.Fqa1hActiveYn == true).Result;
             return _mapper.Map<FormQa1HeaderDTO>(obj);
         }
-
 
         public async Task<FormQa1HeaderDTO> FindQa1Details(int pkRefNo)
         {
@@ -113,7 +111,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             return result;
         }
 
-
         public async Task<PagingResult<FormQa1MatDTO>> GetMaterialFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
         {
             PagingResult<FormQa1MatDTO> result = new PagingResult<FormQa1MatDTO>();
@@ -142,7 +139,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             return result;
         }
-
 
         public async Task<PagingResult<FormQa1GenDTO>> GetGeneralFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
         {

@@ -75,7 +75,6 @@ namespace RAMMS.DTO.ResponseBO
         public int PkRefNo { get; set; }
         public int? Fqa1hPkRefNo { get; set; }
         public string Type { get; set; }
-
         public string Desc { get; set; }
         public string PVNo { get; set; }
         public decimal? Capacity { get; set; }
