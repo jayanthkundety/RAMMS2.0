@@ -31,6 +31,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormQa1Service _formQa1Service;
         private readonly IRoadMasterService _roadMasterService;
         private readonly IDDLookupBO _dDLookupBO;
+        private readonly IFormV2Service _formV2Service;
 
         FormQa1Model _formQa1Model = new FormQa1Model();
         public FormQA1Controller(IHostingEnvironment _environment,
@@ -43,7 +44,9 @@ namespace RAMMS.Web.UI.Controllers
             ISecurity security,
             IRoadMasterService roadMasterService,
             ILogger logger,
-            IFormQa1Service formQa1Service)
+            IFormQa1Service formQa1Service,
+            IFormV2Service formV2Service
+            )
         {
             _userService = userService;
             _dDLookupBO = _ddLookupBO;
@@ -56,6 +59,7 @@ namespace RAMMS.Web.UI.Controllers
             _formQa1Service = formQa1Service ?? throw new ArgumentNullException(nameof(formQa1Service));
             _roadMasterService = roadMasterService ?? throw new ArgumentNullException(nameof(roadMasterService));
             _logger = logger;
+            _formV2Service = formV2Service ?? throw new ArgumentNullException(nameof(formV2Service));
         }
 
         private List<SelectListItem> DDLYESNO()
@@ -63,6 +67,15 @@ namespace RAMMS.Web.UI.Controllers
             var list = new List<SelectListItem>();
             list.Add(new SelectListItem { Text = "Yes", Value = "Yes" });
             list.Add(new SelectListItem { Text = "No", Value = "No" });
+            return list;
+        }
+
+        private List<SelectListItem> DDLGOODFAIRINADE()
+        {
+            var list = new List<SelectListItem>();
+            list.Add(new SelectListItem { Text = "Good", Value = "Good" });
+            list.Add(new SelectListItem { Text = "Fiar", Value = "Fair" });
+            list.Add(new SelectListItem { Text = "Inadequate Capacity", Value = "Inadequate Capacity" });
             return list;
         }
 
@@ -74,7 +87,6 @@ namespace RAMMS.Web.UI.Controllers
             return list;
         }
 
-
         private List<SelectListItem> DDLADENO()
         {
             var list = new List<SelectListItem>();
@@ -83,7 +95,6 @@ namespace RAMMS.Web.UI.Controllers
             return list;
         }
 
-
         private List<SelectListItem> DDLSTHD()
         {
             var list = new List<SelectListItem>();
@@ -91,8 +102,6 @@ namespace RAMMS.Web.UI.Controllers
             list.Add(new SelectListItem { Text = "Hard", Value = "Hard" });
             return list;
         }
-
-
 
         private async Task LoadDropDown()
         {
@@ -136,6 +145,7 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["ADENO"] = DDLADENO();
 
             ViewData["STHD"] = DDLSTHD();
+
         }
 
         public async Task<IActionResult> QA1()
@@ -197,25 +207,34 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formQa1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
-        public async Task<IActionResult> EditFormQa1()
+        public async Task<IActionResult> EditFormQa1(int id)
         {
             await LoadDropDown();
-            _formQa1Model.SaveFormQa1Model = new FormQa1HeaderDTO();
-            _formQa1Model.SaveFormQa1Model.Labour = new List<FormQa1LabDTO>();
-            _formQa1Model.SaveFormQa1Model.Labour.Add(new FormQa1LabDTO { Labour = "Crew Supervisor" });
-            _formQa1Model.SaveFormQa1Model.Labour.Add(new FormQa1LabDTO { Labour = "Operators" });
-            _formQa1Model.SaveFormQa1Model.Labour.Add(new FormQa1LabDTO { Labour = "Drivers" });
-            _formQa1Model.SaveFormQa1Model.Labour.Add(new FormQa1LabDTO { Labour = "Workmates" });
-            _formQa1Model.SaveFormQa1Model.Labour.Add(new FormQa1LabDTO { Labour = "Others" });
+            if (id == 0)
+            {
+                _formQa1Model.SaveFormQa1Model = new FormQa1HeaderDTO();
+                _formQa1Model.SaveFormQa1Model.Lab = new FormQa1LabDTO();
+                _formQa1Model.SaveFormQa1Model.Wcq = new FormQa1WcqDTO();
+                _formQa1Model.SaveFormQa1Model.We = new FormQa1WeDTO();
+                _formQa1Model.SaveFormQa1Model.EqVh = new List<FormQa1EqVhDTO>();
+                _formQa1Model.SaveFormQa1Model.Mat = new List<FormQa1MatDTO>();
+                _formQa1Model.SaveFormQa1Model.Ssc = new FormQa1SscDTO();
+                _formQa1Model.SaveFormQa1Model.Gc = new FormQa1GCDTO();
+                _formQa1Model.SaveFormQa1Model.Gen = new List<FormQa1GenDTO>();
+            }
+            else
+            {
+                _formQa1Model.SaveFormQa1Model = await _formQa1Service.GetFormQA1(id);
+                //_formQa1Model.SaveFormQa1Model.Lab = new FormQa1LabDTO();
+                //_formQa1Model.SaveFormQa1Model.Wcq = new FormQa1WcqDTO();
+                //_formQa1Model.SaveFormQa1Model.We = new FormQa1WeDTO();
+                //_formQa1Model.SaveFormQa1Model.EqVh = new List<FormQa1EqVhDTO>();
+                //_formQa1Model.SaveFormQa1Model.Mat = new List<FormQa1MatDTO>();
+                //_formQa1Model.SaveFormQa1Model.Ssc = new FormQa1SscDTO();
+                //_formQa1Model.SaveFormQa1Model.Gc = new FormQa1GCDTO();
+                //_formQa1Model.SaveFormQa1Model.Gen = new List<FormQa1GenDTO>();
 
-            _formQa1Model.SaveFormQa1Model.WorkCompletionQuality = new FormQa1WcqDTO();
-            _formQa1Model.SaveFormQa1Model.WorkExecution = new FormQa1WeDTO();
-            _formQa1Model.SaveFormQa1Model.Equipment_Vehicle = new FormQa1EqVhDTO();
-            _formQa1Model.SaveFormQa1Model.Material = new FormQa1MatDTO();
-            _formQa1Model.SaveFormQa1Model.SpecificSiteCondition = new FormQa1SscDTO();
-            _formQa1Model.SaveFormQa1Model.GeneralComments = new FormQa1GCDTO();
-            _formQa1Model.SaveFormQa1Model.GeneralQA1 = new FormQa1GenDTO();
-
+            }
 
             return View("~/Views/MAM/FormQa1/_AddFormQA1.cshtml", _formQa1Model);
         }
@@ -250,13 +269,51 @@ namespace RAMMS.Web.UI.Controllers
                 formQa1.ModDt = DateTime.Now;
                 formQa1.CrDt = DateTime.Now;
                 formQa1Res = await _formQa1Service.FindAndSaveFormQA1Hdr(formQa1, false);
-
-                if (formQa1Res.PkRefNo > 0)
-                {
-                    await _formQa1Service.InsertLabourDetails(formQa1Res.PkRefNo);
-                }
             }
             return Json(formQa1Res, JsonOption());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditFormQa1Gen(int id)
+        {
+            var _formQa1GenModel = new FormQa1GenDTO();
+            if (id > 0)
+            {
+                _formQa1GenModel = await _formQa1Service.GetGenDetails(id);
+            }
+
+            return PartialView("~/Views/MAM/FormQa1/_GeneralAdd.cshtml", _formQa1GenModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditFormMaterial(int id)
+        {
+            var _formQa1MaterialModel = new FormQa1MatDTO();
+
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "MaterialUnit";
+            ViewData["Unit"] = await _ddLookupService.GetDdLookup(ddLookup);
+            ViewData["YESNO"] = DDLYESNO();
+            if (id > 0)
+            {
+                _formQa1MaterialModel = await _formQa1Service.GetMatDetails(id);
+            }
+
+            return PartialView("~/Views/MAM/FormQa1/_MaterialAdd.cshtml", _formQa1MaterialModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditFormEquipment(int id)
+        {
+            var _formQa1EqpModel = new FormQa1EqVhDTO();
+            ViewData["EQPList"] = await _formV2Service.GetEquipmentCode();
+            ViewData["GOODFAIRINADE"] = DDLGOODFAIRINADE();
+            if (id > 0)
+            {
+                _formQa1EqpModel = await _formQa1Service.GetEquipDetails(id);
+            }
+
+            return PartialView("~/Views/MAM/FormQa1/_EquipAdd.cshtml", _formQa1EqpModel);
         }
 
         [HttpPost]
@@ -285,8 +342,6 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formQa1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> LoadFormQa1MaterialList(DataTableAjaxPostModel<FormQa1SearchGridDTO> formQa1Filter, int id)
         {
@@ -300,5 +355,20 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formQa1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SaveEquipment(FormQa1EqVhDTO formQa1Eq)
+        {
+            return Json( new {});
+        }
+
+        public async Task<IActionResult> SaveMaterial(FormQa1MatDTO formQa1Mat)
+        {
+            return Json(new { });
+        }
+
+        public async Task<IActionResult> SaveGeneral(FormQa1GenDTO formQa1Gen)
+        {
+            return Json(new { });
+        }
     }
 }

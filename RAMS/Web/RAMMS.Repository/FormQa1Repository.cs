@@ -172,7 +172,7 @@ namespace RAMMS.Repository
                 lstData.Add("MonthNo", formQa1Header.Fqa1hDt.Value.Month.ToString());
                 lstData.Add("Day", formQa1Header.Fqa1hDt.Value.Day.ToString());
                 lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(formQa1Header.Fqa1hPkRefNo));
-                formQa1Header.Fqa1hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV2Header, lstData);
+                formQa1Header.Fqa1hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormQA1Header, lstData);
                 _context.SaveChanges();
             }
             return formQa1Header;
@@ -185,6 +185,20 @@ namespace RAMMS.Repository
             return labour;
         }
 
+        public async Task<RmFormQa1Hdr> GetFormQA1(int pkRefNo)
+        {
+            var result = await _context.RmFormQa1Hdr.Include(m => m.RmFormQa1EqVh)
+                .Include(m => m.RmFormQa1Gc)
+                .Include(m => m.RmFormQa1Gen)
+                .Include(m => m.RmFormQa1Lab)
+                .Include(m => m.RmFormQa1Mat)
+                .Include(m => m.RmFormQa1Ssc)
+                .Include(m => m.RmFormQa1Tes)
+                .Include(m => m.RmFormQa1Wcq)
+                .Include(m => m.RmFormQa1We)
+                .FirstOrDefaultAsync(m => m.Fqa1hPkRefNo == pkRefNo);
+            return result;
+        }
 
         #region Equipment
         public async Task<int> GetFilteredEqpRecordCount(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
@@ -205,6 +219,11 @@ namespace RAMMS.Repository
             return result;
         }
 
+        public async Task<RmFormQa1EqVh> GetEquipDetails(int pkRefNo)
+        {
+            var result = await _context.RmFormQa1EqVh.FirstOrDefaultAsync(m => m.Fqa1evFqa1hPkRefNo == pkRefNo);
+            return result;
+        }        
         #endregion
 
         #region Material
@@ -226,6 +245,11 @@ namespace RAMMS.Repository
             return result;
         }
 
+        public async Task<RmFormQa1Mat> GetMatDetails(int pkRefNo)
+        {
+            var result = await _context.RmFormQa1Mat.FirstOrDefaultAsync(m => m.Fqa1mFqa1hPkRefNo == pkRefNo);
+            return result;
+        }
         #endregion
 
 
@@ -248,6 +272,22 @@ namespace RAMMS.Repository
             return result;
         }
 
+        public async Task<RmFormQa1Gen> GetGenDetails(int pkRefNo)
+        {
+            var result = await  _context.RmFormQa1Gen.FirstOrDefaultAsync(m => m.Fqa1genPkRefNo == pkRefNo);
+            return result;
+
+        }
+
+        #endregion
+
+
+        #region Labour
+        public async Task<RmFormQa1Lab> GetLabourDetails(int pkRefNo)
+        {
+            var result = await _context.RmFormQa1Lab.FirstOrDefaultAsync(m => m.Fqa1lPkRefNo == pkRefNo);
+            return result;
+        }
         #endregion
     }
 

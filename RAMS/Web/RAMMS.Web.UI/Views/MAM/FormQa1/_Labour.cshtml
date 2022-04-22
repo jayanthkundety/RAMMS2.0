@@ -1,8 +1,4 @@
-﻿@model RAMMS.Web.UI.Models.FormQa1Model
-
-@{
-
-}
+﻿@model RAMMS.DTO.ResponseBO.FormQa1LabDTO
 
 <div class="main-container" id="container">
     <div class="col-lg-12">
@@ -13,34 +9,112 @@
             <div class="col-2 px-0 text-center"><b>As per Performance Std</b></div>
             <div class="col-4"><b>Remarks</b></div>
         </div>
-        @{
-            var i = 1;
-            foreach (var labour in Model.SaveFormQa1Model.Labour)
-            {
-                
-                <div class="row">
-                    <div class="form-group col-lg-2 float-left">
-                       <b>@i. @labour.Labour</b>
-                    </div>
-                    <div class="form-group col-lg-2 float-left">
-                        <input type="text" value="@labour.LabourOnSite" id="formQa1LabNosOnSite_@i" class="form-control  svalidate {required, Nos on Site}" />
-                    </div>
-                    <div class="form-group col-lg-2 float-left">
 
-                        <input type="text" value="@labour.LabourOnLeave" id="formQa1LabNosOnLeave_@i" class="form-control  svalidate {required, Nos on Leave}" />
-                    </div>
 
-                    <div class="form-group col-lg-2 float-left">
-                    @Html.DropDownListFor(Adtl => Adtl.SaveFormQa1Model.Rmu, (IEnumerable
-                     <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1LabPerfStnd_@i", @class = "form-control validate {required,  Performance Standard}" })
+        <div class="row">
+            <div class="form-group col-lg-2 float-left">
+                <b>Crew Supervisor</b>
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabCsOnSite, new { @Id = "formQa1LabCROnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Crew Supervisor - No. of Site}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabCsOnLeave, new { @Id = "formQa1LabCROnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Crew Supervisor - No. on Leave}", @rows = 1 })
+            </div>
 
-                    </div>
-                    <div class="form-group col-lg-4 float-left">
-                        <input type="text" value="@labour.LabourRemark" id="formQa1LabRemark_@i" class="form-control svalidate {required, Remark}" />
-                    </div>
-                </div>
-                i += 1;
-            }
-        }
+            <div class="form-group col-lg-2 float-left">
+                @Html.DropDownListFor(Adtl => Adtl.LabCsPerfStd, (IEnumerable
+                <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1LabCRPerfStd", @class = "form-control lddl svalidate {required, Crew Supervisor -  Performance Standard}" })
+
+            </div>
+            <div class="form-group col-lg-4 float-left">
+                @Html.TextAreaFor(m => m.LabCsRemark , new { @id= "formQa1LabCRRemark", @style="height:40px", @class="form-control  svalidate {required,Crew Supervisor - Remark}"})
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-2 float-left">
+                <b>Operator</b>
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabOpOnSite, new { @Id = "formQa1LabOPOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Operator - No. of Site}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabOpOnLeave, new { @Id = "formQa1LabOPOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Operator - No. on Leave}", @rows = 1 })
+            </div>
+
+            <div class="form-group col-lg-2 float-left">
+                @Html.DropDownListFor(Adtl => Adtl.LabOpPerfStd, (IEnumerable
+                <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1LabOPPerfStd", @class = "form-control  lddl svalidate {required, Operator -  Performance Standard}" })
+
+            </div>
+            <div class="form-group col-lg-4 float-left">
+                @Html.TextAreaFor(m => m.LabOpRemark , new { @id= "formQa1LabOPRemark", @style="height:40px", @class="form-control  svalidate {required,Operator - Remark}"})
+            </div>
+        </div>
+
+          <div class="row">
+            <div class="form-group col-lg-2 float-left">
+                <b>Driver</b>
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabDrOnSite, new { @Id = "formQa1LabDROnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Driver - No. of Site}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabDrOnLeave, new { @Id = "formQa1LabDROnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Driver - No. on Leave}", @rows = 1 })
+            </div>
+
+            <div class="form-group col-lg-2 float-left">
+                @Html.DropDownListFor(Adtl => Adtl.LabDrPerfStd, (IEnumerable
+                <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1LabDRPerfStd", @class = "form-control  lddl svalidate {required, Driver -  Performance Standard}" })
+
+            </div>
+            <div class="form-group col-lg-4 float-left">
+                @Html.TextAreaFor(m => m.LabDrRemark , new { @id= "formQa1LabDRRemark", @style="height:40px", @class="form-control  svalidate {required,Driver - Remark}"})
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-2 float-left">
+                <b>Workmates</b>
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabWmOnSite, new { @Id = "formQa1LabWMOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Workmates - No. of Site}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabWmOnLeave, new { @Id = "formQa1LabWMOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Workmates - No. on Leave}", @rows = 1 })
+            </div>
+
+            <div class="form-group col-lg-2 float-left">
+                @Html.DropDownListFor(Adtl => Adtl.LabWmPerFStd, (IEnumerable
+                <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1LabWMPerfStd", @class = "form-control  lddl svalidate {required, Workmates -  Performance Standard}" })
+
+            </div>
+            <div class="form-group col-lg-4 float-left">
+                @Html.TextAreaFor(m => m.LabWmRemark , new { @id= "formQa1LabWMRemark", @style="height:40px", @class="form-control  svalidate {required,Workmates - Remark}"})
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-2 float-left">
+                <b>Others</b>
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabOthOnSite, new { @Id = "formQa1LabOTHOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Others - No. of Site}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-2 float-left">
+                @Html.TextBoxFor(Adtl => Adtl.LabOthOnLeave, new { @Id = "formQa1LabOTHOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Others - No. on Leave}", @rows = 1 })
+            </div>
+
+            <div class="form-group col-lg-2 float-left">
+                @Html.DropDownListFor(Adtl => Adtl.LabOthPerfStd, (IEnumerable
+                <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1LabOTHPerfStd", @class = "form-control  lddl svalidate {required, Others -  Performance Standard}" })
+
+            </div>
+            <div class="form-group col-lg-4 float-left">
+                @Html.TextAreaFor(m => m.LabOthRemark , new { @id= "formQa1LabOTHRemark", @style="height:40px", @class="form-control  svalidate {required, Others - Remark}"})
+            </div>
+        </div>
+
     </div>
 </div>

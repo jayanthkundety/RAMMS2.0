@@ -11,6 +11,19 @@
         } else
             $("#FormAddGeneral").modal("hide");
     }
+
+    function GoBackGen() {
+        FormGenGridRefresh();
+        if ($("#hdnGenView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormAddGeneral").modal("hide");
+                }
+            }));
+        } else
+            $("#FormAddGeneral").modal("hide");
+    }
+
 </script>
 <form id="FormAddGeneral" action="/FormQA1/FormQa1SaveGeneral">
     <div class="modal-body">
@@ -40,8 +53,9 @@
     @Html.Hidden("hdnGenView", "")
     <div class="modal-footer">
         <div class="col-md-12 float-right text-right custom-footer">
-            <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackGen()">Cancel</button>
-            <button id="saveFormQa1Btn" type="button" class="btn btn-sm btn-themebtn">Save</button>
+            <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackGen()">Cancel</button>            
+            <button id="saveFormQa1GenBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+            <button id="saveContinueFormQa1GenBtn" type="button" class="btn btn-sm btn-themebtn">Save & EXit</button>
         </div>
     </div>
 </form>

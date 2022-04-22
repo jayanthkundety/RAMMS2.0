@@ -64,7 +64,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         public async Task<FormQa1HeaderDTO> FindQa1Details(int pkRefNo)
         {
-            var obj =  _repoUnit.FormQa1Repository.FindAsync(x =>  x.Fqa1hPkRefNo == pkRefNo && x.Fqa1hActiveYn == true).Result;
+            var obj = _repoUnit.FormQa1Repository.FindAsync(x => x.Fqa1hPkRefNo == pkRefNo && x.Fqa1hActiveYn == true).Result;
             return _mapper.Map<FormQa1HeaderDTO>(obj);
         }
 
@@ -76,41 +76,17 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormQa1HeaderDTO>(response);
         }
 
-        public async Task<List<FormQa1LabDTO>> InsertLabourDetails(int qa1Id)
+        public async Task<FormQa1LabDTO> SaveLabour(FormQa1LabDTO labDTO)
         {
-            List<FormQa1LabDTO> _input = new List<FormQa1LabDTO>();
-            List<FormQa1LabDTO> result = new List<FormQa1LabDTO>();
-            FormQa1LabDTO labDTO = new FormQa1LabDTO();
-            labDTO.Labour = "Crew Supervisor";
-            _input.Add(labDTO);
-            labDTO = new FormQa1LabDTO();
-            labDTO.Labour = "Operator";
-            _input.Add(labDTO);
-            labDTO = new FormQa1LabDTO();
-            labDTO.Labour = "Driver";
-            _input.Add(labDTO);
-            labDTO = new FormQa1LabDTO();
-            labDTO.Labour = "Workmates";
-            _input.Add(labDTO);
-            labDTO = new FormQa1LabDTO();
-            labDTO.Labour = "Others";
-            _input.Add(labDTO);
-
-            foreach (var lab in _input)
-            {
-                lab.Fqa1hPkRefNo = qa1Id;
-                var obj = _mapper.Map<RmFormQa1Lab>(lab);
-                var labourctx = await _repoUnit.FormQa1Repository.SaveLabour(obj);
-                var labour = _mapper.Map<FormQa1LabDTO>(labourctx);
-                result.Add(labour);
-            }
-
-            return result;
+            var lab = _mapper.Map<RmFormQa1Lab>(labDTO);
+            var labourctx = await _repoUnit.FormQa1Repository.SaveLabour(lab);
+            var labour = _mapper.Map<FormQa1LabDTO>(labourctx);
+            return labour;
         }
 
         public async Task<PagingResult<FormQa1EqVhDTO>> GetEquipmentFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
         {
-            PagingResult <FormQa1EqVhDTO > result = new PagingResult<FormQa1EqVhDTO>();
+            PagingResult<FormQa1EqVhDTO> result = new PagingResult<FormQa1EqVhDTO>();
 
             List<FormQa1EqVhDTO> formQa1EquipList = new List<FormQa1EqVhDTO>();
             try
@@ -167,7 +143,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             return result;
         }
 
-       
+
         public async Task<PagingResult<FormQa1GenDTO>> GetGeneralFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
         {
             PagingResult<FormQa1GenDTO> result = new PagingResult<FormQa1GenDTO>();
@@ -195,6 +171,81 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw ex;
             }
             return result;
+        }
+
+
+        public async Task<FormQa1GenDTO> GetGenDetails(int pkRefNo)
+        {
+            var response = await _repoUnit.FormQa1Repository.GetGenDetails(pkRefNo);
+            return _mapper.Map<FormQa1GenDTO>(response);
+        }
+
+
+        public async Task<FormQa1EqVhDTO> GetEquipDetails(int pkRefNo)
+        {
+            var response = await _repoUnit.FormQa1Repository.GetEquipDetails(pkRefNo);
+            return _mapper.Map<FormQa1EqVhDTO>(response);
+        }
+
+        public async Task<FormQa1MatDTO> GetMatDetails(int pkRefNo)
+        {
+            var response = await _repoUnit.FormQa1Repository.GetMatDetails(pkRefNo);
+            return _mapper.Map<FormQa1MatDTO>(response);
+        }
+
+        public async Task<FormQa1HeaderDTO> GetFormQA1(int pkRefNo)
+        {
+            var _formQA1 = await _repoUnit.FormQa1Repository.GetFormQA1(pkRefNo);
+            var response = _mapper.Map<FormQa1HeaderDTO>(_formQA1);
+            response.EqVh = new List<FormQa1EqVhDTO>();
+            foreach (var listData in _formQA1.RmFormQa1EqVh)
+            {
+                response.EqVh.Add(_mapper.Map<FormQa1EqVhDTO>(listData));
+            }
+
+            response.Mat = new List<FormQa1MatDTO>();
+            foreach (var listData in _formQA1.RmFormQa1Mat)
+            {
+                response.Mat.Add(_mapper.Map<FormQa1MatDTO>(listData));
+            }
+
+            response.Gen = new List<FormQa1GenDTO>();
+            foreach (var listData in _formQA1.RmFormQa1Gen)
+            {
+                response.Gen.Add(_mapper.Map<FormQa1GenDTO>(listData));
+            }
+
+            response.Ssc = new FormQa1SscDTO();
+            if (_formQA1.RmFormQa1Ssc.Count > 0)
+                response.Ssc = _mapper.Map<FormQa1SscDTO>(_formQA1.RmFormQa1Ssc);
+
+            response.Tes = new FormQa1TesDTO();
+            if (_formQA1.RmFormQa1Tes.Count > 0)
+                response.Tes = _mapper.Map<FormQa1TesDTO>(_formQA1.RmFormQa1Tes);
+
+            response.Wcq = new FormQa1WcqDTO();
+            if (_formQA1.RmFormQa1Wcq.Count > 0)
+                response.Wcq = _mapper.Map<FormQa1WcqDTO>(_formQA1.RmFormQa1Wcq);
+
+            response.We = new FormQa1WeDTO();
+            if (_formQA1.RmFormQa1We.Count > 0)
+                response.We = _mapper.Map<FormQa1WeDTO>(_formQA1.RmFormQa1We);
+
+            response.Gc = new FormQa1GCDTO();
+            if (_formQA1.RmFormQa1Gc.Count > 0)
+                response.Gc = _mapper.Map<FormQa1GCDTO>(_formQA1.RmFormQa1Gc);
+
+            response.Lab = new FormQa1LabDTO();
+            if (_formQA1.RmFormQa1Lab.Count > 0)
+                response.Lab = _mapper.Map<FormQa1LabDTO>(_formQA1.RmFormQa1Lab);
+
+            return response;
+        }
+
+        public async Task<FormQa1LabDTO> GetLabourDetails(int pkRefNo)
+        {
+            var response = await _repoUnit.FormQa1Repository.GetLabourDetails(pkRefNo);
+            return _mapper.Map<FormQa1LabDTO>(response);
         }
     }
 }

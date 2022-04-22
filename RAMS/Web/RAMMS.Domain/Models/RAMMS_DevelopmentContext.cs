@@ -148,7 +148,6 @@ namespace RAMMS.Domain.Models
             }
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AssetFieldDtl>(entity =>
@@ -8530,6 +8529,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1lPkRefNo).HasColumnName("FQA1L_PK_Ref_No");
 
+                entity.Property(e => e.Fqa1lActiveYn).HasColumnName("FQA1L_Active_YN");
+
                 entity.Property(e => e.Fqa1lCrBy).HasColumnName("FQA1L_CR_By");
 
                 entity.Property(e => e.Fqa1lCrDt)
@@ -8538,19 +8539,73 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1lFqa1hPkRefNo).HasColumnName("FQA1L_FQA1H_PK_Ref_No");
 
-                entity.Property(e => e.Fqa1lLabour)
-                    .HasColumnName("FQA1L_Labour")
-                    .HasMaxLength(100)
+                entity.Property(e => e.Fqa1lLabCsOnLeave).HasColumnName("FQA1L_Lab_CS_On_Leave");
+
+                entity.Property(e => e.Fqa1lLabCsOnSite).HasColumnName("FQA1L_Lab_CS_On_Site");
+
+                entity.Property(e => e.Fqa1lLabCsPerfStd)
+                    .HasColumnName("FQA1L_Lab_CS_Perf_Std")
+                    .HasMaxLength(6)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Fqa1lLabourOnLeave).HasColumnName("FQA1L_Labour_On_Leave");
+                entity.Property(e => e.Fqa1lLabCsRemark)
+                    .HasColumnName("FQA1L_Lab_CS_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fqa1lLabourOnSite).HasColumnName("FQA1L_Labour_On_Site");
+                entity.Property(e => e.Fqa1lLabDrOnLeave).HasColumnName("FQA1L_Lab_DR_On_Leave");
 
-                entity.Property(e => e.Fqa1lLabourPerformanceStd).HasColumnName("FQA1L_Labour_Performance_Std");
+                entity.Property(e => e.Fqa1lLabDrOnSite).HasColumnName("FQA1L_Lab_DR_On_Site");
 
-                entity.Property(e => e.Fqa1lLabourRemark)
-                    .HasColumnName("FQA1L_Labour_Remark")
+                entity.Property(e => e.Fqa1lLabDrPerfStd)
+                    .HasColumnName("FQA1L_Lab_DR_Perf_Std")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabDrRemark)
+                    .HasColumnName("FQA1L_Lab_DR_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabOpOnLeave).HasColumnName("FQA1L_Lab_OP_On_Leave");
+
+                entity.Property(e => e.Fqa1lLabOpOnSite).HasColumnName("FQA1L_Lab_OP_On_Site");
+
+                entity.Property(e => e.Fqa1lLabOpPerfStd)
+                    .HasColumnName("FQA1L_Lab_OP_Perf_Std")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabOpRemark)
+                    .HasColumnName("FQA1L_Lab_OP_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabOthOnLeave).HasColumnName("FQA1L_Lab_OTH_On_Leave");
+
+                entity.Property(e => e.Fqa1lLabOthOnSite).HasColumnName("FQA1L_Lab_OTH_On_Site");
+
+                entity.Property(e => e.Fqa1lLabOthPerfStd)
+                    .HasColumnName("FQA1L_Lab_OTH_Perf_Std")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabOthRemark)
+                    .HasColumnName("FQA1L_Lab_OTH_Remark")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabWmOnLeave).HasColumnName("FQA1L_Lab_WM_On_Leave");
+
+                entity.Property(e => e.Fqa1lLabWmOnSite).HasColumnName("FQA1L_Lab_WM_On_Site");
+
+                entity.Property(e => e.Fqa1lLabWmPerFStd)
+                    .HasColumnName("FQA1L_Lab_WM_PerF_Std")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fqa1lLabWmRemark)
+                    .HasColumnName("FQA1L_Lab_WM_Remark")
                     .HasMaxLength(4000)
                     .IsUnicode(false);
 
@@ -10792,7 +10847,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv4hPkRefNo).HasColumnName("FV4H_PK_Ref_No");
 
-                entity.Property(e => e.Fv4hActCode).HasColumnName("FV4H_ACT_Code");
+                entity.Property(e => e.Fv4hActCode)
+                    .HasColumnName("FV4H_ACT_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv4hActiveYn).HasColumnName("FV4H_Active_YN");
 
@@ -10840,8 +10898,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV4H_DT_AGR")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Fv4hDtSch)
-                    .HasColumnName("FV4H_DT_SCH")
+                entity.Property(e => e.Fv4hDtFac)
+                    .HasColumnName("FV4H_DT_FAC")
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.Fv4hDtVet)
@@ -13780,6 +13838,7 @@ namespace RAMMS.Domain.Models
 
             OnModelCreatingPartial(modelBuilder);
         }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

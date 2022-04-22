@@ -16,8 +16,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<FormQa1HeaderDTO> FindAndSaveFormQA1Hdr(FormQa1HeaderDTO header, bool updateSubmit);
 
-
-        Task<List<FormQa1LabDTO>> InsertLabourDetails(int qa1Id);
+        Task<FormQa1LabDTO> SaveLabour(FormQa1LabDTO labDTO);
 
         Task<FormQa1HeaderDTO> FindQa1Details(int pkRefNo);
 
@@ -27,6 +26,14 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<PagingResult<FormQa1GenDTO>> GetGeneralFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id);
 
+        Task<FormQa1GenDTO> GetGenDetails(int pkRefNo);
 
+        Task<FormQa1EqVhDTO> GetEquipDetails(int pkRefNo);
+
+        Task<FormQa1MatDTO> GetMatDetails(int pkRefNo);
+
+        Task<FormQa1HeaderDTO> GetFormQA1(int pkRefNo);
+
+        Task<FormQa1LabDTO> GetLabourDetails(int pkRefNo);
     }
 }
