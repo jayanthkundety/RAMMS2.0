@@ -1,4 +1,4 @@
-﻿@model RAMMS.Web.UI.Models.FormV2MaterialDetailsModel;
+﻿@model RAMMS.DTO.ResponseBO.FormQa1MatDTO;
 <script type="text/javascript">
 
     var val = $("#hdnMaterialNo").val();
@@ -43,14 +43,6 @@
     $("#formV2MatCode").on("change", function () {
         var val = $(this).find(":selected").text();
         val = val.split("-").length > 0 ? val.split("-")[1] : val;
-        //if ($(this).find(":selected").val() == "99999999") {
-        //    $("#formV2MatDesc").attr('readonly', false);
-        //    $("#formV2MatDesc").val(matDesc);
-        //}
-        //else {
-        //    $("#formV2MatDesc").attr('readonly', true);
-        //    $("#formV2MatDesc").val(val);
-        //}
         $("#FormV2MatDescription").val(val);
     });
 
@@ -59,64 +51,54 @@
         if ($("#hdnMatView").val() == 0) {
             if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
                 if (e) {
-                    $("#FormV2MaterialModal").modal("hide");
+                    $("#FormQa1MaterialModal").modal("hide");
                 }
             }));
         } else
-            $("#FormV2MaterialModal").modal("hide");
+            $("#FormQa1MaterialModal").modal("hide");
     }
 
 
     if (val != 0 && val != undefined && val != "") {}
         //$("#formV2MatCode").trigger("change");
 </script>
-<form id="FormQa12MaterialModal" action="/FormQA1/FormQa1MaterialModal">
+<form id="FormQa1MaterialModal" action="/FormQA1/FormQa1MaterialModal">
     <div class="modal-body">
         <div class="row">
 
             <div class="form-group col-lg-3 mb-0">
-                <label for="Code">
-                    Type
-                </label>
-                <input class="form-control" id="formDlabDesc" name="SaveFormDLabourModel.CodeDesc" rows="1" type="text" value="">
+                @Html.Label("Type", "Type")
+                @Html.TextBoxFor(Adtl => Adtl.Type, new { @Id = "formQa1MatType", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Type}", @rows = 1 })
             </div>
             <div class="form-group col-lg-3 pl-0">
                 <label for="Quantity">Quantity</label>
-                <input autocomplete="off" class="form-control allow_numeric  validate {required, Quantity}" id="formDLabQty" maxlength="3" name="SaveFormDLabourModel.Quantity" rows="1" type="text" value="">
+                @Html.TextBoxFor(Adtl => Adtl.Qty,new { @class="form-control allow_numeric  validate {required, Quantity}" , @id="formQa1MatQty", @maxlength="3" , @rows="1"})
             </div>
             <div class="form-group col-lg-3 px-0">
-                <label for="Unit">Unit</label>
-                <select class="form-control validate {required, Unit}" id="formDLabUnit" name="SaveFormDLabourModel.Unit">
-                    <option value="">Select Unit</option>
-                    <option value="Person">NR</option>
-                </select>
+                @Html.Label("Unit", "Unit")
+                @Html.DropDownListFor(Ahdr => Ahdr.Unit, (IEnumerable
+                <SelectListItem>)ViewData["Unit"], "Select Unit", new { @Id = "formQa1MatUnit", @class = "form-control validate {required, Unit}" })
             </div>
             <div class="form-group col-lg-3">
-                <label for="Unit">
-                    As Per Specification
-                </label>
-                <select class="form-control validate {required, Unit}" id="formDLabUnit" name="SaveFormDLabourModel.Unit">
-                    <option value="">Select </option>
-                    <option value="Person">Yes</option>
-                    <option value="Person">No</option>
-                </select>
+                @Html.Label("As Per Specification", "As Per Specification")
+                @Html.DropDownListFor(Ahdr => Ahdr.Spec, (IEnumerable
+                <SelectListItem>)ViewData["YESNO"], "Select ", new { @Id = "formQa1MatSpec", @class = "form-control validate {required, Material Specification}" })
             </div>
             <div class="form-group col-lg-12 txtarea-107">
                 <label for="Description">Remarks</label>
-                <textarea class="form-control  validate {required, Description}" id="formDLabDescription" name="SaveFormDLabourModel.LabourDesc"></textarea>
+                @Html.TextAreaFor(m => m.Remark, new { @Id = "FormQa1MatRemark", @class = "form-control  validate {required, Remark}" })
             </div>
         </div>
     </div>
 
-    @Html.HiddenFor(m => m.SaveFormV2MaterialModel.PkRefNo, new { @id = "hdnMaterialNo", @class = "form-control" })
-    @*@Html.HiddenFor(m => m.SaveFormV2MaterialModel.SerialNo, new { @id = "MaterialSerialNo", @class = "form-control" })*@
+    @Html.HiddenFor(m => m.PkRefNo, new { @id = "hdnMaterialNo", @class = "form-control" })
     @Html.Hidden("hdnMatView", "")
     <div class="modal-footer">
         <div id="val-summary-displayer-material">
             <div id="val-summary-displayer"></div>
         </div>
         <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="GoBackMat()">Cancel</button>
-        <button id="saveContinueFormV2MtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
-        <button id="saveFormV2MtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+        <button id="saveContinueFormQa1MtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+        <button id="saveFormQa1MtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
     </div>
 </form>

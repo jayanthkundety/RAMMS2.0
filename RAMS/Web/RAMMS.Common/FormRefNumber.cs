@@ -20,6 +20,7 @@ namespace RAMMS.Common.RefNumber
         public const string FormV2Header = "{RMU}/V2/{CrewUnit}/{ActCode}/{Year}{MonthNo}{Day}/{" + NewRunningNumber + "}";
         public const string FormV3Header = "RMU/V3/{Crew}/{ActivityCode}/{YYYYMMDD}/{" + NewRunningNumber + "}";
 
+        public const string FormQA1Header = "{RMU}/QA1/{CrewUnit}/{ActCode}/{Year}{MonthNo}{Day}/{" + NewRunningNumber + "}";
         public static string GetRefNumber(FormType type, IDictionary<string, string> values)
         {
             string format = GetFormat(type);
@@ -75,9 +76,16 @@ namespace RAMMS.Common.RefNumber
                 case FormType.FormV2Header:
                     format = FormV2Header;
                     break;
+
+
+
+                case FormType.FormQA1Header:
+                    format = FormQA1Header;
+                    break;
                 case FormType.FormV3Header:
                     format = FormV3Header;
                     break;
+
 
             }
             return format;
@@ -97,6 +105,9 @@ namespace RAMMS.Common.RefNumber
         FormFDHeader,
         FormV1Header,
         FormV2Header,
+
+        FormQA1Header,
+
         FormV3Header,
 
     }

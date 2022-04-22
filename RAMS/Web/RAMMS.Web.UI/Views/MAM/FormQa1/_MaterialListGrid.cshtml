@@ -5,7 +5,7 @@
             @if (security.IsPCModify(ModuleNameList.Management_and_Maintanence))
             {
                 <div class="grid-btns">
-                    <button type="button" id="btnMaterialAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormQa12MaterialModal" onclick="javascript:EditFormQa1Material(0);"><span class="intbl-add-icon"></span></button>
+                    <button type="button" id="btnMaterialAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormQa1MaterialModal" onclick="javascript:EditFormQa1Material(0);"><span class="intbl-add-icon"></span></button>
                 </div>
             }
 
@@ -65,7 +65,7 @@
 
         Mtable = $('#FormQa1MaterialGridView').DataTable({
             ajax: {
-                url: "/FormQA1/LoadFormQa1MaterialList?id=" + $("#formQaPkRefNo").val(),
+                url: "/FormQA1/LoadFormQa1MaterialList?id=" + $("#formQa1PkRefNo").val(),
                 type: "POST",
                 datatype: "json",
                 data: {

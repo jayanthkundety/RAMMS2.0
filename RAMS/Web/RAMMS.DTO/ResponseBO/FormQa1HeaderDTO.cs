@@ -58,17 +58,15 @@ namespace RAMMS.DTO.ResponseBO
         public string Status { get; set; }
         public string AuditLog { get; set; }
 
-
-        public virtual FormQa1EqVhDTO Equipment_Vehicle { get; set; }
-        public virtual FormQa1GCDTO GeneralComments { get; set; }
-        public virtual FormQa1GenDTO GeneralQA1 { get; set; }
-
-        public virtual List<FormQa1LabDTO> Labour { get; set; }
-        public virtual FormQa1MatDTO Material { get; set; }
-        public virtual FormQa1SscDTO SpecificSiteCondition { get; set; }
-        public virtual FormQa1TesDTO Testing { get; set; }
-        public virtual FormQa1WcqDTO WorkCompletionQuality { get; set; }
-        public virtual FormQa1WeDTO WorkExecution { get; set; }
+        public virtual List<FormQa1EqVhDTO> EqVh { get; set; }
+        public virtual FormQa1GCDTO   Gc { get; set; }
+        public virtual List<FormQa1GenDTO>  Gen { get; set; }
+        public virtual FormQa1LabDTO  Lab { get; set; }
+        public virtual List<FormQa1MatDTO>  Mat { get; set; }
+        public virtual FormQa1SscDTO  Ssc  { get; set; }
+        public virtual FormQa1TesDTO  Tes { get; set; }
+        public virtual FormQa1WcqDTO  Wcq  { get; set; }
+        public virtual FormQa1WeDTO We { get; set; }
     }
 
     public class FormQa1EqVhDTO
@@ -77,11 +75,13 @@ namespace RAMMS.DTO.ResponseBO
         public int PkRefNo { get; set; }
         public int? Fqa1hPkRefNo { get; set; }
         public string Type { get; set; }
-        public string VNo { get; set; }
+
+        public string Desc { get; set; }
+        public string PVNo { get; set; }
         public decimal? Capacity { get; set; }
         public int? Unit { get; set; }
         public string Condition { get; set; }
-        public string LabourRemark { get; set; }
+        public string Remark { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -138,17 +138,33 @@ namespace RAMMS.DTO.ResponseBO
         //Fqa1l
         public int PkRefNo { get; set; }
         public int? Fqa1hPkRefNo { get; set; }
-        public string Labour { get; set; }
-        public int? LabourOnSite { get; set; }
-        public int? LabourOnLeave { get; set; }
-        public bool? LabourPerformanceStd { get; set; }
-        public string LabourRemark { get; set; }
+        public int? LabCsOnSite { get; set; }
+        public int? LabCsOnLeave { get; set; }
+        public string LabCsPerfStd { get; set; }
+        public string LabCsRemark { get; set; }
+        public int? LabOpOnSite { get; set; }
+        public int? LabOpOnLeave { get; set; }
+        public string LabOpPerfStd { get; set; }
+        public string LabOpRemark { get; set; }
+        public int? LabDrOnSite { get; set; }
+        public int? LabDrOnLeave { get; set; }
+        public string LabDrPerfStd { get; set; }
+        public string LabDrRemark { get; set; }
+        public int? LabWmOnSite { get; set; }
+        public int? LabWmOnLeave { get; set; }
+        public string LabWmPerFStd { get; set; }
+        public string LabWmRemark { get; set; }
+        public int? LabOthOnSite { get; set; }
+        public int? LabOthOnLeave { get; set; }
+        public string LabOthPerfStd { get; set; }
+        public string LabOthRemark { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
+        public bool ActiveYn { get; set; }
 
-        public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
+        public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
 
     public class FormQa1MatDTO
@@ -165,7 +181,7 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
-        public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
+        public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
 
     public class FormQa1SscDTO
@@ -188,7 +204,7 @@ namespace RAMMS.DTO.ResponseBO
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
 
-        public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
+        public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
 
     public class FormQa1TesDTO
@@ -216,7 +232,7 @@ namespace RAMMS.DTO.ResponseBO
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
 
-        public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
+        public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
 
     public class FormQa1WcqDTO
@@ -252,7 +268,7 @@ namespace RAMMS.DTO.ResponseBO
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
 
-        public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
+        public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
 
     public class FormQa1WeDTO
@@ -314,6 +330,6 @@ namespace RAMMS.DTO.ResponseBO
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
 
-        public virtual FormQa1HeaderDTO FormQa1Hdr { get; set; }
+        public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
 }

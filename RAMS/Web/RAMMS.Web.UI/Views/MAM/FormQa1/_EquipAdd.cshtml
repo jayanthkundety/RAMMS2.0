@@ -3,14 +3,8 @@
     var val = $("#hdnEquipid").val();
     var equipDesc = "";
     $(document).ready(function () {
-        $("#formV2EquipCode").chosen();
-        //$("#formV2EquipUnit").chosen();
-
-        //if ($("#formV2EquipCode").find(":selected").val() == '99999999') {
-        //    equipDesc = $("#formV2EquipDesc").val();
-        //    $("#formV2EquipDesc").attr('readonly', false);
-        //}
-
+        $("#formQa1EquipCode").chosen();
+        
         $('.allow_numeric').keypress(function (event) {
             var $this = $(this);
             if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
@@ -37,23 +31,15 @@
         });
     });
 
-    $("#formV2EquipCode").on("change", function () {
+    $("#formQa1EquipCode").on("change", function () {
         var val = $(this).find(":selected").text();
         val = val.split("-").length > 0 ? val.split("-")[1] : val;
 
-        //if ($(this).find(":selected").val() == "99999999") {
-        //    $("#formV2EquipDesc").attr('readonly', false);
-        //    $("#formV2EquipDesc").val(equipDesc);
-        //}
-        //else {
-        //    $("#formV2EquipDesc").val(val);
-        //    $("#formV2EquipDesc").attr('readonly', true);
-        //}
-        $("#FormV2EquipDescription").val(val);
+        $("#formQa1EquipDesc").val(val);
     });
 
 
-    if (val != 0 && val != undefined && val != "") { }//$("#formV2EquipCode").trigger("change");
+    if (val != 0 && val != undefined && val != "") { }//$("#formQa1EquipCode").trigger("change");
 
     function GoBackEquip() {
          FormEquipGridRefresh()
@@ -81,51 +67,40 @@
                         @Html.HiddenFor(Ahdr => Ahdr.Type, new { @id = "hdnformQa1EquipCode", @class = "form-control" })
                     </div>
                     <div class="form-group col-lg-6">
-                        <label for="Code"> Name</label>
-                        @Html.TextBoxFor(Adtl => Adtl.Capacity, new { @Id = "formV2EquipCapacity", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Equipment Name}", @rows = 1 })
+                        @Html.Label("Name", "Name")
+                        @Html.TextBoxFor(Adtl => Adtl.Desc, new { @Id = "formQa1EquipDesc", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Equipment Name}", @rows = 1 })
                     </div>
                 </div>
             </div>
             <div class="form-group col-lg-2 pl-0">
-                <label for="Quantity">P / V No.</label>
-                <input autocomplete="off" class="form-control " maxlength="3" name="SaveFormDLabourModel.Quantity" rows="1" type="text" value="">
+                @Html.Label("P / V No.", "P / V No.")
+                @Html.TextBoxFor(Adtl => Adtl.PVNo, new { @Id = "formQa1EquipPVNo", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, P/V No.}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 pl-0">
-                <label for="Quantity">Capacity</label>
-                <input autocomplete="off" class="form-control " maxlength="3" name="SaveFormDLabourModel.Quantity" rows="1" type="text" value="">
+                @Html.Label("Capacity", "Capacity")
+                @Html.TextBoxFor(Adtl => Adtl.Capacity, new { @Id = "formQa1EquipCapacity", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required, Capacity}", @rows = 1 })
             </div>
 
             <div class="form-group col-lg-2 pl-0">
-                <label for="Unit">
-                    Apparent Condition
-                </label>
-                <select class="form-control  validate {required, Equipment Code}" id="formDEquipCode" name="SaveFormDEquipModel.EquipmentCode">
-                    <option value="">Select Code</option>
-                    <option>Good</option>
-                    <option> Fair</option>
-                    <option>Inadequate Capacity</option>
-                </select>
+                @Html.Label("Apparent Condition", "Apparent Condition")
+                @Html.DropDownListFor(Ahdr => Ahdr.Condition, (IEnumerable
+                        <SelectListItem>)ViewData["GOODFAIRINADE"], "Select Code", new { @Id = "formQa1EquipCondition", @class = "form-control  validate {required, Equipment Condition}" })  
             </div>
-            @*  <div class="form-group col-lg-2 pl-0">
-                <label for="Unit">Model</label>
-                <select class="form-control validate {required, Unit}" id="formDLabUnit" name="SaveFormDLabourModel.Unit">
-                <option value="">Select Unit</option>
-                <option value="Person">NR</option>
-                </select>
-                <input class="form-control " maxlength="3" name="SaveFormDLabourModel.Quantity" rows="1" type="text" value="">
-
-                </div>*@
+          
             <div class="form-group col-lg-12 txtarea-107">
-                <label for="Description">Remarks</label>
-                <textarea class="form-control  validate {required, Description}" id="formDLabDescription" name="SaveFormDLabourModel.LabourDesc"></textarea>
+                @Html.Label("Remarks", "Remarks")
+                @Html.TextAreaFor(m => m.Remark , new { @id= "formQa1EqpRemark", @class="form-control  validate {required, Remark}"})
             </div>
 
         </div>
     </div>
+    @Html.HiddenFor(m => m.PkRefNo, new { @id = "hdnEquipid", @class = "form-control" })
+    @Html.Hidden("hdnEquView", "")
     <div class="modal-footer">
         <div class="col-md-12 float-right text-right custom-footer">
             <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackEquip()">Cancel</button>
-            <button id="saveFormN2Btn" type="button" class="btn btn-sm btn-themebtn">Save</button>
+            <button id="saveFormQa1EqBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+            <button id="saveContinueFormQa1EqBtn" type="button" class="btn btn-sm btn-themebtn">Save & EXit</button>
         </div>
     </div>
 </form>
