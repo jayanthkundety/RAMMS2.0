@@ -8,12 +8,15 @@ namespace RAMMS.Domain.Models
         public int Fv4hPkRefNo { get; set; }
         public int? Fv4hContNo { get; set; }
         public string Fv4hRmu { get; set; }
+        public string Fv4hRmuName { get; set; }
         public string Fv4hDivision { get; set; }
         public int? Fv4hCrew { get; set; }
         public string Fv4hCrewname { get; set; }
         public string Fv4hSecCode { get; set; }
+        public string Fv4hSecName { get; set; }
         public string Fv4hRefId { get; set; }
         public string Fv4hActCode { get; set; }
+        public string Fv4hActName { get; set; }
         public DateTime? Fv4hDt { get; set; }
         public DateTime? Fv4hStartTime { get; set; }
         public DateTime? Fv4hEndTime { get; set; }

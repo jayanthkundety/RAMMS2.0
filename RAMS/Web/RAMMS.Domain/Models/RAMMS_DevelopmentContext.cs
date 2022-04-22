@@ -10852,6 +10852,10 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv4hActName)
+                    .HasColumnName("FV4H_ACT_name")
+                    .HasMaxLength(250);
+
                 entity.Property(e => e.Fv4hActiveYn).HasColumnName("FV4H_Active_YN");
 
                 entity.Property(e => e.Fv4hAuditLog).HasColumnName("FV4H_AuditLog");
@@ -10936,9 +10940,17 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv4hRmuName)
+                    .HasColumnName("FV4H_RMU_name")
+                    .HasMaxLength(250);
+
                 entity.Property(e => e.Fv4hSecCode)
                     .HasColumnName("FV4H_Sec_Code")
                     .HasMaxLength(16);
+
+                entity.Property(e => e.Fv4hSecName)
+                    .HasColumnName("FV4H_Sec_name")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.Fv4hServiceProvider)
                     .HasColumnName("FV4H_Service_Provider")
