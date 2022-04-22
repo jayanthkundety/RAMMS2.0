@@ -10916,7 +10916,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv4hEndTime)
                     .HasColumnName("FV4H_End_Time")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv4hFacilitator)
                     .HasColumnName("FV4H_Facilitator")
@@ -10969,7 +10970,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv4hStartTime)
                     .HasColumnName("FV4H_Start_Time")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv4hStatus)
                     .HasColumnName("FV4H_Status")
