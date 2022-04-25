@@ -139,13 +139,13 @@
 
 
     function DeleteHeaderRecord(id) {
-        var headerId = id;
+        
         app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
             if (e) {
                 InitAjaxLoading();
                 $.ajax({
                     url: '/MAM/DeleteFormV3',
-                    data: { headerId },
+                    data: { id },
                     type: 'POST',
                     success: function (data) {
                         if (data > 0) {

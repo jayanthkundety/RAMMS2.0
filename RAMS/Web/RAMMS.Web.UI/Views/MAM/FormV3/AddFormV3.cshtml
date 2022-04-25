@@ -243,7 +243,7 @@
                                                                 <label for="Name">
                                                                     Recorded by
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Recordedby", "Select Users", new { Id = "ddlRecordedby", @class = "form-control  {required,Recorded by}", @onchange = "OnRecordChange(this);" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Recordedby", "Select Users", new { Id = "ddlRecordedby", @class = "form-control  {required,Recorded by}", @onchange = "OnRecordedChange(this);" })
                                                             </div>
 
                                                             <div class="form-group col-lg-2 float-left">
@@ -416,7 +416,7 @@
                                                     </label>
                                                     <div class="row">
                                                         <div class="col">
-                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TimetakenFrm, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Time Taken From }", @rows = 1 })
+                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TimetakenFrm, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Time Taken From }", @onchange = "CalTotalTime()", @rows = 1 })
                                                         </div>
                                                        
                                                     </div>
@@ -427,7 +427,7 @@
                                                     </label>
                                                     <div class="row">
                                                         <div class="col">
-                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TimeTakenTo, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Time Taken To }", @rows = 1 })
+                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TimeTakenTo, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Time Taken To }", @onchange = "CalTotalTime()", @rows = 1 })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -443,7 +443,7 @@
                                                     </label>
                                                     <div class="row">
                                                         <div class="col">
-                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TransitTimeFrm, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Transit Time From }", @rows = 1 })
+                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TransitTimeFrm, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Transit Time From }", @onchange = "CalTotalTransitTime()", @rows = 1 })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -453,7 +453,7 @@
                                                     </label>
                                                     <div class="row">
                                                         <div class="col">
-                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TransitTimeTo, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Transit Time To }", @rows = 1 })
+                                                            @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TransitTimeTo, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Transit Time To }", @onchange = "CalTotalTransitTime()", @rows = 1 })
                                                         </div>
                                                     </div>
                                                 </div>
@@ -519,7 +519,7 @@
                 }
                 else if (IsApproved && (Model.FormV3.Status == RAMMS.Common.StatusList.FormV2Verified || Model.FormV3.Status == RAMMS.Common.StatusList.FormV2Rejected))
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Approved By');"> Approved / Facilitate </button>
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Approved By');"> Approved / Agreed </button>
                 }
 
             }
@@ -559,7 +559,10 @@
 
     $(document).ready(function () {
         process.Init("FormV3", "@Model.FormV3.Status", @Model.FormV3.PkRefNo);
-        $("#FormV3Dtl_StartTime").timeEntry();
+        $("#FormV3Dtl_TimetakenFrm").timeEntry();
+        $("#FormV3Dtl_TimeTakenTo").timeEntry();
+        $("#FormV3Dtl_TransitTimeFrm").timeEntry();
+        $("#FormV3Dtl_TransitTimeTo").timeEntry();
 
     });
 

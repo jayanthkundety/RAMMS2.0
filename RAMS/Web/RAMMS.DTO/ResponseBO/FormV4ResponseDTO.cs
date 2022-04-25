@@ -9,20 +9,24 @@ namespace RAMMS.DTO.ResponseBO
     public class FormV4ResponseDTO
     {
 
+
         public int PkRefNo { get; set; }
         public int? ContNo { get; set; }
         public string Rmu { get; set; }
+        public string RmuName { get; set; }
         public string Division { get; set; }
         public int? Crew { get; set; }
         public string Crewname { get; set; }
         public string SecCode { get; set; }
+        public string SecName { get; set; }
         public string RefId { get; set; }
-        public int? ActCode { get; set; }
+        public string ActCode { get; set; }
+        public string ActName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? Dt { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public decimal? TotalProduction { get; set; }
         public string Remarks { get; set; }
         public bool SignFac { get; set; }
@@ -36,6 +40,8 @@ namespace RAMMS.DTO.ResponseBO
         public int? UseridAgr { get; set; }
         public string UsernameAgr { get; set; }
         public string DesignationAgr { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DtAgr { get; set; }
         public bool SignVet { get; set; }
         public int? UseridVet { get; set; }
@@ -55,6 +61,8 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+
+        
 
       
     }

@@ -1,4 +1,4 @@
-﻿import { isNumeric } from "jquery";
+﻿
 
 $(document).ready(function () {
 
@@ -32,12 +32,12 @@ $(document).ready(function () {
     HeaderLogic();
 
     if ($("#FormV3_Status").val() == "") {
-      
+
         $("#saveFormV3Btn").hide();
         $("#SubmitFormV3Btn").hide();
     }
     else if ($("#FormV3_Status").val() == "Initialize" || $("#FormV3_Status").val() == "Saved") {
-         
+
         $("#saveFormV3Btn").show();
         $("#SubmitFormV3Btn").show();
     } else {
@@ -47,12 +47,12 @@ $(document).ready(function () {
     }
 
     if ($("#hdnView").val() == "1") {
-        
+
         $('#FormV3_Remarks').attr("readonly", "true");
     }
 
 
-    $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
+    $('#ddlFacilitatedby').prop('disabled', true).trigger("chosen:updated");
     $('#ddlAgreedby').prop('disabled', true).trigger("chosen:updated");
     $('#ddlRecordedby').prop('disabled', true).trigger("chosen:updated");
     $('#FormV3_DtAgr').attr("readonly", "true");
@@ -62,7 +62,7 @@ $(document).ready(function () {
     $('#FormV3_SignFac').prop('disabled', true);
     $('#FormV3_SignAgr').prop('disabled', true);
 
-    
+
 
     $("#ddlActCode").on("change", function () {
 
@@ -71,7 +71,7 @@ $(document).ready(function () {
         $("#FormV3_Actname").val(val);
     });
 
-   
+
 
 
 
@@ -229,7 +229,7 @@ function getNameByCode(obj) {
 }
 
 
-function OnRecordChange(tis) {
+function OnRecordedChange(tis) {
 
     var ctrl = $(tis);
     if (ctrl.val() != null)
@@ -309,9 +309,9 @@ function OnFacilitatedbyChange(tis) {
 
 
 
-function Save( SubmitType) {
+function Save(SubmitType) {
 
-    
+
     if (SubmitType == "Submitted") {
         $("#FormV3_SubmitSts").val(true);
     }
@@ -332,28 +332,34 @@ function Save( SubmitType) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
-                debugger
+                 
                 if (SubmitType == "") {
-                    if (isNumeric(data)) {
-                        $("#FormV3_PkRefNo").val(data);
+                    if (data.status =="Success") {
+                        $("#FormV3_PkRefNo").val(data.pkRefNo);
+                        $("#FormV3_RefId").val(data.refId);
+                        $("#FormV1_Status").val(data.status)
+                        $("#saveFormV3Btn").show();
+                        $("#SubmitFormV3Btn").show();
+                        HeaderLogic();
                         InitializeGrid();
                         app.ShowSuccessMessage('Saved Successfully', false);
                     }
                     else {
+                        EnableDisableElements(false);
                         app.ShowErrorMessage(data, false);
                     }
-                   
+
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
-                    
+
                     location.href = "/MAM/FormV3";
                 }
                 else if (SubmitType == "Submitted") {
                     app.ShowSuccessMessage('Submitted Successfully', false);
                     location.href = "/MAM/FormV3";
                 }
-                 
+
             }
         });
     }
@@ -364,9 +370,9 @@ function Save( SubmitType) {
 
 function SaveFormV3Dtl() {
 
-    if (ValidatePage('#WorkScheduleModal')) {
+    if (ValidatePage('#WorkAccompModal')) {
         InitAjaxLoading();
-        $.post('/MAM/SaveFormV3WorkSchedule', $("form").serialize(), function (data) {
+        $.post('/MAM/SaveFormV3Dtl', $("form").serialize(), function (data) {
             HideAjaxLoading();
             if (data == -1) {
                 app.ShowErrorMessage(data.errorMessage);
@@ -388,6 +394,7 @@ function EditFormV3Dtl(obj, view) {
     var data = $('#WorkAccomplishmentGridView').DataTable().row(currentRow).data();
 
     $("#FormV3Dtl_PkRefNo").val(data.pkRefNo);
+    $("#FormV3Dtl_Fv1dPkRefNo").val(data.fv1dPkRefNo);
     $("#ddlRoadCode").val(data.roadCode);
     $("#ddlRoadCode").trigger('chosen:updated');
     $("#ddlRoadCode").trigger('change');
@@ -405,7 +412,7 @@ function EditFormV3Dtl(obj, view) {
     $("#FormV3Dtl_TransitTimeTo").val(data.transitTimeTo);
     $("#FormV3Dtl_TransitTimeTotal").val(data.transitTimeTotal);
 
-    if (view == 0) {
+    if (view == 1) {
         $('#ddlRoadCode').prop('disabled', true).trigger("chosen:updated");
         $('#FormV3Dtl_FrmCh').attr("readonly", true);
         $('#FormV3Dtl_FrmChDeci').attr("readonly", true);
@@ -419,12 +426,54 @@ function EditFormV3Dtl(obj, view) {
         $("#FormV3Dtl_TransitTimeFrm").attr("readonly", true);
         $("#FormV3Dtl_TransitTimeTo").attr("readonly", true);
     }
+    else {
+        $('#ddlRoadCode').prop('disabled', false).trigger("chosen:updated");
+        $('#FormV3Dtl_FrmCh').attr("readonly", false);
+        $('#FormV3Dtl_FrmChDeci').attr("readonly", false);
+        $('#FormV3Dtl_ToCh').attr("readonly", false);
+        $('#FormV3Dtl_ToChDeci').attr("readonly", false);
+        $("#FormV3Dtl_Length").attr("readonly", false);
+        $("#FormV3Dtl_Width").attr("readonly", false);
+        $("#FormV3Dtl_Adp").attr("readonly", false);
+        $("#FormV3Dtl_TimetakenFrm").attr("readonly", false);
+        $("#FormV3Dtl_TimeTakenTo").attr("readonly", false);
+        $("#FormV3Dtl_TransitTimeFrm").attr("readonly", false);
+        $("#FormV3Dtl_TransitTimeTo").attr("readonly", false);
+    }
 
 }
 
+function CalTotalTime() {
+    if ($('#FormV3Dtl_TimeTakenTo').timeEntry('getTime') != null && $('#FormV3Dtl_TimetakenFrm').timeEntry('getTime') != null) {
+        var milliseconds = ($('#FormV3Dtl_TimeTakenTo').timeEntry('getTime') - $('#FormV3Dtl_TimetakenFrm').timeEntry('getTime'))
+        const secs = Math.floor(Math.abs(milliseconds) / 1000);
+        const totalmins = Math.floor(secs / 60);
+        const hours = Math.floor(totalmins / 60);
+        const mins = Math.floor(totalmins % 60);
+        $('#FormV3Dtl_TimeTakenTotal').val(hours + "." + mins);
+    }
+    else {
+        $('#FormV3Dtl_TimeTakenTotal').val(0 + "." + 0);
+    }
+}
 
+function CalTotalTransitTime() {
+
+    if ($('#FormV3Dtl_TransitTimeTo').timeEntry('getTime') != null && $('#FormV3Dtl_TransitTimeFrm').timeEntry('getTime') != null) {
+        var milliseconds = ($('#FormV3Dtl_TransitTimeTo').timeEntry('getTime') - $('#FormV3Dtl_TransitTimeFrm').timeEntry('getTime'))
+        const secs = Math.floor(Math.abs(milliseconds) / 1000);
+        const totalmins = Math.floor(secs / 60);
+        const hours = Math.floor(totalmins / 60);
+        const mins = Math.floor(totalmins % 60);
+        $('#FormV3Dtl_TransitTimeTotal').val(hours + "." + mins);
+    }
+    else {
+        $('#FormV3Dtl_TransitTimeTotal').val(0 + "." + 0);
+    }
+}
 
  
+
 function ClearFormV3Dtl() {
 
     $('#ddlRoadCode').val("0");
@@ -458,7 +507,7 @@ function DeleteFormV3Dtl(id) {
         }
     });
 }
- 
+
 function HeaderLogic() {
     if ($("#FormV3_PkRefNo").val() != "0") {
 
@@ -467,27 +516,30 @@ function HeaderLogic() {
 
         $("#btnFindDetails").hide();
 
-}
-
-function EnableDisableElements(state) {
-       
-    $('#AccordPage0 * > select').prop('disabled', state).trigger("chosen:updated");
-    $("#FormV3_Dt").prop("disabled", state);
-    
-}
-
-
-
-
-function GoBack() {
-    if ($("#hdnView").val() == "0") {
-        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
-            if (e) {
-                location.href = "/MAM/FormV3";
-
-            }
-        }));
     }
-    else
-        location.href = "/MAM/FormV3";
 }
+
+    function EnableDisableElements(state) {
+
+        $('#AccordPage0 * > select').prop('disabled', state).trigger("chosen:updated");
+        $("#FormV3_Dt").prop("disabled", state);
+
+    }
+
+
+
+
+    function GoBack() {
+        if ($("#hdnView").val() == "0") {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    location.href = "/MAM/FormV3";
+
+                }
+            }));
+        }
+        else {
+            location.href = "/MAM/FormV3";
+        }
+    }
+
