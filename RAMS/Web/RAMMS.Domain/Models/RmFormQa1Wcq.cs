@@ -30,6 +30,7 @@ namespace RAMMS.Domain.Models
         public string Fqa1wcqSruevRemark { get; set; }
         public bool? Fqa1wcqSrprType { get; set; }
         public string Fqa1wcqSrprRemark { get; set; }
+        public bool Fqa1wcqActiveYn { get; set; }
         public int? Fqa1wcqModBy { get; set; }
         public DateTime? Fqa1wcqModDt { get; set; }
         public int? Fqa1wcqCrBy { get; set; }

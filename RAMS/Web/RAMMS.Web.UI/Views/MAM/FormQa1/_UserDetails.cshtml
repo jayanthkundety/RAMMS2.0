@@ -23,11 +23,6 @@
 
             </div>
             <div class="form-group col-lg-3 float-left">
-                @Html.Label("Initial", "Initial")
-                @Html.TextBoxFor(w => w.SaveFormQa1Model.InitialAssgn, new { @id = "formQa1AssignedDesig", @class = "form-control svalidate  {required, Assigned by Designation}", @disabled = true })
-            </div>
-
-            <div class="form-group col-lg-3 float-left">
                 @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
                 @{
                     var vd = Model.SaveFormQa1Model.DtAssgn;
@@ -35,7 +30,15 @@
                 }
                 <input type="date" class="datepicker form-control svalidate {required, Assigned by date}" id="formQa1AssignedDate" value="@_DtAssg" />
             </div>
-
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("Initial", "Initial")
+                @{
+                    var _AssgSign = Model.SaveFormQa1Model.InitialAssgn == null || Model.SaveFormQa1Model.InitialAssgn == false ? false : true;
+                }
+                <div class="clear-b mt-2">
+                    <input class="{required, Assign By Signature}" checked="@_AssgSign" id="formQa1SignAssg" type="checkbox" value="true">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -59,11 +62,7 @@
                 </div>
 
             </div>
-            <div class="form-group col-lg-3 float-left">
-                @Html.Label("Initial", "Initial")
-                @Html.TextBoxFor(w => w.SaveFormQa1Model.InitialExec, new { @id = "formQa1ExecutedDesig", @class = "form-control svalidate  {required, Executed by Designation}", @disabled = true })
-            </div>
-
+          
             <div class="form-group col-lg-3 float-left">
                 @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
                 @{
@@ -72,7 +71,15 @@
                 }
                 <input type="date" class="datepicker form-control svalidate {required, Executed by date}" id="formQa1ExecutedDate" value="@_DtExec" />
             </div>
-
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("Initial", "Initial")
+                @{
+                    var _ExeSign = Model.SaveFormQa1Model.InitialExec == null || Model.SaveFormQa1Model.InitialExec == false ? false : true;
+                }
+                <div class="clear-b mt-2">
+                    <input class="{required, Executed By Signature}" checked="@_ExeSign" id="formQa1SignExe" type="checkbox" value="true">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -82,7 +89,7 @@
                 Checked by
             </span>
         </div>
-       <div class="border-top pt-3 pb-1 float-left w-100">
+        <div class="border-top pt-3 pb-1 float-left w-100">
 
             <div class="form-group col-lg-6 float-left mb-0">
                 @Html.Label("Name", "Name")
@@ -96,10 +103,6 @@
                 </div>
 
             </div>
-            <div class="form-group col-lg-3 float-left">
-                @Html.Label("Initial", "Initial")
-                @Html.TextBoxFor(w => w.SaveFormQa1Model.InitialChked, new { @id = "formQa1CheckedDesig", @class = "form-control svalidate  {required, Checked by Designation}", @disabled = true })
-            </div>
 
             <div class="form-group col-lg-3 float-left">
                 @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
@@ -109,7 +112,15 @@
                 }
                 <input type="date" class="datepicker form-control svalidate {required, Checked by date}" id="formQa1CheckedDate" value="@_DtChk" />
             </div>
-
+            <div class="form-group col-lg-3 float-left">
+                @Html.Label("Initial", "Initial")
+                @{
+                    var _ChckSign = Model.SaveFormQa1Model.InitialChked == null || Model.SaveFormQa1Model.InitialChked == false ? false : true;
+                }
+                <div class="clear-b mt-2">
+                    <input class="{required, Checked By Signature}" checked="@_ChckSign" id="formQa1SignChck" type="checkbox" value="true">
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -17,6 +17,7 @@ namespace RAMMS.Domain.Models
         public string Fqa1sscImsRemark { get; set; }
         public string Fqa1sscAsd { get; set; }
         public string Fqa1sscAsdRemark { get; set; }
+        public bool Fqa1sscActiveYn { get; set; }
         public int? Fqa1sscModBy { get; set; }
         public DateTime? Fqa1sscModDt { get; set; }
         public int? Fqa1sscCrBy { get; set; }

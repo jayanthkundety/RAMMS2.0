@@ -6,6 +6,8 @@ namespace RAMMS.Domain.Models
     public partial class RmFormV4Hdr
     {
         public int Fv4hPkRefNo { get; set; }
+        public int? Fv4hFv3PkRefNo { get; set; }
+        public string Fv4hFv3PkRefId { get; set; }
         public int? Fv4hContNo { get; set; }
         public string Fv4hRmu { get; set; }
         public string Fv4hRmuName { get; set; }

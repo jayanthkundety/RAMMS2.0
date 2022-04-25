@@ -25,15 +25,15 @@ namespace RAMMS.DTO.ResponseBO
         public string ActName { get; set; }
         public DateTime? Dt { get; set; }
         public int? UseridAssgn { get; set; }
-        public string InitialAssgn { get; set; }
+        public bool? InitialAssgn { get; set; }
         public string UsernameAssgn { get; set; }
         public DateTime? DtAssgn { get; set; }
         public int? UseridExec { get; set; }
-        public string InitialExec { get; set; }
+        public bool? InitialExec { get; set; }
         public string UsernameExec { get; set; }
         public DateTime? DtExec { get; set; }
         public int? UseridChked { get; set; }
-        public string InitialChked { get; set; }
+        public bool? InitialChked { get; set; }
         public string UsernameChked { get; set; }
         public DateTime? DtChked { get; set; }
         public int? ModBy { get; set; }
@@ -110,6 +110,8 @@ namespace RAMMS.DTO.ResponseBO
         public bool? WiusWrk { get; set; }
         public string WiusWrkRemark { get; set; }
         public string WiusWrkReason { get; set; }
+
+        public bool ActiveYn { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -157,11 +159,13 @@ namespace RAMMS.DTO.ResponseBO
         public int? LabOthOnLeave { get; set; }
         public string LabOthPerfStd { get; set; }
         public string LabOthRemark { get; set; }
+
+        public bool ActiveYn { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
         public DateTime? CrDt { get; set; }
-        public bool ActiveYn { get; set; }
+
 
         public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
@@ -173,8 +177,8 @@ namespace RAMMS.DTO.ResponseBO
         public int? Fqa1hPkRefNo { get; set; }
         public string Type { get; set; }
         public decimal? Qty { get; set; }
-        public int? Unit { get; set; }
-        public bool? Spec { get; set; }
+        public string Unit { get; set; }
+        public string Spec { get; set; }
         public string Remark { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
@@ -198,6 +202,8 @@ namespace RAMMS.DTO.ResponseBO
         public string ImsRemark { get; set; }
         public string Asd { get; set; }
         public string AsdRemark { get; set; }
+
+        public bool ActiveYn { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -226,6 +232,8 @@ namespace RAMMS.DTO.ResponseBO
         public string OtCs { get; set; }
         public int? OtCsA { get; set; }
         public string OtCsRemark { get; set; }
+
+        public bool ActiveYn { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -236,7 +244,7 @@ namespace RAMMS.DTO.ResponseBO
 
     public class FormQa1WcqDTO
     {
-        //
+        //Fqa1wcq
         public int PkRefNo { get; set; }
         public int? Fqa1hPkRefNo { get; set; }
         public bool? FlFlushType { get; set; }
@@ -262,6 +270,8 @@ namespace RAMMS.DTO.ResponseBO
         public string SruevRemark { get; set; }
         public bool? SrprType { get; set; }
         public string SrprRemark { get; set; }
+
+        public bool ActiveYn { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -324,6 +334,8 @@ namespace RAMMS.DTO.ResponseBO
         public decimal? SsdRhsW { get; set; }
         public decimal? SsdLhsL { get; set; }
         public decimal? SsdLhsW { get; set; }
+
+        public bool ActiveYn { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }

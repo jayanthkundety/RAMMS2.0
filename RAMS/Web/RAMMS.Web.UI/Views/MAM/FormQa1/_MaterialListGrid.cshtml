@@ -25,7 +25,7 @@
     var Mtable = null;
     var mactionCol = {
         data: null, name: "Action", title: "Action", autoWidth: false, width: 20, sortable: false, render: function (data) {
-            if (IsView != "1" && (!data.submitStatus)) {
+            if (IsView != "1" ) {
                 var actionSection = "<div class='btn-group dropright' id='Matactiondropdown'> <button id='Matactionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormQa1MaterialModal' id='formQa1MaterialEdit' onclick='javascript:EditFormQa1Material(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' " + isDeletePerm + " class='dropdown-item editdel-btns' onclick='javascript:DeleteFormQa1MaterialRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnMatView' href='#' data-toggle='modal' data-target='#FormQa1MaterialModal' onclick='javascript:EditFormQa1Material(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button></div></div>";
                 return actionSection;
             }
@@ -36,11 +36,12 @@
         }
     };
     //var mrefNoCol = { data: "serialNo", name: "msNo", title: "S No", autoWidth: false, width: 20, sortable: false };
-    var mTypeCol = { data: "type", name: "mType", title: "Type", autoWidth: false, width: 60, sortable: false };
+    var mTypeCol = { data: "type", name: "mType", title: "Type", autoWidth: true, sortable: false };
     var mQtyCol = { data: "qty", name: "mQty", title: "Qty. Seen", autoWidth: true, sortable: false };
     var mSpecCol = { data: "spec", name: "mSpec", title: "As Per Specification", autoWidth: true, sortable: false };
     var mRemarkCol = { data: "remark", name: "mRemark", title: "Remarks", autoWidth: true, sortable: false };
 
+    mtable_columns.push(mactionCol);
     mtable_columns.push(mTypeCol);
     mtable_columns.push(mQtyCol);
     mtable_columns.push(mSpecCol);
@@ -61,7 +62,7 @@
             $('#FormQa1MaterialGridView').empty();
         }
 
-        mfilterData.HeaderNo = $("#FV2PkRefNo").val();
+        mfilterData.HeaderNo = $("#formQa1PkRefNo").val();
 
         Mtable = $('#FormQa1MaterialGridView').DataTable({
             ajax: {

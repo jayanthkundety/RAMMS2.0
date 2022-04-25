@@ -13,6 +13,14 @@
 
     vd = Model.SaveFormQa1Model.DtAudit;
     string _DtAudit = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    var _Auser = Model.SaveFormQa1Model.UseridAudit;
+    var _Wuser = Model.SaveFormQa1Model.UseridWit;
+    var _Assguser = Model.SaveFormQa1Model.UseridAssgn;
+    var _Exeuser = Model.SaveFormQa1Model.UseridExec;
+    var _Chckuser = Model.SaveFormQa1Model.UseridChked;
+
+
 }
 @model RAMMS.Web.UI.Models.FormQa1Model;
 
@@ -21,7 +29,11 @@
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormQa1", "@Model.SaveFormQa1Model.Status", @Model.SaveFormQa1Model.PkRefNo);
-
+        $("#formQa1AuditedBy").val('@_Auser').trigger("chosen:updated");
+        $("#formQa1WitnessedBy").val('@_Wuser').trigger("chosen:updated");
+        $("#formQa1AssignedBy").val('@_Assguser').trigger("chosen:updated");
+        $("#formQa1ExecutedBy").val('@_Exeuser').trigger("chosen:updated");
+        $("#formQa1CheckedBy").val('@_Chckuser').trigger("chosen:updated");
     });
 </script>
 
@@ -264,7 +276,7 @@
                                                     <div class="modal-header">
 
                                                         <h4 class="modal-title w-100 float-left" id="FormQa1MaterialModalid">Add Material</h4>
-                                                        <button type="button" class="close float-left w-25 text-right" onclick="GoBackMat()"  aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+                                                        <button type="button" class="close float-left w-25 text-right" onclick="GoBackMat()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
                                                     </div>
                                                     <div id="div-mat-container">
                                                     </div>
@@ -440,7 +452,7 @@
                                                 @Html.Label("Name", "Name")
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1AuditedBy", "Select Users", new { Id = "formQa1AuditedBy", @class = "form-control svalidate {required, Audited by} ", @disabled=true})
+                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1AuditedBy", "Select Users", new { Id = "formQa1AuditedBy", @class = "form-control svalidate {required, Audited by} "})
                                                     </div>
                                                     <div class="col-6">
                                                         @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameAudit, new { @id = "formQa1AuditedName", @class = "form-control svalidate  {required, Audited by Name}", @disabled = true })
@@ -453,11 +465,11 @@
                                             </div>
                                             <div class="form-group col-lg-2 float-left pl-0">
                                                 @Html.Label("Office", "Office")
-                                                @Html.TextBoxFor(w => w.SaveFormQa1Model.OfficeAudit, new { @id = "formW2AuditedOffice", @class = "form-control svalidate  {required, Audited by Office }", @disabled = true })
+                                                @Html.TextBoxFor(w => w.SaveFormQa1Model.OfficeAudit, new { @id = "formQa1AuditOffice", @class = "form-control svalidate  {required, Audited by Office }", @disabled = true })
                                             </div>
                                             <div class="form-group col-lg-2 float-left px-0">
                                                 @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
-                                                <input type="date" class="datepicker form-control svalidate {required, Audited by date}" id="formQa1AuditedDate" value="@_DtAudit" />
+                                                <input type="date" class="datepicker form-control svalidate {required, Audited by date}" id="formQa1AuditDate" value="@_DtAudit" />
                                             </div>
                                             <div class="form-group col-lg-1 float-left">
                                                 @Html.Label("Signature", "Signature")
@@ -465,7 +477,7 @@
                                                     var _AuditedSign = Model.SaveFormQa1Model.SignAudit == null || Model.SaveFormQa1Model.SignAudit == false ? false : true;
                                                 }
                                                 <div class="clear-b mt-2">
-                                                    <input class="{required, Recorded By Signature}" checked="@_AuditedSign" id="formV2SignRecorded" type="checkbox" value="true">
+                                                    <input class="{required, Audited By Signature}" checked="@_AuditedSign" id="formQa1AuditSign" type="checkbox" value="true">
                                                 </div>
                                             </div>
                                         </div>
@@ -496,7 +508,7 @@
                                                 @Html.Label("Name", "Name")
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1WitnessedBy", "Select Users", new { Id = "formQa1WitnessedBy", @class = "form-control svalidate {required, Witnessed by} ", @disabled=true})
+                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1WitnessedBy", "Select Users", new { Id = "formQa1WitnessedBy", @class = "form-control svalidate {required, Witnessed by} "})
                                                     </div>
                                                     <div class="col-6">
                                                         @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameWit, new { @id = "formQa1WitnessedName", @class = "form-control svalidate  {required, Witnessed by Name}", @disabled = true })
@@ -521,7 +533,7 @@
                                                     var _WitSign = Model.SaveFormQa1Model.SignWit == null || Model.SaveFormQa1Model.SignWit == false ? false : true;
                                                 }
                                                 <div class="clear-b mt-2">
-                                                    <input class="{required, Recorded By Signature}" checked="@_WitSign" id="formV2SignRecorded" type="checkbox" value="true">
+                                                    <input class="{required, Recorded By Signature}" checked="@_WitSign" id="formQa1SignWit" type="checkbox" value="true">
                                                 </div>
                                             </div>
                                         </div>
@@ -529,7 +541,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-5">
+                        <div class="row mt-5" id="divUserDetails">
                             <div class="col-lg-12">
                                 @{
                                     Html.RenderPartial("_GeneralListGrid.cshtml");

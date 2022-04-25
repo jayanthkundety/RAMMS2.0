@@ -225,20 +225,18 @@ namespace RAMMS.Web.UI.Controllers
             else
             {
                 _formQa1Model.SaveFormQa1Model = await _formQa1Service.GetFormQA1(id);
-                //_formQa1Model.SaveFormQa1Model.Lab = new FormQa1LabDTO();
-                //_formQa1Model.SaveFormQa1Model.Wcq = new FormQa1WcqDTO();
-                //_formQa1Model.SaveFormQa1Model.We = new FormQa1WeDTO();
-                //_formQa1Model.SaveFormQa1Model.EqVh = new List<FormQa1EqVhDTO>();
-                //_formQa1Model.SaveFormQa1Model.Mat = new List<FormQa1MatDTO>();
-                //_formQa1Model.SaveFormQa1Model.Ssc = new FormQa1SscDTO();
-                //_formQa1Model.SaveFormQa1Model.Gc = new FormQa1GCDTO();
-                //_formQa1Model.SaveFormQa1Model.Gen = new List<FormQa1GenDTO>();
+
+                //if ((_formQa1Model.SaveFormQa1Model.UseridExec == null || _formQa1Model.SaveFormQa1Model.UseridExec ==  0) 
+                //    && _formQa1Model.SaveFormQa1Model.Status == Common.StatusList.FormQA1Saved)
+                //{
+                //    _formQa1Model.SaveFormQa1Model.UseridExec = _security.UserID;
+                //    _formQa1Model.SaveFormQa1Model.UsernameExec = _security.UserName;
+                //}
 
             }
 
             return View("~/Views/MAM/FormQa1/_AddFormQA1.cshtml", _formQa1Model);
         }
-
 
         [HttpPost]
         public IActionResult GetRoadCodeBySection(int secCode)
@@ -358,17 +356,31 @@ namespace RAMMS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveEquipment(FormQa1EqVhDTO formQa1Eq)
         {
-            return Json( new {});
+           var ret = _formQa1Service.SaveEquipment(formQa1Eq);
+            return Json( new { ret });
         }
 
+        [HttpPost]
         public async Task<IActionResult> SaveMaterial(FormQa1MatDTO formQa1Mat)
         {
-            return Json(new { });
+            var ret = _formQa1Service.SaveMaterial(formQa1Mat);
+            return Json(new { ret });
         }
 
+        [HttpPost]
         public async Task<IActionResult> SaveGeneral(FormQa1GenDTO formQa1Gen)
         {
-            return Json(new { });
+            var ret = _formQa1Service.SaveGeneral(formQa1Gen);
+            return Json(new { ret });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveHeader(FormQa1HeaderDTO formQa1,bool submitStatus)
+        {
+            formQa1.ModBy = _security.UserID;
+            formQa1.ModDt = DateTime.Today;
+            var ret = _formQa1Service.SaveFormQA1(formQa1, submitStatus);
+            return Json(new { ret });
         }
     }
 }

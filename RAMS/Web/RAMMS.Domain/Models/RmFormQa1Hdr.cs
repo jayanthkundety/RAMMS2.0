@@ -36,15 +36,15 @@ namespace RAMMS.Domain.Models
         public string Fqa1hActName { get; set; }
         public DateTime? Fqa1hDt { get; set; }
         public int? Fqa1hUseridAssgn { get; set; }
-        public string Fqa1hInitialAssgn { get; set; }
+        public bool? Fqa1hInitialAssgn { get; set; }
         public string Fqa1hUsernameAssgn { get; set; }
         public DateTime? Fqa1hDtAssgn { get; set; }
         public int? Fqa1hUseridExec { get; set; }
-        public string Fqa1hInitialExec { get; set; }
+        public bool? Fqa1hInitialExec { get; set; }
         public string Fqa1hUsernameExec { get; set; }
         public DateTime? Fqa1hDtExec { get; set; }
         public int? Fqa1hUseridChked { get; set; }
-        public string Fqa1hInitialChked { get; set; }
+        public bool? Fqa1hInitialChked { get; set; }
         public string Fqa1hUsernameChked { get; set; }
         public DateTime? Fqa1hDtChked { get; set; }
         public int? Fqa1hModBy { get; set; }

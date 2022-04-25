@@ -184,7 +184,7 @@
                         Evenly Spread/No
                     </label>
                     <div class="input-group">
-                        @Html.DropDownListFor(Adtl => Adtl.TcEvenlySpread , (IEnumerable
+                        @Html.DropDownListFor(Adtl => Adtl.PcEvenlySpread , (IEnumerable
                         <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1PcEvSpNo", @class = "form-control wddl validate {required, Prime Coat - Evenly Spread/No}" })
                     </div>
                 </div>
@@ -451,3 +451,4 @@
         </div>
     </div>
 </div>
+@Html.HiddenFor(m => m.PkRefNo , new { @id="formQa1WEPkRefNo"})

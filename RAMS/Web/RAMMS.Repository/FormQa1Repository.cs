@@ -178,11 +178,144 @@ namespace RAMMS.Repository
             return formQa1Header;
         }
 
-        public async Task<RmFormQa1Lab> SaveLabour(RmFormQa1Lab labour)
+        public async Task<RmFormQa1Wcq> SaveWCQ(RmFormQa1Wcq form)
         {
-            _context.RmFormQa1Lab.Add(labour);
-            await _context.SaveChangesAsync();
-            return labour;
+            if (form.Fqa1wcqPkRefNo == 0)
+            {
+                _context.RmFormQa1Wcq.Add(form);
+                _context.Entry<RmFormQa1Wcq>(form).State = EntityState.Added;
+            }
+            else
+            {
+                _context.RmFormQa1Wcq.Attach(form);
+                _context.Entry<RmFormQa1Wcq>(form).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+            return form;
+        }
+
+        public async Task<RmFormQa1We> SaveWE(RmFormQa1We form)
+        {
+            if (form.Fqa1wPkRefNo == 0)
+            {
+                _context.RmFormQa1We.Add(form);
+                _context.Entry<RmFormQa1We>(form).State = EntityState.Added;
+            }
+            else
+            {
+                _context.RmFormQa1We.Attach(form);
+                _context.Entry<RmFormQa1We>(form).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+            return form;
+        }
+
+        public async Task<RmFormQa1Lab> SaveLabour(RmFormQa1Lab form)
+        {
+            if (form.Fqa1lPkRefNo == 0)
+            {
+                _context.RmFormQa1Lab.Add(form);
+                _context.Entry<RmFormQa1Lab>(form).State = EntityState.Added;
+            }
+            else
+            {
+                _context.RmFormQa1Lab.Attach(form);
+                _context.Entry<RmFormQa1Lab>(form).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+            return form;
+        }
+
+        public async Task<RmFormQa1Gc> SaveGC(RmFormQa1Gc form)
+        {
+            if (form.Fqa1gcPkRefNo == 0)
+            {
+                _context.RmFormQa1Gc.Add(form);
+                _context.Entry<RmFormQa1Gc>(form).State = EntityState.Added;
+            }
+            else
+            {
+                _context.RmFormQa1Gc.Attach(form);
+                _context.Entry<RmFormQa1Gc>(form).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+            return form;
+        }
+
+        public async Task<RmFormQa1Tes> SaveTES(RmFormQa1Tes form)
+        {
+            if (form.Fqa1tesPkRefNo == 0)
+            {
+                _context.RmFormQa1Tes.Add(form);
+                _context.Entry<RmFormQa1Tes>(form).State = EntityState.Added;
+            }
+            else
+            {
+                _context.RmFormQa1Tes.Attach(form);
+                _context.Entry<RmFormQa1Tes>(form).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+            return form;
+        }
+
+        public async Task<RmFormQa1Ssc> SaveSSC(RmFormQa1Ssc form)
+        {
+            if (form.Fqa1sscPkRefNo == 0)
+            {
+                _context.RmFormQa1Ssc.Add(form);
+                _context.Entry<RmFormQa1Ssc>(form).State = EntityState.Added;
+            }
+            else
+            {
+                _context.RmFormQa1Ssc.Attach(form);
+                _context.Entry<RmFormQa1Ssc>(form).State = EntityState.Modified;
+            }
+            _context.SaveChanges();
+            return form;
+        }
+
+
+        public int? DeleteFormQA1(int id)
+        {
+            try
+            {
+
+                var res = _context.Set<RmFormQa1Hdr>().FindAsync(id);
+                res.Result.Fqa1hActiveYn = false;
+                _context.Set<RmFormQa1Hdr>().Attach(res.Result);
+                _context.Entry<RmFormQa1Hdr>(res.Result).State = EntityState.Modified;
+
+                var lab = _context.Set<RmFormQa1Lab>().FindAsync(id);
+                lab.Result.Fqa1lActiveYn = false;
+                _context.Set<RmFormQa1Lab>().Attach(lab.Result);
+
+                var Gc = _context.Set<RmFormQa1Gc>().FindAsync(id);
+                Gc.Result.Fqa1gcActiveYn = false;
+                _context.Set<RmFormQa1Gc>().Attach(Gc.Result);
+
+                var Ssc = _context.Set<RmFormQa1Ssc>().FindAsync(id);
+                Ssc.Result.Fqa1sscActiveYn = false;
+                _context.Set<RmFormQa1Ssc>().Attach(Ssc.Result);
+
+                var Tes = _context.Set<RmFormQa1Tes>().FindAsync(id);
+                Tes.Result.Fqa1tesActiveYn = false;
+                _context.Set<RmFormQa1Tes>().Attach(Tes.Result);
+
+                var Wcq = _context.Set<RmFormQa1Wcq>().FindAsync(id);
+                Wcq.Result.Fqa1wcqActiveYn = false;
+                _context.Set<RmFormQa1Wcq>().Attach(Wcq.Result);
+
+                var We = _context.Set<RmFormQa1We>().FindAsync(id);
+                We.Result.Fqa1wActiveYn = false;
+                _context.Set<RmFormQa1We>().Attach(We.Result);
+
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
         }
 
         public async Task<RmFormQa1Hdr> GetFormQA1(int pkRefNo)
@@ -210,7 +343,7 @@ namespace RAMMS.Repository
         public async Task<List<RmFormQa1EqVh>> GetFilteredEqpRecordList(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
         {
             List<RmFormQa1EqVh> result = new List<RmFormQa1EqVh>();
-            var query = (from x in _context.RmFormQa1EqVh.Where(x => x.Fqa1evFqa1hPkRefNo == id )    select x);
+            var query = (from x in _context.RmFormQa1EqVh.Where(x => x.Fqa1evFqa1hPkRefNo == id) select x);
 
             result = await query.OrderByDescending(s => s.Fqa1evPkRefNo)
                                 .Skip(filterOptions.StartPageNo)
@@ -223,7 +356,37 @@ namespace RAMMS.Repository
         {
             var result = await _context.RmFormQa1EqVh.FirstOrDefaultAsync(m => m.Fqa1evFqa1hPkRefNo == pkRefNo);
             return result;
-        }        
+        }
+
+        public int? SaveEquipment(RmFormQa1EqVh formQa1EqVh)
+        {
+            try
+            {
+                _context.Entry<RmFormQa1EqVh>(formQa1EqVh).State = formQa1EqVh.Fqa1evPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
+                _context.SaveChanges();
+
+                return formQa1EqVh.Fqa1evPkRefNo;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteEquipment(int id)
+        {
+            try
+            {
+                var res = _context.Set<RmFormQa1EqVh>().FindAsync(id);
+                _context.Remove(res);
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
         #endregion
 
         #region Material
@@ -250,8 +413,37 @@ namespace RAMMS.Repository
             var result = await _context.RmFormQa1Mat.FirstOrDefaultAsync(m => m.Fqa1mFqa1hPkRefNo == pkRefNo);
             return result;
         }
-        #endregion
 
+        public int? SaveMaterial(RmFormQa1Mat formQa1Mat)
+        {
+            try
+            {
+                _context.Entry<RmFormQa1Mat>(formQa1Mat).State = formQa1Mat.Fqa1mPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
+                _context.SaveChanges();
+
+                return formQa1Mat.Fqa1mPkRefNo;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteMaterial(int id)
+        {
+            try
+            {
+                var res = _context.Set<RmFormQa1Mat>().FindAsync(id);
+                _context.Remove(res);
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+        #endregion
 
         #region General 
         public async Task<int> GetFilteredGenRecordCount(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
@@ -274,21 +466,54 @@ namespace RAMMS.Repository
 
         public async Task<RmFormQa1Gen> GetGenDetails(int pkRefNo)
         {
-            var result = await  _context.RmFormQa1Gen.FirstOrDefaultAsync(m => m.Fqa1genPkRefNo == pkRefNo);
+            var result = await _context.RmFormQa1Gen.FirstOrDefaultAsync(m => m.Fqa1genPkRefNo == pkRefNo);
             return result;
 
         }
 
-        #endregion
+        public int? SaveGeneral(RmFormQa1Gen formQa1Gen)
+        {
+            try
+            {
+                _context.Entry<RmFormQa1Gen>(formQa1Gen).State = formQa1Gen.Fqa1genPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
+                _context.SaveChanges();
 
+                return formQa1Gen.Fqa1genPkRefNo;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteGeneral(int id)
+        {
+            try
+            {
+                var res = _context.Set<RmFormQa1Gen>().FindAsync(id);
+                _context.Remove(res);
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        #endregion
 
         #region Labour
         public async Task<RmFormQa1Lab> GetLabourDetails(int pkRefNo)
         {
-            var result = await _context.RmFormQa1Lab.FirstOrDefaultAsync(m => m.Fqa1lPkRefNo == pkRefNo);
+            var result = await _context.RmFormQa1Lab.FirstOrDefaultAsync(m => m.Fqa1lPkRefNo == pkRefNo && m.Fqa1lActiveYn == true);
             return result;
         }
+
         #endregion
+
+
+
     }
 
 

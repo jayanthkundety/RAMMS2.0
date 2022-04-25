@@ -9,8 +9,8 @@ namespace RAMMS.Domain.Models
         public int? Fqa1mFqa1hPkRefNo { get; set; }
         public string Fqa1mType { get; set; }
         public decimal? Fqa1mQty { get; set; }
-        public int? Fqa1mUnit { get; set; }
-        public bool? Fqa1mSpec { get; set; }
+        public string Fqa1mUnit { get; set; }
+        public string Fqa1mSpec { get; set; }
         public string Fqa1mRemark { get; set; }
         public int? Fqa1mModBy { get; set; }
         public DateTime? Fqa1mModDt { get; set; }

@@ -35,9 +35,33 @@ namespace RAMMS.Repository.Interfaces
 
         Task<RmFormQa1Hdr> GetFormQA1(int pkRefNo);
 
-        Task<RmFormQa1Lab> SaveLabour(RmFormQa1Lab labour);
-
         Task<RmFormQa1Lab> GetLabourDetails(int pkRefNo);
-        
+
+        int? SaveMaterial(RmFormQa1Mat formQa1Mat);
+
+        int? DeleteMaterial(int id);
+
+        int? SaveGeneral(RmFormQa1Gen formQa1Gen);
+
+        int? DeleteGeneral(int id);
+
+        int? SaveEquipment(RmFormQa1EqVh formQa1EqVh);
+
+        int? DeleteEquipment(int id);
+
+        Task<RmFormQa1Wcq> SaveWCQ(RmFormQa1Wcq form);
+
+        Task<RmFormQa1We> SaveWE(RmFormQa1We form);
+
+        Task<RmFormQa1Lab> SaveLabour(RmFormQa1Lab form);
+
+        Task<RmFormQa1Gc> SaveGC(RmFormQa1Gc form);
+
+        Task<RmFormQa1Tes> SaveTES(RmFormQa1Tes form);
+
+        Task<RmFormQa1Ssc> SaveSSC(RmFormQa1Ssc form);
+
+
+
     }
 }

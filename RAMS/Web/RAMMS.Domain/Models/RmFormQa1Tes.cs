@@ -22,6 +22,7 @@ namespace RAMMS.Domain.Models
         public string Fqa1tesOtCs { get; set; }
         public int? Fqa1tesOtCsA { get; set; }
         public string Fqa1tesOtCsRemark { get; set; }
+        public bool Fqa1tesActiveYn { get; set; }
         public int? Fqa1tesModBy { get; set; }
         public DateTime? Fqa1tesModDt { get; set; }
         public int? Fqa1tesCrBy { get; set; }
