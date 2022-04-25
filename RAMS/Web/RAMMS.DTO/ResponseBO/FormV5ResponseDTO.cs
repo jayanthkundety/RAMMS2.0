@@ -8,16 +8,23 @@ namespace RAMMS.DTO.ResponseBO
 {
     public  class FormV5ResponseDTO
     {
+       
         public int PkRefNo { get; set; }
+        public int? Fv4PkRefNo { get; set; }
         public int? ContNo { get; set; }
         public string Rmu { get; set; }
+        public string RmuName { get; set; }
         public int? Crew { get; set; }
         public string Crewname { get; set; }
         public string SecCode { get; set; }
+        public string SecName { get; set; }
+        public string Division { get; set; }
         public string RefId { get; set; }
-        public int? ActCode { get; set; }
+        public string ActCode { get; set; }
+        public string ActName { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+
         public DateTime? Dt { get; set; }
         public int? Year { get; set; }
         public bool SignRec { get; set; }
@@ -26,6 +33,7 @@ namespace RAMMS.DTO.ResponseBO
         public string DesignationRec { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+
         public DateTime? DtRec { get; set; }
         public string Verifier { get; set; }
         public string Remarks { get; set; }

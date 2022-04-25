@@ -1762,14 +1762,14 @@ namespace RAMMS.Web.UI.Controllers
                 {
                     status = frm.FormV3.Status;
                 }
-               
+
 
                 return Json(new
                 {
                     RefId = frm.FormV3.RefId,
                     PkRefNo = frm.FormV3.PkRefNo,
                     Status = status,
-                    Msg= Msg
+                    Msg = Msg
                 });
             }
             else
@@ -1886,8 +1886,6 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formV4Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
-
-
         public async Task<IActionResult> AddFormV4(int id, int view = 0)
         {
             var _formV4Model = new FormV4Model();
@@ -1903,8 +1901,6 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/MAM/FormV4/AddFormV4.cshtml", _formV4Model);
         }
 
-
-
         public async Task<IActionResult> EditFormV4(int Id, int view = 0)
         {
             await LoadFormV1DropDown();
@@ -1912,9 +1908,6 @@ namespace RAMMS.Web.UI.Controllers
 
             _formV4Model.FormV4 = await _formV1Service.FindFormV4ByID(Id);
 
-
-
-           
 
             if (_formV4Model.FormV4.UseridFac == null || _formV4Model.FormV4.UseridFac == 0)
             {
@@ -1941,7 +1934,6 @@ namespace RAMMS.Web.UI.Controllers
             return View("~/Views/MAM/FormV4/AddFormV4.cshtml", _formV4Model);
         }
 
-
         public async Task<IActionResult> SaveFormV4(FormV4Model frm)
         {
             string refNo = "0";
@@ -1965,9 +1957,6 @@ namespace RAMMS.Web.UI.Controllers
 
 
         }
-
-
-
         public async Task<IActionResult> DeleteFormV4(int id)
         {
             int? rowsAffected = 0;
@@ -1975,214 +1964,193 @@ namespace RAMMS.Web.UI.Controllers
             return Json(rowsAffected);
         }
 
-
         #endregion
 
         #region Form V5
 
-        //public async Task<IActionResult> FormV5()
-        //{
-        //    DDLookUpDTO ddLookup = new DDLookUpDTO();
-        //    ddLookup.Type = "RMU";
-        //    ViewData["RMU"] = await _formN1Service.GetRMU();
+        public async Task<IActionResult> FormV5()
+        {
+            DDLookUpDTO ddLookup = new DDLookUpDTO();
+            ddLookup.Type = "RMU";
+            ViewData["RMU"] = await _formN1Service.GetRMU();
 
-        //    ddLookup.Type = "Act-FormD";
-        //    ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
+            ddLookup.Type = "Act-FormD";
+            ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
 
-        //    LoadLookupService("User");
+            LoadLookupService("User");
 
-        //    FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+            FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
 
-        //    ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
-        //    return View("~/Views/MAM/FormV5/FormV5.cshtml");
-        //}
+            ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+            return View("~/Views/MAM/FormV5/FormV5.cshtml");
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> LoadFormV5List(DataTableAjaxPostModel<FormV1SearchGridDTO> formV5Filter)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> LoadFormV5List(DataTableAjaxPostModel<FormV1SearchGridDTO> formV5Filter)
+        {
 
-        //    if (Request.Form.ContainsKey("columns[0][search][value]"))
-        //    {
-        //        formV5Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
-        //    }
-        //    if (Request.Form.ContainsKey("columns[1][search][value]"))
-        //    {
-        //        formV5Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
-        //    }
-        //    if (Request.Form.ContainsKey("columns[2][search][value]"))
-        //    {
-        //        formV5Filter.filterData.Section = Request.Form["columns[2][search][value]"].ToString();
-        //    }
-        //    if (Request.Form.ContainsKey("columns[3][search][value]"))
-        //    {
-        //        formV5Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
-        //    }
-        //    if (Request.Form.ContainsKey("columns[4][search][value]"))
-        //    {
-        //        formV5Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
-        //    }
-        //    if (Request.Form.ContainsKey("columns[5][search][value]"))
-        //    {
-        //        formV5Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
-        //    }
-        //    if (Request.Form.ContainsKey("columns[6][search][value]"))
-        //    {
-        //        formV5Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
-        //    }
+            if (Request.Form.ContainsKey("columns[0][search][value]"))
+            {
+                formV5Filter.filterData.SmartInputValue = Request.Form["columns[0][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[1][search][value]"))
+            {
+                formV5Filter.filterData.RMU = Request.Form["columns[1][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                formV5Filter.filterData.Section = Request.Form["columns[2][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[3][search][value]"))
+            {
+                formV5Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                formV5Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                formV5Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                formV5Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
+            }
 
-        //    FilteredPagingDefinition<FormV1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1SearchGridDTO>();
-        //    filteredPagingDefinition.Filters = formV5Filter.filterData;
-        //    filteredPagingDefinition.RecordsPerPage = formV5Filter.length;
-        //    filteredPagingDefinition.StartPageNo = formV5Filter.start;
+            FilteredPagingDefinition<FormV1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV1SearchGridDTO>();
+            filteredPagingDefinition.Filters = formV5Filter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV5Filter.length;
+            filteredPagingDefinition.StartPageNo = formV5Filter.start;
 
-        //    if (formV5Filter.order != null)
-        //    {
-        //        filteredPagingDefinition.ColumnIndex = formV5Filter.order[0].column;
-        //        filteredPagingDefinition.sortOrder = formV5Filter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
-        //    }
+            if (formV5Filter.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = formV5Filter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV5Filter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
 
-        //    var result = await _formV1Service.GetFilteredFormV1Grid(filteredPagingDefinition).ConfigureAwait(false);
+            var result = await _formV1Service.GetFilteredFormV1Grid(filteredPagingDefinition).ConfigureAwait(false);
 
-        //    return Json(new { draw = formV5Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
-        //}
+            return Json(new { draw = formV5Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
 
-        //public async Task<IActionResult> GetV5DtlGridList(DataTableAjaxPostModel<FormV5DtlGridDTO> formV5DtlFilter, int V5PkRefNo)
-        //{
-
-
-        //    FilteredPagingDefinition<FormV5DtlGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV5DtlGridDTO>();
-        //    filteredPagingDefinition.Filters = formV5DtlFilter.filterData;
-        //    filteredPagingDefinition.RecordsPerPage = formV5DtlFilter.length;
-        //    filteredPagingDefinition.StartPageNo = formV5DtlFilter.start;
-
-        //    if (formV5DtlFilter.order != null)
-        //    {
-        //        filteredPagingDefinition.ColumnIndex = formV5DtlFilter.order[0].column;
-        //        filteredPagingDefinition.sortOrder = formV5DtlFilter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
-        //    }
-
-        //    var result = await _formV1Service.GetFormV5DtlGridList(filteredPagingDefinition, V5PkRefNo).ConfigureAwait(false);
-
-        //    return Json(new { draw = formV5DtlFilter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
-        //}
+        public async Task<IActionResult> GetV5DtlGridList(DataTableAjaxPostModel<FormV5DtlResponseDTO> formV5DtlFilter, int V5PkRefNo)
+        {
 
 
-        //public async Task<IActionResult> AddFormV5(int id, int view = 0)
-        //{
-        //    var _formV5Model = new FormV5Model();
-        //    _formV5Model.FormV5 = new FormV5ResponseDTO();
-        //    _formV5Model.FormV5Dtl = new FormV5DtlGridDTO();
-        //    await LoadFormV1DropDown();
+            FilteredPagingDefinition<FormV5DtlResponseDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV5DtlResponseDTO>();
+            filteredPagingDefinition.Filters = formV5DtlFilter.filterData;
+            filteredPagingDefinition.RecordsPerPage = formV5DtlFilter.length;
+            filteredPagingDefinition.StartPageNo = formV5DtlFilter.start;
 
-        //    if (_formV5Model.FormV5.UseridFac == null || _formV5Model.FormV5.UseridFac == 0)
-        //    {
-        //        _formV5Model.FormV5.UseridFac = _security.UserID;
-        //        _formV5Model.FormV5.DtFac = DateTime.Today;
-        //        _formV5Model.FormV5.SignFac = true;
-        //    }
+            if (formV5DtlFilter.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = formV5DtlFilter.order[0].column;
+                filteredPagingDefinition.sortOrder = formV5DtlFilter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
 
-        //    _formV5Model.view = view;
+            var result = await _formV1Service.GetFormV5DtlGridList(filteredPagingDefinition, V5PkRefNo).ConfigureAwait(false);
 
-        //    return View("~/Views/MAM/FormV5/AddFormV5.cshtml", _formV5Model);
-        //}
+            return Json(new { draw = formV5DtlFilter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+        }
 
 
+        public async Task<IActionResult> AddFormV5(int id, int view = 0)
+        {
+            var _formV5Model = new FormV5Model();
+            _formV5Model.FormV5 = new FormV5ResponseDTO();
+            _formV5Model.FormV5Dtl = new FormV5DtlResponseDTO();
+            await LoadFormV1DropDown();
 
-        //public async Task<IActionResult> EditFormV5(int Id, int view = 0)
-        //{
-        //    await LoadFormV1DropDown();
-        //    var _formV5Model = new FormV5Model();
+            if (_formV5Model.FormV5.UseridRec == null || _formV5Model.FormV5.UseridRec == 0)
+            {
+                _formV5Model.FormV5.UseridRec = _security.UserID;
+                _formV5Model.FormV5.DtRec = DateTime.Today;
+                _formV5Model.FormV5.SignRec = true;
+            }
 
-        //    _formV5Model.FormV5 = await _formV1Service.FindFormV5ByID(Id);
+            _formV5Model.view = view;
+
+            return View("~/Views/MAM/FormV5/AddFormV5.cshtml", _formV5Model);
+        }
+
+        public async Task<IActionResult> EditFormV5(int Id, int view = 0)
+        {
+            await LoadFormV1DropDown();
+            var _formV5Model = new FormV5Model();
+
+            _formV5Model.FormV5 = await _formV1Service.FindFormV5ByID(Id);
 
 
 
-        //    if (_formV5Model.FormV5.UseridFac == null || _formV5Model.FormV5.UseridFac == 0)
-        //    {
-        //        _formV5Model.FormV5.UseridFac = _security.UserID;
-        //        _formV5Model.FormV5.DtFac = DateTime.Today;
-        //        _formV5Model.FormV5.SignFac = true;
-        //    }
-        //    if ((_formV5Model.FormV5.UseridRec == null || _formV5Model.FormV5.UseridRec == 0) && _formV5Model.FormV5.Status == RAMMS.Common.StatusList.FormV1Submitted)
-        //    {
-        //        _formV5Model.FormV5.UseridRec = _security.UserID;
-        //        _formV5Model.FormV5.DtRec = DateTime.Today;
-        //        _formV5Model.FormV5.SignRec = true;
-        //    }
-        //    if ((_formV5Model.FormV5.UseridAgr == null || _formV5Model.FormV5.UseridAgr == 0) && _formV5Model.FormV5.Status == RAMMS.Common.StatusList.FormV1Verified)
-        //    {
-        //        _formV5Model.FormV5.UseridAgr = _security.UserID;
-        //        _formV5Model.FormV5.DtAgr = DateTime.Today;
-        //        _formV5Model.FormV5.SignAgr = true;
-        //    }
+            if (_formV5Model.FormV5.UseridRec == null || _formV5Model.FormV5.UseridRec == 0)
+            {
+                _formV5Model.FormV5.UseridRec = _security.UserID;
+                _formV5Model.FormV5.DtRec = DateTime.Today;
+                _formV5Model.FormV5.SignRec = true;
+            }
+
+            _formV5Model.view = view;
+
+            return View("~/Views/MAM/FormV5/AddFormV5.cshtml", _formV5Model);
+        }
+
+        public async Task<IActionResult> SaveFormV5(FormV5Model frm)
+        {
+            string refNo = "0";
+            frm.FormV5.ActiveYn = true;
+            if (frm.FormV5.PkRefNo == 0)
+            {
+                int pkRefno = _formV1Service.SaveFormV5(frm.FormV5).Result.PkRefNo;
+
+                if (pkRefno == -2)
+                    refNo = "No Matching record found in FormV4";
+                else
+                    refNo = pkRefno.ToString();
+            }
+            else
+            {
+                if (frm.FormV5.Status == "Initialize")
+                    frm.FormV5.Status = "Saved";
+                refNo = Convert.ToString(await _formV1Service.UpdateFormV5(frm.FormV5));
+            }
+            return Json(refNo);
 
 
+        }
 
-        //    _formV5Model.view = view;
+        public async Task<IActionResult> SaveFormV5Dtl(FormV5Model frm)
+        {
+            int? refNo = 0;
+            frm.FormV5Dtl.ActiveYn = true;
+            frm.FormV5Dtl.Fv5hPkRefNo = frm.FormV5.PkRefNo;
+            if (frm.FormV5Dtl.PkRefNo == 0)
+            {
+                refNo = _formV1Service.SaveFormV5Dtl(frm.FormV5Dtl);
 
-        //    return View("~/Views/MAM/FormV5/AddFormV5.cshtml", _formV5Model);
-        //}
-
-
-        //public async Task<IActionResult> SaveFormV5(FormV5Model frm)
-        //{
-        //    string refNo = "0";
-        //    frm.FormV5.ActiveYn = true;
-        //    if (frm.FormV5.PkRefNo == 0)
-        //    {
-        //        int pkRefno = _formV1Service.SaveFormV5(frm.FormV5).Result.PkRefNo;
-
-        //        if (pkRefno == -1)
-        //            refNo = "No Matching record found in FormV1";
-        //        else if (pkRefno == -2)
-        //            refNo = "No Matching record found in FormV2";
-        //        else
-        //            refNo = pkRefno.ToString();
-        //    }
-        //    else
-        //    {
-        //        if (frm.FormV5.Status == "Initialize")
-        //            frm.FormV5.Status = "Saved";
-        //        refNo = Convert.ToString(await _formV1Service.UpdateV5(frm.FormV5));
-        //    }
-        //    return Json(refNo);
+            }
+            else
+            {
+                refNo = await _formV1Service.UpdateFormV5Dtl(frm.FormV5Dtl);
+            }
+            return Json(refNo);
 
 
-        //}
+        }
 
+        public async Task<IActionResult> DeleteFormV5(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formV1Service.DeleteFormV5(id);
+            return Json(rowsAffected);
+        }
 
-        //public async Task<IActionResult> SaveFormV5Dtl(FormV5Model frm)
-        //{
-        //    int? refNo = 0;
-        //    frm.FormV5Dtl.ActiveYn = true;
-        //    frm.FormV5Dtl.Fv3hPkRefNo = frm.FormV5.PkRefNo;
-        //    if (frm.FormV5Dtl.PkRefNo == 0)
-        //    {
-        //        //  refNo = _formV1Service.SaveFormV5WorkSchedule(frm.FormV5Dtl);
-
-        //    }
-        //    else
-        //    {
-        //        refNo = await _formV1Service.UpdateFormV5Dtl(frm.FormV5Dtl);
-        //    }
-        //    return Json(refNo);
-
-
-        //}
-
-        //public async Task<IActionResult> DeleteFormV5(int id)
-        //{
-        //    int? rowsAffected = 0;
-        //    rowsAffected = _formV1Service.DeleteFormV5(id);
-        //    return Json(rowsAffected);
-        //}
-
-        //public async Task<IActionResult> DeleteFormV5Dtl(int id)
-        //{
-        //    int? rowsAffected = 0;
-        //    rowsAffected = _formV1Service.DeleteFormV5Dtl(id);
-        //    return Json(rowsAffected);
-        //}
+        public async Task<IActionResult> DeleteFormV5Dtl(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formV1Service.DeleteFormV5Dtl(id);
+            return Json(rowsAffected);
+        }
         #endregion
 
     }

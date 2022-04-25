@@ -654,251 +654,226 @@ namespace RAMMS.Business.ServiceProvider.Services
         #endregion
 
         #region FormV5
-       
-
-        //public async Task<PagingResult<FormV5ResponseDTO>> GetFilteredFormV5Grid(FilteredPagingDefinition<FormV5SearchGridDTO> filterOptions)
-        //{
-        //    PagingResult<FormV5ResponseDTO> result = new PagingResult<FormV5ResponseDTO>();
-
-        //    List<FormV5ResponseDTO> formDList = new List<FormV5ResponseDTO>();
-        //    try
-        //    {
-        //        var filteredRecords = await _repoUnit.FormV5Repository.GetFilteredRecordList(filterOptions);
-
-        //        result.TotalRecords = await _repoUnit.FormV5Repository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
-
-        //        foreach (var listData in filteredRecords)
-        //        {
-        //            var _ = _mapper.Map<FormV5ResponseDTO>(listData);
-        //            // _.ProcessStatus = listData.FV5hStatus;
-
-        //            formDList.Add(_);
-        //        }
-
-        //        result.PageResult = formDList;
-
-        //        result.PageNo = filterOptions.StartPageNo;
-        //        result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
-        //    return result;
-        //}
 
 
-        //public async Task<PagingResult<FormV5WorkScheduleGridDTO>> GetFormV5WorkScheduleGridList(FilteredPagingDefinition<FormV5WorkScheduleGridDTO> filterOptions, int V5PkRefNo)
-        //{
-        //    PagingResult<FormV5WorkScheduleGridDTO> result = new PagingResult<FormV5WorkScheduleGridDTO>();
+        public async Task<PagingResult<FormV5ResponseDTO>> GetFilteredFormV5Grid(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions)
+        {
+            PagingResult<FormV5ResponseDTO> result = new PagingResult<FormV5ResponseDTO>();
 
-        //    List<FormV5WorkScheduleGridDTO> formV5WorkScheduleList = new List<FormV5WorkScheduleGridDTO>();
-        //    try
-        //    {
-        //        var filteredRecords = await _repoUnit.FormV5Repository.GetFormV5WorkScheduleGridList(filterOptions, V5PkRefNo);
+            List<FormV5ResponseDTO> formDList = new List<FormV5ResponseDTO>();
+            try
+            {
+                var filteredRecords = await _repoUnit.FormV1Repository.GetFilteredV5RecordList(filterOptions);
 
-        //        result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                result.TotalRecords = await _repoUnit.FormV1Repository.GetFilteredV5RecordCount(filterOptions).ConfigureAwait(false);
 
-        //        foreach (var listData in filteredRecords)
-        //        {
-        //            FormV5WorkScheduleGridDTO obj = new FormV5WorkScheduleGridDTO();
+                foreach (var listData in filteredRecords)
+                {
+                    var _ = _mapper.Map<FormV5ResponseDTO>(listData);
+                    // _.ProcessStatus = listData.FV5hStatus;
 
-        //            obj.Fv5hPkRefNo = listData.Fv5dFv5hPkRefNo;
-        //            obj.Fs1dPkRefNo = listData.Fv5dS1dPkRefNo;
-        //            obj.Chainage = Convert.ToString(listData.Fv5dFrmChDeci);
-        //            obj.ChainageFrom = Convert.ToString(listData.Fv5dFrmCh);
-        //            obj.ChainageFromDec = Convert.ToString(listData.Fv5dFrmChDeci);
-        //            obj.ChainageTo = Convert.ToString(listData.Fv5dToCh);
-        //            obj.ChainageToDec = Convert.ToString(listData.Fv5dToChDeci);
-        //            obj.PkRefNo = listData.Fv5dPkRefNo;
-        //            obj.Remarks = listData.Fv5dRemarks;
-        //            obj.RoadCode = listData.Fv5dRoadCode;
-        //            obj.RoadName = listData.Fv5dRoadName;
-        //            obj.SiteRef = listData.Fv5dSiteRef;
-        //            obj.StartTime = listData.Fv5dStartTime;
+                    formDList.Add(_);
+                }
 
-        //            formV5WorkScheduleList.Add(obj);
-        //        }
+                result.PageResult = formDList;
 
-        //        result.PageResult = formV5WorkScheduleList;
-
-        //        result.PageNo = filterOptions.StartPageNo;
-        //        result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
-        //    return result;
-        //}
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return result;
+        }
 
 
+        public async Task<PagingResult<FormV5DtlResponseDTO>> GetFormV5DtlGridList(FilteredPagingDefinition<FormV5DtlResponseDTO> filterOptions, int V5PkRefNo)
+        {
+            PagingResult<FormV5DtlResponseDTO> result = new PagingResult<FormV5DtlResponseDTO>();
 
-        //public async Task<FormV5ResponseDTO> SaveFormV5(FormV5ResponseDTO FormV5)
-        //{
-        //    try
-        //    {
-        //        var domainModelFormV5 = _mapper.Map<RmFormV5Hdr>(FormV5);
-        //        domainModelFormV5.Fv5hPkRefNo = 0;
+            List<FormV5DtlResponseDTO> formV5WorkScheduleList = new List<FormV5DtlResponseDTO>();
+            try
+            {
+                var filteredRecords = await _repoUnit.FormV1Repository.GetFormv5DtlGridList(filterOptions, V5PkRefNo);
 
-        //        //var obj = _repoUnit.FormV5Repository.FindAsync(x => x.Fv5hRmu == domainModelFormV5.Fv5hRmu && x.Fv5hActCode == domainModelFormV5.Fv5hActCode && x.Fv5hSecCode == domainModelFormV5.Fv5hSecCode && x.Fv5hCrew == domainModelFormV5.Fv5hCrew && x.Fv5hDt == domainModelFormV5.Fv5hDt && x.Fv5hActiveYn == true).Result;
-        //        var obj = _repoUnit.FormV5Repository.FindAsync(x => x.Fv5hRmu == domainModelFormV5.Fv5hRmu && x.Fv5hActCode == domainModelFormV5.Fv5hActCode && x.Fv5hDt == domainModelFormV5.Fv5hDt && x.Fv5hCrew == domainModelFormV5.Fv5hCrew && x.Fv5hActiveYn == true).Result;
-        //        if (obj != null)
-        //            return _mapper.Map<FormV5ResponseDTO>(obj);
+                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
 
-        //        IDictionary<string, string> lstData = new Dictionary<string, string>();
-        //        lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
-        //        lstData.Add("Crew", domainModelFormV5.Fv5hCrew.ToString());
-        //        lstData.Add("ActivityCode", domainModelFormV5.Fv5hActCode);
-        //        domainModelFormV5.Fv5hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV5Header, lstData);
+                foreach (var listData in filteredRecords)
+                {
+                    FormV5DtlResponseDTO obj = new FormV5DtlResponseDTO();
 
-        //        var entity = _repoUnit.FormV5Repository.CreateReturnEntity(domainModelFormV5);
-        //        FormV5.PkRefNo = _mapper.Map<FormV5ResponseDTO>(entity).PkRefNo;
-        //        FormV5.RefId = domainModelFormV5.Fv5hRefId;
-        //        FormV5.Status = domainModelFormV5.Fv5hStatus;
+                    obj.Fv5hPkRefNo = listData.Fv5dFv5hPkRefNo;
+                    obj.PkRefNo = listData.Fv5dPkRefNo;
+                    obj.FileNameFrm = listData.Fv5dFileNameFrm;
+                    obj.FileNameTo = Convert.ToString(listData.Fv5dFileNameTo);
+                    obj.Desc = Convert.ToString(listData.Fv5dDesc);
+                    obj.ImageFilenameSys = Convert.ToString(listData.Fv5dImageFilenameSys);
+                     
 
-        //        return FormV5;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
-        //}
+                    formV5WorkScheduleList.Add(obj);
+                }
 
-        //public int? SaveFormV5WorkSchedule(FormV5DtlResponseDTO FormV5Dtl)
-        //{
+                result.PageResult = formV5WorkScheduleList;
 
-        //    try
-        //    {
-        //        var model = _mapper.Map<RmFormV5Dtl>(FormV5Dtl);
-        //        model.Fv5dPkRefNo = 0;
-        //        return _repo.SaveFormV5WorkSchedule(model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
-        //}
-
-        //public int? UpdateFormV5WorkSchedule(FormV5DtlResponseDTO FormV5Dtl)
-        //{
-
-        //    try
-        //    {
-        //        int? Fv5hPkRefNo = FormV5Dtl.Fv5hPkRefNo;
-        //        var model = _mapper.Map<RmFormV5Dtl>(FormV5Dtl);
-        //        model.Fv5dPkRefNo = 0;
-        //        model.Fv5dFv5hPkRefNo = Fv5hPkRefNo;
-        //        return _repo.UpdateFormV5WorkSchedule(model);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
-        //}
-
-        //public int? DeleteFormV5(int id)
-        //{
-        //    int? rowsAffected;
-        //    try
-        //    {
-        //        rowsAffected = _repo.DeleteFormV5(id);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
-
-        //    return rowsAffected;
-        //}
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return result;
+        }
 
 
-        //public int? DeleteFormV5WorkSchedule(int id)
-        //{
-        //    int? rowsAffected;
-        //    try
-        //    {
-        //        rowsAffected = _repo.DeleteFormV5WorkSchedule(id);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
+        public async Task<FormV5ResponseDTO> SaveFormV5(FormV5ResponseDTO Formv5)
+        {
+            try
+            {
+                return await _repo.SaveFormV5(Formv5);
 
-        //    return rowsAffected;
-        //}
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+        public int? SaveFormV5Dtl(FormV5DtlResponseDTO FormV5Dtl)
+        {
+
+            try
+            {
+                var model = _mapper.Map<RmFormV5Dtl>(FormV5Dtl);
+                model.Fv5dPkRefNo = 0;
+                return _repo.SaveFormV5Dtl(model);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+        public Task<int> UpdateFormV5Dtl(FormV5DtlResponseDTO FormV5Dtl)
+        {
+
+            try
+            {
+                int? Fv5hPkRefNo = FormV5Dtl.Fv5hPkRefNo;
+                var model = _mapper.Map<RmFormV5Dtl>(FormV5Dtl);
+                model.Fv5dPkRefNo = 0;
+                model.Fv5dFv5hPkRefNo = Fv5hPkRefNo;
+                return _repo.UpdateFormV5Dtl(model);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+        public int? DeleteFormV5(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormV5(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
 
 
-        //public async Task<int> Update(FormV5ResponseDTO FormV5)
-        //{
-        //    int rowsAffected;
-        //    try
-        //    {
-        //        int PkRefNo = FormV5.PkRefNo;
+        public int? DeleteFormV5Dtl(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormV5(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
 
-        //        var domainModelFormV5 = _mapper.Map<RmFormV5Hdr>(FormV5);
-        //        domainModelFormV5.Fv5hPkRefNo = PkRefNo;
-        //        domainModelFormV5.Fv5hActiveYn = true;
-        //        domainModelFormV5 = UpdateStatus(domainModelFormV5);
-        //        _repoUnit.FormV5Repository.Update(domainModelFormV5);
-        //        rowsAffected = await _repoUnit.CommitAsync();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await _repoUnit.RollbackAsync();
-        //        throw ex;
-        //    }
+            return rowsAffected;
+        }
 
-        //    return rowsAffected;
-        //}
 
-        //public RmFormV5Hdr UpdateStatus(RmFormV5Hdr form)
-        //{
-        //    if (form.Fv5hPkRefNo > 0)
-        //    {
-        //        var existsObj = _repoUnit.FormV5Repository._context.RmFormV5Hdr.Where(x => x.Fv5hPkRefNo == form.Fv5hPkRefNo).Select(x => new { Status = x.Fv5hStatus, Log = x.Fv5hAuditLog }).FirstOrDefault();
-        //        if (existsObj != null)
-        //        {
-        //            form.Fv5hAuditLog = existsObj.Log;
-        //            // form.Fv5hStatus = existsObj.Status;
+        public async Task<int> UpdateFormV5(FormV5ResponseDTO FormV5)
+        {
+            int rowsAffected;
+            try
+            {
+                int PkRefNo = FormV5.PkRefNo;
 
-        //        }
+                var domainModelFormV5 = _mapper.Map<RmFormV5Hdr>(FormV5);
+                domainModelFormV5.Fv5hPkRefNo = PkRefNo;
+                domainModelFormV5.Fv5hActiveYn = true;
+                domainModelFormV5 = UpdateStatus(domainModelFormV5);
+                await _repoUnit.FormV1Repository.UpdateFormV5(domainModelFormV5);
+                rowsAffected = await _repoUnit.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
 
-        //    }
-        //    if (form.Fv5hSubmitSts && form.Fv5hStatus == "Saved")
-        //    {
-        //        form.Fv5hStatus = Common.StatusList.FormW2Submitted;
-        //        form.Fv5hAuditLog = Utility.ProcessLog(form.Fv5hAuditLog, "Submitted By", "Submitted", form.Fv5hUsernameSch, string.Empty, form.Fv5hDtSch, _security.UserName);
-        //        processService.SaveNotification(new RmUserNotification()
-        //        {
-        //            RmNotCrBy = _security.UserName,
-        //            RmNotGroup = GroupNames.OperationsExecutive,
-        //            RmNotMessage = "Recorded By:" + form.Fv5hUsernameSch + " - Form WN (" + form.Fv5hPkRefNo + ")",
-        //            RmNotOn = DateTime.Now,
-        //            RmNotUrl = "/MAM/EditFormV5?id=" + form.Fv5hPkRefNo.ToString(),
-        //            RmNotUserId = "",
-        //            RmNotViewed = ""
-        //        }, true);
-        //    }
+            return rowsAffected;
+        }
 
-        //    return form;
-        //}
+        public RmFormV5Hdr UpdateStatus(RmFormV5Hdr form)
+        {
+            if (form.Fv5hPkRefNo > 0)
+            {
+                var existsObj = _repoUnit.FormV1Repository._context.RmFormV5Hdr.Where(x => x.Fv5hPkRefNo == form.Fv5hPkRefNo).Select(x => new { Status = x.Fv5hStatus, Log = x.Fv5hAuditLog }).FirstOrDefault();
+                if (existsObj != null)
+                {
+                    form.Fv5hAuditLog = existsObj.Log;
+                    // form.Fv5hStatus = existsObj.Status;
 
-        //public async Task<FormV5ResponseDTO> FindFormV5ByID(int id)
-        //{
-        //    RmFormV5Hdr formV5 = await _repo.FindFormV5ByID(id);
-        //    return _mapper.Map<FormV5ResponseDTO>(formV5);
+                }
 
-        //}
+            }
+            if (form.Fv5hSubmitSts && form.Fv5hStatus == "Saved")
+            {
+                form.Fv5hStatus = Common.StatusList.FormW2Submitted;
+                form.Fv5hAuditLog = Utility.ProcessLog(form.Fv5hAuditLog, "Submitted By", "Submitted", form.Fv5hUsernameRec, string.Empty, form.Fv5hDtRec, _security.UserName);
+                processService.SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = _security.UserName,
+                    RmNotGroup = GroupNames.OperationsExecutive,
+                    RmNotMessage = "Recorded By:" + form.Fv5hUsernameRec + " - Form WN (" + form.Fv5hPkRefNo + ")",
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = "/MAM/EditFormV5?id=" + form.Fv5hPkRefNo.ToString(),
+                    RmNotUserId = "",
+                    RmNotViewed = ""
+                }, true);
+            }
 
-     
+            return form;
+        }
+
+        public async Task<FormV5ResponseDTO> FindFormV5ByID(int id)
+        {
+            RmFormV5Hdr formV5 = await _repo.FindFormV5ByID(id);
+            return _mapper.Map<FormV5ResponseDTO>(formV5);
+
+        }
+
+
 
         #endregion
 

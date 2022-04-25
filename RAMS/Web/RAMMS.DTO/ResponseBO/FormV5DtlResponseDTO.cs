@@ -9,21 +9,20 @@ namespace RAMMS.DTO.ResponseBO
     public class FormV5DtlResponseDTO
     {
 
-        public int Fv5dPkRefNo { get; set; }
-        public int? Fv5dFf5hPkRefNo { get; set; }
-        public string Fv5dFileNameFrm { get; set; }
-        public string Fv5dFileNameTo { get; set; }
-        public string Fv5dDesc { get; set; }
-        public string Fv5dImageFilenameSys { get; set; }
-        public string Fv5dImageFilenameUpload { get; set; }
-        public string Fv5dImageUserFilePath { get; set; }
-        public int? Fv5dModBy { get; set; }
-        public DateTime? Fv5dModDt { get; set; }
-        public int? Fv5dCrBy { get; set; }
-        public DateTime? Fv5dCrDt { get; set; }
-        public bool Fv5dSubmitSts { get; set; }
-        public bool Fv5dActiveYn { get; set; }
-
+        public int PkRefNo { get; set; }
+        public int? Fv5hPkRefNo { get; set; }
+        public string FileNameFrm { get; set; }
+        public string FileNameTo { get; set; }
+        public string Desc { get; set; }
+        public string ImageFilenameSys { get; set; }
+        public string ImageFilenameUpload { get; set; }
+        public string ImageUserFilePath { get; set; }
+        public int? ModBy { get; set; }
+        public DateTime? ModDt { get; set; }
+        public int? CrBy { get; set; }
+        public DateTime? CrDt { get; set; }
+        public bool SubmitSts { get; set; }
+        public bool ActiveYn { get; set; }
 
     }
 }

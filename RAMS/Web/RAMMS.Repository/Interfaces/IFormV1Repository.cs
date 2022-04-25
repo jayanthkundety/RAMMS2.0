@@ -67,21 +67,27 @@ namespace RAMMS.Repository.Interfaces
         #endregion
 
         #region FormV5
-        //Task<List<RmFormV1Hdr>> GetFilteredV5RecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+        Task<List<RmFormV5Hdr>> GetFilteredV5RecordList(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
-        //Task<int> GetFilteredV5RecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
+        Task<int> GetFilteredV5RecordCount(FilteredPagingDefinition<FormV1SearchGridDTO> filterOptions);
 
-        //Task<List<RmFormV5Dtl>> GetFormV5WorkScheduleGridList(FilteredPagingDefinition<FormV5WorkScheduleGridDTO> filterOptions, int V5PkRefNo);
+        Task<List<RmFormV5Dtl>> GetFormv5DtlGridList(FilteredPagingDefinition<FormV5DtlResponseDTO> filterOptions, int V5PkRefNo);
 
-        //Task<RmFormV5Hdr> FindFormV5ByID(int id);
+        Task<RmFormV5Hdr> FindFormV5ByID(int id);
 
-        //int? SaveFormV5WorkSchedule(RmFormV5Dtl FormV5Dtl);
-        //int? UpdateFormV5WorkSchedule(RmFormV5Dtl FormV5Dtl);
+        Task<FormV5ResponseDTO> SaveFormV5(FormV5ResponseDTO Formv5);
 
-        //int? DeleteFormV5(int id);
-        //int? DeleteFormV5WorkSchedule(int id);
+        Task<int> UpdateFormV5(RmFormV5Hdr FormV5);
 
-    
+
+        int? SaveFormV5Dtl(RmFormV5Dtl FormV5Dtl);
+
+        Task<int> UpdateFormV5Dtl(RmFormV5Dtl FormV5Dtl);
+
+        int? DeleteFormV5(int id);
+        int? DeleteFormV5Dtl(int id);
+
+
         #endregion
 
     }
