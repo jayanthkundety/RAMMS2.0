@@ -12,9 +12,9 @@ $(document).ready(function () {
         $("#SubmitFormQa1Btn").hide();
         document.getElementById("btnEquipAdd").disabled = true;
         document.getElementById("btnGenAdd").disabled = true;
-        document.getElementById("btnMaterialAdd").disabled = true; 
+        document.getElementById("btnMaterialAdd").disabled = true;
         disableAll();
-     
+
     }
 
     if ($("#hdnView").val() == "1") {
@@ -155,7 +155,143 @@ $(document).ready(function () {
         SetWeekDayYear($('#formQa1Dt').val());
     });
 
+    $("#formQa1AuditedBy").on("change", function () {
+        var id = $("#formQa1AuditedBy option:selected").val();
+        var ctrl = $(this);
+        if (id != "99999999" && id != "") {
+            $("#formQa1AuditedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formQa1AuditedDesig").val(ctrl.find("option:selected").attr("Item2"));
+            $("#formQa1AuditOffice").val(ctrl.find("option:selected").attr("Item3"));
+            $("#formQa1AuditSign").prop("checked", true);
+        }
+        else if (id == "99999999") {
+            $("#formQa1AuditedName").prop("disabled", false);
+            $("#formQa1AuditedName").val('');
+            $("#formQa1AuditedDesig").prop("disabled", false);
+            $("#formQa1AuditedDesig").val('');
+            $("#formQa1AuditOffice").prop("disabled", false);
+            $("#formQa1AuditOffice").val('');
+            $("#formQa1AuditSign").prop("checked", true);
+        }
+        else {
+            $("#formQa1AuditedName").prop("disabled", true);
+            $("#formQa1AuditedName").val('');
+            $("#formQa1AuditedDesig").prop("disabled", true);
+            $("#formQa1AuditedDesig").val('');
+            $("#formQa1AuditOffice").prop("disabled", true);
+            $("#formQa1AuditOffice").val('');
+            //$("#formQa1AuditSign").prop("checked", true);
+        }
+        $("#formQa1AuditDate").val(currentDate);
+        return false;
+    });
+
+    $("#formQa1WitnessedBy").on("change", function () {
+        var id = $("#formQa1WitnessedBy option:selected").val();
+        var ctrl = $(this);
+        if (id != "99999999" && id != "") {
+            $("#formQa1WitnessedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formQa1WitnessedDesig").val(ctrl.find("option:selected").attr("Item2"));
+            $("#formW2WitnessedOffice").val(ctrl.find("option:selected").attr("Item3"));
+            $("#formQa1SignWit").prop("checked", true);
+        }
+        else if (id == "99999999") {
+            $("#formQa1WitnessedName").prop("disabled", false);
+            $("#formQa1WitnessedName").val('');
+            $("#formQa1WitnessedDesig").prop("disabled", false);
+            $("#formQa1WitnessedDesig").val('');
+            $("#formW2WitnessedOffice").prop("disabled", false);
+            $("#formW2WitnessedOffice").val('');
+            $("#formQa1SignWit").prop("checked", true);
+        }
+        else {
+            $("#formQa1WitnessedName").prop("disabled", true);
+            $("#formQa1WitnessedName").val('');
+            $("#formQa1WitnessedDesig").prop("disabled", true);
+            $("#formQa1WitnessedDesig").val('');
+            $("#formW2WitnessedOffice").prop("disabled", true);
+            $("#formW2WitnessedOffice").val('');
+            //$("#formQa1SignWit").prop("checked", true);
+        }
+        $("#formQa1WitnessedDate").val(currentDate);
+        return false;
+    });
+
+    $("#formQa1AssignedBy").on("change", function () {
+        var id = $("#formQa1AssignedBy option:selected").val();
+        var ctrl = $(this);
+        if (id != "99999999" && id != "") {
+            $("#formQa1AssignedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formQa1SignAssg").prop("checked", true);
+        }
+        else if (id == "99999999") {
+            $("#formQa1AssignedName").prop("disabled", false);
+            $("#formQa1AssignedName").val('');
+            $("#formQa1SignAssg").prop("disabled", false);
+            $("#formQa1SignAssg").prop("checked", true);
+        }
+        else {
+            $("#formQa1AssignedName").prop("disabled", true);
+            $("#formQa1AssignedName").val('');
+            $("#formQa1SignAssg").prop("disabled", false);
+        }
+        $("#formQa1AssignedDate").val(currentDate);
+        return false;
+    });
+
+    $("#formQa1ExecutedBy").on("change", function () {
+        var id = $("#formQa1ExecutedBy option:selected").val();
+        var ctrl = $(this);
+        if (id != "99999999" && id != "") {
+            $("#formQa1ExecutedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formQa1SignExe").prop("checked", true);
+        }
+        else if (id == "99999999") {
+            $("#formQa1ExecutedName").prop("disabled", false);
+            $("#formQa1ExecutedName").val('');
+            $("#formQa1SignExe").prop("disabled", false);
+            $("#formQa1SignExe").prop("checked", true);
+        }
+        else {
+            $("#formQa1ExecutedName").prop("disabled", true);
+            $("#formQa1ExecutedName").val('');
+            $("#formQa1SignExe").prop("disabled", true);
+        }
+        $("#formQa1ExecutedDate").val(currentDate);
+        return false;
+    });
+
+    $("#formQa1CheckedBy").on("change", function () {
+        var id = $("#formQa1CheckedBy option:selected").val();
+        var ctrl = $(this);
+        if (id != "99999999" && id != "") {
+            $("#formQa1CheckedName").val(ctrl.find("option:selected").attr("Item1"));
+            $("#formQa1SignChck").prop("checked", true);
+        }
+        else if (id == "99999999") {
+            $("#formQa1CheckedName").prop("disabled", false);
+            $("#formQa1CheckedName").val('');
+            $("#formQa1SignChck").prop("disabled", false);
+            $("#formQa1SignChck").prop("checked", true);
+        }
+        else {
+            $("#formQa1CheckedName").prop("disabled", true);
+            $("#formQa1CheckedName").val('');
+            $("#formQa1SignChck").prop("disabled", true);
+        }
+        $("#formQa1CheckedDate").val(currentDate);
+        return false;
+    });
 });
+
+function getDt() {
+    var d = new Date();
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+    var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
+        (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
+    return output;
+}
 
 function disableAll() {
     //Labour
@@ -391,7 +527,7 @@ function FormEquipGridRefresh() {
 }
 
 function EditFormQa1Gen(id, view) {
-
+    debugger;
     InitAjaxLoading();
     $.ajax({
         url: '/FormQA1/EditFormQa1Gen',
@@ -406,7 +542,7 @@ function EditFormQa1Gen(id, view) {
                 $("#saveFormQa1GenBtn").css("display", "none");
                 $("#cancelAddModelBtn").attr("disabled", false);
                 $("#saveContinueFormQa1GenBtn").css("display", "none");
-            } else if ($("#hdnLabid").val() != "") {
+            } else if ($("#hdnGenId").val() != "") {
                 $("#FormQa1GenModalid").html("Edit Attention")
             }
             HideAjaxLoading();
@@ -459,14 +595,40 @@ function EditFormQa1Material(id, view) {
     })
 }
 
-//ADD EQUIP
-
-$(document).on("click", "#saveFormDEqBtn", function () {
+//SAVE EQUIP
+$(document).on("click", "#saveFormQa1EqBtn", function () {
     saveEquipment(false, false);
 });
 
-$(document).on("click", "#saveContinueFormDEqBtn", function () {
+$(document).on("click", "#saveContinueFormQa1EqBtn", function () {
     saveEquipment(false, true);
+});
+
+//SAVE MATERIAL
+$(document).on("click", "#saveContinueFormQa1MtBtn", function () {
+    saveMaterial(false, true);
+});
+
+$(document).on("click", "#saveFormQa1MtBtn", function () {
+    saveMaterial(false, false);
+});
+
+//SAVE GENERAL
+$(document).on("click", "#saveContinueFormQa1GenBtn", function () {
+    saveGeneral(false, true);
+});
+
+$(document).on("click", "#saveFormQa1GenBtn", function () {
+    saveGeneral(false, false);
+});
+
+//SAVE FORMQA1
+$(document).on("click", "#saveFormQa1Btn", function () {
+    saveHeader(false);
+});
+
+$(document).on("click", "#SubmitFormQa1Btn", function () {
+    saveHeader(true);
 });
 
 function saveEquipment(isSubmit, cont) {
@@ -501,7 +663,7 @@ function saveEquipment(isSubmit, cont) {
                 $("#val-summary-displayer").css("display", "none");
                 $("#val-summary-displayer-equip").css("display", "none");
                 if (!cont)
-                    $("#FormDEquipModal").modal("hide");
+                    $("#FormQa1EquipModal").modal("hide");
                 else {
                     $("#hdnEquipid").val('');
                     $("#formQa1EquipCode").val('').trigger('chosen:updated');
@@ -528,7 +690,7 @@ function saveEquipment(isSubmit, cont) {
 }
 
 function saveGeneral(isSubmit, cont) {
-    if (ValidatePage('#FormDLabourModal')) {
+    if (ValidatePage('#FormAddGeneral')) {
         InitAjaxLoading();
         var d = new Date();
 
@@ -539,54 +701,32 @@ function saveGeneral(isSubmit, cont) {
             (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
 
         var saveObj = new Object;
-        saveObj.SubmitStatus = isSubmit;
-        var tdlen = $("#FormDLabourGridView").find("tbody").find("tr td").length;
-        var rowno = $("#FormDLabourGridView").find("tbody").find("tr").length;
-        //  saveObj.SerialNo = tdlen == 1 ? 1 : rowno + 1;
-        saveObj.FdmdFdhPkRefNo = $("#FDHRef_No").val();
-        saveObj.No = $("#hdnLabid").val();
-        saveObj.LabourCode = $("#formDLabCode").find(":selected").val();
-        saveObj.CodeDesc = $("#formDlabDesc").val();
-        saveObj.LabourDesc = $("#formDLabDescription").val();
-        saveObj.Quantity = $("#formDLabQty").val();
-        saveObj.Unit = $("#formDLabUnit").find(":selected").val();
-        saveObj.SerialNo = $("#LabSerialNo").val();
-        //saveObj.ContNo = $("#formDContNo").val();
-
-        //saveObj.ReportedByUsername = $("#FormDAttnUsername").val();
-
-        //saveObj.UseridVer = $("#FormDVeriBy").find(":selected").text();
-        //saveObj.UsernameVer = $("#FormDVerUsername").val();
-        //saveObj.DtVer = $("#formDverDate").val();
-
-        //saveObj.UseridVet = $("#FormDSVetby").find(":selected").text();
-        //saveObj.UsernameVet = $("#FormDSVetUsername").val();
-
-        saveObj.DateReported = output
-        // saveObj.ModifeidBy = $("#FormDSVerby").find(":selected").text();
-        saveObj.ModifiedDate = output
-        // saveObj.CreatedBy = $("#FormDSVerby").find(":selected").text();
-        saveObj.CreatedDate = output
+        //saveObj.SubmitStatus = isSubmit;
+        saveObj.PkRefNo = $("#hdnGenId").val();
+        saveObj.Fqa1hPkRefNo = $("#formQa1PkRefNo").val();
+        saveObj.Item = $("#formQa1GenItem").val();
+        saveObj.AttTo = $("#formQa1GenAttTo").val();
+        saveObj.AttRemarks = $("#formQa1GenAttRemark").val();
+        saveObj.ModDt = output
+        saveObj.CrDt = output
         saveObj.ActiveYn = true;
 
         $.ajax({
-            url: '/ERT/FormDSaveLabour',
+            url: '/FormQA1/SaveGeneral',
             data: saveObj,
             type: 'POST',
             success: function (data) {
                 app.ShowSuccessMessage('Successfully Saved', false);
                 $("#val-summary-displayer").css("display", "none");
                 $("#val-summary-displayer-labour").css("display", "none");
-                FormLabGridRefresh();
+                FormGenGridRefresh();
                 if (!cont)
-                    $("#FormDLabourModal").modal("hide");
+                    $("#FormAddGeneral").modal("hide");
                 else {
-                    $("#hdnLabid").val('');
-                    $("#formDLabCode").val('').trigger('chosen:updated');
-                    $("#formDlabDesc").val("");
-                    $("#formDLabUnit").val("").trigger('chosen:updated');
-                    $("#formDLabQty").val("");
-                    $("#formDLabDescription").val("")
+                    $("#hdnGenId").val('');
+                    $("#formQa1GenItem").val("");
+                    $("#formQa1GenAttTo").val("");
+                    $("#formQa1GenAttRemark").val("")
                 }
                 HideAjaxLoading();
             },
@@ -603,7 +743,7 @@ function saveGeneral(isSubmit, cont) {
 }
 
 function saveMaterial(isSubmit, cont) {
-    if (ValidatePage('#FormDMaterialModal')) {
+    if (ValidatePage('#FormQa1MaterialModal')) {
         InitAjaxLoading();
         var d = new Date();
 
@@ -614,37 +754,19 @@ function saveMaterial(isSubmit, cont) {
             (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
 
         var saveObj = new Object;
-        saveObj.SubmitStatus = isSubmit;
-        var tdlen = $("#FormDMaterialGridView").find("tbody").find("tr td").length;
-        var rowno = $("#FormDMaterialGridView").find("tbody").find("tr").length;
-        // saveObj.SerialNo = tdlen == 1 ? 1 : rowno + 1;
-        saveObj.FdmdFdhPkRefNo = $("#FDHRef_No").val();
-        saveObj.No = $("#hdnMaterialNo").val();
-        saveObj.MaterialCode = $("#formDMatCode").find(":selected").val();
-        saveObj.CodeDesc = $("#formDMatDesc").val();
-        saveObj.MaterialDesc = $("#FormDMatDescription").val();
-        saveObj.Quantity = $("#formDMatQuantity").val();
-        saveObj.Unit = $("#formDMatUnit").find(":selected").val();
-        saveObj.SerialNo = $("#MaterialSerialNo").val();
-        //saveObj.ContNo = $("#formDContNo").val();
-
-        //saveObj.ReportedByUsername = $("#FormDAttnUsername").val();
-
-        //saveObj.UseridVer = $("#FormDVeriBy").find(":selected").text();
-        //saveObj.UsernameVer = $("#FormDVerUsername").val();
-        //saveObj.DtVer = $("#formDverDate").val();
-
-        //saveObj.UseridVet = $("#FormDSVetby").find(":selected").text();
-        //saveObj.UsernameVet = $("#FormDSVetUsername").val();
-
-        saveObj.DateReported = output
-        // saveObj.ModifeidBy = $("#FormDSVerby").find(":selected").text();
-        saveObj.ModifiedDate = output
-        // saveObj.CreatedBy = $("#FormDSVerby").find(":selected").text();
-        saveObj.CreatedDate = output
+        //saveObj.SubmitStatus = isSubmit;
+        saveObj.PkRefNo = $("#hdnMaterialNo").val();
+        saveObj.Fqa1hPkRefNo = $("#formQa1PkRefNo").val();
+        saveObj.Type = $("#formQa1MatType").val();
+        saveObj.Qty = $("#formQa1MatQty").val();
+        saveObj.Unit = $("#formQa1MatUnit").find(":selected").val();
+        saveObj.Spec = $("#formQa1MatSpec").find(":selected").val();
+        saveObj.Remark = $("#formQa1MatRemark").val();
+        saveObj.ModDt = output
+        saveObj.CrDt = output
         saveObj.ActiveYn = true;
         $.ajax({
-            url: '/ERT/FormDSaveMaterial',
+            url: '/FormQA1/SaveMaterial',
             data: saveObj,
             type: 'POST',
             success: function (data) {
@@ -652,15 +774,14 @@ function saveMaterial(isSubmit, cont) {
                 $("#val-summary-displayer").css("display", "none");
                 $("#val-summary-displayer-material").css("display", "none");
                 if (!cont)
-                    $("#FormDMaterialModal").modal("hide");
+                    $("#FormQa1MaterialModal").modal("hide");
                 else {
                     $("#hdnMaterialNo").val('');
-                    $("#FormDMaterialNo").val("");
-                    $("#formDMatCode").val('').trigger('chosen:updated');
-                    $("#formDMatDesc").val("");
-                    $("#FormDMatDescription").val("");
-                    $("#formDMatQuantity").val("");
-                    $("#formDMatUnit").val("").trigger('chosen:updated');
+                    $("#formQa1MatType").val("");
+                    $("#formQa1MatQty").val("");
+                    $("#formQa1MatUnit").val('').trigger('chosen:updated');
+                    $("#formQa1MatSpec").val("").trigger('chosen:updated');
+                    $("#formQa1MatRemark").val("");
                 }
                 FormMatGridRefresh();
                 HideAjaxLoading();
@@ -675,4 +796,305 @@ function saveMaterial(isSubmit, cont) {
     } else {
         $("#val-summary-displayer-material").css("display", "block");
     }
+}
+
+function saveHeader(submitsts) {
+
+    if (submitsts) {
+        $("#AccordPage1 .svalidate").addClass("validate");
+        $("#AccordPage2 .svalidate").addClass("validate");
+        $("#AccordPage6 .svalidate").addClass("validate");
+        $("#AccordPage7 .svalidate").addClass("validate");
+        $("#AccordPage12 .svalidate").addClass("validate");
+        $("#AccordPage16 .svalidate").addClass("validate");
+        $("#AccordPage8 .svalidate").addClass("validate");
+        $("#AccordPage9 .svalidate").addClass("validate");
+        $("#AccordPage10 .svalidate").addClass("validate");
+        $("#divUserDetails .svalidate").addClass("validate");
+    }
+    if (ValidatePage('AccordPage1', 'AccordPage2', 'AccordPage6', 'AccordPage7', 'AccordPage12', 'AccordPage16', 'AccordPage8', 'AccordPage9', 'AccordPage10', 'divUserDetails')) {
+        InitAjaxLoading();
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var output = (('' + month).length < 2 ? '0' : '') + month + '/' +
+            (('' + day).length < 2 ? '0' : '') + day + '/' + d.getFullYear();
+
+        var saveObj = new Object;
+        //saveObj.SubmitStatus = isSubmit;
+        saveObj.PkRefNo = $("#formQa1PkRefNo").val();
+
+        saveObj.Rmu = $("#formQa1rmu").find(":selected").val();
+        saveObj.RmuName = $("#formQa1rmuDesc").val();
+        saveObj.SecCode = $("#formQa1SectionCode").find(":selected").val();
+        saveObj.SecName = $("#formQa1SectionName").val();
+        saveObj.RoadCode = $("#formQa1RoadCode").find(":selected").val();
+        saveObj.RoadName = $("#formQa12RoadName").val();
+        saveObj.WeekNo = $("#formQa1WeekNo").find(":selected").val();
+        saveObj.Day = $("#formQa1Day").val();
+        saveObj.Year = $("#formQa1Year").val();
+        saveObj.RefId = $("#formQa1ReferenceNo").val();
+        saveObj.Crew = $("#formQa1Crew").find(":selected").val();
+        saveObj.Crewname = $("#formQa1CrewName").val();
+        saveObj.ActCode = $("#formQa1ActivityCode").find(":selected").val();
+        saveObj.ActName = $("#formQa1ActivityName").val();
+        saveObj.Dt = $("#FormQa1Date").val();
+        saveObj.Lab = getLabour();
+        saveObj.Gc = getGC()
+        saveObj.Ssc = getSSC();
+        saveObj.Tes = getTES();
+        saveObj.Wcq = getWCQ();
+        saveObj.We = getWE();
+        saveObj.UseridAssgn = $("#formQa1AssignedBy").find(":selected").val();
+        saveObj.UsernameAssgn = $("#formQa1AssignedName").val();
+        saveObj.InitialAssgn = $("#formQa1SignAssg").prop("checked");
+        saveObj.DtAssgn = $("#formQa1AssignedDate").val();
+        
+        saveObj.UseridExec =  $("#formQa1ExecutedBy").find(":selected").val();
+        saveObj.UsernameExec = $("#formQa1ExecutedName").val();
+        saveObj.InitialExec = $("#formQa1SignExe").prop("checked");
+        saveObj.DtExec = $("#formQa1ExecutedDate").val();
+        saveObj.UseridChked = $("#formQa1CheckedBy").find(":selected").val();
+        saveObj.UsernameChked = $("#formQa1CheckedName").val();
+        saveObj.InitialChked = $("#formQa1SignChck").prop("checked");
+        saveObj.DtChked = $("#formQa1CheckedDate").val();
+        saveObj.ModDt = output
+        saveObj.CrDt = output
+        saveObj.SignAudit = $("#formQa1AuditSign").val();
+        saveObj.UseridAudit = $("#formQa1AuditedBy").find(":selected").val();
+        saveObj.UsernameAudit = $("#formQa1AuditedName").val();
+        saveObj.DesignationAudit = $("#formQa1AuditedDesig").val();
+        saveObj.DtAudit = $("#formQa1AuditDate").val();
+        saveObj.OfficeAudit = $("#formQa1AuditOffice").val();
+        saveObj.SignWit = $("#formQa1SignWit").val();
+        saveObj.UseridWit = $("#formQa1WitnessedBy").find(":selected").val();
+        saveObj.UsernameWit = $("#formQa1WitnessedName").val();
+        saveObj.DesignationWit = $("#formQa1WitnessedDesig").val();
+        saveObj.DtWit = $("#formQa1WitnessedDate").val();
+        saveObj.OfficeWit = $("#formW2WitnessedOffice").val();
+        saveObj.Remarks = $("#formQa1Remarks").val();
+        saveObj.SubmitSts = submitsts;  
+        saveObj.ActiveYn = true;
+
+        $.ajax({
+            url: '/FormQA1/SaveHeader',
+            data: saveObj,
+            type: 'POST',
+            success: function (data) {
+                app.ShowSuccessMessage('Successfully Saved', false);
+                location.href = "/FormQA1/QA1"
+                HideAjaxLoading();
+            },
+            error: function (data) {
+                app.ShowErrorMessage(data.responseText);
+                HideAjaxLoading();
+            }
+
+        });
+    }
+    else {
+        $("#val-summary-displayer-equip").css("display", "block");
+    }
+}
+
+function getLabour() {
+    var lab = new Object();
+    var dt = getDt();
+    lab.PkRefNo = $("#formQa1LabPkRefNo").val();
+    lab.Fqa1hPkRefNo = $("#formQa1PkRefNo").val();
+    lab.LabCsOnSite = $("#formQa1LabCROnSite").val();
+    lab.LabCsOnLeave = $("#formQa1LabCROnLeave").val();
+    lab.LabCsPerfStd = $("#formQa1LabCRPerfStd").find(":selected").val();
+    lab.LabCsRemark = $("#formQa1LabCRRemark").val();
+    lab.LabOpOnSite = $("#formQa1LabOPOnSite").val();
+    lab.LabOpOnLeave = $("#formQa1LabOPOnLeave").val();
+    lab.LabOpPerfStd = $("#formQa1LabOPPerfStd").find(":selected").val();
+    lab.LabOpRemark = $("#formQa1LabOPRemark").val();
+    lab.LabDrOnSite = $("#formQa1LabDROnSite").val();
+    lab.LabDrOnLeave = $("#formQa1LabDROnLeave").val();
+    lab.LabDrPerfStd = $("#formQa1LabDRPerfStd").find(":selected").val();
+    lab.LabDrRemark = $("#formQa1LabDRRemark").val();
+    lab.LabWmOnSite = $("#formQa1LabWMOnSite").val();
+    lab.LabWmOnLeave = $("#formQa1LabWMOnLeave").val();
+    lab.LabWmPerFStd = $("#formQa1LabWMPerfStd").find(":selected").val();
+    lab.LabWmRemark = $("#formQa1LabWMRemark").val();
+    lab.LabOthOnSite = $("#formQa1LabOTHOnSite").val();
+    lab.LabOthOnLeave = $("#formQa1LabOTHOnLeave").val();
+    lab.LabOthPerfStd = $("#formQa1LabOTHPerfStd").find(":selected").val();
+    lab.LabOthRemark = $("#formQa1LabOTHRemark").val();
+    lab.ActiveYn = true;
+    lab.CrDt = dt;
+    lab.ModDt = dt;
+    return lab;
+}
+
+function getGC() {
+    var gc = new Object();
+    var dt = getDt();
+    gc.PkRefNo = $("#formGCPkRefNo").val();
+    gc.Fqa1hPkRefNo = $("#formQa1PkRefNo").val();
+    gc.Whs = $("#formQa1GcWhs").prop("checked");
+    gc.WhsRemark = $("#formQa1WhsRemark").val();
+    gc.WhsReason = $("#formQa1WhsReason").val();
+    gc.Wis = $("#formQa1GcWis").prop("checked");
+    gc.WisRemark = $("#formQa1WisRemark").val();
+    gc.WisReason = $("#formQa1WisReason").val();
+    gc.Wius = $("#formQa1GcWius").prop("checked");
+    gc.WiusMat = $("#formQa1GcWiusMat").prop("checked");
+    gc.WiusMatRemark = $("#formQa1WiusMatRemark").val();
+    gc.WiusMatReason = $("#formQa1WiusMatReason").val();
+    gc.WiusEqp = $("#formQa1GcWiusEqp").prop("checked");
+    gc.WiusEqpReason = $("#formQa1WiusEqpRemark").val();
+    gc.WiusEqpRemark = $("#formQa1WiusEqpReason").val();
+    gc.WiusWrk = $("#formQa1GcWiusWrk").prop("checked");
+    gc.WiusWrkRemark = $("#formQa1WiusWrkRemark").val();
+    gc.WiusWrkReason = $("#formQa1WiusWrkReason").val();
+    gc.ActiveYn = true;
+    gc.ModDt = dt;
+    gc.CrDt = dt;
+    return gc;
+}
+
+function getSSC() {
+    var ssc = new Object();
+    var dt = getDt();
+    ssc.PkRefNo = $("#formQa1SSCPkRefNo").val();
+    ssc.Fqa1hPkRefNo = $("#formQa1PkRefNo").val();
+    ssc.Sp = $("#formQa1Sp").find(":selected").val();
+    ssc.SpRemark = $("#formQa1SpRemark").val();
+    ssc.Ed = $("#formQa1Ed").find(":selected").val();
+    ssc.EdRemark = $("#formQa1EdRemark").val();
+    ssc.Wpe = $("#formQa1Wpe").find(":selected").val();
+    ssc.WpeRemark = $("#formQa1WpeRemark").val();
+    ssc.Ims = $("#formQa1Ims").find(":selected").val();
+    ssc.ImsRemark = $("#formQa1ImsRemark").val();
+    ssc.Asd = $("#formQa1Asd").find(":selected").val();
+    ssc.AsdRemark = $("#formQa1AsdRemark").val();
+    ssc.ActiveYn = true;
+    ssc.ModDt = dt;
+    ssc.CrDt = dt;
+    return ssc;
+}
+
+function getTES() {
+    var tes = new Object();
+    var dt = getDt();
+    tes.PkRefNo = $("#formQa1TesPkRefNo").val();
+    tes.Fqa1hPkRefNo = $("#formSSCPkRefNo").val();
+    tes.CtCs = $("#formQa1CtCs").find(":selected").val();
+    tes.CtCsA = "";
+    tes.CtCsRemark = $("#formQa1CtCsRemark").val();
+    tes.DtCs = $("#formQa1DtCs").find(":selected").val();
+    tes.DtCsA = "";
+    tes.DtCsRemark = $("#formQa1DtCsRemark").val();
+    tes.MgtCs = $("#formQa1MgtCs").find(":selected").val();
+    tes.MgtCsA = "";
+    tes.MgtCsRemark = $("#formQa1MgtCsRemark").val();
+    tes.CbrCs = $("#formQa1CbrCs").find(":selected").val();
+    tes.CbrCsA = "";
+    tes.CbrCsRemark = $("#formQa1CbrCsRemark").val();
+    tes.OtCs = $("#formQa1OtCs").find(":selected").val();
+    tes.OtCsA = "";
+    tes.OtCsRemark = $("#formQa1OtCsRemark").val();
+    tes.ActiveYn = true;
+    tes.ModDt = dt;
+    tes.CrDt = dt;
+    return tes;
+}
+
+function getWCQ() {
+    var wcq = new Object();
+    var dt = getDt();
+    wcq.PkRefNo = $("#formQa1WCQPkRefNo").val();
+    wcq.Fqa1hPkRefNo = $("#formQa1PkRefNo").val();
+    wcq.FlFlushType = $("#formQa1FlushType").prop("checked");
+    wcq.FlFlush = $("#formQa1FlFlush").val();
+    wcq.FlFlushRemark = $("#formQa1FlFlushRemark").val();
+    wcq.FlThType = $("#formQa1FlThType").prop("checked");
+    wcq.FlTh = $("#formQa1FlTh").val();
+    wcq.FlThRemark = $("#formQa1FlThRemark").val();
+    wcq.FlTlType = $("#formQa1FlTlType").prop("checked");
+    wcq.FlTl = $("#formQa1FlTl").val();
+    wcq.FlTlRemark = $("#formQa1FlTlRemark").val();
+    wcq.FlScType = $("#formQa1FlScType").prop("checked");
+    wcq.FlScRemark = $("#formQa1FlScRemark").val();
+    wcq.FlUcType = $("#formQa1FlUcType").prop("checked");
+    wcq.FlUcRemark = $("#formQa1FlUcRemark").val();
+    wcq.JnType = $("#formQa1JnType").prop("checked");
+    wcq.JnRemark = $("#formQa1JnRemark").val();
+    wcq.JiType = $("#formQa1JiType").prop("checked");
+    wcq.JiRemark = $("#formQa1JiRemark").val();
+    wcq.SrevType = $("#formQa1SrevType").prop("checked");
+    wcq.SrevRemark = $("#formQa1SrEvenRemark").val();
+    wcq.SruevType = $("#formQa1SruevType").prop("checked");
+    wcq.SruevRemark = $("#formQa1SrUnEvenRemark").val();
+    wcq.SrprType = $("#formQa1SrprType").prop("checked");
+    wcq.SrprRemark = $("#formQa1SrPrRemark").val();
+    wcq.ActiveYn = true;
+    wcq.ModDt = dt;
+    wcq.CrDt = dt;
+    return wcq;
+
+}
+
+function getWE() {
+    var we = new Object();
+    var dt = getDt();
+    we.PkRefNo = $("#formQa1WEPkRefNo").val();
+    we.Fqa1hPkRefNo = $("#formQa1PkRefNo").val();
+    we.AcwcThinkness = $("#formQa1AcwcThinkness").val();
+    we.AcwcThinknessUnit = "";
+    we.AcwcTemperature = $("#formQa1AcwcTemperature").val();
+    we.AcwcTemperatureUnit = "";
+    we.AcwcPasses = $("#formQa1AcwcPasses").val();
+    we.AcwcRemark = $("#formQa1AcwcRemark").val();
+    we.TcDRate = $("#formQa1TcDRate").val();
+    we.TcDRateUnit = "";
+    we.TcType = $("#formQa1TcType").val();
+    we.TcEvenlySpread = $("#formQa1TcEvSpNo").find(":selected").val();
+    we.TcRemark = $("#formQa1TcRemark").val();
+    we.AcbcThinkness = $("#formQa1AcbcThinkness").val();
+    we.AcbcThinknessUnit = "";
+    we.AcbcTemperature = $("#formQa1AcbcTemperature").val();
+    we.AcbcTemperatureUnit = "";
+    we.AcbcPasses = $("#formQa1AcbcPasses").val();
+    we.AcbcRemark = $("#formQa1AcbcRemark").val();
+    we.PcDRate = $("#formQa1PcDRate").val();
+    we.PcDRateUnit = "";
+    we.PcType = $("#formQa1PcType").val();
+    we.PcEvenlySpread = $("#formQa1PcEvSpNo").find(":selected").val();
+    we.PcRemark = $("#formQa1PcRemark").val();
+    we.RbThinkness = $("#formQa1RbThinkness").val();
+    we.RbThinknessUnit = "";
+    we.RbLayers = $("#formQa1RbLayers").val();
+    we.RbPasses = $("#formQa1RbPasses").val();
+    we.RbRemark = $("#formQa1RbRemark").val();
+    we.SbThinkness = $("#formQa1SbThinkness").val();
+    we.SbThinknessUnit = "";
+    we.SbLayers = $("#formQa1SbLayers").val();
+    we.SbPasses = $("#formQa1SbPasses").val();
+    we.SbRemark = $("#formQa1SbRemark").val();
+    we.SgThinkness = $("#formQa1SgThinkness").val();
+    we.SgThinknessUnit = "";
+    we.SgLayers = $("#formQa1SgLayers").val();
+    we.SgPasses = $("#formQa1SgPasses").val();
+    we.SgRemark = $("#formQa1SgRemark").val();
+    we.SsdSb = $("#formQa1SsdSb").val();
+    we.SsdSbUnit = "";
+    we.SsdPp = $("#formQa1SsdPp").val();
+    we.SsdPpUnit = "";
+    we.SsdRemark = $("#formQa1SsdRemark").val();
+
+    we.SsdCh = $("#formQa1SsdCh").val();
+    we.SsdChDeci = $("#formQa1SsdChDeci").val();
+    we.SsdRhsL = $("#formQa1SsdRhsL").val();
+    we.SsdRhsW = $("#formQa1SsdRhsW").val();
+    we.SsdLhsL = $("#formQa1SsdLhsL").val();
+    we.SsdLhsW = $("#formQa1SsdLhsW").val();
+
+    we.ActiveYn = true;
+    we.ModDt = dt;
+    we.CrDt = dt;
+
+    return we;
 }

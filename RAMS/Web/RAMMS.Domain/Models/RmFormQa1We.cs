@@ -55,6 +55,7 @@ namespace RAMMS.Domain.Models
         public decimal? Fqa1wSsdRhsW { get; set; }
         public decimal? Fqa1wSsdLhsL { get; set; }
         public decimal? Fqa1wSsdLhsW { get; set; }
+        public bool Fqa1wActiveYn { get; set; }
         public int? Fqa1wModBy { get; set; }
         public DateTime? Fqa1wModDt { get; set; }
         public int? Fqa1wCrBy { get; set; }

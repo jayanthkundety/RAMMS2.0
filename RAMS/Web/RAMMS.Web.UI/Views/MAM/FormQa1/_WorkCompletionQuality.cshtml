@@ -338,7 +338,7 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-9 float-left">
-                        @Html.TextAreaFor(m => m.SrprRemark , new { @id="formQa1SrPoorRemark", @class="form-control svalidate  {required, Surface Regularity Poor Remark}" , @style="height: 40px;" })
+                        @Html.TextAreaFor(m => m.SrprRemark , new { @id="formQa1SrPrRemark", @class="form-control svalidate  {required, Surface Regularity Poor Remark}" , @style="height: 40px;" })
                     </div>
                 </div>
             </div>
@@ -346,3 +346,4 @@
 
     </div>
 </div>
+@Html.HiddenFor(m => m.PkRefNo , new { @id="formQa1WCQPkRefNo"})

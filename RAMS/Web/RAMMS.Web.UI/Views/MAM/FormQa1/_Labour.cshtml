@@ -115,6 +115,6 @@
                 @Html.TextAreaFor(m => m.LabOthRemark , new { @id= "formQa1LabOTHRemark", @style="height:40px", @class="form-control  svalidate {required, Others - Remark}"})
             </div>
         </div>
-
+        @Html.HiddenFor(m => m.PkRefNo , new { @id="formQa1LabPkRefNo"})
     </div>
 </div>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.Business.ServiceProvider.Interfaces;
+using RAMMS.Common;
 using RAMMS.Domain.Models;
 using RAMMS.DTO;
 using RAMMS.DTO.ResponseBO;
@@ -18,11 +19,15 @@ namespace RAMMS.Business.ServiceProvider.Services
     {
         private readonly IRepositoryUnit _repoUnit;
         private readonly IMapper _mapper;
+        private readonly IProcessService processService;
+        private readonly ISecurity _security;
 
-        public FormQa1Service(IRepositoryUnit repoUnit, IMapper mapper)
+        public FormQa1Service(IRepositoryUnit repoUnit, IMapper mapper, IProcessService process, ISecurity security)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            processService = process;
+            _security = security;   
         }
 
         public async Task<PagingResult<FormQa1HeaderDTO>> GetFilteredFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions)
@@ -72,14 +77,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             formQa1.Fqa1hPkRefNo = header.PkRefNo;
             var response = await _repoUnit.FormQa1Repository.FindSaveFormQa1Hdr(formQa1, updateSubmit);
             return _mapper.Map<FormQa1HeaderDTO>(response);
-        }
-
-        public async Task<FormQa1LabDTO> SaveLabour(FormQa1LabDTO labDTO)
-        {
-            var lab = _mapper.Map<RmFormQa1Lab>(labDTO);
-            var labourctx = await _repoUnit.FormQa1Repository.SaveLabour(lab);
-            var labour = _mapper.Map<FormQa1LabDTO>(labourctx);
-            return labour;
         }
 
         public async Task<PagingResult<FormQa1EqVhDTO>> GetEquipmentFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions, int id)
@@ -213,27 +210,27 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             response.Ssc = new FormQa1SscDTO();
             if (_formQA1.RmFormQa1Ssc.Count > 0)
-                response.Ssc = _mapper.Map<FormQa1SscDTO>(_formQA1.RmFormQa1Ssc);
+                response.Ssc = _mapper.Map<FormQa1SscDTO>(_formQA1.RmFormQa1Ssc.FirstOrDefault());
 
             response.Tes = new FormQa1TesDTO();
             if (_formQA1.RmFormQa1Tes.Count > 0)
-                response.Tes = _mapper.Map<FormQa1TesDTO>(_formQA1.RmFormQa1Tes);
+                response.Tes = _mapper.Map<FormQa1TesDTO>(_formQA1.RmFormQa1Tes.FirstOrDefault());
 
             response.Wcq = new FormQa1WcqDTO();
             if (_formQA1.RmFormQa1Wcq.Count > 0)
-                response.Wcq = _mapper.Map<FormQa1WcqDTO>(_formQA1.RmFormQa1Wcq);
+                response.Wcq = _mapper.Map<FormQa1WcqDTO>(_formQA1.RmFormQa1Wcq.FirstOrDefault());
 
             response.We = new FormQa1WeDTO();
             if (_formQA1.RmFormQa1We.Count > 0)
-                response.We = _mapper.Map<FormQa1WeDTO>(_formQA1.RmFormQa1We);
+                response.We = _mapper.Map<FormQa1WeDTO>(_formQA1.RmFormQa1We.FirstOrDefault());
 
             response.Gc = new FormQa1GCDTO();
             if (_formQA1.RmFormQa1Gc.Count > 0)
-                response.Gc = _mapper.Map<FormQa1GCDTO>(_formQA1.RmFormQa1Gc);
+                response.Gc = _mapper.Map<FormQa1GCDTO>(_formQA1.RmFormQa1Gc.FirstOrDefault());
 
             response.Lab = new FormQa1LabDTO();
             if (_formQA1.RmFormQa1Lab.Count > 0)
-                response.Lab = _mapper.Map<FormQa1LabDTO>(_formQA1.RmFormQa1Lab);
+                response.Lab = _mapper.Map<FormQa1LabDTO>(_formQA1.RmFormQa1Lab.FirstOrDefault());
 
             return response;
         }
@@ -243,5 +240,183 @@ namespace RAMMS.Business.ServiceProvider.Services
             var response = await _repoUnit.FormQa1Repository.GetLabourDetails(pkRefNo);
             return _mapper.Map<FormQa1LabDTO>(response);
         }
+
+        public int? SaveMaterial(FormQa1MatDTO formQa1Mat)
+        {
+            try
+            {
+                var res = _mapper.Map<RmFormQa1Mat>(formQa1Mat);
+                res.Fqa1mPkRefNo = formQa1Mat.PkRefNo;
+                res.Fqa1mFqa1hPkRefNo = formQa1Mat.Fqa1hPkRefNo;
+                return _repoUnit.FormQa1Repository.SaveMaterial(res);
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteMaterial(int id)
+        {
+            try
+            {
+                return _repoUnit.FormQa1Repository.DeleteMaterial(id);
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+
+        public int? SaveGeneral(FormQa1GenDTO formQa1Gen)
+        {
+            try
+            {
+                var res = _mapper.Map<RmFormQa1Gen>(formQa1Gen);
+                res.Fqa1genPkRefNo = formQa1Gen.PkRefNo;
+                res.Fqa1genFqa1hPkRefNo = formQa1Gen.Fqa1hPkRefNo;
+                return _repoUnit.FormQa1Repository.SaveGeneral(res);
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteGeneral(int id)
+        {
+            try
+            {
+                return _repoUnit.FormQa1Repository.DeleteGeneral(id);
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+
+        public int? SaveEquipment(FormQa1EqVhDTO formQa1EqVh)
+        {
+            try
+            {
+                var res = _mapper.Map<RmFormQa1EqVh>(formQa1EqVh);
+                res.Fqa1evPkRefNo = formQa1EqVh.PkRefNo;
+                res.Fqa1evFqa1hPkRefNo = formQa1EqVh.Fqa1hPkRefNo;
+                return _repoUnit.FormQa1Repository.SaveEquipment(res);
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public int? DeleteEquipment(int id)
+        {
+            try
+            {
+                return _repoUnit.FormQa1Repository.DeleteEquipment(id);
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+        public async Task<int> SaveFormQA1(FormQa1HeaderDTO formQa1Header, bool updateSubmit)
+         
+        {
+            var formQA1 = _mapper.Map<RmFormQa1Hdr>(formQa1Header);
+            formQA1.Fqa1hPkRefNo = formQa1Header.PkRefNo;
+            formQA1 = UpdateStatus(formQA1);
+            _repoUnit.FormQa1Repository.Update(formQA1);
+            
+
+            var formGc = _mapper.Map<RmFormQa1Gc>(formQa1Header.Gc);            
+            formGc.Fqa1gcPkRefNo = formQa1Header.Lab.PkRefNo;
+            formGc.Fqa1gcFqa1hPkRefNo = formQa1Header.PkRefNo;
+            await _repoUnit.FormQa1Repository.SaveGC(formGc);
+
+            var formLab = _mapper.Map<RmFormQa1Lab>(formQa1Header.Lab);
+            formLab.Fqa1lPkRefNo = formQa1Header.Lab.PkRefNo;
+            formLab.Fqa1lFqa1hPkRefNo = formQa1Header.PkRefNo; 
+            await _repoUnit.FormQa1Repository.SaveLabour(formLab);
+
+            var formSsc = _mapper.Map<RmFormQa1Ssc>(formQa1Header.Ssc);
+            formSsc.Fqa1sscPkRefNo = formQa1Header.Ssc.PkRefNo;
+            formSsc.Fqa1sscFqa1hPkRefNo = formQa1Header.PkRefNo;
+            await _repoUnit.FormQa1Repository.SaveSSC(formSsc);
+
+            var formTes = _mapper.Map<RmFormQa1Tes>(formQa1Header.Tes);
+            formTes.Fqa1tesPkRefNo = formQa1Header.Tes.PkRefNo;
+            formTes.Fqa1tesFqa1hPkRefNo = formQa1Header.PkRefNo;
+            await _repoUnit.FormQa1Repository.SaveTES(formTes);
+
+            var formWcq = _mapper.Map<RmFormQa1Wcq>(formQa1Header.Wcq);
+            formWcq.Fqa1wcqPkRefNo = formQa1Header.Wcq.PkRefNo;
+            formWcq.Fqa1wcqFqa1hPkRefNo = formQa1Header.PkRefNo;
+            await _repoUnit.FormQa1Repository.SaveWCQ(formWcq);
+
+            var formWe = _mapper.Map<RmFormQa1We>(formQa1Header.We);
+            formWe.Fqa1wPkRefNo = formQa1Header.We.PkRefNo;
+            formWe.Fqa1wFqa1hPkRefNo = formQa1Header.PkRefNo;
+            await _repoUnit.FormQa1Repository.SaveWE(formWe);
+
+            await _repoUnit.CommitAsync();
+            return 1;
+        }
+
+        public RmFormQa1Hdr UpdateStatus(RmFormQa1Hdr form)
+        {
+            if (form.Fqa1hPkRefNo > 0)
+            {
+                var existsObj = _repoUnit.FormQa1Repository._context.RmFormQa1Hdr.Where(x => x.Fqa1hPkRefNo == form.Fqa1hPkRefNo).Select(x => new { Status = x.Fqa1hStatus, Log = x.Fqa1hAuditLog }).FirstOrDefault();
+                if (existsObj != null)
+                {
+                    form.Fqa1hAuditLog = existsObj.Log;
+                    form.Fqa1hStatus = existsObj.Status;
+                }
+
+            }
+
+
+            if (form.Fqa1hSubmitSts && (string.IsNullOrEmpty(form.Fqa1hStatus) || form.Fqa1hStatus == Common.StatusList.FormQA1Saved || form.Fqa1hStatus == Common.StatusList.FormQA1Rejected))
+            {
+                form.Fqa1hUseridExec = _security.UserID;
+                form.Fqa1hUsernameExec = _security.UserName;
+                form.Fqa1hDtExec = DateTime.Today;
+                form.Fqa1hStatus = Common.StatusList.FormQA1Submitted;
+                form.Fqa1hAuditLog = Utility.ProcessLog(form.Fqa1hAuditLog, "Submitted", "Submitted", form.Fqa1hUsernameExec, string.Empty, form.Fqa1hDtExec, _security.UserName);
+                processService.SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = _security.UserName,
+                    RmNotGroup = GroupNames.OperationsExecutive,
+                    RmNotMessage = "Executed By:" + form.Fqa1hUsernameExec + " - Form QA1 (" + form.Fqa1hPkRefNo + ")",
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = "/FormQA1/EditFormQa1?id=" + form.Fqa1hPkRefNo.ToString() + "&view=1",
+                    RmNotUserId = "",
+                    RmNotViewed = ""
+                }, true);
+            }
+            else if (string.IsNullOrEmpty(form.Fqa1hStatus))
+                form.Fqa1hStatus = Common.StatusList.FormQA1Saved;
+
+            return form;
+        }
+
+
+        public async Task<int?> DeleteFormQA1(int id)
+        {
+            try
+            {
+                return _repoUnit.FormQa1Repository.DeleteFormQA1(id);
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
     }
 }

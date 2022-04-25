@@ -23,6 +23,7 @@ namespace RAMMS.Domain.Models
         public bool? Fqa1gcWiusWrk { get; set; }
         public string Fqa1gcWiusWrkRemark { get; set; }
         public string Fqa1gcWiusWrkReason { get; set; }
+        public bool Fqa1gcActiveYn { get; set; }
         public int? Fqa1gcModBy { get; set; }
         public DateTime? Fqa1gcModDt { get; set; }
         public int? Fqa1gcCrBy { get; set; }
