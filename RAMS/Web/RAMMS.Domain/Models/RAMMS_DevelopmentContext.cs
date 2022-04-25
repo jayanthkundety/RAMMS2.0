@@ -10927,6 +10927,13 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv4hFv3PkRefId)
+                    .HasColumnName("FV4H_FV3_PK_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv4hFv3PkRefNo).HasColumnName("FV4H_FV3_PK_Ref_No");
+
                 entity.Property(e => e.Fv4hModBy).HasColumnName("FV4H_Mod_By");
 
                 entity.Property(e => e.Fv4hModDt)
@@ -11036,8 +11043,6 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Fv5dFf5hPkRefNo).HasColumnName("FV5D_FF5H_PK_Ref_No");
-
                 entity.Property(e => e.Fv5dFileNameFrm)
                     .HasColumnName("FV5D_FileName_FRM")
                     .HasMaxLength(16)
@@ -11047,6 +11052,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV5D_FileName_TO")
                     .HasMaxLength(16)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Fv5dFv5hPkRefNo).HasColumnName("FV5D_FV5H_PK_Ref_No");
 
                 entity.Property(e => e.Fv5dImageFilenameSys)
                     .HasColumnName("FV5D_Image_Filename_Sys")
@@ -11084,7 +11091,14 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv5hPkRefNo).HasColumnName("FV5H_PK_Ref_No");
 
-                entity.Property(e => e.Fv5hActCode).HasColumnName("FV5H_ACT_Code");
+                entity.Property(e => e.Fv5hActCode)
+                    .HasColumnName("FV5H_ACT_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fv5hActName)
+                    .HasColumnName("FV5H_ACT_Name")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.Fv5hActiveYn).HasColumnName("FV5H_Active_YN");
 
@@ -11117,6 +11131,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV5H_DT_REC")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Fv5hFv4PkRefNo).HasColumnName("FV5H_FV4_PK_Ref_No");
+
                 entity.Property(e => e.Fv5hModBy).HasColumnName("FV5H_Mod_By");
 
                 entity.Property(e => e.Fv5hModDt)
@@ -11138,9 +11154,17 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Fv5hRmuName)
+                    .HasColumnName("FV5H_RMU_Name")
+                    .HasMaxLength(250);
+
                 entity.Property(e => e.Fv5hSecCode)
                     .HasColumnName("FV5H_Sec_Code")
                     .HasMaxLength(16);
+
+                entity.Property(e => e.Fv5hSecName)
+                    .HasColumnName("FV5H_Sec_Name")
+                    .HasMaxLength(250);
 
                 entity.Property(e => e.Fv5hSignRec).HasColumnName("FV5H_Sign_REC");
 
