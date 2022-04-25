@@ -6,7 +6,7 @@ namespace RAMMS.Domain.Models
     public partial class RmFormV5Dtl
     {
         public int Fv5dPkRefNo { get; set; }
-        public int? Fv5dFf5hPkRefNo { get; set; }
+        public int? Fv5dFv5hPkRefNo { get; set; }
         public string Fv5dFileNameFrm { get; set; }
         public string Fv5dFileNameTo { get; set; }
         public string Fv5dDesc { get; set; }
