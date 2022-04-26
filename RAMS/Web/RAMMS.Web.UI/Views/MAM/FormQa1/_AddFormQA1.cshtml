@@ -104,7 +104,7 @@
                                                         <div class="row">
                                                             <div class="col-6 form-group px-0">
                                                                 @Html.Label("Road Code", "Road Code")
-                                                                @Html.DropDownListFor(m => m.RoadCode ,(IEnumerable<SelectListItem>)ViewData["RD_Code"],  "Select Road Code", new { @id = "formQa1RoadCode", @class = "form-control validate {required, Road Code}" })
+                                                                @Html.DropDownListFor(m => m.SaveFormQa1Model.RoadCode ,(IEnumerable<SelectListItem>)ViewData["RD_Code"],  "Select Road Code", new { @id = "formQa1RoadCode", @class = "form-control validate {required, Road Code}" })
                                                             </div>
                                                             <div class="form-group col-lg-6 mb-0">
                                                                 @Html.Label("Road Name", "Road Name")
@@ -200,7 +200,7 @@
                         </div>
                         <div class="accordion custom-accordion mb-3" id="custom-accordion-zero2">
                             <div class="card mb-0">
-                                <div class="card-header" id="headingZero">
+                                <div class="card-header" id="headingZero1">
                                     <h5 class="m-0">
                                         <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage02" aria-expanded="false" aria-controls="collapseZero">
                                             <span class="float-left">
@@ -212,7 +212,7 @@
                                     </h5>
                                 </div>
 
-                                <div id="AccordPage02" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                <div id="AccordPage02" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingZero1" data-parent="#custom-accordion-zero2">
                                     <div class="card-body">
 
                                         <div id="content">
@@ -569,19 +569,34 @@
                             }
 
                         </div>
+
+                        @{
+                            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                            {
+                                Form = "FormQA1",
+                                RefId = Model.SaveFormQa1Model.PkRefNo,
+                                Stage = Model.SaveFormQa1Model.Status
+                            });
+                        }
                     </div>
                 </div>
             </div>
-        </div>
+        </div
+
+        
         @Html.HiddenFor(m => m.SaveFormQa1Model.PkRefNo , new { @id="formQa1PkRefNo"})
         @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
         @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
+        <input type="hidden" id="hdnUserId" value="@security.UserID" />
         @Html.Hidden("hdnWeekNo")
         @Html.Hidden("hdnMonthNo")
         <div class="col-md-12 float-right text-right custom-footer">
             <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
             <button id="saveFormQa1Btn" type="button" class="btn btn-sm btn-themebtn">Save</button>
-            <button id="SubmitFormQa1Btn" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            @if (string.IsNullOrEmpty(Model.SaveFormQa1Model.Status) || Model.SaveFormQa1Model.Status == RAMMS.Common.StatusList.FormQA1Saved)
+            {
+                <button id="SubmitFormQa1Btn" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            }
         </div>
     </div>
 

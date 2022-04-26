@@ -14,6 +14,7 @@ namespace RAMMS.Domain.Models
         public string Fv5hCrewname { get; set; }
         public string Fv5hSecCode { get; set; }
         public string Fv5hSecName { get; set; }
+        public string Fv4hDivision { get; set; }
         public string Fv5hRefId { get; set; }
         public string Fv5hActCode { get; set; }
         public string Fv5hActName { get; set; }

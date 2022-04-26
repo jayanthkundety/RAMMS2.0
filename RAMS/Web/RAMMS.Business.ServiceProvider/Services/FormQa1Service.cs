@@ -399,7 +399,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                     RmNotViewed = ""
                 }, true);
             }
-            else if (string.IsNullOrEmpty(form.Fqa1hStatus))
+            else if (string.IsNullOrEmpty(form.Fqa1hStatus) || form.Fqa1hStatus == "Initialize")
                 form.Fqa1hStatus = Common.StatusList.FormQA1Saved;
 
             return form;

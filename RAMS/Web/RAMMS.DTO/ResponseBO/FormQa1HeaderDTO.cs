@@ -294,7 +294,7 @@ namespace RAMMS.DTO.ResponseBO
         public decimal? TcDRate { get; set; }
         public int? TcDRateUnit { get; set; }
         public string TcType { get; set; }
-        public bool? TcEvenlySpread { get; set; }
+        public string TcEvenlySpread { get; set; }
         public string TcRemark { get; set; }
         public decimal? AcbcThinkness { get; set; }
         public int? AcbcThinknessUnit { get; set; }
@@ -305,7 +305,7 @@ namespace RAMMS.DTO.ResponseBO
         public decimal? PcDRate { get; set; }
         public int? PcDRateUnit { get; set; }
         public string PcType { get; set; }
-        public bool? PcEvenlySpread { get; set; }
+        public string PcEvenlySpread { get; set; }
         public string PcRemark { get; set; }
         public decimal? RbThinkness { get; set; }
         public int? RbThinknessUnit { get; set; }

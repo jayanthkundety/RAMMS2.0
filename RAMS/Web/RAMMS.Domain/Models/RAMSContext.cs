@@ -8474,7 +8474,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1hStatus)
                     .HasColumnName("FQA1H_Status")
-                    .HasMaxLength(30);
+                    .HasMaxLength(30)
+                    .HasDefaultValueSql("(N'Initialize')");
 
                 entity.Property(e => e.Fqa1hSubmitSts).HasColumnName("FQA1H_SUBMIT_STS");
 
@@ -9022,7 +9023,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1wPcDRateUnit).HasColumnName("FQA1W_PC_D_Rate_Unit");
 
-                entity.Property(e => e.Fqa1wPcEvenlySpread).HasColumnName("FQA1W_PC_Evenly_Spread");
+                entity.Property(e => e.Fqa1wPcEvenlySpread)
+                    .HasColumnName("FQA1W_PC_Evenly_Spread")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1wPcRemark)
                     .HasColumnName("FQA1W_PC_Remark")
@@ -9126,7 +9130,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1wTcDRateUnit).HasColumnName("FQA1W_TC_D_Rate_Unit");
 
-                entity.Property(e => e.Fqa1wTcEvenlySpread).HasColumnName("FQA1W_TC_Evenly_Spread");
+                entity.Property(e => e.Fqa1wTcEvenlySpread)
+                    .HasColumnName("FQA1W_TC_Evenly_Spread")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1wTcRemark)
                     .HasColumnName("FQA1W_TC_Remark")
@@ -11094,6 +11101,11 @@ namespace RAMMS.Domain.Models
                 entity.ToTable("RM_FormV5_HDR");
 
                 entity.Property(e => e.Fv5hPkRefNo).HasColumnName("FV5H_PK_Ref_No");
+
+                entity.Property(e => e.Fv4hDivision)
+                    .HasColumnName("FV4H_Division")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv5hActCode)
                     .HasColumnName("FV5H_ACT_Code")

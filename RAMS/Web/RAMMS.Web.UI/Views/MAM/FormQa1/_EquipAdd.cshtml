@@ -62,7 +62,7 @@
                 <div class="row">
                     <div class="form-group col-lg-6">
                         @Html.Label("Code", "Code")
-                        @Html.DropDownListFor(Ahdr => Ahdr.Capacity, (IEnumerable
+                        @Html.DropDownListFor(Ahdr => Ahdr.Type, (IEnumerable
                         <SelectListItem>)ViewData["EQPList"], "Select Code", new { @Id = "formQa1EquipCode", @class = "form-control  validate {required, Equipment Code}" })
                         @Html.HiddenFor(Ahdr => Ahdr.Type, new { @id = "hdnformQa1EquipCode", @class = "form-control" })
                     </div>
@@ -98,7 +98,7 @@
     @Html.Hidden("hdnEquView", "")
     <div class="modal-footer">
         <div class="col-md-12 float-right text-right custom-footer">
-            <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackEquip()">Cancel</button>
+            <button id="cancelFormQa1EqBtn" type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackEquip()">Cancel</button>
             <button id="saveContinueFormQa1EqBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
             <button id="saveFormQa1EqBtn" type="button" class="btn btn-sm btn-themebtn">Save & EXit</button>
         </div>
