@@ -2,7 +2,7 @@
 
 <div class="main-container" id="container">
     <div id="content">
-        <table id="FormV3GridView" class="table w-100 nowrap">
+        <table id="FormV4GridView" class="table w-100 nowrap">
         </table>
     </div>
 </div>
@@ -18,14 +18,14 @@
         var table_columns = [];
         var actionCol = {
             data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV3HeaderEdit'" + isModifyPerm + " onclick='javascript:EditFormV3(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-                var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV3(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV4HeaderEdit'" + isModifyPerm + " onclick='javascript:EditFormV4(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormV4(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
                 return full["submitSts"] == true ? viewaction : actionSection;
             }
         };
         var refNoCol = { data: "refId", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
         var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
-        var divisionCol = { data: "divCode", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
+        var divisionCol = { data: "division", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
         var actCodeCol = { data: "actCode", name: "actCode", title: "Activity Code", autoWidth: true, sortable: true };
         var secCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
         var crewCol = { data: "crewname", name: "Crew ID", title: "Crew Supervisor", autoWidth: true, sortable: true };
@@ -75,17 +75,17 @@
             var _currentGridSettings = new CustomGridSettings();
             $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
-            filterData.SmartInputValue = $("#FormV3SmartSearch").val();
-            filterData.RMU = $("#formV3DetSrchRMU  option:selected").text().split("-")[0];
-            filterData.Section =  $("#formV3DetSrchSectionCode option:selected").text().split("-")[0];
-            filterData.Crew = $("#formV3DetSrchCrew  option:selected").text().split("-")[0];
-            //filterData.ActivityCode = $("#formV3DetSrchActivityCode option:selected").text().split("-")[0];
-            //filterData.ByFromdate = $("#FormV3SrchByFromDate").val()
-            //filterData.ByTodate = $("#FormV3SrchByToDate").val()
+            filterData.SmartInputValue = $("#FormV4SmartSearch").val();
+            filterData.RMU = $("#formV4DetSrchRMU  option:selected").text().split("-")[0];
+            filterData.Section =  $("#formV4DetSrchSectionCode option:selected").text().split("-")[0];
+            filterData.Crew = $("#formV4DetSrchCrew  option:selected").text().split("-")[0];
+            //filterData.ActivityCode = $("#formV4DetSrchActivityCode option:selected").text().split("-")[0];
+            //filterData.ByFromdate = $("#FormV4SrchByFromDate").val()
+            //filterData.ByTodate = $("#FormV4SrchByToDate").val()
 
-            $('#FormV3GridView').DataTable({
+            $('#FormV4GridView').DataTable({
                 ajax: {
-                    url: "/MAM/LoadFormV3List",
+                    url: "/MAM/LoadFormV4List",
                     type: "POST",
                     datatype: "json",
                     data: {
@@ -100,8 +100,8 @@
         $(document).ready(function () {
             InitializeGrid();
 
-             $('#formV3SearchBtn').click(function () {
-                FormV3GridRefresh();
+             $('#formV4SearchBtn').click(function () {
+                FormV4GridRefresh();
             });
 
         });

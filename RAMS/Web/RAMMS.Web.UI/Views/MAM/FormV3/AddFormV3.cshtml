@@ -388,15 +388,15 @@
 
                                                             <div class="form-group in-lbl">
                                                                 <label for="L">L</label>
-                                                                
-                                                                @Html.TextBoxFor(m => m.FormV3Dtl.Length, new { @maxlength = "5", @class = "form-control allow_numeric validate {required,Length}" ,@style= "width:60px" })
+
+                                                                @Html.TextBoxFor(m => m.FormV3Dtl.Length, new { @maxlength = "5", @class = "form-control allow_numeric validate {required,Length}", })
                                                             </div>
                                                         </div>
                                                         <div class="col-6 float-left pl-0">
                                                             <div class="form-group in-lbl">
 
                                                                 <label for="W">W</label>
-                                                                @Html.TextBoxFor(m => m.FormV3Dtl.Width, new { @maxlength = "5", @class = "form-control allow_numeric validate {required,Width}", @style = "width:60px" })
+                                                                @Html.TextBoxFor(m => m.FormV3Dtl.Width, new { @maxlength = "5", @class = "form-control allow_numeric validate {required,Width}", })
                                                             </div>
                                                         </div>
                                                     </div>
@@ -418,7 +418,7 @@
                                                         <div class="col">
                                                             @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TimetakenFrm, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Time Taken From }", @onchange = "CalTotalTime()", @rows = 1 })
                                                         </div>
-                                                       
+
                                                     </div>
                                                 </div>
                                                 <div class="form-group  col-3">
@@ -461,7 +461,7 @@
                                                     <label for="RoadCode">
                                                         Total Transit Time
                                                     </label>
-                                                    @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TransitTimeTotal, new { @readonly = true , @class = "form-control" })
+                                                    @Html.TextBoxFor(Adtl => Adtl.FormV3Dtl.TransitTimeTotal, new { @readonly = true, @class = "form-control" })
                                                 </div>
 
                                             </div>
@@ -473,7 +473,7 @@
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-sm btn-outline-theme"  data-dismiss="modal" >Close</button>
+                                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
                                             <button type="button" class="btn btn-sm btn-themebtn" id="saveFormV3DtlBtn" onclick="SaveFormV3Dtl()">Submit</button>
                                         </div>
                                     </div>
@@ -529,6 +529,7 @@
 
 
     @Html.HiddenFor(m => m.FormV3.PkRefNo)
+    @Html.HiddenFor(m => m.FormV3.Fv1PkRefNo)
     @Html.HiddenFor(m => m.FormV3Dtl.PkRefNo)
     @Html.HiddenFor(m => m.FormV3.SecCode)
     @Html.HiddenFor(m => m.FormV3.UseridFac)
@@ -539,7 +540,8 @@
     @Html.HiddenFor(m => m.FormV3.SubmitSts)
     <input type="hidden" id="hdnSecCode" value="@Model.FormV3.SecCode" />
     <input type="hidden" id="hdnView" value="@Model.view" />
-
+    <input type="text" id="CalculationTime"  style="display:none" />
+    <input type="text" id="CalculationTime1" style="display:none" />
 
 }
 
@@ -563,6 +565,8 @@
         $("#FormV3Dtl_TimeTakenTo").timeEntry();
         $("#FormV3Dtl_TransitTimeFrm").timeEntry();
         $("#FormV3Dtl_TransitTimeTo").timeEntry();
+        $("#CalculationTime").timeEntry();
+        $("#CalculationTime1").timeEntry();
 
     });
 

@@ -1745,30 +1745,30 @@ namespace RAMMS.Web.UI.Controllers
             frm.FormV3.ActiveYn = true;
             if (frm.FormV3.PkRefNo == 0)
             {
-                int pkRefno = _formV1Service.SaveFormV3(frm.FormV3).Result.PkRefNo;
+                frm.FormV3 = _formV1Service.SaveFormV3(frm.FormV3).Result;
+                int pkRefno = frm.FormV3.PkRefNo;
+
                 string Msg = "";
-                string status = "Success";
+                string Result = "Success";
                 if (pkRefno == -1)
                 {
                     Msg = "No Matching record found in FormV1";
-                    status = "Failed";
+                    Result = "Failed";
                 }
                 else if (pkRefno == -2)
                 {
                     Msg = "No Matching record found in FormV2";
-                    status = "Failed";
+                    Result = "Failed";
                 }
-                else
-                {
-                    status = frm.FormV3.Status;
-                }
+                
 
 
                 return Json(new
                 {
                     RefId = frm.FormV3.RefId,
                     PkRefNo = frm.FormV3.PkRefNo,
-                    Status = status,
+                    Status = frm.FormV3.Status,
+                    Result = Result,
                     Msg = Msg
                 });
             }
@@ -1881,7 +1881,7 @@ namespace RAMMS.Web.UI.Controllers
                 filteredPagingDefinition.sortOrder = formV4Filter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
             }
 
-            var result = await _formV1Service.GetFilteredFormV1Grid(filteredPagingDefinition).ConfigureAwait(false);
+            var result = await _formV1Service.GetFilteredFormV4Grid(filteredPagingDefinition).ConfigureAwait(false);
 
             return Json(new { draw = formV4Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
@@ -1893,9 +1893,12 @@ namespace RAMMS.Web.UI.Controllers
 
             await LoadFormV1DropDown();
 
-            if (_formV4Model.FormV4.UseridFac == 0)
+            if (_formV4Model.FormV4.UseridFac == null || _formV4Model.FormV4.UseridFac == 0)
+            {
                 _formV4Model.FormV4.UseridFac = _security.UserID;
-
+                _formV4Model.FormV4.DtFac = DateTime.Today;
+                _formV4Model.FormV4.SignFac = true;
+            }
             _formV4Model.view = view;
 
             return View("~/Views/MAM/FormV4/AddFormV4.cshtml", _formV4Model);
@@ -1940,12 +1943,36 @@ namespace RAMMS.Web.UI.Controllers
             frm.FormV4.ActiveYn = true;
             if (frm.FormV4.PkRefNo == 0)
             {
-                int pkRefno = _formV1Service.SaveFormV4(frm.FormV4).Result.PkRefNo;
+                frm.FormV4 = _formV1Service.SaveFormV4(frm.FormV4).Result;
+                int pkRefno = frm.FormV4.PkRefNo;
 
                 if (pkRefno == -1)
                     refNo = "No Matching record found in FormV3";
                 else
                     refNo = pkRefno.ToString();
+
+
+                string Msg = "";
+                string Result = "Success";
+                if (pkRefno == -1)
+                {
+                    Msg = "No Matching record found in FormV1";
+                    Result = "Failed";
+                }
+                 
+
+
+                return Json(new
+                {
+                    RefId = frm.FormV4.RefId,
+                    PkRefNo = frm.FormV4.PkRefNo,
+                    TotalProduction = frm.FormV4.TotalProduction,
+                    FV3PKRefNo = frm.FormV4.FV3PKRefNo,
+                    Status = frm.FormV4.Status,
+                    Result = Result,
+                    Msg = Msg
+                });
+
             }
             else
             {
@@ -1953,6 +1980,10 @@ namespace RAMMS.Web.UI.Controllers
                     frm.FormV4.Status = "Saved";
                 refNo = Convert.ToString(await _formV1Service.UpdateV4(frm.FormV4));
             }
+
+
+
+
             return Json(refNo);
 
 

@@ -1153,64 +1153,32 @@ namespace RAMMS.Repository
                 {
                     return _mapper.Map<FormV4ResponseDTO>(obj);
                 }
-                var objV2 = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv4.Fv4hRmu && x.Fv4hActCode == domainModelFormv4.Fv4hActCode && x.Fv4hDt == domainModelFormv4.Fv4hDt && x.Fv4hCrew == domainModelFormv4.Fv4hCrew && x.Fv4hActiveYn == true).ToList();
+                var objV2 = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv4.Fv4hRmu && x.Fv3hActCode == domainModelFormv4.Fv4hActCode && x.Fv3hDt == domainModelFormv4.Fv4hDt && x.Fv3hCrew == domainModelFormv4.Fv4hCrew && x.Fv3hActiveYn == true).ToList();
                 if (objV2.Count == 0)
                 {
-                    Formv4.PkRefNo = -2;
+                    Formv4.PkRefNo = -1;
                     return Formv4;
                 }
                 else
                 {
-                    var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv4.Fv4hRmu && x.Fv1hActCode == domainModelFormv4.Fv4hActCode && x.Fv1hDt == domainModelFormv4.Fv4hDt && x.Fv1hActiveYn == true).ToList();
-                    if (objV1.Count > 0)
-                    {
-                        //domainModelFormv4.Fv4hFv1PkRefNo = objV1.Single().Fv1hPkRefNo;
-                        //_context.Set<RmFormV4Hdr>().Add(domainModelFormv4);
-                        //_context.SaveChanges();
 
-                        //IDictionary<string, string> lstData = new Dictionary<string, string>();
-                        //lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
-                        //lstData.Add("Crew", domainModelFormv4.Fv4hCrew.ToString());
-                        //lstData.Add("ActivityCode", domainModelFormv4.Fv4hActCode);
-                        //lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv4.Fv4hPkRefNo));
-                        //domainModelFormv4.Fv4hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV4Header, lstData);
-                        //_context.SaveChanges();
-                        //Formv4.PkRefNo = _mapper.Map<FormV4ResponseDTO>(domainModelFormv4).PkRefNo;
-                        //Formv4.RefId = domainModelFormv4.Fv4hRefId;
-                        //Formv4.Status = domainModelFormv4.Fv4hStatus;
+                    domainModelFormv4.Fv4hFv3PkRefNo = objV2.Single().Fv3hPkRefNo;
+                    _context.Set<RmFormV4Hdr>().Add(domainModelFormv4);
+                    _context.SaveChanges();
 
-                        //var res = (from dtl in _context.RmFormV1Dtl
-                        //           where dtl.Fv1dFv1hPkRefNo == domainModelFormv4.Fv4hFv1PkRefNo && dtl.Fv1dActiveYn == true
-                        //           orderby dtl.Fv1dPkRefNo descending
-                        //           select new RmFormV4Dtl
-                        //           {
-                        //               Fv4dFv4hPkRefNo = Formv4.PkRefNo,
-                        //               Fv4dFv1dPkRefNo = dtl.Fv1dPkRefNo,
-                        //               Fv4dActiveYn = true,
-                        //               Fv4dFrmChDeci = dtl.Fv1dFrmChDeci,
-                        //               Fv4dFrmCh = dtl.Fv1dFrmCh,
-                        //               Fv4dToChDeci = dtl.Fv1dToCh,
-                        //               Fv4dToCh = dtl.Fv1dToChDeci,
-                        //               Fv4dRoadCode = dtl.Fv1dRoadCode,
-                        //               Fv4dRoadName = dtl.Fv1dRoadName,
-
-                        //           }).ToList();
-
-
-                        //foreach (var item in res)
-                        //{
-                        //    _context.RmFormV4Dtl.Add(item);
-                        //    _context.SaveChanges();
-                        //}
-
-
-                        return Formv4;
-                    }
-                    else
-                    {
-                        Formv4.PkRefNo = -1;
-                        return Formv4;
-                    }
+                    IDictionary<string, string> lstData = new Dictionary<string, string>();
+                    lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
+                    lstData.Add("Crew", domainModelFormv4.Fv4hCrew.ToString());
+                    lstData.Add("ActivityCode", domainModelFormv4.Fv4hActCode);
+                    lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv4.Fv4hPkRefNo));
+                    domainModelFormv4.Fv4hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV4Header, lstData);
+                    _context.SaveChanges();
+                    Formv4.PkRefNo = _mapper.Map<FormV4ResponseDTO>(domainModelFormv4).PkRefNo;
+                    Formv4.RefId = domainModelFormv4.Fv4hRefId;
+                    Formv4.Status = domainModelFormv4.Fv4hStatus;
+ 
+                    return Formv4;
+                   
 
                 }
             }

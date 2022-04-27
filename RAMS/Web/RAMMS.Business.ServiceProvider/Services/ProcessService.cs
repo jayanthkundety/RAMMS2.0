@@ -1803,82 +1803,82 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         private async Task<int> SaveFormV4(DTO.RequestBO.ProcessDTO process)
         {
-            //var form = context.RmFormV4Hdr.Where(x => x.Fv4hPkRefNo == process.RefId).FirstOrDefault();
-            //if (form != null)
-            //{
-            //    string strTitle = "";
-            //    string strNotURL = "";
-            //    string strNotMsg = "";
-            //    string strNotGroupName = "";
-            //    string strNotUserID = "";
-            //    string strStatus = "";
-            //    string strNotStatus = "";
+            var form = context.RmFormV4Hdr.Where(x => x.Fv4hPkRefNo == process.RefId).FirstOrDefault();
+            if (form != null)
+            {
+                string strTitle = "";
+                string strNotURL = "";
+                string strNotMsg = "";
+                string strNotGroupName = "";
+                string strNotUserID = "";
+                string strStatus = "";
+                string strNotStatus = "";
 
-            //    if (process.Stage == Common.StatusList.Submitted)
-            //    {
-            //        //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
-            //        form.Fv4hStatus = process.IsApprove ? Common.StatusList.Verified : Common.StatusList.Saved;
-            //        strTitle = "Vetted By";
-            //        strStatus = "Vetted";
-            //        strNotStatus = Common.StatusList.Verified;
-            //        form.Fv4hUseridVet = Convert.ToInt32(process.UserID);
-            //        form.Fv4hUsernameVet = process.UserName;
-            //        form.Fv4hDesignationVet = process.UserDesignation;
-            //        form.Fv4hDtVet = process.ApproveDate;
-            //        form.Fv4hSignVet = true;
-            //    }
-            //    else if (process.Stage == Common.StatusList.Verified)
-            //    {
-            //        //strNotGroupName = process.IsApprove ? GroupNames.JKRSSuperiorOfficerSO : GroupNames.OpeHeadMaintenance;
-            //        form.Fv4hStatus = process.IsApprove ? Common.StatusList.Approved : Common.StatusList.Submitted;
-            //        strTitle = "Agreed By";
-            //        strStatus = "Agreed";
-            //        strNotStatus = Common.StatusList.Verified;
-            //        form.Fv4hUseridAgr = Convert.ToInt32(process.UserID);
-            //        form.Fv4hUsernameAgr = process.UserName;
-            //        form.Fv4hDesignationAgr = process.UserDesignation;
-            //        form.Fv4hDtAgr = process.ApproveDate;
-            //        form.Fv4hSignAgr = true;
-            //    }
+                if (process.Stage == Common.StatusList.Submitted)
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
+                    form.Fv4hStatus = process.IsApprove ? Common.StatusList.Verified : Common.StatusList.Saved;
+                    strTitle = "Vetted By";
+                    strStatus = "Vetted";
+                    strNotStatus = Common.StatusList.Verified;
+                    form.Fv4hUseridVet = Convert.ToInt32(process.UserID);
+                    form.Fv4hUsernameVet = process.UserName;
+                    form.Fv4hDesignationVet = process.UserDesignation;
+                    form.Fv4hDtVet = process.ApproveDate;
+                    form.Fv4hSignVet = true;
+                }
+                else if (process.Stage == Common.StatusList.Verified)
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.JKRSSuperiorOfficerSO : GroupNames.OpeHeadMaintenance;
+                    form.Fv4hStatus = process.IsApprove ? Common.StatusList.Approved : Common.StatusList.Submitted;
+                    strTitle = "Agreed By";
+                    strStatus = "Agreed";
+                    strNotStatus = Common.StatusList.Verified;
+                    form.Fv4hUseridAgr = Convert.ToInt32(process.UserID);
+                    form.Fv4hUsernameAgr = process.UserName;
+                    form.Fv4hDesignationAgr = process.UserDesignation;
+                    form.Fv4hDtAgr = process.ApproveDate;
+                    form.Fv4hSignAgr = true;
+                }
 
-            //    if (process.IsApprove)
-            //    {
-            //        List<int> lstNotUserId = new List<int>();
-            //        if (form.Fv4hUseridFac.HasValue)
-            //            lstNotUserId.Add(form.Fv4hUseridAgr.Value);
-            //        if (form.Fv4hUseridAgr.HasValue)
-            //            lstNotUserId.Add(form.Fv4hUseridAgr.Value);
+                if (process.IsApprove)
+                {
+                    List<int> lstNotUserId = new List<int>();
+                    if (form.Fv4hUseridAgr.HasValue)
+                        lstNotUserId.Add(form.Fv4hUseridAgr.Value);
+                    if (form.Fv4hUseridAgr.HasValue)
+                        lstNotUserId.Add(form.Fv4hUseridAgr.Value);
 
-            //        form.Fv4hUseridAgr = Convert.ToInt32(process.UserID);
-            //        form.Fv4hUsernameAgr = process.UserName;
-            //        form.Fv4hDesignationAgr = process.UserDesignation;
-            //        form.Fv4hDtAgr = process.ApproveDate;
-            //        form.Fv4hSignAgr = true;
+                    form.Fv4hUseridAgr = Convert.ToInt32(process.UserID);
+                    form.Fv4hUsernameAgr = process.UserName;
+                    form.Fv4hDesignationAgr = process.UserDesignation;
+                    form.Fv4hDtAgr = process.ApproveDate;
+                    form.Fv4hSignAgr = true;
 
-            //        strNotUserID = string.Join(",", lstNotUserId.Distinct());
-            //    }
-            //    else
-            //    {
-            //        if (process.Stage == Common.StatusList.Submitted)
-            //        {
-            //            form.Fv4hSubmitSts = false;
-            //        }
-            //    }
+                    strNotUserID = string.Join(",", lstNotUserId.Distinct());
+                }
+                else
+                {
+                    if (process.Stage == Common.StatusList.Submitted)
+                    {
+                        form.Fv4hSubmitSts = false;
+                    }
+                }
 
-            //    form.Fv4hAuditLog = Utility.ProcessLog(form.Fv4hAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
-            //    strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form V4 (" + form.Fv4hPkRefNo + ")";
-            //    strNotURL = "/MAM/EditFormV4?id=" + form.Fv4hPkRefNo.ToString() + "&View=0";
-            //    SaveNotification(new RmUserNotification()
-            //    {
-            //        RmNotCrBy = security.UserName,
-            //        RmNotGroup = strNotGroupName,
-            //        RmNotMessage = strNotMsg,
-            //        RmNotOn = DateTime.Now,
-            //        RmNotUrl = strNotURL,
-            //        RmNotUserId = strNotUserID,
-            //        RmNotViewed = ""
-            //    }, false);
-            //}
+                form.Fv4hAuditLog = Utility.ProcessLog(form.Fv4hAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form V4 (" + form.Fv4hPkRefNo + ")";
+                strNotURL = "/MAM/EditFormV4?id=" + form.Fv4hPkRefNo.ToString() + "&View=0";
+                SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = security.UserName,
+                    RmNotGroup = strNotGroupName,
+                    RmNotMessage = strNotMsg,
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = strNotURL,
+                    RmNotUserId = strNotUserID,
+                    RmNotViewed = ""
+                }, false);
+            }
             return await context.SaveChangesAsync();
         }
 

@@ -11,9 +11,7 @@
     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
 }
-<link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
-<script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
-<script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
+ 
 <script src="~/js/FormV4.js"></script>
 
 
@@ -56,9 +54,9 @@
                                     <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="form-group col-lg-10 col-md-12">
+                                                <div class="form-group col-md-12">
                                                     <div class="row">
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-4">
                                                             <div class="row">
                                                                 <div class="col-6 form-group pr-lg-0">
                                                                     <label for="RMU">RMU</label>
@@ -73,7 +71,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-4">
                                                             <div class="row">
                                                                 <div class="col-6 form-group px-0">
                                                                     <label for="RMU">Section Code</label>
@@ -87,11 +85,14 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="col-2 form-group px-0">
+                                                        <div class="col-2 form-group">
                                                             <label for="RMU"> Division Code</label>
                                                             @Html.TextBoxFor(m => m.FormV4.Division, new { @readonly = "readonly", @class = "form-control " })
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="form-group col-lg-2">
+                                                            <button id="btnFindDetails" type="button" onclick="Save('')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right mt-4">Find Details</button>
+                                                        </div>
+                                                        <div class="col-lg-4">
 
                                                             <div class="row">
 
@@ -107,7 +108,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-4">
                                                             <div class="row">
                                                                 <div class="col-lg-6 form-group px-0">
                                                                     <label for="Ref_No_">Activity Code</label>
@@ -121,16 +122,30 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-2 form-group px-0">
+                                                        <div class="col-2 form-group">
                                                             <label for="Division_Code">Date </label>
                                                             @Html.EditorFor(m => m.FormV4.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">Start Time (on site)</label>
+                                                            @Html.TextBoxFor(m => m.FormV4.StartTime, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">End Time (on location) </label>
+                                                            @Html.TextBoxFor(m => m.FormV4.EndTime, new { @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">V3 Reference no </label>
+                                                            @Html.TextBoxFor(m => m.FormV4.FV3PKRefID, new { @readonly = "readonly", @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">Total Production</label>
+                                                            @Html.TextBoxFor(m => m.FormV4.TotalProduction, new { @readonly = "readonly", @class = "form-control" })
                                                         </div>
                                                     </div>
 
                                                 </div>
-                                                <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                                    <button id="btnFindDetails" type="button" onclick="Save('')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
-                                                </div>
+
                                             </div>
 
                                         </div>
@@ -245,9 +260,9 @@
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left mb-0">
                                                                 <label for="Name">
-                                                                    Recorded by
+                                                                    Vetted by
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Recordedby", "Select Users", new { Id = "ddlRecordedby", @class = "form-control  {required,Recorded by}", @onchange = "OnRecordChange(this);" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Vettedby", "Select Users", new { Id = "ddlVettedby", @class = "form-control  {required,Vetted by}", @onchange = "OnVettedChange(this);" })
                                                             </div>
 
                                                             <div class="form-group col-lg-2 float-left">
@@ -269,7 +284,7 @@
                                                                     Sign
                                                                 </label>
                                                                 <div class="clear-b mt-2">
-                                                                    @Html.CheckBoxFor(model => model.FormV4.SignVet, new { @class = "{required, Recorded by Signature}" })
+                                                                    @Html.CheckBoxFor(model => model.FormV4.SignVet, new { @class = "{required, Vetorded by Signature}" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -323,7 +338,7 @@
                                     </div>
                                 </div>
                             </div>
- 
+
 
 
 
@@ -373,13 +388,13 @@
 
 
     @Html.HiddenFor(m => m.FormV4.PkRefNo)
-    
+    @Html.HiddenFor(m => m.FormV4.FV3PKRefNo)
     @Html.HiddenFor(m => m.FormV4.SecCode)
     @Html.HiddenFor(m => m.FormV4.UseridFac)
     @Html.HiddenFor(m => m.FormV4.UseridAgr)
     @Html.HiddenFor(m => m.FormV4.UseridVet)
     @Html.HiddenFor(m => m.FormV4.Status)
-    
+
     @Html.HiddenFor(m => m.FormV4.SubmitSts)
     <input type="hidden" id="hdnSecCode" value="@Model.FormV4.SecCode" />
     <input type="hidden" id="hdnView" value="@Model.view" />
@@ -403,8 +418,7 @@
 
     $(document).ready(function () {
         process.Init("FormV4", "@Model.FormV4.Status", @Model.FormV4.PkRefNo);
-        $("#FormV4Dtl_StartTime").timeEntry();
-
+      
     });
 
 
@@ -425,9 +439,9 @@
     $('#ddlCrew').trigger('chosen:updated');
     $('#ddlCrew').trigger("change");
 
-    $('#ddlRecordedby').val("@Model.FormV4.UseridVet");
-    $('#ddlRecordedby').trigger('chosen:updated');
-    $('#ddlRecordedby').trigger("change");
+    $('#ddlVettedby').val("@Model.FormV4.UseridVet");
+    $('#ddlVettedby').trigger('chosen:updated');
+    $('#ddlVettedby').trigger("change");
 
     $('#ddlAgreedby').val("@Model.FormV4.UseridAgr");
     $('#ddlAgreedby').trigger('chosen:updated');

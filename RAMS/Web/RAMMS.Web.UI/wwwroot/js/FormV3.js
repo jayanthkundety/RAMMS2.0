@@ -334,7 +334,7 @@ function Save(SubmitType) {
             else {
                  
                 if (SubmitType == "") {
-                    if (data.status =="Success") {
+                    if (data.result == "Success") {
                         $("#FormV3_PkRefNo").val(data.pkRefNo);
                         $("#FormV3_RefId").val(data.refId);
                         $("#FormV1_Status").val(data.status)
