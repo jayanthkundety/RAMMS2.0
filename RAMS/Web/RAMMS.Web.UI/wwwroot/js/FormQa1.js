@@ -833,7 +833,7 @@ function saveHeader(submitsts) {
     if (submitsts) {
         $(".svalidate").addClass("validate");
     }
-    if (ValidatePage('.validate')) {
+    if (ValidatePage('#divFormQA1')) {
         InitAjaxLoading();
         var d = new Date();
         var month = d.getMonth() + 1;

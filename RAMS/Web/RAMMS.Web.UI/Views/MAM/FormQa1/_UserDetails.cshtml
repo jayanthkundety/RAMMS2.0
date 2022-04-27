@@ -54,10 +54,10 @@
                 @Html.Label("Name", "Name")
                 <div class="row">
                     <div class="col-6 form-group">
-                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1ExecutedBy", "Select Users", new { Id = "formQa1ExecutedBy", @class = "form-control svalidate {required, Executed by} ", @disabled=true})
+                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1ExecutedBy", "Select Users", new { Id = "formQa1ExecutedBy", @class = "form-control ssvalidate {required, Executed by} ", @disabled=true})
                     </div>
                     <div class="col-6 form-group">
-                        @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameExec, new { @id = "formQa1ExecutedName", @class = "form-control svalidate  {required, Executed by Name}", @disabled = true })
+                        @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameExec, new { @id = "formQa1ExecutedName", @class = "form-control ssvalidate  {required, Executed by Name}", @disabled = true })
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
                     vd = Model.SaveFormQa1Model.DtExec;
                     string _DtExec = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                 }
-                <input type="date" class="datepicker form-control svalidate {required, Executed by date}" id="formQa1ExecutedDate" value="@_DtExec" />
+                <input type="date" class="datepicker form-control ssvalidate {required, Executed by date}" id="formQa1ExecutedDate" value="@_DtExec" />
             </div>
             <div class="form-group col-lg-3 float-left">
                 @Html.Label("Initial", "Initial")
@@ -77,7 +77,7 @@
                     var _ExeSign = Model.SaveFormQa1Model.InitialExec == null || Model.SaveFormQa1Model.InitialExec == false ? false : true;
                 }
                 <div class="clear-b mt-2">
-                    <input class="{required, Executed By Signature}" checked="@_ExeSign" id="formQa1SignExe" type="checkbox" value="true">
+                    <input class=" ssvalidate {required, Executed By Signature}" checked="@_ExeSign" id="formQa1SignExe" type="checkbox" value="true">
                 </div>
             </div>
         </div>
@@ -95,10 +95,10 @@
                 @Html.Label("Name", "Name")
                 <div class="row">
                     <div class="col-6 form-group">
-                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1CheckedBy", "Select Users", new { Id = "formQa1CheckedBy", @class = "form-control svalidate {required, Checked by} ", @disabled=true})
+                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formQa1CheckedBy", "Select Users", new { Id = "formQa1CheckedBy", @class = "form-control asvalidate {required, Checked by} ", @disabled=true})
                     </div>
                     <div class="col-6 form-group">
-                        @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameChked, new { @id = "formQa1CheckedName", @class = "form-control svalidate  {required, Checked by Name}", @disabled = true })
+                        @Html.TextBoxFor(w => w.SaveFormQa1Model.UsernameChked, new { @id = "formQa1CheckedName", @class = "form-control asvalidate  {required, Checked by Name}", @disabled = true })
                     </div>
                 </div>
 
@@ -110,7 +110,7 @@
                     vd = Model.SaveFormQa1Model.DtChked;
                     string _DtChk = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                 }
-                <input type="date" class="datepicker form-control svalidate {required, Checked by date}" id="formQa1CheckedDate" value="@_DtChk" />
+                <input type="date" class="datepicker form-control asvalidate {required, Checked by date}" id="formQa1CheckedDate" value="@_DtChk" />
             </div>
             <div class="form-group col-lg-3 float-left">
                 @Html.Label("Initial", "Initial")
@@ -118,7 +118,7 @@
                     var _ChckSign = Model.SaveFormQa1Model.InitialChked == null || Model.SaveFormQa1Model.InitialChked == false ? false : true;
                 }
                 <div class="clear-b mt-2">
-                    <input class="{required, Checked By Signature}" checked="@_ChckSign" id="formQa1SignChck" type="checkbox" value="true">
+                    <input class="asvalidate {required, Checked By Signature}" checked="@_ChckSign" id="formQa1SignChck" type="checkbox" value="true">
                 </div>
             </div>
         </div>

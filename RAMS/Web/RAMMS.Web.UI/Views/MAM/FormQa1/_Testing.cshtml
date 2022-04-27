@@ -15,27 +15,42 @@
             </label>
 
             @Html.DropDownListFor(Adtl => Adtl.CtCs , (IEnumerable
-            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1CtCs", @class = "form-control tddl validate {required, Compaction Test -  Compliance With Specification}" })
+            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1CtCs", @class = "form-control tddl svalidate {required, Compaction Test -  Compliance With Specification}" })
         </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                See Attachment
-            </label>
-            <button class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" style="display:block;" onclick="document.getElementById('getFile').click()">Click here to upload</button>
-            <input type='file' id="getFile" style="display:none">
-        </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                File Name
-            </label>
-            <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-            <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-        </div>
+
+        @{
+
+            if (Model.CtCsA == 0 || Model.CtCsA == null)
+            {
+                <div class="col-2">
+                    <label for="RoadCode">
+                        See Attachment
+                    </label>
+                    <div class="img-btns mt-1" id="addAttachment">
+                        <a class="btn btn-sm btn-themebtn form-control" data-toggle="modal" onclick="FormAddImage()">
+                            <span class="add-icon"></span> Add Attachment
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-2">
+                    <label for="Filename">
+                        Filename
+                    </label>
+                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
+                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
+                </div>
+            }
+        }
+
+
         <div class="col-3 px-0">
             <label>
                 Remarks
             </label>
-            @Html.TextAreaFor(m => m.CtCsRemark , new { @id="formQa1CtCsRemark", @class="form-control svalidate  {required,  Density Test Remark}" , @style="height: 40px;" })
+            @Html.TextAreaFor(m => m.CtCsRemark , new { @id="formQa1CtCsRemark", @class="form-control svalidate {required,  Compaction Test Remark}" , @style="height: 40px;" })
         </div>
     </div>
     <div class="row">
@@ -51,23 +66,32 @@
             <label>
                 Compliance With Specification
             </label>
-             @Html.DropDownListFor(Adtl => Adtl.DtCs , (IEnumerable
-            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1DtCs", @class = "form-control tddl validate {required, Density Test - Compliance With Specification}" })
+            @Html.DropDownListFor(Adtl => Adtl.DtCs , (IEnumerable
+            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1DtCs", @class = "form-control tddl svalidate {required, Density Test - Compliance With Specification}" })
         </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                See Attachment
-            </label>
-            <button class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" style="display:block;" onclick="document.getElementById('getFile').click()">Click here to upload</button>
-            <input type='file' id="getFile" style="display:none">
-        </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                File Name
-            </label>
-            <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-            <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-        </div>
+        @{
+
+            if (Model.DtCsA == 0 || Model.DtCsA == null)
+            {
+                <div class="col-2">
+                    <div class="img-btns mt-1" id="addAttachment">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+                            <span class="add-icon"></span> Add Attachment
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-2">
+                    <label for="Filename">
+                        Filename
+                    </label>
+                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
+                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
+                </div>
+            }
+        }
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -89,22 +113,31 @@
                 Compliance With Specification
             </label>
             @Html.DropDownListFor(Adtl => Adtl.MgtCs , (IEnumerable
-            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1MgtCs", @class = "form-control tddl validate {required, Material Grading Test - Compliance With Specification}" })
+            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1MgtCs", @class = "form-control tddl svalidate {required, Material Grading Test - Compliance With Specification}" })
         </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                See Attachment
-            </label>
-            <button class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" style="display:block;" onclick="document.getElementById('getFile').click()">Click here to upload</button>
-            <input type='file' id="getFile" style="display:none">
-        </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                File Name
-            </label>
-            <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-            <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-        </div>
+        @{
+
+            if (Model.MgtCsA == 0 || Model.MgtCsA == null)
+            {
+                <div class="col-2">
+                    <div class="img-btns mt-1" id="addAttachment">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+                            <span class="add-icon"></span> Add Attachment
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-2">
+                    <label for="Filename">
+                        Filename
+                    </label>
+                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
+                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
+                </div>
+            }
+        }
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -126,22 +159,31 @@
                 Compliance With Specification
             </label>
             @Html.DropDownListFor(Adtl => Adtl.CbrCs , (IEnumerable
-            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1CbrCs", @class = "form-control tddl validate {required, CBR - Compliance With Specification}" })
+            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1CbrCs", @class = "form-control tddl svalidate {required, CBR - Compliance With Specification}" })
         </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                See Attachment
-            </label>
-            <button class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" style="display:block;" onclick="document.getElementById('getFile').click()">Click here to upload</button>
-            <input type='file' id="getFile" style="display:none">
-        </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                File Name
-            </label> 
-            <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-            <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-        </div>
+        @{
+
+            if (Model.CbrCsA == 0 || Model.CbrCsA == null)
+            {
+                <div class="col-2">
+                    <div class="img-btns mt-1" id="addAttachment">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+                            <span class="add-icon"></span> Add Attachment
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-2">
+                    <label for="Filename">
+                        Filename
+                    </label>
+                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
+                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
+                </div>
+            }
+        }
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -163,22 +205,31 @@
                 Compliance With Specification
             </label>
             @Html.DropDownListFor(Adtl => Adtl.OtCs , (IEnumerable
-            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1OtCs", @class = "form-control tddl validate {required, Other Tests - Compliance With Specification}" })
+            <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1OtCs", @class = "form-control tddl svalidate {required, Other Tests - Compliance With Specification}" })
         </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                See Attachment
-            </label>
-            <button class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" style="display:block;" onclick="document.getElementById('getFile').click()">Click here to upload</button>
-            <input type='file' id="getFile" style="display:none">
-        </div>
-        <div class="col-2">
-            <label for="RoadCode">
-                File Name
-            </label>
-            <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-            <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-        </div>
+        @{
+
+            if (Model.OtCsA == 0 || Model.OtCsA == null)
+            {
+                <div class="col-2">
+                    <div class="img-btns mt-1" id="addAttachment">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+                            <span class="add-icon"></span> Add Attachment
+                        </a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-2">
+                    <label for="Filename">
+                        Filename
+                    </label>
+                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
+                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
+                </div>
+            }
+        }
         <div class="col-3 px-0">
             <label>
                 Remarks

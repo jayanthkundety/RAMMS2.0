@@ -38,7 +38,7 @@
 </script>
 
 
-<div class="container-fluid">
+<div class="container-fluid" id="divFormQA1">
     <div class="row">
         <div class="col-lg-12">
             <div class="d-flex justify-content-center pt-3 pb-3">
@@ -338,7 +338,7 @@
 
                         <div class="accordion custom-accordion mb-3" id="custom-accordion-seven">
                             <div class="card mb-0">
-                                <div class="card-header" id="headingsix">
+                                <div class="card-header" id="heading7">
                                     <h5 class="m-0">
                                         <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage7" aria-expanded="false" aria-controls="collapseseven">
                                             <span class="float-left">
@@ -351,7 +351,7 @@
                                         </a>
                                     </h5>
                                 </div>
-                                <div id="AccordPage7" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingsix" data-parent="#custom-accordion-seven">
+                                <div id="AccordPage7" class="collapse avowmodal-form formgrp-section" aria-labelledby="heading7" data-parent="#custom-accordion-seven">
                                     @{
                                         Html.RenderPartial("_WorkCompletionQuality.cshtml", Model.SaveFormQa1Model.Wcq);
                                     }
@@ -375,7 +375,7 @@
                                         </a>
                                     </h5>
                                 </div>
-                                <div id="AccordPage12" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingonesix" data-parent="#custom-accordion-onetwo">
+                                <div id="AccordPage12" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingonetwo" data-parent="#custom-accordion-onetwo">
                                     @{
                                         Html.RenderPartial("_Testing.cshtml", Model.SaveFormQa1Model.Tes);
                                     }
@@ -581,13 +581,13 @@
                     </div>
                 </div>
             </div>
-        </div
+        </div>
 
         
-        @Html.HiddenFor(m => m.SaveFormQa1Model.PkRefNo , new { @id="formQa1PkRefNo"})
-        @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
-        @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
         <input type="hidden" id="hdnUserId" value="@security.UserID" />
+        @Html.HiddenFor(m => m.SaveFormQa1Model.PkRefNo , new { @id="formQa1PkRefNo"})
+        @Html.HiddenFor(m => m.viewm, new { @id = "hdnView"})
+        @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo"})
         @Html.Hidden("hdnWeekNo")
         @Html.Hidden("hdnMonthNo")
         <div class="col-md-12 float-right text-right custom-footer">
