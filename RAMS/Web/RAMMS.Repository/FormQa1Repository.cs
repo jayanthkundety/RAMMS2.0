@@ -354,7 +354,7 @@ namespace RAMMS.Repository
 
         public async Task<RmFormQa1EqVh> GetEquipDetails(int pkRefNo)
         {
-            var result = await _context.RmFormQa1EqVh.FirstOrDefaultAsync(m => m.Fqa1evFqa1hPkRefNo == pkRefNo);
+            var result = await _context.RmFormQa1EqVh.FirstOrDefaultAsync(m => m.Fqa1evPkRefNo == pkRefNo);
             return result;
         }
 
@@ -410,7 +410,7 @@ namespace RAMMS.Repository
 
         public async Task<RmFormQa1Mat> GetMatDetails(int pkRefNo)
         {
-            var result = await _context.RmFormQa1Mat.FirstOrDefaultAsync(m => m.Fqa1mFqa1hPkRefNo == pkRefNo);
+            var result = await _context.RmFormQa1Mat.FirstOrDefaultAsync(m => m.Fqa1mPkRefNo == pkRefNo);
             return result;
         }
 

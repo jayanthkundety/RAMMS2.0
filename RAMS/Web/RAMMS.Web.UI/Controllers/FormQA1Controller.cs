@@ -225,6 +225,8 @@ namespace RAMMS.Web.UI.Controllers
             else
             {
                 _formQa1Model.SaveFormQa1Model = await _formQa1Service.GetFormQA1(id);
+                if (_formQa1Model.SaveFormQa1Model.SubmitSts)
+                    _formQa1Model.viewm = "1";
 
                 //if ((_formQa1Model.SaveFormQa1Model.UseridExec == null || _formQa1Model.SaveFormQa1Model.UseridExec ==  0) 
                 //    && _formQa1Model.SaveFormQa1Model.Status == Common.StatusList.FormQA1Saved)

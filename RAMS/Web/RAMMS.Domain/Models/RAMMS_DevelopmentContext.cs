@@ -9018,7 +9018,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1wPcDRateUnit).HasColumnName("FQA1W_PC_D_Rate_Unit");
 
-                entity.Property(e => e.Fqa1wPcEvenlySpread).HasColumnName("FQA1W_PC_Evenly_Spread");
+                entity.Property(e => e.Fqa1wPcEvenlySpread)
+                     .HasColumnName("FQA1W_PC_Evenly_Spread")
+                     .HasMaxLength(6)
+                     .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1wPcRemark)
                     .HasColumnName("FQA1W_PC_Remark")
@@ -9122,7 +9125,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1wTcDRateUnit).HasColumnName("FQA1W_TC_D_Rate_Unit");
 
-                entity.Property(e => e.Fqa1wTcEvenlySpread).HasColumnName("FQA1W_TC_Evenly_Spread");
+                entity.Property(e => e.Fqa1wTcEvenlySpread)
+                    .HasColumnName("FQA1W_TC_Evenly_Spread")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
+
 
                 entity.Property(e => e.Fqa1wTcRemark)
                     .HasColumnName("FQA1W_TC_Remark")

@@ -16,7 +16,7 @@ namespace RAMMS.Domain.Models
         public decimal? Fqa1wTcDRate { get; set; }
         public int? Fqa1wTcDRateUnit { get; set; }
         public string Fqa1wTcType { get; set; }
-        public bool? Fqa1wTcEvenlySpread { get; set; }
+        public string Fqa1wTcEvenlySpread { get; set; }
         public string Fqa1wTcRemark { get; set; }
         public decimal? Fqa1wAcbcThinkness { get; set; }
         public int? Fqa1wAcbcThinknessUnit { get; set; }
@@ -27,7 +27,7 @@ namespace RAMMS.Domain.Models
         public decimal? Fqa1wPcDRate { get; set; }
         public int? Fqa1wPcDRateUnit { get; set; }
         public string Fqa1wPcType { get; set; }
-        public bool? Fqa1wPcEvenlySpread { get; set; }
+        public string Fqa1wPcEvenlySpread { get; set; }
         public string Fqa1wPcRemark { get; set; }
         public decimal? Fqa1wRbThinkness { get; set; }
         public int? Fqa1wRbThinknessUnit { get; set; }

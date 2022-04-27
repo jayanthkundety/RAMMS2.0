@@ -13,7 +13,7 @@ $(document).ready(function () {
         document.getElementById("btnEquipAdd").disabled = true;
         document.getElementById("btnGenAdd").disabled = true;
         document.getElementById("btnMaterialAdd").disabled = true;
-        disableAll();
+        disableAll(true);
 
     }
 
@@ -29,7 +29,7 @@ $(document).ready(function () {
         $("#formQa1EquipmentEdit").attr("disabled", "disabled").off('click');
 
         userIdDisable();
-        disableAll();
+        disableAll(true);
         document.getElementById("btnEquipAdd").disabled = true;
         document.getElementById("btnGenAdd").disabled = true;
         document.getElementById("btnMaterialAdd").disabled = true;
@@ -151,8 +151,8 @@ $(document).ready(function () {
         SetReferenceId();
     })
 
-    $('#formQa1Dt').on("change", function () {
-        SetWeekDayYear($('#formQa1Dt').val());
+    $('#FormQa1Date').on("change", function () {
+        SetWeekDayYear($('#FormQa1Date').val());
     });
 
     $("#formQa1AuditedBy").on("change", function () {
@@ -293,35 +293,68 @@ function getDt() {
     return output;
 }
 
-function disableAll() {
-    //Labour
-    $("#AccordPage1 *").attr("disabled", "disabled").off('click');
-    $(".lddl").chosen('destroy');
-    $(".lddl").attr("disabled", "disabled");
+function disableAll(action) {
+    if (action) {
+        //Labour
+        $("#AccordPage1 *").attr("disabled", "disabled").off('click');
+        $(".lddl").chosen('destroy');
+        $(".lddl").attr("disabled", "disabled");
 
-    //Work Execution
-    $("#AccordPage2 *").attr("disabled", "disabled").off('click');
-    $(".wddl").chosen('destroy');
-    $(".wddl").attr("disabled", "disabled").off('click');
+        //Work Execution
+        $("#AccordPage2 *").attr("disabled", "disabled").off('click');
+        $(".wddl").chosen('destroy');
+        $(".wddl").attr("disabled", "disabled").off('click');
 
-    //Specific Condition
-    $("#AccordPage6 *").attr("disabled", "disabled").off('click');
-    $(".ddl").chosen('destroy');
-    $(".ddl").attr("disabled", "disabled").off('click');
+        //Specific Condition
+        $("#AccordPage6 *").attr("disabled", "disabled").off('click');
+        $(".ddl").chosen('destroy');
+        $(".ddl").attr("disabled", "disabled").off('click');
 
-    //Work Completion Quality
-    $("#AccordPage7 *").attr("disabled", "disabled").off('click');
+        //Work Completion Quality
+        $("#AccordPage7 *").attr("disabled", "disabled").off('click');
 
-    //Testing
-    $("#AccordPage12 *").attr("disabled", "disabled").off('click');
-    $(".tddl").chosen('destroy');
-    $(".tddl").attr("disabled", "disabled").off('click');
+        //Testing
+        $("#AccordPage12 *").attr("disabled", "disabled").off('click');
+        $(".tddl").chosen('destroy');
+        $(".tddl").attr("disabled", "disabled").off('click');
 
-    //General Comments
-    $("#AccordPage16 *").attr("disabled", "disabled").off('click');
+        //General Comments
+        $("#AccordPage16 *").attr("disabled", "disabled").off('click');
 
-    //Remark
-    $("#AccordPage8 *").attr("disabled", "disabled").off('click');
+        //Remark
+        $("#AccordPage8 *").attr("disabled", "disabled").off('click');
+    }
+    else {
+        //Labour
+        $("#AccordPage1 *").removeAttr("disabled");
+        $(".lddl").removeAttr("disabled");
+        $(".lddl").prop('disabled', false).trigger("chosen:updated");
+
+        //Work Execution
+        $("#AccordPage2 *").removeAttr("disabled");
+        $(".wddl").removeAttr("disabled");
+        $(".wddl").prop('disabled', false).trigger("chosen:updated");
+        
+
+        //Specific Condition
+        $("#AccordPage6 *").removeAttr("disabled");
+        $(".ddl").removeAttr("disabled");
+        $(".ddl").prop('disabled', false).trigger("chosen:updated");
+
+        //Work Completion Quality
+        $("#AccordPage7 *").removeAttr("disabled");
+
+        //Testing
+        $("#AccordPage12 *").removeAttr("disabled");
+        $(".tddl").removeAttr("disabled");
+        $(".tddl").prop('disabled', false).trigger("chosen:updated");
+        
+        //General Comments
+        $("#AccordPage16 *").removeAttr("disabled");
+
+        //Remark
+        $("#AccordPage8 *").removeAttr("disabled");
+    }
 }
 
 function GetDate(year, weekno, weekday) {
@@ -352,18 +385,15 @@ $(document).on("click", "#btnFindDetails", function () {
         GetResponseValue("FindDetails", "FormQa1", FormValueCollection("#FormQa1Headers"), function (data) {
             HideAjaxLoading();
             if (data != undefined && data != null) {
-
-                $.ajax({
-                    url: '/FormQA1/CreateFormQa1',
-                    data: FormValueCollection("#FormQa1Headers"),
-                    type: 'POST',
-                    success: function (data) {
-                        $("#btnFindDetails").hide();
-                        $("#saveFormQa1Btn").show();
-                        $("#SubmitFormQa1Btn").show();
-                    }
-                })
-
+                $("#btnFindDetails").hide();
+                $("#saveFormQa1Btn").show();
+                $("#SubmitFormQa1Btn").show();
+                gridAddBtnDis();
+                disableAll(false);
+                $("#formQa1AssignedBy").val($("#hdnUserId").val()).trigger("chosen:updated");
+                $("#formQa1AssignedBy").trigger("change");
+                $("#formQa1PkRefNo").val(data.PkRefNo);
+                $("#formQa1ReferenceNo").val(data.RefId);
             }
         }, "Finding");
     }
@@ -425,7 +455,7 @@ function getDateRangeOfWeek(weekNo, y) {
         var d3 = new Date(rangeIsFrom);
         if (weekday[d3.getDay()] == $("#formQa1Day").val()) {
             var d4 = formatDate(d3);
-            $('#formQa1Dt').val(d4);
+            $('#FormQa1Date').val(d4);
         }
         d3.setDate(d3.getDate() + 1);
         rangeIsFrom = new Date(d3,);
@@ -540,7 +570,7 @@ function EditFormQa1Gen(id, view) {
                 $("#FormQa1GenModalid").html("View Attention")
                 $("#div-gen-container *").attr("disabled", "disabled").off('click');
                 $("#saveFormQa1GenBtn").css("display", "none");
-                $("#cancelAddModelBtn").attr("disabled", false);
+                $("#cancelFormQa1GenBtn").attr("disabled", false);
                 $("#saveContinueFormQa1GenBtn").css("display", "none");
             } else if ($("#hdnGenId").val() != "") {
                 $("#FormQa1GenModalid").html("Edit Attention")
@@ -563,7 +593,7 @@ function EditFormQa1Equip(id, view) {
                 $("#FormQa1EquipModalid").html("View Equipment & Vehicles");
                 $("#div-equip-container *").attr("disabled", "disabled").off('click');
                 $("#saveFormQa1EqBtn").css("display", "none");
-                $("#cancelAddModelBtn").attr("disabled", false);
+                $("#cancelFormQa1EqBtn").attr("disabled", false);
                 $("#saveContinueFormQa1EqBtn").css("display", "none");
             }
             else if ($("#hdnEquipid").val() != "")
@@ -586,7 +616,7 @@ function EditFormQa1Material(id, view) {
                 $("#FormQa1MaterialModalid").html("View Material")
                 $("#div-mat-container *").attr("disabled", "disabled").off('click');
                 $("#saveFormQa1MtBtn").css("display", "none");
-                $("#cancelAddModelBtn").attr("disabled", false);
+                $("#cancelFormQa1MtBtn").attr("disabled", false);
                 $("#saveContinueFormQa1MtBtn").css("display", "none");
             } else if ($("#hdnMaterialNo").val() != "")
                 $("#FormQa1MaterialModalid").html("Edit Material")
@@ -801,18 +831,9 @@ function saveMaterial(isSubmit, cont) {
 function saveHeader(submitsts) {
 
     if (submitsts) {
-        $("#AccordPage1 .svalidate").addClass("validate");
-        $("#AccordPage2 .svalidate").addClass("validate");
-        $("#AccordPage6 .svalidate").addClass("validate");
-        $("#AccordPage7 .svalidate").addClass("validate");
-        $("#AccordPage12 .svalidate").addClass("validate");
-        $("#AccordPage16 .svalidate").addClass("validate");
-        $("#AccordPage8 .svalidate").addClass("validate");
-        $("#AccordPage9 .svalidate").addClass("validate");
-        $("#AccordPage10 .svalidate").addClass("validate");
-        $("#divUserDetails .svalidate").addClass("validate");
+        $(".svalidate").addClass("validate");
     }
-    if (ValidatePage('AccordPage1', 'AccordPage2', 'AccordPage6', 'AccordPage7', 'AccordPage12', 'AccordPage16', 'AccordPage8', 'AccordPage9', 'AccordPage10', 'divUserDetails')) {
+    if (ValidatePage('.validate')) {
         InitAjaxLoading();
         var d = new Date();
         var month = d.getMonth() + 1;
@@ -849,8 +870,8 @@ function saveHeader(submitsts) {
         saveObj.UsernameAssgn = $("#formQa1AssignedName").val();
         saveObj.InitialAssgn = $("#formQa1SignAssg").prop("checked");
         saveObj.DtAssgn = $("#formQa1AssignedDate").val();
-        
-        saveObj.UseridExec =  $("#formQa1ExecutedBy").find(":selected").val();
+
+        saveObj.UseridExec = $("#formQa1ExecutedBy").find(":selected").val();
         saveObj.UsernameExec = $("#formQa1ExecutedName").val();
         saveObj.InitialExec = $("#formQa1SignExe").prop("checked");
         saveObj.DtExec = $("#formQa1ExecutedDate").val();
@@ -873,7 +894,7 @@ function saveHeader(submitsts) {
         saveObj.DtWit = $("#formQa1WitnessedDate").val();
         saveObj.OfficeWit = $("#formW2WitnessedOffice").val();
         saveObj.Remarks = $("#formQa1Remarks").val();
-        saveObj.SubmitSts = submitsts;  
+        saveObj.SubmitSts = submitsts;
         saveObj.ActiveYn = true;
 
         $.ajax({
@@ -1097,4 +1118,15 @@ function getWE() {
     we.CrDt = dt;
 
     return we;
+}
+
+function GoBack() {
+    if ($("#hdnView").val() == 0) {
+        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+            if (e) {
+                location.href = "/FormQA1/QA1";
+            }
+        }));
+    } else
+        location.href = "/FormQA1/QA1";
 }
