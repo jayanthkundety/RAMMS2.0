@@ -332,14 +332,14 @@ function Save(SubmitType) {
             else {
                  
                 if (SubmitType == "") {
-
+                    debugger
                     if (data.result =="Success") {
                         $("#FormV4_PkRefNo").val(data.pkRefNo);
                         $("#FormV4_RefId").val(data.refId);
                         $("#FormV4_Status").val(data.status);
                         $("#FormV4_TotalProduction").val(data.totalProduction)
                         $("#FormV4_FV3PKRefNo").val(data.fV3PKRefNo)
-                        $("#FormV4_FV3PKRefNo").val(data.fV3PKRefID)
+                        $("#FormV4_FV3PKRefID").val(data.fV3PKRefID)
                         $("#saveFormV4Btn").show();
                         $("#SubmitFormV4Btn").show();
                         HeaderLogic();
@@ -368,27 +368,6 @@ function Save(SubmitType) {
 
 }
 
-
-
-function SaveFormV4Dtl() {
-
-    if (ValidatePage('#WorkAccompModal')) {
-        InitAjaxLoading();
-        $.post('/MAM/SaveFormV4Dtl', $("form").serialize(), function (data) {
-            HideAjaxLoading();
-            if (data == -1) {
-                app.ShowErrorMessage(data.errorMessage);
-            }
-            else {
-                ClearFormV4Dtl();
-
-                InitializeGrid();
-                app.ShowSuccessMessage('Saved Successfully', false);
-            }
-        });
-    }
-
-}
 
  
 function HeaderLogic() {
