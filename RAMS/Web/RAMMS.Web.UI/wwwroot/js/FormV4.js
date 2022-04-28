@@ -339,6 +339,7 @@ function Save(SubmitType) {
                         $("#FormV4_Status").val(data.status);
                         $("#FormV4_TotalProduction").val(data.totalProduction)
                         $("#FormV4_FV3PKRefNo").val(data.fV3PKRefNo)
+                        $("#FormV4_FV3PKRefNo").val(data.fV3PKRefID)
                         $("#saveFormV4Btn").show();
                         $("#SubmitFormV4Btn").show();
                         HeaderLogic();
@@ -397,7 +398,8 @@ function HeaderLogic() {
         $("#AccordPage0 * > select").attr('disabled', true).trigger("chosen:updated");
 
         $("#btnFindDetails").hide();
-
+        $("#FormV4_StartTime").attr("readonly", "true");
+        $("#FormV4_EndTime").attr("readonly", "true");
     }
 }
 

@@ -18,7 +18,7 @@
                         <td></td>
                         <td></td>
                         <td id="txtTotalTime"></td>
-                        <td></td>
+                        <td id="txtTotalADP"></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -130,6 +130,7 @@
         var totalmins = 0;
         var totallength = 0;
         var totalwidth = 0;
+        var totaladp = 0;
 
         data.each(function (item, index) {
 
@@ -145,6 +146,7 @@
 
             totallength = totallength + item.length;
             totalwidth = totalwidth + item.width;
+            totaladp = totaladp + item.adp;
 
 
         });
@@ -153,11 +155,11 @@
         const mins = Math.floor(totalmins % 60);
 
         var TT = hours + ":" + mins;
-
-        debugger
+ 
         $('#txtTotalLength').html(totallength);
         $('#txtTotalWidth').html(totalwidth);
         $('#txtTotalTime').html(TT);
+        $('#txtTotalADP').html(totaladp);
 
 
     }

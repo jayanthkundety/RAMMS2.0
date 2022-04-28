@@ -1161,8 +1161,11 @@ namespace RAMMS.Repository
                 }
                 else
                 {
+                    
 
                     domainModelFormv4.Fv4hFv3PkRefNo = objV2.Single().Fv3hPkRefNo;
+                    domainModelFormv4.Fv4hFv3PkRefId = objV2.Single().Fv3hRefId;
+                    domainModelFormv4.Fv4hTotalProduction = _context.RmFormV3Dtl.Where(x => x.Fv3dFv3hPkRefNo == objV2.Single().Fv3hPkRefNo).Select(x => x.Fv3dAdp).Sum();
                     _context.Set<RmFormV4Hdr>().Add(domainModelFormv4);
                     _context.SaveChanges();
 
@@ -1176,7 +1179,11 @@ namespace RAMMS.Repository
                     Formv4.PkRefNo = _mapper.Map<FormV4ResponseDTO>(domainModelFormv4).PkRefNo;
                     Formv4.RefId = domainModelFormv4.Fv4hRefId;
                     Formv4.Status = domainModelFormv4.Fv4hStatus;
- 
+                    Formv4.FV3PKRefID = domainModelFormv4.Fv4hFv3PkRefId;
+                    Formv4.TotalProduction = domainModelFormv4.Fv4hTotalProduction;
+
+
+
                     return Formv4;
                    
 

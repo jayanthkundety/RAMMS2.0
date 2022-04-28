@@ -11,7 +11,7 @@ namespace RAMMS.DTO.ResponseBO
 
 
         public int PkRefNo { get; set; }
-        public int FV3PKRefNo { get; set; }
+        public int? FV3PKRefNo { get; set; }
         public int? ContNo { get; set; }
         public string FV3PKRefID { get; set; }
      

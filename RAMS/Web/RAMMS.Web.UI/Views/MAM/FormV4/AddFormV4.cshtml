@@ -11,7 +11,10 @@
     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
 }
- 
+
+<link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
+<script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
+<script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
 <script src="~/js/FormV4.js"></script>
 
 
@@ -389,6 +392,7 @@
 
     @Html.HiddenFor(m => m.FormV4.PkRefNo)
     @Html.HiddenFor(m => m.FormV4.FV3PKRefNo)
+    @Html.HiddenFor(m => m.FormV4.FV3PKRefID)
     @Html.HiddenFor(m => m.FormV4.SecCode)
     @Html.HiddenFor(m => m.FormV4.UseridFac)
     @Html.HiddenFor(m => m.FormV4.UseridAgr)
@@ -418,7 +422,9 @@
 
     $(document).ready(function () {
         process.Init("FormV4", "@Model.FormV4.Status", @Model.FormV4.PkRefNo);
-      
+        $("#FormV4_StartTime").timeEntry();
+        $("#FormV4_EndTime").timeEntry();
+
     });
 
 

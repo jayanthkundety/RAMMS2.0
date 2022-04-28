@@ -1968,6 +1968,7 @@ namespace RAMMS.Web.UI.Controllers
                     PkRefNo = frm.FormV4.PkRefNo,
                     TotalProduction = frm.FormV4.TotalProduction,
                     FV3PKRefNo = frm.FormV4.FV3PKRefNo,
+                    FV3PKRefID = frm.FormV4.FV3PKRefID,
                     Status = frm.FormV4.Status,
                     Result = Result,
                     Msg = Msg
