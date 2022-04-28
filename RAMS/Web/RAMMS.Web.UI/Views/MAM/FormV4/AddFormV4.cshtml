@@ -131,11 +131,11 @@
                                                         </div>
                                                         <div class="col-2 form-group">
                                                             <label for="Division_Code">Start Time (on site)</label>
-                                                            @Html.TextBoxFor(m => m.FormV4.StartTime, new { @class = "form-control" })
+                                                            @Html.TextBoxFor(m => m.FormV4.StartTime, new { @class = "form-control validate {required, Start time}" })
                                                         </div>
                                                         <div class="col-2 form-group">
                                                             <label for="Division_Code">End Time (on location) </label>
-                                                            @Html.TextBoxFor(m => m.FormV4.EndTime, new { @class = "form-control" })
+                                                            @Html.TextBoxFor(m => m.FormV4.EndTime, new { @class = "form-control validate {required, End time}" })
                                                         </div>
                                                         <div class="col-2 form-group">
                                                             <label for="Division_Code">V3 Reference no </label>
