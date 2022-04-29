@@ -1,4 +1,4 @@
-﻿@model RAMMS.Web.UI.Models.FormV1Model;
+﻿@model RAMMS.Web.UI.Models.FormV4Model;
 @using RAMMS.Business.ServiceProvider;
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @{
@@ -11,10 +11,11 @@
     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
 }
+
 <link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
 <script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
 <script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
-<script src="~/js/FormV1.js"></script>
+<script src="~/js/FormV4.js"></script>
 
 
 @using (Html.BeginForm())
@@ -28,7 +29,7 @@
                     <div class="form-group mb-0" style="width:400px; float:left">
                         <span style="width:100px;float:left;"> <label for="Form_C1_C2_No_" style="padding: .5rem .5rem 0 !important;">Reference No</label></span>
                         <span style="width:300px; float:left">
-                            @Html.TextBoxFor(m => m.FormV1.RefId, new { @readonly = true, @class = "form-control", style = "width:300px;" })
+                            @Html.TextBoxFor(m => m.FormV4.RefId, new { @readonly = true, @class = "form-control", style = "width:300px;" })
                         </span>
 
                     </div>
@@ -48,7 +49,7 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                                                 </span>
                                                 <span class="float-left" style="padding: 4px 8px;">
-                                                    Form V1
+                                                    Form V4
                                                 </span>
                                             </a>
                                         </h5>
@@ -56,94 +57,98 @@
                                     <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="form-group col-lg-10 col-md-12">
+                                                <div class="form-group col-md-12">
                                                     <div class="row">
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-4">
                                                             <div class="row">
                                                                 <div class="col-6 form-group pr-lg-0">
                                                                     <label for="RMU">RMU</label>
-                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.Rmu, (IEnumerable
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV4.Rmu, (IEnumerable
     <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "ddlrmu", @class = "form-control validate {required, RMU}" })
 
                                                                 </div>
                                                                 <div class="form-group col-lg-6 mb-0">
                                                                     <label for="RMU_Name">RMU Name</label>
-                                                                    @Html.TextBoxFor(m => m.FormV1.RmuName, new { @Id = "ddlrmuDesc", @readonly = "readonly", @class = "form-control" })
+                                                                    @Html.TextBoxFor(m => m.FormV4.RmuName, new { @Id = "ddlrmuDesc", @readonly = "readonly", @class = "form-control" })
                                                                 </div>
                                                             </div>
 
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-4">
                                                             <div class="row">
                                                                 <div class="col-6 form-group px-0">
                                                                     <label for="RMU">Section Code</label>
-                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV1.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "ddlSecCode", @class = "form-control validate {required, Section Code}" })
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV4.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "ddlSecCode", @class = "form-control validate {required, Section Code}" })
 
                                                                 </div>
                                                                 <div class="form-group col-lg-6 mb-0">
                                                                     <label for="RMU_Name">Section Name</label>
-                                                                    @Html.TextBoxFor(m => m.FormV1.SecName, new { @readonly = "readonly", @class = "form-control " })
+                                                                    @Html.TextBoxFor(m => m.FormV4.SecName, new { @readonly = "readonly", @class = "form-control " })
                                                                 </div>
                                                             </div>
 
                                                         </div>
-                                                        <div class="col-2 form-group px-0">
+                                                        <div class="col-2 form-group">
                                                             <label for="RMU"> Division Code</label>
-                                                            @Html.TextBoxFor(m => m.FormV1.DivCode, new { @readonly = "readonly", @class = "form-control " })
+                                                            @Html.TextBoxFor(m => m.FormV4.Division, new { @readonly = "readonly", @class = "form-control " })
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="form-group col-lg-2">
+                                                            <button id="btnFindDetails" type="button" onclick="Save('')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right mt-4">Find Details</button>
+                                                        </div>
+                                                        <div class="col-lg-4">
 
                                                             <div class="row">
 
                                                                 <div class="form-group col-lg-6">
                                                                     <label for="Name_of_Crew_Supervisor">Crew</label>
-                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV1.Crew, (IEnumerable
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV4.Crew, (IEnumerable
     <SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "ddlCrew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
 
                                                                 </div>
                                                                 <div class="form-group col-lg-6">
                                                                     <label for="Name_of_Crew_Supervisor">Crew Name</label>
-                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.Crewname, "", new { @readonly = "readonly",  @class = "form-control" })
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV4.Crewname, "", new { @readonly = "readonly", @class = "form-control" })
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-4">
                                                             <div class="row">
                                                                 <div class="col-lg-6 form-group px-0">
                                                                     <label for="Ref_No_">Activity Code</label>
-                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.ActCode, (IEnumerable
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV4.ActCode, (IEnumerable
     <SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "ddlActCode", @class = "form-control validate {required, Activity Code}" })
 
                                                                 </div>
                                                                 <div class="col-lg-6 form-group">
                                                                     <label for="Ref_No_">Activity Name</label>
-                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV1.ActName, "", new { @readonly = "readonly", @class = "form-control" })
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV4.ActName, "", new { @readonly = "readonly", @class = "form-control" })
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-2 form-group px-0">
+                                                        <div class="col-2 form-group">
                                                             <label for="Division_Code">Date </label>
-                                                            @Html.EditorFor(m => m.FormV1.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
+                                                            @Html.EditorFor(m => m.FormV4.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
                                                         </div>
-                                                        <div class="col-lg-5">
-                                                            <div class="row">
-                                                                <div class="col-6 form-group divsource">
-                                                                    <label for="">Source</label>
-                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.Source, (new List<SelectListItem> { new SelectListItem { Text = "Form S1", Value = "S1" }, new SelectListItem { Text = "New", Value = "V1" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control" })
-                                                                </div>
-                                                                <div class="form-group col-lg-6 mb-0 divRefno">
-                                                                    <label for="">Reference No</label>
-                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.S1HPkRefNo, Model.RefNoDS, "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control" })
-                                                                </div>
-                                                            </div>
-
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">Start Time (on site)</label>
+                                                            @Html.TextBoxFor(m => m.FormV4.StartTime, new { @class = "form-control validate {required, Start time}" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">End Time (on location) </label>
+                                                            @Html.TextBoxFor(m => m.FormV4.EndTime, new { @class = "form-control validate {required, End time}" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">V3 Reference no </label>
+                                                            @Html.TextBoxFor(m => m.FormV4.FV3PKRefID, new { @readonly = "readonly", @class = "form-control" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">Total Production</label>
+                                                            @Html.TextBoxFor(m => m.FormV4.TotalProduction, new { @readonly = "readonly", @class = "form-control" })
                                                         </div>
                                                     </div>
 
                                                 </div>
-                                                <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                                    <button id="btnFindDetails" type="button" onclick="Save('','')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
-                                                </div>
+
                                             </div>
 
                                         </div>
@@ -151,30 +156,7 @@
                                 </div>
                             </div>
 
-                            <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
-                                <div class="card mb-0">
-                                    <div class="card-header" id="headingOne">
-                                        <h5 class="m-0">
-                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
-                                                <span class="float-left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                </span>
-                                                <span class="float-left" style="padding: 4px 8px;">
-                                                    Work Schedule
-                                                </span>
-                                            </a>
-                                        </h5>
-                                    </div>
-                                    <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
-                                        <div class="card-body">
-                                            @{
-                                                Html.RenderPartial("_WorkScheduleGrid.cshtml");
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
                                 <div class="card mb-0">
                                     <div class="card-header" id="headingTwo">
@@ -194,7 +176,7 @@
                                         <div class="card-body">
                                             <div id="EquipmentListGrid" class="w-100 dt-tbl-section">
                                                 <label>Remarks</label>
-                                                @Html.TextAreaFor(m => m.FormV1.Remarks, new { @class = "form-control  svalidate {required,Remarks}" })
+                                                @Html.TextAreaFor(m => m.FormV4.Remarks, new { @class = "form-control  svalidate {required,Remarks}" })
 
                                             </div>
                                         </div>
@@ -233,44 +215,41 @@
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="User_Id">
-                                                                    Service Provider
+                                                                    Facilitator
                                                                 </label>
 
                                                                 <input type="text" class="form-control" readonly title="Endaya Construction Sdn Bhd" value="Endaya Construction Sdn Bhd" />
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 <label for="Name">
-                                                                    Scheduled by
+                                                                    Facilitated by
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Scheduledby", "Select Users", new { Id = "ddlScheduledby", @class = "form-control  {required,Scheduled by}", @onchange = "OnScheduledbyChange(this);" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Facilitatedby", "Select Users", new { Id = "ddlFacilitatedby", @class = "form-control  {required,Facilitated by}", @onchange = "OnFacilitatedbyChange(this);" })
 
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="User_Id">
                                                                     Name
                                                                 </label>
-                                                                @Html.TextBoxFor(model => model.FormV1.UsernameSch, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV4.UsernameFac, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="Designation">Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormV1.DesignationSch, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV4.DesignationFac, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-3 float-left">
                                                                 <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                @Html.EditorFor(m => m.FormV1.DtSch, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                @Html.EditorFor(m => m.FormV4.DtFac, new { type = "date", htmlAttributes = new { @class = "form-control" } })
                                                             </div>
                                                             <div class="form-group col-lg-1 float-left">
                                                                 <label>
                                                                     Sign
-
                                                                 </label>
                                                                 <div class="clear-b mt-2">
-                                                                    @Html.CheckBoxFor(model => model.FormV1.SignSch, new { @class = "{required, Scheduled by Signature}" })
+                                                                    @Html.CheckBoxFor(model => model.FormV4.SignFac, new { @class = "{required, Scheduled by Signature}" })
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
                                                     </div>
 
 
@@ -284,32 +263,31 @@
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left mb-0">
                                                                 <label for="Name">
-                                                                    Agreed by
+                                                                    Vetted by
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Agreedby", "Select Users", new { Id = "ddlAgreedby", @class = "form-control  {required,Agreed by}", @onchange = "OnAgreedbyChange(this);" })
-
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Vettedby", "Select Users", new { Id = "ddlVettedby", @class = "form-control  {required,Vetted by}", @onchange = "OnVettedChange(this);" })
                                                             </div>
 
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="User_Id">
                                                                     Name
                                                                 </label>
-                                                                @Html.TextBoxFor(model => model.FormV1.UsernameAgr, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV4.UsernameVet, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="Designation">Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormV1.DesignationAgr, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV4.DesignationVet, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-3 float-left">
                                                                 <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                @Html.EditorFor(m => m.FormV1.DtAgr, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                @Html.EditorFor(m => m.FormV4.DtVet, new { type = "date", htmlAttributes = new { @class = "form-control" } })
                                                             </div>
                                                             <div class="form-group col-lg-1 float-left">
                                                                 <label>
                                                                     Sign
                                                                 </label>
                                                                 <div class="clear-b mt-2">
-                                                                    @Html.CheckBoxFor(model => model.FormV1.SignAgr, new { @class = "{required, Agreed by Signature}" })
+                                                                    @Html.CheckBoxFor(model => model.FormV4.SignVet, new { @class = "{required, Vetorded by Signature}" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -321,35 +299,35 @@
                                                         <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="User_Id">
-                                                                    Facilitator
+                                                                    Service Provider
                                                                 </label>
                                                                 <input type="text" disabled class="form-control" value=" JKR Sarawak, Miri Division">
 
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left mb-0">
-                                                                <label for="Name"> Acknowledged by<!--  Bansing Tijun--></label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Acknowledgedby", "Select Users", new { Id = "ddlAcknowledgedby", @class = "form-control  {required,Acknowledged by}", @onchange = "OnAcknowledgedChange(this);" })
+                                                                <label for="Name"> Agreed by<!--  Bansing Tijun--></label>
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Agreeedby", "Select Users", new { Id = "ddlAgreedby", @class = "form-control  {required,Agreed by}", @onchange = "OnAgreedbyChange(this);" })
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="User_Id">
                                                                     Name
                                                                 </label>
-                                                                @Html.TextBoxFor(model => model.FormV1.UsernameAck, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV4.UsernameAgr, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="Designation">Designation</label>
-                                                                @Html.TextBoxFor(model => model.FormV1.DesignationAck, new { @readonly = true, @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.FormV4.DesignationAgr, new { @readonly = true, @class = "form-control" })
                                                             </div>
                                                             <div class="form-group col-lg-3 float-left">
                                                                 <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                                @Html.EditorFor(m => m.FormV1.DtAck, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                                @Html.EditorFor(m => m.FormV4.DtAgr, new { type = "date", htmlAttributes = new { @class = "form-control" } })
                                                             </div>
                                                             <div class="form-group col-lg-1 float-left">
                                                                 <label>
                                                                     Sign
                                                                 </label>
                                                                 <div class="clear-b mt-2">
-                                                                    @Html.CheckBoxFor(model => model.FormV1.SignAck, new { @class = "{required, Acknowledged by Signature}" })
+                                                                    @Html.CheckBoxFor(model => model.FormV4.SignAgr, new { @class = "{required, Agreed by Signature}" })
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -358,121 +336,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="modal fade" id="WorkScheduleModal" role="dialog">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-
-                                            <h4 class="modal-title w-100">
-                                                <span class="float-left"> WORK SCHEDULE</span>
-                                                <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
-                                            </h4>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <div class="row pt-3">
-
-                                                <div class="form-group col-lg-6">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            @Html.Label("Road Code", "Road Code")
-                                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RoadCode", "Select Road Code", new { id = "ddlRoadCode", @class = "form-control svalidate {required,Road Code}", @onchange = "OnRoadChange(this);" })
-
-                                                        </div>
-                                                        <div class="col-6">
-                                                            @Html.Label("Road Name", "Road Name")
-                                                            @Html.TextBoxFor(m => m.FormV1Dtl.RoadName, new { @readonly = true, @class = "form-control" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-lg-3">
-
-                                                    <label for="RoadCode" class="mb-1">
-                                                        Chainage Location From
-                                                    </label>
-                                                    <div class="form-group col-lg-7 p-0">
-
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" style="height: 35px; padding: 4px">CH</span>
-                                                            </div>
-                                                            @Html.TextBoxFor(m => m.FormV1Dtl.FrmCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM from}", style = "height:35px" })
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-lg-1 pt-2 px-0 text-center" style="max-width:4.33%">
-                                                        +
-                                                    </div>
-                                                    <div class="form-group col-lg-4 p-0">
-
-                                                        @Html.TextBoxFor(m => m.FormV1Dtl.FrmChDeci, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage KM fromch}" })
-
-                                                    </div>
-
-                                                </div>
-                                                <div class="form-group col-lg-3">
-
-                                                    <label for="RoadCode" class="mb-1">
-                                                        Chainage Location To
-                                                    </label>
-                                                    <div class="form-group col-lg-7 p-0">
-
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" style="height: 35px;padding:4px">CH</span>
-                                                            </div>
-                                                            @Html.TextBoxFor(m => m.FormV1Dtl.ToCh, new { @maxlength = "6", @class = "form-control allow_numeric validate {required,Chainage KM To}", style = "height:35px" })
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group col-lg-1 pt-2 px-0 text-center" style="max-width:4.33%">
-                                                        +
-                                                    </div>
-                                                    <div class="form-group col-lg-4 p-0">
-                                                        @Html.TextBoxFor(m => m.FormV1Dtl.ToChDeci, new { @maxlength = "3", @class = "form-control allow_numeric validate {required,Chainage KM Toch}" })
-
-                                                    </div>
-
-                                                </div>
-                                                <div class="form-group col-lg-5">
-                                                    <div class="row">
-                                                        <div class="form-group col-lg-6">
-                                                            <label for="RoadCode">  Site Reference</label>
-                                                            @Html.DropDownListFor(Adtl => Adtl.FormV1Dtl.SiteRef, (IEnumerable<CSelectListItem>)ViewData["Site_Ref"], "Select Site Reference", new { @Id = "ddlSiteRef", @class = "form-control validate {required, Site Reference}" })
-                                                        </div>
-                                                        <div class="form-group col-lg-6">
-                                                            <label for="RoadCode">
-                                                                Schedule Time to Start
-                                                            </label>
-
-                                                            @Html.TextBoxFor(Adtl => Adtl.FormV1Dtl.StartTime, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required, Start Time}", @rows = 1 })
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-lg-7">
-                                                    <label for="RoadCode">
-                                                        Remarks
-                                                    </label>
-                                                    @Html.TextBoxFor(m => m.FormV1Dtl.Remarks, new { @class = "form-control validate {required, Remarks} " })
-                                                </div>
-                                            </div>
-
-
-                                            <!--<div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                    <button id="btnFindDetails" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
-                                </div>-->
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-sm btn-themebtn" id="saveFormV1DtlBtn" onclick="SaveFormV1WorkSchedule()">Submit</button>
 
                                         </div>
                                     </div>
@@ -488,35 +351,35 @@
                 </div>
 
                 @{
-                    if (Model.FormV1.Status != "" && Model.FormV1.Status != "Initialize")
+                    if (Model.FormV4.Status != "" && Model.FormV4.Status != "Initialize")
                         Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
                         {
-                            Form = "FormV1",
-                            RefId = Model.FormV1.PkRefNo,
-                            Stage = Model.FormV1.Status
+                            Form = "FormV4",
+                            RefId = Model.FormV4.PkRefNo,
+                            Stage = Model.FormV4.Status
                         });
                 }
             </div>
 
-      
+
 
         </div>
- 
+
         <div class="col-md-12 float-right text-right custom-footer">
             <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
             @{
 
 
 
-                <button id="saveFormV1Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
-                <button id="SubmitFormV1Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
+                <button id="saveFormV4Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Saved')">Save</button>
+                <button id="SubmitFormV4Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Submitted')">Submit</button>
 
 
-                @if (IsApproved && (Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Submitted || Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Rejected))
+                @if (IsApproved && (Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Submitted || Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Rejected))
                 {
                     <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
                 }
-                else if (IsApproved && (Model.FormV1.Status == RAMMS.Common.StatusList.FormV2Verified || Model.FormV1.Status == RAMMS.Common.StatusList.FormV2Rejected))
+                else if (IsApproved && (Model.FormV4.Status == RAMMS.Common.StatusList.FormV2Verified || Model.FormV4.Status == RAMMS.Common.StatusList.FormV2Rejected))
                 {
                     <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Approved By');"> Approved / Facilitate </button>
                 }
@@ -527,17 +390,17 @@
     </div>
 
 
-    @Html.HiddenFor(m => m.FormV1.PkRefNo)
-    @Html.HiddenFor(m => m.FormV1Dtl.PkRefNo)
-    @Html.HiddenFor(m => m.FormV1.SecCode)
-    @Html.HiddenFor(m => m.FormV1.UseridAck)
-    @Html.HiddenFor(m => m.FormV1.UseridAgr)
-    @Html.HiddenFor(m => m.FormV1.UseridSch)
-    @Html.HiddenFor(m => m.FormV1.Status)
-    @Html.HiddenFor(m => m.FormV1Dtl.RoadCode)
-    @Html.HiddenFor(m => m.FormV1.SubmitSts)
+    @Html.HiddenFor(m => m.FormV4.PkRefNo)
+    @Html.HiddenFor(m => m.FormV4.FV3PKRefNo)
+    @Html.HiddenFor(m => m.FormV4.FV3PKRefID)
+    @Html.HiddenFor(m => m.FormV4.SecCode)
+    @Html.HiddenFor(m => m.FormV4.UseridFac)
+    @Html.HiddenFor(m => m.FormV4.UseridAgr)
+    @Html.HiddenFor(m => m.FormV4.UseridVet)
+    @Html.HiddenFor(m => m.FormV4.Status)
 
-    <input type="hidden" id="hdnSecCode" value="@Model.FormV1.SecCode" />
+    @Html.HiddenFor(m => m.FormV4.SubmitSts)
+    <input type="hidden" id="hdnSecCode" value="@Model.FormV4.SecCode" />
     <input type="hidden" id="hdnView" value="@Model.view" />
 
 
@@ -558,40 +421,41 @@
     var onloadFlag = true;
 
     $(document).ready(function () {
-        process.Init("FormV1", "@Model.FormV1.Status", @Model.FormV1.PkRefNo);
-        $("#FormV1Dtl_StartTime").timeEntry();
+        process.Init("FormV4", "@Model.FormV4.Status", @Model.FormV4.PkRefNo);
+        $("#FormV4_StartTime").timeEntry();
+        $("#FormV4_EndTime").timeEntry();
 
     });
 
 
 
-    $('#ddlrmu').val("@Model.FormV1.Rmu");
+    $('#ddlrmu').val("@Model.FormV4.Rmu");
     $('#ddlrmu').trigger('chosen:updated');
     $('#ddlrmu').trigger("change");
 
-    $('#dllSecCode').val("@Model.FormV1.SecCode");
+    $('#dllSecCode').val("@Model.FormV4.SecCode");
     $('#dllSecCode').trigger('chosen:updated');
     $('#dllSecCode').trigger("change");
 
-    $('#ddlActCode').val("@Model.FormV1.ActCode");
+    $('#ddlActCode').val("@Model.FormV4.ActCode");
     $('#ddlActCode').trigger('chosen:updated');
     $('#ddlActCode').trigger("change");
 
-    $('#ddlCrew').val("@Model.FormV1.Crew");
+    $('#ddlCrew').val("@Model.FormV4.Crew");
     $('#ddlCrew').trigger('chosen:updated');
     $('#ddlCrew').trigger("change");
 
-    $('#ddlAcknowledgedby').val("@Model.FormV1.UseridAck");
-    $('#ddlAcknowledgedby').trigger('chosen:updated');
-    $('#ddlAcknowledgedby').trigger("change");
+    $('#ddlVettedby').val("@Model.FormV4.UseridVet");
+    $('#ddlVettedby').trigger('chosen:updated');
+    $('#ddlVettedby').trigger("change");
 
-    $('#ddlAgreedby').val("@Model.FormV1.UseridAgr");
+    $('#ddlAgreedby').val("@Model.FormV4.UseridAgr");
     $('#ddlAgreedby').trigger('chosen:updated');
     $('#ddlAgreedby').trigger("change");
 
-    $('#ddlScheduledby').val("@Model.FormV1.UseridSch");
-    $('#ddlScheduledby').trigger('chosen:updated');
-    $('#ddlScheduledby').trigger("change");
+    $('#ddlFacilitatedby').val("@Model.FormV4.UseridFac");
+    $('#ddlFacilitatedby').trigger('chosen:updated');
+    $('#ddlFacilitatedby').trigger("change");
 
 
    // HeaderLogic();

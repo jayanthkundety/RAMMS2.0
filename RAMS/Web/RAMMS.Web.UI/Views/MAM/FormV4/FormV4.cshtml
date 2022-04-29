@@ -2,29 +2,29 @@
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 @{
-    ViewBag.TabTitle = "ERT - Form V1 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "ERT - Form V4 - Road Asset Management and Maintenance System";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
     var isModifyPerm = security.IsPCModify(ModuleNameList.Management_and_Maintanence) ? "" : "hidden";
     var isDeletePerm = security.IsPCDelete(ModuleNameList.Management_and_Maintanence) ? "" : "hidden";
 }
 
-@model RAMMS.Web.UI.Models.FormV1Model;
+@model RAMMS.Web.UI.Models.FormV4Model;
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#formV1DetSrchRMU").chosen();
-        $('#formV1DetSrchSectionCode').chosen();
-        $("#formV1AdvSearch").hide();
+        $("#formV4DetSrchRMU").chosen();
+        $('#formV4DetSrchSectionCode').chosen();
+        $("#formV4AdvSearch").hide();
 
-        $("#formV1DetSrchRMU").on("change", function () {
-            var rmu = $("#formV1DetSrchRMU").find("option:selected").text();
+        $("#formV4DetSrchRMU").on("change", function () {
+            var rmu = $("#formV4DetSrchRMU").find("option:selected").text();
             var rmuName = rmu.split("-")[1];
            $("#txtRmuName").val(rmuName);
         });
 
-        //$("#formV1DetSrchRMU").trigger("change");
+        //$("#formV4DetSrchRMU").trigger("change");
 
-        $("#formV1DetSrchCrew").on("change", function () {
-            var val = $("#formV1DetSrchCrew option:selected").text();
+        $("#formV4DetSrchCrew").on("change", function () {
+            var val = $("#formV4DetSrchCrew option:selected").text();
             var Name = val.split("-")[1];
             var ctrl = $(this);
             if (val != "99999999" && val != "") {
@@ -41,7 +41,7 @@
             return false;
         });
 
-        $("#formV1DetSrchSectionCode").on("change", function () {
+        $("#formV4DetSrchSectionCode").on("change", function () {
             var ddldata = $(this).val();
             if (ddldata != "") {
                $("#txtSectionName").val(ddldata);
@@ -54,17 +54,17 @@
     });
 
     function clearHeaderSearch() {
-        $("#FormV1SmartSearch").val('');
-        $("#formV1DetSrchRMU").val("").trigger("chosen:updated");
-        $('#formV1DetSrchSectionCode').val("").trigger("chosen:updated");
-        $("#formV1DetSrchCrew").val("").trigger("chosen:updated");
-        //$("#formV1DetSrchActivityCode").val("").trigger("chosen:updated");
-        //$("#FormV1SrchByFromDate").val('');
-        //$("#FormV1SrchByToDate").val('');
+        $("#FormV4SmartSearch").val('');
+        $("#formV4DetSrchRMU").val("").trigger("chosen:updated");
+        $('#formV4DetSrchSectionCode').val("").trigger("chosen:updated");
+        $("#formV4DetSrchCrew").val("").trigger("chosen:updated");
+        //$("#formV4DetSrchActivityCode").val("").trigger("chosen:updated");
+        //$("#FormV4SrchByFromDate").val('');
+        //$("#FormV4SrchByToDate").val('');
 
         var req = {};
-        var _rmu = $("#formV1DetSrchRMU");
-        var _road = $("#formV1DetSrchSectionCode");
+        var _rmu = $("#formV4DetSrchRMU");
+        var _road = $("#formV4DetSrchSectionCode");
         req.RMU = this.value;
         req.Section = '';
         req.RoadCode = '';
@@ -76,20 +76,20 @@
             type: 'Post',
             success: function (data) {
                 if (req.RMU == "") {
-                    $("#formV1DetSrchRMU").empty();
-                    $("#formV1DetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
+                    $("#formV4DetSrchRMU").empty();
+                    $("#formV4DetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
                     $.each(data.rmu, function (index, v) {
-                        $("#formV1DetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
+                        $("#formV4DetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
                     });
                 }
                 if (req.Section == "") {
-                    $("#formV1DetSrchSectionCode").empty();
-                    $("#formV1DetSrchSectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $("#formV4DetSrchSectionCode").empty();
+                    $("#formV4DetSrchSectionCode").append($("<option></option>").val("").html("Select Section Code"));
                     $.each(data.section, function (index, v) {
-                        $("#formV1DetSrchSectionCode").append($("<option></option>").val(v.value).html(v.text));
+                        $("#formV4DetSrchSectionCode").append($("<option></option>").val(v.value).html(v.text));
                     });
 
-                    $('#formV1DetSrchSectionCode').trigger("chosen:updated");
+                    $('#formV4DetSrchSectionCode').trigger("chosen:updated");
                 }
             },
             error: function (data) {
@@ -97,33 +97,33 @@
                 console.error(data);
             }
         });
-        $("#formV1SearchBtn").click();
+        $("#formV4SearchBtn").click();
     }
 
     function detailSearch() {
-        $("#formV1AdvSearch").slideToggle(500);
+        $("#formV4AdvSearch").slideToggle(500);
     }
 
-    function FormV1GridRefresh() {
+    function FormV4GridRefresh() {
 
-        oTable = $('#FormV1GridView').DataTable();
-        oTable.columns(0).search($("#FormV1SmartSearch").val().trim());
+        oTable = $('#FormV4GridView').DataTable();
+        oTable.columns(0).search($("#FormV4SmartSearch").val().trim());
 
-        var rmuCode = $("#formV1DetSrchRMU").val();
+        var rmuCode = $("#formV4DetSrchRMU").val();
         if (rmuCode != "") {
             oTable.columns(1).search(rmuCode);
         } else {
                 oTable.columns(1).search("");
         }
 
-        var secCode = $("#formV1DetSrchSectionCode").val();
+        var secCode = $("#formV4DetSrchSectionCode").val();
         if (secCode != "") {
             oTable.columns(2).search(secCode);
         } else {
                 oTable.columns(2).search("");
         }
 
-        var crewCode = $("#formV1DetSrchCrew").val().trim();
+        var crewCode = $("#formV4DetSrchCrew").val().trim();
 
         if (crewCode != "" ){
             oTable.columns(3).search(crewCode);
@@ -136,21 +136,21 @@
         oTable.draw();
     }
 
- 
+
 
     function DeleteHeaderRecord(id) {
-        
+        var headerId = id;
         app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
             if (e) {
                 InitAjaxLoading();
                 $.ajax({
-                    url: '/MAM/DeleteFormV1',
-                    data: { id },
+                    url: '/MAM/DeleteFormV4',
+                    data: { headerId },
                     type: 'POST',
                     success: function (data) {
                         if (data > 0) {
                             app.ShowSuccessMessage('Successfully Deleted', false);
-                            FormV1GridRefresh();
+                            FormV4GridRefresh();
                         }
                         else {
                             app.ShowErrorMessage("Error in Deleted. Kindly retry later.", false);
@@ -181,13 +181,13 @@
     <div class="body-header w-100">
         <div class="col-lg-12">
             <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
-                <span class="mb-0 font-weight-bold font-20">FIELD VERIFICATION (Form V1)</span>
+                <span class="mb-0 font-weight-bold font-20">FIELD VERIFICATION (Form V4)</span>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
                         <li class="breadcrumb-item">Home</li>
                         <li class="breadcrumb-item">MAM</li>
                         <li class="breadcrumb-item" aria-current="page">
-                            Form V1
+                            Form V4
                         </li>
                     </ol>
                 </nav>
@@ -202,12 +202,12 @@
         <div class="row justify-content-center mb-1">
             <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
                 <div class="input-group">
-                    @Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormV1SmartSearch", placeholder = "Search...", @class = "form-control" })
+                    @Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormV4SmartSearch", placeholder = "Search...", @class = "form-control" })
                     <div class="input-group-append">
                         <div class="btn-group">
-                            <button id="formV1SearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
-                            <button id="formV1SearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
-                            <button id="formV1SearchClearBtn" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                            <button id="formV4SearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                            <button id="formV4SearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                            <button id="formV4SearchClearBtn" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
                         </div>
                     </div>
                 </div>
@@ -216,15 +216,15 @@
     </form>
     @*Detail Search Screen*@
     <div id="detailSearch">
-        <div class="row" id="formV1AdvSearch" style="display:block">
-            <form id="formV1DetailsearchForm" name="formV1DetailsearchForm">
+        <div class="row" id="formV4AdvSearch" style="display:block">
+            <form id="formV4DetailsearchForm" name="formV4DetailsearchForm">
                 <div class="col-lg-8 offset-lg-2">
                     <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
                         <div class="row">
                             <div class="form-group col-lg-2">
                                 @Html.Label("RMU ", "RMU ")
                                 @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.RMU, (IEnumerable
-                            <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV1DetSrchRMU", @class = "form-control" })
+                            <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV4DetSrchRMU", @class = "form-control" })
                             </div>
                             <div class="form-group col-lg-2">
                                 @Html.Label("RMU Name", "RMU Name")
@@ -233,7 +233,7 @@
                             <div class="form-group col-lg-4">
                                 @Html.Label("Section Code ", "Section Code")
                                 @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
-                            <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV1DetSrchSectionCode", @class = "form-control widget-content-area" })
+                            <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV4DetSrchSectionCode", @class = "form-control widget-content-area" })
                             </div>
                             <div class="form-group col-lg-2">
                                 @Html.Label("Section Name", "Section Name")
@@ -242,7 +242,7 @@
                             <div class="form-group col-lg-4">
                                 @Html.Label("Crew ", "Crew")
                                 @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
-                            <CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formV1DetSrchCrew", @class = "form-control widget-content-area" })
+                            <CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formV4DetSrchCrew", @class = "form-control widget-content-area" })
                             </div>
                             <div class="form-group col-lg-4">
                                 @Html.Label("Crew Name", "Crew Name")
@@ -262,10 +262,10 @@
         <div class="w-100 float-left position-relative">
 
             <div class="grid-btns">
-                <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:AddFormV1(0,0);"><span class="add-icon"></span> Add Form V1</button>
+                <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:AddFormV4(0,0);"><span class="add-icon"></span> Add Form V4</button>
             </div>
 
-            @*Form V1 Grid*@
+            @*Form V4 Grid*@
             <div id="headerListGrid" class="w-100 dt-tbl-section">
                 @{
                     Html.RenderPartial("_HeaderListGrid.cshtml");
@@ -276,15 +276,15 @@
     </div>
 </main>
 
- 
+
 
 
 <script>
-    function AddFormV1(pid, view) {
-        window.location = "/MAM/AddFormV1" + "?id=" + pid + "&view=" + view;
+    function AddFormV4(pid, view) {
+        window.location = "/MAM/AddFormV4" + "?id=" + pid + "&view=" + view;
     }
-    function EditFormV1(pid, view) {
-        window.location = "/MAM/EditFormV1" + "?id=" + pid + "&view=" + view;
+    function EditFormV4(pid, view) {
+        window.location = "/MAM/EditFormV4" + "?id=" + pid + "&view=" + view;
     }
-  
+
 </script>

@@ -6,6 +6,13 @@ namespace RAMMS.Common
 {
     public class StatusList
     {
+
+        public const string Saved = "Saved";
+        public const string Submitted = "Submitted";
+        public const string Rejected = "Rejected";
+        public const string Approved = "Approved";
+        public const string Verified = "Verified";
+
         public const string Supervisor = "Supervisor";
         public const string Executive = "Executive";
         public const string HeadMaintenance = "HeadMaintenance";
