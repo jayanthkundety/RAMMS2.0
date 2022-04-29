@@ -240,6 +240,8 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? CrDt { get; set; }
 
         public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
+
+        public virtual List<FormQa1AttachmentDTO> RmFormQa1Image { get; set; }
     }
 
     public class FormQa1WcqDTO
@@ -343,4 +345,27 @@ namespace RAMMS.DTO.ResponseBO
 
         public virtual FormQa1HeaderDTO Fqa1hPkRefNoNavigation { get; set; }
     }
+
+    public class FormQa1AttachmentDTO
+    {
+        public int PkRefNo { get; set; }
+        public int? Fqa1PkRefNo { get; set; }
+        public string Fqa1TesPkRefNo { get; set; }
+        public string ImgRefId { get; set; }
+        public string ImageTypeCode { get; set; }
+        public int? ImageSrno { get; set; }
+        public string ImageFilenameSys { get; set; }
+        public string ImageFilenameUpload { get; set; }
+        public string ImageUserFilePath { get; set; }
+        public int? ModBy { get; set; }
+        public DateTime? ModDt { get; set; }
+        public int? CrBy { get; set; }
+        public DateTime? CrDt { get; set; }
+        public bool SubmitSts { get; set; }
+        public bool ActiveYn { get; set; }
+        public string Source { get; set; }
+
+        public virtual FormQa1TesDTO Fqa1TesPkRefNoNavigation { get; set; }
+    }
+
 }

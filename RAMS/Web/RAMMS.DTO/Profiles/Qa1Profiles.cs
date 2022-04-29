@@ -11,7 +11,7 @@ namespace RAMMS.DTO.Profiles
     {
         public Qa1Profiles()
         {
-            string[] arrPrefix = new string[] { "Fqa1h", "Fqa1ev", "Fqa1gc", "Fqa1gen", "Fqa1l", "Fqa1m", "Fqa1ssc", "Fqa1tes", "Fqa1wcq", "Fqa1w" };
+            string[] arrPrefix = new string[] { "Fqa1h", "Fqa1ev", "Fqa1gc", "Fqa1gen", "Fqa1l", "Fqa1m", "Fqa1ssc", "Fqa1tes", "Fqa1wcq", "Fqa1w" , "Fqa1i" };
             this.RecognizeDestinationPrefixes(arrPrefix);
             this.RecognizePrefixes(arrPrefix);
 
@@ -25,7 +25,7 @@ namespace RAMMS.DTO.Profiles
             this.CreateMap<FormQa1TesDTO, RmFormQa1Tes>().ReverseMap();
             this.CreateMap<FormQa1WcqDTO, RmFormQa1Wcq>().ReverseMap();
             this.CreateMap<FormQa1WeDTO, RmFormQa1We>().ReverseMap();
-
+            this.CreateMap<FormQa1AttachmentDTO, RmFormQa1Image>().ReverseMap();
         }
     }
 }

@@ -17,35 +17,32 @@
             @Html.DropDownListFor(Adtl => Adtl.CtCs , (IEnumerable
             <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1CtCs", @class = "form-control tddl svalidate {required, Compaction Test -  Compliance With Specification}" })
         </div>
-
-        @{
-
-            if (Model.CtCsA == 0 || Model.CtCsA == null)
-            {
-                <div class="col-2">
-                    <label for="RoadCode">
-                        See Attachment
-                    </label>
-                    <div class="img-btns mt-1" id="addAttachment">
-                        <a class="btn btn-sm btn-themebtn form-control" data-toggle="modal" onclick="FormAddImage()">
+        <div class="col-2" id="divCs1">
+            @{
+                <label>&nbsp;</label>
+                if (Model.CtCsA == 0 || Model.CtCsA == null)
+                {
+                    <div style="text-align:center">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormQA1Image(1)">
                             <span class="add-icon"></span> Add Attachment
                         </a>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div style="text-align:center">
+                        <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">
+                            @{
+                                var CtCSA = Model.RmFormQa1Image.Find(x => x.ImageSrno == 1);
+                                //<img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
+                                <a class="warCaption" href="~/@CtCSA.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@CtCSA.ImageUserFilePath</a>
+                            }
+                        </span>
+                        <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteAttachment(@CtCSA.PkRefNo,1)"><span class="remove-icon"></span></button></span>
+                    </div>
+                }
             }
-            else
-            {
-                <div class="col-2">
-                    <label for="Filename">
-                        Filename
-                    </label>
-                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-                </div>
-            }
-        }
-
-
+        </div>
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -69,29 +66,33 @@
             @Html.DropDownListFor(Adtl => Adtl.DtCs , (IEnumerable
             <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1DtCs", @class = "form-control tddl svalidate {required, Density Test - Compliance With Specification}" })
         </div>
-        @{
-
-            if (Model.DtCsA == 0 || Model.DtCsA == null)
-            {
-                <div class="col-2">
-                    <div class="img-btns mt-1" id="addAttachment">
-                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+        <div class="col-2" id="divCs2">
+            <label>&nbsp;</label>
+            @{
+                if (Model.DtCsA == 0 || Model.DtCsA == null)
+                {
+                    <div style="text-align:center">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormQA1Image(2)">
                             <span class="add-icon"></span> Add Attachment
                         </a>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div style="text-align:center">
+                        <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">
+                            @{
+
+                                var CtCSA = Model.RmFormQa1Image.Find(x => x.ImageSrno == 2);
+                                //<img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
+                                <a class="warCaption" href="~/@CtCSA.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@CtCSA.ImageUserFilePath</a>
+                            }
+                        </span>
+                        <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteAttachment(@CtCSA.PkRefNo,2)"><span class="remove-icon"></span></button></span>
+                    </div>
+                }
             }
-            else
-            {
-                <div class="col-2">
-                    <label for="Filename">
-                        Filename
-                    </label>
-                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-                </div>
-            }
-        }
+        </div>
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -115,29 +116,35 @@
             @Html.DropDownListFor(Adtl => Adtl.MgtCs , (IEnumerable
             <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1MgtCs", @class = "form-control tddl svalidate {required, Material Grading Test - Compliance With Specification}" })
         </div>
-        @{
+        <div class="col-2" id="divCs3">
+            <label>&nbsp;</label>
+            @{
 
-            if (Model.MgtCsA == 0 || Model.MgtCsA == null)
-            {
-                <div class="col-2">
-                    <div class="img-btns mt-1" id="addAttachment">
-                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+                if (Model.MgtCsA == 0 || Model.MgtCsA == null)
+                {
+                    <div style="text-align:center">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormQA1Image(3)">
                             <span class="add-icon"></span> Add Attachment
                         </a>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div style="text-align:center">
+                        <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">
+                            @{
+
+                                var CtCSA = Model.RmFormQa1Image.Find(x => x.ImageSrno == 3);
+                                //<img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
+                                <a class="warCaption" href="~/@CtCSA.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@CtCSA.ImageUserFilePath</a>
+
+                            }
+                        </span>
+                        <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteAttachment(@CtCSA.PkRefNo,3)"><span class="remove-icon"></span></button></span>
+                    </div>
+                }
             }
-            else
-            {
-                <div class="col-2">
-                    <label for="Filename">
-                        Filename
-                    </label>
-                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-                </div>
-            }
-        }
+        </div>
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -161,29 +168,34 @@
             @Html.DropDownListFor(Adtl => Adtl.CbrCs , (IEnumerable
             <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1CbrCs", @class = "form-control tddl svalidate {required, CBR - Compliance With Specification}" })
         </div>
-        @{
+        <div class="col-2" id="divCs4">
+            <label>&nbsp;</label>
+            @{
+                if (Model.CbrCsA == 0 || Model.CbrCsA == null)
+                {
 
-            if (Model.CbrCsA == 0 || Model.CbrCsA == null)
-            {
-                <div class="col-2">
-                    <div class="img-btns mt-1" id="addAttachment">
-                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+                    <div style="text-align:center">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormQA1Image(4)">
                             <span class="add-icon"></span> Add Attachment
                         </a>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div style="text-align:center">
+                        <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">
+                            @{
+
+                                var CtCSA = Model.RmFormQa1Image.Find(x => x.ImageSrno == 4);
+                                //<img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
+                                <a class="warCaption" href="~/@CtCSA.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@CtCSA.ImageUserFilePath</a>
+                            }
+                        </span>
+                        <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteAttachment(@CtCSA.PkRefNo,4)"><span class="remove-icon"></span></button></span>
+                    </div>
+                }
             }
-            else
-            {
-                <div class="col-2">
-                    <label for="Filename">
-                        Filename
-                    </label>
-                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-                </div>
-            }
-        }
+        </div>
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -207,29 +219,33 @@
             @Html.DropDownListFor(Adtl => Adtl.OtCs , (IEnumerable
             <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1OtCs", @class = "form-control tddl svalidate {required, Other Tests - Compliance With Specification}" })
         </div>
-        @{
+        <div class="col-2" id="divCs5">
+            <label>&nbsp;</label>
+            @{
+                if (Model.OtCsA == 0 || Model.OtCsA == null)
+                {
 
-            if (Model.OtCsA == 0 || Model.OtCsA == null)
-            {
-                <div class="col-2">
-                    <div class="img-btns mt-1" id="addAttachment">
-                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormAddImage()">
+                    <div style="text-align:center">
+                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormQA1Image(5)">
                             <span class="add-icon"></span> Add Attachment
                         </a>
                     </div>
-                </div>
+                }
+                else
+                {
+                    <div style="text-align:center">
+                        <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">
+                            @{
+                                var CtCSA = Model.RmFormQa1Image.Find(x => x.ImageSrno == 5);
+                                //<img class="item-doc" src="~/Uploads/FormX/WAR/file-icon.png" alt="Image_Unavailable" />
+                                <a class="warCaption" href="~/@CtCSA.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@CtCSA.ImageUserFilePath</a>
+                            }
+                        </span>
+                        <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteAttachment(@CtCSA.PkRefNo,5)"><span class="remove-icon"></span></button></span>
+                    </div>
+                }
             }
-            else
-            {
-                <div class="col-2">
-                    <label for="Filename">
-                        Filename
-                    </label>
-                    <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;"></span>
-                    <span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteImage(29)"><span class="remove-icon"></span></button></span>
-                </div>
-            }
-        }
+        </div>
         <div class="col-3 px-0">
             <label>
                 Remarks
@@ -239,3 +255,233 @@
     </div>
 </div>
 @Html.HiddenFor(m => m.PkRefNo , new { @id="formQa1TesPkRefNo"})
+@Html.Hidden("hdnImageRow")
+<style>
+
+    .gallery {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .modal2.fade.in ~ .modal-backdrop.fade.in {
+        opacity: .1;
+        background-color: #f00;
+    }
+
+    .uploadfile {
+        font-size: 18px;
+    }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+        font-size: 1rem
+    }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    .disabled #FormBrowseBtn {
+        opacity: .65;
+    }
+</style>
+<div class="modal hide border-10x addphoto-mdl" id="myModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Attachment Upload</h4>
+                <button type="button" id="btnclose" class="close">×</button>
+            </div><div class="container"></div>
+            <div class="modal-body">
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="row">
+                        <div class="form-group col-lg-12 mt-4">
+                            <form id="fileupload" action="#" method="POST" enctype="multipart/form-data">
+                                <div class="files" id="files1" style="text-align:center">
+                                    <span class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" id="FormBrowseBtn">
+                                        Browse files here to upload
+                                        <input type="file" id="files" name="files1" multiple />
+                                    </span>
+                                    <br />
+                                    <br>
+                                    <ul id="photolist" class="fileList"></ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="divImg" class="row">
+                    <div class="mt-3 col-md-2">
+                        <output id="Filelist" style="display:inline-flex"></output>
+                    </div>
+                </div>
+
+                <div class="text-center mt-2">
+                    <button type="button" id="btnImageUpload" onclick="UploadModalClose()" class="btn btn-sm btn-themebtn">Upload</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="imageClear" class="btn btn-sm btn-outline-theme">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
+        var fileIdCounter = 0;
+
+        this.closest(".files").change(function (evt) {
+            var output = [];
+            for (var i = 0; i < evt.target.files.length; i++) {
+                fileIdCounter++;
+                var file = evt.target.files[i];
+                var fileId = sectionIdentifier + fileIdCounter;
+
+                var ext = file.name.split('.').pop().toLowerCase();
+
+
+                if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                    app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                    return
+                }
+            }
+
+            filesToUpload.push({
+                id: fileId,
+                file: file,
+            });
+
+            if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
+                var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
+            }
+            else {
+                var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[0]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+            }
+
+            $(this).children(".fileList")
+                .append(output.join(""));
+
+            //reset the input to null - nice little chrome bug!
+            evt.target.value = null;
+            document.getElementById("btnImageUpload").disabled = false;
+        });
+
+        $(this).on("click", ".removeFile", function (e) {
+            e.preventDefault();
+            var fileId = $(this).parent().children("a").data("fileid");
+
+            // loop through the files array and check if the name of that file matches FileName
+            // and get the index of the match
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id === fileId)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).parent().remove();
+            if (filesToUpload.length == 0) {
+                document.getElementById("btnImageUpload").disabled = true;
+
+            }
+            else {
+                document.getElementById("files").disabled = false;
+                document.getElementById("btnImageUpload").disabled = false;
+            }
+        });
+
+        this.clear = function () {
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id.indexOf(sectionIdentifier) >= 0)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).children(".fileList").empty();
+        }
+
+        return this;
+    };
+
+
+
+        (function () {
+            var filesToUpload = [];
+
+            $("#files1").removeClass("disabled");
+            document.getElementById("files").disabled = false;
+
+            var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
+
+            $("#imageClear").click(function (e) {
+                filesToUpload.length = 0;
+                $("#photolist li").remove();
+                $("#myModal").modal('hide');
+            });
+
+            $("#btnclose").click(function (e) {
+                filesToUpload.length = 0;
+                $("#photolist li").remove();
+                $("#myModal").modal('hide');
+            });
+
+            $("#btnImageUpload").click(function (e) {
+                var id = $("#formQa1TesPkRefNo").val();
+                var formData = new FormData();
+                formData.append("PkRefNo", id);
+                formData.append("Qa1PkRefNo",$("#formQa1PkRefNo").val())
+                formData.append("row", $("#hdnImageRow").val());
+
+                for (var i = 0, len = filesToUpload.length; i < len; i++) {
+                    formData.append("FormFile", filesToUpload[i].file);
+                }
+
+                InitAjaxLoading();
+                $.ajax(
+                    {
+                        url: "/FormQA1/ImageUploadFormQA1",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        dataType: 'JSON',
+                        success: function (data) {
+                            HideAjaxLoading();
+                            debugger
+                            if (data) {
+                                app.ShowSuccessMessage('Uploaded Successcully', false);
+                                $("#divCs" + row).html(SetAttachment($("#hdnImageRow").val()));
+                                $('#myModal').modal('hide');
+                            }
+                            else {
+                                app.ShowErrorMessage('Upload Failed. Kindly retry later.', false);
+                                HideAjaxLoading();
+                            }
+
+                        },
+                        error: function (data) {
+                            HideAjaxLoading();
+                            app.ShowErrorMessage("Upload Failed. Kindly retry later.")
+
+                        }
+                    }
+                );
+
+            });
+        })()
+
+</script>

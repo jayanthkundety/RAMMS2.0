@@ -334,7 +334,7 @@ function disableAll(action) {
         $("#AccordPage2 *").removeAttr("disabled");
         $(".wddl").removeAttr("disabled");
         $(".wddl").prop('disabled', false).trigger("chosen:updated");
-        
+
 
         //Specific Condition
         $("#AccordPage6 *").removeAttr("disabled");
@@ -348,7 +348,7 @@ function disableAll(action) {
         $("#AccordPage12 *").removeAttr("disabled");
         $(".tddl").removeAttr("disabled");
         $(".tddl").prop('disabled', false).trigger("chosen:updated");
-        
+
         //General Comments
         $("#AccordPage16 *").removeAttr("disabled");
 
@@ -394,6 +394,7 @@ $(document).on("click", "#btnFindDetails", function () {
                 $("#formQa1AssignedBy").trigger("change");
                 $("#formQa1PkRefNo").val(data.PkRefNo);
                 $("#formQa1ReferenceNo").val(data.RefId);
+                $("#formQa1TesPkRefNo").val(data.Tes.PkRefNo)
             }
         }, "Finding");
     }
@@ -1129,4 +1130,81 @@ function GoBack() {
         }));
     } else
         location.href = "/FormQA1/QA1";
+}
+
+//Attachment
+
+function FormQA1Image(row) {
+    $("#hdnImageRow").val(row);
+    if ($("#hdnView").val() == "1") return;
+    if ($("#formQa1PkRefNo").val() != "0") {
+        $("#myModal").modal('show');
+    }
+}
+
+function UploadModalClose() {
+    document.getElementById("files").disabled = true;
+    document.getElementById("FormBrowseBtn").disabled = true;
+    document.getElementById("btnImageUpload").disabled = true;
+    $("#photolist").empty();
+    $('#myModal').modal('hide');
+}
+
+function deleteImageupload(imageToDelete) {
+    var imagedelete = imageToDelete.cellIndex - 1;
+    app.Confirm("Are you sure you want to remove?, If Yes click OK.", function (e) {
+        if (e) {
+            var row = document.getElementById("ImageRow")
+            row.deleteCell(imageToDelete.cellIndex);
+            row.deleteCell(imagedelete);
+        }
+    });
+}
+
+function DeleteAttachment(pkId, row) {
+    if ($("#hdnView").val() == "1") return;
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            InitAjaxLoading();
+            $.ajax({
+                url: '/FormQA1/DeleteAttachment',
+                data: { pkId },
+                type: 'POST',
+                success: function (data) {
+                    if (data > 0) {
+                        if (row == 1) {
+                            $("#divCs" + row).html(AddShowAttachmentButton(row));
+                        }
+                        HideAjaxLoading();
+                        app.ShowSuccessMessage("Successfully Deleted")
+                    }
+                    else {
+                        HideAjaxLoading();
+                        alert("Error in Deleted. Kindly retry later.");
+
+                    }
+
+                }
+            });
+        }
+    }));
+}
+
+function AddShowAttachmentButton(row) {
+    return '<div style="text-align:center"><a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormQA1Image(' + row + ')"><span class="add-icon"></span> Add Attachment</a></div>';
+}
+
+function SetAttachment(row) {
+    var pkId = $("#formQa1TesPkRefNo").val();
+    $.ajax({
+        url: '/FormQA1/GetImages',
+        data: { pkId },
+        type: 'POST',
+        success: function (data) {
+            return ' <span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">' +
+                '<a class="warCaption" href="~/' + data.ImageFilenameSys + '" target="_blank" title="Click here to View the Document">' + data.ImageFilenameSys + '</a></span>' +
+                '<span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteAttachment(' + data.PkRefNo + ',' + row + ')">' +
+                '<span class="remove-icon"></span></button></span >';
+        }
+    });
 }

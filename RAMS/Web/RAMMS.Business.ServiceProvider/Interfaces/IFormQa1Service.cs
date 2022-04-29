@@ -50,5 +50,13 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         int? DeleteEquipment(int id);
 
+        Task<int> SaveImage(List<FormQa1AttachmentDTO> image);
+
+        Task<List<FormQa1AttachmentDTO>> GetImages(int tesPkRefNo, int row =0 );
+
+        Task<int> DeActivateImage(int imageId);
+
+        Task<FormQa1TesDTO> GetTes(int tesPkRefNo);
+
     }
 }

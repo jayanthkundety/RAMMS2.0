@@ -7,7 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public int Fqa1iPkRefNo { get; set; }
         public int? Fqa1iFqa1PkRefNo { get; set; }
-        public string Fqa1iFqa1IwRefNo { get; set; }
+        public int? Fqa1iFqa1TesPkRefNo { get; set; }
         public string Fqa1iImgRefId { get; set; }
         public string Fqa1iImageTypeCode { get; set; }
         public int? Fqa1iImageSrno { get; set; }
@@ -21,5 +21,7 @@ namespace RAMMS.Domain.Models
         public bool Fqa1iSubmitSts { get; set; }
         public bool Fqa1iActiveYn { get; set; }
         public string Fqa1iSource { get; set; }
+
+        public virtual RmFormQa1Tes Fqa1iFqa1TesPkRefNoNavigation { get; set; }
     }
 }

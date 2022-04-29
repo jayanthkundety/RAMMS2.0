@@ -34,4 +34,11 @@ namespace RAMMS.Web.UI.Models
         public string MaxNo { get; set; }
 
     }
+
+    public class FormQa1ImageModel
+    {
+        public string FormQA1RefNo { get; set; }
+        public string View { get; set; }
+
+    }
 }

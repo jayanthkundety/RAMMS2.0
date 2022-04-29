@@ -61,6 +61,16 @@ namespace RAMMS.Repository.Interfaces
 
         Task<RmFormQa1Ssc> SaveSSC(RmFormQa1Ssc form);
 
+        void SaveImage(IEnumerable<RmFormQa1Image> image);
+
+        Task<List<RmFormQa1Image>> GetImages(int tesPkRefNo, int row =0);
+
+        void UpdateImage(RmFormQa1Image image);
+
+        Task<RmFormQa1Image> GetImageById(int imageId);
+        Task<RmFormQa1Tes> GetTes(int tesPkRefNo);
+
+        void UpdateTesImage(IEnumerable<RmFormQa1Image> images);
 
 
     }

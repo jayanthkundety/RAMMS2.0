@@ -5,6 +5,11 @@ namespace RAMMS.Domain.Models
 {
     public partial class RmFormQa1Tes
     {
+        public RmFormQa1Tes()
+        {
+            RmFormQa1Image = new HashSet<RmFormQa1Image>();
+        }
+
         public int Fqa1tesPkRefNo { get; set; }
         public int? Fqa1tesFqa1hPkRefNo { get; set; }
         public string Fqa1tesCtCs { get; set; }
@@ -29,5 +34,6 @@ namespace RAMMS.Domain.Models
         public DateTime? Fqa1tesCrDt { get; set; }
 
         public virtual RmFormQa1Hdr Fqa1tesFqa1hPkRefNoNavigation { get; set; }
+        public virtual ICollection<RmFormQa1Image> RmFormQa1Image { get; set; }
     }
 }
