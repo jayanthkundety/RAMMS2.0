@@ -20,6 +20,9 @@
     var _Exeuser = Model.SaveFormQa1Model.UseridExec;
     var _Chckuser = Model.SaveFormQa1Model.UseridChked;
 
+    bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+
 
 }
 @model RAMMS.Web.UI.Models.FormQa1Model;
@@ -28,7 +31,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        process.Init("FormQa1", "@Model.SaveFormQa1Model.Status", @Model.SaveFormQa1Model.PkRefNo);
+        process.Init("FormQA1", "@Model.SaveFormQa1Model.Status", @Model.SaveFormQa1Model.PkRefNo);
         $("#formQa1AuditedBy").val('@_Auser').trigger("chosen:updated");
         $("#formQa1WitnessedBy").val('@_Wuser').trigger("chosen:updated");
         $("#formQa1AssignedBy").val('@_Assguser').trigger("chosen:updated");
@@ -590,12 +593,23 @@
         @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo"})
         @Html.Hidden("hdnWeekNo")
         @Html.Hidden("hdnMonthNo")
+        @{
+            var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+        }
         <div class="col-md-12 float-right text-right custom-footer">
             <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
             <button id="saveFormQa1Btn" type="button" class="btn btn-sm btn-themebtn">Save</button>
             @if (string.IsNullOrEmpty(Model.SaveFormQa1Model.Status) || Model.SaveFormQa1Model.Status == RAMMS.Common.StatusList.FormQA1Saved)
             {
                 <button id="SubmitFormQa1Btn" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+            }
+            @if (IsApproved && (Model.SaveFormQa1Model.Status == RAMMS.Common.StatusList.FormQA1Submitted || Model.SaveFormQa1Model.Status == RAMMS.Common.StatusList.FormQA1Rejected))
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Executed By');"> Approved / Executed </button>
+            }
+            else if (IsApproved && (Model.SaveFormQa1Model.Status == RAMMS.Common.StatusList.FormQA1Verified || Model.SaveFormQa1Model.Status == RAMMS.Common.StatusList.FormQA1Rejected))
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Checked By');"> Approved / Checked </button>
             }
         </div>
     </div>

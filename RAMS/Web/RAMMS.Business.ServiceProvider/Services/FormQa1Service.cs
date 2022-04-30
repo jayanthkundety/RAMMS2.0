@@ -405,7 +405,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-        public async Task<int?> DeleteFormQA1(int id)
+        public async Task<int> DeleteFormQA1(int id)
         {
             try
             {
@@ -434,9 +434,9 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 }
                 _repoUnit.FormQa1Repository.SaveImage(domainModelFormQA1);
-                _repoUnit.FormQa1Repository.SaveChanges();
+                //_repoUnit.FormQa1Repository.SaveChanges();
 
-                _repoUnit.FormQa1Repository.UpdateTesImage(domainModelFormQA1);
+                //_repoUnit.FormQa1Repository.UpdateTesImage(domainModelFormQA1);
                 //rowsAffected = _repoUnit.FormQa1Repository.SaveChanges();
                 rowsAffected = await _repoUnit.CommitAsync();
             }

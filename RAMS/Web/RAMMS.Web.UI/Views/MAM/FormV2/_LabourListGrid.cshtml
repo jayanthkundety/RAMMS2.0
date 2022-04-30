@@ -30,7 +30,7 @@
     var LbactionCol = {
         data: null, name: "Action", title: "Action", autoWidth: false, width: 20, sortable: false, render: function (data) {
             if (IsView != "1" && (!data.submitStatus)) {
-                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormV2LabourModal' id='formV2LabourEdit' onclick='javascript:EditFormV2Labour(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteFormDLabourRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnLabView' href='#'  data-toggle='modal' data-target='#FormV2LabourModal'  onclick='javascript:EditFormV2Labour(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button></div></div>";
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormV2LabourModal' id='formV2LabourEdit' onclick='javascript:EditFormV2Labour(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteFormV2LabourRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnLabView' href='#'  data-toggle='modal' data-target='#FormV2LabourModal'  onclick='javascript:EditFormV2Labour(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button></div></div>";
                 return actionSection;
             }
              else {
@@ -39,7 +39,7 @@
             }
         }
     };
-    //var LbrefNoCol = { data: "serialNo", name: "LbsNo", title: "S No", autoWidth: false, width: 20, sortable: false };
+
     var LbCodeCol = { data: "labRefCode", name: "LbCode", title: "Code", autoWidth: false, width: 60, sortable: false };
     var LbDescCol = { data: "desc", name: "LbDescription", title: "Description",autoWidth: true, sortable: false };
     var LbRemarkCol = { data: "remark", name: "LbQuantity", title: "Remark", autoWidth: true, sortable: false };

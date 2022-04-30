@@ -210,6 +210,17 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formQa1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> HeaderListFormQa1Delete(int pkId)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formQa1Service.DeleteFormQA1(pkId);
+            return Json(rowsAffected);
+
+        }
+
+
         public async Task<IActionResult> EditFormQa1(int id)
         {
             await LoadDropDown();
@@ -225,6 +236,7 @@ namespace RAMMS.Web.UI.Controllers
                 _formQa1Model.SaveFormQa1Model.Gc = new FormQa1GCDTO();
                 _formQa1Model.SaveFormQa1Model.Gen = new List<FormQa1GenDTO>();
                 _formQa1Model.SaveFormQa1Model.Tes = new FormQa1TesDTO();
+                _formQa1Model.SaveFormQa1Model.Tes.RmFormQa1Image = new List<FormQa1AttachmentDTO>();
             }
             else
             {
@@ -398,7 +410,6 @@ namespace RAMMS.Web.UI.Controllers
                 string wwwPath = this._webHostEnvironment.WebRootPath;
                 string contentPath = this._webHostEnvironment.ContentRootPath;
                 string _id = Regex.Replace(PkRefNo, @"[^0-9a-zA-Z]+", "");
-                string photo_Type = "FormQA1";
                 string fileName = "";
                 int j = 0;
                 string source = "";
@@ -428,11 +439,11 @@ namespace RAMMS.Web.UI.Controllers
                     List<FormQa1AttachmentDTO> uploadedFiles = new List<FormQa1AttachmentDTO>();
 
 
-                    string subPath = Path.Combine(@"Uploads/FormQA1/", _id, photo_Type);
-                    string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormQA1\", _id, photo_Type));
-
-                    fileName = Path.GetFileName(postedFile.FileName);
-                    string fileRename = _id + "_" + source + "_" + fileName;
+                    string subPath = Path.Combine(@"Uploads/FormQA1/", Qa1PkRefNo.ToString());
+                    string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormQA1\", Qa1PkRefNo.ToString()));
+                    string ext = Path.GetExtension(postedFile.FileName);
+                    fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
+                    string fileRename = Qa1PkRefNo.ToString() + "_" + source + "_" + fileName + "_" + "0" + row + ext;
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
@@ -441,13 +452,13 @@ namespace RAMMS.Web.UI.Controllers
                     {
                         _rmAssetImageDtl.Fqa1TesPkRefNo = PkRefNo;
                         _rmAssetImageDtl.Fqa1PkRefNo = Qa1PkRefNo;
-                        _rmAssetImageDtl.ImageTypeCode = "FormQA1";
+                        _rmAssetImageDtl.ImageTypeCode = fileName;
                         _rmAssetImageDtl.ImageUserFilePath = postedFile.FileName;
                         _rmAssetImageDtl.ImageSrno = row;
                         _rmAssetImageDtl.Source = source;
 
                         _rmAssetImageDtl.ActiveYn = true;
-                        _rmAssetImageDtl.ImageFilenameSys = _id + "_" + source + "_" + "0" + row;
+                        _rmAssetImageDtl.ImageFilenameSys = Qa1PkRefNo.ToString() + "_" + source + "_" + "0" + row;
 
                         _rmAssetImageDtl.ImageFilenameUpload = $"{subPath}/{fileRename}";
                         postedFile.CopyTo(stream);
@@ -482,12 +493,18 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { ret });
         }
 
-
         [HttpPost]
         public async Task<IActionResult> GetImages(int tesPKRefNo, int row = 0)
         {
             var ret = await _formQa1Service.GetImages(tesPKRefNo, row);
             return Json(new { ret });
         }
+
+        [HttpPost]
+        public IActionResult GetAttachment()
+        {
+            return PartialView("~/Views/MAM/FormQa1/_Attachment.cshtml");
+        }
+
     }
 }
