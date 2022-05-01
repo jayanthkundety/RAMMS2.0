@@ -435,19 +435,29 @@ namespace RAMMS.Repository
         {
             try
             {
-                IList<RmFormV1Dtl> child = (from r in _context.RmFormV1Dtl where r.Fv1dFv1hPkRefNo == id select r).ToList();
-                foreach (var item in child)
-                {
-                    _context.Remove(item);
-                    _context.SaveChanges();
-                }
 
-                var res = _context.Set<RmFormV1Hdr>().FindAsync(id);
-                res.Result.Fv1hActiveYn = false;
-                _context.Set<RmFormV1Hdr>().Attach(res.Result);
-                _context.Entry<RmFormV1Hdr>(res.Result).State = EntityState.Modified;
-                _context.SaveChanges();
-                return 1;
+                var dependency = _context.RmFormV2Hdr.Where(x => x.Fv2hFv1hPkRefNo == id && x.Fv2hActiveYn == true).FirstOrDefault();
+                if (dependency == null)
+                {
+
+                    IList<RmFormV1Dtl> child = (from r in _context.RmFormV1Dtl where r.Fv1dFv1hPkRefNo == id select r).ToList();
+                    foreach (var item in child)
+                    {
+                        _context.Remove(item);
+                        _context.SaveChanges();
+                    }
+
+                    var res = _context.Set<RmFormV1Hdr>().FindAsync(id);
+                    res.Result.Fv1hActiveYn = false;
+                    _context.Set<RmFormV1Hdr>().Attach(res.Result);
+                    _context.Entry<RmFormV1Hdr>(res.Result).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
             }
             catch (Exception ex)
             {
@@ -775,10 +785,12 @@ namespace RAMMS.Repository
                 domainModelFormv3.Fv3hPkRefNo = 0;
 
                 //var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hSecCode == domainModelFormv3.Fv3hSecCode && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hActiveYn == true).ToList();
-                var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hActiveYn == true).ToList();
-                if (obj.Count > 0)
+                var obj = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv3.Fv3hRmu && x.Fv3hActCode == domainModelFormv3.Fv3hActCode && x.Fv3hDt == domainModelFormv3.Fv3hDt && x.Fv3hCrew == domainModelFormv3.Fv3hCrew && x.Fv3hActiveYn == true).FirstOrDefault();
+                if (obj != null)
                 {
-                    return _mapper.Map<FormV3ResponseDTO>(obj);
+                    var res = _mapper.Map<FormV3ResponseDTO>(obj);
+                    res.FormExist = true;
+                    return res;
                 }
                 var objV2 = _context.RmFormV2Hdr.Where(x => x.Fv2hRmu == domainModelFormv3.Fv3hRmu && x.Fv2hActCode == domainModelFormv3.Fv3hActCode && x.Fv2hDt == domainModelFormv3.Fv3hDt && x.Fv2hCrew == domainModelFormv3.Fv3hCrew && x.Fv2hActiveYn == true).ToList();
                 if (objV2.Count == 0)
@@ -791,6 +803,7 @@ namespace RAMMS.Repository
                     var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv3.Fv3hRmu && x.Fv1hActCode == domainModelFormv3.Fv3hActCode && x.Fv1hDt == domainModelFormv3.Fv3hDt && x.Fv1hActiveYn == true).ToList();
                     if (objV1.Count > 0)
                     {
+                        domainModelFormv3.Fv3hFv1PkRefId = objV1.Single().Fv1hRefId;
                         domainModelFormv3.Fv3hFv1PkRefNo = objV1.Single().Fv1hPkRefNo;
                         _context.Set<RmFormV3Hdr>().Add(domainModelFormv3);
                         _context.SaveChanges();
@@ -805,14 +818,15 @@ namespace RAMMS.Repository
                         Formv3.PkRefNo = _mapper.Map<FormV3ResponseDTO>(domainModelFormv3).PkRefNo;
                         Formv3.RefId = domainModelFormv3.Fv3hRefId;
                         Formv3.Status = domainModelFormv3.Fv3hStatus;
+                        Formv3.FV1PKRefId = domainModelFormv3.Fv3hFv1PkRefId;
 
                         var res = (from dtl in _context.RmFormV1Dtl
-                                   where dtl.Fv1dFv1hPkRefNo == domainModelFormv3.Fv3hFv1PkRefNo  && dtl.Fv1dActiveYn == true
+                                   where dtl.Fv1dFv1hPkRefNo == domainModelFormv3.Fv3hFv1PkRefNo && dtl.Fv1dActiveYn == true
                                    orderby dtl.Fv1dPkRefNo descending
                                    select new RmFormV3Dtl
                                    {
                                        Fv3dFv3hPkRefNo = Formv3.PkRefNo,
-                                       Fv3dFv1dPkRefNo = dtl.Fv1dPkRefNo, 
+                                       Fv3dFv1dPkRefNo = dtl.Fv1dPkRefNo,
                                        Fv3dActiveYn = true,
                                        Fv3dFrmChDeci = dtl.Fv1dFrmChDeci,
                                        Fv3dFrmCh = dtl.Fv1dFrmCh,
@@ -820,7 +834,7 @@ namespace RAMMS.Repository
                                        Fv3dToCh = dtl.Fv1dToChDeci,
                                        Fv3dRoadCode = dtl.Fv1dRoadCode,
                                        Fv3dRoadName = dtl.Fv1dRoadName,
-                                       
+
                                    }).ToList();
 
 
@@ -838,7 +852,7 @@ namespace RAMMS.Repository
                         Formv3.PkRefNo = -1;
                         return Formv3;
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -870,7 +884,7 @@ namespace RAMMS.Repository
             {
                 _context.Set<RmFormV3Dtl>().Attach(FormV3Dtl);
                 _context.Entry<RmFormV3Dtl>(FormV3Dtl).State = EntityState.Modified;
-               await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return 1;
             }
             catch (Exception ex)
@@ -883,21 +897,27 @@ namespace RAMMS.Repository
         {
             try
             {
-                // var Dependency = from r in _context.RmFormV4Hdr where r.Fv4hPkRefNo == id  select r;
-
-                IList<RmFormV3Dtl> child = (from r in _context.RmFormV3Dtl where r.Fv3dFv3hPkRefNo == id select r).ToList();
-                foreach (var item in child)
+                var dependency = _context.RmFormV4Hdr.Where(x => x.Fv4hFv3PkRefNo == id && x.Fv4hActiveYn == true).FirstOrDefault();
+                if (dependency == null)
                 {
-                    _context.Remove(item);
-                    _context.SaveChanges();
-                }
+                    IList<RmFormV3Dtl> child = (from r in _context.RmFormV3Dtl where r.Fv3dFv3hPkRefNo == id select r).ToList();
+                    foreach (var item in child)
+                    {
+                        _context.Remove(item);
+                        _context.SaveChanges();
+                    }
 
-                var res = _context.Set<RmFormV3Hdr>().FindAsync(id);
-                res.Result.Fv3hActiveYn = false;
-                _context.Set<RmFormV3Hdr>().Attach(res.Result);
-                _context.Entry<RmFormV3Hdr>(res.Result).State = EntityState.Modified;
-                _context.SaveChanges();
-                return 1;
+                    var res = _context.Set<RmFormV3Hdr>().FindAsync(id);
+                    res.Result.Fv3hActiveYn = false;
+                    _context.Set<RmFormV3Hdr>().Attach(res.Result);
+                    _context.Entry<RmFormV3Hdr>(res.Result).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
             }
             catch (Exception ex)
             {
@@ -1133,7 +1153,7 @@ namespace RAMMS.Repository
             return await query.CountAsync().ConfigureAwait(false);
         }
 
-    
+
 
         public async Task<RmFormV4Hdr> FindFormV4ByID(int id)
         {
@@ -1148,10 +1168,12 @@ namespace RAMMS.Repository
                 domainModelFormv4.Fv4hPkRefNo = 0;
 
                 //var obj = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv4.Fv4hRmu && x.Fv4hActCode == domainModelFormv4.Fv4hActCode && x.Fv4hSecCode == domainModelFormv4.Fv4hSecCode && x.Fv4hCrew == domainModelFormv4.Fv4hCrew && x.Fv4hDt == domainModelFormv4.Fv4hDt && x.Fv4hActiveYn == true).ToList();
-                var obj = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv4.Fv4hRmu && x.Fv4hActCode == domainModelFormv4.Fv4hActCode && x.Fv4hDt == domainModelFormv4.Fv4hDt && x.Fv4hCrew == domainModelFormv4.Fv4hCrew && x.Fv4hActiveYn == true).ToList();
-                if (obj.Count > 0)
+                var obj = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv4.Fv4hRmu && x.Fv4hActCode == domainModelFormv4.Fv4hActCode && x.Fv4hDt == domainModelFormv4.Fv4hDt && x.Fv4hCrew == domainModelFormv4.Fv4hCrew && x.Fv4hActiveYn == true).FirstOrDefault();
+                if (obj != null)
                 {
-                    return _mapper.Map<FormV4ResponseDTO>(obj);
+                    var res = _mapper.Map<FormV4ResponseDTO>(obj);
+                    res.FormExist = true;
+                    return res;
                 }
                 var objV2 = _context.RmFormV3Hdr.Where(x => x.Fv3hRmu == domainModelFormv4.Fv4hRmu && x.Fv3hActCode == domainModelFormv4.Fv4hActCode && x.Fv3hDt == domainModelFormv4.Fv4hDt && x.Fv3hCrew == domainModelFormv4.Fv4hCrew && x.Fv3hActiveYn == true).ToList();
                 if (objV2.Count == 0)
@@ -1161,7 +1183,7 @@ namespace RAMMS.Repository
                 }
                 else
                 {
-                    
+
 
                     domainModelFormv4.Fv4hFv3PkRefNo = objV2.Single().Fv3hPkRefNo;
                     domainModelFormv4.Fv4hFv3PkRefId = objV2.Single().Fv3hRefId;
@@ -1185,7 +1207,7 @@ namespace RAMMS.Repository
 
 
                     return Formv4;
-                   
+
 
                 }
             }
@@ -1216,12 +1238,21 @@ namespace RAMMS.Repository
         {
             try
             {
-                var res = _context.Set<RmFormV4Hdr>().FindAsync(id);
-                res.Result.Fv4hActiveYn = false;
-                _context.Set<RmFormV4Hdr>().Attach(res.Result);
-                _context.Entry<RmFormV4Hdr>(res.Result).State = EntityState.Modified;
-                _context.SaveChanges();
-                return 1;
+                var dependency = _context.RmFormV5Hdr.Where(x => x.Fv5hFv4PkRefNo == id && x.Fv5hActiveYn == true).FirstOrDefault();
+                if (dependency == null)
+                {
+
+                    var res = _context.Set<RmFormV4Hdr>().FindAsync(id);
+                    res.Result.Fv4hActiveYn = false;
+                    _context.Set<RmFormV4Hdr>().Attach(res.Result);
+                    _context.Entry<RmFormV4Hdr>(res.Result).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
             }
             catch (Exception ex)
             {
@@ -1447,7 +1478,7 @@ namespace RAMMS.Repository
                     query = query.OrderBy(x => x.x.Fv5dDesc);
                 if (filterOptions.ColumnIndex == 4)
                     query = query.OrderBy(x => x.x.Fv5dImageFilenameSys);
-                 
+
 
 
             }
@@ -1485,11 +1516,13 @@ namespace RAMMS.Repository
                 var domainModelFormv5 = _mapper.Map<RmFormV5Hdr>(Formv5);
                 domainModelFormv5.Fv5hPkRefNo = 0;
 
-                
-                var obj = _context.RmFormV5Hdr.Where(x => x.Fv5hRmu == domainModelFormv5.Fv5hRmu && x.Fv5hActCode == domainModelFormv5.Fv5hActCode && x.Fv5hDt == domainModelFormv5.Fv5hDt && x.Fv5hCrew == domainModelFormv5.Fv5hCrew && x.Fv5hActiveYn == true).ToList();
-                if (obj.Count > 0)
+
+                var obj = _context.RmFormV5Hdr.Where(x => x.Fv5hRmu == domainModelFormv5.Fv5hRmu && x.Fv5hActCode == domainModelFormv5.Fv5hActCode && x.Fv5hDt == domainModelFormv5.Fv5hDt && x.Fv5hCrew == domainModelFormv5.Fv5hCrew && x.Fv5hActiveYn == true).FirstOrDefault();
+                if (obj != null)
                 {
-                    return _mapper.Map<FormV5ResponseDTO>(obj);
+                    var res = _mapper.Map<FormV5ResponseDTO>(obj);
+                    res.FormExist = true;
+                    return res;
                 }
                 var objV4 = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv5.Fv5hRmu && x.Fv4hActCode == domainModelFormv5.Fv5hActCode && x.Fv4hDt == domainModelFormv5.Fv5hDt && x.Fv4hCrew == domainModelFormv5.Fv5hCrew && x.Fv4hActiveYn == true).ToList();
                 if (objV4.Count == 0)
@@ -1499,22 +1532,22 @@ namespace RAMMS.Repository
                 }
                 else
                 {
-                        _context.Set<RmFormV5Hdr>().Add(domainModelFormv5);
-                        _context.SaveChanges();
+                    _context.Set<RmFormV5Hdr>().Add(domainModelFormv5);
+                    _context.SaveChanges();
 
-                        IDictionary<string, string> lstData = new Dictionary<string, string>();
-                        lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
-                        lstData.Add("Crew", domainModelFormv5.Fv5hCrew.ToString());
-                        lstData.Add("ActivityCode", domainModelFormv5.Fv5hActCode);
-                        lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv5.Fv5hPkRefNo));
-                        domainModelFormv5.Fv5hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV5Header, lstData);
-                        _context.SaveChanges();
-                        Formv5.PkRefNo = _mapper.Map<FormV5ResponseDTO>(domainModelFormv5).PkRefNo;
-                        Formv5.RefId = domainModelFormv5.Fv5hRefId;
-                        Formv5.Status = domainModelFormv5.Fv5hStatus;
+                    IDictionary<string, string> lstData = new Dictionary<string, string>();
+                    lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
+                    lstData.Add("Crew", domainModelFormv5.Fv5hCrew.ToString());
+                    lstData.Add("ActivityCode", domainModelFormv5.Fv5hActCode);
+                    lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv5.Fv5hPkRefNo));
+                    domainModelFormv5.Fv5hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV5Header, lstData);
+                    _context.SaveChanges();
+                    Formv5.PkRefNo = _mapper.Map<FormV5ResponseDTO>(domainModelFormv5).PkRefNo;
+                    Formv5.RefId = domainModelFormv5.Fv5hRefId;
+                    Formv5.Status = domainModelFormv5.Fv5hStatus;
 
-                        return Formv5;
-                   
+                    return Formv5;
+
                 }
             }
             catch (Exception ex)

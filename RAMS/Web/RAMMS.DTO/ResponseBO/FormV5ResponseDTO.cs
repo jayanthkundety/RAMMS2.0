@@ -45,5 +45,7 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+        public bool FormExist { get; set; }
+        
     }
 }

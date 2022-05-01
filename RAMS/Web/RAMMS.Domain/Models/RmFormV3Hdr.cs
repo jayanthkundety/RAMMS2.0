@@ -12,6 +12,7 @@ namespace RAMMS.Domain.Models
 
         public int Fv3hPkRefNo { get; set; }
         public int? Fv3hFv1PkRefNo { get; set; }
+        public string Fv3hFv1PkRefId { get; set; }
         public int? Fv3hContNo { get; set; }
         public string Fv3hRmu { get; set; }
         public string Fv3hRmuname { get; set; }

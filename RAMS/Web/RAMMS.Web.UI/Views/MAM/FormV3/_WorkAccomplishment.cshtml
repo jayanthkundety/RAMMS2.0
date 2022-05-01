@@ -8,17 +8,17 @@
 
                 <tfoot>
                     <tr>
+                        <td>Total</td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td id="txtTotalLength"> </td>
-                        <td id="txtTotalWidth"></td>
                         <td></td>
                         <td></td>
-                        <td id="txtTotalTime"></td>
-                        <td id="txtTotalADP"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -107,10 +107,56 @@
             },
             columns: table_columns,
             columns: table_columns,
-            "initComplete": function (settings, json) {
+            "footerCallback": function (row, data, start, end, display) {
                 debugger
-                CalculateGridTotal();
+
+                var data = $('#WorkAccomplishmentGridView').DataTable().rows().data();
+
+                var totalmins = 0;
+                var totallength = 0;
+                var totalwidth = 0;
+                var totaladp = 0;
+
+                data.each(function (item, index) {
+
+                    $('#CalculationTime').val(item.timetakenFrm);
+                    $('#CalculationTime1').val(item.timeTakenTo);
+
+                    if ($('#CalculationTime').timeEntry('getTime') != null && $('#CalculationTime1').timeEntry('getTime') != null) {
+                        var milliseconds = ($('#CalculationTime1').timeEntry('getTime') - $('#CalculationTime').timeEntry('getTime'))
+                        const secs = Math.floor(Math.abs(milliseconds) / 1000);
+                        const min = Math.floor(secs / 60);
+                        totalmins = totalmins + min;
+                    }
+
+                    totallength = totallength + item.length;
+                    totalwidth = totalwidth + item.width;
+                    totaladp = totaladp + item.adp;
+
+
+                });
+
+                const hours = Math.floor(totalmins / 60);
+                const mins = Math.floor(totalmins % 60);
+
+                var TT = hours + ":" + mins;
+ 
+
+
+                var api = this.api();
+
+                $(api.column(6).footer()).html("Length:");
+                $(api.column(7).footer()).html(totallength);
+                $(api.column(8).footer()).html("Width:");
+                $(api.column(9).footer()).html(totalwidth);
+                $(api.column(10).footer()).html("Time:");
+                $(api.column(11).footer()).html(TT);
+                $(api.column(12).footer()).html("ADP:");
+                $(api.column(13).footer()).html(totaladp);
+
+               // CalculateGridTotal();
             }
+           
         });
 
        // table.columns.adjust().draw();
@@ -123,45 +169,5 @@
     });
 
 
-    function CalculateGridTotal() {
-        debugger
-        var data = $('#WorkAccomplishmentGridView').DataTable().rows().data();
-
-        var totalmins = 0;
-        var totallength = 0;
-        var totalwidth = 0;
-        var totaladp = 0;
-
-        data.each(function (item, index) {
-
-            $('#CalculationTime').val(item.timetakenFrm);
-            $('#CalculationTime1').val(item.timeTakenTo);
-
-            if ($('#CalculationTime').timeEntry('getTime') != null && $('#CalculationTime1').timeEntry('getTime') != null) {
-                var milliseconds = ($('#CalculationTime1').timeEntry('getTime') - $('#CalculationTime').timeEntry('getTime'))
-                const secs = Math.floor(Math.abs(milliseconds) / 1000);
-                const min = Math.floor(secs / 60);
-                totalmins = totalmins + min;
-            }
-
-            totallength = totallength + item.length;
-            totalwidth = totalwidth + item.width;
-            totaladp = totaladp + item.adp;
-
-
-        });
-
-        const hours = Math.floor(totalmins / 60);
-        const mins = Math.floor(totalmins % 60);
-
-        var TT = hours + ":" + mins;
- 
-        $('#txtTotalLength').html(totallength);
-        $('#txtTotalWidth').html(totalwidth);
-        $('#txtTotalTime').html(TT);
-        $('#txtTotalADP').html(totaladp);
-
-
-    }
-
+   
 </script>

@@ -133,7 +133,11 @@ namespace RAMMS.Business.ServiceProvider.Services
                 //var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormV1.Fv1hRmu && x.Fv1hActCode == domainModelFormV1.Fv1hActCode && x.Fv1hSecCode == domainModelFormV1.Fv1hSecCode && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hActiveYn == true).Result;
                 var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormV1.Fv1hRmu && x.Fv1hActCode == domainModelFormV1.Fv1hActCode && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hActiveYn == true).Result;
                 if (obj != null)
-                    return _mapper.Map<FormV1ResponseDTO>(obj);
+                {
+                    var res= _mapper.Map<FormV1ResponseDTO>(obj);
+                    res.FormExist = true;
+                    return res;
+                }
 
                 IDictionary<string, string> lstData = new Dictionary<string, string>();
                 lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
