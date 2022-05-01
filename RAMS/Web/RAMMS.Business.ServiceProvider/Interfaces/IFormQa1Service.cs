@@ -44,11 +44,19 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<int> SaveFormQA1(FormQa1HeaderDTO formQa1Header, bool updateSubmit);
 
-        Task<int?> DeleteFormQA1(int id);
+        Task<int> DeleteFormQA1(int id);
 
         int? SaveEquipment(FormQa1EqVhDTO formQa1EqVh);
 
         int? DeleteEquipment(int id);
+
+        Task<int> SaveImage(List<FormQa1AttachmentDTO> image);
+
+        Task<List<FormQa1AttachmentDTO>> GetImages(int tesPkRefNo, int row =0 );
+
+        Task<int> DeActivateImage(int imageId);
+
+        Task<FormQa1TesDTO> GetTes(int tesPkRefNo);
 
     }
 }

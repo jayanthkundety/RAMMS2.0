@@ -27,7 +27,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             processService = process;
-            _security = security;   
+            _security = security;
         }
 
         public async Task<PagingResult<FormQa1HeaderDTO>> GetFilteredFormQa1Grid(FilteredPagingDefinition<FormQa1SearchGridDTO> filterOptions)
@@ -296,7 +296,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-
         public int? SaveEquipment(FormQa1EqVhDTO formQa1EqVh)
         {
             try
@@ -325,22 +324,22 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
         public async Task<int> SaveFormQA1(FormQa1HeaderDTO formQa1Header, bool updateSubmit)
-         
+
         {
             var formQA1 = _mapper.Map<RmFormQa1Hdr>(formQa1Header);
             formQA1.Fqa1hPkRefNo = formQa1Header.PkRefNo;
             formQA1 = UpdateStatus(formQA1);
             _repoUnit.FormQa1Repository.Update(formQA1);
-            
 
-            var formGc = _mapper.Map<RmFormQa1Gc>(formQa1Header.Gc);            
+
+            var formGc = _mapper.Map<RmFormQa1Gc>(formQa1Header.Gc);
             formGc.Fqa1gcPkRefNo = formQa1Header.Lab.PkRefNo;
             formGc.Fqa1gcFqa1hPkRefNo = formQa1Header.PkRefNo;
             await _repoUnit.FormQa1Repository.SaveGC(formGc);
 
             var formLab = _mapper.Map<RmFormQa1Lab>(formQa1Header.Lab);
             formLab.Fqa1lPkRefNo = formQa1Header.Lab.PkRefNo;
-            formLab.Fqa1lFqa1hPkRefNo = formQa1Header.PkRefNo; 
+            formLab.Fqa1lFqa1hPkRefNo = formQa1Header.PkRefNo;
             await _repoUnit.FormQa1Repository.SaveLabour(formLab);
 
             var formSsc = _mapper.Map<RmFormQa1Ssc>(formQa1Header.Ssc);
@@ -406,7 +405,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-        public async Task<int?> DeleteFormQA1(int id)
+        public async Task<int> DeleteFormQA1(int id)
         {
             try
             {
@@ -418,5 +417,82 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
+        public async Task<int> SaveImage(List<FormQa1AttachmentDTO> files)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormQA1 = new List<RmFormQa1Image>();
+
+                foreach (var list in files)
+                {
+                    var dt = _mapper.Map<RmFormQa1Image>(list);
+                    dt.Fqa1iPkRefNo = list.PkRefNo;
+                    dt.Fqa1iFqa1TesPkRefNo = Convert.ToInt32(list.Fqa1TesPkRefNo);
+
+                    domainModelFormQA1.Add(dt);
+
+                }
+                _repoUnit.FormQa1Repository.SaveImage(domainModelFormQA1);
+                //_repoUnit.FormQa1Repository.SaveChanges();
+
+                //_repoUnit.FormQa1Repository.UpdateTesImage(domainModelFormQA1);
+                //rowsAffected = _repoUnit.FormQa1Repository.SaveChanges();
+                rowsAffected = await _repoUnit.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+
+        public async Task<List<FormQa1AttachmentDTO>> GetImages(int tesPkRefNo, int row = 0)
+        {
+            var attachments = new List<FormQa1AttachmentDTO>();
+            var files = new List<RmFormQa1Image>();
+            if (row == 0)
+                files = await _repoUnit.FormQa1Repository.GetImages(tesPkRefNo);
+            else
+                files = await _repoUnit.FormQa1Repository.GetImages(tesPkRefNo, row);
+
+            foreach (var list in files)
+            {
+                attachments.Add(_mapper.Map<FormQa1AttachmentDTO>(list));
+            }
+            return attachments;
+        }
+
+
+        public async Task<int> DeActivateImage(int imageId)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModel = await _repoUnit.FormQa1Repository.GetImageById(imageId);
+                domainModel.Fqa1iActiveYn = false;
+                _repoUnit.FormQa1Repository.UpdateImage(domainModel);
+
+                rowsAffected = await _repoUnit.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
+
+        public async Task<FormQa1TesDTO> GetTes(int tesPkRefNo)
+        {
+            var ret = await _repoUnit.FormQa1Repository.GetTes(tesPkRefNo);
+            return _mapper.Map<FormQa1TesDTO>(ret);
+
+        }
     }
+
 }

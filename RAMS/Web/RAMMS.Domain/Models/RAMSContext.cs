@@ -8570,7 +8570,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1iSource)
                     .HasColumnName("FQA1I_Source")
-                    .HasMaxLength(100);
+                    .HasMaxLength(16);
 
                 entity.Property(e => e.Fqa1iSubmitSts).HasColumnName("FQA1I_SUBMIT_STS");
 

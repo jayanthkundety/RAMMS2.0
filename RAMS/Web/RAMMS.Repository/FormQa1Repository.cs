@@ -117,6 +117,7 @@ namespace RAMMS.Repository
                 isAdd = true;
                 formQa1Header.Fqa1hActiveYn = true;
                 _context.RmFormQa1Hdr.Add(formQa1Header);
+
             }
             else
             {
@@ -173,6 +174,12 @@ namespace RAMMS.Repository
                 lstData.Add("Day", formQa1Header.Fqa1hDt.Value.Day.ToString());
                 lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(formQa1Header.Fqa1hPkRefNo));
                 formQa1Header.Fqa1hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormQA1Header, lstData);
+                var rmtes = new RmFormQa1Tes
+                {
+                    Fqa1tesPkRefNo = 0,
+                    Fqa1tesFqa1hPkRefNo = formQa1Header.Fqa1hPkRefNo,
+                };
+                _context.RmFormQa1Tes.Add(rmtes);
                 _context.SaveChanges();
             }
             return formQa1Header;
@@ -275,40 +282,64 @@ namespace RAMMS.Repository
         }
 
 
-        public int? DeleteFormQA1(int id)
+        public int DeleteFormQA1(int id)
         {
             try
             {
 
-                var res = _context.Set<RmFormQa1Hdr>().FindAsync(id);
-                res.Result.Fqa1hActiveYn = false;
-                _context.Set<RmFormQa1Hdr>().Attach(res.Result);
-                _context.Entry<RmFormQa1Hdr>(res.Result).State = EntityState.Modified;
+                var res = _context.Set<RmFormQa1Hdr>().FindAsync(id).Result;
+                res.Fqa1hActiveYn = false;
+                _context.Set<RmFormQa1Hdr>().Attach(res);
+                _context.Entry<RmFormQa1Hdr>(res).State = EntityState.Modified;
 
-                var lab = _context.Set<RmFormQa1Lab>().FindAsync(id);
-                lab.Result.Fqa1lActiveYn = false;
-                _context.Set<RmFormQa1Lab>().Attach(lab.Result);
+                var lab = _context.Set<RmFormQa1Lab>().FindAsync(id).Result;
+                if (lab != null)
+                {
+                    lab.Fqa1lActiveYn = false;
+                    _context.Set<RmFormQa1Lab>().Attach(lab);
+                    _context.Entry<RmFormQa1Lab>(lab).State = EntityState.Modified;
+                }
 
-                var Gc = _context.Set<RmFormQa1Gc>().FindAsync(id);
-                Gc.Result.Fqa1gcActiveYn = false;
-                _context.Set<RmFormQa1Gc>().Attach(Gc.Result);
+                var Gc = _context.Set<RmFormQa1Gc>().FindAsync(id).Result;
+                if (Gc != null)
+                {
+                    Gc.Fqa1gcActiveYn = false;
+                    _context.Set<RmFormQa1Gc>().Attach(Gc);
+                    _context.Entry<RmFormQa1Gc>(Gc).State = EntityState.Modified;
+                }
 
-                var Ssc = _context.Set<RmFormQa1Ssc>().FindAsync(id);
-                Ssc.Result.Fqa1sscActiveYn = false;
-                _context.Set<RmFormQa1Ssc>().Attach(Ssc.Result);
+                var Ssc = _context.Set<RmFormQa1Ssc>().FindAsync(id).Result;
+                if (Ssc != null)
+                {
+                    Ssc.Fqa1sscActiveYn = false;
+                    _context.Set<RmFormQa1Ssc>().Attach(Ssc);
+                    _context.Entry<RmFormQa1Ssc>(Ssc).State = EntityState.Modified;
+                } 
+                
 
-                var Tes = _context.Set<RmFormQa1Tes>().FindAsync(id);
-                Tes.Result.Fqa1tesActiveYn = false;
-                _context.Set<RmFormQa1Tes>().Attach(Tes.Result);
+                var Tes = _context.Set<RmFormQa1Tes>().FindAsync(id).Result;
+                if (Tes != null) 
+                {
+                    Tes.Fqa1tesActiveYn = false;
+                    _context.Set<RmFormQa1Tes>().Attach(Tes);
+                    _context.Entry<RmFormQa1Tes>(Tes).State = EntityState.Modified;
+                }
 
-                var Wcq = _context.Set<RmFormQa1Wcq>().FindAsync(id);
-                Wcq.Result.Fqa1wcqActiveYn = false;
-                _context.Set<RmFormQa1Wcq>().Attach(Wcq.Result);
+                var Wcq = _context.Set<RmFormQa1Wcq>().FindAsync(id).Result;
+                if (Wcq != null)
+                {
+                    Wcq.Fqa1wcqActiveYn = false;
+                    _context.Set<RmFormQa1Wcq>().Attach(Wcq);
+                    _context.Entry<RmFormQa1Wcq>(Wcq).State = EntityState.Modified;
+                }
 
-                var We = _context.Set<RmFormQa1We>().FindAsync(id);
-                We.Result.Fqa1wActiveYn = false;
-                _context.Set<RmFormQa1We>().Attach(We.Result);
-
+                var We = _context.Set<RmFormQa1We>().FindAsync(id).Result;
+                if (We != null)
+                {
+                    We.Fqa1wActiveYn = false;
+                    _context.Set<RmFormQa1We>().Attach(We);
+                    _context.Entry<RmFormQa1We>(We).State = EntityState.Modified;
+                }
                 _context.SaveChanges();
                 return 1;
             }
@@ -512,7 +543,77 @@ namespace RAMMS.Repository
 
         #endregion
 
+        #region Attachment
 
+        public void SaveImage(IEnumerable<RmFormQa1Image> image)
+        {
+
+            _context.RmFormQa1Image.AddRange(image);
+        }
+
+        public async Task<List<RmFormQa1Image>> GetImages(int tesPkRefNo, int row = 0)
+        {
+            if (row == 0)
+            {
+                return await _context.RmFormQa1Image.Where(x => x.Fqa1iFqa1TesPkRefNo == tesPkRefNo && x.Fqa1iActiveYn == true).ToListAsync();
+            }
+            return await _context.RmFormQa1Image.Where(x => x.Fqa1iFqa1TesPkRefNo == tesPkRefNo && x.Fqa1iImageSrno == row && x.Fqa1iActiveYn == true).ToListAsync();
+        }
+
+
+        public void UpdateImage(RmFormQa1Image image)
+        {
+            _context.Set<RmFormQa1Image>().Attach(image);
+            _context.Entry(image).State = EntityState.Modified;
+        }
+
+
+        public async Task<RmFormQa1Image> GetImageById(int imageId)
+        {
+            return await _context.RmFormQa1Image.Where(x => x.Fqa1iPkRefNo == imageId && x.Fqa1iActiveYn == true).FirstOrDefaultAsync();
+        }
+        #endregion
+
+
+        public async Task<RmFormQa1Tes> GetTes(int tesPkRefNo)
+        {
+            return await _context.RmFormQa1Tes.Where(x => x.Fqa1tesFqa1hPkRefNo == tesPkRefNo).FirstOrDefaultAsync();
+        }
+
+        public async void UpdateTesImage(IEnumerable<RmFormQa1Image> images)
+        {
+
+            foreach (var image in images)
+            {
+                var tes = await GetTes((int)image.Fqa1iFqa1PkRefNo);
+
+                switch (image.Fqa1iImageSrno)
+                {
+                    case 1:
+                        tes.Fqa1tesCtCsA = image.Fqa1iPkRefNo;
+                        _context.RmFormQa1Tes.Attach(tes);
+                        break;
+                    case 2:
+                        tes.Fqa1tesDtCsA = image.Fqa1iPkRefNo;
+                        _context.RmFormQa1Tes.Attach(tes);
+                        break;
+                    case 3:
+                        tes.Fqa1tesMgtCsA = image.Fqa1iPkRefNo;
+                        _context.RmFormQa1Tes.Attach(tes);
+                        break;
+                    case 4:
+                        tes.Fqa1tesCbrCsA = image.Fqa1iPkRefNo;
+                        _context.RmFormQa1Tes.Attach(tes);
+                        break;
+                    case 5:
+                        tes.Fqa1tesOtCsA = image.Fqa1iPkRefNo;
+                        _context.RmFormQa1Tes.Attach(tes);
+                        break;
+                }
+                //_context.Entry<RmFormQa1Tes>(tes).State = EntityState.Modified;
+                //await _context.SaveChangesAsync();
+            }
+        }
 
     }
 

@@ -15,6 +15,9 @@ using RAMMS.DTO.Wrappers;
 using System.Collections.Generic;
 using RAMMS.Business.ServiceProvider;
 using System.Globalization;
+using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -207,6 +210,17 @@ namespace RAMMS.Web.UI.Controllers
             return Json(new { draw = formQa1Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> HeaderListFormQa1Delete(int pkId)
+        {
+            int rowsAffected = 0;
+            rowsAffected = await _formQa1Service.DeleteFormQA1(pkId);
+            return Json(rowsAffected);
+
+        }
+
+
         public async Task<IActionResult> EditFormQa1(int id)
         {
             await LoadDropDown();
@@ -221,6 +235,8 @@ namespace RAMMS.Web.UI.Controllers
                 _formQa1Model.SaveFormQa1Model.Ssc = new FormQa1SscDTO();
                 _formQa1Model.SaveFormQa1Model.Gc = new FormQa1GCDTO();
                 _formQa1Model.SaveFormQa1Model.Gen = new List<FormQa1GenDTO>();
+                _formQa1Model.SaveFormQa1Model.Tes = new FormQa1TesDTO();
+                _formQa1Model.SaveFormQa1Model.Tes.RmFormQa1Image = new List<FormQa1AttachmentDTO>();
             }
             else
             {
@@ -228,12 +244,11 @@ namespace RAMMS.Web.UI.Controllers
                 if (_formQa1Model.SaveFormQa1Model.SubmitSts)
                     _formQa1Model.viewm = "1";
 
-                //if ((_formQa1Model.SaveFormQa1Model.UseridExec == null || _formQa1Model.SaveFormQa1Model.UseridExec ==  0) 
-                //    && _formQa1Model.SaveFormQa1Model.Status == Common.StatusList.FormQA1Saved)
-                //{
-                //    _formQa1Model.SaveFormQa1Model.UseridExec = _security.UserID;
-                //    _formQa1Model.SaveFormQa1Model.UsernameExec = _security.UserName;
-                //}
+                if (_formQa1Model.SaveFormQa1Model.Tes != null)
+                {
+                    var imges = await _formQa1Service.GetImages(_formQa1Model.SaveFormQa1Model.Tes.PkRefNo);
+                    _formQa1Model.SaveFormQa1Model.Tes.RmFormQa1Image = imges;
+                }
 
             }
 
@@ -269,6 +284,7 @@ namespace RAMMS.Web.UI.Controllers
                 formQa1.ModDt = DateTime.Now;
                 formQa1.CrDt = DateTime.Now;
                 formQa1Res = await _formQa1Service.FindAndSaveFormQA1Hdr(formQa1, false);
+                formQa1Res.Tes = await _formQa1Service.GetTes(formQa1Res.PkRefNo);
             }
             return Json(formQa1Res, JsonOption());
         }
@@ -358,8 +374,8 @@ namespace RAMMS.Web.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveEquipment(FormQa1EqVhDTO formQa1Eq)
         {
-           var ret = _formQa1Service.SaveEquipment(formQa1Eq);
-            return Json( new { ret });
+            var ret = _formQa1Service.SaveEquipment(formQa1Eq);
+            return Json(new { ret });
         }
 
         [HttpPost]
@@ -377,12 +393,118 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveHeader(FormQa1HeaderDTO formQa1,bool submitStatus)
+        public async Task<IActionResult> SaveHeader(FormQa1HeaderDTO formQa1, bool submitStatus)
         {
             formQa1.ModBy = _security.UserID;
             formQa1.ModDt = DateTime.Today;
             var ret = _formQa1Service.SaveFormQA1(formQa1, submitStatus);
             return Json(new { ret });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ImageUploadFormQA1(IList<IFormFile> formFile, string PkRefNo, int Qa1PkRefNo, int row)
+        {
+            try
+            {
+                bool successFullyUploaded = false;
+                string wwwPath = this._webHostEnvironment.WebRootPath;
+                string contentPath = this._webHostEnvironment.ContentRootPath;
+                string _id = Regex.Replace(PkRefNo, @"[^0-9a-zA-Z]+", "");
+                string fileName = "";
+                int j = 0;
+                string source = "";
+
+                switch (row)
+                {
+                    case 1:
+                        source = "Compaction_Test";
+                        break;
+                    case 2:
+                        source = "Density_Test";
+                        break;
+                    case 3:
+                        source = "Material_Grading_Test";
+                        break;
+                    case 4:
+                        source = "CBR";
+                        break;
+                    case 5:
+                        source = "Other_Tests";
+                        break;
+                }
+
+                FormQa1AttachmentDTO _rmAssetImageDtl = new FormQa1AttachmentDTO();
+                foreach (IFormFile postedFile in formFile)
+                {
+                    List<FormQa1AttachmentDTO> uploadedFiles = new List<FormQa1AttachmentDTO>();
+
+
+                    string subPath = Path.Combine(@"Uploads/FormQA1/", Qa1PkRefNo.ToString());
+                    string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormQA1\", Qa1PkRefNo.ToString()));
+                    string ext = Path.GetExtension(postedFile.FileName);
+                    fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
+                    string fileRename = Qa1PkRefNo.ToString() + "_" + source + "_" + fileName + "_" + "0" + row + ext;
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    using (FileStream stream = new FileStream(Path.Combine(path, fileRename), FileMode.Create))
+                    {
+                        _rmAssetImageDtl.Fqa1TesPkRefNo = PkRefNo;
+                        _rmAssetImageDtl.Fqa1PkRefNo = Qa1PkRefNo;
+                        _rmAssetImageDtl.ImageTypeCode = fileName;
+                        _rmAssetImageDtl.ImageUserFilePath = postedFile.FileName;
+                        _rmAssetImageDtl.ImageSrno = row;
+                        _rmAssetImageDtl.Source = source;
+
+                        _rmAssetImageDtl.ActiveYn = true;
+                        _rmAssetImageDtl.ImageFilenameSys = Qa1PkRefNo.ToString() + "_" + source + "_" + "0" + row;
+
+                        _rmAssetImageDtl.ImageFilenameUpload = $"{subPath}/{fileRename}";
+                        postedFile.CopyTo(stream);
+                    }
+                    uploadedFiles.Add(_rmAssetImageDtl);
+                    if (uploadedFiles.Count() > 0)
+                    {
+                        await _formQa1Service.SaveImage(uploadedFiles);
+                        successFullyUploaded = true;
+                    }
+                    else
+                    {
+                        successFullyUploaded = false;
+                    }
+
+                    j = j + 1;
+                }
+
+                return Json(new { status = successFullyUploaded, row, filename = fileName, filepath = _rmAssetImageDtl.ImageFilenameUpload });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAttachment(int pKRefNo)
+        {
+            var ret = await _formQa1Service.DeActivateImage(pKRefNo);
+            return Json(new { ret });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetImages(int tesPKRefNo, int row = 0)
+        {
+            var ret = await _formQa1Service.GetImages(tesPKRefNo, row);
+            return Json(new { ret });
+        }
+
+        [HttpPost]
+        public IActionResult GetAttachment()
+        {
+            return PartialView("~/Views/MAM/FormQa1/_Attachment.cshtml");
+        }
+
     }
 }

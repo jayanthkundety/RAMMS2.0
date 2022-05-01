@@ -118,7 +118,7 @@
               function FormQa1GridRefresh() {
 
                   oTable = $('#FormQa1GridView').DataTable();
-                  oTable.columns(0).search($("#FormQa1SmartSearch").val().trim());
+                  oTable.columns(0).search($("#formQa1SmartSearch").val().trim());
 
                   var rmuCode = $("#formQa1RMU").val();
                   if (rmuCode != "") {
@@ -168,20 +168,18 @@
                   oTable.draw();
               }
 
-
               function EditFormQa1(pid,view) {
                   window.location = "@Url.Action("EditFormQa1", "FormQA1")" +
                       "?id=" + pid + "&view=" + view;
               }
 
-              function DeleteHeaderRecord(id) {
-                  var headerId = id;
+              function DeleteHeaderRecord(pkId) {
                   app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
                       if (e) {
                           InitAjaxLoading();
                           $.ajax({
-                              url: '/MAM/HeaderListFormQa1Delete',
-                              data: { headerId },
+                              url: '/FormQA1/HeaderListFormQa1Delete',
+                              data: { pkId },
                               type: 'POST',
                               success: function (data) {
                                   if (data > 0) {

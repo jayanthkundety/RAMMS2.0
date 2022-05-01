@@ -77,6 +77,7 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmFormQa1Gc> RmFormQa1Gc { get; set; }
         public virtual DbSet<RmFormQa1Gen> RmFormQa1Gen { get; set; }
         public virtual DbSet<RmFormQa1Hdr> RmFormQa1Hdr { get; set; }
+        public virtual DbSet<RmFormQa1Image> RmFormQa1Image { get; set; }
         public virtual DbSet<RmFormQa1Lab> RmFormQa1Lab { get; set; }
         public virtual DbSet<RmFormQa1Mat> RmFormQa1Mat { get; set; }
         public virtual DbSet<RmFormQa1Ssc> RmFormQa1Ssc { get; set; }
@@ -8470,7 +8471,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1hStatus)
                     .HasColumnName("FQA1H_Status")
-                    .HasMaxLength(30);
+                    .HasMaxLength(30)
+                    .HasDefaultValueSql("(N'Initialize')");
 
                 entity.Property(e => e.Fqa1hSubmitSts).HasColumnName("FQA1H_SUBMIT_STS");
 
@@ -8512,6 +8514,66 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fqa1hWeekNo).HasColumnName("FQA1H_Week_No");
 
                 entity.Property(e => e.Fqa1hYear).HasColumnName("FQA1H_Year");
+            });
+
+            modelBuilder.Entity<RmFormQa1Image>(entity =>
+            {
+                entity.HasKey(e => e.Fqa1iPkRefNo);
+
+                entity.ToTable("RM_FormQA1_Image");
+
+                entity.Property(e => e.Fqa1iPkRefNo).HasColumnName("FQA1I_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1iActiveYn).HasColumnName("FQA1I_Active_YN");
+
+                entity.Property(e => e.Fqa1iCrBy).HasColumnName("FQA1I_CR_By");
+
+                entity.Property(e => e.Fqa1iCrDt)
+                    .HasColumnName("FQA1I_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1iFqa1PkRefNo).HasColumnName("FQA1I_FQA1_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1iFqa1TesPkRefNo).HasColumnName("FQA1I_FQA1_TES_PK_Ref_No");
+
+                entity.Property(e => e.Fqa1iImageFilenameSys)
+                    .HasColumnName("FQA1I_Image_Filename_Sys")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fqa1iImageFilenameUpload)
+                    .HasColumnName("FQA1I_Image_Filename_Upload")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fqa1iImageSrno).HasColumnName("FQA1I_Image_SRNO");
+
+                entity.Property(e => e.Fqa1iImageTypeCode)
+                    .HasColumnName("FQA1I_Image_Type_Code")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fqa1iImageUserFilePath)
+                    .HasColumnName("FQA1I_image_user_filePath")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fqa1iImgRefId)
+                    .HasColumnName("FQA1I_Img_Ref_ID")
+                    .HasMaxLength(250);
+
+                entity.Property(e => e.Fqa1iModBy).HasColumnName("FQA1I_Mod_By");
+
+                entity.Property(e => e.Fqa1iModDt)
+                    .HasColumnName("FQA1I_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fqa1iSource)
+                    .HasColumnName("FQA1I_Source")
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.Fqa1iSubmitSts).HasColumnName("FQA1I_SUBMIT_STS");
+
+                entity.HasOne(d => d.Fqa1iFqa1TesPkRefNoNavigation)
+                    .WithMany(p => p.RmFormQa1Image)
+                    .HasForeignKey(d => d.Fqa1iFqa1TesPkRefNo)
+                    .HasConstraintName("FK_RM_FormQA1_Image_RM_FormQA1_Image");
             });
 
             modelBuilder.Entity<RmFormQa1Lab>(entity =>
@@ -9019,9 +9081,9 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fqa1wPcDRateUnit).HasColumnName("FQA1W_PC_D_Rate_Unit");
 
                 entity.Property(e => e.Fqa1wPcEvenlySpread)
-                     .HasColumnName("FQA1W_PC_Evenly_Spread")
-                     .HasMaxLength(6)
-                     .IsUnicode(false);
+                    .HasColumnName("FQA1W_PC_Evenly_Spread")
+                    .HasMaxLength(6)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1wPcRemark)
                     .HasColumnName("FQA1W_PC_Remark")
@@ -9129,7 +9191,6 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FQA1W_TC_Evenly_Spread")
                     .HasMaxLength(6)
                     .IsUnicode(false);
-
 
                 entity.Property(e => e.Fqa1wTcRemark)
                     .HasColumnName("FQA1W_TC_Remark")
@@ -11001,10 +11062,7 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV4H_Total_Production")
                     .HasColumnType("decimal(9, 0)");
 
-                entity.Property(e => e.Fv4hUseridAgr)
-                    .HasColumnName("FV4H_Userid_AGR")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Fv4hUseridAgr).HasColumnName("FV4H_Userid_AGR");
 
                 entity.Property(e => e.Fv4hUseridFac).HasColumnName("FV4H_Userid_FAC");
 
@@ -11097,6 +11155,11 @@ namespace RAMMS.Domain.Models
                 entity.ToTable("RM_FormV5_HDR");
 
                 entity.Property(e => e.Fv5hPkRefNo).HasColumnName("FV5H_PK_Ref_No");
+
+                entity.Property(e => e.Fv4hDivision)
+                    .HasColumnName("FV4H_Division")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fv5hActCode)
                     .HasColumnName("FV5H_ACT_Code")

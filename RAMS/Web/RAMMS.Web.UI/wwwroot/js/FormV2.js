@@ -842,10 +842,10 @@ function saveMaterial(isSubmit, cont) {
         saveObj.Fv2hPkRefNo = $("#FV2PkRefNo").val();
         saveObj.PkRefNo = $("#hdnMaterialNo").val();
         saveObj.MatRefCode = $("#formV2MatCode").find(":selected").val();
-        //saveObj.Desc = $("#formV2MatDesc").val();
+        saveObj.Desc = $("#FormV2MatDescription").val();
         saveObj.Qnty = $("#formV2MatQuantity").val();
         saveObj.Unit = $("#formV2MatUnit").find(":selected").val();
-        saveObj.Remark = $("#FormV2MatDescription").val();
+        //saveObj.Remark = $("#FormV2MatDescription").val();
         saveObj.ModDt = output
         saveObj.CrDt = output
         saveObj.ActiveYn = true;

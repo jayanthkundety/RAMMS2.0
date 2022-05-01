@@ -1596,7 +1596,33 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> FormV2MaterialDelete(int headerId)
+        {
+            int RowsAffected = 0;
+            RowsAffected = await _formV2Service.DeActivateFormMaterialDAsync(headerId);
+            return Json(RowsAffected);
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FormV2LabourDelete(int headerId)
+        {
+            int RowsAffected = 0;
+            RowsAffected = await _formV2Service.DeActivateFormV2LabourAsync(headerId);
+            return Json(RowsAffected);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FormV2EquipmentDelete(int headerId)
+        {
+            int RowsAffected = 0;
+            RowsAffected = await _formV2Service.DeActivateFormV2EquipmentAsync(headerId);
+            return Json(RowsAffected);
+
+        }
+            
         #endregion
 
         #region Form V3

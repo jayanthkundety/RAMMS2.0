@@ -334,7 +334,7 @@ function disableAll(action) {
         $("#AccordPage2 *").removeAttr("disabled");
         $(".wddl").removeAttr("disabled");
         $(".wddl").prop('disabled', false).trigger("chosen:updated");
-        
+
 
         //Specific Condition
         $("#AccordPage6 *").removeAttr("disabled");
@@ -348,7 +348,7 @@ function disableAll(action) {
         $("#AccordPage12 *").removeAttr("disabled");
         $(".tddl").removeAttr("disabled");
         $(".tddl").prop('disabled', false).trigger("chosen:updated");
-        
+
         //General Comments
         $("#AccordPage16 *").removeAttr("disabled");
 
@@ -384,7 +384,7 @@ $(document).on("click", "#btnFindDetails", function () {
         InitAjaxLoading();
         GetResponseValue("FindDetails", "FormQa1", FormValueCollection("#FormQa1Headers"), function (data) {
             HideAjaxLoading();
-            if (data != undefined && data != null) {
+            if (data != undefined && data != null && data.PkRefNo == 0) {
                 $("#btnFindDetails").hide();
                 $("#saveFormQa1Btn").show();
                 $("#SubmitFormQa1Btn").show();
@@ -394,6 +394,10 @@ $(document).on("click", "#btnFindDetails", function () {
                 $("#formQa1AssignedBy").trigger("change");
                 $("#formQa1PkRefNo").val(data.PkRefNo);
                 $("#formQa1ReferenceNo").val(data.RefId);
+                $("#formQa1TesPkRefNo").val(data.Tes.PkRefNo)
+            }
+            else {
+                app.ShowInfoMessage("Form Already exist");
             }
         }, "Finding");
     }
@@ -833,7 +837,7 @@ function saveHeader(submitsts) {
     if (submitsts) {
         $(".svalidate").addClass("validate");
     }
-    if (ValidatePage('.validate')) {
+    if (ValidatePage('#divFormQA1')) {
         InitAjaxLoading();
         var d = new Date();
         var month = d.getMonth() + 1;
@@ -1129,4 +1133,102 @@ function GoBack() {
         }));
     } else
         location.href = "/FormQA1/QA1";
+}
+
+//Attachment
+
+function FormQA1Image(row) {
+    $("#hdnImageRow").val(row);
+    if ($("#hdnView").val() == "1") return;
+    if ($("#formQa1PkRefNo").val() != "0") {
+        $("#myModal").modal('show');
+        GetAttachment();
+    }
+}
+
+function UploadModalClose() {
+    document.getElementById("files").disabled = true;
+    document.getElementById("FormBrowseBtn").disabled = true;
+    document.getElementById("btnImageUpload").disabled = true;
+    $("#photolist").empty();
+    $('#myModal').modal('hide');
+}
+
+function deleteImageupload(imageToDelete) {
+    var imagedelete = imageToDelete.cellIndex - 1;
+    app.Confirm("Are you sure you want to remove?, If Yes click OK.", function (e) {
+        if (e) {
+            var row = document.getElementById("ImageRow")
+            row.deleteCell(imageToDelete.cellIndex);
+            row.deleteCell(imagedelete);
+        }
+    });
+}
+
+function DeleteAttachment(pKRefNo, row) {
+    if ($("#hdnView").val() == "1") return;
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            InitAjaxLoading();
+            $.ajax({
+                url: '/FormQA1/DeleteAttachment',
+                data: { pKRefNo },
+                type: 'POST',
+                success: function (data) {
+                    if (data.ret > 0) {
+                        $("#divCs" + row).html(AddShowAttachmentButton(row));
+                        HideAjaxLoading();
+                        app.ShowSuccessMessage("Successfully Deleted")
+                    }
+                    else {
+                        HideAjaxLoading();
+                        alert("Error in Deleted. Kindly retry later.");
+
+                    }
+
+                }
+            });
+        }
+    }));
+}
+
+function AddShowAttachmentButton(row) {
+    return '<label>&nbsp;</label><div style="text-align:center"><a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="FormQA1Image(' + row + ')"><span class="add-icon"></span> Add Attachment</a></div>';
+}
+
+function SetAttachment(row) {
+    var tesPKRefNo = $("#formQa1TesPkRefNo").val();
+    $.ajax({
+        url: '/FormQA1/GetImages',
+        data: { tesPKRefNo, row },
+        type: 'POST',
+        success: function (data) {
+            var ret = "";
+            if (data.ret.length > 0) {
+                for (var i = 0; i < data.ret.length; i++) {
+                    ret += '<label>&nbsp;</label><div style="text-align:center"><span style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">' +
+                        '<a class="warCaption" href="~/' + data.ret[i].imageFilenameUpload + '" target="_blank" title="Click here to View the Document">' + data.ret[i].imageUserFilePath + '</a></span>' +
+                        '<span style="width: 40%; float:left"><button type="button" style="border:none;align-content:center;background:transparent" onclick="DeleteAttachment(' + data.ret[i].pkRefNo + ',' + row + ')">' +
+                        '<span class="remove-icon"></span></button></span></div>';
+                }
+            }
+            $("#divCs" + row).html(ret);
+        }
+    });
+}
+
+function GetAttachment() {
+    $.ajax({
+        url: '/FormQA1/GetAttachment',
+        type: 'POST',
+        success: function (data) {
+            $("#divAttachment").html(data);
+        },
+        error: function (data) {
+            alert(data.responseText);
+        }
+
+    });
+
+    return true;
 }

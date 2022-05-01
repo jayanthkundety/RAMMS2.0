@@ -76,8 +76,8 @@ namespace RAMMS.Common
         public const string FormQA1Saved = "Saved";
         public const string FormQA1Submitted = "Submitted";
         public const string FormQA1Rejected = "Rejected";
-        public const string FormQA1Approved = "Approved";
-        public const string FormQA1Verified = "Verified";
+        public const string FormQA1Approved = "Checked";
+        public const string FormQA1Verified = "Executed";
 
         public const string FormXInit = "Open";
         public const string FormXWorkCompleted = "Work Completed";

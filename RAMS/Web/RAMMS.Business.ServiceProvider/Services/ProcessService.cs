@@ -100,7 +100,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormV4":
                     iResult = await SaveFormV4(process);
                     break;
-                
+                case "FormQA1":
+                    iResult = await SaveFormQA1(process);
+                    break;
+
             }
             return iResult;
         }
@@ -1885,6 +1888,88 @@ namespace RAMMS.Business.ServiceProvider.Services
             return await context.SaveChangesAsync();
         }
 
-      
+        private async Task<int> SaveFormQA1(DTO.RequestBO.ProcessDTO process)
+        {
+            var form = context.RmFormQa1Hdr.Where(x => x.Fqa1hPkRefNo == process.RefId).FirstOrDefault();
+            if (form != null)
+            {
+                string strTitle = "";
+                string strNotURL = "";
+                string strNotMsg = "";
+                string strNotGroupName = "";
+                string strNotUserID = "";
+                string strStatus = "";
+                string strNotStatus = "";
+
+                if (process.Stage == Common.StatusList.FormQA1Submitted)
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
+                    form.Fqa1hStatus = process.IsApprove ? Common.StatusList.FormQA1Verified : Common.StatusList.FormQA1Saved;
+                    strTitle = "Executed By";
+                    strStatus = "Executed";
+                    strNotStatus = Common.StatusList.FormQA1Saved;
+                    form.Fqa1hUseridExec = Convert.ToInt32(process.UserID);
+                    form.Fqa1hUsernameExec = process.UserName;
+                    
+                    form.Fqa1hDtExec = process.ApproveDate;
+                    form.Fqa1hInitialExec  = true;
+                }
+                else if (process.Stage == Common.StatusList.FormQA1Verified)
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.JKRSSuperiorOfficerSO : GroupNames.OpeHeadMaintenance;
+                    form.Fqa1hStatus = process.IsApprove ? Common.StatusList.FormQA1Approved : Common.StatusList.FormQA1Submitted;
+                    strTitle = "Checked By";
+                    strStatus = "Checked";
+                    strNotStatus = Common.StatusList.FormQA1Verified;
+                    form.Fqa1hUseridChked = Convert.ToInt32(process.UserID);
+                    form.Fqa1hUsernameChked = process.UserName;
+                    
+                    form.Fqa1hDtChked = process.ApproveDate;
+                    form.Fqa1hInitialChked = true;
+                }
+
+                if (process.IsApprove)
+                {
+                    List<int> lstNotUserId = new List<int>();
+                    if (form.Fqa1hUseridExec.HasValue)
+                        lstNotUserId.Add(form.Fqa1hUseridExec.Value);
+                    if (form.Fqa1hUseridChked.HasValue)
+                        lstNotUserId.Add(form.Fqa1hUseridChked.Value);
+
+                    form.Fqa1hUseridExec = Convert.ToInt32(process.UserID);
+                    form.Fqa1hUsernameExec = process.UserName;
+                    
+                    form.Fqa1hDtExec = process.ApproveDate;
+                    form.Fqa1hInitialExec = true;
+
+                    strNotUserID = string.Join(",", lstNotUserId.Distinct());
+                }
+                else
+                {
+                    if (process.Stage == Common.StatusList.FormQA1Submitted)
+                    {
+                        form.Fqa1hSubmitSts = false;
+                    }
+                }
+
+                form.Fqa1hAuditLog = Utility.ProcessLog(form.Fqa1hAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form V2 (" + form.Fqa1hPkRefNo + ")";
+                strNotURL = "/FormQA1/EditFormQa1?id=" + form.Fqa1hPkRefNo.ToString() + "&View=0";
+                SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = security.UserName,
+                    RmNotGroup = strNotGroupName,
+                    RmNotMessage = strNotMsg,
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = strNotURL,
+                    RmNotUserId = strNotUserID,
+                    RmNotViewed = ""
+                }, false);
+            }
+            return await context.SaveChangesAsync();
+        }
+
+
+
     }
 }
