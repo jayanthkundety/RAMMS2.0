@@ -5486,8 +5486,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FduTableFieldName)
                     .HasColumnName("FDU_Table_Field_Name")
-                    .HasMaxLength(4000)
-                    .IsUnicode(false);
+                    .HasMaxLength(4000);
 
                 entity.Property(e => e.FduTableName)
                     .HasColumnName("FDU_Table_Name")
@@ -5504,6 +5503,10 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Mutilpleline)
                     .HasColumnName("mutilpleline")
                     .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Rowlength).HasColumnName("rowlength");
+
+                entity.Property(e => e.Sheetindex).HasColumnName("sheetindex");
 
                 entity.Property(e => e.Startindex).HasColumnName("startindex");
             });
@@ -8570,7 +8573,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1iSource)
                     .HasColumnName("FQA1I_Source")
-                    .HasMaxLength(16);
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.Fqa1iSubmitSts).HasColumnName("FQA1I_SUBMIT_STS");
 

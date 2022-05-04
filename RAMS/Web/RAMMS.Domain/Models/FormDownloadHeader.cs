@@ -158,6 +158,25 @@ namespace RAMMS.Domain.Models
         public string header149 { get; set; }
         public string header150 { get; set; }
 
+        public string header151 { get; set; }
+
+        public string header152 { get; set; }
+
+        public string header153 { get; set; }
+
+
+        public string header154 { get; set; }
+
+        public string header155 { get; set; }
+
+        public string header156 { get; set; }
+
+        public string header157 { get; set; }
+
+        public string header158 { get; set; }
+
+        public string header159 { get; set; }
+        public string header160 { get; set; }
 
     }
 }

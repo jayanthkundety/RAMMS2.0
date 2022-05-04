@@ -79,9 +79,9 @@
             filterData.RMU = $("#formV2DetSrchRMU  option:selected").text().split("-")[0];
             filterData.Section =  $("#formV2DetSrchSectionCode option:selected").text().split("-")[0];
             filterData.Crew = $("#formV2DetSrchCrew  option:selected").text().split("-")[0];
-            //filterData.ActivityCode = $("#formV2DetSrchActivityCode option:selected").text().split("-")[0];
-            //filterData.ByFromdate = $("#FormV2SrchByFromDate").val()
-            //filterData.ByTodate = $("#FormV2SrchByToDate").val()
+            filterData.ActivityCode = $("#formV2DetSrchActivityCode option:selected").text().split("-")[0];
+            filterData.ByFromdate = $("#txtStartDtFrom").val()
+            filterData.ByTodate = $("#txtEndDtTo").val()
 
             $('#FormV2GridView').DataTable({
                 ajax: {

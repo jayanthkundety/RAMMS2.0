@@ -68,6 +68,18 @@ namespace RAMMS.Repository
                     query = query.Where(x => x.x.Fv1hActCode == filterOptions.Filters.ActivityCode);
                 }
 
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv1hDt.HasValue ? x.x.Fv1hDt >= dtFrom && x.x.Fv1hDt <= dtTo : false);
+                    }
+                }
+
+
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
                 {
                     DateTime dt;
@@ -200,6 +212,18 @@ namespace RAMMS.Repository
                 {
                     query = query.Where(x => x.x.Fv1hActCode == filterOptions.Filters.ActivityCode);
                 }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv1hDt.HasValue ? x.x.Fv1hDt >= dtFrom && x.x.Fv1hDt <= dtTo : false);
+                    }
+                }
+
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
                 {

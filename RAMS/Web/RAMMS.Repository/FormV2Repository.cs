@@ -142,28 +142,39 @@ namespace RAMS.Repository
                     query = query.Where(x => x.x.Fv2hCrewname == filterOptions.Filters.Crew || (x.x.Fv2hCrew.HasValue ? x.x.Fv2hCrew.ToString() == filterOptions.Filters.Crew : x.x.Fv2hCrew.ToString() == ""));
                 }
 
-                //if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
-                //{
-                //    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode);
-                //}
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
+                {
+                    query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode);
+                }
 
-                //if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
-                //{
-                //    DateTime dt;
-                //    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
-                //    {
-                //        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
-                //    }
-                //}
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
 
-                //if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
-                //{
-                //    DateTime dt;
-                //    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
-                //    {
-                //        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
-                //    }
-                //}
+                    {
+                        query = query.Where(x => x.x.Fv2hDt.HasValue ? x.x.Fv2hDt >= dtFrom && x.x.Fv2hDt <= dtTo : false);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dt;
+                    if (DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dt))
+                    {
+                        query = query.Where(x => x.x.Fv2hDt.HasValue ? (x.x.Fv2hDt.Value.Year == dt.Year && x.x.Fv2hDt.Value.Month == dt.Month && x.x.Fv2hDt.Value.Day == dt.Day) : false);
+                    }
+                }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInputValue))
                 {
@@ -279,6 +290,17 @@ namespace RAMS.Repository
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
                     query = query.Where(x => x.x.Fv2hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv2hDt.HasValue ? x.x.Fv2hDt >= dtFrom && x.x.Fv2hDt <= dtTo : false);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))

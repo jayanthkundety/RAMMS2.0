@@ -1213,18 +1213,18 @@ namespace RAMMS.Web.UI.Controllers
             {
                 formV2Filter.filterData.Crew = Request.Form["columns[3][search][value]"].ToString();
             }
-            //if (Request.Form.ContainsKey("columns[4][search][value]"))
-            //{
-            //    formV2Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
-            //}
-            //if (Request.Form.ContainsKey("columns[5][search][value]"))
-            //{
-            //    formV2Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
-            //}
-            //if (Request.Form.ContainsKey("columns[6][search][value]"))
-            //{
-            //    formV2Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
-            //}
+            if (Request.Form.ContainsKey("columns[4][search][value]"))
+            {
+                formV2Filter.filterData.ActivityCode = Request.Form["columns[4][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[5][search][value]"))
+            {
+                formV2Filter.filterData.ByFromdate = Request.Form["columns[5][search][value]"].ToString();
+            }
+            if (Request.Form.ContainsKey("columns[6][search][value]"))
+            {
+                formV2Filter.filterData.ByTodate = Request.Form["columns[6][search][value]"].ToString();
+            }
 
             FilteredPagingDefinition<FormV2SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormV2SearchGridDTO>();
             filteredPagingDefinition.Filters = formV2Filter.filterData;

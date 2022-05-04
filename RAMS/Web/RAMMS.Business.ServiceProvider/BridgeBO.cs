@@ -38,7 +38,7 @@ namespace RAMMS.Business.ServiceProvider
         RmFormGenDtl GetRmFormGenDtl(string formname);
         List<RAMMS.Domain.Models.FormDownloadHeader> formheader(string Formtype, int id, string Hdr_DTL);
         List<RAMMS.Domain.Models.FormDownloadHeader> formDetails(string Formtype, int id, string Hdr_DTL);
-        Byte[] formdownload(string formname,int id,string filepath);
+        Byte[] formdownload(string formname, int id, string filepath);
         List<SearchBridge> GetBridgeGrid();
         List<SearchBridge> SearchBridgeGridBO(string assetGroup, string InputValue);
         List<RmAssetImageDtl> SaveAssetImageDtlBO(List<RmAssetImageDtl> rmAssetImageDtls);
@@ -156,12 +156,12 @@ namespace RAMMS.Business.ServiceProvider
         public List<RmFormDownloadUse> getformfield(string formname)
         {
             List<RmFormDownloadUse> res = new List<RmFormDownloadUse>();
-           try
+            try
             {
                 res = _reportGeneration.GetAllRmFormDownloadUses().Where(x => x.FduFormType == formname).ToList();
                 return res;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -185,6 +185,7 @@ namespace RAMMS.Business.ServiceProvider
             string Oldfilename = "";
             string filename = "";
             string cachefile = "";
+            int sheetIndex = 1;
             if (!filepath.Contains(".xlsx"))
             {
                 Oldfilename = filepath + formname + ".xlsx";// formdetails.FgdFilePath+"\\" + formdetails.FgdFileName+ ".xlsx";
@@ -198,11 +199,12 @@ namespace RAMMS.Business.ServiceProvider
                 cachefile = filename;
             }
 
-            try {
-            List<RAMMS.Domain.Models.FormDownloadHeader> RmAllassetInventoryDTO = formheader(formname.ToLower(), id, "Header");
-            List<RmFormDownloadUse> RmAllasset = getformfield(formname);
-            var formdetails = GetRmFormGenDtl(formname);
-            List<RAMMS.Domain.Models.FormDownloadHeader> RmAlledtailsDTO = formDetails(formname.ToLower(), id, "detail");
+            try
+            {
+                List<RAMMS.Domain.Models.FormDownloadHeader> RmAllassetInventoryDTO = formheader(formname.ToLower(), id, "Header");
+                List<RmFormDownloadUse> RmAllasset = getformfield(formname);
+                var formdetails = GetRmFormGenDtl(formname);
+                List<RAMMS.Domain.Models.FormDownloadHeader> RmAlledtailsDTO = formDetails(formname.ToLower(), id, "detail");
                 List<RAMMS.Domain.Models.FormDownloadHeader> RmAlledtailsDTO_det1 = formDetails(formname.ToLower(), id, "detail1");
                 List<RAMMS.Domain.Models.FormDownloadHeader> RmAlledtailsDTO_det2 = formDetails(formname.ToLower(), id, "detail2");
                 List<RAMMS.Domain.Models.FormDownloadHeader> RmAlledtailsFooterDTO = formDetails(formname.ToLower(), id, "footer");
@@ -212,6 +214,8 @@ namespace RAMMS.Business.ServiceProvider
                 {
                     IXLWorksheet worksheet;
                     workbook.Worksheets.TryGetWorksheet("sheet1", out worksheet);
+                    if (worksheet == null && workbook.Worksheets.Count >= 1)
+                        worksheet = workbook.Worksheet(1);
 
                     List<RmFormDownloadUse> RmAllassetDetails = RmAllasset.Where(x => x.FduTableTypeHdrDtl.ToLower() == "detail").ToList();
                     if (RmAlledtailsDTO != null && RmAlledtailsDTO.Count > 0)
@@ -238,7 +242,7 @@ namespace RAMMS.Business.ServiceProvider
 
                     }
 
-                    
+
                     Type _type = Type.GetType("RAMMS.Business.ServiceProvider.FormDownloadHeader");
                     PropertyInfo[] propertyInfos = _type.GetProperties();
 
@@ -275,14 +279,15 @@ namespace RAMMS.Business.ServiceProvider
                                     }
                                     foreach (PropertyInfo _propertyInfo in propertyInfos)
                                     {
-                                        if (_propertyInfo.Name.ToLower() == RmAllassetHeader[j].FduHeaderName.ToLower())
+                                        if (_propertyInfo.Name.ToLower() == RmAllassetHeader[j].FduHeaderName.ToLower() && (RmAllassetHeader[j].Sheetindex == null || RmAllassetHeader[j].Sheetindex == sheetIndex) )
                                         {
-                                            if (RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name) != null && RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null) != null)
+                                            if (RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name) != null && 
+                                                RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null) != null)
                                             {
                                                 if (RmAllassetHeader[j].FduHeaderName.ToLower().Contains("header"))
-                                                {                                                    
+                                                {
                                                     if (RmAllassetHeader[j].FduAppendOverwrite.ToLower() == "append")
-                                                    {                                                       
+                                                    {
                                                         //if (appenstring == "")
                                                         //    appenstring = string.Concat(tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).Value.ToString() , RmAllassetHeader[j].FduSeperator ?? "".ToString() , RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null).ToString());
                                                         //else
@@ -291,16 +296,16 @@ namespace RAMMS.Business.ServiceProvider
                                                         {
                                                             tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).SetValue<string>(string.Concat(tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).GetString(), RmAllassetHeader[j].FduSeperator ?? "".ToString(), RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null).ToString()));
                                                         }
-                                                        else if(RmAllassetHeader[j].FduSeperator == ".")
+                                                        else if (RmAllassetHeader[j].FduSeperator == ".")
                                                         {
                                                             tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).SetValue<string>(string.Concat(tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).GetString(), RmAllassetHeader[j].FduSeperator ?? "".ToString(), RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null).ToString()));
                                                         }
                                                         else
                                                         {
                                                             tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).Value = string.Concat(tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).GetString(), RmAllassetHeader[j].FduSeperator ?? "".ToString(), RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null).ToString());
-                                                        }                                                        
+                                                        }
                                                     }
-                                                    else if(RmAllassetHeader[j].FduAppendOverwrite.ToLower() == "overwrite")
+                                                    else if (RmAllassetHeader[j].FduAppendOverwrite.ToLower() == "overwrite")
                                                     {
                                                         if (RmAllassetHeader[j].FduFormType == "FormX" && RmAllassetHeader[j].FduHeaderName == "header23")
                                                         {
@@ -309,7 +314,7 @@ namespace RAMMS.Business.ServiceProvider
                                                                 RmAllassetInventoryDTO[i].header23 = "Section " + RmAllassetInventoryDTO[i].header23;
                                                             }
                                                         }
-                                                        tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).Value =  RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null).ToString();
+                                                        tworksheet.Cell(RmAllassetHeader[j].FduExcelRowNo ?? 0, RmAllassetHeader[j].FduExcelColumnNo ?? 0).Value = RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null).ToString();
                                                     }
                                                     break;
                                                 }
@@ -318,10 +323,12 @@ namespace RAMMS.Business.ServiceProvider
                                     }
                                 }
                             }
+                            sheetIndex += 1;
                         }
                     }
-                    
+
                     int rownumber = 0;
+                    sheetIndex = 1;
                     RmAllassetDetails = new List<RmFormDownloadUse>();
                     RmAllassetDetails = RmAllasset.Where(x => x.FduTableTypeHdrDtl.ToLower() == "detail").ToList();
                     if (RmAlledtailsDTO != null && RmAlledtailsDTO.Count() > 0)
@@ -329,6 +336,7 @@ namespace RAMMS.Business.ServiceProvider
                         foreach (IXLWorksheet tworksheet in workbook.Worksheets)
                         {
                             int excelcolumn = 0;
+                            
                             for (int i = 0; i < RmAlledtailsDTO.Count; i++)
                             {
                                 if (i == 0)
@@ -344,7 +352,7 @@ namespace RAMMS.Business.ServiceProvider
                                 {
                                     foreach (PropertyInfo _propertyInfo in propertyInfos)
                                     {
-                                        if (_propertyInfo.Name.ToLower() == RmAllassetDetails[j].FduHeaderName.ToLower())
+                                        if (_propertyInfo.Name.ToLower() == RmAllassetDetails[j].FduHeaderName.ToLower() && (RmAllassetDetails[j].Sheetindex == null || RmAllassetDetails[j].Sheetindex == sheetIndex))
                                         {
                                             if (RmAlledtailsDTO[rownumber].GetType().GetProperty(_propertyInfo.Name) != null && RmAlledtailsDTO[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO[rownumber], null) != null)
                                             {
@@ -370,23 +378,24 @@ namespace RAMMS.Business.ServiceProvider
                                 excelcolumn = excelcolumn + 1;
                                 rownumber = rownumber + 1;
                             }
-
+                            sheetIndex += 1;
                         }
                     }
 
                     rownumber = 0;
+                    sheetIndex = 1;
                     RmAllassetDetails = new List<RmFormDownloadUse>();
                     RmAllassetDetails = RmAllasset.Where(x => x.FduTableTypeHdrDtl.ToLower() == "detail1").ToList();
                     if (RmAlledtailsDTO_det1 != null && RmAlledtailsDTO_det1.Count() > 0)
                     {
                         foreach (IXLWorksheet tworksheet in workbook.Worksheets)
                         {
-                            int excelcolumn = 0;
+                            int excelrow = 0;
                             for (int i = 0; i < RmAlledtailsDTO_det1.Count; i++)
                             {
                                 if (i == 0)
                                 {
-                                    excelcolumn = RmAllassetDetails[i].Startindex ?? 0;
+                                    excelrow = RmAllassetDetails[i].Startindex ?? 0;
                                     if (tworksheet.Name.ToLower() == "sheet1")
                                     {
                                         rownumber = 0;
@@ -397,7 +406,7 @@ namespace RAMMS.Business.ServiceProvider
                                 {
                                     foreach (PropertyInfo _propertyInfo in propertyInfos)
                                     {
-                                        if (_propertyInfo.Name.ToLower() == RmAllassetDetails[j].FduHeaderName.ToLower())
+                                        if (_propertyInfo.Name.ToLower() == RmAllassetDetails[j].FduHeaderName.ToLower() && (RmAllassetDetails[j].Sheetindex == null || RmAllassetDetails[j].Sheetindex == sheetIndex))
                                         {
                                             if (RmAlledtailsDTO_det1[rownumber].GetType().GetProperty(_propertyInfo.Name) != null && RmAlledtailsDTO_det1[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det1[rownumber], null) != null)
                                             {
@@ -407,39 +416,42 @@ namespace RAMMS.Business.ServiceProvider
                                                 }
                                                 else if (RmAllassetDetails[j].FduAppendOverwrite.ToLower() == "overwrite")
                                                 {
-                                                    tworksheet.Cell(excelcolumn, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det1[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det1[rownumber], null).ToString();
+                                                    tworksheet.Cell(excelrow, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det1[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det1[rownumber], null).ToString();
                                                 }
                                                 break;
                                             }
                                         }
                                     }
                                 }
-                                if (excelcolumn == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det1.Count - 1)
+                                if (excelrow == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det1.Count - 1)
                                 {
                                     rownumber = rownumber + 1;
                                     break;
                                 }
 
-                                excelcolumn = excelcolumn + 1;
+                                excelrow = excelrow + 1;
                                 rownumber = rownumber + 1;
                             }
-
+                            sheetIndex += 1;
                         }
                     }
 
                     rownumber = 0;
+                    sheetIndex = 1;
                     RmAllassetDetails = new List<RmFormDownloadUse>();
                     RmAllassetDetails = RmAllasset.Where(x => x.FduTableTypeHdrDtl.ToLower() == "detail2").ToList();
                     if (RmAlledtailsDTO_det2 != null && RmAlledtailsDTO_det2.Count() > 0)
                     {
                         foreach (IXLWorksheet tworksheet in workbook.Worksheets)
                         {
-                            int excelcolumn = 0;
+                            int excelrow = 0;
+                            int excelrowlength = 1;
                             for (int i = 0; i < RmAlledtailsDTO_det2.Count; i++)
                             {
                                 if (i == 0)
                                 {
-                                    excelcolumn = RmAllassetDetails[i].Startindex ?? 0;
+                                    excelrow = RmAllassetDetails[i].Startindex ?? 0;
+                                    excelrowlength = RmAllassetDetails[i].Rowlength  ?? 1;
                                     if (tworksheet.Name.ToLower() == "sheet1")
                                     {
                                         rownumber = 0;
@@ -450,7 +462,7 @@ namespace RAMMS.Business.ServiceProvider
                                 {
                                     foreach (PropertyInfo _propertyInfo in propertyInfos)
                                     {
-                                        if (_propertyInfo.Name.ToLower() == RmAllassetDetails[j].FduHeaderName.ToLower())
+                                        if (_propertyInfo.Name.ToLower() == RmAllassetDetails[j].FduHeaderName.ToLower() && (RmAllassetDetails[j].Sheetindex == null || RmAllassetDetails[j].Sheetindex == sheetIndex))
                                         {
                                             if (RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name) != null && RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det2[rownumber], null) != null)
                                             {
@@ -460,27 +472,28 @@ namespace RAMMS.Business.ServiceProvider
                                                 }
                                                 else if (RmAllassetDetails[j].FduAppendOverwrite.ToLower() == "overwrite")
                                                 {
-                                                    tworksheet.Cell(excelcolumn, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det2[rownumber], null).ToString();
+                                                    tworksheet.Cell(excelrow, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det2[rownumber], null).ToString();
                                                 }
                                                 break;
                                             }
                                         }
                                     }
                                 }
-                                if (excelcolumn == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det2.Count - 1)
+                                if (excelrow == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det2.Count - 1 )
                                 {
                                     rownumber = rownumber + 1;
                                     break;
                                 }
 
-                                excelcolumn = excelcolumn + 1;
+                                excelrow = excelrow + excelrowlength;
                                 rownumber = rownumber + 1;
                             }
-
+                            sheetIndex += 1;
                         }
                     }
 
                     rownumber = 0;
+                    
                     RmAllassetDetails = new List<RmFormDownloadUse>();
                     RmAllassetDetails = RmAllasset.Where(x => x.FduTableTypeHdrDtl.ToLower() == "footer").ToList();
                     if (RmAlledtailsFooterDTO != null && RmAlledtailsFooterDTO.Count() > 0)
@@ -519,7 +532,7 @@ namespace RAMMS.Business.ServiceProvider
                                 tworksheet.Cells("N26").Style.DateFormat.Format = "h:mm AM/PM";
                                 tworksheet.Cells("N27").Style.DateFormat.Format = "h:mm AM/PM";
                             }
-                           
+
 
                             int excelcolumn = 0;
                             int remarksexcelcolumn = 35;
@@ -544,15 +557,15 @@ namespace RAMMS.Business.ServiceProvider
                                             {
                                                 if (RmAllassetDetails[j].FduAppendOverwrite.ToLower() == "append")
                                                 {
-                                                    tworksheet.Cell(RmAllassetDetails[j].FduExcelRowNo ?? 0,excelcolumn).Value = tworksheet.Cell(excelcolumn, RmAllassetDetails[j].FduExcelRowNo ?? 0).Value + RmAllassetDetails[j].FduSeperator  + RmAlledtailsFooterDTO[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsFooterDTO[rownumber], null).ToString();
+                                                    tworksheet.Cell(RmAllassetDetails[j].FduExcelRowNo ?? 0, excelcolumn).Value = tworksheet.Cell(excelcolumn, RmAllassetDetails[j].FduExcelRowNo ?? 0).Value + RmAllassetDetails[j].FduSeperator + RmAlledtailsFooterDTO[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsFooterDTO[rownumber], null).ToString();
                                                 }
                                                 else if (RmAllassetDetails[j].FduAppendOverwrite.ToLower() == "overwrite")
                                                 {
-                                                    tworksheet.Cell( RmAllassetDetails[j].FduExcelRowNo ?? 0, excelcolumn).Value = RmAlledtailsFooterDTO[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsFooterDTO[rownumber], null).ToString();
-                                                    if(formname.ToLower() == "formd" && RmAllassetDetails[j].FduTableFieldName == "FDD_Remarks")
+                                                    tworksheet.Cell(RmAllassetDetails[j].FduExcelRowNo ?? 0, excelcolumn).Value = RmAlledtailsFooterDTO[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsFooterDTO[rownumber], null).ToString();
+                                                    if (formname.ToLower() == "formd" && RmAllassetDetails[j].FduTableFieldName == "FDD_Remarks")
                                                     {
-                                                        tworksheet.Cells("C"+ remarksexcelcolumn).Value= RmAlledtailsFooterDTO[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsFooterDTO[rownumber], null).ToString();
-                                                        remarksexcelcolumn = remarksexcelcolumn+1;
+                                                        tworksheet.Cells("C" + remarksexcelcolumn).Value = RmAlledtailsFooterDTO[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsFooterDTO[rownumber], null).ToString();
+                                                        remarksexcelcolumn = remarksexcelcolumn + 1;
                                                     }
 
                                                 }
@@ -583,7 +596,7 @@ namespace RAMMS.Business.ServiceProvider
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.IO.File.Copy(Oldfilename, cachefile, true);
                 using (var workbook = new XLWorkbook(cachefile))
@@ -643,7 +656,7 @@ namespace RAMMS.Business.ServiceProvider
 
         public List<RAMMS.Domain.Models.FormDownloadHeader> formDetails(string Formtype, int id, string Hdr_DTL)
         {
-            List<RAMMS.Domain.Models.FormDownloadHeader> r1 = _reportGeneration.GetDownloadDetails(Formtype,id,Hdr_DTL);
+            List<RAMMS.Domain.Models.FormDownloadHeader> r1 = _reportGeneration.GetDownloadDetails(Formtype, id, Hdr_DTL);
             return r1;
 
         }
@@ -653,7 +666,7 @@ namespace RAMMS.Business.ServiceProvider
             RmFormGenDtl res = new RmFormGenDtl();
             try
             {
-                res = _reportGeneration.GetFormGenDtls().Where(x => x.FgdFileName== formname).FirstOrDefault();
+                res = _reportGeneration.GetFormGenDtls().Where(x => x.FgdFileName == formname).FirstOrDefault();
                 return res;
             }
             catch (Exception ex)
