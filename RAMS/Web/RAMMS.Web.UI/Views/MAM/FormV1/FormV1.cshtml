@@ -58,9 +58,9 @@
         $("#formV1DetSrchRMU").val("").trigger("chosen:updated");
         $('#formV1DetSrchSectionCode').val("").trigger("chosen:updated");
         $("#formV1DetSrchCrew").val("").trigger("chosen:updated");
-        //$("#formV1DetSrchActivityCode").val("").trigger("chosen:updated");
-        //$("#FormV1SrchByFromDate").val('');
-        //$("#FormV1SrchByToDate").val('');
+        $("#formV1DetSrchActivityCode").val("").trigger("chosen:updated");
+        $("#txtStartDtFrom").val('');
+        $("#txtEndDtTo").val('');
 
         var req = {};
         var _rmu = $("#formV1DetSrchRMU");
@@ -247,6 +247,22 @@
                             <div class="form-group col-lg-4">
                                 @Html.Label("Crew Name", "Crew Name")
                                 <input type="text" class="form-control" id="txtCrewName" disabled />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Activity Code", "Activity Code")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.ActivityCode, (IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formV1DetSrchActivityCode", @class = "form-control validate {required, Activity Code}" })
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Activity Name ", "Activity Name")
+                                <input type="text" class="form-control" id="formV2DetSrchActivityName" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label for="C_Date">Start Date (DD-MM-YYYY)</label>
+                                <input class="form-control" type="date" id="txtStartDtFrom">
+                            </div>
+                            <div class="form-group">
+                                <label for="C_Date">End Date (DD-MM-YYYY)</label>
+                                <input class="form-control" type="date" id="txtEndDtTo">
                             </div>
                         </div>
                     </div>

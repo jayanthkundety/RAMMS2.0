@@ -327,7 +327,8 @@ namespace RAMMS.Repository
 
             var res = (from hdr in _context.RmFormS1Hdr
                        join dtl in _context.RmFormS1Dtl on hdr.FsihPkRefNo equals dtl.FsidFsihPkRefNo
-                       where hdr.FsihDt == FormV1.Dt && hdr.FsihRmu == FormV1.Rmu && Convert.ToInt32(dtl.FsidActCode) == Convert.ToInt32(FormV1.ActCode) && dtl.FsidActiveYn == true && hdr.FsihActiveYn == true
+                       join wdtl in _context.RmFormS1WkDtl on dtl.FsidPkRefNo equals wdtl.FsiwdFsidPkRefNo
+                       where wdtl.FsiwdSchldDate == FormV1.Dt && hdr.FsihRmu == FormV1.Rmu && Convert.ToInt32(dtl.FsidActCode) == Convert.ToInt32(FormV1.ActCode) && dtl.FsidActiveYn == true && hdr.FsihActiveYn == true
                        orderby hdr.FsihPkRefNo descending
                        select new
                        {

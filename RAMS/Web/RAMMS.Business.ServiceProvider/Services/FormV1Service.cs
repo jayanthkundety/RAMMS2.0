@@ -93,7 +93,8 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                     obj.Fv1hPkRefNo = listData.Fv1dFv1hPkRefNo;
                     obj.Fs1dPkRefNo = listData.Fv1dS1dPkRefNo;
-                    obj.Chainage = Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageFromColl = Convert.ToString(listData.Fv1dFrmCh) + "+" + Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageToColl = Convert.ToString(listData.Fv1dToCh) + "+" + Convert.ToString(listData.Fv1dToChDeci);
                     obj.ChainageFrom = Convert.ToString(listData.Fv1dFrmCh);
                     obj.ChainageFromDec = Convert.ToString(listData.Fv1dFrmChDeci);
                     obj.ChainageTo = Convert.ToString(listData.Fv1dToCh);

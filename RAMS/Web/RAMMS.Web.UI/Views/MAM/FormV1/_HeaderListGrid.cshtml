@@ -80,8 +80,8 @@
             filterData.Section =  $("#formV1DetSrchSectionCode option:selected").text().split("-")[0];
             filterData.Crew = $("#formV1DetSrchCrew  option:selected").text().split("-")[0];
             filterData.ActivityCode = $("#formV1DetSrchActivityCode option:selected").text().split("-")[0];
-            filterData.ByFromdate = $("#FormV1SrchByFromDate").val()
-            filterData.ByTodate = $("#FormV1SrchByToDate").val()
+            filterData.ByFromdate = $("#txtStartDtFrom").val()
+            filterData.ByTodate = $("#txtEndDtTo").val()
 
             $('#FormV1GridView').DataTable({
                 ajax: {
