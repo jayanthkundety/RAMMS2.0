@@ -333,7 +333,13 @@ function Save(SubmitType) {
                  
                 if (SubmitType == "") {
                     debugger
-                    if (data.result =="Success") {
+                    if (data.result == "Success") {
+
+                        if (data.formExist) {
+                            location.href = "/MAM/EditFormV4?Id=" + data.pkRefNo + "&view=0";
+                            return;
+                        }
+
                         $("#FormV4_PkRefNo").val(data.pkRefNo);
                         $("#FormV4_RefId").val(data.refId);
                         $("#FormV4_Status").val(data.status);
@@ -344,7 +350,7 @@ function Save(SubmitType) {
                         $("#SubmitFormV4Btn").show();
                         HeaderLogic();
                        
-                        app.ShowSuccessMessage('Saved Successfully', false);
+                    //    app.ShowSuccessMessage('Saved Successfully', false);
                     }
                     else {
                         EnableDisableElements(false);

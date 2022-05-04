@@ -93,7 +93,8 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                     obj.Fv1hPkRefNo = listData.Fv1dFv1hPkRefNo;
                     obj.Fs1dPkRefNo = listData.Fv1dS1dPkRefNo;
-                    obj.Chainage = Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageFromColl = Convert.ToString(listData.Fv1dFrmCh) + "+" + Convert.ToString(listData.Fv1dFrmChDeci);
+                    obj.ChainageToColl = Convert.ToString(listData.Fv1dToCh) + "+" + Convert.ToString(listData.Fv1dToChDeci);
                     obj.ChainageFrom = Convert.ToString(listData.Fv1dFrmCh);
                     obj.ChainageFromDec = Convert.ToString(listData.Fv1dFrmChDeci);
                     obj.ChainageTo = Convert.ToString(listData.Fv1dToCh);
@@ -133,7 +134,11 @@ namespace RAMMS.Business.ServiceProvider.Services
                 //var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormV1.Fv1hRmu && x.Fv1hActCode == domainModelFormV1.Fv1hActCode && x.Fv1hSecCode == domainModelFormV1.Fv1hSecCode && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hActiveYn == true).Result;
                 var obj = _repoUnit.FormV1Repository.FindAsync(x => x.Fv1hRmu == domainModelFormV1.Fv1hRmu && x.Fv1hActCode == domainModelFormV1.Fv1hActCode && x.Fv1hDt == domainModelFormV1.Fv1hDt && x.Fv1hCrew == domainModelFormV1.Fv1hCrew && x.Fv1hActiveYn == true).Result;
                 if (obj != null)
-                    return _mapper.Map<FormV1ResponseDTO>(obj);
+                {
+                    var res= _mapper.Map<FormV1ResponseDTO>(obj);
+                    res.FormExist = true;
+                    return res;
+                }
 
                 IDictionary<string, string> lstData = new Dictionary<string, string>();
                 lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
@@ -177,8 +182,9 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 int? Fv1hPkRefNo = FormV1Dtl.Fv1hPkRefNo;
+                int Fv1dPkRefNo = FormV1Dtl.PkRefNo;
                 var model = _mapper.Map<RmFormV1Dtl>(FormV1Dtl);
-                model.Fv1dPkRefNo = 0;
+                model.Fv1dPkRefNo = Fv1dPkRefNo;
                 model.Fv1dFv1hPkRefNo = Fv1hPkRefNo;
                 return _repo.UpdateFormV1WorkSchedule(model);
             }

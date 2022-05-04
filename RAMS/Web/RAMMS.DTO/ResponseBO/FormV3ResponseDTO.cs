@@ -11,6 +11,9 @@ namespace RAMMS.DTO.ResponseBO
 
         public int PkRefNo { get; set; }
         public int? Fv1PkRefNo { get; set; }
+
+        public string FV1PKRefId { get; set; }
+        
         public int? ContNo { get; set; }
         public string Rmu { get; set; }
         public string Rmuname { get; set; }
@@ -60,9 +63,11 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+        public bool FormExist { get; set; }
+        
 
 
-       
- 
+
+
     }
 }

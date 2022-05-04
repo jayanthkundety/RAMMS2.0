@@ -13,7 +13,8 @@ namespace RAMMS.DTO.ResponseBO
         public string RoadCode { get; set; }
         public string RoadName { get; set; }
 
-        public string Chainage { get; set; }
+        public string ChainageFromColl { get; set; }
+        public string ChainageToColl { get; set; }
 
         public string ChainageFrom { get; set; }
         public string ChainageFromDec { get; set; }

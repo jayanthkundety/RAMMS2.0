@@ -125,6 +125,10 @@
                                                             <label for="Division_Code">Date </label>
                                                             @Html.EditorFor(m => m.FormV3.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
                                                         </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">V1 Reference no </label>
+                                                            @Html.TextBoxFor(m => m.FormV3.FV1PKRefId, new { @readonly = "readonly", @class = "form-control" })
+                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -196,7 +200,7 @@
                                                                     Facilitator
                                                                 </label>
 
-                                                                <input type="text" class="form-control" readonly title="Endaya Construction Sdn Bhd" value="Endaya Construction Sdn Bhd" />
+                                                                <input type="text" class="form-control" readonly title="JKR Sarawak, Miri Division" value="JKR Sarawak, Miri Division" />
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 <label for="Name">
@@ -279,7 +283,7 @@
                                                                 <label for="User_Id">
                                                                     Service Provider
                                                                 </label>
-                                                                <input type="text" disabled class="form-control" value=" JKR Sarawak, Miri Division">
+                                                                <input type="text" disabled class="form-control" title="Endaya Construction Sdn Bhd" value="Endaya Construction Sdn Bhd">
 
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left mb-0">
@@ -530,6 +534,7 @@
 
     @Html.HiddenFor(m => m.FormV3.PkRefNo)
     @Html.HiddenFor(m => m.FormV3.Fv1PkRefNo)
+    @Html.HiddenFor(m => m.FormV3.FV1PKRefId)
     @Html.HiddenFor(m => m.FormV3Dtl.PkRefNo)
     @Html.HiddenFor(m => m.FormV3.SecCode)
     @Html.HiddenFor(m => m.FormV3.UseridFac)
@@ -540,7 +545,7 @@
     @Html.HiddenFor(m => m.FormV3.SubmitSts)
     <input type="hidden" id="hdnSecCode" value="@Model.FormV3.SecCode" />
     <input type="hidden" id="hdnView" value="@Model.view" />
-    <input type="text" id="CalculationTime"  style="display:none" />
+    <input type="text" id="CalculationTime" style="display:none" />
     <input type="text" id="CalculationTime1" style="display:none" />
 
 }

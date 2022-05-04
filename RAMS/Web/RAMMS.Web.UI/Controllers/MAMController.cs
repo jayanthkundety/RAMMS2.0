@@ -1053,8 +1053,11 @@ namespace RAMMS.Web.UI.Controllers
             await LoadFormV1DropDown();
 
             if (_formV1Model.FormV1.UseridSch == 0)
+            {
                 _formV1Model.FormV1.UseridSch = _security.UserID;
-
+                _formV1Model.FormV1.DtSch = DateTime.Today;
+                _formV1Model.FormV1.SignSch = true;
+            }
             _formV1Model.view = view;
 
             //if (_formV1Model.FormV1.Status == Common.StatusList.FormW1Submitted && View == 0 && (_security.IsJKRSSuperiorOfficer || _security.IsDivisonalEngg || _security.IsJKRSHQ))
@@ -1086,16 +1089,20 @@ namespace RAMMS.Web.UI.Controllers
             {
                 _formV1Model.FormV1.UseridSch = _security.UserID;
                 _formV1Model.FormV1.DtSch = DateTime.Today;
+                _formV1Model.FormV1.SignSch = true;
+
             }
             if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Submitted)
             {
                 _formV1Model.FormV1.UseridAgr = _security.UserID;
                 _formV1Model.FormV1.DtAgr = DateTime.Today;
+                _formV1Model.FormV1.SignAgr = true;
             }
             if (_formV1Model.FormV1.UseridAgr == 0 && _formV1Model.FormV1.Status == RAMMS.Common.StatusList.FormV1Verified)
             {
                 _formV1Model.FormV1.UseridAck = _security.UserID;
                 _formV1Model.FormV1.DtAck = DateTime.Today;
+                _formV1Model.FormV1.SignAck = true;
             }
 
 
@@ -1128,10 +1135,9 @@ namespace RAMMS.Web.UI.Controllers
             {
                 frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
                 frm.RefNoDS = _formV1Service.FindRefNoFromS1(frm.FormV1);
-                //frm.FormV1.Source = frm.FormV1.Source == null ? "" : frm.FormV1.Source;
-                //await LoadFormV1DropDown();
-                // return PartialView("~/Views/MAM/FormV1/_AddFormV1Content.cshtml", frm);
-                return Json(new { RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormV1.S1HPkRefNo });
+                
+                
+                return Json(new { FormExist = frm.FormV1.FormExist, RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormV1.S1HPkRefNo });
             }
             else
             {
@@ -1786,14 +1792,16 @@ namespace RAMMS.Web.UI.Controllers
                     Msg = "No Matching record found in FormV2";
                     Result = "Failed";
                 }
-                
 
+                 
 
                 return Json(new
                 {
                     RefId = frm.FormV3.RefId,
                     PkRefNo = frm.FormV3.PkRefNo,
                     Status = frm.FormV3.Status,
+                    FormExist = frm.FormV3.FormExist,
+                    FV1PKRefId = frm.FormV3.FV1PKRefId,
                     Result = Result,
                     Msg = Msg
                 });
@@ -1970,6 +1978,7 @@ namespace RAMMS.Web.UI.Controllers
             if (frm.FormV4.PkRefNo == 0)
             {
                 frm.FormV4 = _formV1Service.SaveFormV4(frm.FormV4).Result;
+
                 int pkRefno = frm.FormV4.PkRefNo;
 
                 if (pkRefno == -1)
@@ -1996,6 +2005,7 @@ namespace RAMMS.Web.UI.Controllers
                     FV3PKRefNo = frm.FormV4.FV3PKRefNo,
                     FV3PKRefID = frm.FormV4.FV3PKRefID,
                     Status = frm.FormV4.Status,
+                    FormExist = frm.FormV4.FormExist,
                     Result = Result,
                     Msg = Msg
                 });

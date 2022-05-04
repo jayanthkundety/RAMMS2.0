@@ -335,14 +335,21 @@ function Save(SubmitType) {
                  
                 if (SubmitType == "") {
                     if (data.result == "Success") {
+
+                        if (data.formExist) {
+                            location.href = "/MAM/EditFormV3?Id=" + data.pkRefNo + "&view=0";
+                            return;
+                        }
+
                         $("#FormV3_PkRefNo").val(data.pkRefNo);
+                        $("#FormV3_FV1PKRefId").val(data.fV1PKRefId)
                         $("#FormV3_RefId").val(data.refId);
-                        $("#FormV1_Status").val(data.status)
+                        $("#FormV3_Status").val(data.status)
                         $("#saveFormV3Btn").show();
                         $("#SubmitFormV3Btn").show();
                         HeaderLogic();
                         InitializeGrid();
-                        app.ShowSuccessMessage('Saved Successfully', false);
+                       // app.ShowSuccessMessage('Saved Successfully', false);
                     }
                     else {
                         EnableDisableElements(false);
@@ -379,8 +386,8 @@ function SaveFormV3Dtl() {
             }
             else {
                 ClearFormV3Dtl();
-
-                InitializeGrid();
+                $('#WorkAccomplishmentGridView').DataTable().ajax.reload();
+               // InitializeGrid();
                 app.ShowSuccessMessage('Saved Successfully', false);
             }
         });
@@ -503,7 +510,7 @@ function DeleteFormV3Dtl(id) {
         }
         else {
             InitializeGrid();
-            app.ShowErrorMessage('Deleted Successfully', false);
+            app.ShowSuccessMessage('Deleted Successfully', false);
         }
     });
 }

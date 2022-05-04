@@ -1,4 +1,5 @@
 ﻿
+var EditModeDtl = false;
 $(document).ready(function () {
 
 
@@ -254,23 +255,32 @@ $(document).ready(function () {
 
 function OnRoadChange(tis) {
 
-    var ctrl = $("#ddlRoadCode");
-    $('#FormV1Dtl_RoadCode').val(ctrl.val());
+    if (!EditModeDtl) {
+        var ctrl = $("#ddlRoadCode");
+        $('#FormV1Dtl_RoadCode').val(ctrl.val());
 
-    if (ctrl.find("option:selected").attr("fromkm") != undefined)
-        $("#FormV1Dtl_FrmCh").val(ctrl.find("option:selected").attr("fromkm"));
-    else
-        $("#FormV1Dtl_FrmCh").val(ctrl.find("option:selected").attr("Item1"));
+        if (ctrl.find("option:selected").attr("fromkm") != undefined)
+            $("#FormV1Dtl_FrmCh").val(ctrl.find("option:selected").attr("fromkm"));
 
-    if (ctrl.find("option:selected").attr("fromm") != undefined)
-        $("#FormV1Dtl_ToChDeci").val(ctrl.find("option:selected").attr("fromm"));
-    else
-        $("#FormV1Dtl_ToChDeci").val(ctrl.find("option:selected").attr("Item2"));
+        if (ctrl.find("option:selected").attr("fromm") != undefined)
+            $("#FormV1Dtl_FrmChDeci").val(ctrl.find("option:selected").attr("fromm"));
 
-    var obj = new Object();
-    obj.TypeCode = ctrl.val();
-    obj.Type = "RD_Code";
-    getNameByCode(obj)
+
+
+        if (ctrl.find("option:selected").attr("tokm") != undefined)
+            $("#FormV1Dtl_ToCh").val(ctrl.find("option:selected").attr("tokm"));
+
+        if (ctrl.find("option:selected").attr("tom") != undefined)
+            $("#FormV1Dtl_ToChDeci").val(ctrl.find("option:selected").attr("tom"));
+
+
+        var obj = new Object();
+        obj.TypeCode = ctrl.val();
+        obj.Type = "RD_Code";
+        getNameByCode(obj)
+    }
+
+    EditModeDtl = false;
 
 }
 
@@ -394,8 +404,12 @@ function Save(GroupName, SubmitType) {
             else {
 
                 if (SubmitType == "") {
+                    if (data.formExist) {
+                        location.href = "/MAM/EditFormV4?Id=" + data.pkRefNo + "&view=0";
+                        return;
+                    }
                     UpdateFormAfterSave(data);
-                    app.ShowSuccessMessage('Saved Successfully', false);
+                   // app.ShowSuccessMessage('Saved Successfully', false);
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
@@ -490,8 +504,11 @@ function ClearWorkSchedule() {
     $('#ddlSiteRef').val("0");
     $('#ddlSiteRef').trigger('chosen:updated');
     $("#FormV1Dtl_Remarks").val("");
+    $("#FormV1Dtl_StartTime").val("");
     $("#FormV1Dtl_FrmCh").val("");
-    $("#FormV1Dtl_ToCh").val("");
+    $("#FormV1Dtl_FrmChDeci").val("");
+    $('#FormV1Dtl_ToCh').val("");
+    $('#FormV1Dtl_ToChDeci').val("");
     $("#FormV1Dtl_RoadName").val("");
     $("#WorkScheduleModal").modal("hide");
 }
@@ -506,7 +523,7 @@ function DeleteV1WorkSchedule(id) {
         }
         else {
             InitializeGrid();
-            app.ShowErrorMessage('Deleted Successfully', false);
+            app.ShowSuccessMessage('Deleted Successfully', false);
         }
     });
 }
@@ -599,8 +616,16 @@ function EnableDisableElements(state) {
 }
 
 
+function AddFormV1WorkSchedule() {
+    $("#FormV1Dtl_PkRefNo").val(0);
+    EditModeDtl = false;
+    ClearWorkSchedule();
+}
+
 function EditFormV1WorkSchedule(obj, view) {
 
+     
+    EditModeDtl = true;
     var currentRow = $(obj).closest("tr");
     var data = $('#WorkScheduleGridView').DataTable().row(currentRow).data();
 
@@ -609,6 +634,11 @@ function EditFormV1WorkSchedule(obj, view) {
     $("#ddlRoadCode").trigger('chosen:updated');
     $("#ddlRoadCode").trigger('change');
     $("#FormV1Dtl_StartTime").val(data.startTime);
+    $("#FormV1Dtl_FrmCh").val(data.chainageFrom);
+    $("#FormV1Dtl_FrmChDeci").val(data.chainageFromDec);
+    $('#FormV1Dtl_ToCh').val(data.chainageTo);
+    $('#FormV1Dtl_ToChDeci').val(data.chainageToDec);
+    $("#FormV1Dtl_RoadName").val(data.roadName);
     $("#FormV1Dtl_Remarks").val(data.remarks);
     $("#ddlSiteRef").val(data.siteRef);
     $("#ddlSiteRef").trigger('chosen:updated');
