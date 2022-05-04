@@ -27,5 +27,6 @@ namespace RAMMS.Domain.Models
         public int? Startindex { get; set; }
         public int? Endindex { get; set; }
         public int? Sheetindex { get; set; }
+        public int? Rowlength { get; set; }
     }
 }

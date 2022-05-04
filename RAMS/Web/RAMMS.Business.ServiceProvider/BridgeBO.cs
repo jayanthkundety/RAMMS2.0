@@ -336,6 +336,7 @@ namespace RAMMS.Business.ServiceProvider
                         foreach (IXLWorksheet tworksheet in workbook.Worksheets)
                         {
                             int excelcolumn = 0;
+                            
                             for (int i = 0; i < RmAlledtailsDTO.Count; i++)
                             {
                                 if (i == 0)
@@ -389,12 +390,12 @@ namespace RAMMS.Business.ServiceProvider
                     {
                         foreach (IXLWorksheet tworksheet in workbook.Worksheets)
                         {
-                            int excelcolumn = 0;
+                            int excelrow = 0;
                             for (int i = 0; i < RmAlledtailsDTO_det1.Count; i++)
                             {
                                 if (i == 0)
                                 {
-                                    excelcolumn = RmAllassetDetails[i].Startindex ?? 0;
+                                    excelrow = RmAllassetDetails[i].Startindex ?? 0;
                                     if (tworksheet.Name.ToLower() == "sheet1")
                                     {
                                         rownumber = 0;
@@ -415,20 +416,20 @@ namespace RAMMS.Business.ServiceProvider
                                                 }
                                                 else if (RmAllassetDetails[j].FduAppendOverwrite.ToLower() == "overwrite")
                                                 {
-                                                    tworksheet.Cell(excelcolumn, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det1[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det1[rownumber], null).ToString();
+                                                    tworksheet.Cell(excelrow, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det1[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det1[rownumber], null).ToString();
                                                 }
                                                 break;
                                             }
                                         }
                                     }
                                 }
-                                if (excelcolumn == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det1.Count - 1)
+                                if (excelrow == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det1.Count - 1)
                                 {
                                     rownumber = rownumber + 1;
                                     break;
                                 }
 
-                                excelcolumn = excelcolumn + 1;
+                                excelrow = excelrow + 1;
                                 rownumber = rownumber + 1;
                             }
                             sheetIndex += 1;
@@ -443,12 +444,14 @@ namespace RAMMS.Business.ServiceProvider
                     {
                         foreach (IXLWorksheet tworksheet in workbook.Worksheets)
                         {
-                            int excelcolumn = 0;
+                            int excelrow = 0;
+                            int excelrowlength = 1;
                             for (int i = 0; i < RmAlledtailsDTO_det2.Count; i++)
                             {
                                 if (i == 0)
                                 {
-                                    excelcolumn = RmAllassetDetails[i].Startindex ?? 0;
+                                    excelrow = RmAllassetDetails[i].Startindex ?? 0;
+                                    excelrowlength = RmAllassetDetails[i].Rowlength  ?? 1;
                                     if (tworksheet.Name.ToLower() == "sheet1")
                                     {
                                         rownumber = 0;
@@ -469,20 +472,20 @@ namespace RAMMS.Business.ServiceProvider
                                                 }
                                                 else if (RmAllassetDetails[j].FduAppendOverwrite.ToLower() == "overwrite")
                                                 {
-                                                    tworksheet.Cell(excelcolumn, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det2[rownumber], null).ToString();
+                                                    tworksheet.Cell(excelrow, RmAllassetDetails[j].FduExcelColumnNo ?? 0).Value = RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det2[rownumber], null).ToString();
                                                 }
                                                 break;
                                             }
                                         }
                                     }
                                 }
-                                if (excelcolumn == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det2.Count - 1)
+                                if (excelrow == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det2.Count - 1 )
                                 {
                                     rownumber = rownumber + 1;
                                     break;
                                 }
 
-                                excelcolumn = excelcolumn + 1;
+                                excelrow = excelrow + excelrowlength;
                                 rownumber = rownumber + 1;
                             }
                             sheetIndex += 1;
