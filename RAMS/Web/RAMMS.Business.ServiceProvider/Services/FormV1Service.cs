@@ -181,8 +181,9 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 int? Fv1hPkRefNo = FormV1Dtl.Fv1hPkRefNo;
+                int Fv1dPkRefNo = FormV1Dtl.PkRefNo;
                 var model = _mapper.Map<RmFormV1Dtl>(FormV1Dtl);
-                model.Fv1dPkRefNo = 0;
+                model.Fv1dPkRefNo = Fv1dPkRefNo;
                 model.Fv1dFv1hPkRefNo = Fv1hPkRefNo;
                 return _repo.UpdateFormV1WorkSchedule(model);
             }

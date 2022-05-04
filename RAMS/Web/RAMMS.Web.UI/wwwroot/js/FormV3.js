@@ -349,7 +349,7 @@ function Save(SubmitType) {
                         $("#SubmitFormV3Btn").show();
                         HeaderLogic();
                         InitializeGrid();
-                        app.ShowSuccessMessage('Saved Successfully', false);
+                       // app.ShowSuccessMessage('Saved Successfully', false);
                     }
                     else {
                         EnableDisableElements(false);
@@ -510,7 +510,7 @@ function DeleteFormV3Dtl(id) {
         }
         else {
             InitializeGrid();
-            app.ShowErrorMessage('Deleted Successfully', false);
+            app.ShowSuccessMessage('Deleted Successfully', false);
         }
     });
 }

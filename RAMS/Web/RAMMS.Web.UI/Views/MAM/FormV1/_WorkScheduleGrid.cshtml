@@ -4,7 +4,7 @@
     <div id="content">
         <div class="w-100 position-relative in-tbl-btns custom-tbl">
             <div class="grid-btns">
-                <button type="button" id="btnWorkScheduleAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#WorkScheduleModal" title="Add New">
+                <button type="button" id="btnWorkScheduleAdd" onclick="AddFormV1WorkSchedule()" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#WorkScheduleModal" title="Add New">
                     <span class="intbl-add-icon"></span>
                 </button>
                 <button type="button" id="btnWorkSchedulePull" class="btn btn-sm btn-themebtn" title="Pull data from S1" onclick="PullS1Data()" >
@@ -34,14 +34,15 @@
     var table_columns = [];
     var actionCol = {
         data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV1DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV1WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV1WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV1DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV1WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,1);'><span class='view-icon'></span> View</button> </div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV1WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,1);'><span class='view-icon'></span> View</button></div></div>";
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
     var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true,  sortable: true };
     var roadNameCol = { data: "roadName", name: "RoadName", title: "Road Name", autoWidth: true, sortable: true };
-    var chainageCol = { data: "chainage", name: "Chainage", title: "Chainage Location", autoWidth: true, sortable: true };
+    var chainageFromCol = { data: "chainageFrom", name: "ChainageFrom", title: "Chainage Location From", autoWidth: true, sortable: true };
+    var chainageToCol = { data: "chainageTo", name: "ChainageTo", title: "Chainage Location From", autoWidth: true, sortable: true };
     var siteRefCol = { data: "siteRef", name: "SiteRef", title: "Site Reference", autoWidth: true, sortable: true };
     var startTimeCol = { data: "startTime", name: "StartTime", title: "Schedule Time to Start", autoWidth: true, sortable: true };
     var remarksCol = { data: "remarks", name: "Remarks", title: "Remarks", autoWidth: true, sortable: true };
@@ -49,15 +50,14 @@
     table_columns.push(actionCol);
     table_columns.push(roadCodeCol);
     table_columns.push(roadNameCol);
-    table_columns.push(chainageCol);
+    table_columns.push(chainageFromCol);
+    table_columns.push(chainageToCol);
     table_columns.push(siteRefCol);
     table_columns.push(startTimeCol);
     table_columns.push(remarksCol);
 
 
-    function PrintForm(id) {
-        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
-    }
+ 
 
     var filterData = new Object();
     function InitializeGrid() {

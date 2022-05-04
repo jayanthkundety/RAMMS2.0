@@ -106,6 +106,58 @@ namespace RAMMS.Business.ServiceProvider
         public string header98 { get; set; }
         public string header99 { get; set; }
         public string header100 { get; set; }
+      
+        public string header101 { get; set; }
+        public string header102 { get; set; }
+        public string header103 { get; set; }
+        public string header104 { get; set; }
+        public string header105 { get; set; }
+        public string header106 { get; set; }
+        public string header107 { get; set; }
+        public string header108 { get; set; }
+        public string header109 { get; set; }
+        public string header110 { get; set; }
+        public string header111 { get; set; }
+        public string header112 { get; set; }
+        public string header113 { get; set; }
+        public string header114 { get; set; }
+        public string header115 { get; set; }
+        public string header116 { get; set; }
+        public string header117 { get; set; }
+        public string header118 { get; set; }
+        public string header119 { get; set; }
+        public string header120 { get; set; }
+        public string header121 { get; set; }
+        public string header122 { get; set; }
+        public string header123 { get; set; }
+        public string header124 { get; set; }
+        public string header125 { get; set; }
+        public string header126 { get; set; }
+        public string header127 { get; set; }
+        public string header128 { get; set; }
+        public string header129 { get; set; }
+        public string header130 { get; set; }
+        public string header131 { get; set; }
+        public string header132 { get; set; }
+        public string header133 { get; set; }
+        public string header134 { get; set; }
+        public string header135 { get; set; }
+        public string header136 { get; set; }
+        public string header137 { get; set; }
+        public string header138 { get; set; }
+        public string header139 { get; set; }
+        public string header140 { get; set; }
+        public string header141 { get; set; }
+        public string header142 { get; set; }
+        public string header143 { get; set; }
+        public string header144 { get; set; }
+        public string header145 { get; set; }
+        public string header146 { get; set; }
+        public string header147 { get; set; }
+        public string header148 { get; set; }
+        public string header149 { get; set; }
+        public string header150 { get; set; }
+
 
     }
 }

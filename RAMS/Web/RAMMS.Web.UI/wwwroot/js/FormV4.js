@@ -350,7 +350,7 @@ function Save(SubmitType) {
                         $("#SubmitFormV4Btn").show();
                         HeaderLogic();
                        
-                        app.ShowSuccessMessage('Saved Successfully', false);
+                    //    app.ShowSuccessMessage('Saved Successfully', false);
                     }
                     else {
                         EnableDisableElements(false);
