@@ -279,9 +279,9 @@ namespace RAMMS.Business.ServiceProvider
                                     }
                                     foreach (PropertyInfo _propertyInfo in propertyInfos)
                                     {
-                                        if (_propertyInfo.Name.ToLower() == RmAllassetHeader[j].FduHeaderName.ToLower() && (RmAllassetHeader[j].Sheetindex == null || RmAllassetHeader[j].Sheetindex == sheetIndex) )
+                                        if (_propertyInfo.Name.ToLower() == RmAllassetHeader[j].FduHeaderName.ToLower() && (RmAllassetHeader[j].Sheetindex == null || RmAllassetHeader[j].Sheetindex == sheetIndex))
                                         {
-                                            if (RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name) != null && 
+                                            if (RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name) != null &&
                                                 RmAllassetInventoryDTO[i].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAllassetInventoryDTO[i], null) != null)
                                             {
                                                 if (RmAllassetHeader[j].FduHeaderName.ToLower().Contains("header"))
@@ -336,7 +336,7 @@ namespace RAMMS.Business.ServiceProvider
                         foreach (IXLWorksheet tworksheet in workbook.Worksheets)
                         {
                             int excelcolumn = 0;
-                            
+
                             for (int i = 0; i < RmAlledtailsDTO.Count; i++)
                             {
                                 if (i == 0)
@@ -446,12 +446,13 @@ namespace RAMMS.Business.ServiceProvider
                         {
                             int excelrow = 0;
                             int excelrowlength = 1;
+                            bool hasSheet = false;
                             for (int i = 0; i < RmAlledtailsDTO_det2.Count; i++)
                             {
                                 if (i == 0)
                                 {
                                     excelrow = RmAllassetDetails[i].Startindex ?? 0;
-                                    excelrowlength = RmAllassetDetails[i].Rowlength  ?? 1;
+                                    excelrowlength = RmAllassetDetails[i].Rowlength ?? 1;
                                     if (tworksheet.Name.ToLower() == "sheet1")
                                     {
                                         rownumber = 0;
@@ -464,6 +465,7 @@ namespace RAMMS.Business.ServiceProvider
                                     {
                                         if (_propertyInfo.Name.ToLower() == RmAllassetDetails[j].FduHeaderName.ToLower() && (RmAllassetDetails[j].Sheetindex == null || RmAllassetDetails[j].Sheetindex == sheetIndex))
                                         {
+                                            hasSheet = true;
                                             if (RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name) != null && RmAlledtailsDTO_det2[rownumber].GetType().GetProperty(_propertyInfo.Name).GetValue(RmAlledtailsDTO_det2[rownumber], null) != null)
                                             {
                                                 if (RmAllassetDetails[j].FduAppendOverwrite.ToLower() == "append")
@@ -479,8 +481,11 @@ namespace RAMMS.Business.ServiceProvider
                                         }
                                     }
                                 }
-                                if (excelrow == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det2.Count - 1 )
+
+                                if (!hasSheet) break;
+                                if (excelrow == (RmAllassetDetails[0].Endindex ?? 0) || rownumber == RmAlledtailsDTO_det2.Count - 1)
                                 {
+
                                     rownumber = rownumber + 1;
                                     break;
                                 }
@@ -493,7 +498,7 @@ namespace RAMMS.Business.ServiceProvider
                     }
 
                     rownumber = 0;
-                    
+
                     RmAllassetDetails = new List<RmFormDownloadUse>();
                     RmAllassetDetails = RmAllasset.Where(x => x.FduTableTypeHdrDtl.ToLower() == "footer").ToList();
                     if (RmAlledtailsFooterDTO != null && RmAlledtailsFooterDTO.Count() > 0)
