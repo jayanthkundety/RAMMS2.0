@@ -35,7 +35,7 @@
 @{
 
     //Operation Executive, RAMS Executive, Head Maintenance and Region Manager
-    bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    bool isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.isEnggAssistant);
     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
 
@@ -316,11 +316,11 @@
             <div id="val-summary-displayer"></div>
             <button type="button" id="btnFrmV2Back" class="btn btn-sm btn-outline-theme" onclick="GoBack()"> Cancel </button>
             <button id="saveFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Save </button>
-            @*@if (isSubmit && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Saved)
-            {*@
+            @if (isSubmit && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Saved)
+            {
                 <button id="SubmitFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Submit </button>
-            @*}
-            else*@ 
+            }
+            
             @if (IsApproved && (Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Submitted || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Rejected))
             {
                 <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Vetted By');"> Approved / Verify </button>

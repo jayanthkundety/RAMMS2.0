@@ -8150,7 +8150,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1evCapacity)
                     .HasColumnName("FQA1EV_Capacity")
-                    .HasColumnType("decimal(8, 3)");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1evCondition)
                     .HasColumnName("FQA1EV_Condition")
@@ -8178,7 +8179,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1evPvNo)
                     .HasColumnName("FQA1EV_PV_No")
-                    .HasMaxLength(100)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fqa1evRemark)

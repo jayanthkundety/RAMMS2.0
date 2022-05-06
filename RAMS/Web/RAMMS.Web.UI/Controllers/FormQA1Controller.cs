@@ -113,7 +113,7 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["RD_Code"] = await _formN1Service.GetRoadCodesByRMU("");
             //ViewData["RMU"] = await _formN1Service.GetRMU();
 
-            ddLookup.Type = "ACT-CWF";
+            ddLookup.Type = "ACT-QA1";
             ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
 
             LoadLookupService("User", "RMU");
@@ -285,7 +285,10 @@ namespace RAMMS.Web.UI.Controllers
                 formQa1.CrDt = DateTime.Now;
                 formQa1Res = await _formQa1Service.FindAndSaveFormQA1Hdr(formQa1, false);
                 formQa1Res.Tes = await _formQa1Service.GetTes(formQa1Res.PkRefNo);
+                formQa1Res.isExist = false;
             }
+            else
+                formQa1Res.isExist = true;
             return Json(formQa1Res, JsonOption());
         }
 
@@ -382,6 +385,27 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> SaveMaterial(FormQa1MatDTO formQa1Mat)
         {
             var ret = _formQa1Service.SaveMaterial(formQa1Mat);
+            return Json(new { ret });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteMaterial(int pKRefNo)
+        {
+            var ret =  _formQa1Service.DeleteMaterial(pKRefNo);
+            return Json(new { ret });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteEquipment(int pKRefNo)
+        {
+            var ret = _formQa1Service.DeleteEquipment(pKRefNo);
+            return Json(new { ret });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteGeneral(int pKRefNo)
+        {
+            var ret = _formQa1Service.DeleteGeneral(pKRefNo);
             return Json(new { ret });
         }
 

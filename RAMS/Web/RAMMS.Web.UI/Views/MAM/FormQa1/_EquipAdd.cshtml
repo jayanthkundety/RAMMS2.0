@@ -34,7 +34,7 @@
     $("#formQa1EquipCode").on("change", function () {
         var val = $(this).find(":selected").text();
         val = val.split("-").length > 0 ? val.split("-")[1] : val;
-
+        $("#formQa1EqpRemark").val(val);
         $("#formQa1EquipDesc").val(val);
     });
 
@@ -74,11 +74,11 @@
             </div>
             <div class="form-group col-lg-2 pl-0">
                 @Html.Label("P / V No.", "P / V No.")
-                @Html.TextBoxFor(Adtl => Adtl.PVNo, new { @Id = "formQa1EquipPVNo", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, P/V No.}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.PVNo, new { @Id = "formQa1EquipPVNo", @maxlength = 15, @autocomplete = "off", @type = "text", @class = "form-control validate {required, P/V No.}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 pl-0">
                 @Html.Label("Capacity", "Capacity")
-                @Html.TextBoxFor(Adtl => Adtl.Capacity, new { @Id = "formQa1EquipCapacity", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required, Capacity}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.Capacity, new { @Id = "formQa1EquipCapacity", @maxlength = 15, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Capacity}", @rows = 1 })
             </div>
 
             <div class="form-group col-lg-2 pl-0">

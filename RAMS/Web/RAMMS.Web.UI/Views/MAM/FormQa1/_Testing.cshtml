@@ -48,7 +48,7 @@
             <label>
                 Remarks
             </label>
-            @Html.TextAreaFor(m => m.CtCsRemark , new { @id="formQa1CtCsRemark", @class="form-control svalidate {required,  Compaction Test Remark}" , @style="height: 40px;" })
+            @Html.TextAreaFor(m => m.CtCsRemark , new { @id="formQa1CtCsRemark", @class="form-control svalidate {required,  Compaction Test Remark}" , @style="height: 40px;" , @maxlength="30"  })
         </div>
     </div>
     <div class="row">
@@ -99,7 +99,7 @@
             <label>
                 Remarks
             </label>
-            @Html.TextAreaFor(m => m.DtCsRemark , new { @id="formQa1DtCsRemark", @class="form-control svalidate  {required,  Density Test Remark}" , @style="height: 40px;" })
+            @Html.TextAreaFor(m => m.DtCsRemark , new { @id="formQa1DtCsRemark", @class="form-control svalidate  {required,  Density Test Remark}" , @style="height: 40px;" , @maxlength="30"  })
         </div>
     </div>
     <div class="row">
@@ -151,7 +151,7 @@
             <label>
                 Remarks
             </label>
-            @Html.TextAreaFor(m => m.MgtCsRemark , new { @id="formQa1MgtCsRemark", @class="form-control svalidate  {required,  Material Grading Test Remark}" , @style="height: 40px;" })
+            @Html.TextAreaFor(m => m.MgtCsRemark , new { @id="formQa1MgtCsRemark", @class="form-control svalidate  {required,  Material Grading Test Remark}" , @style="height: 40px;",  @maxlength="30" })
         </div>
     </div>
     <div class="row">
@@ -203,7 +203,7 @@
             <label>
                 Remarks
             </label>
-            @Html.TextAreaFor(m => m.CbrCsRemark , new { @id="formQa1CbrCsRemark", @class="form-control svalidate  {required, CBR Remark}" , @style="height: 40px;" })
+            @Html.TextAreaFor(m => m.CbrCsRemark , new { @id="formQa1CbrCsRemark", @class="form-control svalidate  {required, CBR Remark}" , @style="height: 40px;" , @maxlength="30"  })
         </div>
     </div>
     <div class="row">
@@ -254,7 +254,7 @@
             <label>
                 Remarks
             </label>
-            @Html.TextAreaFor(m => m.OtCsRemark , new { @id="formQa1OtCsRemark", @class="form-control svalidate  {required, Other Test Remark}" , @style="height: 40px;" })
+            @Html.TextAreaFor(m => m.OtCsRemark , new { @id="formQa1OtCsRemark", @class="form-control svalidate  {required, Other Test Remark}" , @style="height: 40px;" , @maxlength="30"  })
         </div>
     </div>
 </div>

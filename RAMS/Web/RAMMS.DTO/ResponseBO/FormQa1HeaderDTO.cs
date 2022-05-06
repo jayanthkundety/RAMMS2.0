@@ -58,6 +58,7 @@ namespace RAMMS.DTO.ResponseBO
         public string Status { get; set; }
         public string AuditLog { get; set; }
 
+        public bool isExist { get; set; }
         public virtual List<FormQa1EqVhDTO> EqVh { get; set; }
         public virtual FormQa1GCDTO   Gc { get; set; }
         public virtual List<FormQa1GenDTO>  Gen { get; set; }
@@ -77,7 +78,7 @@ namespace RAMMS.DTO.ResponseBO
         public string Type { get; set; }
         public string Desc { get; set; }
         public string PVNo { get; set; }
-        public decimal? Capacity { get; set; }
+        public string Capacity { get; set; }
         public int? Unit { get; set; }
         public string Condition { get; set; }
         public string Remark { get; set; }

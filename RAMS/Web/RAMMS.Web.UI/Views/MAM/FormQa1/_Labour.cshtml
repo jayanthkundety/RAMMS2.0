@@ -1,5 +1,6 @@
 ﻿@model RAMMS.DTO.ResponseBO.FormQa1LabDTO
 
+
 <div class="main-container" id="container">
     <div class="col-lg-12">
         <div class="row mb-2">
@@ -16,10 +17,10 @@
                 <b>Crew Supervisor</b>
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabCsOnSite, new { @Id = "formQa1LabCROnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Crew Supervisor - No. of Site}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabCsOnSite, new { @Id = "formQa1LabCROnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Crew Supervisor - No. of Site}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabCsOnLeave, new { @Id = "formQa1LabCROnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Crew Supervisor - No. on Leave}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabCsOnLeave, new { @Id = "formQa1LabCROnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Crew Supervisor - No. on Leave}", @rows = 1 })
             </div>
 
             <div class="form-group col-lg-2 float-left">
@@ -37,10 +38,10 @@
                 <b>Operator</b>
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabOpOnSite, new { @Id = "formQa1LabOPOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Operator - No. of Site}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabOpOnSite, new { @Id = "formQa1LabOPOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Operator - No. of Site}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabOpOnLeave, new { @Id = "formQa1LabOPOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Operator - No. on Leave}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabOpOnLeave, new { @Id = "formQa1LabOPOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Operator - No. on Leave}", @rows = 1 })
             </div>
 
             <div class="form-group col-lg-2 float-left">
@@ -58,10 +59,10 @@
                 <b>Driver</b>
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabDrOnSite, new { @Id = "formQa1LabDROnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Driver - No. of Site}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabDrOnSite, new { @Id = "formQa1LabDROnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Driver - No. of Site}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabDrOnLeave, new { @Id = "formQa1LabDROnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Driver - No. on Leave}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabDrOnLeave, new { @Id = "formQa1LabDROnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Driver - No. on Leave}", @rows = 1 })
             </div>
 
             <div class="form-group col-lg-2 float-left">
@@ -79,10 +80,10 @@
                 <b>Workmates</b>
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabWmOnSite, new { @Id = "formQa1LabWMOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Workmates - No. of Site}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabWmOnSite, new { @Id = "formQa1LabWMOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Workmates - No. of Site}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabWmOnLeave, new { @Id = "formQa1LabWMOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Workmates - No. on Leave}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabWmOnLeave, new { @Id = "formQa1LabWMOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Workmates - No. on Leave}", @rows = 1 })
             </div>
 
             <div class="form-group col-lg-2 float-left">
@@ -100,10 +101,10 @@
                 <b>Others</b>
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabOthOnSite, new { @Id = "formQa1LabOTHOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Others - No. of Site}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabOthOnSite, new { @Id = "formQa1LabOTHOnSite", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Others - No. of Site}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 float-left">
-                @Html.TextBoxFor(Adtl => Adtl.LabOthOnLeave, new { @Id = "formQa1LabOTHOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control svalidate {required, Others - No. on Leave}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.LabOthOnLeave, new { @Id = "formQa1LabOTHOnLeave", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric svalidate {required, Others - No. on Leave}", @rows = 1 })
             </div>
 
             <div class="form-group col-lg-2 float-left">
