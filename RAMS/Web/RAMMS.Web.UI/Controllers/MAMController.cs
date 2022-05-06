@@ -19,6 +19,9 @@ using System.Linq;
 using System.Globalization;
 using System.Collections.Generic;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace RAMMS.Web.UI.Controllers
 {
@@ -1135,8 +1138,8 @@ namespace RAMMS.Web.UI.Controllers
             {
                 frm.FormV1 = await _formV1Service.SaveFormV1(frm.FormV1);
                 frm.RefNoDS = _formV1Service.FindRefNoFromS1(frm.FormV1);
-                
-                
+
+
                 return Json(new { FormExist = frm.FormV1.FormExist, RefId = frm.FormV1.RefId, PkRefNo = frm.FormV1.PkRefNo, Status = frm.FormV1.Status, Source = frm.FormV1.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormV1.S1HPkRefNo });
             }
             else
@@ -1622,7 +1625,7 @@ namespace RAMMS.Web.UI.Controllers
             return Json(RowsAffected);
 
         }
-            
+
         #endregion
 
         #region Form V3
@@ -1793,7 +1796,7 @@ namespace RAMMS.Web.UI.Controllers
                     Result = "Failed";
                 }
 
-                 
+
 
                 return Json(new
                 {
@@ -1994,7 +1997,7 @@ namespace RAMMS.Web.UI.Controllers
                     Msg = "No Matching record found in FormV1";
                     Result = "Failed";
                 }
-                 
+
 
 
                 return Json(new
@@ -2097,7 +2100,7 @@ namespace RAMMS.Web.UI.Controllers
                 filteredPagingDefinition.sortOrder = formV5Filter.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
             }
 
-            var result = await _formV1Service.GetFilteredFormV1Grid(filteredPagingDefinition).ConfigureAwait(false);
+            var result = await _formV1Service.GetFilteredFormV5Grid(filteredPagingDefinition).ConfigureAwait(false);
 
             return Json(new { draw = formV5Filter.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
@@ -2148,7 +2151,7 @@ namespace RAMMS.Web.UI.Controllers
             var _formV5Model = new FormV5Model();
 
             _formV5Model.FormV5 = await _formV1Service.FindFormV5ByID(Id);
-
+            _formV5Model.FormV5Dtl = new FormV5DtlResponseDTO();
 
 
             if (_formV5Model.FormV5.UseridRec == null || _formV5Model.FormV5.UseridRec == 0)
@@ -2165,16 +2168,39 @@ namespace RAMMS.Web.UI.Controllers
 
         public async Task<IActionResult> SaveFormV5(FormV5Model frm)
         {
+
             string refNo = "0";
             frm.FormV5.ActiveYn = true;
             if (frm.FormV5.PkRefNo == 0)
             {
-                int pkRefno = _formV1Service.SaveFormV5(frm.FormV5).Result.PkRefNo;
+                frm.FormV5 = _formV1Service.SaveFormV5(frm.FormV5).Result;
 
-                if (pkRefno == -2)
+                int pkRefno = frm.FormV5.PkRefNo;
+
+                if (pkRefno == -1)
                     refNo = "No Matching record found in FormV4";
                 else
                     refNo = pkRefno.ToString();
+
+
+                string Msg = "";
+                string Result = "Success";
+                if (pkRefno == -1)
+                {
+                    Msg = "No Matching record found in FormV4";
+                    Result = "Failed";
+                }
+
+                return Json(new
+                {
+                    RefId = frm.FormV5.RefId,
+                    PkRefNo = frm.FormV5.PkRefNo,
+                    Status = frm.FormV5.Status,
+                    FormExist = frm.FormV5.FormExist,
+                    Result = Result,
+                    Msg = Msg
+                });
+
             }
             else
             {
@@ -2182,9 +2208,8 @@ namespace RAMMS.Web.UI.Controllers
                     frm.FormV5.Status = "Saved";
                 refNo = Convert.ToString(await _formV1Service.UpdateFormV5(frm.FormV5));
             }
+
             return Json(refNo);
-
-
         }
 
         public async Task<IActionResult> SaveFormV5Dtl(FormV5Model frm)
@@ -2219,6 +2244,72 @@ namespace RAMMS.Web.UI.Controllers
             rowsAffected = _formV1Service.DeleteFormV5Dtl(id);
             return Json(rowsAffected);
         }
+
+        [HttpPost]
+        public IActionResult GetAttachment()
+        {
+            return PartialView("~/Views/MAM/FormV5/_Attachment.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ImageUploadFormV5(IList<IFormFile> formFile, string PkRefNo)
+        {
+            try
+            {
+                bool successFullyUploaded = false;
+                string wwwPath = this._webHostEnvironment.WebRootPath;
+                string contentPath = this._webHostEnvironment.ContentRootPath;
+                string _id = Regex.Replace(PkRefNo, @"[^0-9a-zA-Z]+", "");
+                string fileName = "";
+                int j = 0;
+                string fullpath = "";
+                string ext = "";
+
+
+                FormQa1AttachmentDTO _rmAssetImageDtl = new FormQa1AttachmentDTO();
+                foreach (IFormFile postedFile in formFile)
+                {
+                    List<FormQa1AttachmentDTO> uploadedFiles = new List<FormQa1AttachmentDTO>();
+
+
+                    string subPath = Path.Combine(@"Uploads/FormV5/", PkRefNo.ToString());
+                    string path = Path.Combine(wwwPath, Path.Combine(@"Uploads\FormV5\", PkRefNo.ToString()));
+
+                    ext = Path.GetExtension(postedFile.FileName);
+                    fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
+                    string fileRename = PkRefNo.ToString() + "_" + fileName + "_" + DateTime.Today.ToString("yymmddss") + ext;
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    using (FileStream stream = new FileStream(Path.Combine(path, fileRename), FileMode.Create))
+                    {
+
+                        fullpath = $"{subPath}/{fileRename}";
+                        postedFile.CopyTo(stream);
+                    }
+                    uploadedFiles.Add(_rmAssetImageDtl);
+                    if (uploadedFiles.Count() > 0)
+                    {
+                        successFullyUploaded = true;
+                    }
+                    else
+                    {
+                        successFullyUploaded = false;
+                    }
+
+                    j = j + 1;
+                }
+
+                return Json(new { status = successFullyUploaded, filename = fileName, filepath = fullpath, ext = ext });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
         #endregion
 
     }

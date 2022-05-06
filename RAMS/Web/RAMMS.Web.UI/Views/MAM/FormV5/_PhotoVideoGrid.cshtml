@@ -4,17 +4,15 @@
     <div id="content">
         <div class="w-100 position-relative in-tbl-btns custom-tbl">
             <div class="grid-btns">
-                <button type="button" id="btnWorkScheduleAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#WorkScheduleModal" title="Add New">
+                <button type="button" id="btnPhotoVideoModal" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#PhotoVideoModal" title="Add New">
                     <span class="intbl-add-icon"></span>
                 </button>
-                <button type="button" id="btnWorkSchedulePull" class="btn btn-sm btn-themebtn" title="Pull data from S1" onclick="PullS1Data()" >
-                    <span class="intbl-add-icon"></span>
-                </button>
+                
             </div>
-            <table id="WorkScheduleGridView" class="table w-100 nowrap">
+            <table id="PhotoVideoGridView" class="table w-100 nowrap">
             </table>
         </div>
-        @*<table id="WorkScheduleGridView" class="table w-100 nowrap">
+        @*<table id="PhotoVideoGridView" class="table w-100 nowrap">
             </table>*@
     </div>
 </div>
@@ -34,8 +32,8 @@
     var table_columns = [];
     var actionCol = {
         data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV1DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV1WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV1WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV1WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV5DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV5WorkSchedule(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV5WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV5WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV5WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV5WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
@@ -66,13 +64,13 @@
 
         if (table != null) {
             table.destroy();
-            $('#WorkScheduleGridView').empty();
+            $('#PhotoVideoGridView').empty();
         }
 
 
-        table =  $('#WorkScheduleGridView').DataTable({
+        table =  $('#PhotoVideoGridView').DataTable({
             ajax: {
-                url: "/MAM/GetWorkScheduleGridList?V1PkRefNo=" + $("#FormV1_PkRefNo").val(),
+                url: "/MAM/GetV5DtlGridList?V5PkRefNo=" + $("#FormV5_PkRefNo").val(),
                 type: "POST",
                 datatype: "json",
                 data: {
@@ -87,14 +85,6 @@
 
     $(document).ready(function () {
         InitializeGrid();
-        if ($("#ddlSource").val() == "S1") {
-            $("#btnWorkScheduleAdd").hide();
-            $("#btnWorkSchedulePull").show();
-        }
-        else if ($("#hdnView").val() != "1") {
-            $("#btnWorkScheduleAdd").show();
-            $("#btnWorkSchedulePull").hide();
-        }
-
+        
     });
 </script>
