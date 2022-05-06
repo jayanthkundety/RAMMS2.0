@@ -651,7 +651,7 @@ function EditFormV1WorkSchedule(obj, view) {
             $('#FormV1Dtl_FrmChDeci').attr("readonly", true);
             $('#FormV1Dtl_ToCh').attr("readonly", true);
             $('#FormV1Dtl_ToChDeci').attr("readonly", true);
-            $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
+         //   $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
 
         }
         else {

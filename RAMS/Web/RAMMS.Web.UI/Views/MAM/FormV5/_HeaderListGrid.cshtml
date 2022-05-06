@@ -25,7 +25,7 @@
         };
         var refNoCol = { data: "refId", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
         var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
-        var divisionCol = { data: "divCode", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
+        var divisionCol = { data: "division", name: "DivisionName", title: "Division", autoWidth: true, sortable: true };
         var actCodeCol = { data: "actCode", name: "actCode", title: "Activity Code", autoWidth: true, sortable: true };
         var secCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
         var crewCol = { data: "crewname", name: "Crew ID", title: "Crew Supervisor", autoWidth: true, sortable: true };
@@ -67,7 +67,7 @@
         table_columns.push(submitStsCol);
 
         function PrintForm(id) {
-            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
+            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormV5";
         }
 
         var filterData = new Object();

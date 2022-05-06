@@ -547,6 +547,18 @@ namespace RAMMS.Repository
                     query = query.Where(x => x.x.Fv3hActCode == filterOptions.Filters.ActivityCode);
                 }
 
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv3hDt.HasValue ? x.x.Fv3hDt >= dtFrom && x.x.Fv3hDt <= dtTo : false);
+                    }
+                }
+
+
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
                 {
                     DateTime dt;
@@ -678,6 +690,17 @@ namespace RAMMS.Repository
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
                     query = query.Where(x => x.x.Fv3hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv3hDt.HasValue ? x.x.Fv3hDt >= dtFrom && x.x.Fv3hDt <= dtTo : false);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
@@ -1007,6 +1030,17 @@ namespace RAMMS.Repository
                     query = query.Where(x => x.x.Fv4hActCode == filterOptions.Filters.ActivityCode);
                 }
 
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv4hDt.HasValue ? x.x.Fv4hDt >= dtFrom && x.x.Fv4hDt <= dtTo : false);
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
                 {
                     DateTime dt;
@@ -1138,6 +1172,17 @@ namespace RAMMS.Repository
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
                     query = query.Where(x => x.x.Fv4hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv4hDt.HasValue ? x.x.Fv4hDt >= dtFrom && x.x.Fv4hDt <= dtTo : false);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
@@ -1326,6 +1371,17 @@ namespace RAMMS.Repository
                     query = query.Where(x => x.x.Fv5hActCode == filterOptions.Filters.ActivityCode);
                 }
 
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv5hDt.HasValue ? x.x.Fv5hDt >= dtFrom && x.x.Fv5hDt <= dtTo : false);
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
                 {
                     DateTime dt;
@@ -1447,6 +1503,17 @@ namespace RAMMS.Repository
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ActivityCode))
                 {
                     query = query.Where(x => x.x.Fv5hActCode == filterOptions.Filters.ActivityCode);
+                }
+
+                if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && !string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
+                {
+                    DateTime dtFrom, dtTo;
+                    DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
+                    DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+
+                    {
+                        query = query.Where(x => x.x.Fv5hDt.HasValue ? x.x.Fv5hDt >= dtFrom && x.x.Fv5hDt <= dtTo : false);
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))

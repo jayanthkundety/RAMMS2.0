@@ -354,7 +354,7 @@ function Save(SubmitType) {
                     }
                     else {
                         EnableDisableElements(false);
-                        app.ShowErrorMessage(data, false);
+                        app.ShowErrorMessage(data.msg, false);
                     }
 
                 }
