@@ -2277,7 +2277,7 @@ namespace RAMMS.Web.UI.Controllers
 
                     ext = Path.GetExtension(postedFile.FileName);
                     fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
-                    string fileRename = PkRefNo.ToString() + "_" + fileName + "_" + DateTime.Today.ToString("yymmddss") + ext;
+                    string fileRename = PkRefNo.ToString() + "_" + fileName + "_" + DateTime.Now.ToString("yyMMddss") + ext;
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);

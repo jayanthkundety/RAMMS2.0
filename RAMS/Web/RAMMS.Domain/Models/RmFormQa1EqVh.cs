@@ -10,7 +10,7 @@ namespace RAMMS.Domain.Models
         public string Fqa1evType { get; set; }
         public string Fqa1evDesc { get; set; }
         public string Fqa1evPvNo { get; set; }
-        public decimal? Fqa1evCapacity { get; set; }
+        public string Fqa1evCapacity { get; set; }
         public int? Fqa1evUnit { get; set; }
         public string Fqa1evCondition { get; set; }
         public string Fqa1evRemark { get; set; }

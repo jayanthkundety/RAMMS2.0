@@ -125,9 +125,9 @@
                                                             <label for="Division_Code">Date </label>
                                                             @Html.EditorFor(m => m.FormV3.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
                                                         </div>
-                                                        <div class="col-2 form-group">
+                                                        <div class="col-4 form-group">
                                                             <label for="Division_Code">V1 Reference no </label>
-                                                            @Html.TextBoxFor(m => m.FormV3.FV1PKRefId, new { @readonly = "readonly", @class = "form-control", style = "width:300px;" })
+                                                            @Html.TextBoxFor(m => m.FormV3.FV1PKRefId, new { @readonly = "readonly", @class = "form-control",@width="300px" })
                                                         </div>
                                                     </div>
 

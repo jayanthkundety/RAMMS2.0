@@ -336,7 +336,7 @@
                                                                                 <label for="RoadCode">
                                                                                     File Name From
                                                                                 </label>
-                                                                                <input type="text" class="form-control" placeholder="" />
+
                                                                                 @Html.TextBoxFor(m => m.FormV5Dtl.FileNameFrm, new { @class = "form-control" })
                                                                             </div>
                                                                             <div class="col-3">
@@ -362,7 +362,7 @@
                                                                                 <div style="text-align:center">
                                                                                     <span id="spnfilename" style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">
                                                                                         @{
-                                                                                            <a class="warCaption" href="~/@Model.FormV5Dtl.ImageUserFilePath" target="_blank" title="Click here to View the Document">@Model.FormV5Dtl.ImageFilenameSys </a>
+                                                                                            <a class="warCaption" href="~/@Model.FormV5Dtl.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@Model.FormV5Dtl.ImageFilenameSys </a>
                                                                                         }
                                                                                     </span>
 
@@ -390,8 +390,8 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
-                                            <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Submit</button>
+                                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal" onclick="ClearFormV5Dtl()">Close</button>
+                                            <button type="button" class="btn btn-sm btn-themebtn" id="saveFormv5Btn" onclick="SaveFormV5Dtl()">save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -469,8 +469,13 @@
 
     @Html.HiddenFor(m => m.FormV5.SubmitSts)
 
+    @Html.HiddenFor(m => m.FormV5Dtl.ImageFilenameSys)
+    @Html.HiddenFor(m => m.FormV5Dtl.ImageFilenameUpload)
+    @Html.HiddenFor(m => m.FormV5Dtl.ImageUserFilePath)
+
     <input type="hidden" id="hdnSecCode" value="@Model.FormV5.SecCode" />
     <input type="hidden" id="hdnView" value="@Model.view" />
+
 
 
 }

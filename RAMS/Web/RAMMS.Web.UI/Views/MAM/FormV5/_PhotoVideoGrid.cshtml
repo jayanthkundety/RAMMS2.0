@@ -2,18 +2,17 @@
 
 <div class="main-container" id="container">
     <div id="content">
-        <div class="w-100 position-relative in-tbl-btns custom-tbl">
+        <div class="w-100 position-relative in-tbl-btns">
             <div class="grid-btns">
-                <button type="button" id="btnPhotoVideoModal" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#PhotoVideoModal" title="Add New">
+                <button type="button" id="btnPhotoVideoModal" class="btn btn-sm btn-themebtn" onclick="ClearFormV5Dtl()" data-toggle="modal" data-target="#PhotoVideoModal" title="Add New">
                     <span class="intbl-add-icon"></span>
                 </button>
-                
+
             </div>
             <table id="PhotoVideoGridView" class="table w-100 nowrap">
             </table>
         </div>
-        @*<table id="PhotoVideoGridView" class="table w-100 nowrap">
-            </table>*@
+
     </div>
 </div>
 
@@ -32,30 +31,22 @@
     var table_columns = [];
     var actionCol = {
         data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV5DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV5WorkSchedule(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV5WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV5WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteV5WorkSchedule(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#WorkScheduleModal' onclick='javascript:EditFormV5WorkSchedule(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV5DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV5Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV5Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
             return full["submitSts"] == true ? viewaction : actionSection;
         }
     };
-    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true,  sortable: true };
-    var roadNameCol = { data: "roadName", name: "RoadName", title: "Road Name", autoWidth: true, sortable: true };
-    var chainageCol = { data: "chainage", name: "Chainage", title: "Chainage Location", autoWidth: true, sortable: true };
-    var siteRefCol = { data: "siteRef", name: "SiteRef", title: "Site Reference", autoWidth: true, sortable: true };
-    var startTimeCol = { data: "startTime", name: "StartTime", title: "Schedule Time to Start", autoWidth: true, sortable: true };
-    var remarksCol = { data: "remarks", name: "Remarks", title: "Remarks", autoWidth: true, sortable: true };
+    var fileNameFrmCol = { data: "fileNameFrm", name: "FileNameFrm", title: "File Name From", autoWidth: true,  sortable: true };
+    var fileNameToCol = { data: "fileNameTo", name: "FileNameTo", title: "File Name To", autoWidth: true, sortable: true };
+    var descCol = { data: "desc", name: "Desc", title: "Description(If Any)", autoWidth: true, sortable: true };
+    var downloadCol = { data: null, name: "ImageFilenameSys", title: "Download", autoWidth: true, sortable: true, render: function (data, type, full) { return "<a href='../" + data.imageFilenameUpload + "' target='_blank'>" + data.imageFilenameSys +"</a>" } };
 
     table_columns.push(actionCol);
-    table_columns.push(roadCodeCol);
-    table_columns.push(roadNameCol);
-    table_columns.push(chainageCol);
-    table_columns.push(siteRefCol);
-    table_columns.push(startTimeCol);
-    table_columns.push(remarksCol);
+    table_columns.push(fileNameFrmCol);
+    table_columns.push(fileNameToCol);
+    table_columns.push(descCol);
+    table_columns.push(downloadCol);
 
-
-    function PrintForm(id) {
-        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
-    }
 
     var filterData = new Object();
     function InitializeGrid() {
@@ -85,6 +76,6 @@
 
     $(document).ready(function () {
         InitializeGrid();
-        
+
     });
 </script>

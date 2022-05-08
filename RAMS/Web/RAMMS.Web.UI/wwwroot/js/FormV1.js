@@ -52,6 +52,8 @@ $(document).ready(function () {
         $("#btnWorkScheduleAdd").hide();
         $("#btnWorkSchedulePull").hide();
         $('#FormV1_Remarks').attr("readonly", "true");
+        $("#saveFormV1Btn").hide();
+        $("#SubmitFormV1Btn").hide();
     }
 
 
