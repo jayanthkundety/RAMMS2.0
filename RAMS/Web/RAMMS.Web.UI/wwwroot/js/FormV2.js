@@ -100,7 +100,7 @@ $(document).ready(function () {
             }
         });
     });
-    debugger;
+    
     if (val != 0 && val != undefined && val != "") {
         gridAddBtnDis()
         $("#formV2rmu").trigger("change");
@@ -639,7 +639,7 @@ function saveHdr(isSubmit) {
 
         if ($("#formV2RecordedDate").val() != "mm/dd/yyyy") saveObj.DtSch = $("#formV2RecordedDate").val();
 
-        saveObj.SignSch = $("formV2SignRecorded").prop("checked");
+        saveObj.SignSch = $("#formV2SignRecorded").prop("checked");
 
         //Vetted By
         if ($("#formV2VettedBy").find(":selected").val() != "") saveObj.UseridAgr = $("#formV2VettedBy").find(":selected").val();
@@ -662,7 +662,7 @@ function saveHdr(isSubmit) {
 
         if ($("#formV2FacilitatedDate").val() != "mm/dd/yyyy") saveObj.DtAck = $("#formV2FacilitatedDate").val();
 
-        saveObj.SignAck = $("formV2SignFacilitated").prop("checked");
+        saveObj.SignAck = $("#formV2SignFacilitated").prop("checked");
 
         //Created by
 
