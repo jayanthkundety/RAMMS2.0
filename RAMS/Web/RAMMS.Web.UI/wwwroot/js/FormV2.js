@@ -100,7 +100,7 @@ $(document).ready(function () {
             }
         });
     });
-
+    debugger;
     if (val != 0 && val != undefined && val != "") {
         gridAddBtnDis()
         $("#formV2rmu").trigger("change");

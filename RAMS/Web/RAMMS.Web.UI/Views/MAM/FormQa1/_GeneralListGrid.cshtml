@@ -2,7 +2,7 @@
 <div id="content">
     <div class="w-100 position-relative in-tbl-btns custom-tbl">
         <div class="w-100 position-relative in-tbl-btns custom-tbl">
-            @if (security.IsPCModify(ModuleNameList.Management_and_Maintanence))
+            @if (security.IsPCModify(ModuleNameList.Routine_Maintanance_Work))
             {
                 <div class="grid-btns">
                     <button type="button" id="btnGenAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-target="#FormAddGeneral" onclick="javascript:EditFormQa1Gen(0);"><span class="intbl-add-icon"></span></button>
@@ -20,7 +20,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : "hidden";
     var Gentable_columns = [];
     var Gentable = null;
     var GenactionCol = {
@@ -35,8 +35,7 @@
             }
         }
     };
-    //var EqrefNoCol = { data: "serialNo", name: "EqsNo", title: "S No", autoWidth: true, width: 20, sortable: false };
-    var GenItemCol = { data: "item", name: "GenItem", title: "Item", autoWidth: true, width: 60, sortable: false };
+    var GenItemCol = { data: "item", name: "GenItem", title: "Item", autoWidth: true, sortable: false };
     var GenAttnCol = { data: "attTo", name: "GenAttTo", title: "Attention to", autoWidth: true, sortable: false };
     var GenRemarkCol = { data: "attRemarks", name: "GenRemark", title: "Comment & Remark", autoWidth: true, sortable: false };
 
@@ -79,6 +78,6 @@
         GenInitializeGrid();
         IsView = $("#hdnView").val();
         goTable = $('#FormQa1GenGridView').DataTable();
-        
+        goTable.columns.adjust().draw();
     });
 </script>

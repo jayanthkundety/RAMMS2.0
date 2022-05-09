@@ -28,7 +28,7 @@
                     var vd = Model.SaveFormQa1Model.DtAssgn;
                     string _DtAssg = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                 }
-                <input type="date" class="datepicker form-control svalidate {required, Assigned by date}" id="formQa1AssignedDate" value="@_DtAssg" />
+                <input type="date" class="datepicker form-control svalidate {required, Assigned by date}" id="formQa1AssignedDate" value="@_DtAssg"  disabled />
             </div>
             <div class="form-group col-lg-3 float-left">
                 @Html.Label("Initial", "Initial")
@@ -69,7 +69,7 @@
                     vd = Model.SaveFormQa1Model.DtExec;
                     string _DtExec = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                 }
-                <input type="date" class="datepicker form-control ssvalidate {required, Executed by date}" id="formQa1ExecutedDate" value="@_DtExec" />
+                <input type="date" class="datepicker form-control ssvalidate {required, Executed by date}" id="formQa1ExecutedDate" value="@_DtExec"  disabled />
             </div>
             <div class="form-group col-lg-3 float-left">
                 @Html.Label("Initial", "Initial")
@@ -110,7 +110,7 @@
                     vd = Model.SaveFormQa1Model.DtChked;
                     string _DtChk = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
                 }
-                <input type="date" class="datepicker form-control asvalidate {required, Checked by date}" id="formQa1CheckedDate" value="@_DtChk" />
+                <input type="date" class="datepicker form-control asvalidate {required, Checked by date}" id="formQa1CheckedDate" value="@_DtChk" disabled />
             </div>
             <div class="form-group col-lg-3 float-left">
                 @Html.Label("Initial", "Initial")

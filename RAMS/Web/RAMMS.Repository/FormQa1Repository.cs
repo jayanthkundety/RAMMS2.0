@@ -404,11 +404,11 @@ namespace RAMMS.Repository
             }
         }
 
-        public int? DeleteEquipment(int id)
+        public async Task<int?> DeleteEquipment(int id)
         {
             try
             {
-                var res = _context.Set<RmFormQa1EqVh>().FindAsync(id);
+                var res = await _context.Set<RmFormQa1EqVh>().FindAsync(id);
                 _context.Remove(res);
                 _context.SaveChanges();
                 return 1;
@@ -460,11 +460,11 @@ namespace RAMMS.Repository
             }
         }
 
-        public int? DeleteMaterial(int id)
+        public async Task<int?> DeleteMaterial(int id)
         {
             try
             {
-                var res = _context.Set<RmFormQa1Mat>().FindAsync(id);
+                var res = await _context.Set<RmFormQa1Mat>().FindAsync(id);
                 _context.Remove(res);
                 _context.SaveChanges();
                 return 1;
@@ -517,11 +517,11 @@ namespace RAMMS.Repository
             }
         }
 
-        public int? DeleteGeneral(int id)
+        public async  Task<int?> DeleteGeneral(int id)
         {
             try
             {
-                var res = _context.Set<RmFormQa1Gen>().FindAsync(id);
+                var res = await _context.Set<RmFormQa1Gen>().FindAsync(id);
                 _context.Remove(res);
                 _context.SaveChanges();
                 return 1;

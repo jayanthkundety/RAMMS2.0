@@ -1,8 +1,8 @@
 ﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 <div class="main-container" id="container">
     <div id="content">
-        <div class="w-100 position-relative in-tbl-btns custom-tbl">
-            @if (security.IsPCModify(ModuleNameList.Emergency_Response_Team))
+        <div class="w-100 position-relative in-tbl-btns">
+            @if (security.IsPCModify(ModuleNameList.Routine_Maintanance_Work))
             {
                 <div class="grid-btns">
                     <button type="button" id="btnMaterialAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormV2MaterialModal" onclick="javascript:EditFormV2Material(0);"><span class="intbl-add-icon"></span></button>
@@ -20,7 +20,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Emergency_Response_Team).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : "hidden";
     var mtable_columns = [];
     var Mtable = null;
     var mactionCol = {

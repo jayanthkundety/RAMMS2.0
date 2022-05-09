@@ -3,6 +3,32 @@ $(document).ready(function () {
     currentDate = formatDate(currentDate);
     var val = $("#formQa1PkRefNo").val();
 
+    $('.allow_numeric').keypress(function (event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+            ((event.which < 48 || event.which > 57) &&
+                (event.which != 0 && event.which != 8))) {
+            event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') == -1)) {
+            setTimeout(function () {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+
+        if ((text.indexOf('.') != -1) &&
+            (text.substring(text.indexOf('.')).length > 3) &&
+            (event.which != 0 && event.which != 8) &&
+            ($(this)[0].selectionStart >= text.length - 3)) {
+            event.preventDefault();
+        }
+    });
+
+
     if (val != 0 && val != undefined && val != "") {
         gridAddBtnDis()
         $("#btnFindDetails").hide();
@@ -20,6 +46,13 @@ $(document).ready(function () {
     if ($("#hdnView").val() == "1") {
         $("#saveFormQa1Btn").hide();
         $("#SubmitFormQa1Btn").hide();
+        $("#formQa1AssignedDate").attr("disabled", "true");
+        $("#formQa1ExecutedDate").attr("disabled", "true");
+        $("#formQa1CheckedDate").attr("disabled", "true");
+
+        $("#formQa1SignAssg").attr("disabled", "true");
+        $("#formQa1SignExe").attr("disabled", "true");
+        $("#formQa1SignChck").attr("disabled", "true");
 
         $("#div-addformd *:not(.enblmode)").attr("disabled", "disabled").off('click');
         $("#formQa1rmu").chosen('destroy');
@@ -384,7 +417,13 @@ $(document).on("click", "#btnFindDetails", function () {
         InitAjaxLoading();
         GetResponseValue("FindDetails", "FormQa1", FormValueCollection("#FormQa1Headers"), function (data) {
             HideAjaxLoading();
-            if (data != undefined && data != null && data.PkRefNo == 0) {
+
+            if (data != undefined && data != null && data.PkRefNo > 0) {
+
+                if (data.isExist) {
+                    location.href = './EditFormQa1?id=' + data.PkRefNo;
+                    return;
+                }
                 $("#btnFindDetails").hide();
                 $("#saveFormQa1Btn").show();
                 $("#SubmitFormQa1Btn").show();
@@ -397,11 +436,192 @@ $(document).on("click", "#btnFindDetails", function () {
                 $("#formQa1TesPkRefNo").val(data.Tes.PkRefNo)
             }
             else {
-                app.ShowInfoMessage("Form Already exist");
+                app.ShowErrorMessage("Unable to fetch Form QA1");
             }
         }, "Finding");
     }
 });
+
+$(document).on("click", "#formQa1GcWhs", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1GcWis").prop("checked", false);
+    $("#formQa1GcWius").prop("checked", false);
+    $("#formQa1GcWiusMat").prop("checked", false);
+    $("#formQa1GcWiusEqp").prop("checked", false);
+    $("#formQa1GcWiusWrk").prop("checked", false);
+
+    clearGcRemarks();
+    
+    $("#divWhsRemark *").attr("disabled", false);
+    $("#divWisRemark *").attr("disabled", true);
+    $("#divWiusMatRemark *").attr("disabled", true);
+    $("#divWiusEqpRemark *").attr("disabled", true);
+    $("#divWiusWrkRemark *").attr("disabled", true);
+    $("#formQa1WhsRemark").focus();
+    return true;
+});
+
+$(document).on("click", "#formQa1GcWis", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1GcWhs").prop("checked", false);
+    $("#formQa1GcWius").prop("checked", false);
+    $("#formQa1GcWiusMat").prop("checked", false);
+    $("#formQa1GcWiusEqp").prop("checked", false);
+    $("#formQa1GcWiusWrk").prop("checked", false);
+    clearGcRemarks();   
+    $("#divWisRemark *").attr("disabled", false);
+    $("#divWhsRemark *").attr("disabled", true);
+    $("#divWiusMatRemark *").attr("disabled", true);
+    $("#divWiusEqpRemark *").attr("disabled", true);
+    $("#divWiusWrkRemark *").attr("disabled", true);
+    $("#formQa1WisRemark").focus();
+    return true;
+});
+
+$(document).on("click", "#formQa1GcWius", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1GcWhs").prop("checked", false);
+    $("#formQa1GcWis").prop("checked", false);
+    $("#formQa1GcWiusMat").prop("checked", true);
+    $("#formQa1GcWiusEqp").prop("checked", false);
+    $("#formQa1GcWiusWrk").prop("checked", false);
+    clearGcRemarks();
+    $("#divWisRemark *").attr("disabled", true);
+    $("#divWhsRemark *").attr("disabled", true);
+    $("#divWiusMatRemark *").attr("disabled", false);
+    $("#divWiusEqpRemark *").attr("disabled", true);
+    $("#divWiusWrkRemark *").attr("disabled", true);
+    $("#formQa1WiusMatRemark").focus();
+    return true;
+});
+
+$(document).on("click", "#formQa1GcWiusMat", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1GcWiusEqp").prop("checked", false);
+    $("#formQa1GcWiusWrk").prop("checked", false);
+
+    if (!$("#formQa1GcWius").prop("checked"))
+        $("#formQa1GcWius").prop("checked", true);
+
+    $("#formQa1GcWhs").prop("checked", false);
+    $("#formQa1GcWis").prop("checked", false);
+    clearGcRemarks();
+    
+    $("#divWisRemark *").attr("disabled", true);
+    $("#divWhsRemark *").attr("disabled", true);
+    $("#divWiusMatRemark *").attr("disabled", false);
+    $("#divWiusEqpRemark *").attr("disabled", true);
+    $("#divWiusWrkRemark *").attr("disabled", true);
+    $("#formQa1WiusMatRemark").focus();
+    return true;
+});
+
+$(document).on("click", "#formQa1GcWiusEqp", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1GcWiusMat").prop("checked", false);
+    $("#formQa1GcWiusWrk").prop("checked", false);
+
+    if (!$("#formQa1GcWius").prop("checked"))
+        $("#formQa1GcWius").prop("checked", true);
+
+    $("#formQa1GcWhs").prop("checked", false);
+    $("#formQa1GcWis").prop("checked", false);
+    clearGcRemarks();
+    
+    $("#divWisRemark *").attr("disabled", true);
+    $("#divWhsRemark *").attr("disabled", true);
+    $("#divWiusMatRemark *").attr("disabled", true);
+    $("#divWiusEqpRemark *").attr("disabled", false);
+    $("#divWiusWrkRemark *").attr("disabled", true);
+    $("#formQa1WiusEqpRemark").focus();
+    return true;
+});
+
+$(document).on("click", "#formQa1GcWiusWrk", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1GcWiusMat").prop("checked", false);
+    $("#formQa1GcWiusEqp").prop("checked", false);
+
+    if (!$("#formQa1GcWius").prop("checked"))
+        $("#formQa1GcWius").prop("checked", true);
+
+    $("#formQa1GcWhs").prop("checked", false);
+    $("#formQa1GcWis").prop("checked", false);
+    clearGcRemarks();
+    
+    $("#divWisRemark *").attr("disabled", true);
+    $("#divWhsRemark *").attr("disabled", true);
+    $("#divWiusMatRemark *").attr("disabled", true);
+    $("#divWiusEqpRemark *").attr("disabled", true);
+    $("#divWiusWrkRemark *").attr("disabled", false);
+    $("#formQa1WiusWrkRemark").focus();
+    return true;
+});
+
+$(document).on("click", "#formQa1FlushType", function () {
+    if ($(this).prop("checked"))
+        $("#formQa1FlFlush").focus();
+});
+
+$(document).on("click", "#formQa1FlThType", function () {
+    if ($(this).prop("checked"))
+        $("#formQa1FlTh").focus();
+});
+
+$(document).on("click", "#formQa1FlTlType", function () {
+    if ($(this).prop("checked"))
+        $("#formQa1FlTl").focus();
+});
+
+$(document).on("click", "#formQa1JnType", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1JiType").prop("checked", false);
+    $("#formQa1JiRemark").attr("disabled", true);
+    $("#formQa1JnRemark").attr("disabled", false);
+    return true;
+});
+
+$(document).on("click", "#formQa1JiType", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1JnType").prop("checked", false);
+    $("#formQa1JnRemark").attr("disabled", true);
+    $("#formQa1JiRemark").attr("disabled", false);
+    return true;
+});
+
+$(document).on("click", "#formQa1SrevType", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1SruevType").prop("checked", false);
+    $("#formQa1SrprType").prop("checked", false);
+
+    $("#formQa1SrEvenRemark").attr("disabled", false);
+    $("#formQa1SrUnEvenRemark").attr("disabled", true);
+    $("#formQa1SrPrRemark").attr("disabled", true);
+    return true;
+});
+
+$(document).on("click", "#formQa1SruevType", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1SrevType").prop("checked", false);
+    $("#formQa1SrprType").prop("checked", false);
+
+    $("#formQa1SrEvenRemark").attr("disabled", true);
+    $("#formQa1SrUnEvenRemark").attr("disabled", false);
+    $("#formQa1SrPrRemark").attr("disabled", true);
+    return true;
+});
+
+$(document).on("click", "#formQa1SrprType", function () {
+    if (!$(this).prop("checked")) return false;
+    $("#formQa1SruevType").prop("checked", false);
+    $("#formQa1SrevType").prop("checked", false);
+
+    $("#formQa1SrEvenRemark").attr("disabled", true);
+    $("#formQa1SrUnEvenRemark").attr("disabled", true);
+    $("#formQa1SrPrRemark").attr("disabled", false);
+    return true;
+});
+
 
 Date.prototype.getWeek = function () {
     var target = new Date(this.valueOf());
@@ -576,7 +796,10 @@ function EditFormQa1Gen(id, view) {
                 $("#saveFormQa1GenBtn").css("display", "none");
                 $("#cancelFormQa1GenBtn").attr("disabled", false);
                 $("#saveContinueFormQa1GenBtn").css("display", "none");
-            } else if ($("#hdnGenId").val() != "") {
+            }
+            else if ($("#hdnGenId").val() == "0")
+                $("#FormQa1EquipModalid").html("Add Attention");
+            else if ($("#hdnGenId").val() != "") {
                 $("#FormQa1GenModalid").html("Edit Attention")
             }
             HideAjaxLoading();
@@ -600,6 +823,8 @@ function EditFormQa1Equip(id, view) {
                 $("#cancelFormQa1EqBtn").attr("disabled", false);
                 $("#saveContinueFormQa1EqBtn").css("display", "none");
             }
+            else if ($("#hdnEquipid").val() == "0")
+                $("#FormQa1EquipModalid").html("Add Equipment & Vehicles");
             else if ($("#hdnEquipid").val() != "")
                 $("#FormQa1EquipModalid").html("Edit Equipment & Vehicles");
             HideAjaxLoading();
@@ -622,11 +847,86 @@ function EditFormQa1Material(id, view) {
                 $("#saveFormQa1MtBtn").css("display", "none");
                 $("#cancelFormQa1MtBtn").attr("disabled", false);
                 $("#saveContinueFormQa1MtBtn").css("display", "none");
-            } else if ($("#hdnMaterialNo").val() != "")
+            }
+            else if ($("#hdnMaterialNo").val() == "0")
+                $("#FormQa1MaterialModalid").html("Add Material")
+            else if ($("#hdnMaterialNo").val() != "")
                 $("#FormQa1MaterialModalid").html("Edit Material")
             HideAjaxLoading();
         }
     })
+}
+
+function DeleteFormQa1MaterialRecord(pKRefNo) {
+    if ($("#hdnView").val() == "1") return;
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            InitAjaxLoading();
+            $.ajax({
+                url: '/FormQA1/DeleteMaterial',
+                data: { pKRefNo },
+                type: 'POST',
+                success: function (data) {
+                    if (data.ret.result > 0) {
+                        app.ShowSuccessMessage('Successfully Deleted', false);
+                        FormMatGridRefresh();
+                    }
+                    else {
+                        app.ShowErrorMessage("Error in Deleted. Kindly retry later.");
+                    }
+                    HideAjaxLoading();
+                }
+            });
+        }
+    }));
+}
+
+function DeleteFormQa1GenRecord(pKRefNo) {
+    if ($("#hdnView").val() == "1") return;
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            InitAjaxLoading();
+            $.ajax({
+                url: '/FormQA1/DeleteGeneral',
+                data: { pKRefNo },
+                type: 'POST',
+                success: function (data) {
+                    if (data.ret.result > 0) {
+                        app.ShowSuccessMessage('Successfully Deleted', false);
+                        FormGenGridRefresh();
+                    }
+                    else {
+                        app.ShowErrorMessage("Error in Deleted. Kindly retry later.");
+                    }
+                    HideAjaxLoading();
+                }
+            });
+        }
+    }));
+}
+
+function DeleteFormQa1EquipmentRecord(pKRefNo) {
+    if ($("#hdnView").val() == "1") return;
+    if (app.Confirm("Are you sure you want to delete the record?", function (e) {
+        if (e) {
+            InitAjaxLoading();
+            $.ajax({
+                url: '/FormQA1/DeleteEquipment',
+                data: { pKRefNo },
+                type: 'POST',
+                success: function (data) {
+                    if (data.ret.result > 0) {
+                        app.ShowSuccessMessage('Successfully Deleted', false);
+                        FormEquipGridRefresh();
+                    }
+                    else {
+                        app.ShowErrorMessage("Error in Deleted. Kindly retry later.");
+                    }
+                    HideAjaxLoading();
+                }
+            });
+        }
+    }));
 }
 
 //SAVE EQUIP
@@ -704,9 +1004,8 @@ function saveEquipment(isSubmit, cont) {
                     $("#formQa1EquipDesc").val("");
                     $("#formQa1EquipPVNo").val("");
                     $("#formQa1EquipCapacity").val("");
-                    $("#formQa1EquipCondition").val("");
                     $("#formQa1EqpRemark").val("");
-                    $("#formDEquipUnit").val("").trigger('chosen:updated');
+                    $("#formQa1EquipCondition").val("").trigger('chosen:updated');
                 }
                 HideAjaxLoading();
                 FormEquipGridRefresh();
@@ -836,7 +1135,14 @@ function saveHeader(submitsts) {
 
     if (submitsts) {
         $(".svalidate").addClass("validate");
+        AddGCValidate();
+        AddWCQValidate()
     }
+    else {
+        $(".svalidate").removeClass("validate");
+    }
+
+
     if (ValidatePage('#divFormQA1')) {
         InitAjaxLoading();
         var d = new Date();
@@ -1231,4 +1537,338 @@ function GetAttachment() {
     });
 
     return true;
+}
+
+//Validate General Comments
+
+function AddGCValidate() {
+    var isChecked = false;
+    if ($("#formQa1GcWhs").prop("checked")) {
+        isChecked = true;
+        $("#formQa1GcWhs").addClass("validate")
+        $("#formQa1WhsRemark").addClass("validate")
+        $("#formQa1WhsReason").addClass("validate")
+    } else {
+        $("#formQa1GcWhs").removeClass("validate")
+        $("#formQa1WhsRemark").removeClass("validate")
+        $("#formQa1WhsReason").removeClass("validate")
+
+        $("#formQa1GcWhs").removeClass("border-error")
+        $("#formQa1WhsRemark").removeClass("border-error")
+        $("#formQa1WhsReason").removeClass("border-error")
+    }
+
+
+    if ($("#formQa1GcWis").prop("checked")) {
+        isChecked = true;
+        $("#formQa1GcWis").addClass("validate");
+        $("#formQa1WisRemark").addClass("validate");
+        $("#formQa1WisReason").addClass("validate");
+    }
+    else {
+        $("#formQa1GcWis").removeClass("validate");
+        $("#formQa1WisRemark").removeClass("validate");
+        $("#formQa1WisReason").removeClass("validate");
+
+        $("#formQa1GcWis").removeClass("border-error");
+        $("#formQa1WisRemark").removeClass("border-error");
+        $("#formQa1WisReason").removeClass("border-error");
+    }
+
+    if ($("#formQa1GcWius").prop("checked")) {
+        isChecked = true;
+
+    }
+
+    if ($("#formQa1GcWiusMat").prop("checked")) {
+        isChecked = true;
+        $("#formQa1GcWiusMat").addClass("validate");
+        $("#formQa1WiusMatRemark").addClass("validate");
+        $("#formQa1WiusMatReason").addClass("validate");
+    }
+    else {
+        $("#formQa1GcWius").removeClass("validate");
+        $("#formQa1GcWiusMat").removeClass("validate");
+        $("#formQa1WiusMatRemark").removeClass("validate");
+        $("#formQa1WiusMatReason").removeClass("validate");
+
+        $("#formQa1GcWius").removeClass("border-error");
+        $("#formQa1GcWiusMat").removeClass("border-error");
+        $("#formQa1WiusMatRemark").removeClass("border-error");
+        $("#formQa1WiusMatReason").removeClass("border-error");
+    }
+
+    if ($("#formQa1GcWiusEqp").prop("checked")) {
+        isChecked = true;
+        $("#formQa1GcWiusEqp").addClass("validate");
+        $("#formQa1WiusEqpRemark").addClass("validate");
+        $("#formQa1WiusEqpReason").addClass("validate");
+    } else {
+        $("#formQa1GcWius").removeClass("validate");
+        $("#formQa1GcWiusEqp").removeClass("validate");
+        $("#formQa1WiusEqpRemark").removeClass("validate");
+        $("#formQa1WiusEqpReason").removeClass("validate");
+
+        $("#formQa1GcWius").removeClass("border-error");
+        $("#formQa1GcWiusEqp").removeClass("border-error");
+        $("#formQa1WiusEqpRemark").removeClass("border-error");
+        $("#formQa1WiusEqpReason").removeClass("border-error");
+
+    }
+
+    if ($("#formQa1GcWiusWrk").prop("checked")) {
+        isChecked = true;
+        $("#formQa1GcWiusWrk").addClass("validate");
+        $("#formQa1WiusWrkRemark").addClass("validate");
+        $("#formQa1WiusWrkReason").addClass("validate");
+    } else {
+        $("#formQa1GcWius").removeClass("validate");
+        $("#formQa1GcWiusWrk").removeClass("validate");
+        $("#formQa1WiusWrkRemark").removeClass("validate");
+        $("#formQa1WiusWrkReason").removeClass("validate");
+
+        $("#formQa1GcWius").removeClass("border-error");
+        $("#formQa1GcWiusWrk").removeClass("border-error");
+        $("#formQa1WiusWrkRemark").removeClass("border-error");
+        $("#formQa1WiusWrkReason").removeClass("border-error");
+    }
+
+    if (!isChecked) {
+        addGCValidateClass();
+    }
+
+}
+
+
+function addGCValidateClass() {
+    $("#formQa1GcWhs").addClass("validate")
+    $("#formQa1WhsRemark").addClass("validate")
+    $("#formQa1WhsReason").addClass("validate")
+
+    $("#formQa1GcWis").addClass("validate");
+    $("#formQa1WisRemark").addClass("validate");
+    $("#formQa1WisReason").addClass("validate");
+
+    $("#formQa1GcWius").addClass("validate");
+
+    $("#formQa1GcWiusMat").addClass("validate");
+    $("#formQa1WiusMatRemark").addClass("validate");
+    $("#formQa1WiusMatReason").addClass("validate");
+
+    $("#formQa1GcWiusEqp").addClass("validate");
+    $("#formQa1WiusEqpRemark").addClass("validate");
+    $("#formQa1WiusEqpReason").addClass("validate");
+
+    $("#formQa1GcWiusWrk").addClass("validate");
+    $("#formQa1WiusWrkRemark").addClass("validate");
+    $("#formQa1WiusWrkReason").addClass("validate");
+}
+
+function AddWCQValidate() {
+    var isChecked = false;
+
+    if ($("#formQa1FlushType").prop("checked")) {
+        isChecked = true;
+        $("#formQa1FlushType").addClass("validate");
+        $("#formQa1FlFlush").addClass("validate");
+        $("#formQa1FlFlushRemark").addClass("validate");
+    } else {
+        $("#formQa1FlushType").removeClass("validate");
+        $("#formQa1FlFlush").removeClass("validate");
+        $("#formQa1FlFlushRemark").removeClass("validate");
+        $("#formQa1FlFlush").removeClass("border-error");
+        $("#formQa1FlFlushRemark").removeClass("border-error");
+    }
+
+    if ($("#formQa1FlThType").prop("checked")) {
+        isChecked = true;
+        $("#formQa1FlThType").addClass("validate");
+        $("#formQa1FlTh").addClass("validate");
+        $("#formQa1FlThRemark").addClass("validate");
+    }
+    else {
+        $("#formQa1FlThType").removeClass("validate");
+        $("#formQa1FlTh").removeClass("validate");
+        $("#formQa1FlThRemark").removeClass("validate");
+
+        $("#formQa1FlThType").removeClass("border-error");
+        $("#formQa1FlTh").removeClass("border-error");
+        $("#formQa1FlThRemark").removeClass("border-error");
+
+    }
+
+    if ($("#formQa1FlTlType").prop("checked")) {
+        isChecked = true;
+        $("#formQa1FlTlType").addClass("validate");
+        $("#formQa1FlTl").addClass("validate");
+        $("#formQa1FlTlRemark").addClass("validate");
+    } else {
+        $("#formQa1FlTlType").removeClass("validate");
+        $("#formQa1FlTl").removeClass("validate");
+        $("#formQa1FlTlRemark").removeClass("validate");
+
+        $("#formQa1FlTlType").removeClass("border-error");
+        $("#formQa1FlTl").removeClass("border-error");
+        $("#formQa1FlTlRemark").removeClass("border-error");
+    }
+
+    if ($("#formQa1FlScType").prop("checked")) {
+        isChecked = true;
+        $("#formQa1FlScType").addClass("validate");
+        $("#formQa1FlScRemark").addClass("validate");
+    } else {
+        $("#formQa1FlScType").removeClass("validate");
+        $("#formQa1FlScRemark").removeClass("validate");
+
+        $("#formQa1FlScType").removeClass("border-error");
+        $("#formQa1FlScRemark").removeClass("border-error");
+    }
+
+    if ($("#formQa1FlUcType").prop("checked")) {
+        isChecked = true;
+        $("#formQa1FlUcType").addClass("validate");
+        $("#formQa1FlUcRemark").addClass("validate");
+    } else {
+        $("#formQa1FlUcType").removeClass("validate");
+        $("#formQa1FlUcRemark").removeClass("validate");
+
+        $("#formQa1FlUcType").removeClass("border-error");
+        $("#formQa1FlUcRemark").removeClass("border-error");
+    }
+
+    var jnChecked = false;
+    if ($("#formQa1JnType").prop("checked")) {
+        jnChecked = true;
+        $("#formQa1JnType").addClass("validate");
+        $("#formQa1JnRemark").addClass("validate");
+    } else {
+        $("#formQa1JnType").removeClass("validate");
+        $("#formQa1JnRemark").removeClass("validate");
+
+        $("#formQa1JnType").removeClass("border-error");
+        $("#formQa1JnRemark").removeClass("border-error");
+    }
+
+    if ($("#formQa1JiType").prop("checked")) {
+        jnChecked = true;
+        $("#formQa1JiType").addClass("validate");
+        $("#formQa1JiRemark").addClass("validate");
+    }
+    else {
+        $("#formQa1JiType").removeClass("validate");
+        $("#formQa1JiRemark").removeClass("validate");
+
+        $("#formQa1JiType").removeClass("border-error");
+        $("#formQa1JiRemark").removeClass("border-error");
+    }
+
+
+    var srChecked = false;
+    if ($("#formQa1SrevType").prop("checked")) {
+        srChecked = true;
+        $("#formQa1SrevType").addClass("validate");
+        $("#formQa1SrEvenRemark").addClass("validate");
+    }
+    else {
+        $("#formQa1SrevType").removeClass("validate");
+        $("#formQa1SrEvenRemark").removeClass("validate");
+
+        $("#formQa1SrevType").removeClass("border-error");
+        $("#formQa1SrEvenRemark").removeClass("border-error");
+    }
+
+    if ($("#formQa1SruevType").prop("checked")) {
+        srChecked = true;
+        $("#formQa1SruevType").addClass("validate");
+        $("#formQa1SrUnEvenRemark").addClass("validate");
+    } else {
+        $("#formQa1SruevType").removeClass("validate");
+        $("#formQa1SrUnEvenRemark").removeClass("validate");
+
+        $("#formQa1SruevType").removeClass("border-error");
+        $("#formQa1SrUnEvenRemark").removeClass("border-error");
+    }
+
+    if ($("#formQa1SrprType").prop("checked")) {
+        srChecked = true;
+        $("#formQa1SrprType").addClass("validate");
+        $("#formQa1SrPrRemark").addClass("validate");
+    } else {
+        $("#formQa1SrprType").removeClass("validate");
+        $("#formQa1SrPrRemark").removeClass("validate");
+
+        $("#formQa1SrprType").removeClass("border-error");
+        $("#formQa1SrPrRemark").removeClass("border-error");
+    }
+
+    if (!isChecked) {
+        addWCQValidateClass();
+    }
+
+    if (!jnChecked) {
+        addWCQJointingClass();
+    }
+
+
+    if (!srChecked) {
+        addWCQSurfaceReg();
+    }
+
+
+}
+
+function addWCQValidateClass() {
+    $("#formQa1FlushType").addClass("validate");
+    $("#formQa1FlFlush").addClass("validate");
+    $("#formQa1FlFlushRemark").addClass("validate");
+
+    $("#formQa1FlThType").addClass("validate");
+    $("#formQa1FlTh").addClass("validate");
+    $("#formQa1FlThRemark").addClass("validate");
+
+    $("#formQa1FlTlType").addClass("validate");
+    $("#formQa1FlTl").addClass("validate");
+    $("#formQa1FlTlRemark").addClass("validate");
+
+    $("#formQa1FlScType").addClass("validate");
+    $("#formQa1FlScRemark").addClass("validate");
+
+    $("#formQa1FlUcType").addClass("validate");
+    $("#formQa1FlUcRemark").addClass("validate");
+}
+
+function addWCQJointingClass() {
+    $("#formQa1JnType").addClass("validate");
+    $("#formQa1JnRemark").addClass("validate");
+
+    $("#formQa1JiType").addClass("validate");
+    $("#formQa1JiRemark").addClass("validate");
+}
+
+function addWCQSurfaceReg() {
+    $("#formQa1SrevType").addClass("validate");
+    $("#formQa1SrEvenRemark").addClass("validate");
+
+    $("#formQa1SruevType").addClass("validate");
+    $("#formQa1SrUnEvenRemark").addClass("validate");
+
+    $("#formQa1SrprType").addClass("validate");
+    $("#formQa1SrPrRemark").addClass("validate");
+}
+
+function clearGcRemarks() {
+    $("#formQa1WhsRemark").val("");
+    $("#formQa1WhsReason").val("");
+    $("#formQa1WisRemark").val("");
+    $("#formQa1WisReason").val("");
+
+    $("#formQa1WiusMatRemark").val("");
+    $("#formQa1WiusMatReason").val("");
+
+    $("#formQa1WiusEqpRemark").val("");
+    $("#formQa1WiusEqpReason").val("");
+
+    $("#formQa1WiusWrkRemark").val("");
+    $("#formQa1WiusWrkReason").val("");
+
 }

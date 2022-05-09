@@ -39,15 +39,15 @@ namespace RAMMS.Repository.Interfaces
 
         int? SaveMaterial(RmFormQa1Mat formQa1Mat);
 
-        int? DeleteMaterial(int id);
+        Task<int?> DeleteMaterial(int id);
 
         int? SaveGeneral(RmFormQa1Gen formQa1Gen);
 
-        int? DeleteGeneral(int id);
+        Task<int?> DeleteGeneral(int id);
 
         int? SaveEquipment(RmFormQa1EqVh formQa1EqVh);
 
-        int? DeleteEquipment(int id);
+        Task<int?> DeleteEquipment(int id);
 
         Task<RmFormQa1Wcq> SaveWCQ(RmFormQa1Wcq form);
 

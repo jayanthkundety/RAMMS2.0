@@ -36,11 +36,11 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         int? SaveMaterial(FormQa1MatDTO formQa1Mat);
 
-        int? DeleteMaterial(int id);
+        Task<int?> DeleteMaterial(int id);
 
         int? SaveGeneral(FormQa1GenDTO formQa1Gen);
 
-        int? DeleteGeneral(int id);
+        Task<int?> DeleteGeneral(int id);
 
         Task<int> SaveFormQA1(FormQa1HeaderDTO formQa1Header, bool updateSubmit);
 
@@ -48,7 +48,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         int? SaveEquipment(FormQa1EqVhDTO formQa1EqVh);
 
-        int? DeleteEquipment(int id);
+        Task<int?> DeleteEquipment(int id);
 
         Task<int> SaveImage(List<FormQa1AttachmentDTO> image);
 

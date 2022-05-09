@@ -1,8 +1,8 @@
 ﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 <div class="main-container" id="container">
     <div id="content">
-        <div class="w-100 position-relative in-tbl-btns custom-tbl">
-            @if (security.IsPCModify(ModuleNameList.Management_and_Maintanence))
+        <div class="w-100 position-relative in-tbl-btns">
+            @if (security.IsPCModify(ModuleNameList.Routine_Maintanance_Work))
             {
                 <div class="grid-btns">
                     <button type="button" id="btnLabourAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static"
@@ -23,7 +23,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant() ? "" : "hidden";
     //alert(IsView);
     var Lbtable_columns = [];
     var table = null;

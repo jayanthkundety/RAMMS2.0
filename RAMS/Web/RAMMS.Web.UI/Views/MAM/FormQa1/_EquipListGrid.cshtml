@@ -1,9 +1,8 @@
 ﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
-
 <div class="main-container" id="container">
     <div id="content">
         <div class="w-100 position-relative in-tbl-btns custom-tbl">
-            @if (security.IsPCModify(ModuleNameList.Management_and_Maintanence))
+            @if (security.IsPCModify(ModuleNameList.Routine_Maintanance_Work))
             {
                 <div class="grid-btns">
                     <button type="button" id="btnEquipAdd" class="btn btn-sm btn-themebtn" data-toggle="modal" data-backdrop="static" data-target="#FormQa1EquipModal" onclick="javascript:EditFormQa1Equip(0);"><span class="intbl-add-icon"></span></button>
@@ -21,7 +20,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm = @security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work).ToString().ToLowerInvariant()? "" : "hidden";
     var Eqtable_columns = [];
     var Etable = null;
     var EqactionCol = {
@@ -38,7 +37,7 @@
     };
     var EqTypeCol = { data: "type", name: "EqType", title: "Type", autoWidth: true, sortable: false };
     var EqPVCol = { data: "pvNo", name: "EqpvNO", title: "P/V No.", autoWidth: true, sortable: false };
-    var EqCapCol = { data: "capacity", name: "EqCapacity", title: "Capacity", autoWidth: false, width:80, sortable: false };
+    var EqCapCol = { data: "capacity", name: "EqCapacity", title: "Capacity", autoWidth: true,  sortable: false };
     var EqCondCol = { data: "condition", name: "EqCond", title: "Apparent Condition", autoWidth: true, sortable: false };
     var EqRemarkCol = { data: "remark", name: "EqRemarks", title: "Remarks", autoWidth: true, sortable: false };
 
@@ -82,6 +81,7 @@
         
         IsView = $("#hdnView").val();
         eoTable = $('#FormQa1EquipGridView').DataTable();
+        eoTable.columns.adjust().draw();
         
     });
 </script>

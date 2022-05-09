@@ -11,7 +11,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormV2", "@Model.SaveFormV2Model.Status", @Model.SaveFormV2Model.PkRefNo);
-        
+
         $('#formV2RecordedBy').val("@Model.SaveFormV2Model.UseridSch");
         $('#formV2RecordedBy').trigger('chosen:updated');
         $("#formV2RecordedBy").trigger("change");
@@ -28,14 +28,34 @@
         $('#formV2CrewCode').trigger('chosen:updated');
         $("#formV2CrewCode").trigger("change");
 
-        
+          $('#AccordPage1').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
+      $('#AccordPage2').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
+      $('#AccordPage3').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
     });
 </script>
 
 @{
 
     //Operation Executive, RAMS Executive, Head Maintenance and Region Manager
-    bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    bool isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.isEnggAssistant || security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
 
@@ -256,7 +276,7 @@
                                     <div class="card-body">
                                         <div class="w-100 dt-tbl-section">
                                             <label>Remarks</label>
-                                            @Html.TextAreaFor(m => m.SaveFormV2Model.Remarks, new { @Id = "formV2Remarks", @class = "form-control  validate {required, Remarks}" })
+                                            @Html.TextAreaFor(m => m.SaveFormV2Model.Remarks, new { @Id = "formV2Remarks", @class = "form-control " })
                                         </div>
                                     </div>
                                 </div>
@@ -292,11 +312,11 @@
                     </div>
                     @{
                         Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                        {
-                            Form = "FormV2",
-                            RefId = Model.SaveFormV2Model.PkRefNo,
-                            Stage = Model.SaveFormV2Model.Status
-                        });
+            {
+                Form = "FormV2",
+                RefId = Model.SaveFormV2Model.PkRefNo,
+                Stage = Model.SaveFormV2Model.Status
+            });
                     }
                 </div>
             </div>
@@ -307,8 +327,8 @@
         @Html.HiddenFor(m => m.SaveFormV2Model.PkRefNo, new { @id = "FV2PkRefNo", @class = "form-control" })
         @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
         @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
-        
-        
+
+
 
         @Html.HiddenFor(m => m.SaveFormV2Model.SubmitSts, new { @id = "hdnstatus", @class = "form-control" })
         @Html.Hidden("hdnNo", new { @id = "hdnNo", @class = "form-control" })
@@ -316,11 +336,11 @@
             <div id="val-summary-displayer"></div>
             <button type="button" id="btnFrmV2Back" class="btn btn-sm btn-outline-theme" onclick="GoBack()"> Cancel </button>
             <button id="saveFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Save </button>
-            @*@if (isSubmit && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Saved)
-            {*@
+            @if (isSubmit && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Saved)
+            {
                 <button id="SubmitFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Submit </button>
-            @*}
-            else*@ 
+            }
+
             @if (IsApproved && (Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Submitted || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Rejected))
             {
                 <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Vetted By');"> Approved / Verify </button>

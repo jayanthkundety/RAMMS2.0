@@ -256,11 +256,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public int? DeleteMaterial(int id)
+        public async Task<int?> DeleteMaterial(int id)
         {
             try
             {
-                return _repoUnit.FormQa1Repository.DeleteMaterial(id);
+                return await _repoUnit.FormQa1Repository.DeleteMaterial(id);
             }
             catch (Exception ex)
             {
@@ -284,11 +284,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public int? DeleteGeneral(int id)
+        public async Task<int?> DeleteGeneral(int id)
         {
             try
             {
-                return _repoUnit.FormQa1Repository.DeleteGeneral(id);
+                return await _repoUnit.FormQa1Repository.DeleteGeneral(id);
             }
             catch (Exception ex)
             {
@@ -311,11 +311,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-        public int? DeleteEquipment(int id)
+        public async Task<int?> DeleteEquipment(int id)
         {
             try
             {
-                return _repoUnit.FormQa1Repository.DeleteEquipment(id);
+                return await _repoUnit.FormQa1Repository.DeleteEquipment(id);
             }
             catch (Exception ex)
             {
