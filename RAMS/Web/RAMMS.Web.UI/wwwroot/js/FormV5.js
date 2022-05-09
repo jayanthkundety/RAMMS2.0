@@ -32,6 +32,13 @@ $(document).ready(function () {
         $("#btnPhotoVideoModal").hide();
     }
 
+    $('#AccordPage1').on('shown.bs.collapse', function () {
+  
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
     HeaderLogic();
 
     if ($("#FormV5_Status").val() == "") {
@@ -52,6 +59,8 @@ $(document).ready(function () {
     if ($("#hdnView").val() == "1") {
 
         $('#FormV5_Remarks').attr("readonly", "true");
+        $("#saveFormV5Btn").hide();
+        $("#SubmitFormV5Btn").hide();
     }
 
 
@@ -335,8 +344,8 @@ function SaveFormV5Dtl() {
             else {
                 ClearFormV5Dtl();
                 $('#PhotoVideoGridView').DataTable().ajax.reload();
-                // InitializeGrid();
                 app.ShowSuccessMessage('Saved Successfully', false);
+                $('#PhotoVideoModal').modal('hide');
             }
         });
     }
@@ -354,7 +363,7 @@ function EditFormV5Dtl(obj, view) {
     $('#FormV5Dtl_ImageFilenameSys').val(data.imageFilenameSys);
     $('#FormV5Dtl_ImageFilenameUpload').val(data.imageFilenameUpload);
     $('#FormV5Dtl_ImageUserFilePath').val(data.imageUserFilePath);
-    $('#FormV5Dtl_FileNameFrm').val(data.ileNameFrm);
+    $('#FormV5Dtl_FileNameFrm').val(data.fileNameFrm);
     $('#FormV5Dtl_FileNameTo').val(data.fileNameTo);
     $('#FormV5Dtl_Desc').val(data.desc);
 
@@ -362,14 +371,17 @@ function EditFormV5Dtl(obj, view) {
         
         $('#FormV5Dtl_Desc').attr("readonly", true);
         $('#FormV5Dtl_FileNameFrm').attr("readonly", true);
-        $('#FormV5Dtl_FileNameFrm').attr("readonly", true);
+        $('#FormV5Dtl_FileNameTo').attr("readonly", true);
         $("#divattach").hide();
+        $("#saveFormv5Btn").hide();
        
     }
     else {
         $('#FormV5Dtl_Desc').attr("readonly", false);
         $('#FormV5Dtl_FileNameFrm').attr("readonly", false);
-        $('#FormV5Dtl_FileNameFrm').attr("readonly", false);
+        $('#FormV5Dtl_FileNameTo').attr("readonly", false);
+        $("#saveFormv5Btn").show();
+        $("#divattach").show();
     }
 
 }
@@ -383,6 +395,7 @@ function ClearFormV5Dtl() {
     $('#FormV5Dtl_FileNameFrm').val("");
     $('#FormV5Dtl_FileNameTo').val("");
     $('#FormV5Dtl_Desc').val("");
+    $('#AttachmentModal').modal('hide');
     
 }
 

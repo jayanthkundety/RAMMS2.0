@@ -1753,13 +1753,13 @@ namespace RAMMS.Web.UI.Controllers
                 _formV3Model.FormV3.DtFac = DateTime.Today;
                 _formV3Model.FormV3.SignFac = true;
             }
-            if ((_formV3Model.FormV3.UseridRec == null || _formV3Model.FormV3.UseridRec == 0) && _formV3Model.FormV3.Status == RAMMS.Common.StatusList.FormV1Submitted)
+            if ((_formV3Model.FormV3.UseridRec == null || _formV3Model.FormV3.UseridRec == 0) && _formV3Model.FormV3.Status == RAMMS.Common.StatusList.Submitted)
             {
                 _formV3Model.FormV3.UseridRec = _security.UserID;
                 _formV3Model.FormV3.DtRec = DateTime.Today;
                 _formV3Model.FormV3.SignRec = true;
             }
-            if ((_formV3Model.FormV3.UseridAgr == null || _formV3Model.FormV3.UseridAgr == 0) && _formV3Model.FormV3.Status == RAMMS.Common.StatusList.FormV1Verified)
+            if ((_formV3Model.FormV3.UseridAgr == null || _formV3Model.FormV3.UseridAgr == 0) && _formV3Model.FormV3.Status == RAMMS.Common.StatusList.Verified)
             {
                 _formV3Model.FormV3.UseridAgr = _security.UserID;
                 _formV3Model.FormV3.DtAgr = DateTime.Today;
@@ -2277,7 +2277,7 @@ namespace RAMMS.Web.UI.Controllers
 
                     ext = Path.GetExtension(postedFile.FileName);
                     fileName = Path.GetFileNameWithoutExtension(postedFile.FileName);
-                    string fileRename = PkRefNo.ToString() + "_" + fileName + "_" + DateTime.Today.ToString("yymmddss") + ext;
+                    string fileRename = PkRefNo.ToString() + "_" + fileName + "_" + DateTime.Now.ToString("yyMMddss") + ext;
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);

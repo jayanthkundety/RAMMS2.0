@@ -2,8 +2,7 @@
 
 <div class="main-container" id="container">
     <div id="content">
-        <div class="w-100 position-relative in-tbl-btns custom-tbl">
-
+        <div class="w-100 position-relative in-tbl-btns ">
             <table id="WorkAccomplishmentGridView" class="table w-100 nowrap">
 
                 <tfoot>
@@ -26,8 +25,6 @@
                 </tfoot>
             </table>
         </div>
-        @*<table id="WorkAccomplishmentGridView" class="table w-100 nowrap">
-            </table>*@
     </div>
 </div>
 
@@ -106,9 +103,9 @@
                 }
             },
             columns: table_columns,
-            columns: table_columns,
+           
             "footerCallback": function (row, data, start, end, display) {
-                debugger
+                
 
                 var data = $('#WorkAccomplishmentGridView').DataTable().rows().data();
 
@@ -122,12 +119,7 @@
                     $('#CalculationTime').val(item.timetakenFrm);
                     $('#CalculationTime1').val(item.timeTakenTo);
 
-                    if ($('#CalculationTime').timeEntry('getTime') != null && $('#CalculationTime1').timeEntry('getTime') != null) {
-                        var milliseconds = ($('#CalculationTime1').timeEntry('getTime') - $('#CalculationTime').timeEntry('getTime'))
-                        const secs = Math.floor(Math.abs(milliseconds) / 1000);
-                        const min = Math.floor(secs / 60);
-                        totalmins = totalmins + min;
-                    }
+                  
 
                     totallength = totallength + item.length;
                     totalwidth = totalwidth + item.width;

@@ -11103,9 +11103,11 @@ namespace RAMMS.Domain.Models
 
             modelBuilder.Entity<RmFormV5Dtl>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Fv5dPkRefNo);
 
                 entity.ToTable("RM_FormV5_DTL");
+
+                entity.Property(e => e.Fv5dPkRefNo).HasColumnName("FV5D_PK_Ref_No");
 
                 entity.Property(e => e.Fv5dActiveYn).HasColumnName("FV5D_Active_YN");
 
@@ -11152,10 +11154,6 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fv5dModDt)
                     .HasColumnName("FV5D_Mod_DT")
                     .HasColumnType("datetime");
-
-                entity.Property(e => e.Fv5dPkRefNo)
-                    .HasColumnName("FV5D_PK_Ref_No")
-                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Fv5dSubmitSts).HasColumnName("FV5D_SUBMIT_STS");
             });

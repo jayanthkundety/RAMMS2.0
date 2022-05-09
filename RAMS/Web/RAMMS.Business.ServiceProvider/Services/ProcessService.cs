@@ -1746,11 +1746,11 @@ namespace RAMMS.Business.ServiceProvider.Services
                     strTitle = "Verified By";
                     strStatus = "Verified";
                     strNotStatus = Common.StatusList.Saved;
-                    form.Fv3hUseridAgr = Convert.ToInt32(process.UserID);
-                    form.Fv3hUsernameAgr = process.UserName;
-                    form.Fv3hDesignationAgr = process.UserDesignation;
-                    form.Fv3hDtAgr = process.ApproveDate;
-                    form.Fv3hSignAgr = true;
+                    form.Fv3hUseridRec = Convert.ToInt32(process.UserID);
+                    form.Fv3hUsernameRec = process.UserName;
+                    form.Fv3hDesignationRec = process.UserDesignation;
+                    form.Fv3hDtRec = process.ApproveDate;
+                    form.Fv3hSignRec = true;
                 }
                 else if (process.Stage == Common.StatusList.Verified)
                 {

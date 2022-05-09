@@ -49,6 +49,8 @@ $(document).ready(function () {
     if ($("#hdnView").val() == "1") {
 
         $('#FormV4_Remarks').attr("readonly", "true");
+        $("#saveFormV4Btn").hide();
+        $("#SubmitFormV4Btn").hide();
     }
 
 

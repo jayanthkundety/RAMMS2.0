@@ -716,7 +716,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                     obj.FileNameTo = Convert.ToString(listData.Fv5dFileNameTo);
                     obj.Desc = Convert.ToString(listData.Fv5dDesc);
                     obj.ImageFilenameSys = Convert.ToString(listData.Fv5dImageFilenameSys);
-                     
+                    obj.ImageFilenameUpload = Convert.ToString(listData.Fv5dImageFilenameUpload);
+
 
                     formV5WorkScheduleList.Add(obj);
                 }
@@ -771,8 +772,9 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 int? Fv5hPkRefNo = FormV5Dtl.Fv5hPkRefNo;
+                int PkRefNo = FormV5Dtl.PkRefNo;
                 var model = _mapper.Map<RmFormV5Dtl>(FormV5Dtl);
-                model.Fv5dPkRefNo = 0;
+                model.Fv5dPkRefNo = PkRefNo;
                 model.Fv5dFv5hPkRefNo = Fv5hPkRefNo;
                 return _repo.UpdateFormV5Dtl(model);
             }
