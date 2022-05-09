@@ -59,6 +59,7 @@ $(document).ready(function () {
         $('#FormV3_Remarks').attr("readonly", "true");
         $("#saveFormV3Btn").hide();
         $("#SubmitFormV3Btn").hide();
+        $('#FormV3_SignFac').prop('disabled', true);
     }
 
 
@@ -69,8 +70,8 @@ $(document).ready(function () {
     $('#FormV3_DtRec').attr("readonly", "true");
     $('#FormV3_DtFac').attr("readonly", "true");
     $('#FormV3_SignRec').prop('disabled', true);
-    $('#FormV3_SignFac').prop('disabled', true);
     $('#FormV3_SignAgr').prop('disabled', true);
+   
 
 
 
