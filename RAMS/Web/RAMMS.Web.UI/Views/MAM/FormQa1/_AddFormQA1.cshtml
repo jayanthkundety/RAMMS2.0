@@ -38,17 +38,32 @@
         $("#formQa1AssignedBy").val('@_Assguser').trigger("chosen:updated");
         $("#formQa1ExecutedBy").val('@_Exeuser').trigger("chosen:updated");
         $("#formQa1CheckedBy").val('@_Chckuser').trigger("chosen:updated");
+
+
+        $('#AccordPage02').on('shown.bs.collapse', function () {
+
+            $.each($.fn.dataTable.tables(true), function () {
+                $(this).DataTable().columns.adjust().draw();
+            });
+        });
+
+
+        $('#AccordPage03').on('shown.bs.collapse', function () {
+
+            $.each($.fn.dataTable.tables(true), function () {
+                $(this).DataTable().columns.adjust().draw();
+            });
+        });
+        
     });
 </script>
 
 
 <style>
-.form-group .form-control.border-error,
-.border-error {
-    border-color: red !important;
-    
-}
-
+    .form-group .form-control.border-error,
+    .border-error {
+        border-color: red !important;
+    }
 
 </style>
 
@@ -230,7 +245,7 @@
                                     <div class="card-body">
 
                                         <div id="content">
-                                            <div class="w-100 position-relative in-tbl-btns custom-tbl">
+                                            <div class="w-100 position-relative in-tbl-btns">
                                                 @{
                                                     Html.RenderPartial("_EquipListGrid.cshtml");
                                                 }
@@ -276,7 +291,7 @@
                                 <div id="AccordPage03" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
                                     <div class="card-body">
                                         <div id="content">
-                                            <div class="w-100 position-relative in-tbl-btns custom-tbl">
+                                            <div class="w-100 position-relative in-tbl-btns">
                                                 @{
                                                     Html.RenderPartial("_MaterialListGrid.cshtml", Model.SaveFormQa1Model.Mat);
                                                 }
@@ -586,18 +601,18 @@
 
                         @{
                             Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                            {
-                                Form = "FormQA1",
-                                RefId = Model.SaveFormQa1Model.PkRefNo,
-                                Stage = Model.SaveFormQa1Model.Status
-                            });
+            {
+                Form = "FormQA1",
+                RefId = Model.SaveFormQa1Model.PkRefNo,
+                Stage = Model.SaveFormQa1Model.Status
+            });
                         }
                     </div>
                 </div>
             </div>
         </div>
 
-        
+
         <input type="hidden" id="hdnUserId" value="@security.UserID" />
         @Html.HiddenFor(m => m.SaveFormQa1Model.PkRefNo , new { @id="formQa1PkRefNo"})
         @Html.HiddenFor(m => m.viewm, new { @id = "hdnView"})

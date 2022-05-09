@@ -11,7 +11,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         process.Init("FormV2", "@Model.SaveFormV2Model.Status", @Model.SaveFormV2Model.PkRefNo);
-        
+
         $('#formV2RecordedBy').val("@Model.SaveFormV2Model.UseridSch");
         $('#formV2RecordedBy').trigger('chosen:updated');
         $("#formV2RecordedBy").trigger("change");
@@ -28,14 +28,34 @@
         $('#formV2CrewCode').trigger('chosen:updated');
         $("#formV2CrewCode").trigger("change");
 
-        
+          $('#AccordPage1').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
+      $('#AccordPage2').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
+      $('#AccordPage3').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
     });
 </script>
 
 @{
 
     //Operation Executive, RAMS Executive, Head Maintenance and Region Manager
-    bool isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.isEnggAssistant);
+    bool isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.isEnggAssistant || security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
 
@@ -292,11 +312,11 @@
                     </div>
                     @{
                         Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                        {
-                            Form = "FormV2",
-                            RefId = Model.SaveFormV2Model.PkRefNo,
-                            Stage = Model.SaveFormV2Model.Status
-                        });
+            {
+                Form = "FormV2",
+                RefId = Model.SaveFormV2Model.PkRefNo,
+                Stage = Model.SaveFormV2Model.Status
+            });
                     }
                 </div>
             </div>
@@ -307,8 +327,8 @@
         @Html.HiddenFor(m => m.SaveFormV2Model.PkRefNo, new { @id = "FV2PkRefNo", @class = "form-control" })
         @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
         @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
-        
-        
+
+
 
         @Html.HiddenFor(m => m.SaveFormV2Model.SubmitSts, new { @id = "hdnstatus", @class = "form-control" })
         @Html.Hidden("hdnNo", new { @id = "hdnNo", @class = "form-control" })
@@ -320,7 +340,7 @@
             {
                 <button id="SubmitFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Submit </button>
             }
-            
+
             @if (IsApproved && (Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Submitted || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Rejected))
             {
                 <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Vetted By');"> Approved / Verify </button>
