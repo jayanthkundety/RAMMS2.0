@@ -125,15 +125,15 @@
                                                             <label for="Division_Code">Date </label>
                                                             @Html.EditorFor(m => m.FormV1.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-9">
                                                             <div class="row">
-                                                                <div class="col-6 form-group divsource">
+                                                                <div class="col-3 form-group divsource">
                                                                     <label for="">Form Type</label>
                                                                     @Html.DropDownListFor(Adtl => Adtl.FormV1.Source, (new List<SelectListItem> { new SelectListItem { Text = "New", Value = "V1" }, new SelectListItem { Text = "Form S1", Value = "S1" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control" })
                                                                 </div>
                                                                 <div class="form-group col-lg-6 mb-0 divRefno">
                                                                     <label for="">Reference No</label>
-                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.S1HPkRefNo, Model.RefNoDS, "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control" })
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV1.S1HPkRefNo, Model.RefNoDS, "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control", @width ="300px" })
                                                                 </div>
                                                             </div>
 

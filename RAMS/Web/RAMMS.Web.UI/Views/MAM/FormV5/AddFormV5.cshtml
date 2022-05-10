@@ -343,30 +343,36 @@
                                                                                 <label for="RoadCode">  File Name To</label>
                                                                                 @Html.TextBoxFor(m => m.FormV5Dtl.FileNameTo, new { @class = "form-control" })
                                                                             </div>
-                                                                            <div class="col-4">
-                                                                                <label for="RoadCode">
-                                                                                    Attachment
-                                                                                </label>
-                                                                                @{
+                                                                            <div class="col-6">
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        <label for="RoadCode">
+                                                                                            Attachment
+                                                                                        </label>
 
-                                                                                    <div id="divattach" style="text-align:center">
-                                                                                        <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="AttachmentDialog()">
-                                                                                            <span class="add-icon"></span> Add Attachment
-                                                                                        </a>
+                                                                                        <div id="divattach" style="text-align:left">
+                                                                                            <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="AttachmentDialog()">
+                                                                                                <span class="add-icon"></span> Add Attachment
+                                                                                            </a>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    <div class="col-6">
+                                                                                        <label for="RoadCode">
+                                                                                            File Name
+                                                                                        </label>
+                                                                                        <div style="text-align:center">
+                                                                                            <span id="spnfilename" style=" white-space: nowrap; overflow: hidden; width:100%; text-align:left; float:left; text-overflow: ellipsis;">
+                                                                                                @{
+                                                                                                    <a class="warCaption" href="~/@Model.FormV5Dtl.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@Model.FormV5Dtl.ImageFilenameSys </a>
+                                                                                                }
+                                                                                            </span>
 
-                                                                                }
-                                                                                <label for="RoadCode">
-                                                                                    File Name
-                                                                                </label>
-                                                                                <div style="text-align:center">
-                                                                                    <span id="spnfilename" style=" white-space: nowrap; overflow: hidden; width:60%; float:left; text-overflow: ellipsis;">
-                                                                                        @{
-                                                                                            <a class="warCaption" href="~/@Model.FormV5Dtl.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@Model.FormV5Dtl.ImageFilenameSys </a>
-                                                                                        }
-                                                                                    </span>
-
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
+                                                                 
+
+                                                                                
                                                                             </div>
 
                                                                         </div>
@@ -441,18 +447,18 @@
 
 
 
-                <button id="saveFormV5Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
-                <button id="SubmitFormV5Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
+                <button id="saveFormV5Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Saved')">Save</button>
+                <button id="SubmitFormV5Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Submitted')">Submit</button>
 
 
-                @if (IsApproved && (Model.FormV5.Status == RAMMS.Common.StatusList.Submitted || Model.FormV5.Status == RAMMS.Common.StatusList.Rejected))
+                @*@if (IsApproved && (Model.FormV5.Status == RAMMS.Common.StatusList.Submitted || Model.FormV5.Status == RAMMS.Common.StatusList.Rejected))
                 {
                     <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
                 }
                 else if (IsApproved && (Model.FormV5.Status == RAMMS.Common.StatusList.FormV2Verified || Model.FormV5.Status == RAMMS.Common.StatusList.FormV2Rejected))
                 {
                     <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Approved By');"> Approved / Facilitate </button>
-                }
+                }*@
 
             }
 
