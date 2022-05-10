@@ -39,16 +39,17 @@
 
     $("#formV2EquipCode").on("change", function () {
         var val = $(this).find(":selected").text();
-        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+        var capacity = "";
+        if (val.indexOf("(") >=0) {
+            capacity = val.split("(")[1];
+            var i = capacity.indexOf(")");
+            capacity = capacity.substring(0,i);
+        }else {
+            val = "";
+        }
+        
 
-        //if ($(this).find(":selected").val() == "99999999") {
-        //    $("#formV2EquipDesc").attr('readonly', false);
-        //    $("#formV2EquipDesc").val(equipDesc);
-        //}
-        //else {
-        //    $("#formV2EquipDesc").val(val);
-        //    $("#formV2EquipDesc").attr('readonly', true);
-        //}
+       $("#formV2EquipCapacity").val(capacity);
         $("#FormV2EquipDescription").val(val);
     });
 
