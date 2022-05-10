@@ -414,7 +414,7 @@ function Save(GroupName, SubmitType) {
 
                 if (SubmitType == "") {
                     if (data.formExist) {
-                        location.href = "/MAM/EditFormV4?Id=" + data.pkRefNo + "&view=0";
+                        location.href = "/MAM/EditFormV1?Id=" + data.pkRefNo + "&view=0";
                         return;
                     }
                     UpdateFormAfterSave(data);
