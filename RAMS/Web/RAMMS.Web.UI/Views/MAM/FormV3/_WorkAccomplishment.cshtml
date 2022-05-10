@@ -7,12 +7,7 @@
 
                 <tfoot>
                     <tr>
-                        <td>Total</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><b style="font-weight:bolder">Grand Total Carried to Page V5:</b></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -137,14 +132,14 @@
 
                 var api = this.api();
 
-                $(api.column(6).footer()).html("Length:");
-                $(api.column(7).footer()).html(totallength);
-                $(api.column(8).footer()).html("Width:");
-                $(api.column(9).footer()).html(totalwidth);
-                $(api.column(10).footer()).html("Time:");
-                $(api.column(11).footer()).html(TT);
-                $(api.column(12).footer()).html("ADP:");
-                $(api.column(13).footer()).html(totaladp);
+                $(api.column(2).footer()).html("Length:");
+                $(api.column(3).footer()).html(totallength);
+                $(api.column(4).footer()).html("Width:");
+                $(api.column(5).footer()).html(totalwidth);
+                $(api.column(6).footer()).html("Time:");
+                $(api.column(7).footer()).html(TT);
+                $(api.column(8).footer()).html("ADP:");
+                $(api.column(9).footer()).html(totaladp);
 
                // CalculateGridTotal();
             }

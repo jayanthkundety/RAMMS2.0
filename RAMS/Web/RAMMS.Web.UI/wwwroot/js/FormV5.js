@@ -67,7 +67,7 @@ $(document).ready(function () {
 
     $('#ddlRecordedby').prop('disabled', true).trigger("chosen:updated");
     $('#FormV5_DtRec').attr("readonly", "true");
-    $('#FormV5_SignRec').prop('disabled', true);
+  //  $('#FormV5_SignRec').prop('disabled', true);
 
 
 
@@ -288,7 +288,7 @@ function Save(SubmitType) {
             else {
 
                 if (SubmitType == "") {
-                    debugger
+                     
                     if (data.result == "Success") {
 
                         if (data.formExist) {

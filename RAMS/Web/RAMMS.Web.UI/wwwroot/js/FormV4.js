@@ -51,6 +51,7 @@ $(document).ready(function () {
         $('#FormV4_Remarks').attr("readonly", "true");
         $("#saveFormV4Btn").hide();
         $("#SubmitFormV4Btn").hide();
+        $('#FormV4_SignFac').prop('disabled', true);
     }
 
 
@@ -61,7 +62,7 @@ $(document).ready(function () {
     $('#FormV4_DtVet').attr("readonly", "true");
     $('#FormV4_DtFac').attr("readonly", "true");
     $('#FormV4_SignVet').prop('disabled', true);
-    $('#FormV4_SignFac').prop('disabled', true);
+  
     $('#FormV4_SignAgr').prop('disabled', true);
 
 

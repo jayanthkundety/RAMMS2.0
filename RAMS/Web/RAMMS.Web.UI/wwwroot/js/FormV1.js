@@ -29,6 +29,13 @@ $(document).ready(function () {
 
     });
 
+    $('#AccordPage1').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
     HeaderLogic();
 
     if ($("#FormV1_Status").val() == "") {
@@ -54,6 +61,7 @@ $(document).ready(function () {
         $('#FormV1_Remarks').attr("readonly", "true");
         $("#saveFormV1Btn").hide();
         $("#SubmitFormV1Btn").hide();
+        $('#FormV1_SignSch').prop('disabled', true);
     }
 
 
@@ -64,7 +72,6 @@ $(document).ready(function () {
     $('#FormV1_DtAck').attr("readonly", "true");
     $('#FormV1_DtSch').attr("readonly", "true");
     $('#FormV1_SignAck').prop('disabled', true);
-    $('#FormV1_SignSch').prop('disabled', true);
     $('#FormV1_SignAgr').prop('disabled', true);
 
     //if ($("#FormV1_Status").val() == "" || $("#FormV1_Status").val( ) == "Initialize" || $("#FormV1_Status").val() == "Saved") {
