@@ -111,7 +111,7 @@ namespace RAMMS.Web.UI.Controllers
 
                 ddLookup.Type = "Act-FormD";
                 ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
-
+                base.LoadLookupService(GroupNameList.Supervisor, GroupNameList.OperationsExecutive, GroupNameList.OpeHeadMaintenance, GroupNameList.JKRSSuperiorOfficerSO);
                 LoadLookupService("User");
 
                 FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
