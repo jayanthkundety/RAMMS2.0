@@ -860,6 +860,7 @@ namespace RAMMS.Repository
                         lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                         lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
                         lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
+                        lstData.Add("RMU", domainModelFormv3.Fv3hRmu.ToString());
                         lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv3.Fv3hPkRefNo));
                         domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV3Header, lstData);
                         _context.SaveChanges();
@@ -878,8 +879,8 @@ namespace RAMMS.Repository
                                        Fv3dActiveYn = true,
                                        Fv3dFrmChDeci = dtl.Fv1dFrmChDeci,
                                        Fv3dFrmCh = dtl.Fv1dFrmCh,
-                                       Fv3dToChDeci = dtl.Fv1dToCh,
-                                       Fv3dToCh = dtl.Fv1dToChDeci,
+                                       Fv3dToChDeci = dtl.Fv1dToChDeci,
+                                       Fv3dToCh = dtl.Fv1dToCh,
                                        Fv3dRoadCode = dtl.Fv1dRoadCode,
                                        Fv3dRoadName = dtl.Fv1dRoadName,
 
@@ -1265,6 +1266,7 @@ namespace RAMMS.Repository
                     lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                     lstData.Add("Crew", domainModelFormv4.Fv4hCrew.ToString());
                     lstData.Add("ActivityCode", domainModelFormv4.Fv4hActCode);
+                    lstData.Add("RMU", domainModelFormv4.Fv4hRmu.ToString());
                     lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv4.Fv4hPkRefNo));
                     domainModelFormv4.Fv4hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV4Header, lstData);
                     _context.SaveChanges();
@@ -1631,6 +1633,7 @@ namespace RAMMS.Repository
                     lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                     lstData.Add("Crew", domainModelFormv5.Fv5hCrew.ToString());
                     lstData.Add("ActivityCode", domainModelFormv5.Fv5hActCode);
+                    lstData.Add("RMU", domainModelFormv5.Fv5hRmu.ToString());
                     lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv5.Fv5hPkRefNo));
                     domainModelFormv5.Fv5hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV5Header, lstData);
                     _context.SaveChanges();
