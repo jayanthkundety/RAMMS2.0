@@ -62,5 +62,7 @@ namespace RAMMS.Repository.Interfaces
         Task<string> CheckAlreadyExists(DateTime? date, string crewUnit, string day, string rmu, string secCode);
 
         Task<RmFormV2Hdr> FindSaveFormV2Hdr(RmFormV2Hdr formDHeader, bool updateSubmit);
+
+        Task<bool> IsV3Exist(int? v1PkRef);
     }
 }
