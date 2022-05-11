@@ -300,8 +300,8 @@ function Save(SubmitType) {
                         $("#FormV5_RefId").val(data.refId);
                         $("#FormV5_Status").val(data.status);
 
-                        //$("#FormV5_FV4PKRefNo").val(data.fV4PKRefNo)
-                        //$("#FormV5_FV4PKRefID").val(data.fV4PKRefID)
+                        $("#FormV5_FV4PKRefNo").val(data.fV4PKRefNo)
+                        $("#FormV5_FV4PKRefID").val(data.fV4PKRefID)
                         $("#saveFormV5Btn").show();
                         $("#SubmitFormV5Btn").show();
                         $("#btnPhotoVideoModal").show();
