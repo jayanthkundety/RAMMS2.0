@@ -57,6 +57,7 @@ var _dt = {
     txtDReference: $("#txtDReference"),
     hdnDetailPkNo: $("#hdnDetailPkNo"),
     weekDetails: [],
+    weekDays: [[]],
     RoadCodeMaster: [],
     IsView: $("#IsDView"),
     txtWorkQty: $("#txtWorkQty")
@@ -510,7 +511,7 @@ function saveHeader(isSave = true, isSubmit = false) {
         req.UseridSchld = _hd.ddlSchduledUserId.val();
         //req.ActCode = _hd.ddlActivityCode.val();
         if (req.ActId != "") {
-           // req.ActName = _hd.ddlActivityCode.text();
+            // req.ActName = _hd.ddlActivityCode.text();
             req.ActCode = _hd.ddlActivityCode.find("option:selected").text().split("-")[0];
             req.ActName = _hd.ddlActivityCode.find("option:selected").text().split("-")[1];
         }
@@ -667,7 +668,7 @@ function openDetail(id) {
         data: req,
         type: 'Post',
         success: function (data) {
-           // debugger;
+            // debugger;
             HideAjaxLoading();
             if (data.pkRefNo == 0) {
                 // generateDetailReferenceId(_hd.HdnHeaderPkId.val());
@@ -774,7 +775,7 @@ function bindWeekDetail() {
                     }
 
                     subbody += sValue.value;
-                    subbody += '"><span class="week-name">W';
+                    subbody += '"><span weekno="' + sValue.text + '" class="week-name">W';
                     subbody += sValue.text;
                     subbody += '</span></button></li>';
                 });
@@ -784,7 +785,6 @@ function bindWeekDetail() {
             });
             $("#divWeeks").html(body);
             $('.sch-colgroup li button').on('click', function () {
-
                 if (_dt.IsView.val() != "1") {
                     $(this).toggleClass('active')
                     var _id = this.id;
@@ -798,6 +798,8 @@ function bindWeekDetail() {
                             _dt.weekDetails.splice(index, 1);
                         }
                     }
+                    var weekno = $(this).find("span").attr("weekno");
+                    bindWeekDay(weekno, _hd.ddlYear.val(), _id)
                 }
 
                 console.log(_dt);
@@ -809,6 +811,71 @@ function bindWeekDetail() {
         }
     });
 }
+
+function bindWeekDay(weekno, year , wid) {
+    const weekday = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    $.ajax({
+        url: '/FormS2/GetDatesByWeekNo',
+        dataType: 'JSON',
+        data: { year, weekno },
+        type: 'Post',
+        success: function (data) {
+            var body = '';
+            var subbody = '<div class="flex-md-fill sch-colgroup"><div class="month-title">';
+            subbody += "Week No." + weekno;
+            subbody += '</div><ul>';
+            $.each(data, function (index, value) {
+                var dt = new Date(value);
+                let day = weekday[dt.getDay()];
+                let name = month[dt.getMonth()];
+                subbody += '<li><span class="day-name">' + day + '</span>'
+                subbody += '<span class="dm-group">'
+                subbody += '<span  class="dt">' + dt.getDate() + '</span>'
+                subbody += '<span  class="mnth">' + name + '</span>'
+                subbody += '</span>'
+                subbody += '<button type="button" id="BTN';
+                subbody += dt.getDate();
+                subbody += '"></button></li>';
+            });
+            subbody += "</ul></div>";
+            body += subbody;
+
+            $("#divWeekDays").html(body);
+            
+
+            $('.sch-colgroup li button').on('click', function () {
+                debugger;
+                if (_dt.IsView.val() != "1") {
+                    $(this).toggleClass('active')
+                    var _id = this.id;
+                    _dt.weekDays = _dt.weekDays == null ? [] : _dt.weekDays;
+                    if ($(this).hasClass('active')) {
+                        _dt.weekDetails.push(_id);
+                    }
+                    else {
+                        $("#divWeekDays").html("");
+                        const index = _dt.weekDetails.indexOf(parseInt(_id));
+                        if (index > -1) {
+                            _dt.weekDetails.splice(index, 1);
+                        }
+                        
+                    }
+                    
+                    
+                }
+
+                console.log(_dt);
+            });
+        },
+        error: function (data) {
+
+            console.error(data);
+        }
+    });
+}
+
 
 function bindRoadCode() {
     var req = {};
