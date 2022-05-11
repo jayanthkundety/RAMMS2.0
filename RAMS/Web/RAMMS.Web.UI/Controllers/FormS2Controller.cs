@@ -237,7 +237,7 @@ namespace RAMMS.Web.UI.Controllers
             dateTimes.Add(obj.AddDays(6));
             return Json(dateTimes);
         }
-
+            
         #endregion
 
 

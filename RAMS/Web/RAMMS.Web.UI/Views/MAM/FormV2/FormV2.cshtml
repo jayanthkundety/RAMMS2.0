@@ -203,6 +203,9 @@
                             app.ShowSuccessMessage('Successfully Deleted', false);
                             FormV2GridRefresh();
                         }
+                        else if(data == -2) {
+                            app.ShowErrorMessage("Form V3 cannot be deleted, first delete Form V3", false);
+                        }
                         else {
                             app.ShowErrorMessage("Error in Deleted. Kindly retry later.", false);
                         }

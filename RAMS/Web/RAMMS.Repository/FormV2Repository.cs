@@ -525,6 +525,13 @@ namespace RAMS.Repository
             return formV2Header;
         }
 
+        public async Task<bool> IsV3Exist(int? v1PkRef)
+        {
+            var formv3 = await _context.RmFormV3Hdr.Where (x => x.Fv3hFv1PkRefNo == v1PkRef && x.Fv3hActiveYn == true).FirstOrDefaultAsync();
+            
+            return (formv3 != null);
+
+        }
 
     }
 }

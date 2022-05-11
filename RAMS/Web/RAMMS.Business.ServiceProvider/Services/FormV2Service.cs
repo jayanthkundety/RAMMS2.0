@@ -38,6 +38,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelFormV2 = await _repoUnit.FormV2Repository.GetByIdAsync(formNo);
+
+                bool isV3Exist = await _repoUnit.FormV2Repository.IsV3Exist(domainModelFormV2.Fv2hFv1hPkRefNo);
+
+                if (isV3Exist) return -2;
+
                 domainModelFormV2.Fv2hActiveYn = false;
                 _repoUnit.FormV2Repository.Update(domainModelFormV2);
 
