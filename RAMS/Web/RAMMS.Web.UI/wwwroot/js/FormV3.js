@@ -354,6 +354,7 @@ function Save(SubmitType) {
 
                         $("#FormV3_PkRefNo").val(data.pkRefNo);
                         $("#FormV3_FV1PKRefId").val(data.fV1PKRefId)
+                        $("#FormV3_Fv1PkRefNo").val(data.fv1PkRefNo)
                         $("#FormV3_RefId").val(data.refId);
                         $("#FormV3_Status").val(data.status)
                         $("#saveFormV3Btn").show();
