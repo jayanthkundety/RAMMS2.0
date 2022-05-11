@@ -418,7 +418,7 @@ namespace RAMMS.Web.UI.Controllers
                         List<FormAImageListRequestDTO> uploadedFiles = new List<FormAImageListRequestDTO>();
                         string photo_Type = Regex.Replace(photoType[j], @"[^a-zA-Z]", "");
                         string path = Path.Combine(wwwPath, Path.Combine("Uploads", "FormADetail", assetId.ToString(), photo_Type));
-                        int i = await _formaImgService.LastInsertedSRNO(assetId, photoType[j]);
+                        int i = await _formaImgService.LastInsertedSRNO(assetId, photo_Type);
                         i += 1;
                         if (!Directory.Exists(path))
                         {
@@ -427,28 +427,28 @@ namespace RAMMS.Web.UI.Controllers
 
                         FormAImageListRequestDTO _rmAssetImageDtl = new FormAImageListRequestDTO();
                         string fileName = Path.GetFileName(postedFile.FileName);
-                        string filerename = i + "_" + photoType + "_" + fileName;
+                        string filerename = i + "_" + photo_Type + "_" + fileName;
 
                         using (FileStream stream = new FileStream(Path.Combine(path, filerename), FileMode.Create))
                         {
                             _rmAssetImageDtl.AssetId = assetId;
-                            _rmAssetImageDtl.ImageTypeCode = photoType[j];
+                            _rmAssetImageDtl.ImageTypeCode = photo_Type;
                             _rmAssetImageDtl.SNO = i;
                             _rmAssetImageDtl.FileName = postedFile.FileName;
                             _rmAssetImageDtl.ActiveYn = true;
                             if (i < 10)
                             {
-                                _rmAssetImageDtl.ImageFilenameSys = assetId.ToString() + "_" + photoType + "_" + "00" + i;
+                                _rmAssetImageDtl.ImageFilenameSys = assetId.ToString() + "_" + photo_Type + "_" + "00" + i;
                             }
                             else if (i >= 10 && i < 100)
                             {
-                                _rmAssetImageDtl.ImageFilenameSys = assetId.ToString() + "_" + photoType + "_" + "0" + i;
+                                _rmAssetImageDtl.ImageFilenameSys = assetId.ToString() + "_" + photo_Type + "_" + "0" + i;
                             }
                             else
                             {
-                                _rmAssetImageDtl.ImageFilenameSys = assetId.ToString() + "_" + photoType + "_" + i;
+                                _rmAssetImageDtl.ImageFilenameSys = assetId.ToString() + "_" + photo_Type + "_" + i;
                             }
-                            _rmAssetImageDtl.ImageFilename = $"/Uploads/FormADetail/{assetId}/{photoType}/{filerename}";
+                            _rmAssetImageDtl.ImageFilename = $"/Uploads/FormADetail/{assetId}/{photo_Type}/{filerename}";
 
                             //AssetID_Section(Water)_incrementalNumber -- i + "_" + _rmAssetImageDtl.assetId +_rmAssetImageDtl.ImageTypeCode + "_" + fileName;
                             //_rmAssetImageDtl.ImageFilename = _httpContext.HttpContext.Request.Host.Value + "\\" + "wwwroot" + "\\" + "Uploads" + "\\" + assetGrpCode[0] + "\\" + id + "\\" + photoType +"\\" + filerename;

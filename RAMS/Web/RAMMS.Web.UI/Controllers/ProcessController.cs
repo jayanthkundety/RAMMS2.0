@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RAMMS.Business.ServiceProvider;
 using RAMMS.Business.ServiceProvider.Interfaces;
 using RAMMS.Web.UI.Models;
 using System;
@@ -13,15 +14,25 @@ namespace RAMMS.Web.UI.Controllers
     {
         private readonly IProcessService _processService;
         private readonly IUserService userService;
-        public ProcessController(IProcessService processService, IUserService userSer)
+        private readonly ISecurity _security;
+        public ProcessController(IProcessService processService, IUserService userSer , ISecurity security)
         {
             _processService = processService;
             userService = userSer;
+            _security = security;
         }
         public IActionResult ViewApprove(string group)
         {
+            if (group == "admin") group = "User";
             ViewBag.GroupName = group;
             base.LoadLookupService(group);
+            var user = (List<CSelectListItem>)ViewData[group];
+            if (user != null)
+            {
+                var cs = user.Find(c => c.Value == _security.UserID.ToString());
+                if (cs != null)
+                     cs.Selected = true;
+            }
             return PartialView("~/Views/Process/ViewApprove.cshtml");
         }
         public async Task<JsonResult> Save(DTO.RequestBO.ProcessDTO process)

@@ -16,6 +16,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<int> Update(FormWDResponseDTO FormW1);
         int? DeleteFormWDClause(int Id);
         int? SaveFormWDClause(FormWDDtlResponseDTO FormWDDtl);
+       Task<int> DeActivateFormWD(int formNo);
 
     }
 }

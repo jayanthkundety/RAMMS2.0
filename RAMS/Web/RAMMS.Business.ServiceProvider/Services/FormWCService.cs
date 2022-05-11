@@ -40,7 +40,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             processService = process;
         }
 
-
         public async Task<FormWCResponseDTO> FindWCByID(int id)
         {
             RmIwFormWc formWC = await _repo.FindWCByID(id);
@@ -133,6 +132,27 @@ namespace RAMMS.Business.ServiceProvider.Services
                 form.FwcStatus = Common.StatusList.FormWCSaved;
 
             return form;
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormWC = await _repoUnit.FormWCRepository.GetByIdAsync(id);
+                domainModelFormWC.FwcActiveYn = false;
+                _repoUnit.FormWCRepository.Update(domainModelFormWC);
+
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
         }
     }
 }

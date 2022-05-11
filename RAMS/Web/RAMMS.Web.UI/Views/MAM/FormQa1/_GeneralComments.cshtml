@@ -1,0 +1,154 @@
+﻿@model RAMMS.DTO.ResponseBO.FormQa1GCDTO
+<div class="card-body px-4">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                <label>
+                    <span class="font-14 font-weight-bold">
+                        Quality Rating
+                    </span>
+                </label>
+                <div class="row">
+                    <div class="col-12">
+                        <span class="float-left">
+                            @{
+                                var _Whs = Model.Whs == null || Model.Whs == false ? false : true;
+                            }
+                            <input class="position-relative mr-1 svalidate {required,General Comments -  Work is highly satisfactory}" checked="@_Whs" id="formQa1GcWhs" type="checkbox" value="true" style="width:18px;height:18px;top:4px;" />
+                        </span>
+                        <span class="float-left">
+                            <label class="float-left py-1">
+                                Work is highly satisfactory
+                            </label>
+                        </span>
+                    </div>
+                    <div class="col-12">
+                        <span class="float-left">
+                            @{
+                                var _Wis = Model.Wis == null || Model.Wis == false ? false : true;
+                            }
+                            <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_Wis" class="position-relative mr-1  svalidate {required,General Comments -  Work is satisfactory}" id="formQa1GcWis">
+                        </span>
+                        <span class="float-left">
+                            <label class="float-left py-1">
+                                Work is satisfactory
+                            </label>
+                        </span>
+                    </div>
+
+                    <div class="col-12" id="divGcWius">
+                        <div class="float-left  mb-0 mt-lg-1 w-100">
+                            <span class="float-left">
+                                @{
+                                    var _Wius = Model.Wius == null || Model.Wius == false ? false : true;
+                                }
+                                <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_Wius" id="formQa1GcWius" class="position-relative mr-1  svalidate {required,General Comments -  Work is unsatisfactory}">
+                            </span>
+                            <span class="float-left">
+                                <label class="float-left py-1">
+                                    Work is unsatisfactory
+                                </label>
+                            </span>
+                        </div>
+                        <div class="d-none"></div>
+                        <div class="float-left  mb-0 w-100 px-5">
+                            <span class="float-left w-100">  Due to</span>
+                            <span class="float-left">
+                                @{
+                                    var _WiusMat = Model.WiusMat == null || Model.WiusMat == false ? false : true;
+                                }
+                                <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_WiusMat" class="position-relative mr-1  svalidate {required,General Comments -  Due to Material }" id="formQa1GcWiusMat">
+                            </span>
+                            <span class="float-left">
+                                <label class="float-left py-1">
+                                    Material
+
+                                </label>
+                            </span>
+                        </div>
+                        <div class="float-left  mb-0 w-100 px-5">
+                            <span class="float-left">
+                                @{
+                                    var _WiusEqp = Model.WiusEqp == null || Model.WiusEqp == false ? false : true;
+                                }
+                                <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_WiusEqp" id="formQa1GcWiusEqp" class="position-relative mr-1  svalidate {required,General Comments -  Due to Equipment}" />
+                            </span>
+                            <span class="float-left">
+                                <label class="float-left py-1">
+                                    Equipment
+                                </label>
+                            </span>
+                        </div>
+                        <div class="float-left  mb-0 w-100 px-5">
+                            <span class="float-left">
+                                @{
+                                    var _WiusWrk = Model.WiusWrk == null || Model.WiusWrk == false ? false : true;
+                                }
+                                <input type="checkbox" style="width:18px;height:18px;top:4px;" checked="@_WiusWrk" class="position-relative mr-1 svalidate {required,General Comments -  Due to Workmanship}" id="formQa1GcWiusWrk">
+                            </span>
+                            <span class="float-left">
+                                <label class="float-left py-1">
+                                    Workmanship
+
+                                </label>
+                            </span>
+                        </div>
+                        <div class="d-none"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-8 mb-2">
+                <label>
+                    <span class="font-14 font-weight-bold">
+                        Correction/Improvement needed on item no.
+                    </span>
+                </label>
+                <div class="row mb-2" id="divWhsRemark">
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WhsRemark , new { @id="formQa1WhsRemark", @class="form-control svalidate  {required, Work highly satisfactory Remark}" , @style="height: 40px;" , @maxlength="10" })
+                    </div>
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WhsReason , new { @id="formQa1WhsReason", @class="form-control svalidate  {required, Work highly satisfactory  Reason}" , @style="height: 40px;" , @maxlength="10" })
+                    </div>
+
+                </div>
+                <div class="row mb-2"  id="divWisRemark">
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WisRemark , new { @id="formQa1WisRemark", @class="form-control svalidate  {required, Work is satisfactory Remark}" , @style="height: 40px;" , @maxlength="10" })
+                    </div>
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WisReason , new { @id="formQa1WisReason", @class="form-control svalidate  {required,  Work is satisfactory Reason}" , @style="height: 40px;" , @maxlength="10" })
+                    </div>
+                </div>
+
+                <div class="row mb-2"  id="divWiusMatRemark">
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WiusMatRemark , new { @id="formQa1WiusMatRemark", @class="form-control svalidate {required,  Due to Material Remark}" , @style="height: 40px;" , @maxlength="10" })
+                    </div>
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WiusMatReason , new { @id="formQa1WiusMatReason", @class="form-control svalidate {required, Due to Material Reason}" , @style="height: 40px;" , @maxlength="10" })
+                    </div>
+
+                </div>
+                <div class="row mb-2"  id="divWiusEqpRemark">
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WiusEqpRemark , new { @id="formQa1WiusEqpRemark", @class="form-control svalidate {required, Due to Equipment  Remark}" , @style="height: 40px;" , @maxlength="10" })
+                    </div>
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WiusEqpReason , new { @id="formQa1WiusEqpReason", @class="form-control svalidate {required, Due to Equipment Reason}" , @style="height: 40px;" , @maxlength="10" })
+                        </div>
+                </div>
+                <div class="row mt-2"  id="divWiusWrkRemark">
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WiusWrkRemark , new { @id="formQa1WiusWrkRemark", @class="form-control svalidate {required,  Due to Workmanship  Remark}" , @style="height: 40px;" , @maxlength="10" })
+                        </div>
+                    <div class="col-6">
+                        @Html.TextAreaFor(m => m.WiusWrkReason , new { @id="formQa1WiusWrkReason", @class="form-control svalidate {required,  Due to Workmanship Reason}" , @style="height: 40px;" , @maxlength="10" })
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.HiddenFor(m => m.PkRefNo , new { @id="formGCPkRefNo"})

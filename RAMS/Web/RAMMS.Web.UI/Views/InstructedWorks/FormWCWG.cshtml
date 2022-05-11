@@ -7,7 +7,17 @@
     ViewBag.TabTitle = "Form WC & WG";
     ViewData["Title"] = "Form WC & WG";
     Layout = null;// "~/Views/Shared/_PortalLayout.cshtml";
+    var ActiveWC = Model.Show == "FormWC" ? "active" : "";
+    var ActiveWG = Model.Show == "FormWG" ? "active" : "";
+    var ShowWC = Model.Show == "FormWC" ? "show" : "";
+    var ShowWG = Model.Show == "FormWG" ? "show" : "";
 }
+<style>
+    .disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+</style>
 <script src="~/js/FormWCWG.js" type="text/javascript"></script>
 <div class="row bg-white row bg-white pt-3 pb-0" style="border-top:1px solid #dee2e6;">
     <div class="col-md-12">
@@ -15,25 +25,38 @@
             <ul class="nav nav-tabs tabbed round">
                 @*<li class="nav-item">
                     <a href="#divFecm" data-toggle="tab" aria-expanded="false" class="nav-link active">
-                        <span class="">
-                            FECM
-                        </span>
+                    <span class="">
+                    FECM
+                    </span>
                     </a>
-                </li>*@
+                    </li>*@
                 <li class="nav-item">
-                    <a href="#page" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                    <a href="#page" data-toggle="tab" aria-expanded="false" class="nav-link @ActiveWC">
                         <span class="">
                             Form WC
                         </span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#Div_wg" data-toggle="tab" aria-expanded="false" class="nav-link ">
-                        <span class="">
-                            Form WG
-                        </span>
-                    </a>
-                </li>
+
+                @if (Model.FormWC.SubmitSts == true)
+                {
+                    <li class="nav-item">
+                        <a href="#Div_wg" data-toggle="tab" aria-expanded="false" class="nav-link @ActiveWG">
+                            <span class="">Form WG</span>
+                        </a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="nav-item disabled">
+                        <a href="#Div_wg" data-toggle="tab" aria-expanded="false" class="nav-link ">
+                            <span class="">Form WG</span>
+                        </a>
+                    </li>
+                }
+
+
 
 
                 <li class="nav-item">
@@ -57,12 +80,19 @@
         </div>
         <input type="hidden" id="hdnUserId" value="@security.UserID" />
         <input type="hidden" id="hdnUsername" value="@security.UserName" />
-        <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo"  />
-        <input type="hidden" id="hdnView" value="@Model.View"  />
+        <input type="hidden" id="hdnPkRefNo" value="@Model.FormW1.PkRefNo" />
+        <input type="hidden" id="hdnView" value="@Model.View" />
+        <input type="hidden" id="hdnFormType" value="FormWCWG" />
+        @Html.HiddenFor(m => m.FormW1.RmuCode, new { @id = "hdnRmuCode", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.SecCode, new { @id = "hdnSecCode", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.RoadCode, new { @id = "hdnRdCode", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.RoadName, new { @id = "hdnRdName", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.Ch, new { @id = "hdnCh", @class = "form-control" })
+        @Html.HiddenFor(m => m.FormW1.ChDeci, new { @id = "hdnChDeci", @class = "form-control" })
         <div class="row bg-white py-3">
             <div class="col-lg-12">
                 <div class="tab-content mh-250">
-                    <div class="tab-pane" id="Div_wg">
+                    <div class="tab-pane @ShowWG @ActiveWG" id="Div_wg">
                         <div id="div_wgload">
                             @{
                                 Html.RenderPartial("_FormWG.cshtml", Model);
@@ -71,14 +101,14 @@
                     </div>
                     @*<div class="tab-pane show active" id="divFecm">
                         <div class="col-12 bg-white" style="border-top:1px solid #dee2e6;">
-                            <div id="div_fecmload">
-                                @{
-                                    Html.RenderPartial("_FormFECM.cshtml", Model.FECM);
-                                }
-                            </div>
+                        <div id="div_fecmload">
+                        @{
+                        Html.RenderPartial("_FormFECM.cshtml", Model.FECM);
+                        }
                         </div>
-                    </div>*@
-                    <div class="tab-pane show active" id="page">
+                        </div>
+                        </div>*@
+                    <div class="tab-pane @ShowWC @ActiveWC" id="page">
                         <div id="div_wc">
                             @{
                                 Html.RenderPartial("_FormWC.cshtml", Model);
@@ -87,7 +117,6 @@
                     </div>
                     <div class="tab-pane show " id="AccordPagegallery">
                         <div id="ViewPhoto">
-
                         </div>
                     </div>
                 </div>

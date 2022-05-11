@@ -24,5 +24,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<RoadMasterResponseDTO> GetByRdCode(string roadCode);
 
+        Task<List<RoadMasterRequestDTO>> GetRoadCodeBySectionCode(int secCode);
+
     }
 }

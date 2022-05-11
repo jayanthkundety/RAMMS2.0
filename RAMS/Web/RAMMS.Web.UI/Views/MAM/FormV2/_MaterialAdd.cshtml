@@ -1,0 +1,108 @@
+﻿@model RAMMS.Web.UI.Models.FormV2MaterialDetailsModel;
+<script type="text/javascript">
+
+    var val = $("#hdnMaterialNo").val();
+    var matDesc = "";
+
+    $(document).ready(function () {
+        $("#formV2MatCode").chosen();
+        $("#formV2MatUnit").chosen();
+
+        if ($("#formV2MatCode").find(":selected").val() == '99999999') {
+            matDesc = $("#formV2MatDesc").val();
+            $("#formV2MatDesc").attr('readonly', false);
+        }
+
+
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    $("#formV2MatCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+        //if ($(this).find(":selected").val() == "99999999") {
+        //    $("#formV2MatDesc").attr('readonly', false);
+        //    $("#formV2MatDesc").val(matDesc);
+        //}
+        //else {
+        //    $("#formV2MatDesc").attr('readonly', true);
+        //    $("#formV2MatDesc").val(val);
+        //}
+        $("#FormV2MatDescription").val(val);
+    });
+
+    function GoBackMat() {
+        FormMatGridRefresh();
+        if ($("#hdnMatView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormV2MaterialModal").modal("hide");
+                }
+            }));
+        } else
+            $("#FormV2MaterialModal").modal("hide");
+    }
+
+
+    if (val != 0 && val != undefined && val != "") {}
+        //$("#formV2MatCode").trigger("change");
+</script>
+<form id="FormV2MaterialModal" action="/MAM/FormV2MaterialModal">
+    <div class="modal-body mh-100">
+        <div class="row">
+            <div class="form-group col-lg-4">
+                @Html.Label("Code", "Code")
+                @Html.DropDownListFor(Adtl => Adtl.SaveFormV2MaterialModel.MatRefCode, (IEnumerable
+                <SelectListItem>)Model.selectList, "Select Code", new { @Id = "formV2MatCode", @class = "form-control  validate {required, Material Code}" })
+                @Html.HiddenFor(Ahdr => Ahdr.SaveFormV2MaterialModel.MatRefCode, new { @id = "hdnformV2MatCode", @class = "form-control" })
+            </div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Quantity", "Quantity")
+                @Html.TextBoxFor(Adtl => Adtl.SaveFormV2MaterialModel.Qnty , new { @Id = "formV2MatQuantity", @maxlength = 6, @type = "text", @autocomplete = "off", @class = "form-control allow_numeric  validate {required, Quantity}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-4">
+                @Html.Label("Unit", "Unit")
+                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2MaterialModel.Unit, (IEnumerable
+                <SelectListItem>)Model.UnitList, "Select Unit", new { @Id = "formV2MatUnit", @class = "form-control validate {required, Unit}" })
+            </div>
+            <div class="form-group col-lg-12 txtarea-107">
+                @Html.Label("Description", "Description")
+                @Html.TextAreaFor(m => m.SaveFormV2MaterialModel.Desc, new { @Id = "FormV2MatDescription", @class = "form-control  validate {required, Description}" })
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SaveFormV2MaterialModel.PkRefNo, new { @id = "hdnMaterialNo", @class = "form-control" })
+    @*@Html.HiddenFor(m => m.SaveFormV2MaterialModel.SerialNo, new { @id = "MaterialSerialNo", @class = "form-control" })*@
+    @Html.Hidden("hdnMatView", "")
+    <div class="modal-footer">
+        <div id="val-summary-displayer-material">
+            <div id="val-summary-displayer"></div>
+        </div>
+        <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="GoBackMat()">Cancel</button>
+        <button id="saveContinueFormV2MtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+        <button id="saveFormV2MtBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+    </div>
+</form>

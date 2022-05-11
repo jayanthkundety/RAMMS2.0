@@ -152,6 +152,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var domainModelForm = _mapper.Map<RmFormN1Hdr>(formN1HeaderBO);
+                domainModelForm.FnihStatus = "Open";
                 domainModelForm.FnihStatus = Common.StatusList.N1Init;
                 var entity = _repoUnit.FormN1Repository.CreateReturnEntity(domainModelForm);
                 if (entity.FnihSubmitSts)

@@ -17,5 +17,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<FormW1ResponseDTO> GetFormW1ById(int formW1Id);
 
         Task<int> Update(FormWGResponseDTO formWGDTO);
+
+        Task<int> Delete(int id);
     }
 }

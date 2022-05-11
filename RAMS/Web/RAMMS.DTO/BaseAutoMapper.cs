@@ -15,8 +15,9 @@ namespace RAMMS.DTO
                 typeof(FormC1C2Profile),
                 typeof(FormFCProfile),
                 typeof(FormFDProfile),
-                typeof(IWProfiles)
-                );
+                typeof(IWProfiles),
+                typeof(MAMVProfiles)
+                ) ;
         }
     }
 }

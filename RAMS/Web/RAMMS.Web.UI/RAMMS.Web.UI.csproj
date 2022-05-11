@@ -15,6 +15,7 @@
     <Compile Remove="AppRoot.cs" />
     <Compile Remove="Controllers\ADownloadController.cs" />
     <Compile Remove="Models\Class.cs" />
+    <Compile Remove="Models\FormV2UserDetailsModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +73,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\MAM\FormV2\" />
     <Folder Include="wwwroot\Templates\" />
     <Folder Include="wwwroot\Uploads\FormD\" />
   </ItemGroup>

@@ -1,0 +1,60 @@
+﻿@model RAMMS.DTO.ResponseBO.FormQa1GenDTO
+<script type="text/javascript">
+    function GoBackGen() {
+         FormEquipGridRefresh()
+        if ($("#hdnEquView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormAddGeneral").modal("hide");
+                }
+            }));
+        } else
+            $("#FormAddGeneral").modal("hide");
+    }
+
+    function GoBackGen() {
+        FormGenGridRefresh();
+        if ($("#hdnGenView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormAddGeneral").modal("hide");
+                }
+            }));
+        } else
+            $("#FormAddGeneral").modal("hide");
+    }
+
+</script>
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-lg-3 float-left pl-4">
+                <label for="Designation">
+                    Item
+                </label>
+                @Html.TextBoxFor(Adtl => Adtl.Item, new { @Id = "formQa1GenItem",  @autocomplete = "off", @type = "text", @class = "form-control validate {required, Item}", @rows = 1 })
+            </div>
+
+            <div class="form-group col-lg-3 float-left">
+                <label for="Date__DD-MM-YYYY_">
+                    Attention to
+                </label>
+                @Html.TextBoxFor(Adtl => Adtl.AttTo, new { @Id = "formQa1GenAttTo",  @autocomplete = "off", @type = "text", @class = "form-control validate {required, AttTo}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-6 float-left">
+                <label for="Date__DD-MM-YYYY_">
+                    Comment & Remarks
+                </label>
+                @Html.TextBoxFor(Adtl => Adtl.AttRemarks, new { @Id = "formQa1GenAttRemark",  @autocomplete = "off", @type = "text", @class = "form-control validate {required, Att Remark}", @rows = 1 })
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.PkRefNo, new { @id = "hdnGenId", @class = "form-control" })
+    @Html.Hidden("hdnGenView", "")
+    <div class="modal-footer">
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button id="cancelFormQa1GenBtn" type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackGen()">Cancel</button>            
+            <button id="saveContinueFormQa1GenBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+            <button id="saveFormQa1GenBtn" type="button" class="btn btn-sm btn-themebtn">Save & EXit</button>
+        </div>
+    </div>

@@ -1,0 +1,160 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="w-100 position-relative in-tbl-btns ">
+            <table id="WorkAccomplishmentGridView" class="table w-100 nowrap">
+
+                <tfoot>
+                    <tr>
+                        <td><b style="font-weight:bolder">Grand Total Carried to Page V5:</b></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var table = null;
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
+    isModifyPerm = '';
+    isDeletePerm = '';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV1DtlEdit' " + isModifyPerm + " data-toggle='modal'   data-target='#WorkAccompModal' onclick='javascript:EditFormV3Dtl(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV3Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal' data-target='#WorkAccompModal' onclick='javascript:EditFormV3Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV3Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal' data-target='#WorkAccompModal' onclick='javascript:EditFormV3Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            return full["submitSts"] == true ? viewaction : actionSection;
+        }
+    };
+    var roadCodeCol = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true,  sortable: true };
+    var roadNameCol = { data: "roadName", name: "RoadName", title: "Road Name", autoWidth: true, sortable: true };
+    var chainageFromCol = { data: "chainageFrom", name: "ChainageFrom", title: "Chainage From", autoWidth: true, sortable: true };
+    var chainageToCol = { data: "chainageTo", name: "ChainageTo", title: "Chainage To", autoWidth: true, sortable: true };
+    var lengthCol = { data: "length", name: "Length", title: "Length", autoWidth: true, sortable: true };
+    var widthCol = { data: "width", name: "Width", title: "Width", autoWidth: true, sortable: true };
+    var timeTakenFromCol = { data: "timetakenFrm", name: "TimeTakenFrom", title: "Time Taken From", autoWidth: true, sortable: true };
+    var timeTakenToCol = { data: "timeTakenTo", name: "TimeTakenTo", title: "Time Taken To", autoWidth: true, sortable: true };
+    var timeTakenTotalCol = { data: "timeTakenTotal", name: "timeTakenTotal", title: "Time Taken Total", autoWidth: true, sortable: true };
+    var adpCol = { data: "adp", name: "ADP", title: "ADP", autoWidth: true, sortable: true };
+    var transitTimeFromCol = { data: "transitTimeFrm", name: "TransitTimeFrom", title: "Transit Time From", autoWidth: true, sortable: true };
+    var transitTimeToCol = { data: "transitTimeTo", name: "TransitTimeTo", title: "Transit Time To", autoWidth: true, sortable: true };
+    var transitTimeTotalCol = { data: "transitTimeTotal", name: "TransitTimeTotal", title: "Transit Time Total", autoWidth: true, sortable: true };
+
+    table_columns.push(actionCol);
+    table_columns.push(roadCodeCol);
+    table_columns.push(roadNameCol);
+    table_columns.push(chainageFromCol);
+    table_columns.push(chainageToCol);
+    table_columns.push(lengthCol);
+    table_columns.push(widthCol);
+    table_columns.push(timeTakenFromCol);
+    table_columns.push(timeTakenToCol);
+    table_columns.push(timeTakenTotalCol);
+    table_columns.push(adpCol);
+    table_columns.push(transitTimeFromCol);
+    table_columns.push(transitTimeToCol);
+    table_columns.push(transitTimeTotalCol);
+
+
+    function PrintForm(id) {
+        window.location.href = '/download/PrintForm?id=' + id + "&formname=FormD";
+    }
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        if (table != null) {
+            table.destroy();
+            $('#WorkAccomplishmentGridView').empty();
+        }
+
+
+        table =  $('#WorkAccomplishmentGridView').DataTable({
+            ajax: {
+                url: "/MAM/GetV3DtlGridList?V3PkRefNo=" + $("#FormV3_PkRefNo").val(),
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns,
+           
+            "footerCallback": function (row, data, start, end, display) {
+                
+
+                var data = $('#WorkAccomplishmentGridView').DataTable().rows().data();
+
+                var totalmins = 0;
+                var totallength = 0;
+                var totalwidth = 0;
+                var totaladp = 0;
+
+                data.each(function (item, index) {
+
+                    $('#CalculationTime').val(item.timetakenFrm);
+                    $('#CalculationTime1').val(item.timeTakenTo);
+
+                  
+
+                    totallength = totallength + item.length;
+                    totalwidth = totalwidth + item.width;
+                    totaladp = totaladp + item.adp;
+
+
+                });
+
+                const hours = Math.floor(totalmins / 60);
+                const mins = Math.floor(totalmins % 60);
+
+                var TT = hours + ":" + mins;
+ 
+
+
+                var api = this.api();
+
+                $(api.column(2).footer()).html("Length:");
+                $(api.column(3).footer()).html(totallength);
+                $(api.column(4).footer()).html("Width:");
+                $(api.column(5).footer()).html(totalwidth);
+                $(api.column(6).footer()).html("Time:");
+                $(api.column(7).footer()).html(TT);
+                $(api.column(8).footer()).html("ADP:");
+                $(api.column(9).footer()).html(totaladp);
+
+               // CalculateGridTotal();
+            }
+           
+        });
+
+       // table.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+
+    });
+
+
+   
+</script>

@@ -42,7 +42,7 @@ namespace RAMMS.Repository
 
         public async Task<RmIwFormW2> FindFormW2ByPKRefNo(int PKRefNo)
         {
-            return await _context.RmIwFormW2.Where(x => x.Fw2Fw1PkRefNo == PKRefNo).FirstOrDefaultAsync();
+            return await _context.RmIwFormW2.Where(x => x.Fw2PkRefNo == PKRefNo).FirstOrDefaultAsync();
         }
 
 

@@ -25,11 +25,14 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IRepositoryUnit _repoUnit;
         private readonly IMapper _mapper;
         private readonly ISecurity _security;
-        public FormF2Service(IRepositoryUnit repoUnit, IMapper mapper, ISecurity security)
+        private readonly IProcessService processService;
+        public FormF2Service(IRepositoryUnit repoUnit, IMapper mapper, 
+            ISecurity security, IProcessService proService)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _security = security ?? throw new ArgumentNullException(nameof(security));
+            this.processService = proService;
         }
 
         #region Header
@@ -98,7 +101,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 string st = $"CI/Form F2/{model.RoadCode}/{model.YearOfInsp}";
                 var formf2 = _mapper.Map<Domain.Models.RmFormF2GrInsHdr>(model);
-
+                formf2.FgrihStatus = "Open";
                 var alreadyexists = _repoUnit.FormF2Repository.IsExists(st);
                 formf2.FgrihPkRefNo = (alreadyexists == null ? 0 : alreadyexists.FgrihPkRefNo);
                 if (alreadyexists != null)
@@ -155,6 +158,18 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 }
 
+                if (formf2 != null && formf2.FgrihSubmitSts)
+                {
+                    int result = processService.Save(new ProcessDTO()
+                    {
+                        ApproveDate = new System.DateTime?(DateTime.Now),
+                        Form = "FormF2",
+                        IsApprove = true,
+                        RefId = formf2.FgrihPkRefNo,
+                        Remarks = "",
+                        Stage = formf2.FgrihStatus
+                    }).Result;
+                }
                 return formf2.FgrihPkRefNo;
 
             }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -203,6 +205,41 @@ namespace RAMMS.Web.UI.Controllers
             var isExist = await _formS2Service.CheckS2DtlExistance(headerId, RdCode);
             return isExist;
         }
+
+        #region Week dates
+        static DateTime FirstDateOfWeek(int year, int weekOfYear)
+        {
+            DateTime jan1 = new DateTime(year, 1, 1);
+            int daysOffset = (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
+
+            DateTime firstMonday = jan1.AddDays(daysOffset);
+
+            int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule, CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
+
+            if (firstWeek <= 1)
+            {
+                weekOfYear -= 1;
+            }
+            return firstMonday.AddDays(weekOfYear * 7);
+        }
+
+        [HttpPost]
+        public IActionResult GetDatesByWeekNo(string year, string weekno)
+        {
+            var obj = FirstDateOfWeek(Convert.ToInt32(year), Convert.ToInt32(weekno));
+            List<DateTime> dateTimes = new List<DateTime>();
+            dateTimes.Add(obj);
+            dateTimes.Add(obj.AddDays(1));
+            dateTimes.Add(obj.AddDays(2));
+            dateTimes.Add(obj.AddDays(3));
+            dateTimes.Add(obj.AddDays(4));
+            dateTimes.Add(obj.AddDays(5));
+            dateTimes.Add(obj.AddDays(6));
+            return Json(dateTimes);
+        }
+            
+        #endregion
+
 
     }
 }

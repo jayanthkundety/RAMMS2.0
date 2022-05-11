@@ -135,5 +135,26 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return form;
         }
+
+        public async Task<int> Delete(int id)
+        {
+            int rowsAffected;
+            try
+            {
+                var domainModelFormWG = await _repoUnit.FormWGRepository.GetByIdAsync(id);
+                domainModelFormWG.FwgActiveYn = false;
+                _repoUnit.FormWGRepository.Update(domainModelFormWG);
+
+                rowsAffected = await _repoUnit.CommitAsync();
+
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+
+            return rowsAffected;
+        }
     }
 }

@@ -52,9 +52,9 @@ namespace RAMMS.DTO.ResponseBO
 
         public string CommencementTo { get; set; }
 
-        public int? PercentageFrom { get; set; }
+        public double? PercentageFrom { get; set; }
 
-        public int? PercentageTo { get; set; }
+        public double? PercentageTo { get; set; }
 
         public int? Months { get; set; }
 

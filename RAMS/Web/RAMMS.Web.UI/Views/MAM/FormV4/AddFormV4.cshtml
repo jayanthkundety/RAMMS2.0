@@ -1,0 +1,464 @@
+﻿@model RAMMS.Web.UI.Models.FormV4Model;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewBag.TabTitle = "INSTRUCTED WORKS";
+    ViewData["Title"] = "INSTRUCTED WORKS";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+
+    bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+    var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+
+}
+
+<link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
+<script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
+<script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
+<script src="~/js/FormV4.js"></script>
+
+
+@using (Html.BeginForm())
+{
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div class="form-group mb-0" style="width:400px; float:left">
+                        <span style="width:100px;float:left;"> <label for="Form_C1_C2_No_" style="padding: .5rem .5rem 0 !important;">Reference No</label></span>
+                        <span style="width:300px; float:left">
+                            @Html.TextBoxFor(m => m.FormV4.RefId, new { @readonly = true, @class = "form-control", style = "width:300px;" })
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body mh-182 pt-0 pb-0">
+                <div class="col-lg-12">
+                    <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
+                        <div id="accordion" class="col-lg-12">
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingZero">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Form V4
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="form-group col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-6 form-group pr-lg-0">
+                                                                    <label for="RMU">RMU</label>
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV4.Rmu, (IEnumerable
+    <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "ddlrmu", @class = "form-control validate {required, RMU}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6 mb-0">
+                                                                    <label for="RMU_Name">RMU Name</label>
+                                                                    @Html.TextBoxFor(m => m.FormV4.RmuName, new { @Id = "ddlrmuDesc", @readonly = "readonly", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-6 form-group px-0">
+                                                                    <label for="RMU">Section Code</label>
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV4.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "ddlSecCode", @class = "form-control validate {required, Section Code}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6 mb-0">
+                                                                    <label for="RMU_Name">Section Name</label>
+                                                                    @Html.TextBoxFor(m => m.FormV4.SecName, new { @readonly = "readonly", @class = "form-control " })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="RMU"> Division Code</label>
+                                                            @Html.TextBoxFor(m => m.FormV4.Division, new { @readonly = "readonly", @class = "form-control " })
+                                                        </div>
+                                                        <div class="form-group col-lg-2">
+                                                            <button id="btnFindDetails" type="button" onclick="Save('')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right mt-4">Find Details</button>
+                                                        </div>
+                                                        <div class="col-lg-4">
+
+                                                            <div class="row">
+
+                                                                <div class="form-group col-lg-6">
+                                                                    <label for="Name_of_Crew_Supervisor">Crew</label>
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV4.Crew, (IEnumerable
+    <SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "ddlCrew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6">
+                                                                    <label for="Name_of_Crew_Supervisor">Crew Name</label>
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV4.Crewname, "", new { @readonly = "readonly", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 form-group px-0">
+                                                                    <label for="Ref_No_">Activity Code</label>
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV4.ActCode, (IEnumerable
+    <SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "ddlActCode", @class = "form-control validate {required, Activity Code}" })
+
+                                                                </div>
+                                                                <div class="col-lg-6 form-group">
+                                                                    <label for="Ref_No_">Activity Name</label>
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV4.ActName, "", new { @readonly = "readonly", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">Date </label>
+                                                            @Html.EditorFor(m => m.FormV4.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">Start Time (on site)</label>
+                                                            @Html.TextBoxFor(m => m.FormV4.StartTime, new { @class = "form-control validate {required, Start time}" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">End Time (on location) </label>
+                                                            @Html.TextBoxFor(m => m.FormV4.EndTime, new { @class = "form-control validate {required, End time}" })
+                                                        </div>
+                                                        <div class="col-4 form-group">
+                                                            <label for="Division_Code">V3 Reference no </label>
+                                                            @Html.TextBoxFor(m => m.FormV4.FV3PKRefID, new { @readonly = "readonly", @class = "form-control", style = "width:300px;" })
+                                                        </div>
+                                                        <div class="col-2 form-group">
+                                                            <label for="Division_Code">Total Production</label>
+                                                            @Html.TextBoxFor(m => m.FormV4.TotalProduction, new { @readonly = "readonly", @class = "form-control" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Remarks
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                        <div class="card-body">
+                                            <div id="EquipmentListGrid" class="w-100 dt-tbl-section">
+                                                <label>Remarks</label>
+                                                @Html.TextAreaFor(m => m.FormV4.Remarks, new { @class = "form-control  svalidate {required,Remarks}" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="accordion custom-accordion mb-4" id="custom-accordion-five">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingFive">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage5" aria-expanded="false" aria-controls="collapseFive">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    User Details
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage5" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFive" data-parent="#custom-accordion-five">
+                                        <div class="card-body float-left p-0 w-100">
+                                            <div class="row">
+                                                <div class="col-lg-10 offset-lg-1 mt-2">
+                                                    <div class="row" useridgroup="">
+
+
+                                                        <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                                            <div class="col-lg-12 border-bottom py-2 my-2">
+                                                                <span class="font-14 font-weight-bold">
+                                                                    Representative From
+                                                                </span>
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Facilitator
+                                                                </label>
+
+                                                                <input type="text" class="form-control" readonly title="JKR Sarawak, Miri Division" value="JKR Sarawak, Miri Division" />
+                                                            </div>
+                                                            <div class="form-group col-lg-2">
+                                                                <label for="Name">
+                                                                    Facilitated by
+                                                                </label>
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Facilitatedby", "Select Users", new { Id = "ddlFacilitatedby", @class = "form-control  {required,Facilitated by}", @onchange = "OnFacilitatedbyChange(this);" })
+
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Name
+                                                                </label>
+                                                                @Html.TextBoxFor(model => model.FormV4.UsernameFac, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="Designation">Designation</label>
+                                                                @Html.TextBoxFor(model => model.FormV4.DesignationFac, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-3 float-left">
+                                                                <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
+                                                                @Html.EditorFor(m => m.FormV4.DtFac, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                            </div>
+                                                            <div class="form-group col-lg-1 float-left">
+                                                                <label>
+                                                                    Sign
+                                                                </label>
+                                                                <div class="clear-b mt-2">
+                                                                    @Html.CheckBoxFor(model => model.FormV4.SignFac, new { @class = "{required, Scheduled by Signature}" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Verifier
+                                                                </label>
+                                                                <input type="text" disabled class="form-control" title="JKR Sarawak, Miri Division" value="JKR Sarawak, Miri Division">
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left mb-0">
+                                                                <label for="Name">
+                                                                    Vetted by
+                                                                </label>
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Vettedby", "Select Users", new { Id = "ddlVettedby", @class = "form-control  {required,Vetted by}", @onchange = "OnVettedChange(this);" })
+                                                            </div>
+
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Name
+                                                                </label>
+                                                                @Html.TextBoxFor(model => model.FormV4.UsernameVet, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="Designation">Designation</label>
+                                                                @Html.TextBoxFor(model => model.FormV4.DesignationVet, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-3 float-left">
+                                                                <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
+                                                                @Html.EditorFor(m => m.FormV4.DtVet, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                            </div>
+                                                            <div class="form-group col-lg-1 float-left">
+                                                                <label>
+                                                                    Sign
+                                                                </label>
+                                                                <div class="clear-b mt-2">
+                                                                    @Html.CheckBoxFor(model => model.FormV4.SignVet, new { @class = "{required, Vetorded by Signature}" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+
+                                                        <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Service Provider
+                                                                </label>
+                                                                <input type="text" disabled class="form-control" title="Endaya Construction Sdn Bhd" value="Endaya Construction Sdn Bhd">
+
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left mb-0">
+                                                                <label for="Name"> Agreed by<!--  Bansing Tijun--></label>
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Agreeedby", "Select Users", new { Id = "ddlAgreedby", @class = "form-control  {required,Agreed by}", @onchange = "OnAgreedbyChange(this);" })
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Name
+                                                                </label>
+                                                                @Html.TextBoxFor(model => model.FormV4.UsernameAgr, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="Designation">Designation</label>
+                                                                @Html.TextBoxFor(model => model.FormV4.DesignationAgr, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-3 float-left">
+                                                                <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
+                                                                @Html.EditorFor(m => m.FormV4.DtAgr, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                            </div>
+                                                            <div class="form-group col-lg-1 float-left">
+                                                                <label>
+                                                                    Sign
+                                                                </label>
+                                                                <div class="clear-b mt-2">
+                                                                    @Html.CheckBoxFor(model => model.FormV4.SignAgr, new { @class = "{required, Agreed by Signature}" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                @{
+                    if (Model.FormV4.Status != "" && Model.FormV4.Status != "Initialize")
+                        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                        {
+                            Form = "FormV4",
+                            RefId = Model.FormV4.PkRefNo,
+                            Stage = Model.FormV4.Status
+                        });
+                }
+            </div>
+
+
+
+        </div>
+
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
+            @{
+
+
+
+                <button id="saveFormV4Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Saved')">Save</button>
+                <button id="SubmitFormV4Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Submitted')">Submit</button>
+
+
+                @if (IsApproved && (Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Submitted || Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Rejected))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                }
+                else if (IsApproved && (Model.FormV4.Status == RAMMS.Common.StatusList.FormV2Verified || Model.FormV4.Status == RAMMS.Common.StatusList.FormV2Rejected))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Approved By');"> Approved / Facilitate </button>
+                }
+
+            }
+
+        </div>
+    </div>
+
+
+    @Html.HiddenFor(m => m.FormV4.PkRefNo)
+    @Html.HiddenFor(m => m.FormV4.FV3PKRefNo)
+    @Html.HiddenFor(m => m.FormV4.FV3PKRefID)
+    @Html.HiddenFor(m => m.FormV4.SecCode)
+    @Html.HiddenFor(m => m.FormV4.UseridFac)
+    @Html.HiddenFor(m => m.FormV4.UseridAgr)
+    @Html.HiddenFor(m => m.FormV4.UseridVet)
+    @Html.HiddenFor(m => m.FormV4.Status)
+
+    @Html.HiddenFor(m => m.FormV4.SubmitSts)
+    <input type="hidden" id="hdnSecCode" value="@Model.FormV4.SecCode" />
+    <input type="hidden" id="hdnView" value="@Model.view" />
+
+
+}
+
+
+<style>
+
+    .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(2), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(2), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(3), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(3), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(5), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(5) {
+        width: auto !important;
+        min-width: auto !important;
+    }
+</style>
+
+
+<script>
+
+    var onloadFlag = true;
+
+    $(document).ready(function () {
+        process.Init("FormV4", "@Model.FormV4.Status", @Model.FormV4.PkRefNo);
+        $("#FormV4_StartTime").timeEntry();
+        $("#FormV4_EndTime").timeEntry();
+
+    });
+
+
+
+    $('#ddlrmu').val("@Model.FormV4.Rmu");
+    $('#ddlrmu').trigger('chosen:updated');
+    $('#ddlrmu').trigger("change");
+
+    $('#dllSecCode').val("@Model.FormV4.SecCode");
+    $('#dllSecCode').trigger('chosen:updated');
+    $('#dllSecCode').trigger("change");
+
+    $('#ddlActCode').val("@Model.FormV4.ActCode");
+    $('#ddlActCode').trigger('chosen:updated');
+    $('#ddlActCode').trigger("change");
+
+    $('#ddlCrew').val("@Model.FormV4.Crew");
+    $('#ddlCrew').trigger('chosen:updated');
+    $('#ddlCrew').trigger("change");
+
+    $('#ddlVettedby').val("@Model.FormV4.UseridVet");
+    $('#ddlVettedby').trigger('chosen:updated');
+    $('#ddlVettedby').trigger("change");
+
+    $('#ddlAgreedby').val("@Model.FormV4.UseridAgr");
+    $('#ddlAgreedby').trigger('chosen:updated');
+    $('#ddlAgreedby').trigger("change");
+
+    $('#ddlFacilitatedby').val("@Model.FormV4.UseridFac");
+    $('#ddlFacilitatedby').trigger('chosen:updated');
+    $('#ddlFacilitatedby').trigger("change");
+
+
+   // HeaderLogic();
+
+
+</script>

@@ -23,6 +23,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         /// </summary>
         string Email { get; }
         string Group { get; }
+
+        string GroupName { get; }
         string Module { get; }
         IList<string> Groups { get; }
         IList<string> Modules { get; }
@@ -100,6 +102,14 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         bool IsHeadMaintenance { get; }
         bool IsJKRSSuperiorOfficer { get; }
         bool IsRegionManager { get; }
+        bool IsDivisonalEngg { get; }
+        bool IsInstructedWorkEngg { get; }
+        bool IsJKRSHQ { get; }
+        bool IsDirector { get; }
+        bool isEnggAssistant { get; }
+        bool isOperRAMSExecutive { get; }
+
+        public IList<RmModuleRightByForm> IWRights { get; }
 
     }
 }

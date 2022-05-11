@@ -1,0 +1,88 @@
+﻿@model RAMMS.Web.UI.Models.FormV2LabourDtlModel;
+<script type="text/javascript">
+
+    var val = $("#hdnLabid").val();
+    var labDesc = "";
+    $(document).ready(function () {
+        $("#formV2LabCode").chosen();
+        $("#formV2LabUnit").chosen();
+
+        if ($("#formV2LabCode").find(":selected").val() == '99999999') {
+            labDesc = $("#formV2labDesc").val();
+            $("#formV2labDesc").attr('readonly', false);
+        }
+
+        $('.allow_numeric').keypress(function (e) {
+            var charCode = (e.which) ? e.which : event.keyCode
+
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                return false;
+        });
+    });
+
+    $("#formV2LabCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+
+        if ($(this).find(":selected").val() == "99999999") {
+            $("#formV2labDesc").attr('readonly', false);
+            $("#formV2labDesc").val(labDesc);
+        }
+        else {
+            $("#formV2labDesc").val(val);
+            $("#formV2labDesc").attr('readonly', true);
+        }
+        $("#formV2LabDescription").val(val);
+    });
+
+    function GoBackLab() {
+        FormLabGridRefresh()
+        if ($("#hdnLabView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormV2LabourModal").modal("hide");
+                }
+            }));
+        } else {
+            $("#FormV2LabourModal").modal("hide");
+        }
+    }
+
+
+
+    //if (val != 0 && val != undefined && val != "")
+    //    $("#formV2LabCode").trigger("change");
+
+</script>
+<form id="FormV2LabourModal" action="/MAM/FormV2SaveLabour">
+    <div class="modal-body mh-100">
+        <div class="row">
+            <div class="form-group col-lg-6 mb-0">
+                @Html.Label("Code", "Code")
+                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2LabourModel.LabRefCode, (IEnumerable
+                <SelectListItem>)Model.selectList, "Select Code", new { @Id = "formV2LabCode", @class = "form-control  validate {required, Labour Code}" })
+                @Html.HiddenFor(Ahdr => Ahdr.SaveFormV2LabourModel.LabRefCode, new { @id = "hdnformV2LabCode", @class = "form-control" })
+            </div>
+            <div class="form-group col-lg-6">
+                @Html.Label("Remarks", "Remarks")
+                @Html.TextBoxFor(Adtl => Adtl.SaveFormV2LabourModel.Remark, new { @Id = "formV2LabRemark", @autocomplete = "off", @type = "text", @class = "form-control validate {required, Remark}", @rows = 1 })
+            </div>
+
+            <div class="form-group col-lg-12 txtarea-107">
+                @Html.Label("Description", "Description")
+                @Html.TextAreaFor(m => m.SaveFormV2LabourModel.Desc, new { @Id = "formV2LabDescription", @class = "form-control  validate {required, Description}" })
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.SaveFormV2LabourModel.PkRefNo, new { @id = "hdnLabid", @class = "form-control" })
+
+    @Html.Hidden("hdnLabView", "")
+    <div class="modal-footer">
+        <div id="val-summary-displayer-labour">
+            <div id="val-summary-displayer"></div>
+        </div>
+        <button type="button" id="cancelAddModelBtn" class="btn btn-sm btn-outline-theme" onclick="GoBackLab()">Cancel</button>
+        <button id="saveContinueFormV2LabBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+        <button id="saveFormV2LabBtn" type="button" class="btn btn-sm btn-themebtn">Save & Exit</button>
+    </div>
+</form>

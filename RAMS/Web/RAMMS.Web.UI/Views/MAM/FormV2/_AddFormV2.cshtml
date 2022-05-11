@@ -1,0 +1,405 @@
+﻿@using RAMMS.Business.ServiceProvider
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+
+    ViewBag.TabTitle = "MAM - Form V2 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+@model RAMMS.Web.UI.Models.FormV2Model;
+<script src="~/js/FormV2.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        process.Init("FormV2", "@Model.SaveFormV2Model.Status", @Model.SaveFormV2Model.PkRefNo);
+
+        $('#formV2RecordedBy').val("@Model.SaveFormV2Model.UseridSch");
+        $('#formV2RecordedBy').trigger('chosen:updated');
+        $("#formV2RecordedBy").trigger("change");
+
+        $('#formV2VettedBy').val("@Model.SaveFormV2Model.UseridAgr");
+        $('#formV2VettedBy').trigger('chosen:updated');
+        $("#formV2VettedBy").trigger("change");
+
+        $('#formV2FacilitatedBy').val("@Model.SaveFormV2Model.UseridAck");
+        $('#formV2FacilitatedBy').trigger('chosen:updated');
+        $("#formV2FacilitatedBy").trigger("change");
+
+        $('#formV2CrewCode').val("@Model.SaveFormV2Model.Crew");
+        $('#formV2CrewCode').trigger('chosen:updated');
+        $("#formV2CrewCode").trigger("change");
+
+          $('#AccordPage1').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
+      $('#AccordPage2').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
+      $('#AccordPage3').on('shown.bs.collapse', function () {
+
+        $.each($.fn.dataTable.tables(true), function () {
+            $(this).DataTable().columns.adjust().draw();
+        });
+    });
+
+    });
+</script>
+
+@{
+
+    //Operation Executive, RAMS Executive, Head Maintenance and Region Manager
+    bool isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.isEnggAssistant || security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+
+
+    var vd = Model.SaveFormV2Model.Dt;
+    string _Date = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+}
+<div class="container-fluid">
+    <div class="row" id="div-addformV2">
+        <div class="col-lg-12">
+            <div class="w-100">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div id="formV2RefDiv" class="form-group mb-0" style="width:400px; float:left">
+                        @Html.Label("Reference No.", "Reference No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                        @Html.TextBoxFor(m => m.SaveFormV2Model.RefId , new { @Id = "formV2ReferenceNo", @disabled = true, @class = "form-control  validate {required, Reference No}", style = "width:300px;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body mh-182 pt-0 pb-0">
+            <div class="col-lg-12">
+                <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
+                    <div id="accordion" class="col-lg-12">
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingZero">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                FORM V2
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div id="FormV2Headers" class="form-group col-lg-10 col-md-12">
+                                                @Html.HiddenFor(m => m.SaveFormV2Model.Fv1hPkRefNo , new { @id = "hdnV1PkRefNo", @class = "form-control" })
+                                                <div class="row">
+                                                    <div class="col-lg-5">
+                                                        <div class="row">
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("RMU", "RMU")
+                                                                @Html.DropDownListFor(Adtl => Adtl.SaveFormV2Model.Rmu, (IEnumerable
+                                                                <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV2rmu", @class = "form-control validate {required, RMU}" })
+                                                            </div>
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("RMU Name", "RMU Name")
+                                                                @Html.TextBoxFor(m => m.RmuDescription, new { @Id = "formV2rmuDesc", @readonly = "readonly", @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="row">
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("Section Code", "Section Code")
+                                                                @Html.DropDownList("formV2SectionCode",(IEnumerable<SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV2SectionCode", @class = "form-control validate {required, Section Code}" })
+                                                                @Html.HiddenFor(a => a.SaveFormV2Model.SecCode, new { @id="hdnSecCode"} )
+                                                            </div>
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("Section Name ", "Section Name")
+                                                                @Html.TextBoxFor(m => m.SectionName, new { @Id = "formV2SectionName", @readonly = "readonly", @class = "form-control " })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2 form-group px-0">
+                                                        <label for="Division Code"> Division Code</label>
+                                                        @Html.TextBoxFor(m => m.SaveFormV2Model.DivCode , new { @Id = "formV2DivCode", @readonly = "readonly", @class = "form-control " })
+                                                        @Html.HiddenFor(m => m.SaveFormV2Model.DivName , new { @Id = "formV2DivCodeName" })
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="row">
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("Crew", "Crew")
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"],"formV2CrewCode", "Select Crew", new { @Id = "formV2CrewCode", @class = "form-control validate {required, Section Code}" })
+                                                                @Html.HiddenFor(a => a.SaveFormV2Model.Crew, new { @id="hdnCrew"} )
+                                                            </div>
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("Crew Name ", "Crew Name")
+                                                                @Html.TextBoxFor(m => m.SaveFormV2Model.Crewname, new { @Id = "formV2CrewName", @readonly = "readonly", @class = "form-control " })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <div class="row">
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("Activity Code", "Activity Code")
+                                                                @Html.DropDownListFor(Ahdr => Ahdr.SaveFormV2Model.ActCode, (IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formV2ActivityCode", @class = "form-control validate {required, Activity Code}" })
+                                                            </div>
+                                                            <div class="form-group col-lg-6">
+                                                                @Html.Label("Activity Name ", "Activity Name")
+                                                                @Html.TextBoxFor(m => m.SaveFormV2Model.ActName, new { @Id = "formV2ActivityName", @readonly = "readonly", @class = "form-control " })
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2 form-group px-0">
+                                                        @Html.Label("Date", "Date")
+                                                        <input type="date" min="2020-01-01" max="2099-12-31" class="datepicker form-control disableinput  validate {required, Date}" id="formV2Date" value="@_Date" name="formV2Date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                                <button id="formV2FindDetailsBtn" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Labour Details
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+                                    <div class="card-body">
+
+
+                                        @*Labour Grid*@
+                                        <div id="LabourListGrid" class="w-100 dt-tbl-section">
+                                            @{
+                                                Html.RenderPartial("_LabourListGrid.cshtml");
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingTwo">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Equipment
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                    <div class="card-body">
+                                        @*Equipment Grid*@
+                                        <div id="EquipmentListGrid" class="w-100 dt-tbl-section">
+                                            @{
+                                                Html.RenderPartial("_EquipListGrid.cshtml");
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-three">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingThree">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage3" aria-expanded="false" aria-controls="collapseThree">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Material
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage3" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingThree" data-parent="#custom-accordion-three">
+                                    <div class="card-body">
+
+
+                                        @*Material Grid*@
+                                        <div id="MaterialListGrid" class="w-100 dt-tbl-section">
+                                            @{
+                                                Html.RenderPartial("_MaterialListGrid.cshtml");
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-five">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingFive">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage5" aria-expanded="false" aria-controls="collapseFive">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                Remarks
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage5" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFive" data-parent="#custom-accordion-five">
+                                    <div class="card-body">
+                                        <div class="w-100 dt-tbl-section">
+                                            <label>Remarks</label>
+                                            @Html.TextAreaFor(m => m.SaveFormV2Model.Remarks, new { @Id = "formV2Remarks", @class = "form-control " })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion custom-accordion mb-3" id="custom-accordion-four">
+                            <div class="card mb-0">
+                                <div class="card-header" id="headingFour">
+                                    <h5 class="m-0">
+                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage4" aria-expanded="false" aria-controls="collapseFour">
+                                            <span class="float-left">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                            </span>
+                                            <span class="float-left" style="padding: 4px 8px;">
+                                                User Details
+                                            </span>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="AccordPage4" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFour" data-parent="#custom-accordion-four">
+                                    <div class="card-body">
+                                        <div id="FormV2Users" class="w-100 dt-tbl-section">
+                                            @{
+                                                Html.RenderPartial("_UserDetails.cshtml");
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @{
+                        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+            {
+                Form = "FormV2",
+                RefId = Model.SaveFormV2Model.PkRefNo,
+                Stage = Model.SaveFormV2Model.Status
+            });
+                    }
+                </div>
+            </div>
+        </div>
+        @{
+            var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+        }
+        @Html.HiddenFor(m => m.SaveFormV2Model.PkRefNo, new { @id = "FV2PkRefNo", @class = "form-control" })
+        @Html.HiddenFor(m => m.viewm, new { @id = "hdnView", @class = "form-control" })
+        @Html.HiddenFor(m => m.MaxNo, new { @id = "hdnMaxNo", @class = "form-control" })
+
+
+
+        @Html.HiddenFor(m => m.SaveFormV2Model.SubmitSts, new { @id = "hdnstatus", @class = "form-control" })
+        @Html.Hidden("hdnNo", new { @id = "hdnNo", @class = "form-control" })
+        <div class="col-md-12 float-right text-right custom-footer">
+            <div id="val-summary-displayer"></div>
+            <button type="button" id="btnFrmV2Back" class="btn btn-sm btn-outline-theme" onclick="GoBack()"> Cancel </button>
+            <button id="saveFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Save </button>
+            @if (isSubmit && Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Saved)
+            {
+                <button id="SubmitFormV2Btn" type="button" class="btn btn-sm btn-themebtn"> Submit </button>
+            }
+
+            @if (IsApproved && (Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Submitted || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Rejected))
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Vetted By');"> Approved / Verify </button>
+            }
+            else if (IsApproved && (Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Verified || Model.SaveFormV2Model.Status == RAMMS.Common.StatusList.FormV2Rejected))
+            {
+                <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Facilitated By');"> Approved / Facilitate </button>
+            }
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="FormV2MaterialModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="FormV2MaterialModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormV2MaterialModalid"> Add Materials </h5>
+                <button type="button" class="close" onclick="GoBackMat()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+            </div>
+            @* Patial View for add Class to bind data in partial view *@
+            <div id="div-mat-container">
+                @{
+                    //  Html.RenderPartial("_MaterialAdd.cshtml", Model.FormV2Material);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="FormV2EquipModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="FormV2EquipModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormV2EquipModalid"> Add Equipment </h5>
+                <button type="button" class="close" onclick="GoBackEquip()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+            </div>
+
+
+            @* Patial View for add Class to bind data in partial view *@
+            <div id="div-equip-container">
+                @{
+                    //Html.RenderPartial("_EquipAdd.cshtml", Model.FormV2Equip);
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="FormV2LabourModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="FormV2LabourModalid" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="FormV2LabourModalid"> Add Labour </h5>
+                <button type="button" class="close" onclick="GoBackLab()" aria-label="Close"><span aria-hidden="true"> &times;</span></button>
+            </div>
+            @* Patial View for add Class to bind data in partial view *@
+            <div id="div-lab-container">
+                @{
+                    //Html.RenderPartial("_LabourAdd.cshtml", Model.FormV2Labour);
+                }
+            </div>
+        </div>
+    </div>
+</div>

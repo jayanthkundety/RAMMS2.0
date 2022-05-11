@@ -44,7 +44,7 @@ namespace RAMMS.Domain.Models
         public string FwdAuditLog { get; set; }
 
         public virtual RmIwFormW1 FwdFw1PkRefNoNavigation { get; set; }
-        public virtual RmIwWorksDeptMaster FwdPkRefNoNavigation { get; set; }
+        public virtual RmIwWorksDeptMaster FwdIwWrksDept { get; set; }
         public virtual ICollection<RmIwFormWdDtl> RmIwFormWdDtl { get; set; }
     }
 }

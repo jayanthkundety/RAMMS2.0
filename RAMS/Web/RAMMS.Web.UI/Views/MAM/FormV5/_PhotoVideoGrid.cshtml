@@ -1,0 +1,81 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="w-100 position-relative in-tbl-btns">
+            <div class="grid-btns">
+                <button type="button" id="btnPhotoVideoModal" class="btn btn-sm btn-themebtn" onclick="ClearFormV5Dtl()" data-toggle="modal" data-target="#PhotoVideoModal" title="Add New">
+                    <span class="intbl-add-icon"></span>
+                </button>
+
+            </div>
+            <table id="PhotoVideoGridView" class="table w-100 nowrap">
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var table = null;
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
+    isModifyPerm = '';
+    isDeletePerm = '';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV5DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV5Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV5Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            return full["submitSts"] == true ? viewaction : actionSection;
+        }
+    };
+    var fileNameFrmCol = { data: "fileNameFrm", name: "FileNameFrm", title: "File Name From", autoWidth: true,  sortable: true };
+    var fileNameToCol = { data: "fileNameTo", name: "FileNameTo", title: "File Name To", autoWidth: true, sortable: true };
+    var descCol = { data: "desc", name: "Desc", title: "Description(If Any)", autoWidth: true, sortable: true };
+    var downloadCol = { data: null, name: "ImageFilenameSys", title: "Download", autoWidth: true, sortable: true, render: function (data, type, full) { return "<a href='../" + data.imageFilenameUpload + "' target='_blank'>" + data.imageFilenameSys +"</a>" } };
+
+    table_columns.push(actionCol);
+    table_columns.push(fileNameFrmCol);
+    table_columns.push(fileNameToCol);
+    table_columns.push(descCol);
+    table_columns.push(downloadCol);
+
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        if (table != null) {
+            table.destroy();
+            $('#PhotoVideoGridView').empty();
+        }
+
+
+        table =  $('#PhotoVideoGridView').DataTable({
+            ajax: {
+                url: "/MAM/GetV5DtlGridList?V5PkRefNo=" + $("#FormV5_PkRefNo").val(),
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+
+       // table.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+    });
+</script>

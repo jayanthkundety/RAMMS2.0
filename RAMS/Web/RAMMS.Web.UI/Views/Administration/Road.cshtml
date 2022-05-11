@@ -9,10 +9,10 @@
     string strPageId = ViewBag.PageID;
 }
 @section Scripts{
-    <script type="text/javascript" src="~/assets/js/Views/Administrator.js" asp-append-version="true"></script>
-    <script type="text/javascript">
-        jsAdmin.PageName = "@strPageId";
-    </script>
+<script type="text/javascript" src="~/js/RoadMaster.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    jsAdmin.PageName = "@strPageId";
+</script>
 }
 <!--BreadCrumbs-->
 <div class="row">
@@ -23,6 +23,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
                         <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Administration</li>
                         <li class="breadcrumb-item" aria-current="page">
                             List of Road
                         </li>
@@ -37,12 +38,11 @@
 <div class="search-section">
     <div class="row justify-content-center mb-1">
         <div class="col-sm-12 col-lg-8 col-lg-6 col-xl-6 search-content" searchSection>
-            <div class="input-group">
-                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "RoadSmartSearch", placeholder = "Search...", @class = "form-control" })*@
-                <input type="text" placeholder="Search..." class="form-control" param="KeySearch" />
+            <div class="input-group">                
+                <input type="text" placeholder="Search..." autofocus class="form-control" param="KeySearch" />
                 <div class="input-group-append">
                     <div class="btn-group">
-                        <button onclick="@(Model.Name + ".Search")(this,'');" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                        <button id="btnSearch" onclick="@(Model.Name + ".Search")(this,'test');" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
                         @*<button id="" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
                             <button id="" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>*@
                     </div>
@@ -150,130 +150,189 @@
         <div class="modal-content border-0">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Add Road
+                    Add Road Details
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="col-lg-12">
+                <div id="divSave"
+                     class="col-lg-12">
                     <div class="row">
+                        <input id="hdnPkRefNo" type="hidden" />
+                        <div class="form-group col-lg-6">
+                            @Html.Label("Feature Id", "Feature Id")
+                            <input id="txtFeatureId"
+                                   type="text"
+                                   disabled
+                                   class="form-control validate {required, Feature Id}" />
+                        </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Division", "Division")
-                            <select class="form-control">
-                                <option></option>
+                            <select id="ddlDivision"
+                                    class="featureid form-control validate {required, Division}">
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Division Code", "Division Code")
-                            <input type="text" class="form-control" />
+                            <input id="txtDivisionCode"
+                                   disabled
+                                   type="text"
+                                   class="form-control" />
                         </div>
                         <div class="form-group col-lg-3">
-                            @Html.Label("RMU", "RMU")
-                            <select class="form-control">
-                                <option></option>
+                            @Html.Label("RMU Name", "RMU Name")
+                            <select id="ddlRmu"
+                                    class="featureid form-control validate {required, RMU Name}">
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("RMU Code", "RMU Code")
-                            <input type="text" class="form-control" />
+                            <input id="txtRmuCode"
+                                   disabled
+                                   type="text"
+                                   class="form-control" />
                         </div>
                         <div class="form-group col-lg-3">
-                            @Html.Label("Section", "Section")
-                            <select class="form-control">
-                                <option></option>
+                            @Html.Label("Section Name", "Section Name")
+                            <select id="ddlSection"
+                                    class="featureid form-control validate {required, Section Name}">
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Section Code", "Section Code")
-                            <input type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-3">
-                            @Html.Label("Road Category", "Road Category")
-                            <select class="form-control">
-                                <option></option>
-                            </select>
+                            <input id="txtSectionCode"
+                                   disabled
+                                   type="text"
+                                   class="form-control" />
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Road Category Code", "Road Category Code")
-                            <input type="text" class="form-control" />
+                            <input id="txtRoadCategoryCode"
+                                   type="text"
+                                   class="form-control" />
+                        </div>
+                        <div class="form-group col-lg-3">
+                            @Html.Label("Road Category", "Road Category")
+                            <input type="text"
+                                   id="txtRoadCategoryName"
+                                   class="form-control validate {required, Road Category}" />
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Road Code", "Road Code")
-                            <input type="text" class="form-control" />
+                            <input id="txtRoadCode"
+                                   type="text"
+                                   class="featureid form-control validate {required, Road Code}" />
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Road Name", "Road Name")
-                            <input type="text" class="form-control" />
+                            <input id="txtRoadName"
+                                   type="text"
+                                   class="form-control validate {required, Road Name}" />
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Location From", "Location From")
-                            <input type="text" class="form-control" />
+                            <input id="txtLocationFrom"
+                                   type="text"
+                                   class="form-control validate {required, Location From}" />
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Location To", "Location To")
-                            <input type="text" class="form-control" />
+                            <input id="txtLocationTo"
+                                   type="text"
+                                   class="form-control validate {required, Location To}" />
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Chainage From", "Chainage From")
                             <div class="row">
                                 <div class="col-6 float-left pr-0">
-                                    <input class="form-control" type="text" value="" />
+                                    <input id="txtChainageFromKm"
+                                           onkeypressvalidate="num,maxcl,5,Chainage From Km should be an numeric"
+                                           class="form-control validate {required, Chainage From Km}"
+                                           type="text"
+                                           value"" />
                                 </div>
-                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                <div class=" col-1 float-left p-0 text-center font-weight-bold lh30">
+                                    +
+                                </div>
                                 <div class="col-5 float-left pl-0">
-                                    <input class="form-control" type="text" value="" />
+                                    <input id="txtChainageFromM"
+                                           onkeypressvalidate="num,maxcl,3,Chainage From M should be an numeric"
+                                           class="form-control validate {required, Chainge From M}"
+                                           type="text"
+                                           value="" />
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
-                            @Html.Label("Chainage To", "Chainage To")
+                        <div class=" form-group col-lg-3">
+                            @Html.Label("Chainage To","Chainage To" )
                             <div class="row">
                                 <div class="col-6 float-left pr-0">
-                                    <input class="form-control" type="text" value="" />
+                                    <input id="txtChaingeToKm"
+                                           onkeypressvalidate="num,maxcl,5,Chainage To Km should be an numeric"
+                                           class="form-control validate {required, Chainage To Km}"
+                                           type="text"
+                                           value="" />
+
+
                                 </div>
                                 <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
                                 <div class="col-5 float-left pl-0">
-                                    <input class="form-control" type="text" value="" />
+                                    <input id="txtChainageToM"
+                                           onkeypressvalidate="num,maxcl,3,Chainage To M should be an numeric"
+                                           class="form-control validate {required, Chainage To M}"
+                                           type="text"
+                                           value="" />
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
-                            @Html.Label("Total Length (in KM)", "Total Length (in KM)")
-                            <input type="text" class="form-control" />
-                        </div>
-                        <div class="form-group col-lg-3">
-                            @Html.Label("Paved Length (in KM)", "Paved Length (in KM)")
-                            <input type="text" class="form-control" />
+                        <div class=" form-group col-lg-3">
+                            @Html.Label("Paved Length (in KM)","Paved Length (in KM)" )
+                            <input id="txtPavedLength"
+                                   type="text"
+                                   onkeypressvalidate="decimal,maxcl,5,Paved Length (in KM)"
+                                   class="form-control validate {required,Paved Length (in KM)}" />
                         </div>
                         <div class="form-group col-lg-3">
                             @Html.Label("Unpaved Length (in KM)", "Unpaved Length (in KM)")
-                            <input type="text" class="form-control" />
+                            <input id="txtUnpavedLength"
+                                   onkeypressvalidate="decimal,maxcl,5,Unpaved Length (in KM)"
+                                   type="text"
+                                   class="form-control validate {required, Unpaved Length (in KM)}" />
                         </div>
-                        <div class="form-group col-lg-3">
-                            @Html.Label("Maintained by", "Maintained by")
-                            <select class="form-control">
-                                <option></option>
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-3" style="display: none;">
                             @Html.Label("Owner", "Owner")
-                            <select class="form-control">
-                                <option></option>
-                            </select>
+                            <select id="ddlOwner" class="form-control"></select>
                         </div>
-                        <div class="form-group col-lg-6 txtarea-80">
+                        <div hidden class="form-group col-lg-9 txtarea-80">
                             @Html.Label("Remarks", "Remarks")
-                            <textarea class="form-control"></textarea>
+                            <textarea id="txtRemarks" class="form-control"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                <button id="btnCancel" type="button" class="alertify-button alertify-button-cancel">
+                    Cancel
+                </button>
+                <button id="btnSave"
+                        type="button"
+                        class="btn btn-sm btn-themebtn">
+                    Submit
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#txtSmartSearch").on('keypress', function (e) {
+            if (e.which == 13)
+            {
+                $("#btnSearch").click();
+            }
+        });
+    });
+</script>

@@ -14,5 +14,9 @@ namespace RAMMS.Web.UI.Models
         public DateTime? W1Date { get; set; }
 
         public string View { get; set; }
+
+        public int WNWGStatus { get; set; }
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using RAMMS.Business.ServiceProvider
 @model RAMMS.Web.UI.Models.FormWCWGModel;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -10,6 +11,8 @@
         $("#formWcIssuedBy").trigger("change");
 
     });
+
+
 
      //if ($("#hdnWcView").val() == "1") {
      //    $("#divFormWc *").prop("disabled", true);
@@ -196,11 +199,25 @@
     background:#fff;
     width: 96%;
     height: 45px;">
-    <button type="button" class="btn btn-sm btn-outline-theme" id="clearWCBtn" onclick="return ClearWC()">Clear</button>
+
     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" id="saveWCBtn" onclick="return checkW2Exist()">Save</button>
-    @if (!string.IsNullOrEmpty(Model.FormWC.Status) && Model.FormWC.Status == RAMMS.Common.StatusList.FormWCSaved)
+
+    @{
+        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+        var isModifyPerm = security.IsPCModify(ModuleNameList.Instructed_Works) ? "" : "hidden";
+    }
+    @if (isModifyPerm == "")
     {
-        <button type="button" class="btn btn-sm btn-themebtn" id="submitWCBtn">Submit</button>
+
+        @if ((string.IsNullOrEmpty(Model.FormWC.Status) || Model.FormWC.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
+        {
+            <button type="button" class="btn btn-sm btn-outline-theme" id="clearWCBtn" onclick="return ClearWC()">Clear</button>
+            <button type="button" class="btn btn-sm btn-themebtn" id="saveWCBtn" onclick="return checkW2Exist()">Save</button>
+        }
+        @if ((security.IsInstructedWorkEngg || isJKRS) && (!string.IsNullOrEmpty(Model.FormWC.Status) && Model.FormWC.Status == RAMMS.Common.StatusList.FormWCSaved))
+        {
+            <button type="button" class="btn btn-sm btn-themebtn" id="submitWCBtn">Submit</button>
+        }
+
     }
 </div>

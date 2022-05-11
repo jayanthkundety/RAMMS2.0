@@ -40,7 +40,7 @@
                     }
 
                     <label class="checkbox-inline py-3 px-2"><input type="checkbox" class="disabled dvalidate {required, Agreed Nego Letter Yes }" id="fecmAgrY" onclick="toggleAgr(1)" value="Yes" @_AgreedNegoLetrY> Yes</label>
-                    <label class="checkbox-inline"><input type="checkbox"  class="disabled dvalidate {required, Agreed Nego Letter No }" id="fecmAgrN" onclick="toggleAgr(0)" value="No" @_AgreedNegoLetrN> No</label>
+                    <label class="checkbox-inline"><input type="checkbox" class="disabled dvalidate {required, Agreed Nego Letter No }" id="fecmAgrN" onclick="toggleAgr(0)" value="No" @_AgreedNegoLetrN> No</label>
 
                 </div>
 
@@ -61,7 +61,7 @@
 
                 <div class="form-group col-lg-2">
                     <label for="RMU">PROGRESS %</label>
-                    @Html.TextBoxFor(m => m.FECM.ProgressPerc, new { @id = "fecmProgress", @maxlength=5, @class = "form-control allow_numeric  svalidate {required, PROGRESS % }" })
+                    @Html.TextBoxFor(m => m.FECM.ProgressPerc, new { @id = "fecmProgress", @maxlength = 5, @class = "form-control allow_numeric  svalidate {required, PROGRESS % }" })
                 </div>
 
                 <div class="form-group col-lg-2 px-4">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-lg-12">  
+                <div class="form-group col-lg-12">
                     <label for="RMU"> Remarks</label>
                     @Html.TextAreaFor(m => m.FECM.Remark, new { @id = "fecmRemark", @class = "form-control  svalidate {required, Remark }" })
                 </div>
@@ -103,13 +103,34 @@
     </div>
 </div>
 <script type="text/javascript">
+
+    //   FECM Change Request
+   // var WNWGStatus = "@Model.WNWGStatus";
+ 
+
     $(document).ready(function () {
         if ($("#hdnFecmView").val() == "1") {
             $("#div_fecmload *").prop("disabled", true);
             $("#saveFCEMBtn").hide();
             $("#btnFecMClear").hide();
-            $("#submitFCEMBtn").hide();
+           // $("#submitFCEMBtn").hide();
+
+        //   FECM Change Request
+            //if (WNWGStatus == 0) {
+            //    $("#submitFCEMBtn").show();
+            //    $("#fecmProgress").prop("disabled", false);
+            //    $("#fecmRemark").prop("disabled", false);
+            //}
+            //else {
+            //    $("#fecmProgress").prop("disabled", true);
+            //    $("#fecmRemark").prop("disabled", true);
+            //    $("#submitFCEMBtn").hide();
+            //}
         }
+
+       
+     
+
     });
 
     function saveFECM(){
@@ -156,7 +177,7 @@
     }
 
     function SaveFCEM(submit) {
-        
+
         if (!checkW2Exist()) return;
 
         if (submit) {
@@ -181,7 +202,7 @@
                  $("fecmAgrN .validate").addClass("dvalidate");
                  $("#fecmAgrN").removeClass("validate");
             }
-            
+
         }
 
         if (!ValidatePage('#divFecm'))
@@ -243,7 +264,7 @@
                     //$("#FW2HRef_No").val(data)
                     if (submit) {
                         $("#saveFCEMBtn").hide();
-                        $("#submitFCEMBtn").hide();
+                       // $("#submitFCEMBtn").hide();
                         app.ShowSuccessMessage('Successfully Submitted', false);
                     }
                     else {

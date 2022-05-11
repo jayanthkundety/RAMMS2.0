@@ -529,16 +529,16 @@
             $("#photoType").val("").trigger("chosen:updated");
         });
 
-        $("#AssetUploadBtn").click(function (e) {
+        $("#AssetUploadBtn").click(function (e) {debugger;
             var type = $("#photoType").val();
             var RefNo = $("#formAFadPKRefNO").val();
             if (RefNo != "0" && RefNo != "" && RefNo != undefined) {
 
                 var formData = new FormData();
-                formData.append("AssetId", document.getElementById("formAFadPKRefNO").value);
+                formData.append("assetId", document.getElementById("formAFadPKRefNO").value);
                 for (var i = 0, len = filesToUpload.length; i < len; i++) {
-                    formData.append("FormFile", filesToUpload[i].file);
-                    formData.append("PhotoType", filesToUpload[i].fileType);
+                    formData.append("formFile", filesToUpload[i].file);
+                    formData.append("photoType", filesToUpload[i].fileType);
                 }
                 InitAjaxLoading();
                 $.ajax(
@@ -615,10 +615,10 @@
                         $("#formAFadPKRefNO").val(data);
 
                         var formData = new FormData();
-                        formData.append("AssetId", document.getElementById("formAFadPKRefNO").value);
+                        formData.append("assetId", document.getElementById("formAFadPKRefNO").value);
                         for (var i = 0, len = filesToUpload.length; i < len; i++) {
-                            formData.append("FormFile", filesToUpload[i].file);
-                            formData.append("phototype", filesToUpload[i].fileType);
+                            formData.append("formFile", filesToUpload[i].file);
+                            formData.append("photoType", filesToUpload[i].fileType);
                         }
                         InitAjaxLoading();
                         $.ajax(

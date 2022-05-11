@@ -16,6 +16,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<FormWNResponseDTO> FindFormWNByID(int id);
         Task<int> SaveFormWN(FormWNResponseDTO FormW1);
         Task<int> Update(FormWNResponseDTO FormW1);
+        Task<int> DeActivateFormWN(int formNo);
 
     }
 

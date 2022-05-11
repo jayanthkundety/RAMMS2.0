@@ -6,8 +6,19 @@
     ViewBag.TabTitle = "Form W2 -  Initiation of Instructed Work";
     ViewData["Title"] = "Form W2 - Initiation of Instructed Work";
     Layout = null;// "~/Views/Shared/_PortalLayout.cshtml";
+
+    var ActiveWD = Model.FormName == "FormWD" ? "active" : "";
+    var ActiveWN = Model.FormName == "FormWN" ? "active" : "";
+    var ShowWD = Model.FormName == "FormWD" ? "show" : "";
+    var ShowWN = Model.FormName == "FormWN" ? "show" : "";
 }
 <script src="~/js/FormWDWN.js" type="text/javascript"></script>
+<style>
+    .disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+</style>
 
 @using (Html.BeginForm())
 {
@@ -16,21 +27,21 @@
             <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
                 <ul class="nav nav-tabs tabbed round">
 
-                    <li class="nav-item">
-                        <a href="#list_one" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                    <li class="nav-item" id="tabWD">
+                        <a href="#list_one" data-toggle="tab" aria-expanded="false" class="nav-link @ActiveWD">
                             <span class="">
                                 Form WD
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#list_two" data-toggle="tab" aria-expanded="false" class="nav-link">
+                    <li class="nav-item" id="tabWN">
+                        <a href="#list_two" data-toggle="tab" aria-expanded="false" class="nav-link @ActiveWN">
                             <span class="">
                                 Form WN
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="tabAttach">
                         <a href="#AccordPagegallery" data-toggle="tab" aria-expanded="false" class="nav-link" onclick="javascript:GetImageList('@Model.FormW1.PkRefNo','FormWDWN');">
                             <span class="">
                                 Attachment
@@ -53,18 +64,18 @@
                 <div class="col-lg-12">
                     <div class="tab-content mh-250">
 
-                        <div class="tab-pane show active " id="list_one">
+                        <div class="tab-pane  @ShowWD @ActiveWD" id="list_one">
                             <div id="div_wdload">
                                 @{
-                                   Html.RenderPartial("_FormWD.cshtml", Model);
+                                    Html.RenderPartial("_FormWD.cshtml", Model);
                                 }
                             </div>
                         </div>
 
-                        <div class="tab-pane" id="list_two">
+                        <div class="tab-pane @ShowWN @ActiveWN" id="list_two">
                             <div id="div_wnload">
                                 @{
-                                  Html.RenderPartial("_FormWN.cshtml", Model);
+                                    Html.RenderPartial("_FormWN.cshtml", Model);
                                 }
                             </div>
                         </div>
@@ -82,6 +93,9 @@
 
     @Html.HiddenFor(m => m.ClauseDetails);
     @Html.HiddenFor(m => m.FormWD.IwRefNo);
+    @Html.HiddenFor(m => m.FormWN.IwRefNo);
+    @Html.HiddenFor(m => m.FormWD.IwProjectTitle);
+    @Html.HiddenFor(m => m.FormWN.IwProjectTitle);
     @Html.HiddenFor(m => m.FormWD.PkRefNo);
     @Html.HiddenFor(m => m.FormWN.PkRefNo);
     @Html.HiddenFor(m => m.FormWD.Fw1PkRefNo);
@@ -95,20 +109,30 @@
 
     <input type="hidden" id="hdnWDPkRefNo" />
     <input type="hidden" id="hdnWNPkRefNo" />
+    <input type="hidden" id="hdnPkRefNo" />
     <input type="hidden" id="hdnView" value="@Model.View" />
+    <input type="hidden" id="hdnFormWDStatus" value="@Model.FormWD.Status" />
+    <input type="hidden" id="hdnFormWNStatus" value="@Model.FormWN.Status" />
     <input type="hidden" id="hdnDtPervCompl">
- 
+    <input type="hidden" id="hdnFormType" value="FormWDWN">
+
 }
 <script>
 
     $(document).ready(function () {
-         
+
+       
+
         process.Init("FormWD", "@Model.FormWD.Status", @Model.FormWD.PkRefNo);
         process.Init("FormWN", "@Model.FormWN.Status", @Model.FormWN.PkRefNo);
 
         $('#FormWD_IwRefNo').val("@Model.FormW1.IwRefNo")
+        $('#hdnPkRefNo').val("@Model.FormW1.PkRefNo")
         $('#FormWD_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
+        $('#FormWN_IwRefNo').val("@Model.FormW1.IwRefNo")
         $('#FormWN_Fw1PkRefNo').val("@Model.FormW1.PkRefNo")
+        $('#FormWD_IwProjectTitle').val("@Model.FormW1.ProjectTitle")
+        $('#FormWN_IwProjectTitle').val("@Model.FormW1.ProjectTitle")
 
         $('#ddlWDUserid').val("@Model.FormWD.UseridIssu");
         $('#ddlWDUserid').trigger('chosen:updated');
@@ -117,6 +141,42 @@
         $('#ddlWNUserid').val("@Model.FormWN.UseridIssu");
         $('#ddlWNUserid').trigger('chosen:updated');
         $("#ddlWNUserid").trigger("change");
+
+        $("#ddlWDUserid").chosen('destroy');
+        $("#ddlWDUserid").prop("disabled", true);
+        $("#ddlWNUserid").chosen('destroy');
+        $("#ddlWNUserid").prop("disabled", true);
+
+        if ($("#hdnFormWDStatus").val() == "Saved") {
+            $("#tabWN").addClass("disabled");
+        }
+        else if ($("#hdnFormWDStatus").val() == "Submitted") {
+            $("#FormWDpage *").prop("disabled", true);
+
+            $("#FormWD_IwWrksDeptId").chosen('destroy');
+            $("#FormWD_IwWrksDeptId").prop("disabled", true);
+
+            $("#btnSaveWD").hide();
+            $("#btnSubmitWD").hide();
+        }
+
+        if ($("#hdnFormWNStatus").val() == "Saved" && $("#hdnFormWDStatus").val() == "") {
+            $("#tabWD").addClass("disabled");
+        }
+        else if ($("#hdnFormWNStatus").val() == "Submitted") {
+            if ($("#hdnFormWDStatus").val() == "")
+                $("#tabWD").addClass("disabled");
+
+           $("#FormWNpage *").prop("disabled", true);
+
+            $("#FormWN_IwWrksDeptId").chosen('destroy');
+            $("#FormWN_IwWrksDeptId").prop("disabled", true);
+
+            $("#btnSaveWN").hide();
+            $("#btnSubmitWN").hide();
+        }
+
+
     });
 
     $("#hdnDtPervCompl").val("@Model.FormWD.DtPervCompl");

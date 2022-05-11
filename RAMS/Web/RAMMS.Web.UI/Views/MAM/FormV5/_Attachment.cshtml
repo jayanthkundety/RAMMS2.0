@@ -1,0 +1,185 @@
+﻿<div class="col-12 d-flex justify-content-center align-items-center">
+    <div class="row">
+        <div class="form-group col-lg-12 mt-4">
+            <form id="fileupload" action="#" method="POST" enctype="multipart/form-data">
+                <div class="files" id="files1" style="text-align:center">
+                    <span class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" id="FormBrowseBtn">
+                        Browse files here to upload
+                        <input type="file" id="files" name="files1" />
+                    </span>
+                    <br />
+                    <br>
+                    <ul id="photolist" class="fileList"></ul>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="divImg" class="row">
+    <div class="mt-3 col-md-2">
+        <output id="Filelist" style="display:inline-flex"></output>
+    </div>
+</div>
+
+<div class="text-center mt-2">
+    <button type="button" id="btnImageUpload" onclick="UploadModalClose()" class="btn btn-sm btn-themebtn">Upload</button>
+</div>
+
+<script>
+    var filesToUpload = [];
+
+    $(document).ready(function () {
+        $("#files1").addClass("disabled");
+        document.getElementById("FormBrowseBtn").disabled = true;
+        document.getElementById("btnImageUpload").disabled = true;
+
+        if ($("#hdnView").val() == "1") {
+            $("#addAttachment").hide();
+        }
+    });
+
+    $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
+        var fileIdCounter = 0;
+
+        this.closest(".files").change(function (evt) {
+            var output = [];
+            
+            for (var i = 0; i < evt.target.files.length; i++) {
+                fileIdCounter++;
+                var file = evt.target.files[i];
+                var fileId = sectionIdentifier + fileIdCounter;
+
+                var ext = file.name.split('.').pop().toLowerCase();
+
+
+                if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                    app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                    return
+                }
+            }
+
+            filesToUpload.push({
+                id: fileId,
+                file: file,
+            });
+
+            if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
+                var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
+            }
+            else {
+                var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[0]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+            }
+
+            $(this).children(".fileList")
+                .append(output.join(""));
+
+            //reset the input to null - nice little chrome bug!
+            evt.target.value = null;
+            document.getElementById("btnImageUpload").disabled = false;
+        });
+
+        $(this).on("click", ".removeFile", function (e) {
+            e.preventDefault();
+            var fileId = $(this).parent().children("a").data("fileid");
+
+            // loop through the files array and check if the name of that file matches FileName
+            // and get the index of the match
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id === fileId)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).parent().remove();
+            if (filesToUpload.length == 0) {
+                document.getElementById("btnImageUpload").disabled = true;
+
+            }
+            else {
+                document.getElementById("files").disabled = false;
+                document.getElementById("btnImageUpload").disabled = false;
+            }
+        });
+
+        this.clear = function () {
+            for (var i = 0; i < filesToUpload.length; ++i) {
+                if (filesToUpload[i].id.indexOf(sectionIdentifier) >= 0)
+                    filesToUpload.splice(i, 1);
+            }
+
+            $(this).children(".fileList").empty();
+        }
+
+        return this;
+    };
+
+
+
+        (function () {
+            
+
+            var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
+
+            $("#imageClear").click(function (e) {
+                filesToUpload.length = 0;
+                $("#photolist li").remove();
+                $("#myModal").modal('hide');
+            });
+
+            $("#btnclose").click(function (e) {
+                filesToUpload.length = 0;
+                $("#photolist li").remove();
+                $("#myModal").modal('hide');
+            });
+
+            $("#btnImageUpload").click(function (e) {
+                var id = $("#FormV5_PkRefNo").val();
+                var formData = new FormData();
+                formData.append("PkRefNo", id);
+
+                for (var i = 0, len = filesToUpload.length; i < len; i++) {
+                    formData.append("FormFile", filesToUpload[i].file);
+                }
+
+                InitAjaxLoading();
+                $.ajax(
+                    {
+                        url: "/MAM/ImageUploadFormV5",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        dataType: 'JSON',
+                        success: function (data) {
+                            HideAjaxLoading();
+
+                            debugger
+                            if (data) {
+                                app.ShowSuccessMessage('Uploaded Successcully', false);
+                                
+                                $('#spnfilename').html(data.filename);
+                                $('#FormV5Dtl_ImageFilenameSys').val(data.filename);
+                                $('#FormV5Dtl_ImageFilenameUpload').val(data.filepath);
+                                $('#FormV5Dtl_ImageUserFilePath').val(data.ext);
+
+
+                                $('#myModal').modal('hide');
+                            }
+                            else {
+                                app.ShowErrorMessage('Upload Failed. Kindly retry later.', false);
+                                HideAjaxLoading();
+                            }
+
+                        },
+                        error: function (data) {
+                            HideAjaxLoading();
+                            app.ShowErrorMessage("Upload Failed. Kindly retry later.")
+
+                        }
+                    }
+                );
+
+            });
+        })()
+</script>

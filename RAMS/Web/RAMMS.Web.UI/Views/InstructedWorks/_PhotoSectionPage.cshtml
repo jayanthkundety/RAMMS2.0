@@ -468,7 +468,7 @@
                     id: fileId,
                     file: file,
                     fileType: fileType
-                });
+                });debugger;
                 if (fileType != 'Others') {
                     if (file.type == "image/png" || file.type == "image/jpeg"|| file.type == "image/jpg") {
                         var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
@@ -554,6 +554,8 @@
         });
 
         $("#btnImageUpload").click(function (e) {
+
+            debugger
             var type = $("#photoType").val();
             var id = $("#hdnPkRefNo").val();
             var formData = new FormData();
@@ -577,6 +579,7 @@
                     dataType: 'JSON',
                     success: function (data) {
                         HideAjaxLoading();
+                        debugger
                         if (data) {
                         app.ShowSuccessMessage('Uploaded Successcully', false);
                         $('#myModal').modal('hide');
@@ -625,7 +628,7 @@
     }
 
     function DeleteImage(pkId) {
-        if ($("#hdnView").val() == "1" || $("#hdnForm").val() == "FormW2") return; 
+        if ($("#hdnView").val() == "1") return; 
         if (app.Confirm("Are you sure you want to delete the record?", function (e) {
             if (e) {
                 InitAjaxLoading();
@@ -637,11 +640,10 @@
                         if (data > 0) {
                             HideAjaxLoading();
                             app.ShowSuccessMessage("Successfully Deleted")
-                            if ($("#hdnFormType").val() == "FormWCWG" || $("#hdnFormType").val() == "FormWDWN"){
-                             GetImageList(id, $("#hdnFormType").val());
-                         }
-                         else
-                            GetImageList( $("#hdnPkRefNo").val(),$("#hdnForm").val());
+                            if (getIsTabForm())
+                                GetImageList($("#hdnPkRefNo").val(), $("#hdnFormType").val());
+                            else
+                                GetImageList($("#hdnPkRefNo").val(), $("#hdnForm").val());
                         }
                         else {
                             HideAjaxLoading();

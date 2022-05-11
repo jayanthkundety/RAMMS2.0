@@ -1,6 +1,7 @@
 ﻿@model RAMMS.Web.UI.Models.FormWDWNModel;
-dt@model RAMMS.Web.UI.Models.FormWDWNModel;
 @using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
 <div class="container-fluid" id="FormWDpage">
     <div class="row">
 
@@ -22,7 +23,7 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                                             <label for="OurRef">
                                                 Name of Division
                                             </label>
-                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "formWCDivisionCode", @class = "form-control svalidate {required, Name of Division}" })
+                                            @Html.DropDownListFor(m => m.FormWD.IwWrksDeptId, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @class = "form-control svalidate {required, Name of Division}" })
                                         </div>
                                         <div class="form-group col-lg-4">
                                             <label for="OurRef">Certificate of Delay and Extension of Time No. </label>
@@ -95,15 +96,18 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                                     <div class="top">
                                         <div class="dataTables_length w-100">
 
-                                            <div class="dataTables_scrollBody" style="min-height:auto!important">
+                                            <div class="" style="min-height:auto!important">
 
                                                 <table id="tblClause" class="table w-100 nowrap dataTable table-bordered">
+
                                                     <tr style="text-align: left; color:#152e4d;background-color: #c8e1ff">
-                                                        <th> <span style="width:60%; float:left">Reason/reasons</span></th>
-                                                        <th>Clause</th>
-                                                        <th>Extension of Time</th>
-                                                        <th>Action</th>
+                                                        <th style="width:60%;"> <span style="width:100%; float:left">Reason/reasons</span></th>
+                                                        <th style="width:20%;">Clause</th>
+                                                        <th style="width:10%;">Extension of Time</th>
+                                                        <th style="width:10px;">Action</th>
                                                     </tr>
+
+
                                                     @{
                                                         foreach (var item in Model.FormWDDtl)
                                                         {
@@ -131,7 +135,7 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                                                     <!-- Modal content-->
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
 
                                                         </div>
                                                         <div id="divClause" class="modal-body">
@@ -145,14 +149,14 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                                                                     <input id="txtClause" type="text" class="form-control" value="" />
                                                                 </div>
                                                                 <div class="col-lg-6">
-                                                                    <label>Extension of Time</label>
-                                                                    <input id="txtExtension" type="number" class="form-control " value="" />
+                                                                    <label>Period of Delay and Extension of Time</label>
+                                                                    <input id="txtExtension" class="form-control " value="" />
                                                                 </div>
 
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12 mb-2 float-right text-right custom-footer">
-                                                            <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                                                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
                                                             <button type="button" class="btn btn-sm btn-themebtn" onclick="AddClauseData();">Submit</button>
                                                         </div>
                                                     </div>
@@ -170,7 +174,7 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
                     <div class="px-3  py-2 float-left w-100 border">
                         <p class="float-left mt-3" style="line-height: 30px; font-size: 17px;">
                             <span class="float-left px-1">The Date for Completion is now therefore extended to</span>
-                            @Html.EditorFor(m => m.FormWD.DtExtn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold svalidate {required,Date of Completion}", @type = "date", @style = "width:190px" } })
+                            @Html.EditorFor(m => m.FormWD.DtExtn, "{0:dd/MM/yyyy}", new { htmlAttributes = new { @class = "float-left form-control border-left-0 border-top-0 border-right-0 border-bottom font-weight-bold svalidate {required,Date of Completion}", @type = "date", @style = "width:190px", @onchange = "CompDtValidation()" } })
 
                         </p>
                     </div>
@@ -231,11 +235,26 @@ dt@model RAMMS.Web.UI.Models.FormWDWNModel;
     width: 96%;
     height: 45px;">
 
-    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Close</button>
-    <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','')">Save</button>
-    @if (!string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
+    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackWD()">Close</button>
+
+    @if (security.IsPCModify(ModuleNameList.Instructed_Works))
     {
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
+
+        var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+
+        if (Model.FormWD.Status != "Submitted")
+        {
+            <button type="button" class="btn btn-sm btn-outline-theme" id="clearWDBtn" onclick="return ClearWD()">Clear</button>
+        }
+
+        if ((string.IsNullOrEmpty(Model.FormWD.Status) || Model.FormWD.Status == "Saved") && (security.IsInstructedWorkEngg || isJKRS))
+        {
+            <button type="button" class="btn btn-sm btn-themebtn" id="btnSaveWD" onclick="return  SaveWD('','')">Save</button>
+        }
+        if (isJKRS && !string.IsNullOrEmpty(Model.FormWD.Status) && Model.FormWD.Status == RAMMS.Common.StatusList.FormWDSaved)
+        {
+            <button type="button" id="btnSubmitWD" class="btn btn-sm btn-themebtn" onclick="return SaveWD('','Submitted')">Submit</button>
+        }
     }
 </div>
 

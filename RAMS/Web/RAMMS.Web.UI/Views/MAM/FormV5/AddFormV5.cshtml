@@ -1,0 +1,535 @@
+﻿@model RAMMS.Web.UI.Models.FormV5Model;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewBag.TabTitle = "MAM";
+    ViewData["Title"] = "MAM";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+
+    bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+    var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+
+}
+
+<script src="~/js/FormV5.js"></script>
+<style>
+
+    .gallery {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .modal2.fade.in ~ .modal-backdrop.fade.in {
+        opacity: .1;
+        background-color: #f00;
+    }
+
+    .uploadfile {
+        font-size: 18px;
+    }
+
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+        font-size: 1rem
+    }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+
+    .disabled #FormBrowseBtn {
+        opacity: .65;
+    }
+</style>
+@using (Html.BeginForm())
+{
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div class="form-group mb-0" style="width:400px; float:left">
+                        <span style="width:100px;float:left;"> <label for="Form_C1_C2_No_" style="padding: .5rem .5rem 0 !important;">Reference No</label></span>
+                        <span style="width:300px; float:left">
+                            @Html.TextBoxFor(m => m.FormV5.RefId, new { @readonly = true, @class = "form-control", style = "width:300px;" })
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body mh-182 pt-0 pb-0">
+                <div class="col-lg-12">
+                    <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
+                        <div id="accordion" class="col-lg-12">
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingZero">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Form V5
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="form-group col-lg-10 col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <div class="row">
+                                                                <div class="col-6 form-group pr-lg-0">
+                                                                    <label for="RMU">RMU</label>
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV5.Rmu, (IEnumerable
+    <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "ddlrmu", @class = "form-control validate {required, RMU}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6 mb-0">
+                                                                    <label for="RMU_Name">RMU Name</label>
+                                                                    @Html.TextBoxFor(m => m.FormV5.RmuName, new { @Id = "ddlrmuDesc", @readonly = "readonly", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <div class="row">
+                                                                <div class="col-6 form-group px-0">
+                                                                    <label for="RMU">Section Code</label>
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV5.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Code", new { @Id = "ddlSecCode", @class = "form-control validate {required, Section Code}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6 mb-0">
+                                                                    <label for="RMU_Name">Section Name</label>
+                                                                    @Html.TextBoxFor(m => m.FormV5.SecName, new { @readonly = "readonly", @class = "form-control " })
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-2 form-group px-0">
+                                                            <label for="RMU"> Division Code</label>
+                                                            @Html.TextBoxFor(m => m.FormV5.Division, new { @readonly = "readonly", @class = "form-control " })
+                                                        </div>
+                                                        <div class="col-lg-5">
+
+                                                            <div class="row">
+
+                                                                <div class="form-group col-lg-6">
+                                                                    <label for="Name_of_Crew_Supervisor">Crew</label>
+                                                                    @Html.DropDownListFor(Ahdr => Ahdr.FormV5.Crew, (IEnumerable
+    <SelectListItem>)ViewData["Supervisor"], "Select Users", new { @Id = "ddlCrew", @class = "form-control  validate {required, Name of Crew Supervisor}" })
+
+                                                                </div>
+                                                                <div class="form-group col-lg-6">
+                                                                    <label for="Name_of_Crew_Supervisor">Crew Name</label>
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV5.Crewname, "", new { @readonly = "readonly", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 form-group px-0">
+                                                                    <label for="Ref_No_">Activity Code</label>
+                                                                    @Html.DropDownListFor(Adtl => Adtl.FormV5.ActCode, (IEnumerable
+    <SelectListItem>)ViewData["ActCode"], "Select Activity", new { @Id = "ddlActCode", @class = "form-control validate {required, Activity Code}" })
+
+                                                                </div>
+                                                                <div class="col-lg-6 form-group">
+                                                                    <label for="Ref_No_">Activity Name</label>
+                                                                    @Html.TextBoxFor(Dhdr => Dhdr.FormV5.ActName, "", new { @readonly = "readonly", @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-2 form-group px-0">
+                                                            <label for="Division_Code">Date </label>
+                                                            @Html.EditorFor(m => m.FormV5.Dt, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                                    <button id="btnFindDetails" type="button" onclick="Save('','')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingOne">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Photo & Video Recording Register
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+                                        <div class="card-body">
+                                            @{
+                                                Html.RenderPartial("_PhotoVideoGrid.cshtml");
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Remarks
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                        <div class="card-body">
+                                            <div id="EquipmentListGrid" class="w-100 dt-tbl-section">
+                                                <label>Remarks</label>
+                                                @Html.TextAreaFor(m => m.FormV5.Remarks, new { @class = "form-control  svalidate {required,Remarks}" })
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="accordion custom-accordion mb-4" id="custom-accordion-five">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingFive">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage5" aria-expanded="false" aria-controls="collapseFive">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    User Details
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage5" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingFive" data-parent="#custom-accordion-five">
+                                        <div class="card-body float-left p-0 w-100">
+                                            <div class="row">
+                                                <div class="col-lg-10 offset-lg-1 mt-2">
+                                                    <div class="row" useridgroup="">
+
+
+                                                        <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                                            <div class="col-lg-12 border-bottom py-2 my-2">
+                                                                <span class="font-14 font-weight-bold">
+                                                                    Representative From
+                                                                </span>
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Verifier
+                                                                </label>
+
+                                                                <input type="text" class="form-control" readonly title="Endaya Construction Sdn Bhd" value="Endaya Construction Sdn Bhd" />
+                                                            </div>
+                                                            <div class="form-group col-lg-2">
+                                                                <label for="Name">
+                                                                    Recorded by
+                                                                </label>
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Recorded", "Select Users", new { Id = "ddlRecorded", @class = "form-control  {required,Scheduled by}", @onchange = "OnRecordedChange(this);" })
+
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="User_Id">
+                                                                    Name
+                                                                </label>
+                                                                @Html.TextBoxFor(model => model.FormV5.UsernameRec, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-2 float-left">
+                                                                <label for="Designation">Designation</label>
+                                                                @Html.TextBoxFor(model => model.FormV5.DesignationRec, new { @readonly = true, @class = "form-control" })
+                                                            </div>
+                                                            <div class="form-group col-lg-3 float-left">
+                                                                <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
+                                                                @Html.EditorFor(m => m.FormV5.DtRec, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                                            </div>
+                                                            <div class="form-group col-lg-1 float-left">
+                                                                <label>
+                                                                    Sign
+
+                                                                </label>
+                                                                <div class="clear-b mt-2">
+                                                                    @Html.CheckBoxFor(model => model.FormV5.SignRec, new { @class = "{required, Recorded Signature}" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="PhotoVideoModal" role="dialog">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+
+                                            <h4 class="modal-title w-100 float-left">
+                                                <span class="float-left">   Photo  & Video Recording Register</span>
+                                                <span class="float-right">
+                                                    <button type="button" class="close float-right" data-dismiss="modal">&times;</button>
+                                                </span>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="row" id="FormW1page">
+                                                <div class="col-12 ">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="container-fluid">
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-lg-12">
+                                                                        <div class="row">
+                                                                            <div class="col-3">
+                                                                                <label for="RoadCode">
+                                                                                    File Name From
+                                                                                </label>
+
+                                                                                @Html.TextBoxFor(m => m.FormV5Dtl.FileNameFrm, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <label for="RoadCode">  File Name To</label>
+                                                                                @Html.TextBoxFor(m => m.FormV5Dtl.FileNameTo, new { @class = "form-control" })
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        <label for="RoadCode">
+                                                                                            Attachment
+                                                                                        </label>
+
+                                                                                        <div id="divattach" style="text-align:left">
+                                                                                            <a class="btn btn-sm btn-themebtn" data-toggle="modal" onclick="AttachmentDialog()">
+                                                                                                <span class="add-icon"></span> Add Attachment
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <label for="RoadCode">
+                                                                                            File Name
+                                                                                        </label>
+                                                                                        <div style="text-align:center">
+                                                                                            <span id="spnfilename" style=" white-space: nowrap; overflow: hidden; width:100%; text-align:left; float:left; text-overflow: ellipsis;">
+                                                                                                @{
+                                                                                                    <a class="warCaption" href="~/@Model.FormV5Dtl.ImageFilenameUpload" target="_blank" title="Click here to View the Document">@Model.FormV5Dtl.ImageFilenameSys </a>
+                                                                                                }
+                                                                                            </span>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                 
+
+                                                                                
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <label for="RoadCode">
+                                                                            Description
+                                                                        </label>
+
+                                                                        @Html.TextAreaFor(m => m.FormV5Dtl.Desc, new { @class = "form-control  svalidate {required,Description}" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--gallery start-->
+                                                            <!--galler end-->
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal" onclick="ClearFormV5Dtl()">Close</button>
+                                            <button type="button" class="btn btn-sm btn-themebtn" id="saveFormv5Btn" onclick="SaveFormV5Dtl()">save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal hide border-10x addphoto-mdl" id="AttachmentModal">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Attachment Upload</h4>
+                                            <button type="button" id="btnclose" class="close" data-dismiss="modal">×</button>
+                                        </div><div class="container"></div>
+                                        <div class="modal-body" id="divAttachment">
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="imageClear" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+                @{
+                    if (Model.FormV5.Status != "" && Model.FormV5.Status != "Initialize")
+                        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                        {
+                            Form = "FormV5",
+                            RefId = Model.FormV5.PkRefNo,
+                            Stage = Model.FormV5.Status
+                        });
+                }
+            </div>
+
+
+
+        </div>
+
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
+            @{
+
+
+
+                <button id="saveFormV5Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Saved')">Save</button>
+                <button id="SubmitFormV5Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Submitted')">Submit</button>
+
+
+                @*@if (IsApproved && (Model.FormV5.Status == RAMMS.Common.StatusList.Submitted || Model.FormV5.Status == RAMMS.Common.StatusList.Rejected))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                }
+                else if (IsApproved && (Model.FormV5.Status == RAMMS.Common.StatusList.FormV2Verified || Model.FormV5.Status == RAMMS.Common.StatusList.FormV2Rejected))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Approved By');"> Approved / Facilitate </button>
+                }*@
+
+            }
+
+        </div>
+    </div>
+
+
+    @Html.HiddenFor(m => m.FormV5.PkRefNo)
+    @Html.HiddenFor(m => m.FormV5Dtl.PkRefNo)
+    @Html.HiddenFor(m => m.FormV5.SecCode)
+    @Html.HiddenFor(m => m.FormV5.UseridRec)
+
+    @Html.HiddenFor(m => m.FormV5.Status)
+
+    @Html.HiddenFor(m => m.FormV5.SubmitSts)
+
+    @Html.HiddenFor(m => m.FormV5Dtl.ImageFilenameSys)
+    @Html.HiddenFor(m => m.FormV5Dtl.ImageFilenameUpload)
+    @Html.HiddenFor(m => m.FormV5Dtl.ImageUserFilePath)
+
+    <input type="hidden" id="hdnSecCode" value="@Model.FormV5.SecCode" />
+    <input type="hidden" id="hdnView" value="@Model.view" />
+
+
+
+}
+
+
+<style>
+
+    .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(2), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(2), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(3), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(3), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(5), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(5) {
+        width: auto !important;
+        min-width: auto !important;
+    }
+</style>
+
+
+<script>
+
+    var onloadFlag = true;
+
+    $(document).ready(function () {
+        process.Init("FormV5", "@Model.FormV5.Status", @Model.FormV5.PkRefNo);
+
+    });
+
+
+
+    $('#ddlrmu').val("@Model.FormV5.Rmu");
+    $('#ddlrmu').trigger('chosen:updated');
+    $('#ddlrmu').trigger("change");
+
+    $('#dllSecCode').val("@Model.FormV5.SecCode");
+    $('#dllSecCode').trigger('chosen:updated');
+    $('#dllSecCode').trigger("change");
+
+    $('#ddlActCode').val("@Model.FormV5.ActCode");
+    $('#ddlActCode').trigger('chosen:updated');
+    $('#ddlActCode').trigger("change");
+
+    $('#ddlCrew').val("@Model.FormV5.Crew");
+    $('#ddlCrew').trigger('chosen:updated');
+    $('#ddlCrew').trigger("change");
+
+
+    $('#ddlRecorded').val("@Model.FormV5.UseridRec");
+    $('#ddlRecorded').trigger('chosen:updated');
+    $('#ddlRecorded').trigger("change");
+
+
+   // HeaderLogic();
+
+
+</script>

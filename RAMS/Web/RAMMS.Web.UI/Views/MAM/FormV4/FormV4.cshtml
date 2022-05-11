@@ -1,0 +1,306 @@
+﻿@using RAMMS.Business.ServiceProvider
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+@{
+    ViewBag.TabTitle = "ERT - Form V4 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
+}
+
+@model RAMMS.Web.UI.Models.FormV4Model;
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#formV4DetSrchRMU").chosen();
+        $('#formV4DetSrchSectionCode').chosen();
+        $("#formV4AdvSearch").hide();
+
+        $("#formV4DetSrchRMU").on("change", function () {
+            var rmu = $("#formV4DetSrchRMU").find("option:selected").text();
+            var rmuName = rmu.split("-")[1];
+           $("#txtRmuName").val(rmuName);
+        });
+
+        //$("#formV4DetSrchRMU").trigger("change");
+
+        $("#formV4DetSrchCrew").on("change", function () {
+            var val = $("#formV4DetSrchCrew option:selected").text();
+            var Name = val.split("-")[1];
+            var ctrl = $(this);
+            if (val != "99999999" && val != "") {
+                $("#txtCrewName").val(Name);
+            }
+            else if (val == "99999999") {
+                $("#txtCrewName").prop("disabled", false);
+                $("#txtCrewName").val('');
+            }
+            else {
+                $("#txtCrewName").prop("disabled", true);
+                $("#txtCrewName").val('');
+            }
+            return false;
+        });
+
+        $("#formV4DetSrchSectionCode").on("change", function () {
+            var ddldata = $(this).val();
+            if (ddldata != "") {
+               $("#txtSectionName").val(ddldata);
+            }
+            else {
+                $("#txtSectionName").val("");
+            }
+            return false;
+        });
+    });
+
+    function clearHeaderSearch() {
+        $("#FormV4SmartSearch").val('');
+        $("#formV4DetSrchRMU").val("").trigger("chosen:updated");
+        $('#formV4DetSrchSectionCode').val("").trigger("chosen:updated");
+        $("#formV4DetSrchCrew").val("").trigger("chosen:updated");
+        $("#formV1DetSrchActivityCode").val("").trigger("chosen:updated");
+        $("#txtStartDtFrom").val('');
+        $("#txtEndDtTo").val('');
+
+        var req = {};
+        var _rmu = $("#formV4DetSrchRMU");
+        var _road = $("#formV4DetSrchSectionCode");
+        req.RMU = this.value;
+        req.Section = '';
+        req.RoadCode = '';
+
+        $.ajax({
+            url: '/ERT/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                if (req.RMU == "") {
+                    $("#formV4DetSrchRMU").empty();
+                    $("#formV4DetSrchRMU").append($("<option></option>").val("").html("Select RMU"));
+                    $.each(data.rmu, function (index, v) {
+                        $("#formV4DetSrchRMU").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                }
+                if (req.Section == "") {
+                    $("#formV4DetSrchSectionCode").empty();
+                    $("#formV4DetSrchSectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#formV4DetSrchSectionCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+
+                    $('#formV4DetSrchSectionCode').trigger("chosen:updated");
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+        $("#formV4SearchBtn").click();
+    }
+
+    function detailSearch() {
+        $("#formV4AdvSearch").slideToggle(500);
+    }
+
+    function FormV4GridRefresh() {
+
+        oTable = $('#FormV4GridView').DataTable();
+        oTable.columns(0).search($("#FormV4SmartSearch").val().trim());
+
+        var rmuCode = $("#formV4DetSrchRMU").val();
+        if (rmuCode != "") {
+            oTable.columns(1).search(rmuCode);
+        } else {
+                oTable.columns(1).search("");
+        }
+
+        var secCode = $("#formV4DetSrchSectionCode").val();
+        if (secCode != "") {
+            oTable.columns(2).search(secCode);
+        } else {
+                oTable.columns(2).search("");
+        }
+
+        var crewCode = $("#formV4DetSrchCrew").val().trim();
+
+        if (crewCode != "" ){
+            oTable.columns(3).search(crewCode);
+        }
+        else {
+            oTable.columns(3).search("");
+        }
+
+        oTable.data = filterData;
+        oTable.draw();
+    }
+
+
+
+    function DeleteHeaderRecord(id) {
+        
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/MAM/DeleteFormV4',
+                    data: { id },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            FormV4GridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Dependency Exit", false);
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        });
+    }
+
+    function EditHeaderRecord(id){
+        var headerId = id;
+        localStorage.setItem("headeridvalue", headerId);
+
+        window.location = "@Url.Action("HeaderListEdit", "ERT")" +
+                "?headerId=" + headerId;
+    }
+
+
+
+</script>
+
+@using (Html.BeginForm())
+    @*{*@
+    //BreadCrumbs
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">FIELD VERIFICATION (Form V4)</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">MAM</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Form V4
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="search-section">
+    <form action="" method="POST">
+        <div class="row justify-content-center mb-1">
+            <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+                <div class="input-group">
+                    @Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormV4SmartSearch", placeholder = "Search...", @class = "form-control" })
+                    <div class="input-group-append">
+                        <div class="btn-group">
+                            <button id="formV4SearchBtn" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                            <button id="formV4SearchExpBtn" type="button" onclick="detailSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                            <button id="formV4SearchClearBtn" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formV4AdvSearch" style="display:block">
+            <form id="formV4DetailsearchForm" name="formV4DetailsearchForm">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                        <div class="row">
+                            <div class="form-group col-lg-2">
+                                @Html.Label("RMU ", "RMU ")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.RMU, (IEnumerable
+                            <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formV4DetSrchRMU", @class = "form-control" })
+                            </div>
+                            <div class="form-group col-lg-2">
+                                @Html.Label("RMU Name", "RMU Name")
+                                <input type="text" class="form-control" id="txtRmuName" disabled />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Section Code ", "Section Code")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
+                            <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formV4DetSrchSectionCode", @class = "form-control widget-content-area" })
+                            </div>
+                            <div class="form-group col-lg-2">
+                                @Html.Label("Section Name", "Section Name")
+                                <input type="text" class="form-control" id="txtSectionName" disabled />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Crew ", "Crew")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
+                            <CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formV4DetSrchCrew", @class = "form-control widget-content-area" })
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Crew Name", "Crew Name")
+                                <input type="text" class="form-control" id="txtCrewName" disabled />
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Activity Code", "Activity Code")
+                                @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.ActivityCode, (IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formV1DetSrchActivityCode", @class = "form-control validate {required, Activity Code}" })
+                            </div>
+                            <div class="form-group col-lg-4">
+                                @Html.Label("Activity Name ", "Activity Name")
+                                <input type="text" class="form-control" id="formV2DetSrchActivityName" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label for="C_Date">Start Date (DD-MM-YYYY)</label>
+                                <input class="form-control" type="date" id="txtStartDtFrom">
+                            </div>
+                            <div class="form-group">
+                                <label for="C_Date">End Date (DD-MM-YYYY)</label>
+                                <input class="form-control" type="date" id="txtEndDtTo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+                <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:AddFormV4(0,0);"><span class="add-icon"></span> Add Form V4</button>
+            </div>
+
+            @*Form V4 Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+
+        </div>
+    </div>
+</main>
+
+
+
+
+<script>
+    function AddFormV4(pid, view) {
+        window.location = "/MAM/AddFormV4" + "?id=" + pid + "&view=" + view;
+    }
+    function EditFormV4(pid, view) {
+        window.location = "/MAM/EditFormV4" + "?id=" + pid + "&view=" + view;
+    }
+
+</script>

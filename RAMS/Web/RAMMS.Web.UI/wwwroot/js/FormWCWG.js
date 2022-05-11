@@ -125,12 +125,12 @@ function SaveWC(submit) {
     saveObj.PkRefNo = $("#hdnWcRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
     saveObj.IwWrksDeptId = $("#formWCDivisionCode option:selected").val();
-    saveObj.RmuCode = ""
-    saveObj.SecCode = "";
-    saveObj.RoadCode = "";
-    saveObj.RoadName = "";
-    saveObj.Ch = "";
-    saveObj.ChDeci = "";
+    saveObj.RmuCode = $("#hdnRmuCode").val();
+    saveObj.SecCode = $("#hdnSecCode").val();
+    saveObj.RoadCode = $("#hdnRdCode").val();
+    saveObj.RoadName = $("#hdnRdName").val();
+    saveObj.Ch = $("#hdnCh").val();
+    saveObj.ChDeci = $("#hdnChDeci").val();
     saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWcProjectTitle").val()
     saveObj.OurRefNo = $("#formWcOurRef").val();
@@ -219,12 +219,12 @@ function SaveWG(submit) {
     saveObj.PkRefNo = $("#hdnWgRefNo").val();
     saveObj.Fw1PkRefNo = $("#fw1PKRefNo").val();
     saveObj.IwWrksDeptId = $("#formWGDivisionCode option:selected").val();
-    saveObj.RmuCode = ""
-    saveObj.SecCode = "";
-    saveObj.RoadCode = "";
-    saveObj.RoadName = "";
-    saveObj.Ch = "";
-    saveObj.ChDeci = "";
+    saveObj.RmuCode = $("#hdnRmuCode").val();
+    saveObj.SecCode = $("#hdnSecCode").val();
+    saveObj.RoadCode = $("#hdnRdCode").val();
+    saveObj.RoadName = $("#hdnRdName").val();
+    saveObj.Ch = $("#hdnCh").val();
+    saveObj.ChDeci = $("#hdnChDeci").val();
     saveObj.IwRefNo = $("#fw1IWRefNo").val();
     saveObj.IwProjectTitle = $("#formWgProjectTitle").val()
     saveObj.OurRefNo = $("#formWgOurRef").val();
@@ -317,6 +317,8 @@ function ClearWG() {
     $("#formWcDtDlpExtn").val('');
     $("#formWcIssuedBy").val('');
     $("#formWgIssuedDate").val('');
+    $("#formWgOurRef").val('');
+    $("#formWgYourRef").val('');
 }
 
 function ClearWC() {
@@ -334,10 +336,10 @@ function GetImageList(id, form) {
     debugger;
     var group = $("#FormADetAssetGrpCode option:selected").val();
     if (id && id > 0) {
-        $("#fw1IWRefNo").val(id);
+        $("#fw1PKRefNo").val(id);
     }
     else {
-        id = $("#fw1IWRefNo").val();
+        id = $("#fw1PKRefNo").val();
     }
     $.ajax({
         url: '/InstructedWorks/GetIWImageList',

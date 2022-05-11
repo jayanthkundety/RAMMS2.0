@@ -1,0 +1,106 @@
+﻿@model RAMMS.DTO.ResponseBO.FormQa1EqVhDTO;
+<script type="text/javascript">
+    var val = $("#hdnEquipid").val();
+    var equipDesc = "";
+    $(document).ready(function () {
+        $("#formQa1EquipCode").chosen();
+        
+        $('.allow_numeric').keypress(function (event) {
+            var $this = $(this);
+            if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+                ((event.which < 48 || event.which > 57) &&
+                    (event.which != 0 && event.which != 8))) {
+                event.preventDefault();
+            }
+
+            var text = $(this).val();
+            if ((event.which == 46) && (text.indexOf('.') == -1)) {
+                setTimeout(function () {
+                    if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                        $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                    }
+                }, 1);
+            }
+
+            if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 3) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 3)) {
+                event.preventDefault();
+            }
+        });
+    });
+
+    $("#formQa1EquipCode").on("change", function () {
+        var val = $(this).find(":selected").text();
+        val = val.split("-").length > 0 ? val.split("-")[1] : val;
+        $("#formQa1EqpRemark").val(val);
+        $("#formQa1EquipDesc").val(val);
+    });
+
+
+    if (val != 0 && val != undefined && val != "") { }//$("#formQa1EquipCode").trigger("change");
+
+    function GoBackEquip() {
+         FormEquipGridRefresh()
+        if ($("#hdnEquView").val() == 0) {
+            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+                if (e) {
+                    $("#FormQa1EquipModal").modal("hide");
+                }
+            }));
+        } else
+            $("#FormQa1EquipModal").modal("hide");
+    }
+
+</script>
+<form id="FormAddEquipDetails" action="/FormQA1/FormQa12SaveEquipment">
+    <div class="modal-body">
+        <div class="row">
+            <div class="form-group col-lg-6 mb-0">
+
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        @Html.Label("Code", "Code")
+                        @Html.DropDownListFor(Ahdr => Ahdr.Type, (IEnumerable
+                        <SelectListItem>)ViewData["EQPList"], "Select Code", new { @Id = "formQa1EquipCode", @class = "form-control  validate {required, Equipment Code}" })
+                        @Html.HiddenFor(Ahdr => Ahdr.Type, new { @id = "hdnformQa1EquipCode", @class = "form-control" })
+                    </div>
+                    <div class="form-group col-lg-6">
+                        @Html.Label("Name", "Name")
+                        @Html.TextBoxFor(Adtl => Adtl.Desc, new { @Id = "formQa1EquipDesc", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Equipment Name}", @rows = 1 })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-lg-2 pl-0">
+                @Html.Label("P / V No.", "P / V No.")
+                @Html.TextBoxFor(Adtl => Adtl.PVNo, new { @Id = "formQa1EquipPVNo", @maxlength = 15, @autocomplete = "off", @type = "text", @class = "form-control validate {required, P/V No.}", @rows = 1 })
+            </div>
+            <div class="form-group col-lg-2 pl-0">
+                @Html.Label("Capacity", "Capacity")
+                @Html.TextBoxFor(Adtl => Adtl.Capacity, new { @Id = "formQa1EquipCapacity", @maxlength = 15, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Capacity}", @rows = 1 })
+            </div>
+
+            <div class="form-group col-lg-2 pl-0">
+                @Html.Label("Apparent Condition", "Apparent Condition")
+                @Html.DropDownListFor(Ahdr => Ahdr.Condition, (IEnumerable
+                        <SelectListItem>)ViewData["GOODFAIRINADE"], "Select Code", new { @Id = "formQa1EquipCondition", @class = "form-control  validate {required, Equipment Condition}" })  
+            </div>
+          
+            <div class="form-group col-lg-12 txtarea-107">
+                @Html.Label("Remarks", "Remarks")
+                @Html.TextAreaFor(m => m.Remark , new { @id= "formQa1EqpRemark", @class="form-control  validate {required, Remark}"})
+            </div>
+
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.PkRefNo, new { @id = "hdnEquipid", @class = "form-control" })
+    @Html.Hidden("hdnEquView", "")
+    <div class="modal-footer">
+        <div class="col-md-12 float-right text-right custom-footer">
+            <button id="cancelFormQa1EqBtn" type="button" class="btn btn-sm btn-outline-theme" onclick="GoBackEquip()">Cancel</button>
+            <button id="saveContinueFormQa1EqBtn" type="button" class="btn btn-sm btn-themebtn">Save & Continue</button>
+            <button id="saveFormQa1EqBtn" type="button" class="btn btn-sm btn-themebtn">Save & EXit</button>
+        </div>
+    </div>
+</form>

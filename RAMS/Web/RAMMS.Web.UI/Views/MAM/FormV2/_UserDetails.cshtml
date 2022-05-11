@@ -1,0 +1,285 @@
+﻿@using RAMMS.Business.ServiceProvider
+@model RAMMS.Web.UI.Models.FormV2Model;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    var v2PkRefNo = Model.SaveFormV2Model.PkRefNo;
+    var rights = security;
+    var vd = Model.SaveFormV2Model.DtAck;
+    string _DtAck = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+
+    var _id = Model.SaveFormV2Model.DtAgr;
+    string _DtAgr = _id.HasValue ? _id.Value.ToString("yyyy-MM-dd") : "";
+
+    vd = Model.SaveFormV2Model.DtSch;
+    string _DtSch = vd.HasValue ? vd.Value.ToString("yyyy-MM-dd") : "";
+}
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="col-lg-10 offset-lg-1 mt-2" id="div-addformv2">
+            <div class="col-lg-10 offset-lg-1 mt-2">
+                <div class="row" useridgroup="">
+                    
+                    <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                        <div class="col-lg-12 border-bottom py-2 my-2">
+                            <span class="font-14 font-weight-bold">
+                                Representative From
+                            </span>
+                        </div>
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("Service Provider", "Service Provider")
+                            @{
+                                Model.SaveFormV2Model.ServiceProvider = string.IsNullOrEmpty(Model.SaveFormV2Model.ServiceProvider) ? "ENDAYA CONSTRUCTION SDN. BHD." : Model.SaveFormV2Model.ServiceProvider;
+                            }
+                            @Html.TextBoxFor(Ahdr => Ahdr.SaveFormV2Model.ServiceProvider, new { @Id = "formV2ServiceProvider", @class = "form-control  svalidate {required, Service Provider}" })
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="Name">
+                                Recorded by
+                            </label>
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2RecordedBy", "Select Users", new { Id = "formV2RecordedBy", @class = "form-control   {required, Recorded by} ", @disabled=true})
+
+                        </div>
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("Name", "Name")
+                            @Html.TextBoxFor(w => w.SaveFormV2Model.UsernameSch, new { @id = "formV2RecordedName", @class = "form-control ssvalidate  {required, Recorded by Name}", @disabled = true })
+                        </div>
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(w => w.SaveFormV2Model.DesignationSch, new { @id = "formV2RecordedDesig", @class = "form-control ssvalidate  {required, Recorded by Designation}", @disabled = true })
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                            <input type="date" class="datepicker form-control  ssvalidate {required, Recorded by date}" id="formV2RecordedDate" value="@_DtSch" />
+                        </div>
+                        <div class="form-group col-lg-1 float-left">
+                            @Html.Label("Signature", "Signature")
+                            @{
+                                var _SchSign = Model.SaveFormV2Model.SignSch == null || Model.SaveFormV2Model.SignSch == false ? false : true;
+                            }
+                            <div class="clear-b mt-2">
+                                <input class="{required, Recorded By Signature}" checked="@_SchSign" id="formV2SignRecorded" type="checkbox" value="true">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row">
+                    <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+                        <div class="form-group col-lg-2 float-left">
+                            <label for="User_Id">
+                                Verifier
+                            </label>
+                            <input type="text" class="form-control" value=" JKR Sarawak, Miri Division">
+                        </div>
+                        <div class="form-group col-lg-2 float-left mb-0">
+                            <label for="Name">
+                                Vetted by:
+                            </label>
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2VettedBy", "Select Users", new { Id = "formV2VettedBy", @class = "form-control   {required, Vetted by} ", @disabled=true})
+                        </div>
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("Name", "Name")
+                            @Html.TextBoxFor(w => w.SaveFormV2Model.UsernameAgr, new { @id = "formV2VettedName", @class = "form-control ssvalidate  {required, Received by Name}", @disabled = true })
+                        </div>
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(w => w.SaveFormV2Model.DesignationAgr, new { @id = "formV2VettedDesig", @class = "form-control ssvalidate  {required, Vetted by Designation}", @disabled = true })
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                            <input type="date" class="datepicker form-control  ssvalidate {required, Vetted by date}" id="formV2VettedDate" value="@_DtAgr" />
+                        </div>
+                        <div class="form-group col-lg-1 float-left">
+                            @Html.Label("Signature", "Signature")
+                            @{
+                                var _AgrSign = Model.SaveFormV2Model.SignAgr == null || Model.SaveFormV2Model.SignAgr == false ? false : true;
+                            }
+                            <div class="clear-b mt-2">
+                                <input class="{required, Vetted By Signature}" checked="@_AgrSign" id="formV2SignVetted" type="checkbox" value="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+
+                    <div class="bg-white rounded landing-division w-100 float-left  my-2" useridgroup="">
+                        <div class="form-group col-lg-2 float-left">
+                            <label for="User_Id">
+                                Facilitator
+                            </label>
+                            <input type="text" class="form-control" value=" JKR Sarawak, Miri Division">
+
+                        </div>
+                        <div class="form-group col-lg-2 float-left mb-0">
+                            <label for="Name">Facilitated by</label>
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "formV2FacilitatedBy", "Select Users", new { @id = "formV2FacilitatedBy", @class = "form-control   {required, Facilitated by} ", @disabled=true})
+                        </div>
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("Name", "Name")
+                            @Html.TextBoxFor(w => w.SaveFormV2Model.UsernameAck, new { @id = "formV2FacilitatedName", @class = "form-control ssvalidate  {required, Facilitated by Name}", @disabled = true })
+                        </div>
+                        <div class="form-group col-lg-2 float-left">
+                            @Html.Label("Designation", "Designation")
+                            @Html.TextBoxFor(w => w.SaveFormV2Model.DesignationAck, new { @id = "formV2FacilitatedDesig", @class = "form-control ssvalidate  {required, Facilitated by Designation}", @disabled = true })
+                        </div>
+                        <div class="form-group col-lg-3 float-left">
+                            @Html.Label("(DD-MM-YYYY)", "(DD-MM-YYYY)")
+                            <input type="date" class="datepicker form-control  ssvalidate {required, Facilitated by date}" id="formV2FacilitatedDate" value="@_DtAck" />
+                        </div>
+                        <div class="form-group col-lg-1 float-left">
+                            @Html.Label("Signature", "Signature")
+                            @{
+                                var _AckSign = Model.SaveFormV2Model.SignAck == null || Model.SaveFormV2Model.SignAck == false ? false : true;
+                            }
+                            <div class="clear-b mt-2">
+                                <input class="{required, Facilitated By Signature}" checked="@_AckSign" id="formV2SignFacilitated" type="checkbox" value="true">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="hdnisAdd" value="0" />
+            <input type="hidden" id="hdnuserDetailsSaved" value="0" />
+            <div class="clear-b"></div>
+
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+
+       
+
+        //if ($("#formV2RecordedBy").val() != "99999999") {
+        //    $("#formV2RecordedName").prop("disabled", true);
+        //    $("#formV2RecordedDesig").prop("disabled", true);
+        //}
+
+        //if ($("#formV2VettedBy").val() != "99999999") {
+        //    $("#formV2VettedName").prop("disabled", true);
+        //    $("#formV2VettedDesig").prop("disabled", true);
+        //}
+
+        //if ($("#formV2FacilitatedBy").val() != "99999999") {
+        //    $("#formV2FacilitatedName").prop("disabled", true);
+        //    $("#formV2FacilitatedDesig").prop("disabled", true);
+        //}
+
+
+        //$("#formV2RecordedBy").on("change", function () {
+        //    var id = $("#formV2RecordedBy option:selected").val();
+        //    if (id != "99999999" && id != "") {
+        //        $.ajax({
+        //            url: '/MAM/GetUserById',
+        //            dataType: 'JSON',
+        //            data: { id },
+        //            type: 'Post',
+        //            success: function (data) {
+        //                $("#formV2RecordedName").val(data.userName);
+        //                $("#formV2RecordedDesig").val(data.position);
+        //                $("#formV2RecordedName").prop("disabled", true);
+        //                $("#formV2RecordedDesig").prop("disabled", true);
+        //            },
+        //            error: function (data) {
+        //                console.error(data);
+        //            }
+        //        });
+        //    }
+        //    else if (id == "99999999") {
+        //        $("#formV2RecordedName").prop("disabled", false);
+        //        $("#formV2RecordedName").val('');
+        //        $("#formV2RecordedDesig").prop("disabled", false);
+        //        $("#formV2RecordedDesig").val('');
+        //    }
+        //    else {
+        //        $("#formV2RecordedName").prop("disabled", true);
+        //        $("#formV2RecordedName").val('');
+        //        $("#formV2RecordedDesig").prop("disabled", true);
+        //        $("#formV2RecordedDesig").val('');
+        //    }
+
+        //    return false;
+        //});
+
+        //$("#formV2VettedBy").on("change", function () {
+        //    var id = $("#formV2VettedBy option:selected").val();
+        //    if (id != "99999999" && id != "") {
+        //        $.ajax({
+        //            url: '/MAM/GetUserById',
+        //            dataType: 'JSON',
+        //            data: { id },
+        //            type: 'Post',
+        //            success: function (data) {
+        //                $("#formV2VettedName").val(data.userName);
+        //                $("#formV2VettedName").prop("disabled", true);
+        //                $("#formV2VettedDesig").val(data.position);
+        //                $("#formV2VettedDesig").prop("disabled", true);
+        //            },
+        //            error: function (data) {
+        //                console.error(data);
+        //            }
+        //        });
+        //    }
+        //    else if (id == "99999999") {
+        //        $("#formV2VettedName").prop("disabled", false);
+        //        $("#formV2VettedName").val('');
+        //        $("#formV2VettedDesig").val('');
+        //        $("#formV2VettedDesig").prop("disabled", false);
+        //    }
+        //    else {
+        //        $("#formV2VettedName").prop("disabled", true);
+        //        $("#formV2VettedName").val('');
+        //        $("#formV2VettedDesig").val('');
+        //        $("#formV2VettedDesig").prop("disabled", true);
+        //    }
+
+        //    return false;
+        //});
+
+        //$("#formV2FacilitatedBy").on("change", function () {
+        //    var id = $("#formV2FacilitatedBy option:selected").val();
+        //    if (id != "99999999" && id != "") {
+        //        $.ajax({
+        //            url: '/MAM/GetUserById',
+        //            dataType: 'JSON',
+        //            data: { id },
+        //            type: 'Post',
+        //            success: function (data) {
+        //                $("#formV2FacilitatedName").val(data.userName);
+        //                $("#formV2FacilitatedName").prop("disabled", true);
+
+        //                $("#formV2FacilitatedDesig").prop("disabled", true);
+        //                $("#formV2FacilitatedDesig").val(data.position);
+        //            },
+        //            error: function (data) {
+        //                console.error(data);
+        //            }
+        //        });
+        //    }
+        //    else if (id == "99999999") {
+        //        $("#formV2FacilitatedName").prop("disabled", false);
+        //        $("#formV2FacilitatedName").val('');
+
+        //        $("#formV2FacilitatedDesig").prop("disabled", false);
+        //        $("#formV2FacilitatedDesig").val('');
+        //    }
+        //    else {
+        //        $("#formV2FacilitatedName").prop("disabled", true);
+        //        $("#formV2FacilitatedName").val('');
+
+        //        $("#formV2FacilitatedDesig").prop("disabled", true);
+        //        $("#formV2FacilitatedDesig").val('');
+        //    }
+
+        //    return false;
+        //});
+
+    });
+</script>
