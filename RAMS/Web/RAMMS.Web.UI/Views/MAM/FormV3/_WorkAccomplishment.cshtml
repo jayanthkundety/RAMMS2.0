@@ -100,8 +100,8 @@
             columns: table_columns,
            
             "footerCallback": function (row, data, start, end, display) {
-                
 
+                 
                 var data = $('#WorkAccomplishmentGridView').DataTable().rows().data();
 
                 var totalmins = 0;
@@ -113,7 +113,12 @@
 
                     $('#CalculationTime').val(item.timetakenFrm);
                     $('#CalculationTime1').val(item.timeTakenTo);
-
+                    if ($('#CalculationTime').timeEntry('getTime') != null && $('#CalculationTime1').timeEntry('getTime') != null) {
+                        var milliseconds = ($('#CalculationTime1').timeEntry('getTime') - $('#CalculationTime').timeEntry('getTime'))
+                        const secs = Math.floor(Math.abs(milliseconds) / 1000);
+                        const min = Math.floor(secs / 60);
+                        totalmins = totalmins + min;
+                    }
                   
 
                     totallength = totallength + item.length;
@@ -132,14 +137,14 @@
 
                 var api = this.api();
 
-                $(api.column(2).footer()).html("Length:");
-                $(api.column(3).footer()).html(totallength);
-                $(api.column(4).footer()).html("Width:");
-                $(api.column(5).footer()).html(totalwidth);
-                $(api.column(6).footer()).html("Time:");
-                $(api.column(7).footer()).html(TT);
-                $(api.column(8).footer()).html("ADP:");
-                $(api.column(9).footer()).html(totaladp);
+                $(api.column(1).footer()).html("Length:");
+                $(api.column(2).footer()).html(totallength);
+                $(api.column(3).footer()).html("Width:");
+                $(api.column(4).footer()).html(totalwidth);
+                $(api.column(5).footer()).html("Time:");
+                $(api.column(6).footer()).html(TT);
+                $(api.column(7).footer()).html("ADP:");
+                $(api.column(8).footer()).html(totaladp);
 
                // CalculateGridTotal();
             }

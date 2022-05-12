@@ -2,8 +2,8 @@
 @using RAMMS.Business.ServiceProvider;
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @{
-    ViewBag.TabTitle = "INSTRUCTED WORKS";
-    ViewData["Title"] = "INSTRUCTED WORKS";
+    ViewBag.TabTitle = "MAM";
+    ViewData["Title"] = "MAM";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
     bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);

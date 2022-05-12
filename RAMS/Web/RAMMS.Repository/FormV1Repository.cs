@@ -324,7 +324,7 @@ namespace RAMMS.Repository
         {
 
 
-
+            var ExistingV1 = (from r in _context.RmFormV1Hdr select r.Fv1hS1hPkRefNo ).ToList();
             var res = (from hdr in _context.RmFormS1Hdr
                        join dtl in _context.RmFormS1Dtl on hdr.FsihPkRefNo equals dtl.FsidFsihPkRefNo
                        join wdtl in _context.RmFormS1WkDtl on dtl.FsidPkRefNo equals wdtl.FsiwdFsidPkRefNo
@@ -334,7 +334,9 @@ namespace RAMMS.Repository
                        {
                            hdr.FsihRefId,
                            hdr.FsihPkRefNo
-                       }).Distinct();
+                       }).Distinct().Where(e => !ExistingV1. Contains(e.FsihPkRefNo));
+
+             
 
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var item in res)
