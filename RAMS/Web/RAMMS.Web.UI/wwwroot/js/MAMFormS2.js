@@ -888,8 +888,7 @@ function bindWeekDay(weekno, year, wid, days ) {
                 subbody += '</span>'
                 subbody += '<button type="button" wid="' + wid + '" ';
                 subbody += Array.isArray(days) && days.indexOf(dt.getDate()+"") >= 0 ? ' class="active" ' : '';
-
-                subbody += ' id ="' + dt.getDate();
+                subbody += ' id ="d' + dt.getDate();
                 subbody += '"></button></li>';
             });
             subbody += "</ul></div>";
@@ -917,7 +916,6 @@ function bindWeekDay(weekno, year, wid, days ) {
                     }
                     else {
                         removeDay(_wid, _id)
-                        //$("#divWeekDays").html("");
                         const index = _dt.weekDetails.indexOf(parseInt(_id));
                         if (index > -1) {
                             _dt.weekDays.splice(index, 1);
@@ -959,7 +957,6 @@ function removeWeek(weekId) {
     var _tmp = getWeekExist(weekId);
     _dt.weekDays.indexOf(_tmp)
 }
-
 
 function bindRoadCode() {
     var req = {};
