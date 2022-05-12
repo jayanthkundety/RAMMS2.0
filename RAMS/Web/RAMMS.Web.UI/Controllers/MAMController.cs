@@ -1805,6 +1805,7 @@ namespace RAMMS.Web.UI.Controllers
                     Status = frm.FormV3.Status,
                     FormExist = frm.FormV3.FormExist,
                     FV1PKRefId = frm.FormV3.FV1PKRefId,
+                    Fv1PkRefNo = frm.FormV3.Fv1PkRefNo,
                     Result = Result,
                     Msg = Msg
                 });
@@ -2197,6 +2198,8 @@ namespace RAMMS.Web.UI.Controllers
                     PkRefNo = frm.FormV5.PkRefNo,
                     Status = frm.FormV5.Status,
                     FormExist = frm.FormV5.FormExist,
+                    //FV4PKRefNo = frm.FormV5.FV4PKRefNo,
+                    //FV4PKRefID = frm.FormV5.FV4PKRefID,
                     Result = Result,
                     Msg = Msg
                 });

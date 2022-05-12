@@ -848,7 +848,7 @@ namespace RAMMS.Repository
                 }
                 else
                 {
-                    var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv3.Fv3hRmu && x.Fv1hActCode == domainModelFormv3.Fv3hActCode && x.Fv1hDt == domainModelFormv3.Fv3hDt && x.Fv1hActiveYn == true).ToList();
+                    var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv3.Fv3hRmu && x.Fv1hActCode == domainModelFormv3.Fv3hActCode && x.Fv1hDt == domainModelFormv3.Fv3hDt && x.Fv1hCrew == domainModelFormv3.Fv3hCrew && x.Fv1hActiveYn == true).ToList();
                     if (objV1.Count > 0)
                     {
                         domainModelFormv3.Fv3hFv1PkRefId = objV1.Single().Fv1hRefId;
@@ -868,6 +868,7 @@ namespace RAMMS.Repository
                         Formv3.RefId = domainModelFormv3.Fv3hRefId;
                         Formv3.Status = domainModelFormv3.Fv3hStatus;
                         Formv3.FV1PKRefId = domainModelFormv3.Fv3hFv1PkRefId;
+                        Formv3.Fv1PkRefNo = domainModelFormv3.Fv3hFv1PkRefNo;
 
                         var res = (from dtl in _context.RmFormV1Dtl
                                    where dtl.Fv1dFv1hPkRefNo == domainModelFormv3.Fv3hFv1PkRefNo && dtl.Fv1dActiveYn == true
@@ -1274,6 +1275,7 @@ namespace RAMMS.Repository
                     Formv4.RefId = domainModelFormv4.Fv4hRefId;
                     Formv4.Status = domainModelFormv4.Fv4hStatus;
                     Formv4.FV3PKRefID = domainModelFormv4.Fv4hFv3PkRefId;
+                    Formv4.FV3PKRefNo = domainModelFormv4.Fv4hFv3PkRefNo;
                     Formv4.TotalProduction = domainModelFormv4.Fv4hTotalProduction;
 
 
@@ -1640,6 +1642,8 @@ namespace RAMMS.Repository
                     Formv5.PkRefNo = _mapper.Map<FormV5ResponseDTO>(domainModelFormv5).PkRefNo;
                     Formv5.RefId = domainModelFormv5.Fv5hRefId;
                     Formv5.Status = domainModelFormv5.Fv5hStatus;
+                    //Formv5.FV4PKRefID = domainModelFormv5.Fv5hFv4PkRefId;
+                    //Formv5.FV4PKRefNo = domainModelFormv5.Fv5hFv4PkRefNo;
 
                     return Formv5;
 
