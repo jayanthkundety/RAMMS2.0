@@ -44,6 +44,29 @@
 }
 
 <style>
+
+    li .note {
+        padding: 3px;
+    }
+
+    .note {
+        position: relative;
+    }
+
+        .note:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            display: block;
+            border-left: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-top: 5px solid #f00;
+        }
+
+
     li .day-name {
         font-weight: 600;
         margin: 2px 1px;

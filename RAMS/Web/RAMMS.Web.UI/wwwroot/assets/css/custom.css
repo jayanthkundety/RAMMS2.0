@@ -2596,14 +2596,13 @@ a.rd-link {
 .login-overflow {
     height: calc(100vh - 0px);
     overflow-y: auto;
-    overflow-x:hidden;
+    overflow-x: hidden;
     width: 100%;
     margin: 0;
     padding: 0;
     float: left;
     position: relative;
     z-index: 9;
-
 }
 
 .jkr-carousel {
@@ -2894,13 +2893,14 @@ body.sidebar-expanded #sidebarSmall.navbar-expand-md .dropright.show > .dropdown
         .inner-container .card-body img {
             width: 66px;
         }
-        .inner-container .card-body img.rams-l{
-            width:104px;
-        }
 
-        .inner-container .card-body img.endaya-l {
-            width: 48px;
-        }
+            .inner-container .card-body img.rams-l {
+                width: 104px;
+            }
+
+            .inner-container .card-body img.endaya-l {
+                width: 48px;
+            }
 }
 
 div.dataTables_scrollHead table thead tr th.complexheader {
@@ -2940,6 +2940,85 @@ a:focus {
 .svg-hover svg path {
     fill: rgba(255,255,255,.5);
 }
+
 .svg-hover:hover svg path {
     fill: rgba(255,255,255,1);
 }
+
+/*FormS2 Day col Group*/
+
+
+.schedule-tbl .daysch-colgroup {
+    border-right: 1px solid #e3ecf3;
+}
+
+.schedule-tbl .daysch-colgroup:last-child {
+    border-right: 0;
+}
+
+.schedule-tbl .daysch-colgroup .month-title {
+    text-align: center;
+    font-weight: 600;
+    margin: 2px 3px;
+    background-color: #152e4d; /*0085ff*/
+    color: #FFFFFF;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.daysch-colgroup ul {
+    border-top: 1px solid #e3ecf3;
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+}
+
+.daysch-colgroup ul li {
+flex: 1 1 auto !important;
+text-align: center;
+padding: 3px;
+border-right: 1px solid #e3ecf3;
+transition: all 0.3s ease;
+}
+
+.daysch-colgroup ul li:last-child {
+    border-right: 0;
+}
+
+.daysch-colgroup ul li button {
+    background-color: #e6eef3;
+    width: 100%;
+    flex: 1 1 auto !important;
+    display: flex;
+    justify-content: center;
+    color: #4c4c4c;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 2px;
+    padding: 12px 5px;
+    border: 0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+    .daysch-colgroup ul li button:hover {
+        background-color: #aec2ce;
+    }
+
+    .daysch-colgroup ul li button.active {
+        background-color: #0085ff;
+        color: #FFFFFF;
+    }
+
+        .daysch-colgroup ul li button.active:before {
+            content: "";
+            background-image: url('../media/check-i.svg');
+            width: 14px;
+            height: 14px;
+            background-size: 14px;
+            position: absolute;
+            right: 3px;
+            top: 3px;
+        }
