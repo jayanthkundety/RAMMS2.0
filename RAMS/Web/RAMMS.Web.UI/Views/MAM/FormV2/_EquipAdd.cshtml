@@ -44,13 +44,11 @@
             capacity = val.split("(")[1];
             var i = capacity.indexOf(")");
             capacity = capacity.substring(0,i);
-        }else {
-            val = "";
         }
         
 
        $("#formV2EquipCapacity").val(capacity);
-        $("#FormV2EquipDescription").val(val);
+       $("#FormV2EquipDescription").val(val);
     });
 
 
