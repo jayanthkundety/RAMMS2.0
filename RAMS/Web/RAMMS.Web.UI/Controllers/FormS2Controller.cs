@@ -116,6 +116,8 @@ namespace RAMMS.Web.UI.Controllers
             request.ModBy = _security.UserID;
           return   Json(_formS2Service.SaveDetail(request));
         }
+
+
         public IActionResult RemoveS2Header(int id) => Json(_formS2Service.RemoveHeader(id));
         public IActionResult RemoveS2Detail(int id) => Json(_formS2Service.RemoveDetail(id));
         public async Task<IActionResult> GetFilteredS2HeaderDetails(DataTableAjaxPostModel<S2HeaderSearchRequestDTO> searchData)

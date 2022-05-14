@@ -696,11 +696,10 @@ function openDetail(id) {
             _dt.ddlDPriority.val(data.priority);
             _dt.ddlDPriority.trigger("chosen:updated");
             _dt.weekDetails = data.weekDetail != null ? data.weekDetail : [];
-            _dt.weekDays = data.weekDays != "" ? JSON.parse(data.weekDays) : [];
+            _dt.weekDays = data.weekDayDetails != null ? data.weekDayDetails : [];
             _dt.txtWorkQty.val(data.workQty);
             //getRoadDetail();
             bindWeekDetail();
-            $("#divWeekDays").html("");
             _dt.ddlDRoadCode.focus();
             var totalDaysinquarter = TryParseInt(_dt.txtDCTotalDay.val());
             var crewDays = TryParseInt(_dt.txtDCCrewDay.val());
@@ -770,10 +769,10 @@ function bindWeekDetail() {
                 subbody += '</div><ul>';
                 $.each(value.week, function (sIndex, sValue) {
                     if (_dt.weekDetails.indexOf(parseInt(sValue.value)) > -1) {
-                        subbody += '<li><button class="active note" type="button" id="';
+                        subbody += '<li><button class="active" type="button" id="';
                     }
                     else {
-                        subbody += '<li><button class="bvalidate" type="button" id="';
+                        subbody += '<li><button type="button" id="';
                     }
 
                     subbody += sValue.value;
@@ -790,9 +789,8 @@ function bindWeekDetail() {
                 if (_dt.IsView.val() != "1") {
                     var bcontinue = false;
                     var _id = this.id;
-                    _dt.weekDetails = _dt.weekDetails == null ? [] : _dt.weekDetails;
-                    _dt.weekDays = _dt.weekDays == null ? [] : _dt.weekDays;
                     var _tmp = getWeekExist(_id);
+                    _dt.weekDetails = _dt.weekDetails == null ? [] : _dt.weekDetails;
                     var weekno = $(this).find("span").attr("weekno");
                     if (Array.isArray(_tmp)) {
                         if (_tmp.length >= 2 && _tmp[1].length == 0)
@@ -808,8 +806,8 @@ function bindWeekDetail() {
                     }
 
                     if ($(this).hasClass('active') && ((Array.isArray(_tmp) && _tmp[1].length == 0) || (!Array.isArray(_tmp) && _tmp == -1))) {
-                        _dt.weekDetails.push(parseInt(_id));
-                        if (!checkWeekExist(parseInt(_id))) {
+                        _dt.weekDetails.push(_id);
+                        if (!checkWeekExist(_id)) {
                             var _tmp = [_id];
                             _dt.weekDays.push(_tmp);
                         }
@@ -819,8 +817,8 @@ function bindWeekDetail() {
                         var wk = $("#divWeeks").width();
                         var dy = $("#divWeekDays").width();
 
-
-
+                        
+                        
                         $("#divWeekDays").css('margin', "auto");
                         bindWeekDay(weekno, _hd.ddlYear.val(), _id)
                         $(this).addClass("note");
@@ -840,7 +838,7 @@ function bindWeekDetail() {
                             _dt.weekDetails.splice(index, 1);
                         }
 
-
+                        
                         const dindex = _dt.weekDays.indexOf(_tmp)
                         if (dindex > -1) {
                             $(this).removeClass('note')
@@ -866,7 +864,7 @@ function checkWeekExist(weekId) {
     return false;
 }
 
-function bindWeekDay(weekno, year, wid, days) {
+function bindWeekDay(weekno, year, wid, days ) {
     const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -902,11 +900,8 @@ function bindWeekDay(weekno, year, wid, days) {
                 $("#" + wid).toggleClass("note");
             }
 
-            $("#divWeekDays").fadeIn();
             $("#divWeekDays").html(body);
-            
-            
-            
+
 
             $('.daysch-colgroup li button').on('click', function () {
 
@@ -927,10 +922,10 @@ function bindWeekDay(weekno, year, wid, days) {
                     }
                     else {
                         removeDay(_wid, _id)
-                        //const index = _dt.weekDays.indexOf(_id);
-                        //if (index > -1) {
-                        //    _dt.weekDays.splice(index, 1);
-                        //}
+                        const index = _dt.weekDetails.indexOf(parseInt(_id));
+                        if (index > -1) {
+                            _dt.weekDays.splice(index, 1);
+                        }
                     }
                 }
 
@@ -946,7 +941,7 @@ function bindWeekDay(weekno, year, wid, days) {
 
 function formatDate(dt) {
     var day = dt.getDate();
-    var month = dt.getMonth() + 1;
+    var month = dt.getMonth()+1;
     var year = dt.getFullYear();
 
     day = +day < 10 ? '0' + day : day;
@@ -977,24 +972,7 @@ function removeDay(weekId, dayId) {
         }
 
         if (_tmp.length == 2 && _tmp[1].length == 0) {
-            
-            
-            const _index = _dt.weekDetails.indexOf(parseInt(weekId));
-            if (_index > -1) {
-                _dt.weekDetails.splice(_index, 1);
-            }
-
-            const _dindex = _dt.weekDays.indexOf(_tmp);
-            if (_dindex > -1) {
-                _dt.weekDays.splice(_dindex, 1);
-            }
-            setTimeout(() => {
-                $("#" + weekId).toggleClass("note");
-                $("#" + weekId).toggleClass("active");
-                $("#divWeekDays").fadeOut();
-                $("#divWeekDays").html("");
-                clearTimeout();
-            }, 1000);
+            $("#" + weekId).toggleClass("note");
         }
     }
 }
@@ -1032,17 +1010,6 @@ function bindRoadCode() {
 
 function saveDetail(isSaveAndExit = false) {
     //debugger;
-    var lastId = $("#LastId").val();
-    var bcontinue = true;
-    if (eval(_hd.HdnHeaderPkId.val()) > +lastId) 
-        bcontinue = ValidateWeekDates();
-    else
-        _dt.weekDays = [];
-
-    if (!bcontinue) {
-        return false;
-    }
-
     if (ValidatePage("#FormAddDetails")) {
         var req = {};
         req.HeaderPkRefNo = _hd.HdnHeaderPkId.val();
@@ -1059,7 +1026,7 @@ function saveDetail(isSaveAndExit = false) {
         req.TargetPercent = _dt.txtDTarget.val();
         req.Remarks = _dt.txtDRemarks.val();
         req.WeekDetail = _dt.weekDetails;
-        req.WeekDays = (Array.isArray(_dt.weekDays) && _dt.weekDays.length > 0) ? JSON.stringify(_dt.weekDays) : "";
+        req.WeekDays = JSON.stringify(_dt.weekDays);
         req.Priority = _dt.ddlDPriority.val();
         req.WorkQty = _dt.txtWorkQty.val();
         InitAjaxLoading();
@@ -1114,23 +1081,4 @@ function ClearDetail() {
     _dt.weekDetails = [];
     _dt.txtWorkQty.val('');
     bindWeekDetail();
-    $("#divWeekDays").html("");
-}
-
-function ValidateWeekDates() {
-    var emptyWeek = "";
-    if (Array.isArray(_dt.weekDays) && _dt.weekDays.length > 0) {
-        for (var i = 0; i < _dt.weekDays.length; i++) {
-            if (_dt.weekDays[i].length == 1) {
-                var week = _dt.weekDays[i][0];
-                emptyWeek += $("#" + _dt.weekDays[i][0]).find("span").html() + ', ';
-            }
-        }
-    }
-    else {
-        emptyWeek = " Weeks ";
-    }
-    if (emptyWeek == "") return true;
-    app.ShowErrorMessage("Kindly select dates for Scheduled " + emptyWeek);
-    return false;
 }

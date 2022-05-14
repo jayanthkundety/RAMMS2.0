@@ -93,6 +93,7 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmFormS1Dtl> RmFormS1Dtl { get; set; }
         public virtual DbSet<RmFormS1Hdr> RmFormS1Hdr { get; set; }
         public virtual DbSet<RmFormS1WkDtl> RmFormS1WkDtl { get; set; }
+        public virtual DbSet<RmFormS2DaySchedule> RmFormS2DaySchedule { get; set; }
         public virtual DbSet<RmFormS2Dtl> RmFormS2Dtl { get; set; }
         public virtual DbSet<RmFormS2Hdr> RmFormS2Hdr { get; set; }
         public virtual DbSet<RmFormS2QuarDtl> RmFormS2QuarDtl { get; set; }
@@ -9759,6 +9760,8 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FsihS1PkRefNo).HasColumnName("FSIH_S1_PK_Ref_No");
+
                 entity.Property(e => e.FsihStatus)
                     .IsRequired()
                     .HasColumnName("FSIH_Status")
@@ -9853,6 +9856,41 @@ namespace RAMMS.Domain.Models
                     .WithMany(p => p.RmFormS1WkDtl)
                     .HasForeignKey(d => d.FsiwdFsidPkRefNo)
                     .HasConstraintName("FK__RM_FormS1__FSIWD__24285DB4");
+            });
+
+            modelBuilder.Entity<RmFormS2DaySchedule>(entity =>
+            {
+                entity.HasKey(e => e.FsiidsPkRefNo);
+
+                entity.ToTable("RM_FormS2_Day_Schedule");
+
+                entity.Property(e => e.FsiidsPkRefNo).HasColumnName("FSIIDS_PK_Ref_No");
+
+                entity.Property(e => e.FsiidsCrBy).HasColumnName("FSIIDS_CR_By");
+
+                entity.Property(e => e.FsiidsCrDt)
+                    .HasColumnName("FSIIDS_CR_DT")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.FsiidsFsiidPkRefNo).HasColumnName("FSIIDS_FSIID_PK_Ref_No");
+
+                entity.Property(e => e.FsiidsFsiiqdClkPkRefNo).HasColumnName("FSIIDS_FSIIQD_CLK_PK_Ref_No");
+
+                entity.Property(e => e.FsiidsFsiiqdPkRefNo).HasColumnName("FSIIDS_FSIIQD_PK_Ref_No");
+
+                entity.Property(e => e.FsiidsScheduledDt)
+                    .HasColumnName("FSIIDS_Scheduled_DT")
+                    .HasColumnType("datetime");
+
+                entity.HasOne(d => d.FsiidsFsiidPkRefNoNavigation)
+                    .WithMany(p => p.RmFormS2DaySchedule)
+                    .HasForeignKey(d => d.FsiidsFsiidPkRefNo)
+                    .HasConstraintName("FK_RM_FormS2_Day_Schedule_RM_FormS2_DTL");
+
+                entity.HasOne(d => d.FsiidsFsiiqdPkRefNoNavigation)
+                    .WithMany(p => p.RmFormS2DaySchedule)
+                    .HasForeignKey(d => d.FsiidsFsiiqdPkRefNo)
+                    .HasConstraintName("FK_RM_FormS2_Day_Schedule_RM_FormS2_Quar_DTL");
             });
 
             modelBuilder.Entity<RmFormS2Dtl>(entity =>
