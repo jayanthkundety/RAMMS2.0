@@ -52,6 +52,21 @@
                 if (data && data != null) {
                     $("#divFindDetails").find("input,select").each(function () { $(this).prop("disabled", true); }).find("button").hide();
                     $("#divFindDetails").find("select").trigger("chosen:updated");
+                   
+                    var dsRefNo = data.refNoDS;
+
+                    if (dsRefNo.length > 0) {
+                        $("#ddlRefNo").empty();
+                        $("#ddlRefNo").append($("<option></option>").val("0").html("Select Reference No"));
+                        $.each(dsRefNo, function (index, v) {
+                            $("#ddlRefNo").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                        $("#ddlRefNo").val(data.s1RefNo)
+                        $('#ddlRefNo').trigger("chosen:updated");
+                        $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
+
+                    }
+
                     formS1.Bind.Header(data); // find get new also
                     formS1.Bind.HeaderInfo(data);
                     formS1.HeaderData = data;
@@ -412,4 +427,32 @@ $(document).ready(function () {
     else {
         $("#FsihRemarks").focus();
     }
+
+    $("#ddlRefNo").on("change", function () {
+
+        InitAjaxLoading();
+        EnableDisableElements(false);
+        LoadS1($(this).val());
+    });
+
+    function LoadS2(S2PKRefNo) {
+        
+        InitAjaxLoading();
+        $.ajax({
+            url: '/MAM/LoadS1Data',
+            dataType: 'JSON',
+            data: { PKRefNo: $("#txtS1RefNumber")[0].PkID, S2PKRefNo: S2PKRefNo, ActCode: $("#ddlActCode").val() },
+            type: 'Post',
+            success: function (data) {
+                HideAjaxLoading();
+                
+                InitializeGrid();
+            },
+            error: function (data) {
+                console.error(data);
+            }
+        });
+    }
+
 });
+

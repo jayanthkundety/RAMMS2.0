@@ -90,10 +90,18 @@ namespace RAMMS.Web.UI.Controllers
         {
             FormS1HeaderRequestDTO headerDetails = null;
             DateTime? dtWStart = null;
+            List<SelectListItem> RefNoFromS2DS = new List<SelectListItem>();
+            ViewData["RefNoFromS2DS"] = RefNoFromS2DS;
             if (id > 0)
             {
                 headerDetails = serFormS1.FindHeaderByID(id);
                 dtWStart = headerDetails.FromDt;
+                foreach( var item in serFormS1.FindRefNoFromS2(headerDetails))
+                {
+                    RefNoFromS2DS.Add(new SelectListItem { Text = item.Text,Value=item.Value });
+                }
+
+                ViewData["RefNoFromS2DS"] = RefNoFromS2DS;
             }
             else
             {
@@ -168,6 +176,7 @@ namespace RAMMS.Web.UI.Controllers
                 header.ModDt = DateTime.UtcNow;
                 header.CrDt = DateTime.UtcNow;
                 formS1 = serFormS1.SaveHeader(header, false);
+                formS1.RefNoDS = serFormS1.FindRefNoFromS2(formS1);
             }
             return Json(formS1, JsonOption());
         }

@@ -161,6 +161,31 @@ namespace RAMMS.Repository
             return grid;
         }
 
+        public List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header)
+        {
+            var ExistingV1 = (from r in _context.RmFormS1Hdr select r.FsihS1PkRefNo).ToList();
+            var res = (from hdr in _context.RmFormS2Hdr
+                       join dtl in _context.RmFormS2Dtl on hdr.FsiihPkRefNo equals dtl.FsiidFsiihPkRefNo
+                       join Qdtl in _context.RmFormS2QuarDtl on dtl.FsiidPkRefNo equals Qdtl.FsiiqdFsiidPkRefNo
+                       join wdtl in _context.RmWeekLookup on Qdtl.FsiiqdClkPkRefNo equals wdtl.ClkPkRefNo
+                       where  hdr.FsiihRmu == header.Rmu && wdtl.ClkWeekNo == header.WeekNo && hdr.FsiihActiveYn == true && dtl.FsiidActiveYn == true
+                       orderby hdr.FsiihPkRefNo descending
+                       select new
+                       {
+                           hdr.FsiihRefId,
+                           hdr.FsiihPkRefNo
+                       }).Distinct().Where(e => !ExistingV1.Contains(e.FsiihPkRefNo));
+
+
+
+            List<SelectListS2> list = new List<SelectListS2>();
+            foreach (var item in res)
+            {
+                list.Add(new SelectListS2 { Text = item.FsiihRefId.ToString(), Value = item.FsiihPkRefNo.ToString() });
+            }
+
+            return list;
+        }
 
         public RmFormS1Dtl SaveDetails(RmFormS1Dtl formS1Details)
         {

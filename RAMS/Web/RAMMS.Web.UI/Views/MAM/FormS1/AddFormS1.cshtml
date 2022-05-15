@@ -67,6 +67,11 @@
                                 @Html.Label("S1 Reference No")
                                 <input name="RefId" type="text" id="txtS1RefNumber" value="" class="form-control" disabled />
                             </div>
+
+                            <div class="form-group col-lg-6 mb-0 divRefno">
+                                <label for="">Reference No From S2</label>
+                                @Html.DropDownListFor(m => m.Item1.PkRefNo, (IEnumerable<SelectListItem>)ViewData["RefNoFromS2DS"], "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control", @width = "300px" })
+                            </div>
                         </div>
                         @if (IsAdd)
                         {

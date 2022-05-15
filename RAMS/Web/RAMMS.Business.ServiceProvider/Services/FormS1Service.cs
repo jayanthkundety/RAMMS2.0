@@ -30,6 +30,14 @@ namespace RAMMS.Business.ServiceProvider.Services
             _mapper = mapper;
             processService = proService;
         }
+
+
+       public List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header)
+        {
+            return repoFromS1.FindRefNoFromS2(header);
+        }
+
+
         public FormS1HeaderRequestDTO SaveHeader(FormS1HeaderRequestDTO headerDTO, bool updateSubmit)
         {
             return SaveHeader<FormS1HeaderRequestDTO>(headerDTO, updateSubmit);

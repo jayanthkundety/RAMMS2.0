@@ -13,6 +13,9 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     public interface IFormS1Service
     {
         FormS1HeaderRequestDTO SaveHeader(FormS1HeaderRequestDTO headerDTO, bool updateSubmit);
+
+        List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header);
+
         T SaveHeader<T>(T headerDTO, bool updateSubmit);
 
         FormS1HeaderRequestDTO FindDetails(FormS1HeaderRequestDTO headerDTO);
