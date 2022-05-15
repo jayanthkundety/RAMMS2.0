@@ -1625,7 +1625,7 @@ namespace RAMMS.Repository
                 var objV4 = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv5.Fv5hRmu && x.Fv4hActCode == domainModelFormv5.Fv5hActCode && x.Fv4hDt == domainModelFormv5.Fv5hDt && x.Fv4hCrew == domainModelFormv5.Fv5hCrew && x.Fv4hActiveYn == true).ToList();
                 if (objV4.Count == 0)
                 {
-                    Formv5.PkRefNo = -2;
+                    Formv5.PkRefNo = -1;
                     return Formv5;
                 }
                 else
