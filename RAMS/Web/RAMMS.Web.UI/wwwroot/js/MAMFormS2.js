@@ -782,7 +782,7 @@ function bindWeekDetail() {
                     }
 
                     subbody += sValue.value;
-                    subbody += '"><span weekno="' + sValue.text + '" class="week-name">W';
+                    subbody += '"><span month="' + value.name + '" weekno="' + sValue.text + '" class="week-name">W';
                     subbody += sValue.text;
                     subbody += '</span></button></li>';
                 });
@@ -793,19 +793,22 @@ function bindWeekDetail() {
             $("#divWeeks").html(body);
             $('.sch-colgroup li button').on('click', function () {
 
+                var weekno = $(this).find("span").attr("weekno");
+                var month = $(this).find("span").attr("month");
+                var _id = this.id;
                 if (_dt.IsView.val() == "1") {
-                    var _id = this.id;
+                    
                     $("#divWeekDays").css('margin', "auto");
                     if ($(this).hasClass('active')) {
                         _dt.weekDays = _dt.weekDays == null ? [] : _dt.weekDays;
                         var _tmp = getWeekExist(_id);
-                        var weekno = $(this).find("span").attr("weekno");
+                        
                         if (Array.isArray(_tmp) && _tmp.length >= 2 && _tmp[1].length > 0) {
-                            bindWeekDay(weekno, _hd.ddlYear.val(), _id, _tmp[1])
+                            bindWeekDay(month,weekno, _hd.ddlYear.val(), _id, _tmp[1])
                             
                         } else {
                             $("#divWeekDays").css('margin', "auto");
-                            bindWeekDay(weekno, _hd.ddlYear.val(), _id)
+                            bindWeekDay(month,weekno, _hd.ddlYear.val(), _id)
                         }
 
                         setTimeout(() => {
@@ -818,11 +821,11 @@ function bindWeekDetail() {
                 }
                 if (_dt.IsView.val() != "1") {
                     var bcontinue = false;
-                    var _id = this.id;
+                    
                     _dt.weekDetails = _dt.weekDetails == null ? [] : _dt.weekDetails;
                     _dt.weekDays = _dt.weekDays == null ? [] : _dt.weekDays;
                     var _tmp = getWeekExist(_id);
-                    var weekno = $(this).find("span").attr("weekno");
+                    
                     if (Array.isArray(_tmp)) {
                         if (_tmp.length >= 2 && _tmp[1].length == 0)
                             bcontinue = true;
@@ -851,14 +854,14 @@ function bindWeekDetail() {
 
 
                         $("#divWeekDays").css('margin', "auto");
-                        bindWeekDay(weekno, _hd.ddlYear.val(), _id)
+                        bindWeekDay(month, weekno, _hd.ddlYear.val(), _id)
                         $(this).addClass("note");
                     }
                     else {
 
                         if ($(this).hasClass('active')) {
                             if (Array.isArray(_tmp) && _tmp.length >= 2 && _tmp[1].length > 0) {
-                                bindWeekDay(weekno, _hd.ddlYear.val(), _id, _tmp[1])
+                                bindWeekDay(month,weekno, _hd.ddlYear.val(), _id, _tmp[1])
                                 return false;
                             }
                         }
@@ -895,10 +898,10 @@ function checkWeekExist(weekId) {
     return false;
 }
 
-function bindWeekDay(weekno, year, wid, days) {
+function bindWeekDay(month, weekno, year, wid, days) {
     const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var iMonth = months.indexOf(month.substring(0,3))+1;
     $.ajax({
         url: '/FormS2/GetDatesByWeekNo',
         dataType: 'JSON',
@@ -908,22 +911,34 @@ function bindWeekDay(weekno, year, wid, days) {
         success: function (data) {
             var body = '';
             var subbody = '<div class="flex-md-fill daysch-colgroup">';
-            subbody += '<div class="daysch-colgroup month-title">Week No.' + weekno + '</div>';
+            subbody += '<div class="daysch-colgroup month-title"><b>WEEK : ' + weekno + '</b></div>';
             subbody += '<ul>';
             $.each(data, function (index, value) {
                 var dt = new Date(value);
                 let day = weekday[dt.getDay()];
-                let name = month[dt.getMonth()];
+                let mnth = dt.getMonth() + 1;
+                let name = months[dt.getMonth()];
+                var lidisabled = '';
+                var btdisabled = '';
 
-                subbody += '<li><span class="day-name">' + day + '</span>'
+                if (iMonth != mnth) {
+                    lidisabled = "class='disabled' ";
+                    btdisabled = "disabled"
+                }
+                subbody += '<li ' + lidisabled + '><span class="day-name">' + day + '</span>'
                 subbody += '<span class="dm-group">'
                 subbody += '<span  class="dt">' + dt.getDate() + '</span>'
                 subbody += '<span  class="mnth">' + name + '</span>'
                 subbody += '</span>'
-                subbody += '<button type="button" wid="' + wid + '" ';
-                subbody += Array.isArray(days) && days.indexOf(formatDate(dt) + "") >= 0 ? ' class="active" ' : '';
-                subbody += ' id ="' + formatDate(dt);
-                subbody += '"></button></li>';
+                if (iMonth == mnth) {
+                    subbody += '<button  type="button" wid="' + wid + '" ';
+                    subbody += Array.isArray(days) && days.indexOf(formatDate(dt) + "") >= 0 ? ' class="active" ' : '';
+                    subbody += ' id ="' + formatDate(dt);
+                    subbody += '"></button>';
+                } else {
+                    subbody += '<button disabled class="disabled"></button>'
+                }
+                subbody += '</li>';
             });
             subbody += "</ul></div>";
             body += subbody;
