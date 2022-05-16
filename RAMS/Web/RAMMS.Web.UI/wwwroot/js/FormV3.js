@@ -401,6 +401,7 @@ function SaveFormV3Dtl() {
             }
             else {
                 ClearFormV3Dtl();
+                $('#WorkAccomplishmentGridView').DataTable().settings()[0].ajax.url = "/MAM/GetV3DtlGridList?V3PkRefNo=" + $("#FormV3_PkRefNo").val();
                 $('#WorkAccomplishmentGridView').DataTable().ajax.reload();
                 // InitializeGrid();
                 app.ShowSuccessMessage('Saved Successfully', false);
