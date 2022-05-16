@@ -305,6 +305,7 @@ function Save(SubmitType) {
                         $("#saveFormV5Btn").show();
                         $("#SubmitFormV5Btn").show();
                         $("#btnPhotoVideoModal").show();
+                       
                         HeaderLogic();
  
                     }
@@ -343,6 +344,7 @@ function SaveFormV5Dtl() {
             }
             else {
                 ClearFormV5Dtl();
+                $('#PhotoVideoGridView').DataTable().settings()[0].ajax.url = "/MAM/GetV5DtlGridList?V5PkRefNo=" + $("#FormV5_PkRefNo").val();
                 $('#PhotoVideoGridView').DataTable().ajax.reload();
                 app.ShowSuccessMessage('Saved Successfully', false);
                 $('#PhotoVideoModal').modal('hide');
