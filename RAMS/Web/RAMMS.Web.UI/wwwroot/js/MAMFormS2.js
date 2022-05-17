@@ -775,7 +775,7 @@ function bindWeekDetail() {
                 subbody += '</div><ul>';
                 $.each(value.week, function (sIndex, sValue) {
                     if (_dt.weekDetails.indexOf(parseInt(sValue.value)) > -1) {
-                        subbody += '<li><button class="active ' + note +' type="button" id="';
+                        subbody += '<li><button class="active ' + note +'" type="button" id="';
                     }
                     else {
                         subbody += '<li><button class="bvalidate" type="button" id="';
@@ -802,18 +802,19 @@ function bindWeekDetail() {
                     if ($(this).hasClass('active')) {
                         _dt.weekDays = _dt.weekDays == null ? [] : _dt.weekDays;
                         var _tmp = getWeekExist(_id);
-                        
                         if (Array.isArray(_tmp) && _tmp.length >= 2 && _tmp[1].length > 0) {
-                            bindWeekDay(month,weekno, _hd.ddlYear.val(), _id, _tmp[1])
+                            bindWeekDay(month, weekno, _hd.ddlYear.val(), _id, _tmp[1]);
                             
                         } else {
-                            $("#divWeekDays").css('margin', "auto");
-                            bindWeekDay(month,weekno, _hd.ddlYear.val(), _id)
+                            bindWeekDay(month, weekno, _hd.ddlYear.val(), _id);
                         }
-
+                        $(".weekselect").toggleClass("weekselect");
+                        $(this).toggleClass("weekselect");
                         setTimeout(() => {
                             $("#divWeekDays").fadeOut();
                             $("#divWeekDays").html("");
+                            $(".weekselect").toggleClass("weekselect");
+                            $(this).removeClass("weekselect");
                             clearTimeout();
                         }, 9000);
                     }
@@ -831,13 +832,20 @@ function bindWeekDetail() {
                             bcontinue = true;
                     }
 
+                    if ((_tmp == -1) || (Array.isArray(_tmp) && _tmp.length == 1)) {
+                        bcontinue = true;
+                    } 
+
                     if (bcontinue) {
                         $(this).toggleClass('active')
                         $(this).toggleClass('note')
-                    } else if ((_tmp == -1) || (Array.isArray(_tmp) && _tmp.length == 1)) {
-                        $(this).toggleClass('active')
-                        $(this).toggleClass('note')
+                        $(".weekselect").toggleClass("weekselect");
+                        //$(this).toggleClass("weekselect");
                     }
+                    //else if ((_tmp == -1) || (Array.isArray(_tmp) && _tmp.length == 1)) {
+                    //    $(this).toggleClass('active')
+                    //    $(this).toggleClass('note')
+                    //}
 
                     if ($(this).hasClass('active') && ((Array.isArray(_tmp) && _tmp[1].length == 0) || (!Array.isArray(_tmp) && _tmp == -1))) {
                         _dt.weekDetails.push(parseInt(_id));
@@ -851,8 +859,8 @@ function bindWeekDetail() {
                         var wk = $("#divWeeks").width();
                         var dy = $("#divWeekDays").width();
 
-
-
+                        $(".weekselect").toggleClass("weekselect");
+                        $(this).toggleClass("weekselect");
                         $("#divWeekDays").css('margin', "auto");
                         bindWeekDay(month, weekno, _hd.ddlYear.val(), _id)
                         $(this).addClass("note");
@@ -860,10 +868,20 @@ function bindWeekDetail() {
                     else {
 
                         if ($(this).hasClass('active')) {
-                            if (Array.isArray(_tmp) && _tmp.length >= 2 && _tmp[1].length > 0) {
-                                bindWeekDay(month,weekno, _hd.ddlYear.val(), _id, _tmp[1])
+                            if (checkWeekDayDivExist(_id)) {
+                                $("#divWeekDays").html("");
+                                $(".weekselect").toggleClass("weekselect");
+                                //$(this).toggleClass("weekselect");
                                 return false;
                             }
+
+                            if ( Array.isArray(_tmp) && _tmp.length >= 2 && _tmp[1].length > 0) {
+                                bindWeekDay(month, weekno, _hd.ddlYear.val(), _id, _tmp[1])
+                                $(".weekselect").toggleClass("weekselect");
+                                $(this).toggleClass("weekselect");
+                                return false;
+                            }
+                            
                         }
 
                         $("#divWeekDays").html("");
@@ -898,10 +916,23 @@ function checkWeekExist(weekId) {
     return false;
 }
 
+function checkWeekDayDivExist(weekno) {
+    var div = $("#divWeek" + weekno);
+    if ($("#divWeek" + weekno).length == 1) {
+        return true
+    }
+    return false;
+}
+
+function setColor(obj) {
+
+}
+
 function bindWeekDay(month, weekno, year, wid, days) {
     const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var iMonth = months.indexOf(month.substring(0,3))+1;
+    var iMonth = months.indexOf(month.substring(0, 3)) + 1;
+    $("#divWeekDays").html("");
     $.ajax({
         url: '/FormS2/GetDatesByWeekNo',
         dataType: 'JSON',
@@ -910,8 +941,8 @@ function bindWeekDay(month, weekno, year, wid, days) {
         async: true,
         success: function (data) {
             var body = '';
-            var subbody = '<div class="flex-md-fill daysch-colgroup">';
-            subbody += '<div class="daysch-colgroup month-title"><b>WEEK : ' + weekno + '</b></div>';
+            var subbody = '<div id="divWeek' + wid + '" class="flex-md-fill daysch-colgroup">';
+            subbody += '<div class="daysch-colgroup month-title weekselect"><b>WEEK : ' + weekno + '</b></div>';
             subbody += '<ul>';
             $.each(data, function (index, value) {
                 var dt = new Date(value);
@@ -947,14 +978,22 @@ function bindWeekDay(month, weekno, year, wid, days) {
                 $("#" + wid).toggleClass("note");
             }
 
-            $("#divWeekDays").fadeIn();
+
+
+            //$("#divWeekDays").fadeIn("slow");
             $("#divWeekDays").html(body);
             
             
-            
+            $("divWeekDays").animate({
+                height: 'toggle'
+            });
+
 
             $('.daysch-colgroup li button').on('click', function () {
 
+                if (_dt.IsView.val() == "1") {
+                    return false;
+                }
                 if (_dt.IsView.val() != "1") {
                     $(this).toggleClass('active')
                     var _id = this.id;
@@ -1033,6 +1072,7 @@ function removeDay(weekId, dayId) {
                 $("#" + weekId).toggleClass("note");
                 $("#" + weekId).toggleClass("active");
                 $("#divWeekDays").fadeOut();
+                $(".weekselect").toggleClass("weekselect");
                 $("#divWeekDays").html("");
                 clearTimeout();
             }, 1000);
