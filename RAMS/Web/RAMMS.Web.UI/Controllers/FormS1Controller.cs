@@ -341,6 +341,10 @@ namespace RAMMS.Web.UI.Controllers
         //    return Json(new { Result = formD }, JsonOption());
         //}
 
-
+        public async Task<IActionResult> LoadS2Data(int PKRefNo, int S2PKRefNo)
+        {
+            serFormS1.LoadS2Data(PKRefNo, S2PKRefNo );
+            return Json(1);
+        }
     }
 }

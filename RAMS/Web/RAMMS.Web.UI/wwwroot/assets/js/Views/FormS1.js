@@ -430,28 +430,42 @@ $(document).ready(function () {
 
     $("#ddlRefNo").on("change", function () {
 
-        InitAjaxLoading();
-        EnableDisableElements(false);
-        LoadS1($(this).val());
+        if ($(this).val() != "") {
+            LoadS2($(this).val());
+            DisableS1DetailHeader();
+        }
     });
 
     function LoadS2(S2PKRefNo) {
         
         InitAjaxLoading();
         $.ajax({
-            url: '/MAM/LoadS1Data',
+            url: '/MAM/LoadS2Data',
             dataType: 'JSON',
-            data: { PKRefNo: $("#txtS1RefNumber")[0].PkID, S2PKRefNo: S2PKRefNo, ActCode: $("#ddlActCode").val() },
+            data: { PKRefNo: $("#txtS1RefNumber")[0].PkID, S2PKRefNo: S2PKRefNo },
             type: 'Post',
             success: function (data) {
                 HideAjaxLoading();
-                
-                InitializeGrid();
+                //                InitializeGrid();
             },
             error: function (data) {
                 console.error(data);
             }
         });
+    }
+
+    function DisableS1DetailHeader() {
+        $('#formS1DActivityCode').prop('disabled', false).trigger("chosen:updated");
+        $('#formS1DRoadCode').prop('disabled', false).trigger("chosen:updated");
+        $('#drpFormType').prop('disabled', false).trigger("chosen:updated");
+        $('#drpFormS1DRefNo').prop('disabled', false).trigger("chosen:updated");
+                
+        
+        $('#formAFromCh').attr("readonly", false);
+        $('#formAFromChDeci').attr("readonly", false);
+        $('#formAToCh').attr("readonly", false);
+        $('#formAToChDeci').attr("readonly", false);
+        
     }
 
 });

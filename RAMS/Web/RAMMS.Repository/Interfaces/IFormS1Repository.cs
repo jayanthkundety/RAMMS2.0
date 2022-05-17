@@ -26,5 +26,6 @@ namespace RAMMS.Repository.Interfaces
         void CreateWkdtl(RmFormS1WkDtl s1WkDtl);
         void UpdateWkdtl(RmFormS1WkDtl s1WkDtl);
         (int id, bool alreadyExists) CheckAlreadyExists(string roadCode, string activityCode, int fromChKm, string fromChM, int toChKm, string toChM, int weekNo);
+        int LoadS2Data(int PKRefNo, int S2PKRefNo);
     }
 }

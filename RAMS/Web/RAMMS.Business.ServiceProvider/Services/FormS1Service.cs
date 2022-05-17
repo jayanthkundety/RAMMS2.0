@@ -788,5 +788,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             var Result = await repoFromS1.GetFormDDtls(roadCode, actCode, frmCh, frmChDeci, toCh, toChDeci, crewSupervisor, weekNo);
             return Result;
         }
+
+
+        public int LoadS2Data(int PKRefNo, int S2PKRefNo )
+        {
+            return repoFromS1.LoadS2Data(PKRefNo, S2PKRefNo);
+        }
     }
 }

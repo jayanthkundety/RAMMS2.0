@@ -168,7 +168,7 @@ namespace RAMMS.Repository
                        join dtl in _context.RmFormS2Dtl on hdr.FsiihPkRefNo equals dtl.FsiidFsiihPkRefNo
                        join Qdtl in _context.RmFormS2QuarDtl on dtl.FsiidPkRefNo equals Qdtl.FsiiqdFsiidPkRefNo
                        join wdtl in _context.RmWeekLookup on Qdtl.FsiiqdClkPkRefNo equals wdtl.ClkPkRefNo
-                       where  hdr.FsiihRmu == header.Rmu && wdtl.ClkWeekNo == header.WeekNo && hdr.FsiihActiveYn == true && dtl.FsiidActiveYn == true
+                       where hdr.FsiihRmu == header.Rmu && wdtl.ClkWeekNo == header.WeekNo && hdr.FsiihActiveYn == true && dtl.FsiidActiveYn == true
                        orderby hdr.FsiihPkRefNo descending
                        select new
                        {
@@ -450,5 +450,55 @@ namespace RAMMS.Repository
                 return (0, false);
             }
         }
+
+
+        public int LoadS2Data(int PKRefNo, int S2PKRefNo)
+        {
+
+            IList<RmFormS1Dtl> del = (from r in _context.RmFormS1Dtl where r.FsidFsihPkRefNo == PKRefNo select r).ToList();
+
+            foreach (var item in del)
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
+
+            if (S2PKRefNo != 0)
+            {
+                var resHDR = from hdr in _context.RmFormS2Hdr where hdr.FsiihPkRefNo == S2PKRefNo && hdr.FsiihActiveYn == true select hdr;
+                if (resHDR.Count() > 0)
+                {
+                    var res = (from dtl in _context.RmFormS2Dtl
+                               where dtl.FsiidFsiihPkRefNo == S2PKRefNo && dtl.FsiidActiveYn == true
+                               orderby dtl.FsiidPkRefNo descending
+                               select new RmFormS1Dtl
+                               {
+                                   FsidFsihPkRefNo = PKRefNo,
+                                   FsidRefId = resHDR.Single().FsiihRefId,
+                                   FsidActiveYn = true,
+                                   FsidCrDt = DateTime.Today,
+                                   FsiidRoadCode = dtl.FsiidRoadCode,
+                                   FsiidRoadName = dtl.FsiidRoadName,
+                                   FsiidRoadId = dtl.FsiidRoadId,
+                                   FsidActCode = resHDR.Single().FsiihActCode,
+                                   FsidActName = resHDR.Single().FsiihActName,
+                                   FsidActId = resHDR.Single().FsiihActId
+                               }).ToList();
+
+
+                    foreach (var item in res)
+                    {
+                        _context.RmFormS1Dtl.Add(item);
+                        _context.SaveChanges();
+                    }
+                }
+
+            }
+
+            return 1;
+        }
+
+
+
     }
 }
