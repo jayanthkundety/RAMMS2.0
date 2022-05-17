@@ -154,7 +154,7 @@ $(document).ready(function () {
         req.RoadCode = '';
         req.RMU = $("#ddlrmu option:selected").text().split("-")[1];
 
-        ;
+       
         //RM_div_RMU_Sec_Master
         $.ajax({
             url: '/ERT/RMUSecRoad',
