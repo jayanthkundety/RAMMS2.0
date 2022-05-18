@@ -128,6 +128,11 @@ namespace RAMMS.Web.UI.Models
 
         }
 
+        public void GetUsersBasedOnGroup(List<string> UserGroup, string LookUpName)
+        {
+            ViewData[LookUpName] = UserService.GetUsersBasedOnGroup(UserGroup).Result;
+        }
+
         public void GetRMUWithDivision(string name)
         {
             ViewData[name] = LookupService.GetRMUwithDivisionDetails().Result;

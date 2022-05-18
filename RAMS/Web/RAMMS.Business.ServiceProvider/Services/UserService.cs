@@ -328,6 +328,36 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
+
+
+        public async Task<IEnumerable<CSelectListItem>> GetUsersBasedOnGroup(List<string> groupCode )
+        {
+            //var result = new List<SelectListItem>();
+            try
+            {
+                var _context = _repoUnit.UserRepository._context;
+                var result = await (from hd in _context.RmGroup
+                                    join h in _context.RmGroupUser on hd.UgPkId equals h.RmGroupsUgPkId
+                                    join x in _context.RmUsers on h.RmUsersUsrPkId equals x.UsrPkId
+                                    where   groupCode.Contains(hd.UgGroupCode)
+                                    select new CSelectListItem
+                                    {
+                                        Text = x.UsrPkId + " - " + x.UsrUserName,
+                                        Value = x.UsrPkId.ToString(),
+                                        CValue = x.UsrPkId.ToString(),
+                                        Item1 = x.UsrUserName,
+                                        Item2 = x.UsrPosition
+                                    }).ToListAsync();
+                result.Add(new CSelectListItem { Text = "99999999 - Others", Value = "99999999", CValue = "99999999", Item1 = "others" });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public async Task<IEnumerable<SelectListItem>> GetSupervisor()
         {
             var supervisor = new List<SelectListItem>();

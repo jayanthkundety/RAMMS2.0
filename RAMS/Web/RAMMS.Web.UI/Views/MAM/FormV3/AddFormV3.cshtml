@@ -206,7 +206,7 @@
                                                                 <label for="Name">
                                                                     Facilitated by
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Facilitatedby", "Select Users", new { Id = "ddlFacilitatedby", @class = "form-control  {required,Facilitated by}", @onchange = "OnFacilitatedbyChange(this);" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Facilate_Record"], "Facilitatedby", "Select Users", new { Id = "ddlFacilitatedby", @class = "form-control  {required,Facilitated by}", @onchange = "OnFacilitatedbyChange(this);" })
 
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
@@ -247,7 +247,7 @@
                                                                 <label for="Name">
                                                                     Recorded by
                                                                 </label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Recordedby", "Select Users", new { Id = "ddlRecordedby", @class = "form-control  {required,Recorded by}", @onchange = "OnRecordedChange(this);" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Facilate_Record"], "Recordedby", "Select Users", new { Id = "ddlRecordedby", @class = "form-control  {required,Recorded by}", @onchange = "OnRecordedChange(this);" })
                                                             </div>
 
                                                             <div class="form-group col-lg-2 float-left">
@@ -288,7 +288,7 @@
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left mb-0">
                                                                 <label for="Name"> Agreed by<!--  Bansing Tijun--></label>
-                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "Agreeedby", "Select Users", new { Id = "ddlAgreedby", @class = "form-control  {required,Agreed by}", @onchange = "OnAgreedbyChange(this);" })
+                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Agreedby"], "Agreeedby", "Select Users", new { Id = "ddlAgreedby", @class = "form-control  {required,Agreed by}", @onchange = "OnAgreedbyChange(this);" })
                                                             </div>
                                                             <div class="form-group col-lg-2 float-left">
                                                                 <label for="User_Id">
