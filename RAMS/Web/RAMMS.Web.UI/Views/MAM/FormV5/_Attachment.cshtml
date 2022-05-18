@@ -153,10 +153,9 @@
                         dataType: 'JSON',
                         success: function (data) {
                             HideAjaxLoading();
-
-                            debugger
+ 
                             if (data) {
-                                app.ShowSuccessMessage('Uploaded Successcully', false);
+                              //  app.ShowSuccessMessage('Uploaded Successcully', false);
                                 
                                 $('#spnfilename').html(data.filename);
                                 $('#FormV5Dtl_ImageFilenameSys').val(data.filename);

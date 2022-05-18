@@ -104,11 +104,29 @@
         padding-top: 3px;
     }
 
+    .disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    .weekselect {
+        color: yellow !important;
+        font-weight: bolder !important;
+        font-size: 11pt !important;
+    }
+
+    .weekselect span {
+        color: yellow !important;
+        font-weight: bolder !important;
+        font-size: 11pt !important;
+    }
+
 </style>
 <input type="hidden" id="HdnHeaderPkId" value="@Model.PkRefNo" />
 <input type="hidden" id="IsAlreadyExists" value="@IsAlreadyExist" />
 <input type="hidden" id="IsHView" value="@IsView" />
 <input type="hidden" id="IsDView" value="" />
+<input type="hidden" id="LastId" value="5" />
 <div class="row" id="headerDiv">
     <div class="w-100 float-left bg-body">
         <div class="w-100 mh-120">
@@ -437,13 +455,16 @@
                                                                             </div>
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <div id="divWeekDays" class="d-flex" style="width:50%">
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
+
                                                                 </tbody>
+                                                            </table>
+                                                            <table class="w-100 dataTable dataTables_scroll schedule-tbl" cellspacing="2" cellpadding="2">
+                                                                <tr>
+                                                                    <td>
+                                                                        <div id="divWeekDays" style="position:relative;width:50%;margin:auto">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
                                                             </table>
                                                         </div>
                                                     </div>

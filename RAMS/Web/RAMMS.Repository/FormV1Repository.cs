@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+ 
 
 
 namespace RAMMS.Repository
@@ -324,7 +325,7 @@ namespace RAMMS.Repository
         {
 
 
-
+            var ExistingV1 = (from r in _context.RmFormV1Hdr select r.Fv1hS1hPkRefNo ).ToList();
             var res = (from hdr in _context.RmFormS1Hdr
                        join dtl in _context.RmFormS1Dtl on hdr.FsihPkRefNo equals dtl.FsidFsihPkRefNo
                        join wdtl in _context.RmFormS1WkDtl on dtl.FsidPkRefNo equals wdtl.FsiwdFsidPkRefNo
@@ -334,7 +335,9 @@ namespace RAMMS.Repository
                        {
                            hdr.FsihRefId,
                            hdr.FsihPkRefNo
-                       }).Distinct();
+                       }).Distinct().Where(e => !ExistingV1. Contains(e.FsihPkRefNo));
+
+             
 
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (var item in res)
@@ -848,7 +851,7 @@ namespace RAMMS.Repository
                 }
                 else
                 {
-                    var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv3.Fv3hRmu && x.Fv1hActCode == domainModelFormv3.Fv3hActCode && x.Fv1hDt == domainModelFormv3.Fv3hDt && x.Fv1hActiveYn == true).ToList();
+                    var objV1 = _context.RmFormV1Hdr.Where(x => x.Fv1hRmu == domainModelFormv3.Fv3hRmu && x.Fv1hActCode == domainModelFormv3.Fv3hActCode && x.Fv1hDt == domainModelFormv3.Fv3hDt && x.Fv1hCrew == domainModelFormv3.Fv3hCrew && x.Fv1hActiveYn == true).ToList();
                     if (objV1.Count > 0)
                     {
                         domainModelFormv3.Fv3hFv1PkRefId = objV1.Single().Fv1hRefId;
@@ -860,6 +863,7 @@ namespace RAMMS.Repository
                         lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                         lstData.Add("Crew", domainModelFormv3.Fv3hCrew.ToString());
                         lstData.Add("ActivityCode", domainModelFormv3.Fv3hActCode);
+                        lstData.Add("RMU", domainModelFormv3.Fv3hRmu.ToString());
                         lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv3.Fv3hPkRefNo));
                         domainModelFormv3.Fv3hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV3Header, lstData);
                         _context.SaveChanges();
@@ -867,6 +871,7 @@ namespace RAMMS.Repository
                         Formv3.RefId = domainModelFormv3.Fv3hRefId;
                         Formv3.Status = domainModelFormv3.Fv3hStatus;
                         Formv3.FV1PKRefId = domainModelFormv3.Fv3hFv1PkRefId;
+                        Formv3.Fv1PkRefNo = domainModelFormv3.Fv3hFv1PkRefNo;
 
                         var res = (from dtl in _context.RmFormV1Dtl
                                    where dtl.Fv1dFv1hPkRefNo == domainModelFormv3.Fv3hFv1PkRefNo && dtl.Fv1dActiveYn == true
@@ -878,8 +883,8 @@ namespace RAMMS.Repository
                                        Fv3dActiveYn = true,
                                        Fv3dFrmChDeci = dtl.Fv1dFrmChDeci,
                                        Fv3dFrmCh = dtl.Fv1dFrmCh,
-                                       Fv3dToChDeci = dtl.Fv1dToCh,
-                                       Fv3dToCh = dtl.Fv1dToChDeci,
+                                       Fv3dToChDeci = dtl.Fv1dToChDeci,
+                                       Fv3dToCh = dtl.Fv1dToCh,
                                        Fv3dRoadCode = dtl.Fv1dRoadCode,
                                        Fv3dRoadName = dtl.Fv1dRoadName,
 
@@ -990,6 +995,8 @@ namespace RAMMS.Repository
                 return 500;
             }
         }
+
+
 
         #endregion
 
@@ -1265,6 +1272,7 @@ namespace RAMMS.Repository
                     lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                     lstData.Add("Crew", domainModelFormv4.Fv4hCrew.ToString());
                     lstData.Add("ActivityCode", domainModelFormv4.Fv4hActCode);
+                    lstData.Add("RMU", domainModelFormv4.Fv4hRmu.ToString());
                     lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv4.Fv4hPkRefNo));
                     domainModelFormv4.Fv4hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV4Header, lstData);
                     _context.SaveChanges();
@@ -1272,6 +1280,7 @@ namespace RAMMS.Repository
                     Formv4.RefId = domainModelFormv4.Fv4hRefId;
                     Formv4.Status = domainModelFormv4.Fv4hStatus;
                     Formv4.FV3PKRefID = domainModelFormv4.Fv4hFv3PkRefId;
+                    Formv4.FV3PKRefNo = domainModelFormv4.Fv4hFv3PkRefNo;
                     Formv4.TotalProduction = domainModelFormv4.Fv4hTotalProduction;
 
 
@@ -1619,7 +1628,7 @@ namespace RAMMS.Repository
                 var objV4 = _context.RmFormV4Hdr.Where(x => x.Fv4hRmu == domainModelFormv5.Fv5hRmu && x.Fv4hActCode == domainModelFormv5.Fv5hActCode && x.Fv4hDt == domainModelFormv5.Fv5hDt && x.Fv4hCrew == domainModelFormv5.Fv5hCrew && x.Fv4hActiveYn == true).ToList();
                 if (objV4.Count == 0)
                 {
-                    Formv5.PkRefNo = -2;
+                    Formv5.PkRefNo = -1;
                     return Formv5;
                 }
                 else
@@ -1631,12 +1640,15 @@ namespace RAMMS.Repository
                     lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                     lstData.Add("Crew", domainModelFormv5.Fv5hCrew.ToString());
                     lstData.Add("ActivityCode", domainModelFormv5.Fv5hActCode);
+                    lstData.Add("RMU", domainModelFormv5.Fv5hRmu.ToString());
                     lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(domainModelFormv5.Fv5hPkRefNo));
                     domainModelFormv5.Fv5hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV5Header, lstData);
                     _context.SaveChanges();
                     Formv5.PkRefNo = _mapper.Map<FormV5ResponseDTO>(domainModelFormv5).PkRefNo;
                     Formv5.RefId = domainModelFormv5.Fv5hRefId;
                     Formv5.Status = domainModelFormv5.Fv5hStatus;
+                    //Formv5.FV4PKRefID = domainModelFormv5.Fv5hFv4PkRefId;
+                    //Formv5.FV4PKRefNo = domainModelFormv5.Fv5hFv4PkRefNo;
 
                     return Formv5;
 

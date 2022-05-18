@@ -43,9 +43,11 @@ $(document).ready(function () {
         $("#btnWorkSchedulePull").hide();
         $("#saveFormV1Btn").hide();
         $("#SubmitFormV1Btn").hide();
+        $('#ddlSource').prop('disabled', true).trigger("chosen:updated");
+        $('#ddlRefNo').prop('disabled', true).trigger("chosen:updated");
     }
     else if ($("#FormV1_Status").val() == "Initialize" || $("#FormV1_Status").val() == "Saved") {
-        $("#btnWorkScheduleAdd").hide();
+        //   $("#btnWorkScheduleAdd").hide();
         $("#btnWorkSchedulePull").hide();
         $("#saveFormV1Btn").show();
         $("#SubmitFormV1Btn").show();
@@ -154,7 +156,7 @@ $(document).ready(function () {
         req.RoadCode = '';
         req.RMU = $("#ddlrmu option:selected").text().split("-")[1];
 
-        ;
+
         //RM_div_RMU_Sec_Master
         $.ajax({
             url: '/ERT/RMUSecRoad',
@@ -209,6 +211,31 @@ $(document).ready(function () {
                             $("#FormV1_DivCode").val(data._RMAllData.divisionCode);
 
                         }
+
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+            debugger
+            var seccode = $("#ddlSecCode option:selected").text().split("-")[0];
+            $.ajax({
+                url: '../FormQa1/GetRoadCodeBySection',
+                dataType: 'JSON',
+                data: { seccode },
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $("#ddlRoadCode").empty();
+                        $("#ddlRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                        $.each(data, function (index, v) {
+                            var text = v.roadCode + " - " + v.roadName;
+                            $("#ddlRoadCode").append($("<option></option>").val(v.roadCode).html(text).attr("Item1", v.roadName));
+                        });
+                        $("#ddlRoadCode").trigger("change");
+                        $('#ddlRoadCode').trigger("chosen:updated");
 
                     }
                 },
@@ -390,8 +417,16 @@ function OnScheduledbyChange(tis) {
 
 function Save(GroupName, SubmitType) {
 
-    
+
     if (SubmitType == "Submitted") {
+       
+        if ($("#ddlSource").val() == "S1") {
+
+            if ($("#ddlRefNo").val() == "") {
+                app.ShowErrorMessage('please select reference no', false);
+                return;
+            }
+        }
         $("#FormV1_SubmitSts").val(true);
     }
 
@@ -417,8 +452,10 @@ function Save(GroupName, SubmitType) {
                         location.href = "/MAM/EditFormV1?Id=" + data.pkRefNo + "&view=0";
                         return;
                     }
+                    $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
+                    $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
                     UpdateFormAfterSave(data);
-                   // app.ShowSuccessMessage('Saved Successfully', false);
+                    // app.ShowSuccessMessage('Saved Successfully', false);
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
@@ -475,7 +512,7 @@ function UpdateFormAfterSave(data) {
     $("#FormV1_RefId").val(data.refId);
     $("#FormV1_Status").val(data.status)
     $("#ddlSource").val(data.source)
-   
+
     $("#hdnPkRefNo").val(data.pkRefNo);
     $("#saveFormV1Btn").show();
     $("#SubmitFormV1Btn").show();
@@ -544,7 +581,8 @@ function LoadS1(S1PKRefNo) {
         type: 'Post',
         success: function (data) {
             HideAjaxLoading();
-            EnableDisableElements(true)
+            if (S1PKRefNo != 0)
+                EnableDisableElements(true)
             HideAjaxLoading();
             InitializeGrid();
         },
@@ -630,7 +668,7 @@ function AddFormV1WorkSchedule() {
 
 function EditFormV1WorkSchedule(obj, view) {
 
-     
+
     EditModeDtl = true;
     var currentRow = $(obj).closest("tr");
     var data = $('#WorkScheduleGridView').DataTable().row(currentRow).data();
@@ -657,7 +695,7 @@ function EditFormV1WorkSchedule(obj, view) {
             $('#FormV1Dtl_FrmChDeci').attr("readonly", true);
             $('#FormV1Dtl_ToCh').attr("readonly", true);
             $('#FormV1Dtl_ToChDeci').attr("readonly", true);
-         //   $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
+            //   $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
 
         }
         else {
@@ -684,7 +722,7 @@ function EditFormV1WorkSchedule(obj, view) {
 }
 
 function PullS1Data() {
-   
+
     if ($("#ddlRefNo").val() != "0" && $("#ddlRefNo").val() != "") {
         InitAjaxLoading();
         $.ajax({

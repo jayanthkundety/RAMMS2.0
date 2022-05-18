@@ -9760,12 +9760,7 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FsihS2PkRefNo).HasColumnName("FSIH_S2_PK_Ref_No");
-
-                entity.Property(e => e.FsihS2RefId)
-                    .HasColumnName("FSIH_S2_Ref_Id")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FsihS1PkRefNo).HasColumnName("FSIH_S1_PK_Ref_No");
 
                 entity.Property(e => e.FsihStatus)
                     .IsRequired()

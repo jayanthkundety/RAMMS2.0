@@ -17,7 +17,8 @@ using System.IO;
 using RAMMS.Common.RefNumber;
 using RAMMS.Common;
 using RAMMS.DTO.JQueryModel;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace RAMMS.Business.ServiceProvider.Services
 {
@@ -41,6 +42,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     var _ = _mapper.Map<FormS2DetailRequestDto>(result);
                     _.WeekDetail = _repoUnit.FormS2QuarterDtlRepository.FindAll(s => s.FsiiqdFsiidPkRefNo == id).Select(s => s.FsiiqdClkPkRefNo.Value).ToList();
+                    _.WeekDays = GetDaySchedules(_repoUnit.FormS2DayScheduleRepository.FindAll(s => s.FsiidsFsiidPkRefNo == id).ToList(), id);
                     return _;
                 }
                 else
@@ -53,6 +55,36 @@ namespace RAMMS.Business.ServiceProvider.Services
                 await _repoUnit.RollbackAsync();
                 throw ex;
             }
+        }
+
+
+        private string GetDaySchedules(List<RmFormS2DaySchedule> rmFormS2DaySchedules, int detailId)
+        {
+            var daySchedules = rmFormS2DaySchedules.Select(s => new { s.FsiidsFsiiqdClkPkRefNo, s.FsiidsFsiiqdPkRefNo }).Distinct();
+
+            string retValue = "[";
+            foreach (var days in daySchedules)
+            {
+                retValue += @"[""" + days.FsiidsFsiiqdClkPkRefNo  + @""",[";
+                var _days = rmFormS2DaySchedules.Where(s => s.FsiidsFsiiqdClkPkRefNo == days.FsiidsFsiiqdClkPkRefNo && s.FsiidsFsiiqdPkRefNo == days.FsiidsFsiiqdPkRefNo  && s.FsiidsFsiidPkRefNo == detailId).Select(s => @"""" + DateTime.Parse(s.FsiidsScheduledDt.ToString()).ToString("yyyy-MM-dd") + @"""").ToList();
+                retValue += string.Join(",", _days) + "]],";
+            }
+            retValue = retValue == "[" ? "" : retValue.Substring(0, retValue.Length - 1) + "]";
+            return retValue;
+        }
+
+        private List<Dictionary<int, List<string>>> GetDaySchedules1(List<RmFormS2DaySchedule> rmFormS2DaySchedules)
+        {
+            IEnumerable<int?> daySchedules = rmFormS2DaySchedules.Select(s => s.FsiidsFsiiqdClkPkRefNo).Distinct();
+            List<Dictionary<int, List<string>>> sch = new List<Dictionary<int, List<string>>>();
+            foreach (int days in daySchedules)
+            {
+                Dictionary<int, List<string>> keyValuePairs = new Dictionary<int, List<string>>();
+                var _days = rmFormS2DaySchedules.Select(s => s.FsiidsScheduledDt.ToString()).ToList();
+                keyValuePairs.Add(days, _days.ToList());
+                sch.Add(keyValuePairs);
+            }
+            return sch;
         }
 
         public async Task<FormS2HeaderRequestDto> GetHeaderById(int id)
@@ -79,20 +111,71 @@ namespace RAMMS.Business.ServiceProvider.Services
 
         public int SaveDetail(FormS2DetailRequestDto request)
         {
-            Func<int, List<int>, int> saveClq = (detailId, weeks) =>
+
+
+            Func<int, List<int>, List<DaySchedule>, int> saveClq = (detailId, weeks, weekDays) =>
               {
+
+                  _repoUnit.FormS2DayScheduleRepository.Delete(s => s.FsiidsFsiidPkRefNo == detailId);
                   _repoUnit.FormS2QuarterDtlRepository.Delete(s => s.FsiiqdFsiidPkRefNo == detailId);
+
                   _repoUnit.Commit();
-                  if (weeks.Count > 0)
+
+                  if (weekDays.Count == 0)
                   {
-                      var toAdd = weeks.Select(s => new RmFormS2QuarDtl
+                      if (weeks.Count > 0)
                       {
-                          FsiiqdClkPkRefNo = s,
+                          var toAdd = weeks.Select(s => new RmFormS2QuarDtl
+                          {
+                              FsiiqdClkPkRefNo = s,
+                              FsiiqdFsiidPkRefNo = detailId
+                          });
+                          _repoUnit.FormS2QuarterDtlRepository.Create(toAdd);
+                          return _repoUnit.Commit();
+                      }
+                      return 0;
+                  }
+
+                  if (weekDays.Count > 0)
+                  {
+                      var toqAdd = weekDays.Select(s => new RmFormS2QuarDtl
+                      {
+                          FsiiqdClkPkRefNo = Convert.ToInt32(s.WeekNo),
                           FsiiqdFsiidPkRefNo = detailId
                       });
-                      _repoUnit.FormS2QuarterDtlRepository.Create(toAdd);
+
+                      //_repoUnit.FormS2QuarterDtlRepository.Create(toAdd);
+                      var toAdd = _repoUnit.FormS2QuarterDtlRepository.SaveQuarDtl(toqAdd, detailId).Result;
+
+
+
+                      List<RmFormS2DaySchedule> toAddDaySch = new List<RmFormS2DaySchedule>();
+
+                      foreach (var days in weekDays)
+                      {
+                          foreach (var day in days.Days)
+                          {
+                              RmFormS2DaySchedule ds = new RmFormS2DaySchedule();
+                              ds.FsiidsFsiidPkRefNo = detailId;
+
+                              var weekno = toAdd.Where(s => s.FsiiqdClkPkRefNo == Convert.ToInt32(days.WeekNo)).FirstOrDefault();
+                              ds.FsiidsFsiiqdPkRefNo = weekno.FsiiqdPkRefNo;
+                              ds.FsiidsFsiiqdClkPkRefNo = weekno.FsiiqdClkPkRefNo;
+                              var sDt = day.Split("-");
+                              int year = Convert.ToInt32(sDt[0]);
+                              int month = Convert.ToInt32(sDt[1]);
+                              int dt = Convert.ToInt32(sDt[2]);
+
+                              DateTime date = new DateTime(year, month, dt);
+                              ds.FsiidsScheduledDt = date;
+                              toAddDaySch.Add(ds);
+                          }
+                      }
+
+                      _repoUnit.FormS2DayScheduleRepository.Create((IEnumerable<RmFormS2DaySchedule>)toAddDaySch);
                       return _repoUnit.Commit();
                   }
+
                   return 0;
               };
 
@@ -100,6 +183,8 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             try
             {
+                var _weekDays = !string.IsNullOrEmpty(request.WeekDays) ? ConvertWeekDaysToObject(request.WeekDays) : new List<DaySchedule>();
+
                 request.WeekDetail = request.WeekDetail ?? new List<int>();
                 RmFormS2Dtl rmFormS2Dtl = _mapper.Map<RmFormS2Dtl>(request);
                 rmFormS2Dtl.FsiidActiveYn = true;
@@ -108,7 +193,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                     rmFormS2Dtl.FsiidModDt = DateTime.UtcNow;
                     _repoUnit.FormS2DetailRepository.Update(rmFormS2Dtl);
                     _repoUnit.Commit();
-                    saveClq(rmFormS2Dtl.FsiidPkRefNo, request.WeekDetail);
+                    saveClq(rmFormS2Dtl.FsiidPkRefNo, request.WeekDetail, _weekDays);
                     return rmFormS2Dtl.FsiidPkRefNo;
                 }
                 else
@@ -120,7 +205,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                     _repoUnit.FormS2DetailRepository._context.SaveChanges();
                     if (result != null)
                     {
-                        saveClq(rmFormS2Dtl.FsiidPkRefNo, request.WeekDetail);
+                        saveClq(rmFormS2Dtl.FsiidPkRefNo, request.WeekDetail, _weekDays);
                         return result.FsiidPkRefNo;
                     }
                     else
@@ -133,6 +218,27 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 throw ex;
             }
+        }
+
+        private List<DaySchedule> ConvertWeekDaysToObject(string WeekDays)
+        {
+            JArray weekDays = (JArray)JsonConvert.DeserializeObject(WeekDays);
+
+            List<DaySchedule> daySchedules = new List<DaySchedule>();
+
+            foreach (var week in weekDays)
+            {
+                DaySchedule daySchedule = new DaySchedule();
+                daySchedule.WeekNo = week[0].ToString();
+                daySchedule.Days = new List<string>();
+                foreach (var day in week[1].ToList())
+                {
+                    daySchedule.Days.Add(day.ToString());
+                }
+                daySchedules.Add(daySchedule);
+            }
+
+            return daySchedules;
         }
 
         public async Task<FormS2HeaderRequestDto> SaveHeader(FormS2HeaderRequestDto request)

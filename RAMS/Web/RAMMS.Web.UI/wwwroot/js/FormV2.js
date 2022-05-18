@@ -300,7 +300,7 @@ function createV2(data) {
         UserDtDisable()
     }
     $("#FV2PkRefNo").val(data.PkRefNo);
-
+    $("#hdnV1PkRefNo").val(data.Fv1hPkRefNo);
     DtlGridLoad(data.PkRefNo);
 
 

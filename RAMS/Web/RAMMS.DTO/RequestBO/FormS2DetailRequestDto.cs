@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using AutoMapper.Configuration.Conventions;
 
@@ -60,8 +61,15 @@ namespace RAMMS.DTO.RequestBO
         [MapTo("FsiidActiveYn")]
         public bool? ActiveYn { get; set; }
         public List<int> WeekDetail { get; set; }
+        public string WeekDays { get; set; }
 
         [MapTo("FsiidWorkQty")]
         public string WorkQty { get; set; }
     }
+    public class DaySchedule
+    {
+        public string WeekNo { get; set; }
+        public List<string> Days { get; set; }
+    }
+
 }

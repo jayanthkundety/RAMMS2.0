@@ -144,6 +144,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 lstData.Add("YYYYMMDD", Utility.ToString(DateTime.Today.ToString("yyyyMMdd")));
                 lstData.Add("Crew", domainModelFormV1.Fv1hCrew.ToString());
                 lstData.Add("ActivityCode", domainModelFormV1.Fv1hActCode);
+                lstData.Add("RMU", domainModelFormV1.Fv1hRmu.ToString());
                 domainModelFormV1.Fv1hRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormV1Header, lstData);
 
                 var entity = _repoUnit.FormV1Repository.CreateReturnEntity(domainModelFormV1);

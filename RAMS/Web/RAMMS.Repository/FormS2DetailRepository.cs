@@ -80,4 +80,18 @@ namespace RAMMS.Repository
                                                         && x.FsiidActiveYn == true);
         }
     }
+
+    public class FormS2DayScheduleRepository : RepositoryBase<RmFormS2DaySchedule>
+    {
+
+        public FormS2DayScheduleRepository(RAMMSContext context) : base(context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+
+        
+
+    }
+
 }
+
