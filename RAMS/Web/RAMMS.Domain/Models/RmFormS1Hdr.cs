@@ -11,7 +11,8 @@ namespace RAMMS.Domain.Models
         }
 
         public int FsihPkRefNo { get; set; }
-        public int? FsihS1PkRefNo { get; set; }
+        public int? FsihS2PkRefNo { get; set; }
+        public string FsihS2RefId { get; set; }
         public string FsihRefId { get; set; }
         public string FsihRmu { get; set; }
         public DateTime? FsihDt { get; set; }
