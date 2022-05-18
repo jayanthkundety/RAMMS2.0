@@ -14,8 +14,8 @@ namespace RAMMS.Domain.Models
         public int? Fv3dFrmChDeci { get; set; }
         public int? Fv3dToCh { get; set; }
         public int? Fv3dToChDeci { get; set; }
-        public int? Fv3dLength { get; set; }
-        public int? Fv3dWidth { get; set; }
+        public decimal? Fv3dLength { get; set; }
+        public decimal? Fv3dWidth { get; set; }
         public string Fv3dTimetakenFrm { get; set; }
         public string Fv3dTimeTakenTo { get; set; }
         public decimal? Fv3dTimeTakenTotal { get; set; }

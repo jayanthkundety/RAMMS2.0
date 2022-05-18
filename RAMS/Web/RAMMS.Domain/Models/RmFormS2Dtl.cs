@@ -7,6 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public RmFormS2Dtl()
         {
+            RmFormS2DaySchedule = new HashSet<RmFormS2DaySchedule>();
             RmFormS2QuarDtl = new HashSet<RmFormS2QuarDtl>();
         }
 
@@ -37,6 +38,7 @@ namespace RAMMS.Domain.Models
         public string FsiidWorkQty { get; set; }
 
         public virtual RmFormS2Hdr FsiidFsiihPkRefNoNavigation { get; set; }
+        public virtual ICollection<RmFormS2DaySchedule> RmFormS2DaySchedule { get; set; }
         public virtual ICollection<RmFormS2QuarDtl> RmFormS2QuarDtl { get; set; }
     }
 }

@@ -16,8 +16,8 @@ namespace RAMMS.DTO.ResponseBO
         public int? FrmChDeci { get; set; }
         public int? ToCh { get; set; }
         public int? ToChDeci { get; set; }
-        public int? Length { get; set; }
-        public int? Width { get; set; }
+        public decimal? Length { get; set; }
+        public decimal? Width { get; set; }
         public string TimetakenFrm { get; set; }
         public string  TimeTakenTo { get; set; }
         public decimal? TimeTakenTotal { get; set; }
