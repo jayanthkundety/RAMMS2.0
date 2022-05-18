@@ -163,7 +163,7 @@ namespace RAMMS.Repository
 
         public List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header)
         {
-            var ExistingV1 = (from r in _context.RmFormS1Hdr select r.FsihS1PkRefNo).ToList();
+            var ExistingV1 = (from r in _context.RmFormS1Hdr select r.FsihS2PkRefNo).ToList();
             var res = (from hdr in _context.RmFormS2Hdr
                        join dtl in _context.RmFormS2Dtl on hdr.FsiihPkRefNo equals dtl.FsiidFsiihPkRefNo
                        join Qdtl in _context.RmFormS2QuarDtl on dtl.FsiidPkRefNo equals Qdtl.FsiiqdFsiidPkRefNo
@@ -463,6 +463,10 @@ namespace RAMMS.Repository
                 _context.SaveChanges();
             }
 
+            var resS1HDR = (from hdr in _context.RmFormS1Hdr where hdr.FsihPkRefNo == PKRefNo && hdr.FsihActiveYn == true select hdr).FirstOrDefault();
+            resS1HDR.FsihS2PkRefNo = S2PKRefNo;
+            _context.SaveChanges();
+
             if (S2PKRefNo != 0)
             {
                 var resHDR = from hdr in _context.RmFormS2Hdr where hdr.FsiihPkRefNo == S2PKRefNo && hdr.FsiihActiveYn == true select hdr;
@@ -474,7 +478,8 @@ namespace RAMMS.Repository
                                select new RmFormS1Dtl
                                {
                                    FsidFsihPkRefNo = PKRefNo,
-                                   FsidRefId = resHDR.Single().FsiihRefId,
+                                   FsidRefId = dtl.FsiidRefId,
+                                   FsidFormType = "FormS2",
                                    FsidActiveYn = true,
                                    FsidCrDt = DateTime.Today,
                                    FsiidRoadCode = dtl.FsiidRoadCode,
@@ -484,6 +489,8 @@ namespace RAMMS.Repository
                                    FsidActName = resHDR.Single().FsiihActName,
                                    FsidActId = resHDR.Single().FsiihActId
                                }).ToList();
+
+
 
 
                     foreach (var item in res)

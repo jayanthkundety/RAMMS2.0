@@ -9760,7 +9760,7 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FsihS1PkRefNo).HasColumnName("FSIH_S1_PK_Ref_No");
+                entity.Property(e => e.FsihS2PkRefNo).HasColumnName("FSIH_S2_PK_Ref_No");
 
                 entity.Property(e => e.FsihStatus)
                     .IsRequired()
@@ -9872,11 +9872,25 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FSIIDS_CR_DT")
                     .HasColumnType("date");
 
+                entity.Property(e => e.FsiidsFsiidPkRefNo).HasColumnName("FSIIDS_FSIID_PK_Ref_No");
+
+                entity.Property(e => e.FsiidsFsiiqdClkPkRefNo).HasColumnName("FSIIDS_FSIIQD_CLK_PK_Ref_No");
+
                 entity.Property(e => e.FsiidsFsiiqdPkRefNo).HasColumnName("FSIIDS_FSIIQD_PK_Ref_No");
 
                 entity.Property(e => e.FsiidsScheduledDt)
                     .HasColumnName("FSIIDS_Scheduled_DT")
                     .HasColumnType("datetime");
+
+                entity.HasOne(d => d.FsiidsFsiidPkRefNoNavigation)
+                    .WithMany(p => p.RmFormS2DaySchedule)
+                    .HasForeignKey(d => d.FsiidsFsiidPkRefNo)
+                    .HasConstraintName("FK_RM_FormS2_Day_Schedule_RM_FormS2_DTL");
+
+                entity.HasOne(d => d.FsiidsFsiiqdPkRefNoNavigation)
+                    .WithMany(p => p.RmFormS2DaySchedule)
+                    .HasForeignKey(d => d.FsiidsFsiiqdPkRefNo)
+                    .HasConstraintName("FK_RM_FormS2_Day_Schedule_RM_FormS2_Quar_DTL");
             });
 
             modelBuilder.Entity<RmFormS2Dtl>(entity =>
@@ -10736,7 +10750,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dFv3hPkRefNo).HasColumnName("FV3D_FV3H_PK_Ref_No");
 
-                entity.Property(e => e.Fv3dLength).HasColumnName("FV3D_Length");
+                entity.Property(e => e.Fv3dLength)
+                    .HasColumnName("FV3D_Length")
+                    .HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Fv3dModBy).HasColumnName("FV3D_Mod_By");
 
@@ -10784,7 +10800,9 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV3D_Transit_Time_Total")
                     .HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.Fv3dWidth).HasColumnName("FV3D_Width");
+                entity.Property(e => e.Fv3dWidth)
+                    .HasColumnName("FV3D_Width")
+                    .HasColumnType("decimal(18, 2)");
 
                 entity.HasOne(d => d.Fv3dFv3hPkRefNoNavigation)
                     .WithMany(p => p.RmFormV3Dtl)

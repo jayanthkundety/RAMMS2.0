@@ -176,8 +176,8 @@ namespace RAMMS.Web.UI.Controllers
                 header.ModDt = DateTime.UtcNow;
                 header.CrDt = DateTime.UtcNow;
                 formS1 = serFormS1.SaveHeader(header, false);
-                formS1.RefNoDS = serFormS1.FindRefNoFromS2(formS1);
             }
+            formS1.RefNoDS = serFormS1.FindRefNoFromS2(formS1);
             return Json(formS1, JsonOption());
         }
         [HttpPost]

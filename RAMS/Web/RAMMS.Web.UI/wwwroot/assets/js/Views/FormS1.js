@@ -1,7 +1,7 @@
 ﻿var formS1 = new function () {
     this.HeaderData = null;
     this.WeekNoChange = function (tis) {
-        debugger;
+        
        
         var week = $(tis).val();
         var selectDate = $("#selecDate").val();
@@ -46,24 +46,24 @@
         obj.find("select").prop("disabled", true).trigger("chosen:updated");
     }
     this.FindDetails = function () {
-        debugger;
+         
         if (ValidatePage("#divFindDetails", "", "")) {
             GetResponseValue("FindDetails", "FormS1", FormValueCollection("#divFindDetails"), function (data) {
                 if (data && data != null) {
                     $("#divFindDetails").find("input,select").each(function () { $(this).prop("disabled", true); }).find("button").hide();
                     $("#divFindDetails").find("select").trigger("chosen:updated");
                    
-                    var dsRefNo = data.refNoDS;
+                    var dsRefNo = data.RefNoDS;
 
                     if (dsRefNo.length > 0) {
                         $("#ddlRefNo").empty();
                         $("#ddlRefNo").append($("<option></option>").val("0").html("Select Reference No"));
                         $.each(dsRefNo, function (index, v) {
-                            $("#ddlRefNo").append($("<option></option>").val(v.value).html(v.text));
+                            $("#ddlRefNo").append($("<option></option>").val(v.Value).html(v.Text));
                         });
-                        $("#ddlRefNo").val(data.s1RefNo)
-                        $('#ddlRefNo').trigger("chosen:updated");
-                        $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
+                        $("#ddlRefNo").val(data.S2PKRefNo)
+                        $("#ddlRefNo").trigger("chosen:updated");
+                        $("#ddlRefNo").prop('disabled', false).trigger("chosen:updated");
 
                     }
 
@@ -140,7 +140,7 @@
                 par.find("#FsiihDtAgrd").val("");
         }
         this.Header = (data) => {
-            debugger;
+            
             var assignFormat = jsMaster.AssignFormat;
             var par = $("#divFindDetails");
             par.find("#formADetSrchRMU").val(data.Rmu).trigger("chosen:updated");
@@ -432,7 +432,13 @@ $(document).ready(function () {
 
         if ($(this).val() != "") {
             LoadS2($(this).val());
-            DisableS1DetailHeader();
+            DisableS1DetailHeader(true);
+            $("#btnAddDetails").hide();
+        }
+        else {
+            LoadS2(0);
+            $("#btnAddDetails").show();
+            DisableS1DetailHeader(false);
         }
     });
 
@@ -440,13 +446,16 @@ $(document).ready(function () {
         
         InitAjaxLoading();
         $.ajax({
-            url: '/MAM/LoadS2Data',
+            url: '/FormS1/LoadS2Data',
             dataType: 'JSON',
             data: { PKRefNo: $("#txtS1RefNumber")[0].PkID, S2PKRefNo: S2PKRefNo },
             type: 'Post',
             success: function (data) {
+                 
+                tblFS1DetailGrid.dataTable.settings()[0].ajax.url = "/FormS1/ListDetail/" + $("#txtS1RefNumber")[0].PkID;
+                tblFS1DetailGrid.Refresh();
                 HideAjaxLoading();
-                //                InitializeGrid();
+ 
             },
             error: function (data) {
                 console.error(data);
@@ -454,17 +463,17 @@ $(document).ready(function () {
         });
     }
 
-    function DisableS1DetailHeader() {
-        $('#formS1DActivityCode').prop('disabled', false).trigger("chosen:updated");
-        $('#formS1DRoadCode').prop('disabled', false).trigger("chosen:updated");
-        $('#drpFormType').prop('disabled', false).trigger("chosen:updated");
-        $('#drpFormS1DRefNo').prop('disabled', false).trigger("chosen:updated");
+    function DisableS1DetailHeader(status) {
+        $('#formS1DActivityCode').prop('disabled', status).trigger("chosen:updated");
+        $('#formS1DRoadCode').prop('disabled', status).trigger("chosen:updated");
+        $('#drpFormType').prop('disabled', status).trigger("chosen:updated");
+        $('#drpFormS1DRefNo').prop('disabled', status).trigger("chosen:updated");
                 
         
-        $('#formAFromCh').attr("readonly", false);
-        $('#formAFromChDeci').attr("readonly", false);
-        $('#formAToCh').attr("readonly", false);
-        $('#formAToChDeci').attr("readonly", false);
+        $('#formAFromCh').attr("readonly", status);
+        $('#formAFromChDeci').attr("readonly", status);
+        $('#formAToCh').attr("readonly", status);
+        $('#formAToChDeci').attr("readonly", status);
         
     }
 
