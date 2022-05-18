@@ -44,13 +44,11 @@
             capacity = val.split("(")[1];
             var i = capacity.indexOf(")");
             capacity = capacity.substring(0,i);
-        }else {
-            val = "";
         }
         
 
        $("#formV2EquipCapacity").val(capacity);
-        $("#FormV2EquipDescription").val(val);
+       $("#FormV2EquipDescription").val(val);
     });
 
 
@@ -80,7 +78,7 @@
             </div>
             <div class="form-group col-lg-3 pl-0">
                 @Html.Label("Capacity", "Capacity")
-                @Html.TextBoxFor(Adtl => Adtl.SaveFormV2EquipModel.Capacity, new { @Id = "formV2EquipCapacity", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control allow_numeric validate {required, Capacity}", @rows = 1 })
+                @Html.TextBoxFor(Adtl => Adtl.SaveFormV2EquipModel.Capacity, new { @Id = "formV2EquipCapacity", @maxlength = 9, @autocomplete = "off", @type = "text", @class = "form-control validate {required, Capacity}", @rows = 1 })
             </div>
             <div class="form-group col-lg-2 pl-0">
                 @Html.Label("Cond", "Cond")

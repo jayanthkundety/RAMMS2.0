@@ -2,12 +2,12 @@
 @using RAMMS.Business.ServiceProvider;
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @{
-    ViewBag.TabTitle = "INSTRUCTED WORKS";
-    ViewData["Title"] = "INSTRUCTED WORKS";
+    ViewBag.TabTitle = "MAM";
+    ViewData["Title"] = "MAM";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
     bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
-    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+    bool IsApproved = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
 }
@@ -372,10 +372,13 @@
 
 
                 <button id="saveFormV4Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Saved')">Save</button>
+
+                @if (isSubmit)
+                {
                 <button id="SubmitFormV4Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('Submitted')">Submit</button>
+                }
 
-
-                @if (IsApproved && (Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Submitted || Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Rejected))
+                @if (isSubmit && (Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Submitted || Model.FormV4.Status == RAMMS.Common.StatusList.FormV1Rejected))
                 {
                     <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
                 }

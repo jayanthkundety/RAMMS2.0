@@ -28,10 +28,11 @@ $(document).ready(function () {
         }
 
     });
- 
+
+  
 
     $('#AccordPage1').on('shown.bs.collapse', function () {
-     
+
         $.each($.fn.dataTable.tables(true), function () {
             $(this).DataTable().columns.adjust().draw();
         });
@@ -71,7 +72,7 @@ $(document).ready(function () {
     $('#FormV3_DtFac').attr("readonly", "true");
     $('#FormV3_SignRec').prop('disabled', true);
     $('#FormV3_SignAgr').prop('disabled', true);
-   
+
 
 
 
@@ -135,6 +136,8 @@ $(document).ready(function () {
     $("#ddlSecCode").on("change", function () {
         //var d = new Date();
         var ddldata = $(this).val();
+
+        LoadRoadCode($("#ddlSecCode option:selected").text().split("-")[0]);
 
         if (ddldata != "") {
             $.ajax({
@@ -343,7 +346,7 @@ function Save(SubmitType) {
                 app.ShowErrorMessage(data.errorMessage);
             }
             else {
-                 
+
                 if (SubmitType == "") {
                     if (data.result == "Success") {
 
@@ -354,13 +357,14 @@ function Save(SubmitType) {
 
                         $("#FormV3_PkRefNo").val(data.pkRefNo);
                         $("#FormV3_FV1PKRefId").val(data.fV1PKRefId)
+                        $("#FormV3_Fv1PkRefNo").val(data.fv1PkRefNo)
                         $("#FormV3_RefId").val(data.refId);
                         $("#FormV3_Status").val(data.status)
                         $("#saveFormV3Btn").show();
                         $("#SubmitFormV3Btn").show();
                         HeaderLogic();
                         InitializeGrid();
-                       // app.ShowSuccessMessage('Saved Successfully', false);
+                        // app.ShowSuccessMessage('Saved Successfully', false);
                     }
                     else {
                         EnableDisableElements(false);
@@ -397,8 +401,9 @@ function SaveFormV3Dtl() {
             }
             else {
                 ClearFormV3Dtl();
+                $('#WorkAccomplishmentGridView').DataTable().settings()[0].ajax.url = "/MAM/GetV3DtlGridList?V3PkRefNo=" + $("#FormV3_PkRefNo").val();
                 $('#WorkAccomplishmentGridView').DataTable().ajax.reload();
-               // InitializeGrid();
+                // InitializeGrid();
                 app.ShowSuccessMessage('Saved Successfully', false);
             }
         });
@@ -490,7 +495,7 @@ function CalTotalTransitTime() {
     }
 }
 
- 
+
 
 function ClearFormV3Dtl() {
 
@@ -537,27 +542,57 @@ function HeaderLogic() {
     }
 }
 
-    function EnableDisableElements(state) {
+function EnableDisableElements(state) {
 
-        $('#AccordPage0 * > select').prop('disabled', state).trigger("chosen:updated");
-        $("#FormV3_Dt").prop("disabled", state);
+    $('#AccordPage0 * > select').prop('disabled', state).trigger("chosen:updated");
+    $("#FormV3_Dt").prop("disabled", state);
 
+}
+
+
+
+
+function GoBack() {
+    if ($("#hdnView").val() == "0") {
+        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+            if (e) {
+                location.href = "/MAM/FormV3";
+
+            }
+        }));
     }
-
-
-
-
-    function GoBack() {
-        if ($("#hdnView").val() == "0") {
-            if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
-                if (e) {
-                    location.href = "/MAM/FormV3";
-
-                }
-            }));
-        }
-        else {
-            location.href = "/MAM/FormV3";
-        }
+    else {
+        location.href = "/MAM/FormV3";
     }
+}
 
+
+function LoadRoadCode(secCode) {
+
+    
+
+    $.ajax({
+        url: '../FormQa1/GetRoadCodeBySection',
+        dataType: 'JSON',
+        data: { secCode },
+        type: 'Post',
+        success: function (data) {
+            if (data != null) {
+                $("#ddlRoadCode").empty();
+                $("#ddlRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                $.each(data, function (index, v) {
+                    var text = v.roadCode + " - " + v.roadName;
+                    $("#ddlRoadCode").append($("<option></option>").val(v.roadCode).html(text).attr("Item1", v.roadName));
+                });
+                $("#ddlRoadCode").trigger("change");
+                $('#ddlRoadCode').trigger("chosen:updated");
+
+            }
+        },
+        error: function (data) {
+
+            console.error(data);
+        }
+    });
+
+}

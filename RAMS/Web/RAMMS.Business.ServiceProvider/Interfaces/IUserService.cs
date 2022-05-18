@@ -19,6 +19,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<IEnumerable<CSelectListItem>> GetUser();
         Task<IEnumerable<SelectListItem>> GetSupervisor();
         Task<IEnumerable<CSelectListItem>> GetSupervisor(string groupCode, string gC);
+        Task<IEnumerable<CSelectListItem>> GetUsersBasedOnGroup(List<string> groupCode);
         RmUsers GetUser(RmUserCredential userDetails);
         Task<UserDetailRequestDTO> GetDetailById(int id);
         Task<int> GetPasswordReset(string email, string hostedUrl);

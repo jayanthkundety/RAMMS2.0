@@ -11,6 +11,7 @@ namespace RAMMS.Domain.Models
         {
         }
 
+
         public virtual DbSet<AssetFieldDtl> AssetFieldDtl { get; set; }
         public virtual DbSet<AssetImport> AssetImport { get; set; }
         public virtual DbSet<ImportAssetUse> ImportAssetUse { get; set; }
@@ -141,6 +142,7 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmWeekLookup> RmWeekLookup { get; set; }
         public virtual DbSet<TestColumns> TestColumns { get; set; }
         public virtual DbSet<UvwSearchData> UvwSearchData { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -10746,7 +10748,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dFv3hPkRefNo).HasColumnName("FV3D_FV3H_PK_Ref_No");
 
-                entity.Property(e => e.Fv3dLength).HasColumnName("FV3D_Length");
+                entity.Property(e => e.Fv3dLength)
+                    .HasColumnName("FV3D_Length")
+                    .HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Fv3dModBy).HasColumnName("FV3D_Mod_By");
 
@@ -10794,7 +10798,9 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FV3D_Transit_Time_Total")
                     .HasColumnType("decimal(18, 2)");
 
-                entity.Property(e => e.Fv3dWidth).HasColumnName("FV3D_Width");
+                entity.Property(e => e.Fv3dWidth)
+                    .HasColumnName("FV3D_Width")
+                    .HasColumnType("decimal(18, 2)");
 
                 entity.HasOne(d => d.Fv3dFv3hPkRefNoNavigation)
                     .WithMany(p => p.RmFormV3Dtl)
