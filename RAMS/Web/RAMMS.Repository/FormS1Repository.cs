@@ -464,14 +464,24 @@ namespace RAMMS.Repository
             }
 
             var resS1HDR = (from hdr in _context.RmFormS1Hdr where hdr.FsihPkRefNo == PKRefNo && hdr.FsihActiveYn == true select hdr).FirstOrDefault();
-            resS1HDR.FsihS2PkRefNo = S2PKRefNo;
-            _context.SaveChanges();
+            if (resS1HDR != null)
+            {
+                resS1HDR.FsihS2PkRefNo = S2PKRefNo;
+                _context.SaveChanges();
+            }
 
             if (S2PKRefNo != 0)
             {
                 var resHDR = from hdr in _context.RmFormS2Hdr where hdr.FsiihPkRefNo == S2PKRefNo && hdr.FsiihActiveYn == true select hdr;
                 if (resHDR.Count() > 0)
                 {
+                   
+                    if (resS1HDR != null)
+                    {
+                        resS1HDR.FsihS2RefId = resHDR.Single().FsiihRefId;
+                        _context.SaveChanges();
+                    }
+
                     var res = (from dtl in _context.RmFormS2Dtl
                                where dtl.FsiidFsiihPkRefNo == S2PKRefNo && dtl.FsiidActiveYn == true
                                orderby dtl.FsiidPkRefNo descending
@@ -479,6 +489,7 @@ namespace RAMMS.Repository
                                {
                                    FsidFsihPkRefNo = PKRefNo,
                                    FsidRefId = dtl.FsiidRefId,
+                                   FsidFormTypeRefNo = dtl.FsiidPkRefNo,
                                    FsidFormType = "FormS2",
                                    FsidActiveYn = true,
                                    FsidCrDt = DateTime.Today,

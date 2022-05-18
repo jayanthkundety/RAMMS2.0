@@ -15,6 +15,7 @@ namespace RAMMS.DTO.RequestBO
         public int PkRefNo { get; set; }
 
         public int S2PKRefNo { get; set; }
+        public string S2RefId { get; set; }
         public string RefId { get; set; }
         public string Rmu { get; set; }
         public DateTime? Dt { get; set; }

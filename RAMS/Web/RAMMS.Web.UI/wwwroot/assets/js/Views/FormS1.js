@@ -1,8 +1,8 @@
 ﻿var formS1 = new function () {
     this.HeaderData = null;
     this.WeekNoChange = function (tis) {
-        
-       
+
+
         var week = $(tis).val();
         var selectDate = $("#selecDate").val();
         if (selectDate != "" && week != "") {
@@ -15,7 +15,7 @@
             ValidatePage('#headerFindDiv');
         }
         else {
-            
+
             $('#frmDate,#toDate').val("");
             $('#drpWeekNo').val("").trigger("chosen:updated");
             ValidatePage('#headerFindDiv');
@@ -26,7 +26,7 @@
             //alert("Select Date first and then Week Number");
         }
         //$("#frmS1HeaderData .svalidate").removeClass("validate");
-      
+
     }
     this.GenRefNumber = () => {
         var refNo = $("#txtS1RefNumber");
@@ -46,25 +46,17 @@
         obj.find("select").prop("disabled", true).trigger("chosen:updated");
     }
     this.FindDetails = function () {
-         
+
         if (ValidatePage("#divFindDetails", "", "")) {
             GetResponseValue("FindDetails", "FormS1", FormValueCollection("#divFindDetails"), function (data) {
                 if (data && data != null) {
                     $("#divFindDetails").find("input,select").each(function () { $(this).prop("disabled", true); }).find("button").hide();
                     $("#divFindDetails").find("select").trigger("chosen:updated");
-                   
+
                     var dsRefNo = data.RefNoDS;
 
                     if (dsRefNo.length > 0) {
-                        $("#ddlRefNo").empty();
-                        $("#ddlRefNo").append($("<option></option>").val("0").html("Select Reference No"));
-                        $.each(dsRefNo, function (index, v) {
-                            $("#ddlRefNo").append($("<option></option>").val(v.Value).html(v.Text));
-                        });
-                        $("#ddlRefNo").val(data.S2PKRefNo)
-                        $("#ddlRefNo").trigger("chosen:updated");
-                        $("#ddlRefNo").prop('disabled', false).trigger("chosen:updated");
-
+                        BindS2ddlRefNo(dsRefNo);
                     }
 
                     formS1.Bind.Header(data); // find get new also
@@ -140,7 +132,7 @@
                 par.find("#FsiihDtAgrd").val("");
         }
         this.Header = (data) => {
-            
+
             var assignFormat = jsMaster.AssignFormat;
             var par = $("#divFindDetails");
             par.find("#formADetSrchRMU").val(data.Rmu).trigger("chosen:updated");
@@ -168,7 +160,15 @@
     this.ShowAddDetailsButton = function () {
         var refNo = $("#txtS1RefNumber");
         if (refNo.length > 0 && refNo[0].PkID && parseInt(refNo[0].PkID, 10) > 0) {
-            $("#btnAddDetails").show();
+
+
+            if (formS1.HeaderData.S2PKRefNo != "0" && formS1.HeaderData.S2PKRefNo != "") {
+                $("#btnAddDetails").hide();
+            }
+            else { $("#btnAddDetails").show(); }
+
+
+
         }
     }
     this.Save = function (isSubmit) {
@@ -331,7 +331,7 @@
                 $("[editdisabled]").prop("disabled", true);
             }
             else {
-                $("[editdisabled]").prop("disabled", false);                
+                $("[editdisabled]").prop("disabled", false);
             }
             $("select[editdisabled]").trigger("chosen:updated");
         }
@@ -442,40 +442,58 @@ $(document).ready(function () {
         }
     });
 
-    function LoadS2(S2PKRefNo) {
-        
-        InitAjaxLoading();
-        $.ajax({
-            url: '/FormS1/LoadS2Data',
-            dataType: 'JSON',
-            data: { PKRefNo: $("#txtS1RefNumber")[0].PkID, S2PKRefNo: S2PKRefNo },
-            type: 'Post',
-            success: function (data) {
-                 
-                tblFS1DetailGrid.dataTable.settings()[0].ajax.url = "/FormS1/ListDetail/" + $("#txtS1RefNumber")[0].PkID;
-                tblFS1DetailGrid.Refresh();
-                HideAjaxLoading();
- 
-            },
-            error: function (data) {
-                console.error(data);
-            }
-        });
+
+    if (formS1.HeaderData.RefNoDS.length > 0) {
+        BindS2ddlRefNo(formS1.HeaderData.RefNoDS);
     }
 
-    function DisableS1DetailHeader(status) {
-        $('#formS1DActivityCode').prop('disabled', status).trigger("chosen:updated");
-        $('#formS1DRoadCode').prop('disabled', status).trigger("chosen:updated");
-        $('#drpFormType').prop('disabled', status).trigger("chosen:updated");
-        $('#drpFormS1DRefNo').prop('disabled', status).trigger("chosen:updated");
-                
-        
-        $('#formAFromCh').attr("readonly", status);
-        $('#formAFromChDeci').attr("readonly", status);
-        $('#formAToCh').attr("readonly", status);
-        $('#formAToChDeci').attr("readonly", status);
-        
-    }
 
 });
 
+function LoadS2(S2PKRefNo) {
+
+    InitAjaxLoading();
+    $.ajax({
+        url: '/FormS1/LoadS2Data',
+        dataType: 'JSON',
+        data: { PKRefNo: $("#txtS1RefNumber")[0].PkID, S2PKRefNo: S2PKRefNo },
+        type: 'Post',
+        success: function (data) {
+
+            tblFS1DetailGrid.dataTable.settings()[0].ajax.url = "/FormS1/ListDetail/" + $("#txtS1RefNumber")[0].PkID;
+            tblFS1DetailGrid.Refresh();
+            HideAjaxLoading();
+
+        },
+        error: function (data) {
+            console.error(data);
+        }
+    });
+}
+
+function DisableS1DetailHeader(status) {
+    $('#formS1DActivityCode').prop('disabled', status).trigger("chosen:updated");
+    $('#formS1DRoadCode').prop('disabled', status).trigger("chosen:updated");
+    $('#drpFormType').prop('disabled', status).trigger("chosen:updated");
+    $('#drpFormS1DRefNo').prop('disabled', status).trigger("chosen:updated");
+
+
+    $('#formAFromCh').attr("readonly", status);
+    $('#formAFromChDeci').attr("readonly", status);
+    $('#formAToCh').attr("readonly", status);
+    $('#formAToChDeci').attr("readonly", status);
+
+}
+
+function BindS2ddlRefNo(dsRefNo) {
+
+    $("#ddlRefNo").empty();
+    $("#ddlRefNo").append($("<option></option>").val("0").html("Select Reference No"));
+    $.each(dsRefNo, function (index, v) {
+        $("#ddlRefNo").append($("<option></option>").val(v.Value).html(v.Text));
+    });
+    // $("#ddlRefNo").val(data.S2PKRefNo)
+    $("#ddlRefNo").trigger("chosen:updated");
+    $("#ddlRefNo").prop('disabled', false).trigger("chosen:updated");
+
+}

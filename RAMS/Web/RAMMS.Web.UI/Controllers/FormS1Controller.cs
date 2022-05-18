@@ -110,6 +110,8 @@ namespace RAMMS.Web.UI.Controllers
             }
             LoadLookupService("RMU", "Week No", "User", "FS1-StatusLegend");
 
+            headerDetails.RefNoDS = serFormS1.FindRefNoFromS2(headerDetails);
+
             var grid = new Models.CDataTable() { Name = "tblFS1DetailGrid", APIURL = "/FormS1/ListDetail/" + id.ToString(), LeftFixedColumn = 1 };
             if (!ViewBag.IsEdit)
             {
