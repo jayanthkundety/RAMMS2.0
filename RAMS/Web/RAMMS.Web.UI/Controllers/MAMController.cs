@@ -1639,7 +1639,7 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.Type = "Act-FormD";
             ViewData["Activity"] = await _ddLookupService.GetLookUpCodeTextConcat(ddLookup);
 
-            //base.LoadLookupService(Common.GroupNames.JKRSSuperiorOfficerSO);
+             
             LoadLookupService("User");
 
             FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
@@ -1725,9 +1725,10 @@ namespace RAMMS.Web.UI.Controllers
             _formV3Model.FormV3Dtl = new FormV3DtlGridDTO();
             await LoadFormV1DropDown();
 
-            GetUsersBasedOnGroup(new List<string> { Common.GroupNames.JKRSSuperiorOfficerSO, Common.GroupNames.HQJKRS, Common.GroupNames.DivisionalEngineer, Common.GroupNames.OperationsExecutive, Common.GroupNames.OperRAMSExecutive, Common.GroupNames.OpeHeadMaintenance, Common.GroupNames.OperRegionManager }, "Facilate_Record");
+            LoadLookupService("User");
 
-            GetUsersBasedOnGroup(new List<string> { Common.GroupNames.OperationsExecutive, Common.GroupNames.OperRAMSExecutive, Common.GroupNames.OpeHeadMaintenance, Common.GroupNames.OperRegionManager }, "Agreedby");
+            //GetUsersBasedOnGroup(new List<string> { Common.GroupNames.JKRSSuperiorOfficerSO, Common.GroupNames.HQJKRS, Common.GroupNames.DivisionalEngineer, Common.GroupNames.OperationsExecutive, Common.GroupNames.OperRAMSExecutive, Common.GroupNames.OpeHeadMaintenance, Common.GroupNames.OperRegionManager }, "Facilate_Record");
+            //GetUsersBasedOnGroup(new List<string> { Common.GroupNames.OperationsExecutive, Common.GroupNames.OperRAMSExecutive, Common.GroupNames.OpeHeadMaintenance, Common.GroupNames.OperRegionManager }, "Agreedby");
 
 
             if (_formV3Model.FormV3.UseridFac == null || _formV3Model.FormV3.UseridFac == 0)
