@@ -800,6 +800,14 @@ function bindWeekDetail() {
                     
                     $("#divWeekDays").css('margin', "auto");
                     if ($(this).hasClass('active')) {
+
+                        if (checkWeekDayDivExist(_id)) {
+                            $("#divWeekDays").html("");
+                            $(".weekselect").toggleClass("weekselect");
+                            //$(this).toggleClass("weekselect");
+                            return false;
+                        }
+
                         _dt.weekDays = _dt.weekDays == null ? [] : _dt.weekDays;
                         var _tmp = getWeekExist(_id);
                         if (Array.isArray(_tmp) && _tmp.length >= 2 && _tmp[1].length > 0) {
@@ -810,13 +818,16 @@ function bindWeekDetail() {
                         }
                         $(".weekselect").toggleClass("weekselect");
                         $(this).toggleClass("weekselect");
-                        setTimeout(() => {
-                            $("#divWeekDays").fadeOut();
-                            $("#divWeekDays").html("");
-                            $(".weekselect").toggleClass("weekselect");
-                            $(this).removeClass("weekselect");
-                            clearTimeout();
-                        }, 9000);
+
+                        
+
+                        //setTimeout(() => {
+                        //    $("#divWeekDays").fadeOut();
+                        //    $("#divWeekDays").html("");
+                        //    $(".weekselect").toggleClass("weekselect");
+                        //    $(this).removeClass("weekselect");
+                        //    clearTimeout();
+                        //}, 9000);
                     }
                     return false;
                 }
@@ -1071,7 +1082,7 @@ function removeDay(weekId, dayId) {
             setTimeout(() => {
                 $("#" + weekId).toggleClass("note");
                 $("#" + weekId).toggleClass("active");
-                $("#divWeekDays").fadeOut();
+                //$("#divWeekDays").fadeOut();
                 $(".weekselect").toggleClass("weekselect");
                 $("#divWeekDays").html("");
                 clearTimeout();
