@@ -143,7 +143,6 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<TestColumns> TestColumns { get; set; }
         public virtual DbSet<UvwSearchData> UvwSearchData { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -9758,8 +9757,6 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FsihS1PkRefNo).HasColumnName("FSIH_S1_PK_Ref_No");
-
                 entity.Property(e => e.FsihStatus)
                     .IsRequired()
                     .HasColumnName("FSIH_Status")
@@ -10732,7 +10729,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dActiveYn).HasColumnName("FV3D_Active_YN");
 
-                entity.Property(e => e.Fv3dAdp).HasColumnName("FV3D_ADP");
+                entity.Property(e => e.Fv3dAdp)
+                    .HasColumnName("FV3D_ADP")
+                    .HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Fv3dCrBy).HasColumnName("FV3D_CR_By");
 
