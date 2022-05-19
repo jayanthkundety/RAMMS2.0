@@ -40,7 +40,7 @@ namespace RAMMS.Repository
                              SecName = sec.RdmSecName,
                              CrewLeaderName = hdr.FivahCrewLeaderName,
                              Year = hdr.FivahYearOfInsp,
-                             dtl = hdr.RmFormF4InsDtl,
+                             dtl =  hdr.RmFormF4InsDtl,
                              Active = hdr.FivahActiveYn,
                              RdId = sec.RdmRdCdSort,
                              Status = (hdr.FivahSubmitSts == true ? "Submitted" : "Saved"),
