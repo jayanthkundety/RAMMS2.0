@@ -81,9 +81,9 @@
         });
 
         $("#formV2DetSrchActivityCode").on("change", function () {
-        var val = $(this).find(":selected").text();
-        val = val.split("-").length > 0 ? val.split("-")[1] : val;
-        $("#formV2DetSrchActivityName").val(val);
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#formV2DetSrchActivityName").val(val);
         });
 
     });
