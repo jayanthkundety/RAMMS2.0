@@ -443,9 +443,9 @@ $(document).ready(function () {
     });
 
 
-    if (formS1.HeaderData.RefNoDS.length > 0) {
-        BindS2ddlRefNo(formS1.HeaderData.RefNoDS);
-    }
+    //if (formS1.HeaderData.RefNoDS.length > 0) {
+    //    BindS2ddlRefNo(formS1.HeaderData.RefNoDS);
+    //}
 
 
 });
