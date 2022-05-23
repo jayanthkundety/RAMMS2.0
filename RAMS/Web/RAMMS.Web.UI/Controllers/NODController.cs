@@ -1371,7 +1371,7 @@ namespace RAMMS.Web.UI.Controllers
             rowsAffected = await _formhImgService.DectivateAssetImage(assetPkId);
             return Json(rowsAffected);
         }
-
+                                               
         [HttpPost]
         public async Task<IActionResult> HGetImageList(int assetPk, string assetGroup)
         {
@@ -1485,6 +1485,7 @@ namespace RAMMS.Web.UI.Controllers
 
             return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
         }
+    
         public async Task<IActionResult> FormH([FromQuery(Name = "vid")] string viewId)
         {
             ViewBag.ViewId = viewId;
