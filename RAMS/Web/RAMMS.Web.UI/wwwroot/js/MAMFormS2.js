@@ -1204,8 +1204,10 @@ function ClearDetail() {
     _dt.txtDCCrewDay.val('');
     _dt.txtDRemarks.val('');
     _dt.weekDetails = [];
+    _dt.weekDays = [];
     _dt.txtWorkQty.val('');
     bindWeekDetail();
+    
     $("#divWeekDays").html("");
 }
 

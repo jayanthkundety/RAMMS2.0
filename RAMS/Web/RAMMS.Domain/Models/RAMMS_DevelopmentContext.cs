@@ -10738,7 +10738,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fv3dActiveYn).HasColumnName("FV3D_Active_YN");
 
-                entity.Property(e => e.Fv3dAdp).HasColumnName("FV3D_ADP");
+                entity.Property(e => e.Fv3dAdp)
+                    .HasColumnName("FV3D_ADP")
+                    .HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Fv3dCrBy).HasColumnName("FV3D_CR_By");
 
