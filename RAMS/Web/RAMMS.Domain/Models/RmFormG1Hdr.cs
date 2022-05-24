@@ -7,15 +7,16 @@ namespace RAMMS.Domain.Models
     {
         public int Fg1hPkRefNo { get; set; }
         public string Fg1hContNo { get; set; }
-        public string Fg1hAiDivCode { get; set; }
-        public string Fg1hAiRmuName { get; set; }
-        public string Fg1hAiRdCode { get; set; }
-        public string Fg1hAiRdName { get; set; }
-        public int? Fg1hAiLocChKm { get; set; }
-        public int? Fg1hAiLocChM { get; set; }
-        public string Fg1hAiStrucCode { get; set; }
-        public decimal? Fg1hAiGpsEasting { get; set; }
-        public decimal? Fg1hAiGpsNorthing { get; set; }
+        public string Fg1hAssetId { get; set; }
+        public string Fg1hDivCode { get; set; }
+        public string Fg1hRmuName { get; set; }
+        public string Fg1hRdCode { get; set; }
+        public string Fg1hRdName { get; set; }
+        public int? Fg1hLocChKm { get; set; }
+        public int? Fg1hLocChM { get; set; }
+        public string Fg1hStrucCode { get; set; }
+        public decimal? Fg1hGpsEasting { get; set; }
+        public decimal? Fg1hGpsNorthing { get; set; }
         public int? Fg1hYearOfInsp { get; set; }
         public DateTime? Fg1hDtOfInsp { get; set; }
         public int? Fg1hRecordNo { get; set; }

@@ -17,6 +17,7 @@ namespace RAMMS.Domain.Models
         public string Ff3hRdCode { get; set; }
         public string Ff3hRdName { get; set; }
         public string Ff3hCrewSup { get; set; }
+        public string Ff3hAssetId { get; set; }
         public DateTime? Ff3hInspectedDate { get; set; }
         public int? Ff3hInspectedBy { get; set; }
         public bool? Ff3hInspectedBySign { get; set; }

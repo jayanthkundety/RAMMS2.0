@@ -6115,6 +6115,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Ff3hActiveYn).HasColumnName("FF3H_Active_YN");
 
+                entity.Property(e => e.Ff3hAssetId)
+                    .HasColumnName("FF3H_Asset_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Ff3hAuditLog)
                     .HasColumnName("FF3H_AuditLog")
                     .IsUnicode(false);
@@ -7195,41 +7200,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fg1hActiveYn).HasColumnName("FG1H_Active_YN");
 
-                entity.Property(e => e.Fg1hAiDivCode)
-                    .HasColumnName("FG1H_AI_Div_Code")
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fg1hAiGpsEasting)
-                    .HasColumnName("FG1H_AI_GPS_Easting")
-                    .HasColumnType("decimal(6, 3)");
-
-                entity.Property(e => e.Fg1hAiGpsNorthing)
-                    .HasColumnName("FG1H_AI_GPS_Northing")
-                    .HasColumnType("decimal(6, 3)");
-
-                entity.Property(e => e.Fg1hAiLocChKm).HasColumnName("FG1H_AI_Loc_CH_KM");
-
-                entity.Property(e => e.Fg1hAiLocChM).HasColumnName("FG1H_AI_Loc_CH_M");
-
-                entity.Property(e => e.Fg1hAiRdCode)
-                    .HasColumnName("FG1H_AI_Rd_Code")
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fg1hAiRdName)
-                    .HasColumnName("FG1H_AI_Rd_name")
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fg1hAiRmuName)
-                    .HasColumnName("FG1H_AI_RMU_Name")
+                entity.Property(e => e.Fg1hAssetId)
+                    .HasColumnName("FG1H_Asset_ID")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Fg1hAiStrucCode)
-                    .HasColumnName("FG1H_AI_Struc_Code")
-                    .HasMaxLength(10)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fg1hAuditLog).HasColumnName("FG1H_AuditLog");
@@ -7245,9 +7218,22 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FG1H_CR_DT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Fg1hDivCode)
+                    .HasColumnName("FG1H_Div_Code")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fg1hDtOfInsp)
                     .HasColumnName("FG1H_DT_Of_Insp")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Fg1hGpsEasting)
+                    .HasColumnName("FG1H_GPS_Easting")
+                    .HasColumnType("decimal(6, 3)");
+
+                entity.Property(e => e.Fg1hGpsNorthing)
+                    .HasColumnName("FG1H_GPS_Northing")
+                    .HasColumnType("decimal(6, 3)");
 
                 entity.Property(e => e.Fg1hInspBarrier).HasColumnName("FG1H_Insp_Barrier");
 
@@ -7297,6 +7283,10 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fg1hInspVmsCritical).HasColumnName("FG1H_Insp_VMS_Critical");
 
+                entity.Property(e => e.Fg1hLocChKm).HasColumnName("FG1H_Loc_CH_KM");
+
+                entity.Property(e => e.Fg1hLocChM).HasColumnName("FG1H_Loc_CH_M");
+
                 entity.Property(e => e.Fg1hModBy).HasColumnName("FG1H_Mod_By");
 
                 entity.Property(e => e.Fg1hModDt)
@@ -7307,11 +7297,31 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fg1hPrkPosition).HasColumnName("FG1H_Prk_Position");
 
+                entity.Property(e => e.Fg1hRdCode)
+                    .HasColumnName("FG1H_Rd_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fg1hRdName)
+                    .HasColumnName("FG1H_Rd_name")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Fg1hRecordNo).HasColumnName("FG1H_Record_No");
+
+                entity.Property(e => e.Fg1hRmuName)
+                    .HasColumnName("FG1H_RMU_Name")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fg1hStatus)
                     .HasColumnName("FG1H_Status")
                     .HasMaxLength(30);
+
+                entity.Property(e => e.Fg1hStrucCode)
+                    .HasColumnName("FG1H_Struc_Code")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fg1hSubmitSts).HasColumnName("FG1H_SUBMIT_STS");
 
