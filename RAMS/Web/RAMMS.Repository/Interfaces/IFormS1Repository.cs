@@ -14,6 +14,7 @@ namespace RAMMS.Repository.Interfaces
     {
         RmFormS1Hdr SaveFormS1Hdr(RmFormS1Hdr formS1Header, bool updateSubmit);
         RmFormS1Dtl SaveDetails(RmFormS1Dtl formS1Details);
+        List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header);
         Task<RmFormS1Dtl> FindDetailsById(int detailPKId);
         Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData);
         int DeleteFormS1Hdr(RmFormS1Hdr formS1Header);
@@ -25,5 +26,6 @@ namespace RAMMS.Repository.Interfaces
         void CreateWkdtl(RmFormS1WkDtl s1WkDtl);
         void UpdateWkdtl(RmFormS1WkDtl s1WkDtl);
         (int id, bool alreadyExists) CheckAlreadyExists(string roadCode, string activityCode, int fromChKm, string fromChM, int toChKm, string toChM, int weekNo);
+        int LoadS2Data(int PKRefNo, int S2PKRefNo);
     }
 }

@@ -532,10 +532,7 @@ function UpdateFormAfterSave(data) {
         });
         $("#ddlRefNo").val(data.s1RefNo)
         $('#ddlRefNo').trigger("chosen:updated");
-
-        //if ($("#FormV1_Status").val() == "Initialize" || $("#FormV1_Status").val() == "") {
-        //    $(".divRefno > select").attr('disabled', false).trigger("chosen:updated")
-        //}
+ 
     }
 
 

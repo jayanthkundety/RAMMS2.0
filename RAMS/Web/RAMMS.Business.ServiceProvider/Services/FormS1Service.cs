@@ -30,6 +30,14 @@ namespace RAMMS.Business.ServiceProvider.Services
             _mapper = mapper;
             processService = proService;
         }
+
+
+       public List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header)
+        {
+            return repoFromS1.FindRefNoFromS2(header);
+        }
+
+
         public FormS1HeaderRequestDTO SaveHeader(FormS1HeaderRequestDTO headerDTO, bool updateSubmit)
         {
             return SaveHeader<FormS1HeaderRequestDTO>(headerDTO, updateSubmit);
@@ -779,6 +787,12 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             var Result = await repoFromS1.GetFormDDtls(roadCode, actCode, frmCh, frmChDeci, toCh, toChDeci, crewSupervisor, weekNo);
             return Result;
+        }
+
+
+        public int LoadS2Data(int PKRefNo, int S2PKRefNo )
+        {
+            return repoFromS1.LoadS2Data(PKRefNo, S2PKRefNo);
         }
     }
 }

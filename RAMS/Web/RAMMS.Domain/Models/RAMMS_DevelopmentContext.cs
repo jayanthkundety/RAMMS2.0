@@ -143,6 +143,7 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<TestColumns> TestColumns { get; set; }
         public virtual DbSet<UvwSearchData> UvwSearchData { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -150,6 +151,7 @@ namespace RAMMS.Domain.Models
                 optionsBuilder.UseSqlServer("Name=RAMMSDatabase");
             }
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -9755,6 +9757,13 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FsihRmu)
                     .HasColumnName("FSIH_RMU")
                     .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FsihS2PkRefNo).HasColumnName("FSIH_S2_PK_Ref_No");
+
+                entity.Property(e => e.FsihS2RefId)
+                    .HasColumnName("FSIH_S2_Ref_Id")
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FsihStatus)

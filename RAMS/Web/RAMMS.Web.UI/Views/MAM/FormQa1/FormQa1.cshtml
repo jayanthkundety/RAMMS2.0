@@ -5,330 +5,406 @@
     ViewBag.TabTitle = "MAM - Form Qa1 - Road Asset Management and Maintenance System";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
     var isModifyPerm = security.IsPCModify(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
-    var isDeletePerm = security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden"; 
-          }
-          @model RAMMS.Web.UI.Models.FormQa1Model;
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
+}
+@model RAMMS.Web.UI.Models.FormQa1Model;
 
-          <script type="text/javascript">
-              $(document).ready(function () {
-                  $("#formQa1RMU").chosen();
-                  $('#formQa1SectionCode').chosen();
-                  $("#formQa1AdvSearch").hide();
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#formQa1RMU").chosen();
+        $('#formQa1SectionCode').chosen();
+        $("#formQa1AdvSearch").hide();
 
-                  $("#formQa1RMU").on("change", function () {
-                      var rmu = $("#formQa1RMU").find("option:selected").text();
-                      var rmuName = rmu.split("-")[1];
-                     $("#txtRmuName").val(rmuName);
-                  });
+        $("#formQa1RMU").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#txtRmuName").val(val);
+            var req = {};
+            req.Section = '';
+            req.RoadCode = '';
+            req.RMU = $("#formQa1RMU option:selected").text().split("-")[1];
+            $.ajax({
+                url: '/MAM/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $("#formQa1SectionCode").empty();
+                        $("#formQa1SectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                        $.each(data.section, function (index, v) {
+                            $("#formQa1SectionCode").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                        $("#formQa1SectionCode").trigger("change");
+                        $('#formQa1SectionCode').trigger("chosen:updated");
 
-                  //$("#formQa1RMU").trigger("change");
+                    } else {
 
-                  $("#formQa1Crew").on("change", function () {
-                      var val = $("#formQa1Crew option:selected").text();
-                      var Name = val.split("-")[1];
-                      var ctrl = $(this);
-                      if (val != "99999999" && val != "") {
-                          $("#txtCrewName").val(Name);
-                      }
-                      else if (val == "99999999") {
-                          $("#txtCrewName").prop("disabled", false);
-                          $("#txtCrewName").val('');
-                      }
-                      else {
-                          $("#txtCrewName").prop("disabled", true);
-                          $("#txtCrewName").val('');
-                      }
-                      return false;
-                  });
+                    }
+                },
+                error: function (data) {
 
-                  $("#formQa1SectionCode").on("change", function () {
-                      var ddldata = $(this).val();
-                      if (ddldata != "") {
-                         $("#txtSectionName").val(ddldata);
-                      }
-                      else {
-                          $("#txtSectionName").val("");
-                      }
-                      return false;
-                  });
-              });
-
-              function clearHeaderSearch() {
-                  $("#FormQa1SmartSearch").val('');
-                  $("#formQa1RMU").val("").trigger("chosen:updated");
-                  $("#txtRmuName").val("");
-
-                  $("#formQa1RoadCode").val("").trigger("chosen:updated");
-                  $("#txtRoadName").val("");
-
-                  $('#formQa1SectionCode').val("").trigger("chosen:updated");
-                  $("#txtSectionName").val("");
-
-                  $("#formQa1Crew").val("").trigger("chosen:updated");
-                  $("#txtCrewName").val("");
-
-                  $("#formQa1ActivityCode").val("").trigger("chosen:updated");
-                  $("#formQa1ActivityName").val("");
-
-                  $("#formQa1FromDate").val('');
-                  $("#formQa1EndDate").val('');
-
-                  var req = {};
-                  var _rmu = $("#formQa1RMU");
-                  var _road = $("#formQa1SectionCode");
-                  req.RMU = this.value;
-                  req.Section = '';
-                  req.RoadCode = '';
-
-                  $.ajax({
-                      url: '/ERT/RMUSecRoad',
-                      dataType: 'JSON',
-                      data: req,
-                      type: 'Post',
-                      success: function (data) {
-                          if (req.RMU == "") {
-                              $("#formQa1RMU").empty();
-                              $("#formQa1RMU").append($("<option></option>").val("").html("Select RMU"));
-                              $.each(data.rmu, function (index, v) {
-                                  $("#formQa1RMU").append($("<option></option>").val(v.value).html(v.text));
-                              });
-                          }
-                          if (req.Section == "") {
-                              $("#formQa1SectionCode").empty();
-                              $("#formQa1SectionCode").append($("<option></option>").val("").html("Select Section Code"));
-                              $.each(data.section, function (index, v) {
-                                  $("#formQa1SectionCode").append($("<option></option>").val(v.value).html(v.text));
-                              });
-
-                              $('#formQa1SectionCode').trigger("chosen:updated");
-                          }
-                      },
-                      error: function (data) {
-
-                          console.error(data);
-                      }
-                  });
-                  $("#formQa1SearchBtn").click();
-              }
-
-              function detailSearch() {
-                  $("#formQa1AdvSearch").slideToggle(500);
-              }
-
-              function FormQa1GridRefresh() {
-
-                  oTable = $('#FormQa1GridView').DataTable();
-                  oTable.columns(0).search($("#formQa1SmartSearch").val().trim());
-
-                  var rmuCode = $("#formQa1RMU").val();
-                  if (rmuCode != "") {
-                      oTable.columns(1).search(rmuCode);
-                  } else {
-                          oTable.columns(1).search("");
-                  }
-
-                  var secCode = $("#formQa1SectionCode").val();
-                  if (secCode != "") {
-                      oTable.columns(2).search(secCode);
-                  } else {
-                          oTable.columns(2).search("");
-                  }
-
-                  var crewCode = $("#formQa1Crew").val().trim();
-
-                  if (crewCode != "" ){
-                      oTable.columns(3).search(crewCode);
-                  }
-                  else {
-                      oTable.columns(3).search("");
-                  }
-
-                  var actCode = $("#formQa1ActivityCode").val().trim();
-
-                  if (actCode != "" ){
-                      oTable.columns(4).search(actCode);
-                  }
-                  else {
-                      oTable.columns(4).search("");
-                  }
-
-                  oTable.columns(5).search($("#formQa1FromDate").val());
-                  oTable.columns(6).search($("#formQa1EndDate").val());
-
-                  var rdCode = $("#formQa1RoadCode").val().trim();
-
-                  if (rdCode != "" ){
-                      oTable.columns(7).search(rdCode);
-                  }
-                  else {
-                      oTable.columns(7).search("");
-                  }
-
-                  oTable.data = filterData;
-                  oTable.draw();
-              }
-
-              function EditFormQa1(pid,view) {
-                  window.location = "@Url.Action("EditFormQa1", "FormQA1")" +
-                      "?id=" + pid + "&view=" + view;
-              }
-
-              function DeleteHeaderRecord(pkId) {
-                  app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
-                      if (e) {
-                          InitAjaxLoading();
-                          $.ajax({
-                              url: '/FormQA1/HeaderListFormQa1Delete',
-                              data: { pkId },
-                              type: 'POST',
-                              success: function (data) {
-                                  if (data > 0) {
-                                      app.ShowSuccessMessage('Successfully Deleted', false);
-                                      FormQa1GridRefresh();
-                                  }
-                                  else {
-                                      app.ShowErrorMessage("Error in Deleted. Kindly retry later.", false);
-                                  }
-                                  HideAjaxLoading();
-                              }
-                          });
-                      }
-                  });
-              }
-
-              function EditHeaderRecord(id){
-                  var headerId = id;
-                  localStorage.setItem("headeridvalue", headerId);
-
-                  window.location = "@Url.Action("HeaderListEdit", "ERT")" +
-                          "?headerId=" + headerId;
-              }
-          </script>
+                    console.error(data);
+                }
+            });
+        });
 
 
-          <div class="container-fluid">
-              <div class="row">
+        $("#formQa1SectionCode").on("change", function () {
+            var ddldata = $(this).val();
+            var secCode = $("#formQa1SectionCode option:selected").text().split("-")[0];
+            if (ddldata != "") {
+                $("#formQa1SectionName").val(ddldata);
+                //GetAllRoadCodeDataBySectionCode
+                $.ajax({
+                    url: '/FormQa1/GetRoadCodeBySection',
+                    dataType: 'JSON',
+                    data: { secCode },
+                    type: 'Post',
+                    success: function (data) {
+                        if (data != null) {
+                            $("#formQa1RoadCode").empty();
+                            $("#formQa1RoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                            $.each(data, function (index, v) {
+                                var text = v.roadCode + " - " + v.roadName;
+                                $("#formQa1RoadCode").append($("<option></option>").val(v.roadCode).html(text).attr("Item1", v.roadName));
+                            });
+                            $("#formQa1RoadCode").trigger("change");
+                            $('#formQa1RoadCode').trigger("chosen:updated");
 
-                  <div class="body-header w-100">
-                      <div class="col-lg-12">
-                          <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
-                              <span class="mb-0 font-weight-bold font-20">
-                                  Form QA1 (Quality Assurance)
-                              </span>
-                              <nav aria-label="breadcrumb">
-                                  <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
-                                      <li class="breadcrumb-item">Home</li>
-                                      <li class="breadcrumb-item" aria-current="page"> Form QA1</li>
-                                  </ol>
-                              </nav>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-12">
-                      <div class="search-section">
-                          <div class="justify-content-center mb-1">
-                              <div class="search-content">
-                                  <div class="input-group">
-                                      <input autocomplete="off" class="form-control" id="formQa1SmartSearch" name="formQa1SmartSearch" onfocus="this.removeAttribute('readonly')" placeholder="Search..." spellcheck="false" type="text" value="">
-                                      <div class="input-group-append">
-                                          <div class="btn-group">
-                                              <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
-                                              <button id="btnAdvSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0" data-toggle="collapse" data-target="#div_advsearch"><span class="filter-icon"></span></button>
-                                              <button id="btnClearSearch" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
+                        } else {
 
-                              <div id="div_advsearch" class="collapse">
-                                  <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
-                                      <div class="row">
-                                          <div class="form-group col-lg-4">
-                                              <div class="row">
-                                                  <div class="form-group col-6">
-                                                      @Html.Label("RMU ", "RMU ")
-                                                      @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.RMU, (IEnumerable
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else {
+                $("#txtSectionName").val("");
+            }
+            return false;
+        });
+
+        $("#formQa1Crew").on("change", function () {
+            var val = $("#formQa1Crew option:selected").text();
+            var Name = val.split("-")[1];
+            var ctrl = $(this);
+            if (val != "99999999" && val != "") {
+                $("#txtCrewName").val(Name);
+            }
+            else if (val == "99999999") {
+                $("#txtCrewName").prop("disabled", false);
+                $("#txtCrewName").val('');
+            }
+            else {
+                $("#txtCrewName").prop("disabled", true);
+                $("#txtCrewName").val('');
+            }
+            return false;
+        });
+
+        $("#formQa1SectionCode").on("change", function () {
+            var ddldata = $(this).val();
+            if (ddldata != "") {
+                $("#txtSectionName").val(ddldata);
+            }
+            else {
+                $("#txtSectionName").val("");
+            }
+            return false;
+        });
+
+        $("#formQa1RoadCode").on("change", function () {
+            var val = $(this).find(":selected").attr("Item1");
+            $("#txtRoadName").val(val);
+        });
+
+         $("#formQa1ActivityCode").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#formQa1ActivityName").val(val);
+        });
+    });
+
+    function clearHeaderSearch() {
+        $("#FormQa1SmartSearch").val('');
+        $("#formQa1RMU").val("").trigger("chosen:updated");
+        $("#txtRmuName").val("");
+
+        $("#formQa1RoadCode").val("").trigger("chosen:updated");
+        $("#txtRoadName").val("");
+
+        $('#formQa1SectionCode').val("").trigger("chosen:updated");
+        $("#txtSectionName").val("");
+
+        $("#formQa1Crew").val("").trigger("chosen:updated");
+        $("#txtCrewName").val("");
+
+        $("#formQa1ActivityCode").val("").trigger("chosen:updated");
+        $("#formQa1ActivityName").val("");
+
+        $("#formQa1FromDate").val('');
+        $("#formQa1EndDate").val('');
+
+        var req = {};
+        var _rmu = $("#formQa1RMU");
+        var _road = $("#formQa1SectionCode");
+        req.RMU = this.value;
+        req.Section = '';
+        req.RoadCode = '';
+
+        $.ajax({
+            url: '/ERT/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                if (req.RMU == "") {
+                    $("#formQa1RMU").empty();
+                    $("#formQa1RMU").append($("<option></option>").val("").html("Select RMU"));
+                    $.each(data.rmu, function (index, v) {
+                        $("#formQa1RMU").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                }
+                if (req.Section == "") {
+                    $("#formQa1SectionCode").empty();
+                    $("#formQa1SectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#formQa1SectionCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+
+                    $('#formQa1SectionCode').trigger("chosen:updated");
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+        $("#btnSearch").click();
+    }
+
+    function detailSearch() {
+        $("#formQa1AdvSearch").slideToggle(500);
+    }
+
+    function FormQa1GridRefresh() {
+
+        oTable = $('#FormQa1GridView').DataTable();
+        oTable.columns(0).search($("#formQa1SmartSearch").val().trim());
+
+        var rmuCode = $("#formQa1RMU").val();
+        if (rmuCode != "") {
+            oTable.columns(1).search(rmuCode);
+        } else {
+                oTable.columns(1).search("");
+        }
+
+        var secCode = $("#formQa1SectionCode").val();
+        if (secCode != "") {
+            oTable.columns(2).search(secCode);
+        } else {
+                oTable.columns(2).search("");
+        }
+
+        var crewCode = $("#formQa1Crew").val().trim();
+
+        if (crewCode != "" ){
+            oTable.columns(3).search(crewCode);
+        }
+        else {
+            oTable.columns(3).search("");
+        }
+
+        var actCode = $("#formQa1ActivityCode").val().trim();
+
+        if (actCode != "" ){
+            oTable.columns(4).search(actCode);
+        }
+        else {
+            oTable.columns(4).search("");
+        }
+
+        oTable.columns(5).search($("#formQa1FromDate").val());
+        oTable.columns(6).search($("#formQa1EndDate").val());
+
+        var rdCode = $("#formQa1RoadCode").val().trim();
+
+        if (rdCode != "" ){
+            oTable.columns(7).search(rdCode);
+        }
+        else {
+            oTable.columns(7).search("");
+        }
+
+        oTable.data = filterData;
+        oTable.draw();
+    }
+
+    function EditFormQa1(pid,view) {
+        window.location = "@Url.Action("EditFormQa1", "FormQA1")" +
+            "?id=" + pid + "&view=" + view;
+    }
+
+    function DeleteHeaderRecord(pkId) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/FormQA1/HeaderListFormQa1Delete',
+                    data: { pkId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            FormQa1GridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Error in Deleted. Kindly retry later.", false);
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        });
+    }
+
+    function EditHeaderRecord(id){
+        var headerId = id;
+        localStorage.setItem("headeridvalue", headerId);
+
+        window.location = "@Url.Action("HeaderListEdit", "ERT")" +
+                "?headerId=" + headerId;
+    }
+</script>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="body-header w-100">
+            <div class="col-lg-12">
+                <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                    <span class="mb-0 font-weight-bold font-20">
+                        Form QA1 (Quality Assurance)
+                    </span>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item" aria-current="page"> Form QA1</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="search-section">
+                <div class="justify-content-center mb-1">
+                    <div class="search-content">
+                        <div class="input-group">
+                            <input autocomplete="off" class="form-control" id="formQa1SmartSearch" name="formQa1SmartSearch" onfocus="this.removeAttribute('readonly')" placeholder="Search..." spellcheck="false" type="text" value="">
+                            <div class="input-group-append">
+                                <div class="btn-group">
+                                    <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                    <button id="btnAdvSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0" data-toggle="collapse" data-target="#div_advsearch"><span class="filter-icon"></span></button>
+                                    <button id="btnClearSearch" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_advsearch" class="collapse">
+                        <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            @Html.Label("RMU ", "RMU ")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.RMU, (IEnumerable
                                             <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formQa1RMU", @class = "form-control" })
-                                                  </div>
-                                                  <div class="form-group col-lg-6 mb-0">
-                                                      @Html.Label("RMU Name", "RMU Name")
-                                                      <input type="text" class="form-control" id="txtRmuName" disabled />
-                                                  </div>
-                                              </div>
-                                          </div>
+                                        </div>
+                                        <div class="form-group col-lg-6 mb-0">
+                                            @Html.Label("RMU Name", "RMU Name")
+                                            <input type="text" class="form-control" id="txtRmuName" disabled />
+                                        </div>
+                                    </div>
+                                </div>
 
-                                          <div class="form-group col-lg-4">
-                                              <div class="row">
-                                                  <div class="col-6 form-group">
-                                                      @Html.Label("Section Code ", "Section Code")
-                                                      @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
+                                <div class="form-group col-lg-4">
+                                    <div class="row">
+                                        <div class="col-6 form-group">
+                                            @Html.Label("Section Code ", "Section Code")
+                                            @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
                                             <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formQa1SectionCode", @class = "form-control widget-content-area" })
-                                                  </div>
-                                                  <div class="form-group col-lg-6 mb-0">
-                                                      @Html.Label("Section Name", "Section Name")
-                                                      <input type="text" class="form-control" id="txtSectionName" disabled />
-                                                  </div>
-                                              </div>
+                                        </div>
+                                        <div class="form-group col-lg-6 mb-0">
+                                            @Html.Label("Section Name", "Section Name")
+                                            <input type="text" class="form-control" id="txtSectionName" disabled />
+                                        </div>
+                                    </div>
 
-                                          </div>
-                                          <div class="form-group col-lg-4">
-                                              <div class="row">
-                                                  <div class="col-6 form-group">
-                                                      @Html.Label("Road Code", "Road Code")
-                                                      @Html.DropDownList("RoadCode",(IEnumerable<SelectListItem>)ViewData["RD_Code"],  "Select Road Code", new { @id = "formQa1RoadCode", @class = "form-control"})
-                                                  </div>
-                                                  <div class="form-group col-lg-6 mb-0">
-                                                      @Html.Label("Road Name", "Road Name")
-                                                      <input type="text" class="form-control" id="txtRoadName" disabled />
-                                                  </div>
-                                              </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <div class="row">
+                                        <div class="col-6 form-group">
+                                            @Html.Label("Road Code", "Road Code")
+                                            @Html.DropDownList("RoadCode",(IEnumerable<SelectListItem>)ViewData["RD_Code"],  "Select Road Code", new { @id = "formQa1RoadCode", @class = "form-control"})
+                                        </div>
+                                        <div class="form-group col-lg-6 mb-0">
+                                            @Html.Label("Road Name", "Road Name")
+                                            <input type="text" class="form-control" id="txtRoadName" disabled />
+                                        </div>
+                                    </div>
 
-                                          </div>
+                                </div>
 
-                                          <div class="form-group col-2">
-                                              @Html.Label("Crew ", "Crew")
-                                              @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
-                                            <CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formQa1Crew", @class = "form-control widget-content-area" })
-                                          </div>
-                                          <div class="form-group col-2">
-                                              @Html.Label("Crew Name", "Crew Name")
-                                              <input type="text" class="form-control" id="txtCrewName" disabled />
-                                          </div>
-                                          <div class="form-group col-2">
-                                              @Html.Label("Activity Code", "Activity Code")
-                                              @Html.DropDownList("formQa1ActivityCode",(IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formQa1ActivityCode", @class = "form-control" })
-                                          </div>
-                                          <div class="form-group col-2">
-                                              @Html.Label("Activity Name ", "Activity Name")
-                                              @Html.TextBoxFor(m => m.SearchObj.ActivityCode, new { @id="formQa1ActivityName", @class = "form-control" })
-                                          </div>
-                                          <div class="form-group col-2">
-                                              <label>Start Date (DD-MM-YYYY)</label>
-                                              <input type="date" min="2020-01-01" max="2099-12-31" class="datepicker form-control disableinput" id="formQa1FromDate" name="formQa1FromDate">
-                                          </div>
-                                          <div class="form-group col-2">
-                                              <label>To Date (DD-MM-YYYY)</label>
-                                              <input type="date" min="2020-01-01" max="2099-12-31" class="datepicker form-control disableinput" id="formQa1EndDate" name="formQa1EndDate">
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-12">
-                      <div class="w-100 dt-tbl-section">
+                                <div class="form-group col-2">
+                                    @Html.Label("Crew ", "Crew")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
+                                    <CSelectListItem>)ViewData["User"], "Select Crew", new { @Id = "formQa1Crew", @class = "form-control widget-content-area" })
+                                </div>
+                                <div class="form-group col-2">
+                                    @Html.Label("Crew Name", "Crew Name")
+                                    <input type="text" class="form-control" id="txtCrewName" disabled />
+                                </div>
+                                <div class="form-group col-2">
+                                    @Html.Label("Activity Code", "Activity Code")
+                                    @Html.DropDownList("formQa1ActivityCode",(IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formQa1ActivityCode", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-2">
+                                    @Html.Label("Activity Name ", "Activity Name")
+                                    @Html.TextBoxFor(m => m.SearchObj.ActivityCode, new { @id="formQa1ActivityName", @class = "form-control" })
+                                </div>
+                                <div class="form-group col-2">
+                                    <label>Start Date (DD-MM-YYYY)</label>
+                                    <input type="date" min="2020-01-01" max="2099-12-31" class="datepicker form-control disableinput" id="formQa1FromDate" name="formQa1FromDate">
+                                </div>
+                                <div class="form-group col-2">
+                                    <label>To Date (DD-MM-YYYY)</label>
+                                    <input type="date" min="2020-01-01" max="2099-12-31" class="datepicker form-control disableinput" id="formQa1EndDate" name="formQa1EndDate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="w-100 dt-tbl-section">
 
-                          <div class="w-100 float-left position-relative">
-                              <div class="grid-btns">
-                                  <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditFormQa1(0,0);"><span class="add-icon"></span> Add Form QA1</button>
-                              </div>
-                              <div id="headerListGrid" class="w-100 dt-tbl-section">
-                                  @{
+                <div class="w-100 float-left position-relative">
+                    <div class="grid-btns">
+                        <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditFormQa1(0,0);"><span class="add-icon"></span> Add Form QA1</button>
+                    </div>
+                    <div id="headerListGrid" class="w-100 dt-tbl-section">
+                        @{
                             Html.RenderPartial("_HeaderListGrid.cshtml");
                         }
                     </div>

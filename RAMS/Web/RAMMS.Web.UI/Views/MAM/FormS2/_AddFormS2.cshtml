@@ -18,22 +18,22 @@
     IEnumerable<SelectListItem> user = await usr.GetUserList();
     IEnumerable<SelectListItem> quarter = _quarter as IEnumerable<SelectListItem>;
     IEnumerable<SelectListItem> activity = (await ddlService.GetLookups(new DDLookUpDTO
-    {
-        Type = "Act-FormS2"
-    })).Select(s => new SelectListItem
-    {
-        Text = s.DdlTypeCode + "-" + s.DdlTypeValue,
-        // Value = s.DdlPkRefNo.ToString()
-        Value = s.DdlPkRefNo.ToString()
-    }).ToArray();
+            {
+                Type = "Act-FormS2"
+            })).Select(s => new SelectListItem
+            {
+                Text = s.DdlTypeCode + "-" + s.DdlTypeValue,
+                // Value = s.DdlPkRefNo.ToString()
+                Value = s.DdlPkRefNo.ToString()
+            }).ToArray();
     IEnumerable<SelectListItem> priority = (await ddlService.GetLookups(new DDLookUpDTO
-    {
-        Type = "Priority"
-    })).Select(s => new SelectListItem
-    {
-        Text = s.DdlTypeValue,
-        Value = s.DdlPkRefNo.ToString()
-    }).ToArray();
+            {
+                Type = "Priority"
+            })).Select(s => new SelectListItem
+            {
+                Text = s.DdlTypeValue,
+                Value = s.DdlPkRefNo.ToString()
+            }).ToArray();
     string PrioritizedDate = Model.DtPrioritised.HasValue ? Model.DtPrioritised.Value.ToString("yyyy-MM-dd") : "";
     string ScheduledDate = Model.DtSchld.HasValue ? Model.DtSchld.Value.ToString("yyyy-MM-dd") : "";
     string SubmittedDate = Model.DtSub.HasValue ? Model.DtSub.Value.ToString("yyyy-MM-dd") : "";
@@ -42,10 +42,91 @@
     int IsAlreadyExist = Model.PkRefNo > 0 ? 1 : 0;
     int IsView = Model.IsViewMode ? 1 : 0;
 }
+
+<style>
+
+    li .note {
+        padding: 3px;
+    }
+
+    .note {
+        position: relative;
+    }
+
+        .note:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            display: block;
+            border-left: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+            border-top: 5px solid #f00;
+        }
+
+
+    li .day-name {
+        font-weight: 600;
+        margin: 2px 1px;
+        background-color: #152e4d;
+        color: #FFFFFF;
+        font-size: 10px;
+        border-radius: 3px;
+        padding: 2px 0 0px;
+        letter-spacing: 1px;
+        display: flex;
+        flex: 1 1 auto !important;
+        justify-content: center;
+    }
+
+    li .dm-group {
+        background-color: #f1f1f1;
+        display: flex;
+        flex: 1 1 auto !important;
+        margin: 2px 1px 4px;
+        border-radius: 3px;
+        justify-content: center;
+    }
+
+    .dt {
+        margin-right: 3px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #464646
+    }
+
+    li .dm-group .mnth {
+        font-size: 10px;
+        font-weight: 600;
+        color: #888888;
+        padding-top: 3px;
+    }
+
+    .disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    .weekselect {
+        color: yellow !important;
+        font-weight: bolder !important;
+        font-size: 11pt !important;
+    }
+
+    .weekselect span {
+        color: yellow !important;
+        font-weight: bolder !important;
+        font-size: 11pt !important;
+    }
+
+</style>
 <input type="hidden" id="HdnHeaderPkId" value="@Model.PkRefNo" />
 <input type="hidden" id="IsAlreadyExists" value="@IsAlreadyExist" />
 <input type="hidden" id="IsHView" value="@IsView" />
 <input type="hidden" id="IsDView" value="" />
+<input type="hidden" id="LastId" value="5" />
 <div class="row" id="headerDiv">
     <div class="w-100 float-left bg-body">
         <div class="w-100 mh-120">
@@ -221,11 +302,11 @@
                         </div>
                         @{
                             Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                            {
-                                Form = "FormS2",
-                                RefId = Model.PkRefNo,
-                                Stage = Model.Status
-                            });
+            {
+                Form = "FormS2",
+                RefId = Model.PkRefNo,
+                Stage = Model.Status
+            });
                         }
                     </div>
                 </div>
@@ -374,7 +455,16 @@
                                                                             </div>
                                                                         </td>
                                                                     </tr>
+
                                                                 </tbody>
+                                                            </table>
+                                                            <table class="w-100 dataTable dataTables_scroll schedule-tbl" cellspacing="2" cellpadding="2">
+                                                                <tr>
+                                                                    <td>
+                                                                        <div id="divWeekDays" style="position:relative;width:50%;margin:auto">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
                                                             </table>
                                                         </div>
                                                     </div>

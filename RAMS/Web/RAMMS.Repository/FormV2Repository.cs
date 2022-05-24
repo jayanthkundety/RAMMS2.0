@@ -125,7 +125,7 @@ namespace RAMS.Repository
             if (filterOptions.Filters != null)
             {
 
-              
+
                 if (!string.IsNullOrEmpty(filterOptions.Filters.RMU))
                 {
                     query = query.Where(x => x.rmu.DdlTypeCode == filterOptions.Filters.RMU || x.rmu.DdlTypeDesc == filterOptions.Filters.RMU);
@@ -152,10 +152,8 @@ namespace RAMS.Repository
                     DateTime dtFrom, dtTo;
                     DateTime.TryParseExact(filterOptions.Filters.ByFromdate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtFrom);
                     DateTime.TryParseExact(filterOptions.Filters.ByTodate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out dtTo);
+                    query = query.Where(x => x.x.Fv2hDt.HasValue ? x.x.Fv2hDt >= dtFrom && x.x.Fv2hDt <= dtTo : false);
 
-                    {
-                        query = query.Where(x => x.x.Fv2hDt.HasValue ? x.x.Fv2hDt >= dtFrom && x.x.Fv2hDt <= dtTo : false);
-                    }
                 }
 
                 if (!string.IsNullOrEmpty(filterOptions.Filters.ByFromdate) && string.IsNullOrEmpty(filterOptions.Filters.ByTodate))
@@ -527,8 +525,8 @@ namespace RAMS.Repository
 
         public async Task<bool> IsV3Exist(int? v1PkRef)
         {
-            var formv3 = await _context.RmFormV3Hdr.Where (x => x.Fv3hFv1PkRefNo == v1PkRef && x.Fv3hActiveYn == true).FirstOrDefaultAsync();
-            
+            var formv3 = await _context.RmFormV3Hdr.Where(x => x.Fv3hFv1PkRefNo == v1PkRef && x.Fv3hActiveYn == true).FirstOrDefaultAsync();
+
             return (formv3 != null);
 
         }

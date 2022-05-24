@@ -13,6 +13,9 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
     public interface IFormS1Service
     {
         FormS1HeaderRequestDTO SaveHeader(FormS1HeaderRequestDTO headerDTO, bool updateSubmit);
+
+        List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header);
+
         T SaveHeader<T>(T headerDTO, bool updateSubmit);
 
         FormS1HeaderRequestDTO FindDetails(FormS1HeaderRequestDTO headerDTO);
@@ -30,5 +33,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Byte[] FormDownload(string formName, int id, string basePath, string filePath);
 
         Task<List<ActWeekDtl>> GetFormDDetails(string roadCode, string actCode, string frmCh, string frmChDeci, string toCh, string toChDeci, string crewSupervisor, string weekNo);
+
+        int LoadS2Data(int PKRefNo, int S2PKRefNo);
     }
 }

@@ -45,6 +45,9 @@ namespace RAMMS.Repository.Interfaces
         public FormS2Repository FormS2Repository { get; }
         public FormS2DetailRepository FormS2DetailRepository { get; }
 
+        //S2 Days Schedule
+        public FormS2DayScheduleRepository FormS2DayScheduleRepository { get; }
+
         //IW Forms
         public FormWCRepository FormWCRepository { get; }
         public FormWGRepository FormWGRepository { get; }
@@ -88,9 +91,6 @@ namespace RAMMS.Repository.Interfaces
 
         //MAM
         public FormV1Repository FormV1Repository { get; }
-
-
-
 
 
         int Commit();

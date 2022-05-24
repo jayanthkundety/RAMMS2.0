@@ -11,8 +11,11 @@ namespace RAMMS.DTO.RequestBO
         public FormS1HeaderRequestDTO()
         {
 
-        }                        
+        }
         public int PkRefNo { get; set; }
+
+        public int S2PKRefNo { get; set; }
+        public string S2RefId { get; set; }
         public string RefId { get; set; }
         public string Rmu { get; set; }
         public DateTime? Dt { get; set; }
@@ -40,6 +43,8 @@ namespace RAMMS.DTO.RequestBO
         public string UserDesignationAgrd { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+        public List<SelectListS2> RefNoDS { get; set; }
+        
         public static void Config(Profile profile)
         {
             profile.RecognizeDestinationPrefixes("Fsih", "Fsiih");
@@ -70,8 +75,15 @@ namespace RAMMS.DTO.RequestBO
                 .ForMember(x => x.FsiihUseridVet, opt => opt.MapFrom(x => x.PkRefNo))
                 .ForMember(x => x.FsiihUserNameAgrd, opt => opt.MapFrom(x => x.PkRefNo))
                 .ForMember(x => x.FsiihUserNamePlan, opt => opt.MapFrom(x => x.ActiveYn))
-                .ForMember(x => x.FsiihUserNameVet, opt => opt.MapFrom(x => x.PkRefNo))  */              
+                .ForMember(x => x.FsiihUserNameVet, opt => opt.MapFrom(x => x.PkRefNo))  */
                 .ReverseMap();
         }
+    }
+
+    public class SelectListS2
+    {
+        public bool Selected { get; set; }
+        public string Text { get; set; }
+        public string Value { get; set; }
     }
 }

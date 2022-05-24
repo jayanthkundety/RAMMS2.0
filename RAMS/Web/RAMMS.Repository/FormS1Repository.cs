@@ -161,6 +161,31 @@ namespace RAMMS.Repository
             return grid;
         }
 
+        public List<SelectListS2> FindRefNoFromS2(FormS1HeaderRequestDTO header)
+        {
+            var ExistingV1 = (from r in _context.RmFormS1Hdr select r.FsihS2PkRefNo).ToList();
+            var res = (from hdr in _context.RmFormS2Hdr
+                       join dtl in _context.RmFormS2Dtl on hdr.FsiihPkRefNo equals dtl.FsiidFsiihPkRefNo
+                       join Qdtl in _context.RmFormS2QuarDtl on dtl.FsiidPkRefNo equals Qdtl.FsiiqdFsiidPkRefNo
+                       join wdtl in _context.RmWeekLookup on Qdtl.FsiiqdClkPkRefNo equals wdtl.ClkPkRefNo
+                       where hdr.FsiihRmu == header.Rmu && wdtl.ClkWeekNo == header.WeekNo && hdr.FsiihActiveYn == true && dtl.FsiidActiveYn == true
+                       orderby hdr.FsiihPkRefNo descending
+                       select new
+                       {
+                           hdr.FsiihRefId,
+                           hdr.FsiihPkRefNo
+                       }).Distinct().Where(e => !ExistingV1.Contains(e.FsiihPkRefNo));
+
+
+
+            List<SelectListS2> list = new List<SelectListS2>();
+            foreach (var item in res)
+            {
+                list.Add(new SelectListS2 { Text = item.FsiihRefId.ToString(), Value = item.FsiihPkRefNo.ToString() });
+            }
+
+            return list;
+        }
 
         public RmFormS1Dtl SaveDetails(RmFormS1Dtl formS1Details)
         {
@@ -425,5 +450,73 @@ namespace RAMMS.Repository
                 return (0, false);
             }
         }
+
+
+        public int LoadS2Data(int PKRefNo, int S2PKRefNo)
+        {
+
+            IList<RmFormS1Dtl> del = (from r in _context.RmFormS1Dtl where r.FsidFsihPkRefNo == PKRefNo select r).ToList();
+
+            foreach (var item in del)
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
+
+            var resS1HDR = (from hdr in _context.RmFormS1Hdr where hdr.FsihPkRefNo == PKRefNo && hdr.FsihActiveYn == true select hdr).FirstOrDefault();
+            if (resS1HDR != null)
+            {
+                resS1HDR.FsihS2PkRefNo = S2PKRefNo;
+                _context.SaveChanges();
+            }
+
+            if (S2PKRefNo != 0)
+            {
+                var resHDR = from hdr in _context.RmFormS2Hdr where hdr.FsiihPkRefNo == S2PKRefNo && hdr.FsiihActiveYn == true select hdr;
+                if (resHDR.Count() > 0)
+                {
+                   
+                    if (resS1HDR != null)
+                    {
+                        resS1HDR.FsihS2RefId = resHDR.Single().FsiihRefId;
+                        _context.SaveChanges();
+                    }
+
+                    var res = (from dtl in _context.RmFormS2Dtl
+                               where dtl.FsiidFsiihPkRefNo == S2PKRefNo && dtl.FsiidActiveYn == true
+                               orderby dtl.FsiidPkRefNo descending
+                               select new RmFormS1Dtl
+                               {
+                                   FsidFsihPkRefNo = PKRefNo,
+                                   FsidRefId = dtl.FsiidRefId,
+                                   FsidFormTypeRefNo = dtl.FsiidPkRefNo,
+                                   FsidFormType = "FormS2",
+                                   FsidActiveYn = true,
+                                   FsidCrDt = DateTime.Today,
+                                   FsiidRoadCode = dtl.FsiidRoadCode,
+                                   FsiidRoadName = dtl.FsiidRoadName,
+                                   FsiidRoadId = dtl.FsiidRoadId,
+                                   FsidActCode = resHDR.Single().FsiihActCode,
+                                   FsidActName = resHDR.Single().FsiihActName,
+                                   FsidActId = resHDR.Single().FsiihActId
+                               }).ToList();
+
+
+
+
+                    foreach (var item in res)
+                    {
+                        _context.RmFormS1Dtl.Add(item);
+                        _context.SaveChanges();
+                    }
+                }
+
+            }
+
+            return 1;
+        }
+
+
+
     }
 }

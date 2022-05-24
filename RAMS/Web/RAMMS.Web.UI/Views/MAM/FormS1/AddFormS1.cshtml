@@ -11,6 +11,11 @@
 
     bool IsAdd = Model.Item1.PkRefNo == 0;
     bool IsEdit = !IsAdd && ViewBag.IsEdit;
+
+    List<SelectListItem> RefNoFromS2DS = new List<SelectListItem>();
+    if (Model.Item1.S2PKRefNo != 0)
+        RefNoFromS2DS.Add(new SelectListItem { Text = Model.Item1.S2RefId.ToString(), Value = Model.Item1.S2PKRefNo.ToString() });
+
 }
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @section Scripts{
@@ -66,6 +71,11 @@
                             <div class="form-group col-md-5">
                                 @Html.Label("S1 Reference No")
                                 <input name="RefId" type="text" id="txtS1RefNumber" value="" class="form-control" disabled />
+                            </div>
+
+                            <div class="form-group col-lg-6 mb-0 divRefno">
+                                <label for="">Reference No From S2</label>
+                                @Html.DropDownListFor(m => m.Item1.S2PKRefNo, RefNoFromS2DS, "Select Reference No", new { @Id = "ddlRefNo", @class = "form-control", @width = "300px" })
                             </div>
                         </div>
                         @if (IsAdd)
@@ -221,7 +231,8 @@
     </div>
 </div>
 
-@Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["FS1-StatusLegend"], "drp_StatusLegend", "Select Week No", new { @Id = "drpStatusLegend", @style = "display:none;" })
+@*@Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["FS1-StatusLegend"], "drp_StatusLegend", "Select Week No", new { @Id = "drpStatusLegend", @style = "display:none;" })*@
+
 @*<script>
         $(document).ready(function () {
             $('.choose-status').on('click', function () {

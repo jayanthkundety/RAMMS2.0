@@ -90,10 +90,18 @@ namespace RAMMS.Web.UI.Controllers
         {
             FormS1HeaderRequestDTO headerDetails = null;
             DateTime? dtWStart = null;
+            List<SelectListItem> RefNoFromS2DS = new List<SelectListItem>();
+            ViewData["RefNoFromS2DS"] = RefNoFromS2DS;
             if (id > 0)
             {
                 headerDetails = serFormS1.FindHeaderByID(id);
                 dtWStart = headerDetails.FromDt;
+                foreach( var item in serFormS1.FindRefNoFromS2(headerDetails))
+                {
+                    RefNoFromS2DS.Add(new SelectListItem { Text = item.Text,Value=item.Value });
+                }
+
+                ViewData["RefNoFromS2DS"] = RefNoFromS2DS;
             }
             else
             {
@@ -101,6 +109,8 @@ namespace RAMMS.Web.UI.Controllers
                 headerDetails.Status = "";
             }
             LoadLookupService("RMU", "Week No", "User", "FS1-StatusLegend");
+
+            headerDetails.RefNoDS = serFormS1.FindRefNoFromS2(headerDetails);
 
             var grid = new Models.CDataTable() { Name = "tblFS1DetailGrid", APIURL = "/FormS1/ListDetail/" + id.ToString(), LeftFixedColumn = 1 };
             if (!ViewBag.IsEdit)
@@ -169,6 +179,7 @@ namespace RAMMS.Web.UI.Controllers
                 header.CrDt = DateTime.UtcNow;
                 formS1 = serFormS1.SaveHeader(header, false);
             }
+            formS1.RefNoDS = serFormS1.FindRefNoFromS2(formS1);
             return Json(formS1, JsonOption());
         }
         [HttpPost]
@@ -332,6 +343,10 @@ namespace RAMMS.Web.UI.Controllers
         //    return Json(new { Result = formD }, JsonOption());
         //}
 
-
+        public async Task<IActionResult> LoadS2Data(int PKRefNo, int S2PKRefNo)
+        {
+            serFormS1.LoadS2Data(PKRefNo, S2PKRefNo );
+            return Json(1);
+        }
     }
 }

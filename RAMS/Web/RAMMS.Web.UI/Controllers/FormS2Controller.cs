@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -116,6 +117,8 @@ namespace RAMMS.Web.UI.Controllers
             request.ModBy = _security.UserID;
           return   Json(_formS2Service.SaveDetail(request));
         }
+
+
         public IActionResult RemoveS2Header(int id) => Json(_formS2Service.RemoveHeader(id));
         public IActionResult RemoveS2Detail(int id) => Json(_formS2Service.RemoveDetail(id));
         public async Task<IActionResult> GetFilteredS2HeaderDetails(DataTableAjaxPostModel<S2HeaderSearchRequestDTO> searchData)
@@ -210,11 +213,11 @@ namespace RAMMS.Web.UI.Controllers
         static DateTime FirstDateOfWeek(int year, int weekOfYear)
         {
             DateTime jan1 = new DateTime(year, 1, 1);
-            int daysOffset = (int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek - (int)jan1.DayOfWeek;
+            int daysOffset = (int)DayOfWeek.Monday - (int)jan1.DayOfWeek;
 
             DateTime firstMonday = jan1.AddDays(daysOffset);
 
-            int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule, CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
+            int firstWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(jan1, CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule, DayOfWeek.Monday);
 
             if (firstWeek <= 1)
             {
@@ -224,8 +227,12 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetDatesByWeekNo(string year, string weekno)
+        public IActionResult GetDatesByWeekNo(string year, string weekno) //, string month)
         {
+            //string[] months = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            //month = month.Substring(3);
+            //int iMonth = months.ToList().IndexOf(month);
+
             var obj = FirstDateOfWeek(Convert.ToInt32(year), Convert.ToInt32(weekno));
             List<DateTime> dateTimes = new List<DateTime>();
             dateTimes.Add(obj);
