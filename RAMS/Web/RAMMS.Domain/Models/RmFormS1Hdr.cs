@@ -11,8 +11,6 @@ namespace RAMMS.Domain.Models
         }
 
         public int FsihPkRefNo { get; set; }
-        public int? FsihS2PkRefNo { get; set; }
-        public string FsihS2RefId { get; set; }
         public string FsihRefId { get; set; }
         public string FsihRmu { get; set; }
         public DateTime? FsihDt { get; set; }
@@ -40,6 +38,8 @@ namespace RAMMS.Domain.Models
         public string FsiihUserDesignationAgrd { get; set; }
         public string FsihStatus { get; set; }
         public string FsihAuditLog { get; set; }
+        public int? FsihS2PkRefNo { get; set; }
+        public string FsihS2RefId { get; set; }
 
         public virtual ICollection<RmFormS1Dtl> RmFormS1Dtl { get; set; }
     }
