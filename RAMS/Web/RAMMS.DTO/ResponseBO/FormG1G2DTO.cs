@@ -107,4 +107,10 @@ namespace RAMMS.DTO.ResponseBO
         public bool SubmitSts { get; set; }
         public bool ActiveYn { get; set; }
     }
+
+    public class FormG1G2PhotoTypeDTO
+    {
+        public int SNO { get; set; }
+        public string Type { get; set; }
+    }
 }

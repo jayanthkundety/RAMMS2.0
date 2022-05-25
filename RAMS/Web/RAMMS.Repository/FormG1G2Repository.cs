@@ -17,60 +17,60 @@ using RAMMS.DTO.RequestBO;
 
 namespace RAMMS.Repository
 {
-    public class FormG1Repository// : RepositoryBase<RmFormG1Hdr> //, IFormG1Repository
+    public class FormG1Repository : RepositoryBase<RmFormG1Hdr> , IFormG1Repository
     {
-     /*   public FormG1Repository(RAMMSContext context) : base(context)
+        public FormG1Repository(RAMMSContext context) : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public async Task<RmFormG1Hdr> FindDetails(RmFormG1Hdr frmC1C2)
+        public async Task<RmFormG1Hdr> FindDetails(RmFormG1Hdr frmG1G2)
         {
-            return await _context.RmFormG1Hdr.Include(x => x.RmFormG2).ThenInclude(x => x.FcvidIimPkRefNoNavigation).Where(x => x.FcvihAiAssetId == frmC1C2.FcvihAiAssetId && x.FcvihYearOfInsp == frmC1C2.FcvihYearOfInsp && x.FcvihActiveYn == true).FirstOrDefaultAsync();
+            return await _context.RmFormG1Hdr.Include(x => x.RmFormG2Hdr).ThenInclude(x => x.Fg2hFg1hPkRefNoNavigation).Where(x => x.Fg1hAssetId == frmG1G2.Fg1hAssetId && x.Fg1hYearOfInsp == frmG1G2.Fg1hYearOfInsp && x.Fg1hActiveYn == true).FirstOrDefaultAsync();
         }
         public async Task<RmFormG1Hdr> FindByHeaderID(int headerId)
         {
 
-            return await _context.RmFormG1Hdr.Include(x => x.RmFormCvInsDtl).ThenInclude(x => x.FcvidIimPkRefNoNavigation).Where(x => x.FcvihPkRefNo == headerId && x.FcvihActiveYn == true).FirstOrDefaultAsync();
+            return await _context.RmFormG1Hdr.Include(x => x.RmFormG2Hdr).ThenInclude(x => x.Fg2hFg1hPkRefNoNavigation).Where(x => x.Fg1hPkRefNo == headerId && x.Fg1hActiveYn == true).FirstOrDefaultAsync();
         }
-        public async Task<RmFormG1Hdr> Save(RmFormG1Hdr frmC1C2, bool updateSubmit)
-        {
+        public async Task<RmFormG1Hdr> Save(RmFormG1Hdr frmG1G2, bool updateSubmit)
+        {   
             //bool isAdd = false;
-            if (frmC1C2.FcvihPkRefNo == 0)
+            if (frmG1G2.Fg1hPkRefNo == 0)
             {
                 //isAdd = true;
-                frmC1C2.FcvihActiveYn = true;
+                frmG1G2.Fg1hActiveYn = true;
                 IDictionary<string, string> lstRef = new Dictionary<string, string>();
-                lstRef.Add("Year", Utility.ToString(frmC1C2.FcvihYearOfInsp));
-                lstRef.Add("AssetID", Utility.ToString(frmC1C2.FcvihAiAssetId));
-                frmC1C2.FcvihCInspRefNo = Common.RefNumber.FormRefNumber.GetRefNumber(FormType.FormC1C2, lstRef);
-                _context.RmFormG1Hdr.Add(frmC1C2);
+                lstRef.Add("Year", Utility.ToString(frmG1G2.Fg1hYearOfInsp));
+                lstRef.Add("AssetID", Utility.ToString(frmG1G2.Fg1hAssetId));
+                frmG1G2.Fg1hContNo  = Common.RefNumber.FormRefNumber.GetRefNumber(FormType.FormG1G2, lstRef);
+                _context.RmFormG1Hdr.Add(frmG1G2);
             }
             else
             {
-                string[] arrNotReqUpdate = new string[] { "FcvihPkRefNo", "FcvihCInspRefNo", "FcvihAiPkRefNo", "FcvihAiAssetId",
-                    "FcvihAiDivCode", "FcvihAiRmuName", "FcvihAiRdCode","FcvihAiRdName","FcvihAiLocChKm","FcvihAiLocChM","FcvihAiFinRdLevel","FcvihAiStrucCode","FcvihAiCatchArea","FcvihAiSkew",
-                    "FcvihAiDesignFlow","FcvihAiLength","FcvihAiPrecastSitu","FcvihAiGrpType","FcvihAiBarrelNo","FcvihAiGpsEasting","FcvihAiGpsNorthing","FcvihAiMaterial","FcvihAiIntelLevel","FcvihAiOutletLevel",
-                    "FcvihAiIntelStruc","FcvihAiOutletStruc","FcvihYearOfInsp","FcvihCrBy","FcvihCrDt"
+                string[] arrNotReqUpdate = new string[] { "Fg1hPkRefNo", "Fg1hCInspRefNo", "Fg1hPkRefNo", "Fg1hAssetId",
+                    "Fg1hDivCode", "Fg1hRmuName", "Fg1hRdCode","Fg1hRdName","Fg1hLocChKm","Fg1hLocChM","Fg1hFinRdLevel","Fg1hStrucCode","Fg1hAiCatchArea","Fg1hAiSkew",
+                    "Fg1hAiDesignFlow","Fg1hAiLength","Fg1hAiPrecastSitu","Fg1hAiGrpType","Fg1hAiBarrelNo","Fg1hAiGpsEasting","Fg1hAiGpsNorthing","Fg1hAiMaterial","Fg1hAiIntelLevel","Fg1hAiOutletLevel",
+                    "Fg1hAiIntelStruc","Fg1hAiOutletStruc","Fg1hYearOfInsp","Fg1hCrBy","Fg1hCrDt"
                 };
                 //_context.RmFormS1Dtl.Update(formS1Details);
-                //var dtls = frmC1C2.RmFormCvInsDtl;
-                //frmC1C2.RmFormCvInsDtl = null;
-                _context.RmFormG1Hdr.Attach(frmC1C2);
-                var entry = _context.Entry(frmC1C2);
+                //var dtls = frmG1G2.RmFormG2Hdr;
+                //frmG1G2.RmFormG2Hdr = null;
+                _context.RmFormG1Hdr.Attach(frmG1G2);
+                var entry = _context.Entry(frmG1G2);
                 entry.Properties.Where(x => !arrNotReqUpdate.Contains(x.Metadata.Name)).ToList().ForEach((p) =>
                 {
                     p.IsModified = true;
                 });
                 if (updateSubmit)
                 {
-                    entry.Property(x => x.FcvihSubmitSts).IsModified = true;
+                    entry.Property(x => x.Fg1hSubmitSts).IsModified = true;
                 }
-                string[] arrDtlReqUpdate = new string[] { "FcvidDistress", "FcvidSeverity", "FcvidDistressOthers" };
-                foreach (var dtl in frmC1C2.RmFormCvInsDtl)
+                string[] arrDtlReqUpdate = new string[] { "Fg1dDistress", "Fg1dSeverity", "Fg1dDistressOthers" };
+                foreach (var dtl in frmG1G2.RmFormG2Hdr)
                 {
-                    if (dtl.FcvidPkRefNo > 0)
+                    if (dtl.Fg2hPkRefNo > 0)
                     {
-                        _context.RmFormCvInsDtl.Attach(dtl);
+                        _context.RmFormG2Hdr.Attach(dtl);
                         var dtlentry = _context.Entry(dtl);
                         dtlentry.Properties.Where(x => arrDtlReqUpdate.Contains(x.Metadata.Name)).ToList().ForEach((p) =>
                         {
@@ -80,78 +80,76 @@ namespace RAMMS.Repository
                 }
             }
             await _context.SaveChangesAsync();
-            return frmC1C2;
+            return frmG1G2;
         }
-        public async Task<List<FormC1C2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
+        public async Task<List<FormG1G2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
         {
-            return await _context.RmFormCvInsImage.Where(x => x.FcviFcvihPkRefNo == headerId).GroupBy(x => x.FcviImageTypeCode).Select(x => new FormC1C2PhotoTypeDTO()
+            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
             {
-                SNO = x.Max(y => y.FcviImageSrno.Value),
+                SNO = x.Max(y => y.FgiImageSrno.Value),
                 Type = x.Key
             }).ToListAsync();
         }
-        public async Task<RmFormCvInsImage> AddImage(RmFormCvInsImage image)
+        public async Task<RmFormGImages> AddImage(RmFormGImages image)
         {
-            _context.RmFormCvInsImage.Add(image);
+            _context.RmFormGImages.Add(image);
             await _context.SaveChangesAsync();
             return image;
         }
-        public async Task<IList<RmFormCvInsImage>> AddMultiImage(IList<RmFormCvInsImage> images)
+        public async Task<IList<RmFormGImages>> AddMultiImage(IList<RmFormGImages> images)
         {
-            _context.RmFormCvInsImage.AddRange(images);
+            _context.RmFormGImages.AddRange(images);
             await _context.SaveChangesAsync();
             return images;
         }
 
         public async Task<int> ImageCount(string type, long headerId)
         {
-            return await _context.RmFormCvInsImage.Where(s => s.FcviImageTypeCode == type && s.FcviFcvihPkRefNo == headerId).CountAsync();
+            return await _context.RmFormGImages.Where(s => s.FgiImageTypeCode == type && s.FgiFg1hPkRefNo == headerId).CountAsync();
 
         }
-        public async Task<List<RmFormCvInsImage>> ImageList(int headerId)
+        public async Task<List<RmFormGImages>> ImageList(int headerId)
         {
-            return await _context.RmFormCvInsImage.Where(x => x.FcviFcvihPkRefNo == headerId && x.FcviActiveYn == true).ToListAsync();
+            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId && x.FgiActiveYn == true).ToListAsync();
         }
-        public async Task<int> DeleteImage(RmFormCvInsImage img)
+        public async Task<int> DeleteImage(RmFormGImages img)
         {
-            _context.RmFormCvInsImage.Attach(img);
+            _context.RmFormGImages.Attach(img);
             var entry = _context.Entry(img);
-            entry.Property(x => x.FcviActiveYn).IsModified = true;
+            entry.Property(x => x.FgiActiveYn).IsModified = true;
             await _context.SaveChangesAsync();
-            return img.FcviPkRefNo;
+            return img.FgiPkRefNo;
         }
 
         public async Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData)
         {
-            var query = (from hdr in _context.RmFormG1Hdr.Where(s => s.FcvihActiveYn == true)
-                         from rmu in _context.RmDdLookup.Where(rd => rd.DdlType == "RMU" && (rd.DdlTypeDesc == hdr.FcvihAiRmuName)).DefaultIfEmpty()
-                         from asset in _context.RmAllassetInventory.Where(a => a.AiPkRefNo == hdr.FcvihAiPkRefNo).DefaultIfEmpty()
-                         let rdcode = _context.RmRoadMaster.Where(r => r.RdmRdCode == hdr.FcvihAiRdCode && r.RdmActiveYn == true).DefaultIfEmpty().FirstOrDefault()
+            var query = (from hdr in _context.RmFormG1Hdr.Where(s => s.Fg1hActiveYn == true)
+                         from rmu in _context.RmDdLookup.Where(rd => rd.DdlType == "RMU" && (rd.DdlTypeDesc == hdr.Fg1hRmuName)).DefaultIfEmpty()
+                         from asset in _context.RmAllassetInventory.Where(a => a.AiPkRefNo == hdr.Fg1hPkRefNo).DefaultIfEmpty()
+                         let rdcode = _context.RmRoadMaster.Where(r => r.RdmRdCode == hdr.Fg1hRdCode && r.RdmActiveYn == true).DefaultIfEmpty().FirstOrDefault()
                          select new
                          {
-                             RefNo = hdr.FcvihPkRefNo,
-                             RefID = hdr.FcvihCInspRefNo,
-                             AssetID = hdr.FcvihAiPkRefNo,
-                             AssetRefId = hdr.FcvihAiAssetId,
-                             InsDate = hdr.FcvihDtOfInsp,
-                             Year = hdr.FcvihYearOfInsp,
+                             RefNo = hdr.Fg1hPkRefNo,
+                             RefID = hdr.Fg1hContNo,
+                             AssetID = hdr.Fg1hPkRefNo,
+                             AssetRefId = hdr.Fg1hAssetId,
+                             InsDate = hdr.Fg1hDtOfInsp,
+                             Year = hdr.Fg1hYearOfInsp,
                              RMUCode = rmu.DdlTypeCode,
-                             RMUDesc = hdr.FcvihAiRmuName,
+                             RMUDesc = hdr.Fg1hRmuName,
                              SecCode = asset.AiSecCode,
                              SecName = asset.AiSecName,
                              Bound = asset.AiBound,
-                             AssetType = hdr.FcvihAiStrucCode,
-                             RoadCode = hdr.FcvihAiRdCode,
-                             RoadName = hdr.FcvihAiRdName,
+                             AssetType = hdr.Fg1hStrucCode,
+                             RoadCode = hdr.Fg1hRdCode,
+                             RoadName = hdr.Fg1hRdName,
                              RoadId = rdcode.RdmRdCdSort,// asset.AiRdmPkRefNoNavigation.RdmRdCdSort,
-                             LocationCH = Convert.ToDecimal((hdr.FcvihAiLocChKm.HasValue ? hdr.FcvihAiLocChKm.Value.ToString() : "") + "." + hdr.FcvihAiLocChM),
-                             InspectedBy = hdr.FcvihSerProviderUserName,
-                             AuditedBy = hdr.FcvihUserNameAud,
+                             LocationCH = Convert.ToDecimal((hdr.Fg1hLocChKm.HasValue ? hdr.Fg1hLocChKm.Value.ToString() : "") + "." + hdr.Fg1hLocChM),
                              CDia = asset.AiDiameter,
                              CULWidth = asset.AiWidth,
-                             Active = hdr.FcvihActiveYn,
-                             Status = (hdr.FcvihSubmitSts ? "Submitted" : "Saved"),
-                             ProcessStatus = hdr.FcvihStatus
+                             Active = hdr.Fg1hActiveYn,
+                             Status = (hdr.Fg1hSubmitSts ? "Submitted" : "Saved"),
+                             ProcessStatus = hdr.Fg1hStatus
                          });
             query = query.Where(x => x.Active == true);
             if (searchData.filter != null)
@@ -174,8 +172,6 @@ namespace RAMMS.Repository
                                  || (x.RoadName ?? "").Contains(strVal)
                                  || (x.LocationCH.ToString() ?? "").Contains(strVal)
                                  || (x.AssetType ?? "").Contains(strVal)
-                                 || (x.InspectedBy ?? "").Contains(strVal)
-                                 || (x.AuditedBy ?? "").Contains(strVal)
                                  || (x.Year.HasValue ? x.Year.Value.ToString() : "").Contains(strVal)
                                  || (!x.CDia.HasValue ? "" : x.CDia.Value.ToString()).Contains(strVal)
                                  || (!x.CULWidth.HasValue ? "" : x.CULWidth.Value.ToString()).Contains(strVal)
@@ -257,13 +253,13 @@ namespace RAMMS.Repository
         {
             return await _context.RmInspItemMas.Include(x => x.RmInspItemMasDtl).Where(x => x.IimActiveYn == true).ToListAsync();
         }
-        public int DeleteHeader(RmFormG1Hdr frmC1C2)
+        public int DeleteHeader(RmFormG1Hdr frmG1G2)
         {
-            _context.RmFormG1Hdr.Attach(frmC1C2);
-            var entry = _context.Entry(frmC1C2);
-            entry.Property(x => x.FcvihActiveYn).IsModified = true;
+            _context.RmFormG1Hdr.Attach(frmG1G2);
+            var entry = _context.Entry(frmG1G2);
+            entry.Property(x => x.Fg1hActiveYn).IsModified = true;
             _context.SaveChanges();
-            return frmC1C2.FcvihPkRefNo;
+            return frmG1G2.Fg1hPkRefNo;
         }
 
         public List<FormC1C2Rpt> GetReportData(int headerid)
@@ -274,167 +270,7 @@ namespace RAMMS.Repository
 
         public List<FormC1C2Rpt> GetReportDataV2(int headerid)
         {
-            Func<string, int, (string distress, int? severity)> distressSeverity = (code, headerid) =>
-            {
-                var ddl = _context.RmFormCvInsDtl.Where(s => s.FcvidFcvihPkRefNo == headerid && s.FcvidInspCode == code).FirstOrDefault();
-                if (ddl != null)
-                {
-                    return (ddl.FcvidDistress, ddl.FcvidSeverity);
-                }
-                else
-                    return ("", null);
-            };
-
-            var type = (from ty in _context.RmDdLookup
-                        where ty.DdlType == "Photo Type" && ty.DdlTypeCode == "CV"
-                        orderby ty.DdlTypeRemarks ascending
-                        select ty).ToList();
-            var roadcode = (from o in _context.RmFormG1Hdr
-                            where o.FcvihPkRefNo == headerid
-                            select new { o.FcvihAiRdCode, o.FcvihDtOfInsp }).FirstOrDefault();
-
-            List<FormC1C2Rpt> detail = (from o in _context.RmFormG1Hdr
-                                        where (o.FcvihAiRdCode == roadcode.FcvihAiRdCode && o.FcvihDtOfInsp.HasValue && o.FcvihDtOfInsp < roadcode.FcvihDtOfInsp) || o.FcvihPkRefNo == headerid
-                                        select new FormC1C2Rpt
-                                        {
-                                            RefernceNo = o.FcvihCInspRefNo,
-                                            RMU = o.FcvihAiRmuName,
-                                            RoadCode = o.FcvihAiRdCode,
-                                            RoadName = o.FcvihAiRdName,
-                                            StructureCode = o.FcvihAiStrucCode,
-                                            ParkingPosition = o.FcvihPrkPosition.HasValue ? o.FcvihPrkPosition.Value ? "Yes" : "No" : "No",
-                                            PotentialHazards = o.FcvihPotentialHazards.HasValue ? o.FcvihPotentialHazards.Value ? "Yes" : "No" : "No",
-                                            Accessiblity = o.FcvihAccessibility.HasValue ? o.FcvihAccessibility.Value ? "Yes" : "No" : "No",
-                                            AuditedByDate = o.FcvihDtAud,
-                                            ReportforYear = o.FcvihYearOfInsp,
-                                            AuditedByDesignation = o.FcvihUserDesignationAud,
-                                            AuditedByName = o.FcvihUserNameAud,
-                                            AssetRefNO = o.FcvihAiAssetId,
-                                            BarrelNumber = o.FcvihAiBarrelNo,
-                                            CatchmentArea = o.FcvihAiCatchArea,
-                                            CulverConditionRate = o.FcvihCulvertConditionRat,
-                                            CulverSkew = o.FcvihAiSkew,
-                                            CulvertLength = o.FcvihAiLength,
-                                            Culvertmaterial = o.FcvihAiMaterial,
-                                            CulvertReference = o.FcvihCInspRefNo,
-                                            CulvertType = o.FcvihAiGrpType,
-                                            DesignFlow = o.FcvihAiDesignFlow,
-                                            Division = o.FcvihAiDivCode,
-                                            InspectedByDate = o.FcvihSerProviderInsDt,
-                                            InspectedByDesignation = o.FcvihSerProviderUserDesignation,
-                                            InspectedByName = o.FcvihSerProviderUserName,
-                                            FinishedRoadLevel = o.FcvihAiFinRdLevel,
-                                            GPSEasting = o.FcvihAiGpsEasting,
-                                            GPSNorthing = o.FcvihAiGpsNorthing,
-                                            HaveIssueFound = o.FcvihReqFurtherInv.HasValue ? o.FcvihReqFurtherInv.Value ? "Yes" : "No" : "No",
-                                            Day = o.FcvihDtOfInsp.Value.Day,
-                                            InletLevel = o.FcvihAiIntelLevel,
-                                            InletStructure = o.FcvihAiIntelStruc,
-                                            LocationChainageKm = o.FcvihAiLocChKm,
-                                            LocationChainageM = o.FcvihAiLocChM,
-                                            Month = o.FcvihDtOfInsp.Value.Month,
-                                            Year = o.FcvihDtOfInsp.Value.Year,
-                                            OutletLevel = o.FcvihAiOutletLevel,
-                                            OutletStructure = o.FcvihAiOutletStruc,
-                                            PartB2ServiceProvider = o.FcvihSerProviderDefObs,
-                                            PartB2ServicePrvdrCons = o.FcvihAuthDefObs,
-                                            PartCGeneralComments = o.FcvihSerProviderDefGenCom,
-                                            PartCGeneralCommentsCons = o.FcvihAuthDefGenCom,
-                                            PartDFeedback = o.FcvihSerProviderDefFeedback,
-                                            PartDFeedbackCons = o.FcvihAuthDefFeedback,
-                                            Precast = o.FcvihAiPrecastSitu,
-                                            PkRefNo = o.FcvihPkRefNo
-                                        }).ToList();
-
-            string[] str = type.Select(s => s.DdlTypeDesc).ToArray();
-            foreach (var rpt in detail)
-            {
-                rpt.CulvertDistress = distressSeverity("1A", rpt.PkRefNo).distress;
-                rpt.CulvertSeverity = distressSeverity("1A", rpt.PkRefNo).severity;
-                rpt.WaterwayDistress = distressSeverity("2A", rpt.PkRefNo).distress;
-                rpt.WaterwaySeverity = distressSeverity("2A", rpt.PkRefNo).severity;
-                rpt.EmbankmentDistress = distressSeverity("2B", rpt.PkRefNo).distress;
-                rpt.EmbankmentSeverity = distressSeverity("2B", rpt.PkRefNo).severity;
-                rpt.HeadwallInletDistress = distressSeverity("3A", rpt.PkRefNo).distress;
-                rpt.HeadwallInletSeverity = distressSeverity("3A", rpt.PkRefNo).severity;
-                rpt.WingwallInletDistress = distressSeverity("3B", rpt.PkRefNo).distress;
-                rpt.WingwalInletSeverity = distressSeverity("3B", rpt.PkRefNo).severity;
-                rpt.ApronInletDistress = distressSeverity("3C", rpt.PkRefNo).distress;
-                rpt.ApronInletSeverity = distressSeverity("3C", rpt.PkRefNo).severity;
-                rpt.RiprapInletDistress = distressSeverity("3D", rpt.PkRefNo).distress;
-                rpt.RiprapInletSeverity = distressSeverity("3D", rpt.PkRefNo).severity;
-                rpt.HeadwallOutletDistress = distressSeverity("3E", rpt.PkRefNo).distress;
-                rpt.HeadwallOutletSeverity = distressSeverity("3E", rpt.PkRefNo).severity;
-                rpt.WingwallOutletDistress = distressSeverity("3F", rpt.PkRefNo).distress;
-                rpt.WingwallOutletSeverity = distressSeverity("3F", rpt.PkRefNo).severity;
-                rpt.ApronOutletDistress = distressSeverity("3G", rpt.PkRefNo).distress;
-                rpt.ApronOutletSeverity = distressSeverity("3G", rpt.PkRefNo).severity;
-                rpt.RiprapOutletDistress = distressSeverity("3H", rpt.PkRefNo).distress;
-                rpt.RiprapOutletSeverity = distressSeverity("3H", rpt.PkRefNo).severity;
-                rpt.Barrel_1_Distress = distressSeverity("4A", rpt.PkRefNo).distress;
-                rpt.Barrel_1_Severity = distressSeverity("4A", rpt.PkRefNo).severity;
-                rpt.Barrel_2_Distress = distressSeverity("4B", rpt.PkRefNo).distress;
-                rpt.Barrel_2_Severity = distressSeverity("4B", rpt.PkRefNo).severity;
-                rpt.Barrel_3_Distress = distressSeverity("4C", rpt.PkRefNo).distress;
-                rpt.Barrel_3_Severity = distressSeverity("4C", rpt.PkRefNo).severity;
-                rpt.Barrel_4_Distress = distressSeverity("4D", rpt.PkRefNo).distress;
-                rpt.Barrel_4_Severity = distressSeverity("4D", rpt.PkRefNo).severity;
-
-                rpt.BarrelList = (from d in _context.RmFormCvInsDtl
-                                  where d.FcvidFcvihPkRefNo == rpt.PkRefNo
-                                  && d.FcvidInspCodeDesc.Contains("Barrel") && d.FcvidActiveYn == true
-                                  && d.FcvidInspCode != "4A"
-                                   && d.FcvidInspCode != "4B"
-                                    && d.FcvidInspCode != "4C"
-                                     && d.FcvidInspCode != "4D"
-                                  orderby d.FcvidInspCodeDesc ascending
-                                  select new BarrelDistressSeverity
-                                  {
-                                      Code = d.FcvidInspCode,
-                                      Description = d.FcvidInspCodeDesc,
-                                      Distress = d.FcvidDistress,
-                                      Severity = d.FcvidSeverity
-                                  }).ToList();
-
-
-                var p = (from o in _context.RmFormCvInsImage
-                         where o.FcviFcvihPkRefNo == rpt.PkRefNo && o.FcviActiveYn == true
-                         && str.Contains(o.FcviImageTypeCode)
-                         select new Pictures
-                         {
-                             ImageUrl = o.FcviImageUserFilePath,
-                             Type = o.FcviImageTypeCode
-                         }).ToList();
-                rpt.Pictures = new List<Pictures>();
-                int i = 1;
-                foreach (var t in type)
-                {
-                    var picktures = p.Where(s => s.Type == t.DdlTypeDesc).ToList();
-                    if (picktures == null || (picktures != null && picktures.Count == 0))
-                    {
-                        rpt.Pictures.Add(new Pictures { Type = t.DdlTypeValue != "P1" ? $"{t.DdlTypeValue}: {t.DdlTypeDesc}" : "" });
-                        rpt.Pictures.Add(new Pictures { Type = $"{t.DdlTypeValue}: {t.DdlTypeDesc}" });
-                    }
-                    else if (picktures.Count < 2)
-                    {
-                        foreach (var pi in picktures)
-                        {
-                            pi.Type = $"{t.DdlTypeValue}: {t.DdlTypeDesc}";
-                        }
-                        rpt.Pictures.AddRange(picktures);
-                        rpt.Pictures.Add(new Pictures { Type = t.DdlTypeValue != "P1" ? $"{t.DdlTypeValue}: {t.DdlTypeDesc}" : "" });
-                    }
-                    else
-                    {
-                        foreach (var pi in picktures)
-                        {
-                            pi.Type = $"{t.DdlTypeValue}: {t.DdlTypeDesc}";
-                        }
-                        rpt.Pictures.AddRange(picktures);
-                    }
-                }
-            }
-            return detail;
+            return null;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetCVId(AssetDDLRequestDTO request)
@@ -457,6 +293,11 @@ namespace RAMMS.Repository
                     Text = s.AiAssetId
                 });
             return resultlst;
-        }*/
+        }
+
+        Task<List<FormG1G2PhotoTypeDTO>> IFormG1Repository.GetExitingPhotoType(int headerId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
