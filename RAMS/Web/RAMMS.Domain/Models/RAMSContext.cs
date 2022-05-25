@@ -6159,6 +6159,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FF3H_Inspected_Date")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Ff3hInspectedName)
+                    .HasColumnName("FF3H_Inspected_Name")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Ff3hModBy).HasColumnName("FF3H_Mod_By");
 
                 entity.Property(e => e.Ff3hModDt)

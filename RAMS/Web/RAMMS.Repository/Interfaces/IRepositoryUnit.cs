@@ -92,6 +92,8 @@ namespace RAMMS.Repository.Interfaces
         //MAM
         public FormV1Repository FormV1Repository { get; }
 
+        public FormF3Repository FormF3Repository { get; }
+
 
         int Commit();
         Task<int> CommitAsync();
