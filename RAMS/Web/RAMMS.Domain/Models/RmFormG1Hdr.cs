@@ -5,6 +5,12 @@ namespace RAMMS.Domain.Models
 {
     public partial class RmFormG1Hdr
     {
+        public RmFormG1Hdr()
+        {
+            RmFormG2Hdr = new HashSet<RmFormG2Hdr>();
+            RmFormGImages = new HashSet<RmFormGImages>();
+        }
+
         public int Fg1hPkRefNo { get; set; }
         public string Fg1hContNo { get; set; }
         public string Fg1hAssetId { get; set; }
@@ -55,5 +61,8 @@ namespace RAMMS.Domain.Models
         public bool Fg1hActiveYn { get; set; }
         public string Fg1hStatus { get; set; }
         public string Fg1hAuditLog { get; set; }
+
+        public virtual ICollection<RmFormG2Hdr> RmFormG2Hdr { get; set; }
+        public virtual ICollection<RmFormGImages> RmFormGImages { get; set; }
     }
 }

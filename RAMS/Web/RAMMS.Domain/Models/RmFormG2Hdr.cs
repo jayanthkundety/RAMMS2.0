@@ -31,5 +31,7 @@ namespace RAMMS.Domain.Models
         public bool Fg2hActiveYn { get; set; }
         public string Fg2hStatus { get; set; }
         public string Fg2hAuditLog { get; set; }
+
+        public virtual RmFormG1Hdr Fg2hFg1hPkRefNoNavigation { get; set; }
     }
 }

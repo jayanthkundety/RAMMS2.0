@@ -18,5 +18,7 @@ namespace RAMMS.Domain.Models
         public DateTime? FgiCrDt { get; set; }
         public bool FgiSubmitSts { get; set; }
         public bool FgiActiveYn { get; set; }
+
+        public virtual RmFormG1Hdr FgiFg1hPkRefNoNavigation { get; set; }
     }
 }

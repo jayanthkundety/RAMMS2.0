@@ -7415,6 +7415,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(30);
 
                 entity.Property(e => e.Fg2hSubmitSts).HasColumnName("FG2H_SUBMIT_STS");
+
+                entity.HasOne(d => d.Fg2hFg1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormG2Hdr)
+                    .HasForeignKey(d => d.Fg2hFg1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormG2_HDR_RM_FormG1_HDR");
             });
 
             modelBuilder.Entity<RmFormGImages>(entity =>
@@ -7463,6 +7468,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.FgiSubmitSts).HasColumnName("FGI_SUBMIT_STS");
+
+                entity.HasOne(d => d.FgiFg1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormGImages)
+                    .HasForeignKey(d => d.FgiFg1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormG_Images_RM_FormG1_HDR");
             });
 
             modelBuilder.Entity<RmFormGenDtl>(entity =>
