@@ -11,13 +11,16 @@ namespace RAMMS.Domain.Models
         }
 
         public int Ff3hPkRefNo { get; set; }
+        public string Ff3hPkRefId { get; set; }
         public string Ff3hDivCode { get; set; }
         public string Ff3hDist { get; set; }
         public string Ff3hRmuCode { get; set; }
         public string Ff3hRdCode { get; set; }
         public string Ff3hRdName { get; set; }
         public string Ff3hCrewSup { get; set; }
+        public string Ff3hCrewName { get; set; }
         public string Ff3hAssetId { get; set; }
+        public int? Ff3hInspectedYear { get; set; }
         public DateTime? Ff3hInspectedDate { get; set; }
         public int? Ff3hInspectedBy { get; set; }
         public string Ff3hInspectedName { get; set; }

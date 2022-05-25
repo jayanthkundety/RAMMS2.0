@@ -7,6 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public int Ff3dPkRefNo { get; set; }
         public int? Ff3dFf3hPkRefNo { get; set; }
+        public string Ff3dAssetId { get; set; }
         public int? RdmFrmCh { get; set; }
         public int? RdmFrmChDeci { get; set; }
         public int? RdmToCh { get; set; }

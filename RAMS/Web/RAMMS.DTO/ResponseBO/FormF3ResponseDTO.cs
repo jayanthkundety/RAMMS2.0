@@ -21,7 +21,7 @@ namespace RAMMS.DTO.ResponseBO
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? InspectedDate { get; set; }
         public int? InspectedBy { get; set; }
-        public string Ff3hInspectedName { get; set; }
+        public string InspectedName { get; set; }
         public bool? InspectedBySign { get; set; }
         public decimal? RoadLength { get; set; }
         public int? ConditionI { get; set; }
