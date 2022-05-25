@@ -1,0 +1,558 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.TabTitle = "Form G1/G2";
+    ViewData["Title"] = "Form G1/G2";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="body-header w-100">
+            <div class="row bg-white pt-4">
+    <div class="w-100">
+        <div class="body-header w-100">
+            <div class="col-lg-12">
+                <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                    <span class="mb-0 font-weight-bold font-20">
+                        Gantry Sign Visual Isual Inspection Record - Form G1/G2
+                    </span>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item">
+                                Gantry Sign Visual Isual Inspection Record
+                            </li>
+                            <li class="breadcrumb-item" aria-current="page">
+                                Form G1/G2
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="search-section">
+                <div class="justify-content-center mb-1">
+                    <div class="search-content">
+                        <div class="input-group">
+                            <input autocomplete="off" class="form-control" id="txtSmartSearch" name="SearchObj.SmartInputValue" onfocus="this.removeAttribute('readonly')" placeholder="Search..." spellcheck="false" type="text" value="">
+                            <div class="input-group-append">
+                                <div class="btn-group">
+                                    <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                    <button id="btnAdvSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0" data-toggle="collapse" data-target="#div_advsearch"><span class="filter-icon"></span></button>
+                                    <button id="btnClearSearch" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_advsearch" class="collapse">
+                        <div class="col-lg-10 offset-lg-1">
+                            <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label for="RMU_">RMU </label>
+                                                <select class="form-control" id="formDDetSrchRMU" name="SearchObj.RMU" style="display: none;">
+                                                    <option value="">Select RMU</option>
+                                                    <option value="MRI">MRI-Miri</option>
+                                                    <option value="BTN">BTN-Batu Niah</option>
+                                                    <option value="ERI">ERI-ERI</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-lg-6 mb-0">
+                                                <label for="RMU_Name">RMU Name</label>
+                                                <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="col-6 form-group">
+                                                <label for="RMU">Section Code</label>
+                                                <select class="form-control disableHinput editHdisable validate {required, RMU}" id="formRmu" name="SaveFormQa2Model.Rmu" onchange="bindRoadName()">
+                                                    <option value="">Select Section Code</option>
+                                                    <option value="MRI">MRI-Miri</option>
+                                                    <option value="BTN">BTN-Batu Niah</option>
+                                                    <option value="ERI">ERI-ERI</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-lg-6 mb-0">
+                                                <label for="RMU_Name">Section Name</label>
+                                                <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    @*<div class="form-group col-2">
+                    <label for="RMU"> Division Code</label>
+                    <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
+                </div>*@
+                                   
+                                    <div class="form-group col-2">
+                                        <label for="Name_of_Crew_Supervisor">
+                                            Road Code
+                                        </label>
+                                        <select class="form-control  editHdisable validate" id="formQA2CrewUnit" name="SaveFormQa2Model.CrewSup" style="display: none;">
+                                            <option value="">
+                                                Select Road Code
+                                            </option>
+                                            <option value="100000035">100000035 - Jelayan Anak Mawar</option>
+                                            <option value="100000034">100000034 - Ramlee Nor</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="Name_of_Crew_Supervisor">Road Name</label>
+                                        <input class="form-control" id="formQA2CrewName" name="SaveFormQa2Model.CrewSupName" type="text" value="" disabled="">
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="RMU_">
+                                            Activity Code
+                                        </label>
+                                        <select class="form-control" id="formDDetSrchRMU" name="SearchObj.RMU" style="display: none;">
+                                            <option value="">Select Activity Code</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="Ref_No_">Activity Name</label>
+                                        <input type="text" class="form-control validate {required, Reference No.}" readonly="">
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label>
+                                            Year of Inspection From
+                                        </label>
+                                        <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="FormDSrchByDate" value="" name="FormDSrchByDate" onfocusout="onFocusOut();">
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label>
+                                            Year of Inspection To
+                                        </label>
+                                        <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="FormDSrchByDate" value="" name="FormDSrchByDate" onfocusout="onFocusOut();">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="Location_Chainage_From">Location Chainage From</label>
+                                        <div class="row">
+                                            <div class="col-6 float-left pr-0">
+                                                <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" ngkeypress="">
+                                            </div>
+                                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                            <div class="col-5 float-left pl-0">
+                                                <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage From M" param="chFromM" ngkeypress="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="Location_Chainage_From">Location Chainage To</label>
+                                        <div class="row">
+                                            <div class="col-6 float-left pr-0">
+                                                <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" ngkeypress="">
+                                            </div>
+                                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                            <div class="col-5 float-left pl-0">
+                                                <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage From M" param="chFromM" ngkeypress="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="w-100 dt-tbl-section">
+
+                <div class="w-100 float-left position-relative">
+                    <div class="grid-btns">
+                        <button type="button" class="btn btn-sm btn-themebtn"><span class="add-icon"></span> Add Form G1 G2</button>
+                    </div>
+                    <div id="headerListGrid" class="w-100 dt-tbl-section">
+                        <div class="main-container" id="container">
+                            <div id="content" class="table-responsive">
+                                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="top">
+                                        <div class="dataTables_length">
+                                            <label>Show <select name="FormDGridView_length" aria-controls="FormDGridView" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10 rows</option><option value="25">25 rows</option><option value="50">50 rows</option><option value="100">100 rows</option><option value="500">500 rows</option><option value="100000">All</option></select> entries</label>
+                                        </div><div class="dataTables_paginate paging_simple_numbers" id="FormDGridView_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="FormDGridView_previous"><a href="#" aria-controls="FormDGridView" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="FormDGridView" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item disabled" id="FormDGridView_ellipsis"><a href="#" aria-controls="FormDGridView" data-dt-idx="6" tabindex="0" class="page-link">...</a></li><li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="7" tabindex="0" class="page-link">9</a></li><li class="paginate_button page-item next" id="FormDGridView_next"><a href="#" aria-controls="FormDGridView" data-dt-idx="8" tabindex="0" class="page-link">Next</a></li></ul></div>
+                                    </div><div id="FormDGridView_processing" class="dataTables_processing card" style="display: none;">Processing...</div><div class="dataTables_scroll">
+                                        <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                                            <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 1325.71px; padding-right: 0px;">
+                                            </div>
+                                        </div><div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 100%;">
+
+
+
+                                            <div class="dataTables_scroll">
+                                                <div class="w-100 position-relative in-tbl-btns custom-tbl">
+
+                                                    <table class="table w-100 nowrap dataTable no-footer">
+
+                                                        <thead style="background-color: #c8e1ff">
+                                                            <tr>
+                                                                <th></th>
+                                                                <th colspan="1">
+                                                                    Reference No
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Year of Inspection
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Date of Inspection
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Asset id
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    RMU
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    RMU Name
+                                                                </th>
+
+                                                                <th colspan="1">
+                                                                    Section Code
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Section Name
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Road Code
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Road Name
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Location CH
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Inspected by
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Audited by
+                                                                </th>
+                                                                <th colspan="1">
+                                                                    Status
+                                                                </th>
+                                                            </tr>
+
+                                                        </thead>
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="btn-group dropright" id="actiondropdown">
+                                                                        <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                                            Click Me
+                                                                        </button>
+                                                                        <div class="dropdown-menu">
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="edit-icon"></span> Edit
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="del-icon"></span> Delete
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="view-icon"></span> View
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="print-icon"></span> Print
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="btn-group dropright" id="actiondropdown">
+                                                                        <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                                            Click Me
+                                                                        </button>
+                                                                        <div class="dropdown-menu">
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="edit-icon"></span> Edit
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="del-icon"></span> Delete
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="view-icon"></span> View
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="print-icon"></span> Print
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="btn-group dropright" id="actiondropdown">
+                                                                        <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                                            Click Me
+                                                                        </button>
+                                                                        <div class="dropdown-menu">
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="edit-icon"></span> Edit
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="del-icon"></span> Delete
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="view-icon"></span> View
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="print-icon"></span> Print
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="btn-group dropright" id="actiondropdown">
+                                                                        <button id="actionclick" type="button" class="btn btn-sm btn-themebtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                                            Click Me
+                                                                        </button>
+                                                                        <div class="dropdown-menu">
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="edit-icon"></span> Edit
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="del-icon"></span> Delete
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="view-icon"></span> View
+                                                                            </button>
+                                                                            <button type="button" class="dropdown-item editdel-btns">
+                                                                                <span class="print-icon"></span> Print
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                                <td>
+                                                                    -----
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="bottom d-flex justify-content-md-between">
+                                        <div class="dataTables_info" id="FormDGridView_info" role="status" aria-live="polite">Showing 1 to 10 of 90 entries</div>
+                                        <div class="dataTables_paginate paging_simple_numbers">
+                                            <ul class="pagination">
+                                                <li class="paginate_button page-item previous disabled">
+                                                    <a href="#" aria-controls="FormDGridView" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                                </li>
+                                                <li class="paginate_button page-item active"><a href="#" aria-controls="FormDGridView" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+                                                <li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
+                                                <li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
+                                                <li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
+                                                <li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
+                                                <li class="paginate_button page-item disabled"><a href="#" aria-controls="FormDGridView" data-dt-idx="6" tabindex="0" class="page-link"> ...</a></li>
+                                                <li class="paginate_button page-item "><a href="#" aria-controls="FormDGridView" data-dt-idx="7" tabindex="0" class="page-link">9</a></li>
+                                                <li class="paginate_button page-item next"><a href="#" aria-controls="FormDGridView" data-dt-idx="8" tabindex="0" class="page-link">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div><div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
