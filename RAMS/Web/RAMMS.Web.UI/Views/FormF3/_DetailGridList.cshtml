@@ -1,0 +1,123 @@
+﻿
+<style>
+    .headcol {
+        position: sticky;
+        left: 0;
+    }
+</style>
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormF2DetailGridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+<script src="~/js/CDTGrid.js"></script>
+<script>
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm = "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var table_columns = [];
+    var isViewMode = $("#hdnHIsViewMode").val();
+    var actionCol = {
+        data: null, name: "Action", title: "Action", class: "headcol",  autoWidth: true, sortable: false, render: function (data) {
+            var title = "";
+            if (data.pkRefNo != "" && data.pkRefNo != null) {
+                title = data.pkRefNo;
+            }
+            if (isViewMode=="1") {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' data-backdrop='static' onclick='javascript:viewDetail(" + data.pkRefNo + ");'><span class='view-icon'></span> View</button></div></div>";
+                return actionSection;
+            }
+            else {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns' data-toggle='modal' data-target='#FormS2AdddetailsModal'  data-backdrop='static' id='formAHeaderEdit'" + isModifyPerm + " onclick='javascript:editDetail(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isViewPerm + " data-toggle='modal' data-target='#FormAAddModal' data-backdrop='static' onclick='javascript:viewDetail(" + data.pkRefNo + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteDetail(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button></div></div>";
+                return actionSection;
+            }
+        }
+    };
+    var noCol = { data: "pkRefNo", name: "No", title: "NO", autoWidth: true, sortable: true, visible: false };
+    var startChainage = {
+        data: null, name: "StartingCh", title: "Location Ch", autoWidth: true, sortable: true, render: function (data) {
+            console.log(data);
+            return data.startingChKm.toString()+"."+data.startingChM;
+        }
+    };
+    var length = { data: "length", name: "length", title: "Length", autoWidth: true, sortable: true };
+    var grCode = { data: "grCode", name: "grCode", title: "Structure Code", autoWidth: true, sortable: true };
+    var GrCondition1 = { data: "grCondition1", name: "GrCondition1", title: "Condition 1", autoWidth: true, sortable: true };
+    var GrCondition2 = { data: "grCondition2", name: "GrCondition2", title: "Condition 2", autoWidth: true, sortable: true };
+    var GrCondition3 = { data: "grCondition3", name: "GrCondition3", title: "Condition 3", autoWidth: true, sortable: true };
+    var bound = { data: "bound", name: "bound", title: "Bound", autoWidth: true, sortable: true };
+    var PostSpac = { data: "postSpac", name: "PostSpac", title: "Post Spacing", autoWidth: true, sortable: true };
+    var Remarks = { data: "remarks", name: "Remarks", title: "Remarks", autoWidth: true, sortable: true };
+    var assetId = { data: "assetId", name: "AssetId", title: "AssetId", autoWidth: true, sortable: true };
+
+    table_columns.push(noCol);
+    table_columns.push(actionCol);
+    table_columns.push(assetId);
+    table_columns.push(startChainage);
+    table_columns.push(length);
+    table_columns.push(grCode);
+    table_columns.push(GrCondition1);
+    table_columns.push(GrCondition2);
+    table_columns.push(GrCondition3);
+    table_columns.push(bound);
+    table_columns.push(PostSpac);
+    table_columns.push(Remarks);
+    var oDTable = null;
+    function deleteDetail(id) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                var req = {};
+                req.id = id;
+                $.ajax({
+                    url: '/FormF2/RemoveDetail',
+                    dataType: 'JSON',
+                    data: req,
+                    type: 'Post',
+                    success: function (data) {
+                        if (data) {
+                            oDTable.draw();
+                            app.ShowSuccessMessage("Record deleted successfully");
+                        }
+                        else {
+                            app.ShowErrorMessage("Not deleted, Please try again.");
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+        });
+    }
+
+    var filterData = new Object();
+
+    function InitializeDetailsGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+        filterData.FgrihPkRefNo = _hd.HdnHeaderPkId.val();
+        if (oDTable != null) {
+            oDTable.destroy();
+        }
+
+        oDTable = $('#FormF2DetailGridView').DataTable({
+                ajax: {
+                    url: "/FormF2/GetDetailList",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                        filterData
+                    }
+                },
+                columns: table_columns
+            });
+        oDTable.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        InitializeDetailsGrid();
+    });
+</script>
