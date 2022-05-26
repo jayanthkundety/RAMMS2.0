@@ -6,7 +6,7 @@ using RAMMS.Business.ServiceProvider.Interfaces;
 using RAMMS.Domain.Models;
 using RAMMS.DTO;
 using RAMMS.DTO.JQueryModel;
-using RAMMS.DTO.RequestBO;
+using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
 using RAMMS.Web.UI.Models;
 using System;
@@ -40,6 +40,7 @@ namespace RAMMS.Web.UI.Controllers
         }
         public IActionResult Index()
         {
+            LoadLookupService("RMU", "Section Code", "Division", "RD_Code", "Year");
             return View();
         }
 
@@ -136,7 +137,18 @@ namespace RAMMS.Web.UI.Controllers
             return null;
         }
 
-
+        public async Task<IActionResult> Add(int id, bool isview)
+        {
+            LoadLookupService("Supervisor", "User");
+            FormF3ResponseDTO _model = new FormF3ResponseDTO();
+            if (id > 0)
+            {
+                _model = await formF3Service.GetHeaderById(id);
+                _model = _model ?? new FormF3ResponseDTO();
+            }
+            _model.IsViewMode = _model.SubmitSts ? true : isview;
+            return PartialView("~/Views/FormF3/_AddFormF3.cshtml", _model);
+        }
 
     }
 }

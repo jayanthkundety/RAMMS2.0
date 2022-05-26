@@ -54,7 +54,15 @@ namespace RAMMS.Business.ServiceProvider.Services
         //}
 
 
-
+        public async Task<FormF3ResponseDTO> GetHeaderById(int id)
+        {
+            var header = await _repoUnit.FormF3Repository.FindAsync(s => s.Ff3hPkRefNo == id && s.Ff3hActiveYn == true);
+            if (header == null)
+            {
+                return null;
+            }
+            return _mapper.Map<RmFormF3Hdr, FormF3ResponseDTO>(header);
+        }
 
 
         public async Task<int> SaveFormF3(FormF3ResponseDTO FormF3)

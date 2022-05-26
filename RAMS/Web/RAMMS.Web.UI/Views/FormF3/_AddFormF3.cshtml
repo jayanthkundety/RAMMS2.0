@@ -5,31 +5,31 @@
 @model RAMMS.DTO.RequestBO.FormF2HeaderRequestDTO
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @{
-    ViewBag.TabTitle = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
-    ViewData["Title"] = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
+    //ViewBag.TabTitle = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
+    //ViewData["Title"] = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
     IEnumerable<SelectListItem> division = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "Division" }))
        .Select(s => new SelectListItem
-               {
-                   Text = s.DdlTypeDesc,
-                   Value = s.DdlTypeValue
-               }).ToArray();
+       {
+           Text = s.DdlTypeDesc,
+           Value = s.DdlTypeValue
+       }).ToArray();
 
     IEnumerable<SelectListItem> year = (await ddlService
         .GetLookups(new DDLookUpDTO { Type = "Year" }))
         .Select(s => new SelectListItem
-                {
-                    Text = s.DdlTypeValue,
-                    Value = s.DdlTypeValue
-                }).ToArray();
+        {
+            Text = s.DdlTypeValue,
+            Value = s.DdlTypeValue
+        }).ToArray();
     IEnumerable<SelectListItem> section = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
        .Select(s => new SelectListItem
-               {
-                   Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
-                   Value = s.DdlTypeCode
-               }).ToArray();
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
 
     IEnumerable<SelectListItem> roadcode = new[] {new SelectListItem
        {
@@ -40,15 +40,15 @@
     IEnumerable<SelectListItem> rmu = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "RMU" }))
        .Select(s => new SelectListItem
-               {
-                   Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
-                   Value = s.DdlTypeCode
-               }).ToArray();
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
     IEnumerable<SelectListItem>
     user = (await usr.GetUserNameRespectToPosition(new UserRequestDTO
-            {
-                Position = "Supervisor"
-            })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
+    {
+        Position = "Supervisor"
+    })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
 
     string inspectedDateBy = Model.DtInspBy.HasValue ? Model.DtInspBy.Value.ToString("yyyy-MM-dd") : "";
     string inspectionDate = Model.DtOfInsp.HasValue ? Model.DtOfInsp.Value.ToString("yyyy-MM-dd") : "";
