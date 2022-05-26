@@ -60,7 +60,7 @@
             Gentable.destroy();
             $('#FormQa1GenGridView').empty();
         }
-        Gentable = $('#FormQa1GenGridView').DataTable({
+        Gentable = $('#FormQa1GenGridView').DataTable({ 
             ajax: {
                 url: "/FormQA1/LoadFormQa1GenList?id=" + $("#formQa1PkRefNo").val(),
                 type: "POST",
@@ -71,7 +71,7 @@
             },
             columns: Gentable_columns
         });
-        Gentable.columns.adjust().draw();
+        //Gentable.columns.adjust().draw();
     }
 
     $(document).ready(function () {
