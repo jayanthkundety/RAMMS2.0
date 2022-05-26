@@ -17,7 +17,7 @@
                                 mm
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.AcwcThinkness , new { @id="formQa1AcwcThinkness" , @class ="form-control allow_numeric svalidate {required, Compacted thickness}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.AcwcThinkness , new { @id="formQa1AcwcThinkness" , @class ="form-control allow_numeric", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -31,7 +31,7 @@
                                 <sup> o </sup>C
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.AcwcTemperature , new { @id="formQa1AcwcTemperature" , @class ="form-control allow_numeric svalidate {required, Delivery Temperature}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.AcwcTemperature , new { @id="formQa1AcwcTemperature" , @class ="form-control allow_numeric awvalidate {required, Delivery Temperature}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -39,7 +39,7 @@
                         No. of Passes
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.AcwcPasses , new { @id="formQa1AcwcPasses" , @class ="form-control allow_numeric svalidate {required,No. of Passes}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.AcwcPasses , new { @id="formQa1AcwcPasses" , @class ="form-control allow_numeric awvalidate {required,No. of Passes}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 float-left">
@@ -67,7 +67,7 @@
                                 L/m <sup> 2</sup>
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.TcDRate , new { @id="formQa1TcDRate" , @class ="form-control allow_numeric svalidate {required, Distribution Rate}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.TcDRate , new { @id="formQa1TcDRate" , @class ="form-control allow_numeric ", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -76,7 +76,7 @@
 
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.TcType , new { @id="formQa1TcType" , @class ="form-control allow_numeric svalidate {required, Type}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.TcType , new { @id="formQa1TcType" , @class ="form-control allow_numeric tcvalidate {required, Type}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -86,7 +86,7 @@
                     </label>
                     <div class="input-group">
                         @Html.DropDownListFor(Adtl => Adtl.TcEvenlySpread , (IEnumerable
-                        <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1TcEvSpNo", @class = "form-control wddl svalidate {required, Compaction Test - Evenly Spread/No}" })
+                        <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1TcEvSpNo", @class = "form-control wddl tcvalidate {required, Compaction Test - Evenly Spread/No}" })
 
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                                 mm
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.AcbcThinkness , new { @id="formQa1AcbcThinkness" , @class ="form-control allow_numeric svalidate {required, Premix Acbc Compacted Thinkness}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.AcbcThinkness , new { @id="formQa1AcbcThinkness" , @class ="form-control allow_numeric ", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -129,7 +129,7 @@
                                 <sup> o</sup>c
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.AcbcTemperature , new { @id="formQa1AcbcTemperature" , @class ="form-control allow_numeric svalidate {required, Premix Acbc Delivery Temperature}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.AcbcTemperature , new { @id="formQa1AcbcTemperature" , @class ="form-control allow_numeric acvalidate {required, Premix Acbc Delivery Temperature}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -137,7 +137,7 @@
                         No. of Passes
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.AcbcPasses , new { @id="formQa1AcbcPasses" , @class ="form-control allow_numeric svalidate {required, Premix Acbc No. of Passes}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.AcbcPasses , new { @id="formQa1AcbcPasses" , @class ="form-control allow_numeric acvalidate {required, Premix Acbc No. of Passes}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 float-left">
@@ -167,7 +167,7 @@
                                 L/m <sup>2</sup>
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.PcDRate , new { @id="formQa1PcDRate" , @class ="form-control allow_numeric svalidate {required, Prime Coat - Distribution Rate}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.PcDRate , new { @id="formQa1PcDRate" , @class ="form-control allow_numeric", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -176,7 +176,7 @@
 
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.PcType , new { @id="formQa1PcType" , @class ="form-control allow_numeric svalidate {required, Prime Coat - Type}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.PcType , new { @id="formQa1PcType" , @class ="form-control allow_numeric pcvalidate {required, Prime Coat - Type}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -185,7 +185,7 @@
                     </label>
                     <div class="input-group">
                         @Html.DropDownListFor(Adtl => Adtl.PcEvenlySpread , (IEnumerable
-                        <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1PcEvSpNo", @class = "form-control wddl svalidate {required, Prime Coat - Evenly Spread/No}" })
+                        <SelectListItem>)ViewData["YESNO"], "Select", new { @Id = "formQa1PcEvSpNo", @class = "form-control wddl pcvalidate {required, Prime Coat - Evenly Spread/No}" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 float-left">
@@ -215,7 +215,7 @@
                                 mm
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.RbThinkness , new { @id="formQa1RbThinkness" , @class ="form-control allow_numeric svalidate {required, Roadbase Compacted thickness}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.RbThinkness , new { @id="formQa1RbThinkness" , @class ="form-control allow_numeric", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -225,7 +225,7 @@
 
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.RbLayers , new { @id="formQa1RbLayers" , @class ="form-control allow_numeric svalidate {required, Roadbase Layers}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.RbLayers , new { @id="formQa1RbLayers" , @class ="form-control allow_numeric rbvalidate {required, Roadbase Layers}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -234,7 +234,7 @@
 
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.RbPasses , new { @id="formQa1RbPasses" , @class ="form-control allow_numeric svalidate {required, Roadbase Passes}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.RbPasses , new { @id="formQa1RbPasses" , @class ="form-control allow_numeric rbvalidate {required, Roadbase Passes}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 float-left">
@@ -264,7 +264,7 @@
                                 mm
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.SbThinkness , new { @id="formQa1SbThinkness" , @class ="form-control allow_numeric svalidate {required, Subbase Thickness}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SbThinkness , new { @id="formQa1SbThinkness" , @class ="form-control allow_numeric", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -274,7 +274,7 @@
 
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.SbLayers , new { @id="formQa1SbLayers" , @class ="form-control allow_numeric svalidate {required, Subbase Layers}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SbLayers , new { @id="formQa1SbLayers" , @class ="form-control allow_numeric sbvalidate {required, Subbase Layers}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -283,7 +283,7 @@
 
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.SbPasses , new { @id="formQa1SbPasses" , @class ="form-control allow_numeric svalidate {required, Subbase Passes}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SbPasses , new { @id="formQa1SbPasses" , @class ="form-control allow_numeric sbvalidate {required, Subbase Passes}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 float-left">
@@ -312,7 +312,7 @@
                                 mm
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.SgThinkness , new { @id="formQa1SgThinkness" , @class ="form-control allow_numeric svalidate {required, Subgrade Thickness}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SgThinkness , new { @id="formQa1SgThinkness" , @class ="form-control allow_numeric", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -320,7 +320,7 @@
                         Nos.of Layers
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.SgLayers , new { @id="formQa1SgLayers" , @class ="form-control allow_numeric svalidate {required, Subgrade Nos.of Layers}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SgLayers , new { @id="formQa1SgLayers" , @class ="form-control allow_numeric sgvalidate {required, Subgrade Nos.of Layers}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -329,7 +329,7 @@
 
                     </label>
                     <div class="input-group">
-                        @Html.TextBoxFor(m => m.SgPasses , new { @id="formQa1SgPasses" , @class ="form-control allow_numeric svalidate {required, Subgrade Passes}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SgPasses , new { @id="formQa1SgPasses" , @class ="form-control allow_numeric sgvalidate {required, Subgrade Passes}", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-6 float-left">
@@ -359,7 +359,7 @@
                                 mm
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.SsdSb, new { @id="formQa1SsdSb" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - Sand Blanket}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SsdSb, new { @id="formQa1SsdSb" , @class ="form-control allow_numeric ", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-2 float-left">
@@ -373,7 +373,7 @@
                                 m
                             </span>
                         </div>
-                        @Html.TextBoxFor(m => m.SsdPp, new { @id="formQa1SsdPp" , @class ="form-control allow_numeric svalidate {required, Sub-Soil Drainage - Perforated pipe}", @style="height:35px", @maxlength="6" })
+                        @Html.TextBoxFor(m => m.SsdPp, new { @id="formQa1SsdPp" , @class ="form-control allow_numeric", @style="height:35px", @maxlength="6" })
                     </div>
                 </div>
                 <div class="form-group col-lg-8 float-left">

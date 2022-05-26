@@ -20,6 +20,8 @@
     var _Exeuser = Model.SaveFormQa1Model.UseridExec;
     var _Chckuser = Model.SaveFormQa1Model.UseridChked;
 
+    
+
     bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
@@ -31,6 +33,7 @@
 <script type="text/javascript" src="~/js/FormQa1.js" asp-append-version="true"></script>
 
 <script type="text/javascript">
+    var _CurrentUser = '@security.UserID';
     $(document).ready(function () {
         process.Init("FormQA1", "@Model.SaveFormQa1Model.Status", @Model.SaveFormQa1Model.PkRefNo);
         $("#formQa1AuditedBy").val('@_Auser').trigger("chosen:updated");
@@ -452,7 +455,7 @@
                                     <div class="card-body px-4">
                                         <div class="row">
                                             <div class="col-12">
-                                                @Html.TextAreaFor(m => m.SaveFormQa1Model.Remarks , new { @id="formQa1Remarks" , @class="form-control svalidate {required, Remarks}" })
+                                                @Html.TextAreaFor(m => m.SaveFormQa1Model.Remarks , new { @id="formQa1Remarks" , @class="form-control ssvalidate {required, Remarks}" })
                                             </div>
                                         </div>
                                     </div>

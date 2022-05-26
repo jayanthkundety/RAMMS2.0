@@ -85,7 +85,7 @@ namespace RAMMS.Web.UI.Controllers
         private List<SelectListItem> DDLWELLNO()
         {
             var list = new List<SelectListItem>();
-            list.Add(new SelectListItem { Text = "Well", Value = "Well" });
+            list.Add(new SelectListItem { Text = "Well Prepared", Value = "Well_Prepared" });
             list.Add(new SelectListItem { Text = "No", Value = "No" });
             return list;
         }
@@ -276,6 +276,8 @@ namespace RAMMS.Web.UI.Controllers
             if (formQa1Res == null)
             {
                 formQa1.Dt = header.FormQa1Date;
+                formQa1.UseridAudit = _security.UserID;
+                formQa1.UseridWit = _security.UserID;
                 formQa1.UseridAssgn = _security.UserID;
                 formQa1.UsernameAssgn = _security.UserName;
                 formQa1.DtAssgn = DateTime.Today;
