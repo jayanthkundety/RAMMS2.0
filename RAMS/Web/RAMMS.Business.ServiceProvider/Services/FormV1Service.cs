@@ -808,7 +808,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             int? rowsAffected;
             try
             {
-                rowsAffected = _repo.DeleteFormV5(id);
+                rowsAffected = _repo.DeleteFormV5Dtl(id);
             }
             catch (Exception ex)
             {
