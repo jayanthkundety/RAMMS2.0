@@ -440,7 +440,14 @@ $(document).on("click", "#btnFindDetails", function () {
 
                 $('#formQa1WitnessedBy').val(_CurrentUser).trigger("chosen:updated");
                 $("#formQa1WitnessedBy").trigger("change");
+                $('#FormQa1GenGridView').DataTable().settings()[0].ajax.url = "/FormQA1/LoadFormQa1GenList?id=" + data.PkRefNo;
+                FormGenGridRefresh();
 
+                $('#FormQa1MaterialGridView').DataTable().settings()[0].ajax.url = "/FormQA1/LoadFormQa1MaterialList?id=" + data.PkRefNo;
+                FormMatGridRefresh();
+
+                $('#FormQa1EquipGridView').DataTable().settings()[0].ajax.url = "/FormQA1/LoadFormQa1EquipmentList?id=" + data.PkRefNo;
+                FormEquipGridRefresh();
                 
             }
             else {
@@ -774,6 +781,7 @@ function FormGenGridRefresh() {
     oTable = $('#FormQa1GenGridView').DataTable();
     oTable.data = filterData;
     oTable.draw();
+    $('#FormQa1GenGridView').DataTable().columns.adjust().draw();
 }
 
 function FormMatGridRefresh() {
@@ -781,6 +789,7 @@ function FormMatGridRefresh() {
     oTable = $('#FormQa1MaterialGridView').DataTable();
     oTable.data = filterData;
     oTable.draw();
+    $('#FormQa1MaterialGridView').DataTable().columns.adjust().draw();
 }
 
 function FormEquipGridRefresh() {
@@ -788,6 +797,7 @@ function FormEquipGridRefresh() {
     oTable = $('#FormQa1EquipGridView').DataTable();
     oTable.data = filterData;
     oTable.draw();
+    $('#FormQa1EquipGridView').DataTable().columns.adjust().draw();
 }
 
 function EditFormQa1Gen(id, view) {
