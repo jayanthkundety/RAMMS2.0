@@ -984,22 +984,22 @@ function bindWeekDay(month, weekno, year, wid, days) {
         var btdisabled = '';
 
         if (iMonth != mnth) {
-            lidisabled = "class='disabled' ";
-            btdisabled = "disabled"
+            //lidisabled = "class='disabled' ";
+            //btdisabled = "disabled"
         }
         subbody += '<li ' + lidisabled + '><span class="day-name">' + day + '</span>'
         subbody += '<span class="dm-group">'
         subbody += '<span  class="dt">' + dt.getDate() + '</span>'
         subbody += '<span  class="mnth">' + name + '</span>'
         subbody += '</span>'
-        if (iMonth == mnth) {
+        //if (iMonth == mnth) {
             subbody += '<button  type="button" wid="' + wid + '" ';
             subbody += Array.isArray(days) && days.indexOf(formatDate(dt) + "") >= 0 ? ' class="active" ' : '';
             subbody += ' id ="' + formatDate(dt);
             subbody += '"></button>';
-        } else {
+       /* } else {
             subbody += '<button disabled class="disabled"></button>'
-        }
+        }*/
         subbody += '</li>';
     });
     subbody += "</ul></div>";
