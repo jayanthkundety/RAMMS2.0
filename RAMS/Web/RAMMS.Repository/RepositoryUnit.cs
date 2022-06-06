@@ -72,6 +72,10 @@ namespace RAMMS.Repository
 
         private FormS2DayScheduleRepository _formS2DayScheduleRepository;
 
+        private FormG1Repository _formG1Repository;
+
+        public FormG1Repository FormG1Repository => _formG1Repository = _formG1Repository ?? new FormG1Repository(_context);
+
         public FormS2DayScheduleRepository FormS2DayScheduleRepository => _formS2DayScheduleRepository = _formS2DayScheduleRepository ?? new FormS2DayScheduleRepository(_context);
 
         public FormQa1Repository FormQa1Repository => _formQa1Repository = _formQa1Repository ?? new FormQa1Repository(_context);
