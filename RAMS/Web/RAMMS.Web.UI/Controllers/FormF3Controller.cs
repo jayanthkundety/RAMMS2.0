@@ -14,13 +14,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
- 
+
+
 namespace RAMMS.Web.UI.Controllers
 {
     public class FormF3Controller : BaseController
     {
 
-        private IFormF3Service formF3Service;
+        private IFormF3Service _formF3Service;
         private ISecurity _security;
         private IWebHostEnvironment _environment;
         private IUserService _userService;
@@ -33,7 +34,7 @@ namespace RAMMS.Web.UI.Controllers
             IRoadMasterService roadMasterService)
         {
             _userService = userService;
-            formF3Service = service;
+            _formF3Service = service;
             _security = security;
             _environment = webhostenvironment;
             _roadMasterService = roadMasterService;
@@ -137,18 +138,45 @@ namespace RAMMS.Web.UI.Controllers
             return null;
         }
 
-        public async Task<IActionResult> Add(int id, bool isview)
+        public async Task<IActionResult> Add(int id, int view)
         {
             LoadLookupService("Supervisor", "User");
-            FormF3ResponseDTO _model = new FormF3ResponseDTO();
+            FormF3Model _model = new FormF3Model();
             if (id > 0)
             {
-                _model = await formF3Service.GetHeaderById(id);
-                _model = _model ?? new FormF3ResponseDTO();
+                _model.FormF3 = await formF3Service.GetHeaderById(id);
+                _model = _model ?? new FormF3Model();
             }
-            _model.IsViewMode = _model.SubmitSts ? true : isview;
+            _model.view = view;
             return PartialView("~/Views/FormF3/_AddFormF3.cshtml", _model);
         }
+
+        //  public async Task<int> SaveHeader(FormF3ResponseDTO model) => model.SubmitSts ? await this.formF3Service.SaveHeader(model) : await this.formF3Service.SaveHeader(model);
+
+
+        //public async Task<IActionResult> SaveFormF3(FormF3Model frm)
+        //{
+        //    int refNo = 0;
+        //    frm.FormF3.ActiveYn = true;
+        //    if (frm.FormF3.PkRefNo == 0)
+        //    {
+        //        frm.FormF3 = await _formF3Service.SaveFormF3(frm.FormF3);
+        //        frm.RefNoDS = _formF3Service.FindRefNoFromS1(frm.FormF3);
+
+
+        //        return Json(new { FormExist = frm.FormF3.FormExist, RefId = frm.FormF3.RefId, PkRefNo = frm.FormF3.PkRefNo, Status = frm.FormF3.Status, Source = frm.FormF3.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormF3.S1HPkRefNo });
+        //    }
+        //    else
+        //    {
+        //        if (frm.FormF3.Status == "Initialize")
+        //            frm.FormF3.Status = "Saved";
+        //        refNo = await _formF3Service.Update(frm.FormF3);
+        //    }
+        //    return Json(refNo);
+
+
+        //}
+
 
     }
 }

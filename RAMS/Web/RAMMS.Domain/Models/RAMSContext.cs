@@ -6161,6 +6161,8 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Ff3hG1hPkRefNo).HasColumnName("FF3H_G1H_PK_Ref_No");
+
                 entity.Property(e => e.Ff3hInspectedBy).HasColumnName("FF3H_Inspected_By");
 
                 entity.Property(e => e.Ff3hInspectedBySign).HasColumnName("FF3H_Inspected_By_Sign");
@@ -6206,6 +6208,16 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Ff3hRoadLength)
                     .HasColumnName("FF3H_Road_Length")
                     .HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Ff3hSecCode)
+                    .HasColumnName("FF3H_Sec_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ff3hSecName)
+                    .HasColumnName("FF3H_Sec_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Ff3hStatus)
                     .HasColumnName("FF3H_Status")
