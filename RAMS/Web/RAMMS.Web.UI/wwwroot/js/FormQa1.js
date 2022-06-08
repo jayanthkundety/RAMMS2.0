@@ -426,7 +426,7 @@ $(document).on("click", "#btnFindDetails", function () {
                 }
                 $("#btnFindDetails").hide();
                 $("#saveFormQa1Btn").show();
-                $("#SubmitFormQa1Btn").show();
+                $("#SubmitFormQa1Btn").hide();
                 gridAddBtnDis();
                 disableAll(false);
                 $("#formQa1AssignedBy").val($("#hdnUserId").val()).trigger("chosen:updated");
