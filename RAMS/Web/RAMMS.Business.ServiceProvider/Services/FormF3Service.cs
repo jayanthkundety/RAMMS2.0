@@ -55,7 +55,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         //    return _mapper.Map<IEnumerable<FormF3DtlResponseDTO>>(formF3Dtl);
         //}
 
-
+        
         public async Task<PagingResult<FormF3DtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions)
         {
            
@@ -69,16 +69,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
 
-                foreach (var listData in filteredRecords)
-                {
-                    FormF3DtlGridDTO obj = new FormF3DtlGridDTO();
-
-                     obj.Bound=listData.bound
-
-                    formF3DtlList.Add(obj);
-                }
-
-                result.PageResult = formF3DtlList;
+                result.PageResult = filteredRecords;
 
                 result.PageNo = filterOptions.StartPageNo;
                 result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;

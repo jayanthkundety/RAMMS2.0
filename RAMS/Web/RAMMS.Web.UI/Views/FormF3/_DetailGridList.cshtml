@@ -7,7 +7,7 @@
 </style>
 <div class="main-container" id="container">
     <div id="content">
-        <table id="FormF2DetailGridView" class="table w-100 nowrap">
+        <table id="FormF3DetailGridView" class="table w-100 nowrap">
         </table>
     </div>
 </div>
@@ -71,7 +71,7 @@
                 var req = {};
                 req.id = id;
                 $.ajax({
-                    url: '/FormF2/RemoveDetail',
+                    url: '/FormF3/RemoveDetail',
                     dataType: 'JSON',
                     data: req,
                     type: 'Post',
@@ -103,9 +103,9 @@
             oDTable.destroy();
         }
 
-        oDTable = $('#FormF2DetailGridView').DataTable({
+        oDTable = $('#FormF3DetailGridView').DataTable({
                 ajax: {
-                    url: "/FormF2/GetDetailList",
+                    url: "/FormF3/GetDetailList",
                     type: "POST",
                     datatype: "json",
                     data: {
