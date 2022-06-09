@@ -22,11 +22,11 @@ namespace RAMMS.Repository.Interfaces
         Task<List<RmFormGImages>> ImageList(int headerId);
         Task<int> DeleteImage(RmFormGImages img);
         Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData);
-        Task<List<RmInspItemMas>> GetInspItemMaster();
+        ///Task<List<RmInspItemMas>> GetInspItemMaster();
 
         //int Delete(RmFormG1Hdr frmC1C2);
         int DeleteHeader(RmFormG1Hdr frmC1C2);
-        Task<IEnumerable<SelectListItem>> GetCVId(AssetDDLRequestDTO request);
+        //Task<IEnumerable<SelectListItem>> GetCVId(AssetDDLRequestDTO request);
         Task<int> ImageCount(string type, long headerId);
 
     }
@@ -42,12 +42,12 @@ namespace RAMMS.Repository.Interfaces
         Task<List<RmFormGImages>> ImageList(int headerId);
         Task<int> DeleteImage(RmFormGImages img);
         Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData);
-        Task<List<RmInspItemMas>> GetInspItemMaster();
+        //Task<List<RmInspItemMas>> GetInspItemMaster();
 
         //int Delete(RmFormG2Hdr frmC1C2);
         int DeleteHeader(RmFormG2Hdr frmC1C2);
-        List<FormC1C2Rpt> GetReportData(int headerid);
-        Task<IEnumerable<SelectListItem>> GetCVId(AssetDDLRequestDTO request);
+        //List<FormC1C2Rpt> GetReportData(int headerid);
+        //Task<IEnumerable<SelectListItem>> GetCVId(AssetDDLRequestDTO request);
         Task<int> ImageCount(string type, long headerId);
     }
 

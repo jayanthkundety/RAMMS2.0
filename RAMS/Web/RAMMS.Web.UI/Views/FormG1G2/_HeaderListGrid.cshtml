@@ -1,0 +1,121 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<div class="main-container" id="container">
+    <div id="content">
+        <table id="FormG1G2GridView" class="table w-100 nowrap">
+        </table>
+    </div>
+</div>
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+        var isModifyPerm =@security.IsPCModify(ModuleNameList.Condition_Inspection).ToString().ToLowerInvariant() ? "" : 'hidden';
+        var isDeletePerm =@security.IsPCDelete(ModuleNameList.Condition_Inspection).ToString().ToLowerInvariant() ? "" : 'hidden';
+
+        var table_columns = [];
+        var actionCol = {
+            data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
+                var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV2HeaderEdit'" + isModifyPerm + " onclick='javascript:EditFormG1G2(" + data.pkRefNo + ",0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormD(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteHeaderRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' href='#'  onclick='javascript:EditFormG1G2(" + data.pkRefNo + ",1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+                return full["submitSts"] == true ? viewaction : actionSection;
+            }
+        };
+        var refNoCol = { data: "contNo", name: "No", title: "Reference No", autoWidth: false, width: 250, sortable: true };
+        var yearOfInsp = { data: "yearOfInsp", name: "Year_of_Inspection", title: "Year of Inspection", autoWidth: true, sortable: true };
+        var dtOfInsp = { data: "dtOfInsp", name: "Date_of_Inspection", title: "Date of Inspection", autoWidth: true, sortable: true };
+        var assetIdCol = { data: "assetId", name: "Asset_Id", title: "Asset Id", autoWidth: true, sortable: true };
+        var rmuRmuCol = { data: "rmu", name: "Rmu", title: "RMU", autoWidth: true, sortable: true };
+        var rmuRmuNameCol = { data: "rmuName", name: "RmuName", title: "RMU Name", autoWidth: true, sortable: true };
+        var secCodeCol = { data: "secCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
+        var secNameCol = { data: "secName", name: "SectionName", title: "Section Name", autoWidth: true, sortable: true };
+        var roadCodeCol = { data: "rdCode", name: "roadcode", title: "Road code", autoWidth: true, sortable: true };
+        var roadNameCol = { data: "rdName", name: "roadName", title: "Road Name", autoWidth: true, sortable: true };
+        var locCHCol = { data: "locChKm", name: "locCH", title: "Location CH", autoWidth: true, sortable: true };
+        var inspByCol = { data: "spName", name: "inspectedBy", title: "Inspected by", autoWidth: true, sortable: true };
+        var auditByCol = { data: "ecName", name: "auditBy", title: "Audited by", autoWidth: true, sortable: true };
+        
+        var dtCol = {
+             data: "dt", name: "dt", title: "Date", autoWidth: true, sortable: true ,
+            render: function (data) {
+                if (data != null) {
+                    var d = new Date(data);
+                    var day = d.getDate();
+                    var month = d.getMonth() + 1;
+                    var year = d.getFullYear();
+                    if (day < 10) {
+                        day = "0" + day;
+                    }
+                    if (month < 10) {
+                        month = "0" + month;
+                    }
+                    var date = day + "/" + month + "/" + year;
+                    return date;
+                }
+                else {
+                    return "";
+                }
+            }
+        };
+
+        var submitStsCol = { data: "status", name: "Status", title: "Status", autoWidth: true, sortable: true };
+
+        table_columns.push(actionCol);
+        table_columns.push(refNoCol);
+        table_columns.push(yearOfInsp);
+        table_columns.push(dtOfInsp);
+        table_columns.push(assetIdCol);
+        table_columns.push(rmuRmuCol);
+        table_columns.push(rmuRmuNameCol);
+        table_columns.push(secCodeCol);
+        table_columns.push(secNameCol);
+        table_columns.push(roadCodeCol);
+        table_columns.push(roadNameCol);  
+        table_columns.push(locCHCol);
+        table_columns.push(inspByCol);
+        table_columns.push(auditByCol);
+        table_columns.push(submitStsCol);
+
+        function PrintForm(id) {
+            window.location.href = '/download/PrintForm?id=' + id + "&formname=FormQA1";
+        }
+
+        var filterData = new Object();
+        function InitializeGrid() {
+            var _currentGridSettings = new CustomGridSettings();
+            $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+            filterData.SmartInputValue = $("#FormG1G2SmartSearch").val();
+            filterData.RMU = $("#formQa1RMU  option:selected").text().split("-")[0];
+            filterData.Section =  $("#formQa1SectionCode option:selected").text().split("-")[0];
+            filterData.RoadCode =  $("#formQa1RoadCode option:selected").text().split("-")[0];
+            filterData.Crew = $("#formQa1Crew  option:selected").text().split("-")[0];
+            filterData.ActivityCode = $("#formQa1ActivityCode option:selected").text().split("-")[0];
+            filterData.ByFromdate = $("#formQa1FromDate").val()
+            filterData.ByTodate = $("#formQa1EndDate").val()
+
+            $('#FormG1G2GridView').DataTable({
+                ajax: {
+                    url: "/FormG1G2/LoadFormG1G2List",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                        filterData
+                    }
+                },
+                columns: table_columns
+            });
+        }
+
+      
+        $(document).ready(function () {
+            InitializeGrid();
+
+             $('#btnSearch').click(function () {
+                FormG1G2GridRefresh();
+            });
+
+        });
+</script>

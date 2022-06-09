@@ -455,6 +455,15 @@ namespace RAMMS.Repository
         public int LoadS2Data(int PKRefNo, int S2PKRefNo)
         {
 
+
+            IList<RmFormS1WkDtl> delWk = (from r in _context.RmFormS1WkDtl where r.FsiwdFsidPkRefNo == _context.RmFormS1Dtl.Where(r => r.FsidFsihPkRefNo == PKRefNo).Single().FsidPkRefNo select r).ToList();
+
+            foreach (var item in delWk)
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
+
             IList<RmFormS1Dtl> del = (from r in _context.RmFormS1Dtl where r.FsidFsihPkRefNo == PKRefNo select r).ToList();
 
             foreach (var item in del)
@@ -462,6 +471,8 @@ namespace RAMMS.Repository
                 _context.Remove(item);
                 _context.SaveChanges();
             }
+
+
 
             var resS1HDR = (from hdr in _context.RmFormS1Hdr where hdr.FsihPkRefNo == PKRefNo && hdr.FsihActiveYn == true select hdr).FirstOrDefault();
             if (resS1HDR != null)
@@ -475,7 +486,7 @@ namespace RAMMS.Repository
                 var resHDR = from hdr in _context.RmFormS2Hdr where hdr.FsiihPkRefNo == S2PKRefNo && hdr.FsiihActiveYn == true select hdr;
                 if (resHDR.Count() > 0)
                 {
-                   
+
                     if (resS1HDR != null)
                     {
                         resS1HDR.FsihS2RefId = resHDR.Single().FsiihRefId;
@@ -487,6 +498,7 @@ namespace RAMMS.Repository
                                orderby dtl.FsiidPkRefNo descending
                                select new RmFormS1Dtl
                                {
+                                   FsidPkRefNo = dtl.FsiidPkRefNo,
                                    FsidFsihPkRefNo = PKRefNo,
                                    FsidRefId = dtl.FsiidRefId,
                                    FsidFormTypeRefNo = dtl.FsiidPkRefNo,
@@ -502,13 +514,40 @@ namespace RAMMS.Repository
                                }).ToList();
 
 
-
+                    int S2DtlPkRefNo = 0;
 
                     foreach (var item in res)
                     {
+                        S2DtlPkRefNo = item.FsidPkRefNo;
+                        item.FsidPkRefNo = 0;
                         _context.RmFormS1Dtl.Add(item);
                         _context.SaveChanges();
+
+                        //_context.Set<RmFormS1Dtl>().Add(item);
+                        //_context.SaveChanges();
+
+                        var Wkres = (from Wkdtl in _context.RmFormS2DaySchedule
+                                     where Wkdtl.FsiidsFsiidPkRefNo == S2DtlPkRefNo
+                                     orderby Wkdtl.FsiidsPkRefNo descending
+                                     select new RmFormS1WkDtl
+                                     {
+                                         FsiwdFsidPkRefNo = item.FsidPkRefNo,
+                                         FsiwdPlanned = 1,
+                                         FsiwdSchldDate = Wkdtl.FsiidsScheduledDt,
+                                         FsiwdSchldDayOfWeek = (int)Wkdtl.FsiidsScheduledDt.Value.DayOfWeek
+                                     }).ToList();
+
+
+                        foreach (var itemW in Wkres)
+                        {
+                            _context.RmFormS1WkDtl.Add(itemW);
+                            _context.SaveChanges();
+                        }
+
                     }
+
+
+
                 }
 
             }
