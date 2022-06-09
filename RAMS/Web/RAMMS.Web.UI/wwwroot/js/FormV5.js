@@ -28,6 +28,13 @@ $(document).ready(function () {
 
     });
 
+
+     
+
+    if ($("#hdnView").val() == "1") {
+        $("#btnPhotoVideoModal").hide();
+    }
+
     if ($("#FormV5_PkRefNo").val() == "0") {
         $("#btnPhotoVideoModal").hide();
     }
