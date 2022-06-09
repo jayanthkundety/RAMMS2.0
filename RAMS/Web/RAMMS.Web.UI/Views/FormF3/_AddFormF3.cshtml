@@ -93,12 +93,12 @@
                                     <div class="form-group col-md-3">
                                         @Html.Label("RMU", "RMU")
 
-                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.RmuCode, rmu, "Select RMU", new { @Id = "ddlrmu", @class = "form-control validate {required, RMU}" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.RmuCode, rmu, "Select RMU", new { @Id = "ddlRMU", @class = "form-control validate {required, RMU}" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Section Code", "Section Code")
 
-                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCodeList"], "Select Section Code", new { @Id = "ddlSecCode", @class = "form-control validate {required, Section Code}" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "ddlSection", @class = "form-control validate {required, Section Code}" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Section Name", "Section Name")
@@ -251,13 +251,13 @@
     $('#ddlDivision').trigger('chosen:updated');
     $('#ddlDivision').trigger("change");
 
-    $('#ddlrmu').val("@Model.FormF3.RmuCode");
-    $('#ddlrmu').trigger('chosen:updated');
-    $('#ddlrmu').trigger("change");
+    $('#ddlRMU').val("@Model.FormF3.RmuCode");
+    $('#ddlRMU').trigger('chosen:updated');
+    $('#ddlRMU').trigger("change");
 
-    $('#ddlSecCode').val("@Model.FormF3.SecCode");
-    $('#ddlSecCode').trigger('chosen:updated');
-    $('#ddlSecCode').trigger("change");
+    $('#ddlSection').val("@Model.FormF3.SecCode");
+    $('#ddlSection').trigger('chosen:updated');
+    $('#ddlSection').trigger("change");
 
     $('#ddlRoadCode').val("@Model.FormF3.RdCode");
     $('#ddlRoadCode').trigger('chosen:updated');

@@ -98,7 +98,7 @@
     function InitializeDetailsGrid() {
         var _currentGridSettings = new CustomGridSettings();
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
-        filterData.FgrihPkRefNo = _hd.HdnHeaderPkId.val();
+        filterData.FgrihPkRefNo = "";//_hd.HdnHeaderPkId.val();
         if (oDTable != null) {
             oDTable.destroy();
         }

@@ -17,8 +17,10 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         // Task<PagingResult<FormF2HeaderRequestDTO>> GetHeaderList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions);
 
+        Task<PagingResult<FormF3DtlResponseDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions);
+
         Task<FormF3ResponseDTO> GetHeaderById(int id);
-        Task<int> SaveFormF3(FormF3ResponseDTO FormW1);
+        Task<FormF3ResponseDTO> SaveFormF3(FormF3ResponseDTO FormF3);
         Task<int> Update(FormF3ResponseDTO FormW1);
         int? DeleteFormF3Dtl(int Id);
         int? SaveFormF3Dtl(FormF3DtlResponseDTO FormF3Dtl);

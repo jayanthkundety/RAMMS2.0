@@ -1,4 +1,5 @@
-﻿var _hd = {
+﻿
+var _hd = {
     txtHReferenceNo: $("#txtHReferenceNo"),
     ddlDivision: $("#ddlDivision"),
     txtDist: $("#txtDist"),
@@ -63,109 +64,62 @@ $(document).ready(function () {
     });
 
 
-    _hd.ddlInspectedby.on("change", function () {
+
+    $("#ddlInspectedby").on("change", function () {
         var value = this.value;
 
         if (value == "") {
-            _hd.txtInspectedbyName.val('');
-            _hd.txtInspectedDesignation.val('');
-            _hd.txtInspectedbyName.prop("disabled", true);
-            _hd.txtInspectedDesignation.prop("disabled", true);
+            $("#txtInspectedbyName").val('');
+            $("#txtInspectedbyName").attr("readonly", "true");
         }
         else if (value == "99999999") {
-            _hd.txtInspectedbyName.val('');
-            _hd.txtInspectedDesignation.val('');
-            _hd.txtInspectedbyName.prop("disabled", false);
-            _hd.txtInspectedDesignation.prop("disabled", false);
+            $("#txtInspectedbyName").val('');
+            $("#txtInspectedbyName").removeAttr("readonly");
         }
         else {
             getUserDetail(value, function (data) {
-                _hd.txtInspectedbyName.val(data.userName);
-                _hd.txtInspectedDesignation.val(data.position);
-                _hd.txtInspectedbyName.prop("disabled", true);
-                _hd.txtInspectedDesignation.prop("disabled", true);
+                $("#txtInspectedbyName").val(data.userName);
+                $("#txtInspectedbyName").attr("readonly", "true");
             });
         }
     });
 
-    _hd.ddlCrewleader.on("change", function () {
+
+    $("#ddlCrewleader").on("change", function () {
         var value = this.value;
 
         if (value == "") {
-            _hd.txtCrewLeaderName.val('');
-            _hd.txtCrewLeaderName.prop("disabled", true);
+            $("#txtCrewLeaderName").val('');
+            $("#txtCrewLeaderName").attr("readonly", "true");
         }
         else if (value == "99999999") {
-            _hd.txtCrewLeaderName.val('');
-            _hd.txtCrewLeaderName.prop("disabled", false);
+            $("#txtCrewLeaderName").val('');
+            $("#txtCrewLeaderName").removeAttr("readonly");
         }
         else {
             getUserDetail(value, function (data) {
-                _hd.txtCrewLeaderName.val(data.userName);
-                _hd.txtCrewLeaderName.prop("disabled", true);
+                $("#txtCrewLeaderName").val(data.userName);
+                $("#txtCrewLeaderName").attr("readonly", "true");
             });
         }
     });
 
-    //debugger
-    //if (_hd.hdnRoadCodeText.val() != "") {
 
-    //    bindRoadDetail(_hd.hdnRoadCodeText.val(), function (data) {
-    //        //
-    //        bindRMU(function () {
-    //            _hd.ddlRMU.val(data.rmuCode);
-    //            _hd.ddlRMU.prop("disabled", true);
-    //            _hd.ddlRMU.trigger("chosen:updated");
-    //           // 
-    //            bindSection(function () {
-    //                _hd.txtSectionName.val(data.secName);
-    //                _hd.ddlSection.val(data.secCode);
-    //                _hd.ddlSection.prop("disabled", true);
-    //                _hd.ddlSection.trigger("chosen:updated");
-    //               // 
-    //                bindRoadCode(function () {
-    //                    //
-    //                    _hd.txtRoadName.val(data.roadName);
-
-    //                    _hd.ddlRoadCode.empty();
-    //                    var t = data.roadCode + '-' + data.roadName;
-    //                    _hd.ddlRoadCode.append($("<option></option>").val(data.roadCode).html(t));
-    //                    _hd.ddlRoadCode.prop("disabled", true);
-    //                    _hd.ddlRoadCode.trigger("chosen:updated");
-
-
-    //                    //_hd.ddlRoadCode.val(data.roadCode);
-    //                    //_hd.ddlRoadCode.val(t).trigger('chosen:updated');
-    //                    _hd.ddlRoadCode.prop("disabled", true);
-    //                    //_hd.ddlRoadCode.trigger("chosen:updated");
-    //                });
-    //            });
-    //        });
-    //    });
-    //    _hd.ddlYear.prop("disabled", true);
-    //    _hd.ddlYear.trigger("chosen:updated");
-    //    _hd.txtDist.prop("disabled", true);
-    //}
-    //else {
-    //    bindRMU();
-    //    bindSection();
-    //    bindRoadCode();
-    //}
 
     $("#ddlRMU").on("change", function () {
         // 
 
-        _hd.txtRoadlength.val("");
+        $("#txtRoadlength").val("");
 
         if (this.value == "") {
-            _hd.txtHReferenceNo.val("");
-            _hd.txtRoadlength.val("");
+            $("#txtHReferenceNo").val("");
+            $("#txtRoadlength").val("");
             _hd.ddlSection.val("");
             _hd.ddlRMU.trigger("chosen:updated");
             _hd.ddlSection.trigger("chosen:updated");
             _hd.ddlRoadCode.val("").trigger("chosen:updated");
-            _hd.txtRoadName.val("");
-            _hd.txtSectionName.val("");
+            $("#txtRoadName").val("");
+            $("#txtSectionName").val("");
             // bindRMU();
             bindSection();
             bindRoadCode();
@@ -178,12 +132,12 @@ $(document).ready(function () {
 
     $("#ddlSection").on("change", function () {
 
-        _hd.txtRoadlength.val("");
+        $("#txtRoadlength").val("");
         bindRoadCode();
         if (this.value == "") {
             $("#txtSectionName").val("");
-            _hd.txtHReferenceNo.val("");
-            _hd.txtRoadlength.val("");
+            $("#txtHReferenceNo").val("");
+            $("#txtRoadlength").val("");
         }
         else {
             $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
@@ -219,28 +173,30 @@ $(document).ready(function () {
         }));
     });
 
-    _hd.ddlYear.on("change", function () {
+
+    $("#ddlYear").on("change", function () {
         generateHeaderReference();
     });
 
-    _hd.ddlRoadCode.on("change", function () {
+    $("#ddlRoadCode").on("change", function () {
 
+         
         var value = this.value;
         if (value != "") {
             bindRoadLength(value);
 
             bindRoadDetail(value, function (data) {
 
-                _hd.txtRoadName.val(data.roadName);
+                $("#txtRoadName").val(data.roadName);
             });
             generateHeaderReference();
 
 
         }
         else {
-            _hd.txtRoadName.val("");
-            _hd.txtHReferenceNo.val("");
-            _hd.txtRoadlength.val("");
+            $("#txtRoadName").val("");
+            $("#txtHReferenceNo").val("");
+            $("#txtRoadlength").val("");
             //_hd.txtDist.val("");
             //_hd.txtDivCode.val("");
         }
@@ -250,6 +206,8 @@ $(document).ready(function () {
 
 });
 
+
+
 function bindRMU(callback) {
     //
     var req = {};
@@ -257,9 +215,9 @@ function bindRMU(callback) {
     req.Section = '';
     req.RdCode = '';
     req.GrpCode = "GR"
-    _hd.txtRmu.val("");
-    _hd.txtSectionName.val("");
-    _hd.txtRoadName.val("");
+    $("#txtRmu").val("");
+    $("#txtSectionName").val("");
+    $("#txtRoadName").val("");
 
     $.ajax({
         url: '/FormF2/RMUSecRoad',
@@ -295,8 +253,8 @@ function bindSection(callback) {
     req.SectionCode = '';
     req.RdCode = '';
     req.GrpCode = "GR"
-    _hd.txtRoadName.val("");
-    _hd.txtSectionName.val("");
+    $("#txtRoadName").val("");
+    $("#txtSectionName").val("");
 
     $.ajax({
         url: '/FormF2/RMUSecRoad',
@@ -305,12 +263,13 @@ function bindSection(callback) {
         type: 'Post',
         success: function (data) {
             // 
-            _hd.ddlSection.empty();
-            _hd.ddlSection.append($("<option></option>").val("").html("Select Section Code"));
+            _sec.empty();
+            _sec.append($("<option></option>").val("").html("Select Section Code"));
             $.each(data.section, function (index, v) {
-                _hd.ddlSection.append($("<option></option>").val(v.code).html(v.text).attr("code", v.code).attr("text", v.value));
+                _sec.append($("<option></option>").val(v.code).html(v.text).attr("code", v.code).attr("text", v.value));
             });
-            _hd.ddlSection.trigger("chosen:updated");
+            _sec.trigger("chosen:updated");
+            _sec.trigger("change");
             if (callback)
                 callback();
         },
@@ -362,17 +321,17 @@ function bindRoadCode(callback) {
 function generateHeaderReference() {
     if (_hd.ddlRoadCode.val() != "" && _hd.ddlYear.val() != "") {
         //var roadcode = _hd.ddlRoadCode.find(":selected").text().split('-')[0].trim();
-        var v = _hd.ddlRoadCode.find(":selected").text().split('-');
+        var v = $("#ddlRoadCode").find(":selected").text().split('-');
         if (v.length > 2) {
             var roadcode = v[0] + '-' + v[1];
         }
         else {
             var roadcode = v[0];
         }
-        _hd.txtHReferenceNo.val(("CI/Form F2/" + roadcode + "/" + _hd.ddlYear.val()));
+        $("#txtHReferenceNo").val(("CI/Form F3/" + roadcode + "/" + $("#ddlYear").val()));
     }
     else {
-        _hd.txtHReferenceNo.val("");
+        $("#txtHReferenceNo").val("");
     }
 }
 
@@ -443,7 +402,7 @@ function bindreference() {
         type: 'Post',
         success: function (data) {
 
-            var reference = _hd.txtHReferenceNo.val() + "/" + (data + 1);
+            var reference = $("#txtHReferenceNo").val() + "/" + (data + 1);
             _dt.txtDReferenceNo.val(reference)
 
         },
@@ -521,7 +480,7 @@ function bindRoadLength(code, callback) {
         data: req,
         type: 'Post',
         success: function (data) {
-            _hd.txtRoadlength.val(data);
+            $("#txtRoadlength").val(data);
             if (callback)
                 callback(data);
         },
@@ -549,7 +508,7 @@ function bindRoadDetail(code, callback) {
             _hd.ddlRMU.trigger("chosen:updated");
             _hd.ddlSection.val(data.secCode);
             _hd.ddlSection.trigger("chosen:updated");
-            _hd.txtSectionName.val(data.secName);
+            $("#txtSectionName").val(data.secName);
 
             if (callback)
                 callback(data);
@@ -590,197 +549,6 @@ function getLocationCh(callback) {
         }
     });
 }
-//GetStructureCode
-function getStructureCode(callback) {
-    var req = {};
-
-    req.roadcode = _hd.ddlRoadCode.find(":selected").text().split('-')[0].trim();
-    req.locationch = _dt.ddlStartinch.val();
-    $.ajax({
-        url: '/FormF2/GetStructureCode',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-
-            _dt.ddlStructurecode.empty();
-            _dt.ddlStructurecode.append($("<option></option>").val("").html("Select Structure Code"));
-            $.each(data, function (index, v) {
-                _dt.ddlStructurecode.append($("<option></option>").val(v.value).html(v.text));
-            });
-
-            _dt.ddlStructurecode.trigger("chosen:updated");
-            if (callback)
-                callback();
-        },
-        error: function (data) {
-            console.error(data);
-        }
-    });
-}
-//GetAIBound
-function getAIBound(callback) {
-    var req = {};
-    req.roadcode = _hd.ddlRoadCode.find(":selected").text().split('-')[0].trim();
-    req.locationch = _dt.ddlStartinch.val();
-    req.structurecode = _dt.ddlStructurecode.val();
-    $.ajax({
-        url: '/FormF2/GetAIBound',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-
-            _dt.ddlBound.empty();
-            _dt.ddlBound.append($("<option></option>").val("").html("Select Bound"));
-            $.each(data, function (index, v) {
-                _dt.ddlBound.append($("<option></option>").val(v.value).html(v.text));
-            });
-
-            _dt.ddlBound.trigger("chosen:updated");
-            if (callback)
-                callback();
-        },
-        error: function (data) {
-            console.error(data);
-        }
-    });
-}
-
-//GetPostSpacing
-function getPostSpacing(callback) {
-    var req = {};
-
-    req.roadcode = _hd.ddlRoadCode.find(":selected").text().split('-')[0].trim();
-    req.locationch = _dt.ddlStartinch.val();
-    req.structurecode = _dt.ddlStructurecode.val();
-    req.bound = _dt.ddlBound.val();
-    $.ajax({
-        url: '/FormF2/GetPostSpacing',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-
-            _dt.ddlPostspacing.empty();
-            _dt.ddlPostspacing.append($("<option></option>").val("").html("Select Post Spacing"));
-            $.each(data, function (index, v) {
-                _dt.ddlPostspacing.append($("<option></option>").val(v.value).html(v.text));
-            });
-
-            _dt.ddlPostspacing.trigger("chosen:updated");
-            if (callback)
-                callback();
-        },
-        error: function (data) {
-            console.error(data);
-        }
-    });
-}
-
-function saveHeader(isSave = true, isSubmit = false) {
-
-    if (isSubmit) {
-        $("#F2UserDetail .svalidate").addClass("validate");
-    }
-    else {
-        $("#F2UserDetail .svalidate").removeClass("validate");
-    }
-    Validation.ResetErrStyles("#F2UserDetail");
-    if (ValidatePage(_hd.ValidateSave, "", "validate")) {
-        var req = {};
-        req.PkRefNo = _hd.HdnHeaderPkId.val();
-        req.DivCode = _hd.ddlDivision.val();
-        req.Dist = _hd.txtDist.val();
-        req.RoadId = _hd.hdnRoadCode.val();
-        if (req.RoadId != "") {
-            var v = _hd.ddlRoadCode.find(":selected").text().split('-');
-            //req.RoadCode = _hd.ddlRoadCode.find(":selected").text().split('-')[0].trim();
-            if (v.length > 2) {
-                req.RoadCode = v[0] + '-' + v[1];
-            }
-            else {
-                req.RoadCode = v[0];
-            }
-
-            req.RoadName = _hd.txtRoadName.val();
-        }
-        req.RoadLength = _hd.txtRoadlength.val();
-        req.InspectedYear = _hd.ddlYear.val();
-        req.InspectedDate = _hd.txtInspectedDate.val();
-        req.InspectedBy = _hd.ddlInspectedby.val();
-        req.InspectedName = _hd.txtInspectedbyName.val();
-        req.UserDesignationInspBy = _hd.txtInspectedDesignation.val();
-        req.InspectedDate = _hd.txtInspectedDate.val();
-        req.SignpathInspBy = "";
-        req.FormRefId = _hd.txtHReferenceNo.val();
-        req.CrewSup = _hd.ddlCrewleader.val();
-        if (_hd.ddlCrewleader.val() != "") {
-            req.CrewName = _hd.txtCrewLeaderName.val();
-        }
-        req.SubmitSts = isSubmit;
-        $.ajax({
-            url: '/FormF3/SaveHeader',
-            dataType: 'JSON',
-            data: req,
-            type: 'Post',
-            success: function (data) {
-
-                if (data > 0) {
-                    _hd.HdnHeaderPkId.val(data);
-                    _hd.txtHReferenceNo.prop("disabled", true);
-                    _hd.ddlRMU.prop("disabled", true);
-                    _hd.ddlRMU.trigger("chosen:updated");
-                    _hd.ddlSection.prop("disabled", true);
-                    _hd.ddlSection.trigger("chosen:updated");
-                    _hd.txtDist.prop("disabled", true);
-                    _hd.txtRmu.prop("disabled", true);
-                    _hd.ddlYear.prop("disabled", true);
-                    _hd.ddlYear.trigger("chosen:updated");
-                    _hd.ddlRoadCode.prop("disabled", true);
-                    _hd.ddlRoadCode.trigger("chosen:updated");
-                    _hd.txtRoadName.prop("disabled", true);
-                    _hd.btnFindDetails.hide();
-                    _hd.btnHSave.show();
-                    _hd.btnHSubmit.show();
-                    if (isSave) {
-                        app.ShowSuccessMessage("Saved Successfully");
-                        // setTimeout(2000);
-                        //window.location.href = "/FormF2";
-                        setTimeout(function () {
-                            window.location.href = "/FormF2";
-                        }, 3000);
-                    }
-                    _hd.btnFindDetails.hide();
-                    InitializeDetailsGrid();
-
-                    $.ajax({
-                        url: '/FormF3/GetSourceData',
-                        dataType: 'JSON',
-                        data: req,
-                        type: 'Post',
-                        success: function (Sourcedata) {
-                        }
-                    });
-
-                    // window.location.href = "/FormF2";
-                }
-                else if (data == -1 && isSubmit) {
-                    app.Alert("You cannot submit until verify the conditional inspection, please verify all.");
-                }
-
-                if (isSubmit) {
-                    $("#F2UserDetail .svalidate").removeClass("validate");
-                }
-
-            },
-            error: function (data) {
-
-                console.error(data);
-            }
-        });
-    }
-}
 
 
 
@@ -799,7 +567,7 @@ function Save(GroupName, SubmitType) {
         $("#FormF3_SubmitSts").val(true);
     }
 
-    if (ValidatePage('#AccordPage0')) {
+    if (ValidatePage('#headerDiv')) {
 
         if ($("#FormF3_Status").val() == "")
             $("#FormF3_Status").val("Initialize");
@@ -843,4 +611,12 @@ function Save(GroupName, SubmitType) {
         });
     }
 
+}
+
+
+function EnableDisableElements(state) {
+ 
+    $('#headerDiv * > select').prop('disabled', state).trigger("chosen:updated");
+    $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
+    $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
 }

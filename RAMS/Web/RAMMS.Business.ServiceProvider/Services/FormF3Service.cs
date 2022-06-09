@@ -9,11 +9,13 @@ using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.Business.ServiceProvider.Interfaces;
 using RAMMS.Common;
+using RAMMS.Common.RefNumber;
 using RAMMS.Domain.Models;
 using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.Report;
 using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
+using RAMMS.DTO.Wrappers;
 using RAMMS.Repository.Interfaces;
 
 namespace RAMMS.Business.ServiceProvider.Services
@@ -54,6 +56,43 @@ namespace RAMMS.Business.ServiceProvider.Services
         //}
 
 
+        public async Task<PagingResult<FormF3DtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions)
+        {
+           
+
+            PagingResult<FormF3DtlGridDTO> result = new PagingResult<FormF3DtlGridDTO>();
+
+            List<FormF3DtlGridDTO> formF3DtlList = new List<FormF3DtlGridDTO>();
+            try
+            {
+                var filteredRecords = await _repoUnit.FormF3Repository.GetFormF3DtlGridList(filterOptions);
+
+                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+
+                foreach (var listData in filteredRecords)
+                {
+                    FormF3DtlGridDTO obj = new FormF3DtlGridDTO();
+
+                     obj.Bound=listData.bound
+
+                    formF3DtlList.Add(obj);
+                }
+
+                result.PageResult = formF3DtlList;
+
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return result;
+        }
+
+       
+
         public async Task<FormF3ResponseDTO> GetHeaderById(int id)
         {
             var header = await _repoUnit.FormF3Repository.FindAsync(s => s.Ff3hPkRefNo == id && s.Ff3hActiveYn == true);
@@ -64,17 +103,35 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _mapper.Map<FormF3ResponseDTO>(header);
         }
 
-     
-        public async Task<int> SaveFormF3(FormF3ResponseDTO FormF3)
+
+        public async Task<FormF3ResponseDTO> SaveFormF3(FormF3ResponseDTO FormF3)
         {
-            FormF3ResponseDTO formF3Response;
             try
             {
                 var domainModelFormF3 = _mapper.Map<RmFormF3Hdr>(FormF3);
                 domainModelFormF3.Ff3hPkRefNo = 0;
+
+               
+                var obj = _repoUnit.FormF3Repository.FindAsync(x => x.Ff3hRmuCode == domainModelFormF3.Ff3hRmuCode && x.Ff3hSecCode == domainModelFormF3.Ff3hSecCode && x.Ff3hRdCode == domainModelFormF3.Ff3hRdCode && x.Ff3hCrewSup == domainModelFormF3.Ff3hCrewSup && x.Ff3hInspectedYear == domainModelFormF3.Ff3hInspectedYear && x.Ff3hActiveYn == true).Result;
+                if (obj != null)
+                {
+                    var res = _mapper.Map<FormF3ResponseDTO>(obj);
+                    res.FormExist = true;
+                    return res;
+                }
+
+                IDictionary<string, string> lstData = new Dictionary<string, string>();
+               
+                lstData.Add("RoadCode", domainModelFormF3.Ff3hRdCode);
+                lstData.Add("Year", domainModelFormF3.Ff3hInspectedYear.ToString());
+                domainModelFormF3.Ff3hPkRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormF3Header, lstData);
+
                 var entity = _repoUnit.FormF3Repository.CreateReturnEntity(domainModelFormF3);
-                formF3Response = _mapper.Map<FormF3ResponseDTO>(entity);
-                return formF3Response.PkRefNo;
+                FormF3.PkRefNo = _mapper.Map<FormF3ResponseDTO>(entity).PkRefNo;
+                FormF3.PkRefId = domainModelFormF3.Ff3hPkRefId;
+                FormF3.Status = domainModelFormF3.Ff3hStatus;
+
+                return FormF3;
             }
             catch (Exception ex)
             {

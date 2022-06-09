@@ -1,4 +1,6 @@
 ﻿using RAMMS.Domain.Models;
+using RAMMS.DTO.ResponseBO;
+using RAMMS.DTO.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +13,8 @@ namespace RAMMS.Repository.Interfaces
         int SaveFormF3(RmFormF3Hdr FormF3);
 
         //   Task<IEnumerable<RmFormF3Dtl>> FindFormF3DtlByID(int Id);
+
+        Task<List<FormF3DtlGridDTO>> GetFormF3DtlGridList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions);
         int? DeleteFormF3Dtl(int Id);
         int? SaveFormF3Dtl(RmFormF3Dtl FormF3Dtl);
 

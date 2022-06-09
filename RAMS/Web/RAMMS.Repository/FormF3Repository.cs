@@ -40,7 +40,7 @@ namespace RAMMS.Repository
         //    }
         //    if (!string.IsNullOrEmpty(search.AssertType))
         //    {
-                
+
         //       // query = query.Where(s => s.s.RmFormF3Dtl.Any(x => x.aser == search.AssertType ));
         //    }
         //    if (!string.IsNullOrEmpty(search.RmuCode))
@@ -328,6 +328,82 @@ namespace RAMMS.Repository
         //    }).ToList();
         //}
 
+
+        public async Task<List<FormF3DtlGridDTO>> GetFormF3DtlGridList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions)
+        {
+            List<RmFormF3Dtl> result = new List<RmFormF3Dtl>();
+
+            var query = from x in _context.RmFormF3Dtl
+                        join a in _context.RmAllassetInventory on Convert.ToInt32(x.Ff3dAssetId) equals a.AiPkRefNo
+                        where x.Ff3dFf3hPkRefNo == filterOptions.Filters.PkRefNo
+
+                        select new { x, a };
+
+
+            if (filterOptions.sortOrder == SortOrder.Ascending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderBy(x => x.x.Ff3dPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderBy(x => x.x.RdmFrmCh);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(x => x.x.Ff3dCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(x => x.x.Ff3dConditionI);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(x => x.a.AiBound);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderBy(x => x.a.AiWidth);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderBy(x => x.a.AiHeight);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(x => x.x.Ff3dDescription);
+
+            }
+            else if (filterOptions.sortOrder == SortOrder.Descending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderByDescending(x => x.x.Ff3dPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderByDescending(x => x.x.RdmFrmCh);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(x => x.x.Ff3dCode);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(x => x.x.Ff3dConditionI);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(x => x.a.AiBound);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderByDescending(x => x.a.AiWidth);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderByDescending(x => x.a.AiHeight);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(x => x.x.Ff3dDescription);
+
+            }
+
+            var list = await query.Skip(filterOptions.StartPageNo)
+            .Take(filterOptions.RecordsPerPage)
+            .ToListAsync();
+
+            return list.Select(s => new FormF3DtlGridDTO
+            {
+                Bound = s.a.AiBound,
+                Ch = s.x.RdmFrmCh + "+" + s.x.RdmFrmChDeci,
+                ConditionRating = s.x.Ff3dConditionI,
+                Description = s.x.Ff3dDescription,
+                FrmCh = s.x.RdmFrmCh,
+                FrmChDec = s.x.RdmFrmChDeci,
+                Height = s.a.AiHeight,
+                PkRefNo = s.x.Ff3dPkRefNo,
+                StructureCode = s.a.AiStrucCode,
+                Width = s.a.AiWidth
+
+            }).ToList();
+
+
+        }
+
+ 
 
         public int SaveFormF3(RmFormF3Hdr FormF3)
         {
