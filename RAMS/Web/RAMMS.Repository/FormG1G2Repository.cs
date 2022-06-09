@@ -131,10 +131,9 @@ namespace RAMMS.Repository
                          {
                              RefNo = hdr.Fg1hPkRefNo,
                              RefID = hdr.Fg1hContNo,
-                             AssetID = hdr.Fg1hPkRefNo,
-                             AssetRefId = hdr.Fg1hAssetId,
-                             InsDate = hdr.Fg1hDtOfInsp,
                              Year = hdr.Fg1hYearOfInsp,
+                             InsDate = hdr.Fg1hDtOfInsp,
+                             AssetRefId = hdr.Fg1hAssetId,
                              RMUCode = rmu.DdlTypeCode,
                              RMUDesc = hdr.Fg1hRmuName,
                              SecCode = asset.AiSecCode,
@@ -145,8 +144,6 @@ namespace RAMMS.Repository
                              RoadName = hdr.Fg1hRdName,
                              RoadId = rdcode.RdmRdCdSort,// asset.AiRdmPkRefNoNavigation.RdmRdCdSort,
                              LocationCH = Convert.ToDecimal((hdr.Fg1hLocChKm.HasValue ? hdr.Fg1hLocChKm.Value.ToString() : "") + "." + hdr.Fg1hLocChM),
-                             CDia = asset.AiDiameter,
-                             CULWidth = asset.AiWidth,
                              Active = hdr.Fg1hActiveYn,
                              Status = (hdr.Fg1hSubmitSts ? "Submitted" : "Saved"),
                              ProcessStatus = hdr.Fg1hStatus
@@ -173,8 +170,6 @@ namespace RAMMS.Repository
                                  || (x.LocationCH.ToString() ?? "").Contains(strVal)
                                  || (x.AssetType ?? "").Contains(strVal)
                                  || (x.Year.HasValue ? x.Year.Value.ToString() : "").Contains(strVal)
-                                 || (!x.CDia.HasValue ? "" : x.CDia.Value.ToString()).Contains(strVal)
-                                 || (!x.CULWidth.HasValue ? "" : x.CULWidth.Value.ToString()).Contains(strVal)
                                  || (x.InsDate.HasValue && ((x.InsDate.Value.ToString().Contains(strVal)) || (dtSearch.HasValue && x.InsDate == dtSearch)))
                                  );
                             break;

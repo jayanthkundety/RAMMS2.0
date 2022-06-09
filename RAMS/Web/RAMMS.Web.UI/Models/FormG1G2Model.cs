@@ -33,6 +33,8 @@ namespace RAMMS.Web.UI.Models
 
         public string MaxNo { get; set; }
 
+        public CDataTable cDataTable { get; set; }
+
     }
 
     public class FormGImageModel

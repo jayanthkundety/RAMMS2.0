@@ -1,4 +1,4 @@
-﻿@model RAMMS.Web.UI.Models.FormG1G2Model
+﻿@model RAMMS.Web.UI.Models.CDataTable
 
 @using RAMMS.Web.UI.Models;
 @using RAMMS.Business.ServiceProvider;
@@ -14,14 +14,14 @@
 <script type="text/javascript" src="~/assets/js/Views/FormG1G2.js" asp-append-version="true"></script>
 }
 
-@{
+@*@{
     Html.RenderPartial("_breadcrumb", new BreadCrumb()
-            {
-                Title = "Condition Inspection - Form G1/G2",
-                SimpleNavigation = "Home,Condition Inspection,Form G1/G2"
-            });
-}
-
+    {
+    Title = "Condition Inspection - Form G1/G2",
+    SimpleNavigation = "Home,Condition Inspection,Form G1/G2"
+    });
+    }
+*@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#formG1G2RMU").chosen();
@@ -333,8 +333,7 @@
                                         <div class="row">
                                             <div class="form-group col-6">
                                                 @Html.Label("RMU ", "RMU ")
-                                                @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.RMU, (IEnumerable
-                                                <SelectListItem>)ViewData["RMU"], "Select RMU", new { @Id = "formG1G2RMU", @class = "form-control" })
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "formG1G2RMU", @class = "form-control" })
                                             </div>
                                             <div class="form-group col-lg-6 mb-0">
                                                 @Html.Label("RMU Name", "RMU Name")
@@ -347,8 +346,8 @@
                                         <div class="row">
                                             <div class="col-6 form-group">
                                                 @Html.Label("Section Code ", "Section Code")
-                                                @Html.DropDownListFor(Ahdr => Ahdr.SearchObj.Section, (IEnumerable
-                                                <SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "formG1G2SectionCode", @class = "form-control widget-content-area" })
+                                                @Html.DropDownList((IEnumerable
+                                                <CSelectListItem>)ViewData["Section_Code"],"selSectionCode", "Select Section Code", new { @Id = "formG1G2SectionCode", @class = "form-control widget-content-area" })
                                             </div>
                                             <div class="form-group col-lg-6 mb-0">
                                                 @Html.Label("Section Name", "Section Name")
@@ -369,7 +368,7 @@
                                                 @Html.Label("Road Code", "Road Code")
                                                 @Html.DropDownList("RoadCode",(IEnumerable<SelectListItem>)ViewData["RD_Code"],  "Select Road Code", new { @id = "formG1G2RoadCode", @class = "form-control"})
                                             </div>
-                                             <div class="form-group col-lg-6 mb-0">
+                                            <div class="form-group col-lg-6 mb-0">
                                                 @Html.Label("Road Name", "Road Name")
                                                 <input type="text" class="form-control" id="txtRoadName" disabled />
                                             </div>
@@ -378,18 +377,18 @@
                                     @*<div class="form-group col-2">
                                         @Html.Label("Activity Code", "Activity Code")
                                         @Html.DropDownList("formG1G2ActivityCode",(IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formG1G2ActivityCode", @class = "form-control" })
-                                    </div>
-                                    <div class="form-group col-2">
+                                        </div>
+                                        <div class="form-group col-2">
                                         @Html.Label("Activity Name ", "Activity Name")
                                         @Html.TextBoxFor(m => m.SearchObj.ActivityCode, new { @id="formG1G2ActivityName", @class = "form-control" })
-                                    </div>*@
+                                        </div>*@
                                     <div class="form-group col-2">
-                                       @Html.Label("Year of Inspection From", "Year of Inspection From")
-                                @Html.DropDownList("FromYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formG1G2FromYear", @class = "form-control", @param = "FromYear" })
+                                        @Html.Label("Year of Inspection From", "Year of Inspection From")
+                                        @Html.DropDownList("FromYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formG1G2FromYear", @class = "form-control", @param = "FromYear" })
                                     </div>
                                     <div class="form-group col-2">
-                                       @Html.Label("Year of Inspection To", "Year of Inspection To")
-                                @Html.DropDownList("ToYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formC1C2InsToYear", @class = "form-control", @param = "ToYear" })
+                                        @Html.Label("Year of Inspection To", "Year of Inspection To")
+                                        @Html.DropDownList("ToYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formC1C2InsToYear", @class = "form-control", @param = "ToYear" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="Location_Chainage_From">Location Chainage From</label>
@@ -424,25 +423,26 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="w-100 dt-tbl-section">
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
 
-                    <div class="w-100 float-left position-relative">
-                        <div class="grid-btns">
-                            <button type="button" class="btn btn-sm btn-themebtn"><span class="add-icon"></span> Add Form G1 G2</button>
-                        </div>
-                        <div id="headerListGrid" class="w-100 dt-tbl-section">
-                            @{
-                                Html.RenderPartial("_HeaderListGrid.cshtml");
-                            }
-                        </div>
-                    </div>
-
+            <div class="w-100 float-left position-relative">
+                <div class="grid-btns">
+                    <button type="button" class="btn btn-sm btn-themebtn"><span class="add-icon"></span> Add Form G1 G2</button>
+                </div>
+                <div id="headerListGrid" class="w-100 dt-tbl-section">
+                    @{
+                        Html.RenderPartial("_CDataTable", Model);
+                    }
                 </div>
             </div>
 
-
         </div>
 
+
     </div>
+</div>
+
+
+
