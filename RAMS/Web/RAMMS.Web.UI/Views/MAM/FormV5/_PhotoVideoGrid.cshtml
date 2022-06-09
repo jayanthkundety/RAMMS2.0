@@ -23,6 +23,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
+    debugger
     var table = null;
     var isModifyPerm =@security.IsPCModify(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
     var isDeletePerm =@security.IsPCDelete(ModuleNameList.Management_and_Maintanence).ToString().ToLowerInvariant()? "" : 'hidden';
@@ -33,7 +34,10 @@
         data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
             var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formV5DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV5Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
             var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormV5Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#PhotoVideoModal' onclick='javascript:EditFormV5Dtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
-            return full["submitSts"] == true ? viewaction : actionSection;
+            if ($("#hdnView").val() == "1") {
+                return viewaction;
+            }
+            return $("#FormV5_SubmitSts").val() == "True" ? viewaction : actionSection;
         }
     };
     var fileNameFrmCol = { data: "fileNameFrm", name: "FileNameFrm", title: "File Name From", autoWidth: true,  sortable: true };
