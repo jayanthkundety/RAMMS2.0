@@ -335,7 +335,7 @@ namespace RAMMS.Repository
 
             var query = from x in _context.RmFormF3Dtl
                         join a in _context.RmAllassetInventory on Convert.ToInt32(x.Ff3dAssetId) equals a.AiPkRefNo
-                        where x.Ff3dFf3hPkRefNo == filterOptions.Filters.PkRefNo
+                        where x.Ff3dFf3hPkRefNo == filterOptions.Filters.Ff3hPkRefNo
 
                         select new { x, a };
 
@@ -403,16 +403,44 @@ namespace RAMMS.Repository
 
         }
 
- 
 
-        public int SaveFormF3(RmFormF3Hdr FormF3)
+         
+        public int LoadG1G2Data(FormF3ResponseDTO FormF3)
         {
             try
             {
-                _context.Entry<RmFormF3Hdr>(FormF3).State = FormF3.Ff3hPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
-                _context.SaveChanges();
+                //var res = (from g1 in _context.RmFormG1Hdr
+                //           where g1.Fg1hDivCode == FormF3.DivCode && g1.RmuCode == FormF3.RmuCode && g1.SecCode == FormF3.SecCode && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
+                //           select g1);
 
-                return FormF3.Ff3hPkRefNo;
+
+                //var res = (from dtl in _context.RmFormS1Dtl
+                //           where dtl.FsidFsihPkRefNo == S1PKRefNo && dtl.FsidActCode == ActCode && dtl.FsidActiveYn == true
+                //           orderby dtl.FsidPkRefNo descending
+                //           select new RmFormV1Dtl
+                //           {
+                //               Fv1dFv1hPkRefNo = PKRefNo,
+                //               Fv1dS1dPkRefNo = dtl.FsidPkRefNo,
+                //               Fv1dActiveYn = true,
+                //               Fv1dCrDt = dtl.FsidCrDt,
+                //               Fv1dFrmCh = dtl.FsidFrmChKm,
+                //               Fv1dRemarks = dtl.FsidRemarks,
+                //               Fv1dRoadCode = dtl.FsiidRoadCode,
+                //               Fv1dRoadName = dtl.FsiidRoadName,
+                //               Fv1dFrmChDeci = dtl.FsidFrmChM == "" ? 0 : Convert.ToInt32(dtl.FsidFrmChM),
+                //               Fv1dSiteRef = dtl.FsidFormASiteRef,
+                //               Fv1dStartTime = "",
+                //               Fv1dToCh = dtl.FsidToChKm,
+                //               Fv1dToChDeci = dtl.FsidToChM == "" ? 0 : Convert.ToInt32(dtl.FsidToChM),
+                //           }).ToList();
+
+
+                //foreach (var item in res)
+                //{
+                //    _context.RmFormV1Dtl.Add(item);
+                //    _context.SaveChanges();
+                //}
+                return 1;
             }
             catch (Exception)
             {
@@ -420,6 +448,8 @@ namespace RAMMS.Repository
 
             }
         }
+
+      
 
         public int? DeleteFormF3Dtl(int Id)
         {

@@ -122,6 +122,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 FormF3.PkRefId = domainModelFormF3.Ff3hPkRefId;
                 FormF3.Status = domainModelFormF3.Ff3hStatus;
 
+                  _repo.LoadG1G2Data(FormF3);
+
                 return FormF3;
             }
             catch (Exception ex)

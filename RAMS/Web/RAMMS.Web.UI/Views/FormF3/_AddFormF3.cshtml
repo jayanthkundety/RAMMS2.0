@@ -78,9 +78,9 @@
                             <div class="col-lg-10 p-0">
                                 <div id="headerFindDiv" class="w-100 form-group mb-0">
                                     @*<div class="form-group col-md-3">
-                                        @Html.Label("Asset Group", "Asset Group")
-                                        <input class="form-control" value="Guardrail" disabled />
-                                        </div>*@
+        @Html.Label("Asset Group", "Asset Group")
+        <input class="form-control" value="Guardrail" disabled />
+        </div>*@
                                     <div class="form-group col-md-3">
                                         @Html.Label("Division", "Division")
                                         @Html.DropDownListFor(m => m.FormF3.DivCode, division, "Select Division", new { @Id = "ddlDivision", @class = "form-control" })
@@ -121,9 +121,13 @@
                                     <div class="form-group col-md-3">
                                         @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
                                         @Html.DropDownListFor(Ahdr => Ahdr.FormF3.InspectedYear, year, "Select Year", new { @Id = "ddlYear", @class = "form-control validate {required, Year }" })
-
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Source", "Source")
+                                        @Html.DropDownListFor(Adtl => Adtl.FormF3.Source, (new List<SelectListItem> { new SelectListItem { Text = "New Sinages", Value = "New" }, new SelectListItem { Text = "Form G1/G2", Value = "G1G2" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control" })
                                     </div>
 
+                                    
                                 </div>
                             </div>
                             <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">

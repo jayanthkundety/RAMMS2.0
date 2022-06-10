@@ -24,6 +24,7 @@ namespace RAMMS.DTO.ResponseBO
         public string CrewName { get; set; }
         public string AssetId { get; set; }
         public int? InspectedYear { get; set; }
+        public string Source { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
