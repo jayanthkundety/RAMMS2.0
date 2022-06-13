@@ -802,7 +802,7 @@ function FormGenGridRefresh() {
     var gTable = $('#FormQa1GenGridView').DataTable();
     gTable.data = filterData;
     gTable.draw();
-    gTable.columns.adjust().draw();
+    //gTable.columns.adjust().draw();
 }
 
 function FormMatGridRefresh() {
