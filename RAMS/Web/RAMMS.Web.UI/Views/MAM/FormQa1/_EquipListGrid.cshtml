@@ -73,15 +73,15 @@
             },
             columns: Eqtable_columns
         });
-        Etable.columns.adjust().draw();
+        //Etable.columns.adjust().draw();
     }
 
     $(document).ready(function () {
         EqInitializeGrid();
         
         IsView = $("#hdnView").val();
-        eoTable = $('#FormQa1EquipGridView').DataTable();
-        eoTable.columns.adjust().draw();
+        $('#FormQa1EquipGridView').DataTable();
+        //eoTable.columns.adjust().draw();
         
     });
 </script>

@@ -1,8 +1,8 @@
 ﻿@using RAMMS.Business.ServiceProvider
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @{
-    ViewBag.TabTitle = "INSTRUCTED WORKS";
-    ViewData["Title"] = "INSTRUCTED WORKS";
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form QA1 - Road Asset Management and Maintenance System";
+    ViewData["Title"] = "ASSET MAINTANENCE - Form QA1 - Road Asset Management and Maintenance System";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
     var vd = Model.SaveFormQa1Model.Dt;
@@ -20,7 +20,7 @@
     var _Exeuser = Model.SaveFormQa1Model.UseridExec;
     var _Chckuser = Model.SaveFormQa1Model.UseridChked;
 
-    
+
 
     bool isSubmit = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer || security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
@@ -57,7 +57,9 @@
                 $(this).DataTable().columns.adjust().draw();
             });
         });
-        
+
+     
+
     });
 </script>
 
@@ -573,7 +575,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mt-5" id="divUserDetails">
+                        <div class="row mt-5">
                             <div class="col-lg-12">
                                 @{
                                     Html.RenderPartial("_GeneralListGrid.cshtml");
@@ -644,9 +646,3 @@
     </div>
 
 </div>
-<style>
-    .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4) {
-        width: auto;
-        min-width: auto;
-    }
-</style>

@@ -28,6 +28,23 @@ $(document).ready(function () {
         }
     });
 
+    $('.allow_numericWOD').keypress(function (event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') == -1) &&
+            ((event.which < 48 || event.which > 57) &&
+                (event.which != 0 && event.which != 8))) {
+            event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') != -1)) {
+            setTimeout(function () {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+    });
 
     if (val != 0 && val != undefined && val != "") {
         gridAddBtnDis()
@@ -65,8 +82,10 @@ $(document).ready(function () {
         disableAll(true);
         document.getElementById("btnEquipAdd").disabled = true;
         document.getElementById("btnGenAdd").disabled = true;
-        document.getElementById("btnMaterialAdd").disabled = true;
+        document.getElementById("btnMaterialAdd").disabled = true;           
     }
+
+
 
     $("#formQa1rmu").on("change", function () {
         var val = $(this).find(":selected").text();
@@ -105,16 +124,17 @@ $(document).ready(function () {
     $("#formQa1Crew").on("change", function () {
         var val = $("#formQa1Crew option:selected").text();
         var Name = val.split("-")[1];
+        val = val.split("-")[0];
         var ctrl = $(this);
         if (val != "99999999" && val != "") {
             $("#formQa1CrewName").val(Name);
         }
         else if (val == "99999999") {
-            $("#txt CrewName").prop("disabled", false);
+            $("#formQa1CrewName").prop("readonly", false);
             $("#formQa1CrewName").val('');
         }
         else {
-            $("#formQa1CrewName").prop("disabled", true);
+            $("#formQa1CrewName").prop("readonly", true);
             $("#formQa1CrewName").val('');
         }
         return false;
@@ -440,6 +460,7 @@ $(document).on("click", "#btnFindDetails", function () {
 
                 $('#formQa1WitnessedBy').val(_CurrentUser).trigger("chosen:updated");
                 $("#formQa1WitnessedBy").trigger("change");
+
                 $('#FormQa1GenGridView').DataTable().settings()[0].ajax.url = "/FormQA1/LoadFormQa1GenList?id=" + data.PkRefNo;
                 FormGenGridRefresh();
 
@@ -465,14 +486,14 @@ $(document).on("click", "#formQa1GcWhs", function () {
     $("#formQa1GcWiusEqp").prop("checked", false);
     $("#formQa1GcWiusWrk").prop("checked", false);
 
-    clearGcRemarks();
+    //clearGcRemarks();
     
-    $("#divWhsRemark *").attr("disabled", false);
-    $("#divWisRemark *").attr("disabled", true);
-    $("#divWiusMatRemark *").attr("disabled", true);
-    $("#divWiusEqpRemark *").attr("disabled", true);
-    $("#divWiusWrkRemark *").attr("disabled", true);
-    $("#formQa1WhsRemark").focus();
+    //$("#divWhsRemark *").attr("disabled", false);
+    //$("#divWisRemark *").attr("disabled", true);
+    //$("#divWiusMatRemark *").attr("disabled", true);
+    //$("#divWiusEqpRemark *").attr("disabled", true);
+    //$("#divWiusWrkRemark *").attr("disabled", true);
+    //$("#formQa1WhsRemark").focus();
     return true;
 });
 
@@ -483,13 +504,13 @@ $(document).on("click", "#formQa1GcWis", function () {
     $("#formQa1GcWiusMat").prop("checked", false);
     $("#formQa1GcWiusEqp").prop("checked", false);
     $("#formQa1GcWiusWrk").prop("checked", false);
-    clearGcRemarks();   
-    $("#divWisRemark *").attr("disabled", false);
-    $("#divWhsRemark *").attr("disabled", true);
-    $("#divWiusMatRemark *").attr("disabled", true);
-    $("#divWiusEqpRemark *").attr("disabled", true);
-    $("#divWiusWrkRemark *").attr("disabled", true);
-    $("#formQa1WisRemark").focus();
+    //clearGcRemarks();   
+    //$("#divWisRemark *").attr("disabled", false);
+    //$("#divWhsRemark *").attr("disabled", true);
+    //$("#divWiusMatRemark *").attr("disabled", true);
+    //$("#divWiusEqpRemark *").attr("disabled", true);
+    //$("#divWiusWrkRemark *").attr("disabled", true);
+    //$("#formQa1WisRemark").focus();
     return true;
 });
 
@@ -500,18 +521,18 @@ $(document).on("click", "#formQa1GcWius", function () {
     $("#formQa1GcWiusMat").prop("checked", true);
     $("#formQa1GcWiusEqp").prop("checked", false);
     $("#formQa1GcWiusWrk").prop("checked", false);
-    clearGcRemarks();
-    $("#divWisRemark *").attr("disabled", true);
-    $("#divWhsRemark *").attr("disabled", true);
-    $("#divWiusMatRemark *").attr("disabled", false);
-    $("#divWiusEqpRemark *").attr("disabled", true);
-    $("#divWiusWrkRemark *").attr("disabled", true);
-    $("#formQa1WiusMatRemark").focus();
+    //clearGcRemarks();
+    //$("#divWisRemark *").attr("disabled", true);
+    //$("#divWhsRemark *").attr("disabled", true);
+    //$("#divWiusMatRemark *").attr("disabled", false);
+    //$("#divWiusEqpRemark *").attr("disabled", true);
+    //$("#divWiusWrkRemark *").attr("disabled", true);
+    //$("#formQa1WiusMatRemark").focus();
     return true;
 });
 
 $(document).on("click", "#formQa1GcWiusMat", function () {
-    if (!$(this).prop("checked")) return false;
+   // if (!$(this).prop("checked")) return false;
     //$("#formQa1GcWiusEqp").prop("checked", false);
     //$("#formQa1GcWiusWrk").prop("checked", false);
 
@@ -522,17 +543,17 @@ $(document).on("click", "#formQa1GcWiusMat", function () {
     $("#formQa1GcWis").prop("checked", false);
     //clearGcRemarks();
     
-    $("#divWisRemark *").attr("disabled", true);
-    $("#divWhsRemark *").attr("disabled", true);
-    $("#divWiusMatRemark *").attr("disabled", false);
+    //$("#divWisRemark *").attr("disabled", true);
+    //$("#divWhsRemark *").attr("disabled", true);
+    //$("#divWiusMatRemark *").attr("disabled", false);
     //$("#divWiusEqpRemark *").attr("disabled", true);
     //$("#divWiusWrkRemark *").attr("disabled", true);
-    $("#formQa1WiusMatRemark").focus();
+    //$("#formQa1WiusMatRemark").focus();
     return true;
 });
 
 $(document).on("click", "#formQa1GcWiusEqp", function () {
-    if (!$(this).prop("checked")) return false;
+    //if (!$(this).prop("checked")) return false;
     //$("#formQa1GcWiusMat").prop("checked", false);
     //$("#formQa1GcWiusWrk").prop("checked", false);
 
@@ -543,17 +564,17 @@ $(document).on("click", "#formQa1GcWiusEqp", function () {
     $("#formQa1GcWis").prop("checked", false);
     //clearGcRemarks();
     
-    $("#divWisRemark *").attr("disabled", true);
-    $("#divWhsRemark *").attr("disabled", true);
+    //$("#divWisRemark *").attr("disabled", true);
+    //$("#divWhsRemark *").attr("disabled", true);
     //$("#divWiusMatRemark *").attr("disabled", true);
-    $("#divWiusEqpRemark *").attr("disabled", false);
+    //$("#divWiusEqpRemark *").attr("disabled", false);
     //$("#divWiusWrkRemark *").attr("disabled", true);
-    $("#formQa1WiusEqpRemark").focus();
+    //$("#formQa1WiusEqpRemark").focus();
     return true;
 });
 
 $(document).on("click", "#formQa1GcWiusWrk", function () {
-    if (!$(this).prop("checked")) return false;
+    //if (!$(this).prop("checked")) return false;
     //$("#formQa1GcWiusMat").prop("checked", false);
     //$("#formQa1GcWiusEqp").prop("checked", false);
 
@@ -564,12 +585,12 @@ $(document).on("click", "#formQa1GcWiusWrk", function () {
     $("#formQa1GcWis").prop("checked", false);
     //clearGcRemarks();
     
-    $("#divWisRemark *").attr("disabled", true);
-    $("#divWhsRemark *").attr("disabled", true);
+    //$("#divWisRemark *").attr("disabled", true);
+    //$("#divWhsRemark *").attr("disabled", true);
     //$("#divWiusMatRemark *").attr("disabled", true);
     //$("#divWiusEqpRemark *").attr("disabled", true);
-    $("#divWiusWrkRemark *").attr("disabled", false);
-    $("#formQa1WiusWrkRemark").focus();
+    //$("#divWiusWrkRemark *").attr("disabled", false);
+    //$("#formQa1WiusWrkRemark").focus();
     return true;
 });
 
@@ -778,26 +799,26 @@ function UserDtDisable() {
 
 function FormGenGridRefresh() {
     var filterData = new Object();
-    oTable = $('#FormQa1GenGridView').DataTable();
-    oTable.data = filterData;
-    oTable.draw();
-    $('#FormQa1GenGridView').DataTable().columns.adjust().draw();
+    var gTable = $('#FormQa1GenGridView').DataTable();
+    gTable.data = filterData;
+    gTable.draw();
+    gTable.columns.adjust().draw();
 }
 
 function FormMatGridRefresh() {
     var filterData = new Object();
-    oTable = $('#FormQa1MaterialGridView').DataTable();
-    oTable.data = filterData;
-    oTable.draw();
-    $('#FormQa1MaterialGridView').DataTable().columns.adjust().draw();
+    var mTable = $('#FormQa1MaterialGridView').DataTable();
+    mTable.data = filterData;
+    mTable.draw();
+    //$('#FormQa1MaterialGridView').DataTable().columns.adjust().draw();
 }
 
 function FormEquipGridRefresh() {
     var filterData = new Object();
-    oTable = $('#FormQa1EquipGridView').DataTable();
-    oTable.data = filterData;
-    oTable.draw();
-    $('#FormQa1EquipGridView').DataTable().columns.adjust().draw();
+    var eTable = $('#FormQa1EquipGridView').DataTable();
+    eTable.data = filterData;
+    eTable.draw();
+    //$('#FormQa1EquipGridView').DataTable().columns.adjust().draw();
 }
 
 function EditFormQa1Gen(id, view) {
@@ -1072,7 +1093,6 @@ function saveGeneral(isSubmit, cont) {
                 app.ShowSuccessMessage('Successfully Saved', false);
                 $("#val-summary-displayer").css("display", "none");
                 $("#val-summary-displayer-labour").css("display", "none");
-                FormGenGridRefresh();
                 if (!cont)
                     $("#FormAddGeneral").modal("hide");
                 else {
@@ -1082,6 +1102,7 @@ function saveGeneral(isSubmit, cont) {
                     $("#formQa1GenAttRemark").val("")
                 }
                 HideAjaxLoading();
+                FormGenGridRefresh();
             },
             error: function (data) {
                 app.ShowErrorMessage(data.responseText, false);
@@ -1574,33 +1595,33 @@ function AddGCValidate() {
     if ($("#formQa1GcWhs").prop("checked")) {
         isChecked = true;
         $("#formQa1GcWhs").addClass("validate")
-        $("#formQa1WhsRemark").addClass("validate")
-        $("#formQa1WhsReason").addClass("validate")
+        //$("#formQa1WhsRemark").addClass("validate")
+        //$("#formQa1WhsReason").addClass("validate")
     } else {
         $("#formQa1GcWhs").removeClass("validate")
-        $("#formQa1WhsRemark").removeClass("validate")
-        $("#formQa1WhsReason").removeClass("validate")
+        //$("#formQa1WhsRemark").removeClass("validate")
+        //$("#formQa1WhsReason").removeClass("validate")
 
         $("#formQa1GcWhs").removeClass("border-error")
-        $("#formQa1WhsRemark").removeClass("border-error")
-        $("#formQa1WhsReason").removeClass("border-error")
+        //$("#formQa1WhsRemark").removeClass("border-error")
+        //$("#formQa1WhsReason").removeClass("border-error")
     }
 
 
     if ($("#formQa1GcWis").prop("checked")) {
         isChecked = true;
         $("#formQa1GcWis").addClass("validate");
-        $("#formQa1WisRemark").addClass("validate");
-        $("#formQa1WisReason").addClass("validate");
+        //$("#formQa1WisRemark").addClass("validate");
+        //$("#formQa1WisReason").addClass("validate");
     }
     else {
         $("#formQa1GcWis").removeClass("validate");
-        $("#formQa1WisRemark").removeClass("validate");
-        $("#formQa1WisReason").removeClass("validate");
+        //$("#formQa1WisRemark").removeClass("validate");
+        //$("#formQa1WisReason").removeClass("validate");
 
         $("#formQa1GcWis").removeClass("border-error");
-        $("#formQa1WisRemark").removeClass("border-error");
-        $("#formQa1WisReason").removeClass("border-error");
+        //$("#formQa1WisRemark").removeClass("border-error");
+        //$("#formQa1WisReason").removeClass("border-error");
     }
 
     if ($("#formQa1GcWius").prop("checked")) {
@@ -1611,54 +1632,54 @@ function AddGCValidate() {
     if ($("#formQa1GcWiusMat").prop("checked")) {
         isChecked = true;
         $("#formQa1GcWiusMat").addClass("validate");
-        $("#formQa1WiusMatRemark").addClass("validate");
-        $("#formQa1WiusMatReason").addClass("validate");
+        //$("#formQa1WiusMatRemark").addClass("validate");
+        //$("#formQa1WiusMatReason").addClass("validate");
     }
     else {
         $("#formQa1GcWius").removeClass("validate");
         $("#formQa1GcWiusMat").removeClass("validate");
-        $("#formQa1WiusMatRemark").removeClass("validate");
-        $("#formQa1WiusMatReason").removeClass("validate");
+        //$("#formQa1WiusMatRemark").removeClass("validate");
+        //$("#formQa1WiusMatReason").removeClass("validate");
 
         $("#formQa1GcWius").removeClass("border-error");
         $("#formQa1GcWiusMat").removeClass("border-error");
-        $("#formQa1WiusMatRemark").removeClass("border-error");
-        $("#formQa1WiusMatReason").removeClass("border-error");
+        //$("#formQa1WiusMatRemark").removeClass("border-error");
+        //$("#formQa1WiusMatReason").removeClass("border-error");
     }
 
     if ($("#formQa1GcWiusEqp").prop("checked")) {
         isChecked = true;
         $("#formQa1GcWiusEqp").addClass("validate");
-        $("#formQa1WiusEqpRemark").addClass("validate");
-        $("#formQa1WiusEqpReason").addClass("validate");
+        //$("#formQa1WiusEqpRemark").addClass("validate");
+        //$("#formQa1WiusEqpReason").addClass("validate");
     } else {
         $("#formQa1GcWius").removeClass("validate");
         $("#formQa1GcWiusEqp").removeClass("validate");
-        $("#formQa1WiusEqpRemark").removeClass("validate");
-        $("#formQa1WiusEqpReason").removeClass("validate");
+        //$("#formQa1WiusEqpRemark").removeClass("validate");
+        //$("#formQa1WiusEqpReason").removeClass("validate");
 
         $("#formQa1GcWius").removeClass("border-error");
         $("#formQa1GcWiusEqp").removeClass("border-error");
-        $("#formQa1WiusEqpRemark").removeClass("border-error");
-        $("#formQa1WiusEqpReason").removeClass("border-error");
+        //$("#formQa1WiusEqpRemark").removeClass("border-error");
+        //$("#formQa1WiusEqpReason").removeClass("border-error");
 
     }
 
     if ($("#formQa1GcWiusWrk").prop("checked")) {
         isChecked = true;
         $("#formQa1GcWiusWrk").addClass("validate");
-        $("#formQa1WiusWrkRemark").addClass("validate");
-        $("#formQa1WiusWrkReason").addClass("validate");
+        //$("#formQa1WiusWrkRemark").addClass("validate");
+        //$("#formQa1WiusWrkReason").addClass("validate");
     } else {
         $("#formQa1GcWius").removeClass("validate");
         $("#formQa1GcWiusWrk").removeClass("validate");
-        $("#formQa1WiusWrkRemark").removeClass("validate");
-        $("#formQa1WiusWrkReason").removeClass("validate");
+        //$("#formQa1WiusWrkRemark").removeClass("validate");
+        //$("#formQa1WiusWrkReason").removeClass("validate");
 
         $("#formQa1GcWius").removeClass("border-error");
         $("#formQa1GcWiusWrk").removeClass("border-error");
-        $("#formQa1WiusWrkRemark").removeClass("border-error");
-        $("#formQa1WiusWrkReason").removeClass("border-error");
+        //$("#formQa1WiusWrkRemark").removeClass("border-error");
+        //$("#formQa1WiusWrkReason").removeClass("border-error");
     }
 
     if (!isChecked) {

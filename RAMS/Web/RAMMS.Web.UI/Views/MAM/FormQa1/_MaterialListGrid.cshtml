@@ -75,13 +75,12 @@
             },
             columns: mtable_columns
         });
-        Mtable.columns.adjust().draw();
+        //Mtable.columns.adjust().draw();
     }
 
     $(document).ready(function () {
         mInitializeGrid();
         IsView = $("#hdnView").val();
-        moTable = $('#FormQa1MaterialGridView').DataTable();
-        moTable.columns.adjust().draw();
+        $('#FormQa1MaterialGridView').DataTable();
     });
 </script>

@@ -2,7 +2,7 @@
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 
 @{
-    ViewBag.TabTitle = "MAM - Form Qa1 - Road Asset Management and Maintenance System";
+    ViewBag.TabTitle = "ASSET MAINTANENCE - Form QA1 - Road Asset Management and Maintenance System";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
     var isModifyPerm = security.IsPCModify(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";
     var isDeletePerm = security.IsPCDelete(ModuleNameList.Routine_Maintanance_Work) ? "" : "hidden";

@@ -540,7 +540,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                                     }
 
                                     workSheet.Cell(i, 11).Value = r.ADP;
-                                    workSheet.Cell(i, 11).Value = r.CrewdayRequired;
+                                    workSheet.Cell(i, 12).Value = r.CrewdayRequired;
                                     workSheet.Cell(i, 13).Value = (r.CrewdaysAllocated * r.CrewdayRequired);
                                     for (int week = 0; week < r.week.Length; week++)
                                     {

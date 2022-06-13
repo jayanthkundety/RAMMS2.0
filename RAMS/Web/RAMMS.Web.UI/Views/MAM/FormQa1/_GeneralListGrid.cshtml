@@ -1,5 +1,5 @@
 ﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
-<div id="content">
+<div class="content">
     <div class="w-100 position-relative in-tbl-btns custom-tbl">
         <div class="w-100 position-relative in-tbl-btns custom-tbl">
             @if (security.IsPCModify(ModuleNameList.Routine_Maintanance_Work))
@@ -10,10 +10,19 @@
             }
 
             <table id="FormQa1GenGridView" class="table w-100 nowrap">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Item</th>
+                        <th>Attention to</th>
+                        <th>Comment &amp; Remark</th>
+                    </tr>
+                </thead>
             </table>
         </div>
     </div>
 </div>
+
 <!-- Jquery DataTable JS library -->
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
@@ -24,7 +33,7 @@
     var Gentable_columns = [];
     var Gentable = null;
     var GenactionCol = {
-        data: null, name: "Action", title: "Action", autoWidth: false, width: 20, sortable: false, render: function (data) {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data) {
             if (IsView != "1" && (!data.submitStatus)) {
                 var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button  type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns @(ViewBag.view=="1"?"d-none":"")' data-toggle='modal' data-target='#FormAddGeneral' id='formQa1GenEdit' onclick='javascript:EditFormQa1Gen(" + data.pkRefNo + ");'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns' " + isDeletePerm + " onclick='javascript:DeleteFormQa1GenRecord(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns'  data-toggle='modal' data-target='#FormAddGeneral' href='#' onclick='EditFormQa1Gen(" + data.pkRefNo + ",1)'><span class='view-icon'></span> View</button></div></div>";
                 return actionSection;
@@ -35,8 +44,8 @@
             }
         }
     };
-    var GenItemCol = { data: "item", name: "GenItem", title: "Item", autoWidth: true, sortable: false };
-    var GenAttnCol = { data: "attTo", name: "GenAttTo", title: "Attention to", autoWidth: true, sortable: false };
+    var GenItemCol = { data: "item", name: "GenItem", title: "Item", autoWidth: false, width: 200, sortable: false };
+    var GenAttnCol = { data: "attTo", name: "GenAttTo", title: "Attention to", autoWidth: false, width: 200, sortable: false };
     var GenRemarkCol = { data: "attRemarks", name: "GenRemark", title: "Comment & Remark", autoWidth: true, sortable: false };
 
     Gentable_columns.push(GenactionCol);
@@ -53,9 +62,7 @@
     function GenInitializeGrid() {
         var _gencurrentGridSettings = new CustomGridSettings();
         $.extend($.fn.dataTable.defaults, _gencurrentGridSettings);
-        //if (id == undefined) {
-        //    id = "0";
-        //}
+
         if (Gentable != null) {
             Gentable.destroy();
             $('#FormQa1GenGridView').empty();
@@ -71,13 +78,13 @@
             },
             columns: Gentable_columns
         });
-        //Gentable.columns.adjust().draw();
+        Gentable.columns.adjust().draw();
     }
 
     $(document).ready(function () {
         GenInitializeGrid();
-        IsView = $("#hdnView").val();
-        goTable = $('#FormQa1GenGridView').DataTable();
-        goTable.columns.adjust().draw();
+        //IsView = $("#hdnView").val();
+        //$('#FormQa1GenGridView').DataTable();
+        //goTable.columns.adjust().draw();
     });
 </script>
