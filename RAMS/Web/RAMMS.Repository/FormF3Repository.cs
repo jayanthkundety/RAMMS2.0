@@ -409,9 +409,9 @@ namespace RAMMS.Repository
         {
             try
             {
-                //var res = (from g1 in _context.RmFormG1Hdr
-                //           where g1.Fg1hDivCode == FormF3.DivCode && g1.RmuCode == FormF3.RmuCode && g1.SecCode == FormF3.SecCode && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
-                //           select g1);
+                //    var res = (from g1 in _context.RmFormG1Hdr
+                //               where g1.Fg1hDivCode == FormF3.DivCode && g1.RmuCode == FormF3.RmuCode && g1.SecCode == FormF3.SecCode && g1.cr == FormF3.RdCode && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
+                //               select g1);
 
 
                 //var res = (from dtl in _context.RmFormS1Dtl
