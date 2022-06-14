@@ -6081,6 +6081,10 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FF3D_Height")
                     .HasColumnType("decimal(18, 2)");
 
+                entity.Property(e => e.Ff3dLocCh).HasColumnName("FF3D_Loc_CH");
+
+                entity.Property(e => e.Ff3dLocChDeci).HasColumnName("FF3D_Loc_CH_Deci");
+
                 entity.Property(e => e.Ff3dModBy).HasColumnName("FF3D_Mod_By");
 
                 entity.Property(e => e.Ff3dModDt)
@@ -6100,14 +6104,6 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Ff3dWidth)
                     .HasColumnName("FF3D_Width")
                     .HasColumnType("decimal(18, 2)");
-
-                entity.Property(e => e.RdmFrmCh).HasColumnName("RDM_FRM_CH");
-
-                entity.Property(e => e.RdmFrmChDeci).HasColumnName("RDM_FRM_CH_Deci");
-
-                entity.Property(e => e.RdmToCh).HasColumnName("RDM_To_CH");
-
-                entity.Property(e => e.RdmToChDeci).HasColumnName("RDM_To_CH_Deci");
 
                 entity.HasOne(d => d.Ff3dFf3hPkRefNoNavigation)
                     .WithMany(p => p.RmFormF3Dtl)

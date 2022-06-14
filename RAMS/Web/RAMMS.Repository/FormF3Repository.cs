@@ -345,7 +345,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 1)
                     query = query.OrderBy(x => x.x.Ff3dPkRefNo);
                 if (filterOptions.ColumnIndex == 2)
-                    query = query.OrderBy(x => x.x.RdmFrmCh);
+                    query = query.OrderBy(x => x.x.Ff3dLocCh);
                 if (filterOptions.ColumnIndex == 3)
                     query = query.OrderBy(x => x.x.Ff3dCode);
                 if (filterOptions.ColumnIndex == 4)
@@ -365,7 +365,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 1)
                     query = query.OrderByDescending(x => x.x.Ff3dPkRefNo);
                 if (filterOptions.ColumnIndex == 2)
-                    query = query.OrderByDescending(x => x.x.RdmFrmCh);
+                    query = query.OrderByDescending(x => x.x.Ff3dLocCh);
                 if (filterOptions.ColumnIndex == 3)
                     query = query.OrderByDescending(x => x.x.Ff3dCode);
                 if (filterOptions.ColumnIndex == 4)
@@ -388,11 +388,11 @@ namespace RAMMS.Repository
             return list.Select(s => new FormF3DtlGridDTO
             {
                 Bound = s.a.AiBound,
-                Ch = s.x.RdmFrmCh + "+" + s.x.RdmFrmChDeci,
+                Ch = s.x.Ff3dLocCh + "+" + s.x.Ff3dLocChDeci,
                 ConditionRating = s.x.Ff3dConditionI,
                 Description = s.x.Ff3dDescription,
-                FrmCh = s.x.RdmFrmCh,
-                FrmChDec = s.x.RdmFrmChDeci,
+                FrmCh = s.x.Ff3dLocCh,
+                FrmChDec = s.x.Ff3dLocChDeci,
                 Height = s.a.AiHeight,
                 PkRefNo = s.x.Ff3dPkRefNo,
                 StructureCode = s.a.AiStrucCode,
