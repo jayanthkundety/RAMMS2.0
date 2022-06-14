@@ -55,10 +55,10 @@ namespace RAMMS.Business.ServiceProvider.Services
         //    return _mapper.Map<IEnumerable<FormF3DtlResponseDTO>>(formF3Dtl);
         //}
 
-        
+
         public async Task<PagingResult<FormF3DtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions)
         {
-           
+
 
             PagingResult<FormF3DtlGridDTO> result = new PagingResult<FormF3DtlGridDTO>();
 
@@ -82,7 +82,24 @@ namespace RAMMS.Business.ServiceProvider.Services
             return result;
         }
 
-       
+
+        public IEnumerable<CSelectListItem> GetAssetDetails(string Source)
+        {
+            IEnumerable<RmAllassetInventory> list = _repo.GetAssetDetails(Source);
+
+            return list.Select(s => new CSelectListItem
+            {
+                Text = s.AiAssetId,
+                Value = s.AiPkRefNo.ToString(),
+                FromKm = s.AiLocChKm ?? 0,
+                FromM = s.AiLocChM,
+                Item1 = s.AiStrucCode,
+                Item2 = s.AiBound,
+                Item3 = s.AiWidth.ToString(),
+                CValue= s.AiHeight.ToString()
+            }).ToList();
+
+        }
 
         public async Task<FormF3ResponseDTO> GetHeaderById(int id)
         {
@@ -102,7 +119,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 var domainModelFormF3 = _mapper.Map<RmFormF3Hdr>(FormF3);
                 domainModelFormF3.Ff3hPkRefNo = 0;
 
-               
+
                 var obj = _repoUnit.FormF3Repository.FindAsync(x => x.Ff3hRmuCode == domainModelFormF3.Ff3hRmuCode && x.Ff3hSecCode == domainModelFormF3.Ff3hSecCode && x.Ff3hRdCode == domainModelFormF3.Ff3hRdCode && x.Ff3hCrewSup == domainModelFormF3.Ff3hCrewSup && x.Ff3hInspectedYear == domainModelFormF3.Ff3hInspectedYear && x.Ff3hActiveYn == true).Result;
                 if (obj != null)
                 {
@@ -112,7 +129,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
                 IDictionary<string, string> lstData = new Dictionary<string, string>();
-               
+
                 lstData.Add("RoadCode", domainModelFormF3.Ff3hRdCode);
                 lstData.Add("Year", domainModelFormF3.Ff3hInspectedYear.ToString());
                 domainModelFormF3.Ff3hPkRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormF3Header, lstData);
@@ -122,7 +139,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 FormF3.PkRefId = domainModelFormF3.Ff3hPkRefId;
                 FormF3.Status = domainModelFormF3.Ff3hStatus;
 
-                  _repo.LoadG1G2Data(FormF3);
+                _repo.LoadG1G2Data(FormF3);
 
                 return FormF3;
             }
@@ -169,11 +186,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 int PkRefNo = FormF3.PkRefNo;
                 int? Fw1PkRefNo = FormF3.PkRefNo;
-               
+
                 var domainModelformF3 = _mapper.Map<RmFormF3Hdr>(FormF3);
                 domainModelformF3.Ff3hPkRefNo = PkRefNo;
-               // domainModelformF3.FF3Fw1PkRefNo = Fw1PkRefNo;
- 
+                // domainModelformF3.FF3Fw1PkRefNo = Fw1PkRefNo;
+
                 domainModelformF3.Ff3hActiveYn = true;
                 domainModelformF3 = UpdateStatus(domainModelformF3);
                 _repoUnit.FormF3Repository.Update(domainModelformF3);

@@ -19,6 +19,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<PagingResult<FormF3DtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions);
 
+        IEnumerable<CSelectListItem> GetAssetDetails(string Source);
         Task<FormF3ResponseDTO> GetHeaderById(int id);
         Task<FormF3ResponseDTO> SaveFormF3(FormF3ResponseDTO FormF3);
         Task<int> Update(FormF3ResponseDTO FormW1);

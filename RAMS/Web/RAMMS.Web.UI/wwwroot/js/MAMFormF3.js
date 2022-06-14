@@ -52,19 +52,7 @@ var _dt = {
 
 $(document).ready(function () {
 
-
-    _hd.btnHSave.hide();
-    _hd.btnHSubmit.hide();
-    _hd.btnHSave.on("click", function () {
-        saveHeader(true, false);
-    });
-
-    _hd.btnHSubmit.on("click", function () {
-        saveHeader(true, true);
-    });
-
-
-
+ 
     $("#ddlInspectedby").on("change", function () {
         var value = this.value;
 
@@ -336,222 +324,36 @@ function generateHeaderReference() {
 }
 
 
+function OnAssetChange(tis) {
 
-function saveDetail(isSaveAndExit = false) {
+    var ctrl = $(tis);
+    if (ctrl.val() != null)
+        $('#FormF3Dtl_AssetID').val(ctrl.val());
+    if ($('#FormF3Dtl_AssetID').val() != "") {
 
-    if (ValidatePage("#FormAddDetails")) {
-        var req = {};
-        req.PkRefNo = _dt.hdnDetailPkNo.val();
-        req.GrCondition1 = _dt.txtCondition1.val() == "" ? 0 : _dt.txtCondition1.val();
-        req.GrCondition2 = _dt.txtCondition2.val() == "" ? 0 : _dt.txtCondition2.val();
-        req.GrCondition3 = _dt.txtCondition3.val() == "" ? 0 : _dt.txtCondition3.val();
-        req.Remarks = _dt.txtRemarks.val();
-        req.PostSpac = _dt.txtPostspacing.val();
+        $("#FormF3Dtl_UsernameSch").val(ctrl.find("option:selected").attr("Item1"));
+        $("#FormF3Dtl_DesignationSch").val(ctrl.find("option:selected").attr("Item2"));
 
-        var c1 = req.GrCondition1 != "" ? parseFloat(req.GrCondition1).toFixed(5) : "0";
-        var c2 = req.GrCondition2 != "" ? parseFloat(req.GrCondition2).toFixed(5) : "0";
-        var c3 = req.GrCondition3 != "" ? parseFloat(req.GrCondition3).toFixed(5) : "0";
+        if ($('#FormF3Dtl_UseridSch').val() == "99999999") {
+            $("#FormF3Dtl_UsernameSch").removeAttr("readonly");
+            $("#FormF3Dtl_DesignationSch").removeAttr("readonly");
 
-        //var tLength = TryParseInt(_dt.txtLength.val());
-        // var ConLength = (TryParseInt(req.GrCondition1) + TryParseInt(req.GrCondition2) + TryParseInt(req.GrCondition3));
-        var tLength = parseFloat((_dt.txtLength.val() != "" ? _dt.txtLength.val() : "0"));
-        var ConLength = parseFloat(c1) + parseFloat(c2) + parseFloat(c3);
-        if (tLength < ConLength) {
-            //app.Alert("<b>(Condition 1 + Condition 2 + Condition 3)</b> should not exceed <b>length</b> !!!");
-            app.Alert("The total Guardrail length (Condition 1 + Condition 2 + Condition 3) should not exceed the initially registered length.")
+        } else {
+            $("#FormF3Dtl_UsernameSch").attr("readonly", "true");
+            $("#FormF3Dtl_DesignationSch").attr("readonly", "true");
         }
-        if (tLength > ConLength) {
-            app.Alert("<b>The total Guardrail length should be equal to (Condition 1 + Condition 2 + Condition 3)</b>");
-        }
-        if (tLength == ConLength) {
-            $.ajax({
-                url: '/FormF2/SaveDetail',
-                dataType: 'JSON',
-                data: req,
-                type: 'Post',
-                success: function (data) {
-                    if (data > 0) {
-                        app.ShowSuccessMessage("Saved Successfully");
-                        ClearDetail();
-                    }
-
-                    if (isSaveAndExit) {
-                        ClearDetail();
-
-                    }
-                    $("#FormF2AdddetailsModal").modal("hide");
-                    InitializeDetailsGrid();
-                },
-                error: function (data) {
-
-                    console.error(data);
-                }
-            });
-        }
+        $('#FormF3Dtl_SignSch').prop('checked', true);
+    }
+    else {
+        $("#FormF3Dtl_UsernameSch").val('');
+        $("#FormF3Dtl_DesignationSch").val('');
+        $('#FormF3Dtl_SignSch').prop('checked', false);
     }
 }
 
-function bindreference() {
-
-    var req = {};
-    req.headerId = _hd.HdnHeaderPkId.val();
-    $.ajax({
-        url: '/FormF2/LastInsertedDetailNo',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-
-            var reference = $("#txtHReferenceNo").val() + "/" + (data + 1);
-            _dt.txtDReferenceNo.val(reference)
-
-        },
-        error: function (data) {
-
-            console.error(data);
-        }
-    });
-
-}
 
 
-function openDetail(id) {
-
-    var req = {};
-    req.id = id;
-    $.ajax({
-        url: '/FormF2/GetDetailById',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-            //
-            if (data.pkRefNo == 0) {
-                bindreference();
-            }
-            _dt.hdnDetailPkNo.val(data.pkRefNo);
-            _dt.txtStartinchKm.val(data.startingChKm);
-            _dt.txtStartinchM.val(data.startingChM);
-            _dt.txtStructurecode.val(data.grCode);
-            _dt.txtBound.val(data.rhsMLhs);
-            _dt.txtPostspacing.val(data.postSpac);
-            _dt.txtCondition1.val(data.grCondition1);
-            _dt.txtCondition2.val(data.grCondition2);
-            _dt.txtCondition3.val(data.grCondition3);
-            _dt.txtRemarks.val(data.remarks);
-            _dt.txtLength.val(data.length);
-            $("#FormF2AdddetailsModal").modal("show");
-
-        },
-        error: function (data) {
-
-            console.error(data);
-        }
-    });
-
-}
-
-
-
-function getUserDetail(id, callback) {
-    var req = {};
-    req.id = id;
-    $.ajax({
-        url: '/NOD/GetUserById',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-            callback(data);
-        },
-        error: function (data) {
-            console.error(data);
-        }
-    });
-}
-
-function bindRoadLength(code, callback) {
-
-    var req = {};
-    req.roadcode = code;
-    $.ajax({
-        url: '/FormF2/GetRoadLength',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-            $("#txtRoadlength").val(data);
-            if (callback)
-                callback(data);
-        },
-        error: function (data) {
-
-            console.error(data);
-        }
-    });
-}
-function bindRoadDetail(code, callback) {
-    var req = {};
-
-    req.code = code;
-    $.ajax({
-        url: '/FormF2/GetRoadDetailByCode',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-
-            _hd.hdnRoadCode.val(data.no);
-            _hd.ddlDivision.val(data.divisionCode);
-            _hd.ddlDivision.trigger("chosen:updated");
-            _hd.ddlRMU.val(data.rmuCode);
-            _hd.ddlRMU.trigger("chosen:updated");
-            _hd.ddlSection.val(data.secCode);
-            _hd.ddlSection.trigger("chosen:updated");
-            $("#txtSectionName").val(data.secName);
-
-            if (callback)
-                callback(data);
-        },
-        error: function (data) {
-
-            console.error(data);
-        }
-    });
-}
-
-
-
-//GetLocationCh
-function getLocationCh(callback) {
-    var req = {};
-
-    req.roadcode = _hd.ddlRoadCode.find(":selected").text().split('-')[0].trim();
-    $.ajax({
-        url: '/FormF2/GetLocationCh',
-        dataType: 'JSON',
-        data: req,
-        type: 'Post',
-        success: function (data) {
-            _dt.ddlStartinch.empty();
-            _dt.ddlStartinch.append($("<option></option>").val("").html("Select Starting Ch"));
-            $.each(data, function (index, v) {
-                _dt.ddlStartinch.append($("<option></option>").val(v.value).html(v.text));
-            });
-
-            _dt.ddlStartinch.trigger("chosen:updated");
-            if (callback)
-                callback();
-        },
-        error: function (data) {
-
-            console.error(data);
-        }
-    });
-}
-
-
-
+ 
 function Save(GroupName, SubmitType) {
 
 

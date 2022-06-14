@@ -13,6 +13,7 @@ namespace RAMMS.Domain.Models
         public int? RdmToCh { get; set; }
         public int? RdmToChDeci { get; set; }
         public string Ff3dCode { get; set; }
+        public string Ff3dBound { get; set; }
         public int? Ff3dConditionI { get; set; }
         public int? Ff3dConditionIi { get; set; }
         public int? Ff3dConditionIii { get; set; }

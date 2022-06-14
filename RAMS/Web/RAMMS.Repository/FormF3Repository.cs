@@ -404,7 +404,21 @@ namespace RAMMS.Repository
         }
 
 
-         
+        public List<RmAllassetInventory> GetAssetDetails(string Source)
+        {
+
+            if (Source == "New")
+            {
+                string[] StructCode = { "W", "GS", "DEL" };
+                return (from r in _context.RmAllassetInventory.Where(s => StructCode.Contains(s.AiStrucCode)) select r).ToList();
+            }
+            else
+            {
+                return (from r in _context.RmAllassetInventory.Where(s => s.AiStrucCode == "G") select r).ToList();
+            }
+
+        }
+
         public int LoadG1G2Data(FormF3ResponseDTO FormF3)
         {
             try
@@ -449,7 +463,7 @@ namespace RAMMS.Repository
             }
         }
 
-      
+
 
         public int? DeleteFormF3Dtl(int Id)
         {

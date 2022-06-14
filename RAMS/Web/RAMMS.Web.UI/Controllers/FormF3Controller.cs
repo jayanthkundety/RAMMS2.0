@@ -163,20 +163,28 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> Add(int id, int view)
         {
             LoadLookupService("Supervisor", "User");
+
             FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
             ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+
             FormF3Model _model = new FormF3Model();
             if (id > 0)
             {
                 _model.FormF3 = await _formF3Service.GetHeaderById(id);
+                ViewData["Asset"] = _formF3Service.GetAssetDetails("G1G2");
             }
+            else
+            {
+                ViewData["Asset"] = _formF3Service.GetAssetDetails("New");
+            }
+
+
             _model.FormF3 = _model.FormF3 ?? new FormF3ResponseDTO();
             _model.view = view;
             return PartialView("~/Views/FormF3/_AddFormF3.cshtml", _model);
         }
 
-        //  public async Task<int> SaveHeader(FormF3ResponseDTO model) => model.SubmitSts ? await this.formF3Service.SaveHeader(model) : await this.formF3Service.SaveHeader(model);
-
+        
 
         public async Task<IActionResult> SaveFormF3(FormF3Model frm)
         {
