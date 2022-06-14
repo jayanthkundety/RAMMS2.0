@@ -42,7 +42,7 @@ namespace RAMMS.Repository
                 IDictionary<string, string> lstRef = new Dictionary<string, string>();
                 lstRef.Add("Year", Utility.ToString(frmG1G2.Fg1hYearOfInsp));
                 lstRef.Add("AssetID", Utility.ToString(frmG1G2.Fg1hAssetId));
-                frmG1G2.Fg1hContNo  = Common.RefNumber.FormRefNumber.GetRefNumber(FormType.FormG1G2, lstRef);
+                frmG1G2.Fg1hRefNo  = Common.RefNumber.FormRefNumber.GetRefNumber(FormType.FormG1G2, lstRef);
                 _context.RmFormG1Hdr.Add(frmG1G2);
             }
             else
@@ -130,11 +130,11 @@ namespace RAMMS.Repository
                          select new
                          {
                              RefNo = hdr.Fg1hPkRefNo,
-                             RefID = hdr.Fg1hContNo,
+                             RefID = hdr.Fg1hRefNo,
                              Year = hdr.Fg1hYearOfInsp,
                              InsDate = hdr.Fg1hDtOfInsp,
                              AssetRefId = hdr.Fg1hAssetId,
-                             RMUCode = rmu.DdlTypeCode,
+                             RMUCode = hdr.Fg1hRmuCode,
                              RMUDesc = hdr.Fg1hRmuName,
                              SecCode = asset.AiSecCode,
                              SecName = asset.AiSecName,

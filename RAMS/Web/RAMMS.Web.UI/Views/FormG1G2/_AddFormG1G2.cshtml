@@ -1,10 +1,38 @@
-﻿@*
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@using RAMMS.Business.ServiceProvider
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
     ViewBag.TabTitle = "Form G1/G2";
     ViewData["Title"] = "Form G1/G2";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
+
+    string strAssestID = string.Empty;
+    string strYear = string.Empty;
+    string strRefId = string.Empty;
+    bool IsSupervisor = false;
+    if (Model != null)
+    {
+        strAssestID = Model.AiAssetId;
+        strYear = Model.YearOfInsp.Value.ToString();
+        strRefId = Model.CInspRefNo;
+        ViewBag.IsEdit = ViewBag.IsEdit ? (Model.SubmitSts ? false : true) : false;
+    }
+}
+
+<script type="text/javascript" src="~/js/FormG1G2.js" asp-append-version="true"></script>
+
+@if (Model != null)
+{
+    IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormG1G2Init);
+    <script type="text/javascript">
+              frmG1G2.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
+            frmG1G2.IsEdit = @(ViewBag.IsEdit ? "true" : "false");
+            $(document).ready(function () {
+             process.Init("FormG1G2", "@Model.Status", @Model.PkRefNo);
+        });
+    </script>
 }
 
 <div class="row bg-white pt-4">
@@ -14,7 +42,7 @@
                 <div class=" w-100 d-flex justify-content-center py-1">
                     <div class="form-group mb-0">
                         <label style="float:left; padding: .5rem .5rem 0 !important;">Form G1/G2 No.</label>
-                        <input class="form-control" style="width:330px;" type="text" value="" disabled="">
+                        <input id="txtFormG1G2RefNum" class="form-control" style="width:330px;" type="text" value="@strRefId" disabled>
                     </div>
                 </div>
             </div>
@@ -22,73 +50,73 @@
     </div>
 </div>
 <div class="modal-body mh-182 pt-0 pb-0">
-    <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3" id="divFindDetailsFC1C2">
+    <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3" id="divFindDetailsFG1G2">
         <div class="row">
             <div class="col-lg-10 p-0">
                 <div class="w-100 form-group mb-0">
-                    <div class="form-group col-md-3" finddetailhide="">
-                        <label for="Division">Division</label>
-                        <select name="selDivision" id="selDivision" class="form-control">
-                            <option value="">Select Division</option>
-                            <option cvalue="MIRI" value="MIRI" code="MIRI" pid="1" fromkm="0" tokm="0">MIRI</option>
-                            <option cvalue="ERI" value="ERI" code="ERI" pid="2574" fromkm="0" tokm="0">ERI</option>
-                        </select>
+                    @if (ViewBag.IsAdd)
+                    {
+                        <div class="form-group col-md-3" finddetailhide="">
+                            @Html.Label("Division", "Division")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Division"], "selDivision", "Select Division", new { @Id = "selDivision", @class = "form-control" })
 
-                    </div>
-                    <div class="form-group col-md-3" finddetailhide="">
-                        <label for="RMU">RMU</label>
-                        <select name="selRMU" id="selRMU" class="form-control">
-                            <option value="">Select RMU</option>
-                            <option cvalue="Miri" value="MRI" code="MRI" pid="2" fromkm="0" tokm="0">MRI-Miri</option>
-                            <option cvalue="Batu Niah" value="BTN" code="BTN" pid="3" fromkm="0" tokm="0">BTN-Batu Niah</option>
-                            <option cvalue="ERI" value="ERI" code="ERI" pid="2575" fromkm="0" tokm="0">ERI-ERI</option>
-                        </select>
+                        </div>
+                        <div class="form-group col-md-3" finddetailhide="">
+                            @Html.Label("RMU", "RMU")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "selRMU", @class = "form-control", @onchange = "frmG1G2.Search.RmuChange(this);", @rmuCode = "rmuCode" })
 
-                    </div>
-                    <div class="form-group col-md-3" finddetailhide="">
-                        <label for="Section_Code">Section Code</label>
-                        <select name="selSectionCode" id="selSectionCode" class="form-control">
-                            <option value="">Select Section Code</option>
-                            <option value="Miri" code="1">1-Miri</option>
-                            <option value="Mulu / Bario" code="2">2-Mulu / Bario</option>
-                        </select>
+                        </div>
+                        <div class="form-group col-md-3" finddetailhide="">
+                            @Html.Label("Section Code", "Section Code")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "selSectionCode", "Select Section Code", new { @Id = "selSectionCode", @class = "form-control", @onchange = "frmG1G2.Search.SecCodeChange(this,true);", @sectionCode = "sectionCode" })
 
-                    </div>
-                    <div class="form-group col-md-3" finddetailhide="">
-                        <label for="Section_Name">Section Name</label>
-                        <input id="txtSectionName" type="text" class="form-control" disabled="">
-                    </div>
-                    <div class="form-group col-md-3" finddetailhide="">
-                        <label for="Road_Code">Road Code</label>
-                        <select class="form-control">
-                            <option value="">Select Road Code</option>
-                        </select>
+                        </div>
+                        <div class="form-group col-md-3" finddetailhide="">
+                            @Html.Label("Section Name", "Section Name")
+                            <input id="txtSectionName" type="text" class="form-control" disabled />
+                        </div>
+                        <div class="form-group col-md-3" finddetailhide="">
+                            @Html.Label("Road Code", "Road Code")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "selRoadCode", "Select Road Code", new { @Id = "selRoadCode", @class = "form-control validate {req,Road Code}", @onchange = "frmG1G2.Search.RoadCodeChange(this,true);", @roadCode = "roadCode" })
 
-                    </div>
-                    <div class="form-group col-md-3" finddetailhide="">
-                        <label for="Road_Name">Road Name</label>
-                        <input id="txtRoadName" type="text" class="form-control" disabled="">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="Asset_ID">Asset ID</label>
-                        <select class="form-control ">
-                            <option value="">Select Asset ID</option>
-                        </select>
+                        </div>
+                        <div class="form-group col-md-3" finddetailhide="">
+                            @Html.Label("Road Name", "Road Name")
+                            <input id="txtRoadName" type="text" class="form-control" disabled />
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.Label("Asset ID", "Asset ID")
+                            @if (ViewBag.IsAdd)
+                            {
+                                List<RAMMS.DTO.ResponseBO.AssetId> lstIds = (List<RAMMS.DTO.ResponseBO.AssetId>)ViewData["AssetIds"];
+                                <select name="AiPkRefNo" id="selAssetID" class="form-control validate {req,Asset ID}" onchange="frmG1G2.AssetIDChange(this);">
+                                    <option value="">Select Asset ID</option>
+                                    @foreach (RAMMS.DTO.ResponseBO.AssetId aid in lstIds)
+                                    {
+                                        <option rmu="@aid.Rmu" rdcode="@aid.RoadCode" scode="@aid.SectionCode" value="@aid.RefId">@aid.AssestyID</option>
+                                    }
+                                </select>
+                            }
+                            <input value="@strAssestID" name="AiAssetId" id="AiAssetId" type="text" class="form-control" @Html.Raw(ViewBag.IsAdd ? "style='display:none;'" : "disabled='disabled'") />
 
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label>Year of Inspection (YYYY)</label>
-                        <select class="form-control ">
-                            <option value="">Select Year</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                        </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
+                            @if (ViewBag.IsAdd)
+                            {
+                                @Html.DropDownList("YearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formG1G2InsYear", @class = "form-control validate {req,Year}", @onchange = "frmG1G2.InsYearChange(this);" })
+                            }
+                            else
+                            {
+                                <input value="@strYear" name="AiAssetId" id="txtG1G2InsYear" type="text" class="form-control" disabled="disabled" />
+                            }
 
-                    </div>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                <button id="btnFindDetails" onclick="frmC1C2.FindDetails();" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                <button id="btnFindDetails" onclick="frmG1G2.FindDetails();" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
             </div>
         </div>
     </div>
@@ -147,9 +175,9 @@
                                                                 <div class="form-group col-md-12">
                                                                     <div class="row">
                                                                         @*<div class="form-group col-lg-2 pr-0">
-                                                                <label for="Reference No">Reference No</label>
-                                                                <input type="text" name="AiDivCode" class="form-control" disabled="">
-                                                            </div>*@
+                                                                            <label for="Reference No">Reference No</label>
+                                                                            <input type="text" name="AiDivCode" class="form-control" disabled="">
+                                                                            </div>*@
                                                                         <div class="form-group col-lg-3 pr-0">
                                                                             <label for="Division">Division</label>
                                                                             <input type="text" name="AiDivCode" class="form-control" disabled="">
@@ -455,7 +483,7 @@
                                                                                                         </span>
                                                                                                     </a>
                                                                                                     <div class="img-btns mt-1">
-                                                                                                        <a id="ancAddImage" class="btn btn-sm btn-themebtn" onclick="frmC1C2.ShowAddImage();" finddetailsdep="">
+                                                                                                        <a id="ancAddImage" class="btn btn-sm btn-themebtn" onclick="frmG1G2.ShowAddImage();" finddetailsdep="">
                                                                                                             <span class="add-icon"></span> Add Image
                                                                                                         </a>
                                                                                                     </div>
@@ -485,7 +513,7 @@
                                                                                                                     <td imgsno=""></td>
                                                                                                                     <td imgtype=""></td>
                                                                                                                     <td imgfilename=""></td>
-                                                                                                                    <td deleteimg="" class="deleteImg" style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="frmC1C2.DeleteImg(this);"><span class="remove-icon"></span></button></td>
+                                                                                                                    <td deleteimg="" class="deleteImg" style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="frmG1G2.DeleteImg(this);"><span class="remove-icon"></span></button></td>
                                                                                                                 </tr>
                                                                                                             </tbody>
                                                                                                         </table>
@@ -518,7 +546,6 @@
                                                                                                 </div>
                                                                                                 <div class="item">
                                                                                                     <div data-fancybox="gallery" style="text-align:center" gallery="">
-
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -538,7 +565,7 @@
                                                                                                         <div class="row">
                                                                                                             <div class="form-group col-lg-12">
                                                                                                                 <label for="Please_Select_Photograph_Type">Please Select Photograph Type</label>
-                                                                                                                <select name="UserIdAud" id="photoType" class="form-control {req,Photo Type}" onchange="frmC1C2.PhotoTypeChange(this);" style="display: none;"><option value="">Select Photo Type</option><option cvalue="P1" value="Culvert Marker" code="CV" pid="1886" fromkm="0" tokm="0">Culvert Marker</option><option cvalue="P2" value="Waterway and embankment (upstream)" code="CV" pid="1887" fromkm="0" tokm="0">Waterway and embankment (upstream)</option><option cvalue="P3" value="Waterway and embankment (downstream)" code="CV" pid="1888" fromkm="0" tokm="0">Waterway and embankment (downstream)</option><option cvalue="P4" value="Headwall and Wingwall (Inlet)" code="CV" pid="1889" fromkm="0" tokm="0">Headwall and Wingwall (Inlet)</option><option cvalue="P5" value="Headwall and Wingwall (Outlet)" code="CV" pid="1890" fromkm="0" tokm="0">Headwall and Wingwall (Outlet)</option><option cvalue="P6" value="Barrels (Culvert Unit (s))" code="CV" pid="1891" fromkm="0" tokm="0">Barrels (Culvert Unit (s))</option><option cvalue="P7" value="Culvert Approach (Pavement)" code="CV" pid="1892" fromkm="0" tokm="0">Culvert Approach (Pavement)</option><option cvalue="O" value="Others" code="CV" pid="1893" fromkm="0" tokm="0">Others</option></select><div class="chosen-container chosen-container-single" title="" id="photoType_chosen" style="width: 0px;">
+                                                                                                                <select name="UserIdAud" id="photoType" class="form-control {req,Photo Type}" onchange="frmG1G2.PhotoTypeChange(this);" style="display: none;"><option value="">Select Photo Type</option><option cvalue="P1" value="Culvert Marker" code="CV" pid="1886" fromkm="0" tokm="0">Culvert Marker</option><option cvalue="P2" value="Waterway and embankment (upstream)" code="CV" pid="1887" fromkm="0" tokm="0">Waterway and embankment (upstream)</option><option cvalue="P3" value="Waterway and embankment (downstream)" code="CV" pid="1888" fromkm="0" tokm="0">Waterway and embankment (downstream)</option><option cvalue="P4" value="Headwall and Wingwall (Inlet)" code="CV" pid="1889" fromkm="0" tokm="0">Headwall and Wingwall (Inlet)</option><option cvalue="P5" value="Headwall and Wingwall (Outlet)" code="CV" pid="1890" fromkm="0" tokm="0">Headwall and Wingwall (Outlet)</option><option cvalue="P6" value="Barrels (Culvert Unit (s))" code="CV" pid="1891" fromkm="0" tokm="0">Barrels (Culvert Unit (s))</option><option cvalue="P7" value="Culvert Approach (Pavement)" code="CV" pid="1892" fromkm="0" tokm="0">Culvert Approach (Pavement)</option><option cvalue="O" value="Others" code="CV" pid="1893" fromkm="0" tokm="0">Others</option></select><div class="chosen-container chosen-container-single" title="" id="photoType_chosen" style="width: 0px;">
                                                                                                                     <a class="chosen-single">
                                                                                                                         <span>Select Photo Type</span>
                                                                                                                         <div><b></b></div>
@@ -674,7 +701,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                
+
                                                                 <div class="accordion custom-accordion mb-3" id="custom-accordion-twelve">
                                                                     <div class="card mb-0">
                                                                         <div class="card-header" id="headingtwelve">

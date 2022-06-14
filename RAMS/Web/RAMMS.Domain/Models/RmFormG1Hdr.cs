@@ -12,9 +12,10 @@ namespace RAMMS.Domain.Models
         }
 
         public int Fg1hPkRefNo { get; set; }
-        public string Fg1hContNo { get; set; }
+        public string Fg1hRefNo { get; set; }
         public string Fg1hAssetId { get; set; }
         public string Fg1hDivCode { get; set; }
+        public string Fg1hRmuCode { get; set; }
         public string Fg1hRmuName { get; set; }
         public string Fg1hRdCode { get; set; }
         public string Fg1hRdName { get; set; }

@@ -8,16 +8,16 @@ namespace RAMMS.DTO.ResponseBO
     {
         //Fg1h
         public int PkRefNo { get; set; }
-        public string ContNo { get; set; }
+        public string RefNo { get; set; }
         public int? AiPkRefNo { get; set; }
         public string AssetId { get; set; }
         public string DivCode { get; set; }
 
-        public string Rmu { get; set; }
+        public string RmuCode { get; set; }
         public string RmuName { get; set; }
 
-        public string SecCode { get; set; }
-        public string SecName { get; set; }
+        //public string SecCode { get; set; }
+        //public string SecName { get; set; }
 
         public string RdCode { get; set; }
         public string RdName { get; set; }

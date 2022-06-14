@@ -159,7 +159,11 @@ namespace RAMMS.Common
         public const string FormV1Approved = "Approved";
         public const string FormV1Verified = "Verified";
 
-        
+        public const string FormG1G2Init = "Open";
+        public const string FormG1G2Inspected = "Inspected";
+        public const string FormG1G2ExecutiveApproved = "Executive";
+        public const string FormG1G2HeadMaintenanceApproved = "Head Maintenance";
+        public const string FormG1G2RegionManagerApproved = "Region Manager";
 
     }
 }

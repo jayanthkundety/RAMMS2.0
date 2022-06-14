@@ -6036,6 +6036,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Ff3dPkRefNo).HasColumnName("FF3D_PK_Ref_No");
 
+                entity.Property(e => e.Ff3dAssetId)
+                    .HasColumnName("FF3D_Asset_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Ff3dAuditLog)
                     .HasColumnName("FF3D_AuditLog")
                     .IsUnicode(false);
@@ -6133,6 +6138,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FF3H_CR_DT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Ff3hCrewName)
+                    .HasColumnName("FF3H_Crew_Name")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Ff3hCrewSup)
                     .HasColumnName("FF3H_Crew_Sup")
                     .HasMaxLength(100)
@@ -6148,6 +6158,8 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Ff3hG1hPkRefNo).HasColumnName("FF3H_G1H_PK_Ref_No");
+
                 entity.Property(e => e.Ff3hInspectedBy).HasColumnName("FF3H_Inspected_By");
 
                 entity.Property(e => e.Ff3hInspectedBySign).HasColumnName("FF3H_Inspected_By_Sign");
@@ -6156,11 +6168,24 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FF3H_Inspected_Date")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Ff3hInspectedName)
+                    .HasColumnName("FF3H_Inspected_Name")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ff3hInspectedYear).HasColumnName("FF3H_Inspected_Year");
+
                 entity.Property(e => e.Ff3hModBy).HasColumnName("FF3H_Mod_By");
 
                 entity.Property(e => e.Ff3hModDt)
                     .HasColumnName("FF3H_Mod_DT")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Ff3hPkRefId)
+                    .IsRequired()
+                    .HasColumnName("FF3H_PK_Ref_Id")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Ff3hRdCode)
                     .HasColumnName("FF3H_Rd_Code")
@@ -6180,6 +6205,16 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Ff3hRoadLength)
                     .HasColumnName("FF3H_Road_Length")
                     .HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Ff3hSecCode)
+                    .HasColumnName("FF3H_Sec_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ff3hSecName)
+                    .HasColumnName("FF3H_Sec_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Ff3hStatus)
                     .HasColumnName("FF3H_Status")
@@ -7204,11 +7239,6 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fg1hAuditLog).HasColumnName("FG1H_AuditLog");
 
-                entity.Property(e => e.Fg1hContNo)
-                    .HasColumnName("FG1H_CONT_No")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.Fg1hCrBy).HasColumnName("FG1H_CR_By");
 
                 entity.Property(e => e.Fg1hCrDt)
@@ -7305,6 +7335,16 @@ namespace RAMMS.Domain.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.Fg1hRecordNo).HasColumnName("FG1H_Record_No");
+
+                entity.Property(e => e.Fg1hRefNo)
+                    .HasColumnName("FG1H_Ref_No")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fg1hRmuCode)
+                    .HasColumnName("FG1H_RMU_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Fg1hRmuName)
                     .HasColumnName("FG1H_RMU_Name")
@@ -7412,6 +7452,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(30);
 
                 entity.Property(e => e.Fg2hSubmitSts).HasColumnName("FG2H_SUBMIT_STS");
+
+                entity.HasOne(d => d.Fg2hFg1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormG2Hdr)
+                    .HasForeignKey(d => d.Fg2hFg1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormG2_HDR_RM_FormG1_HDR");
             });
 
             modelBuilder.Entity<RmFormGImages>(entity =>
@@ -7460,6 +7505,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.FgiSubmitSts).HasColumnName("FGI_SUBMIT_STS");
+
+                entity.HasOne(d => d.FgiFg1hPkRefNoNavigation)
+                    .WithMany(p => p.RmFormGImages)
+                    .HasForeignKey(d => d.FgiFg1hPkRefNo)
+                    .HasConstraintName("FK_RM_FormG_Images_RM_FormG1_HDR");
             });
 
             modelBuilder.Entity<RmFormGenDtl>(entity =>
@@ -9591,11 +9641,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fqa1wSsdCh)
                     .HasColumnName("FQA1W_SSD_CH")
-                    .HasColumnType("decimal(8, 3)");
+                    .HasColumnType("decimal(8, 0)");
 
                 entity.Property(e => e.Fqa1wSsdChDeci)
                     .HasColumnName("FQA1W_SSD_CH_Deci")
-                    .HasColumnType("decimal(8, 3)");
+                    .HasColumnType("decimal(8, 0)");
 
                 entity.Property(e => e.Fqa1wSsdLhsL)
                     .HasColumnName("FQA1W_SSD_LHS_L")

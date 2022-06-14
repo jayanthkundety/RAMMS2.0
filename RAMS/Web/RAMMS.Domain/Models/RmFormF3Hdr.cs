@@ -11,11 +11,14 @@ namespace RAMMS.Domain.Models
         }
 
         public int Ff3hPkRefNo { get; set; }
+        public int? Ff3hG1hPkRefNo { get; set; }
         public string Ff3hPkRefId { get; set; }
         public string Ff3hDivCode { get; set; }
         public string Ff3hDist { get; set; }
         public string Ff3hRmuCode { get; set; }
         public string Ff3hRdCode { get; set; }
+        public string Ff3hSecCode { get; set; }
+        public string Ff3hSecName { get; set; }
         public string Ff3hRdName { get; set; }
         public string Ff3hCrewSup { get; set; }
         public string Ff3hCrewName { get; set; }
