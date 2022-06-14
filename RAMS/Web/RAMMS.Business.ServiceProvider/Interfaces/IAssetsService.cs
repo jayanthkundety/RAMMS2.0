@@ -43,5 +43,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<List<AssetFieldDtl>> GetAssetTemplate(string assetType);
         Task<int> CheckAssetRefNo(string refNo);
         Task<List<DTO.ResponseBO.AssetId>> ListOfCulvertAssestIds();
+
+        Task<List<DTO.ResponseBO.AssetId>> ListOfGantorySignAssestIds();
     }
 }

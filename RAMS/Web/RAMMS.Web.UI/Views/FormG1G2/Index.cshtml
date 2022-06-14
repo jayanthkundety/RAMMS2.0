@@ -8,6 +8,8 @@
     ViewBag.TabTitle = "Form G1/G2";
     ViewData["Title"] = "Form G1/G2";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
+     var isModifyPerm = security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Condition_Inspection) ? "" : "hidden";
 }
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @section Scripts{
@@ -240,7 +242,7 @@
     }
 
     function EditformG1G2(pid,view) {
-        window.location = "@Url.Action("EditformG1G2", "formG1G2")" +
+        window.location = "@Url.Action("EidtFormG1G2", "FormG1G2")" +
             "?id=" + pid + "&view=" + view;
     }
 
@@ -429,7 +431,7 @@
 
             <div class="w-100 float-left position-relative">
                 <div class="grid-btns">
-                    <button type="button" class="btn btn-sm btn-themebtn"><span class="add-icon"></span> Add Form G1 G2</button>
+                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditformG1G2(0,0);"><span class="add-icon"></span> Add Form G1 G2</button>
                 </div>
                 <div id="headerListGrid" class="w-100 dt-tbl-section">
                     @{

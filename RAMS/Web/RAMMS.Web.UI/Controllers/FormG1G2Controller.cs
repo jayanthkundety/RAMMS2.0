@@ -34,6 +34,7 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IRoadMasterService _roadMasterService;
         private readonly IDDLookupBO _dDLookupBO;
         private readonly IFormG1G2Service _formG1G2Service;
+        private readonly IAssetsService _AssetService;
 
         public FormG1G2Controller(IHostingEnvironment _environment,
            IDDLookupBO _ddLookupBO,
@@ -45,7 +46,8 @@ namespace RAMMS.Web.UI.Controllers
            ISecurity security,
            IRoadMasterService roadMasterService,
            ILogger logger,
-           IFormG1G2Service formG1G2Service
+           IFormG1G2Service formG1G2Service,
+           IAssetsService assestService
            )
         {
             _userService = userService;
@@ -59,6 +61,7 @@ namespace RAMMS.Web.UI.Controllers
             _roadMasterService = roadMasterService ?? throw new ArgumentNullException(nameof(roadMasterService));
             _logger = logger;
             _formG1G2Service = formG1G2Service ?? throw new ArgumentNullException(nameof(formG1G2Service));
+            _AssetService = assestService;
         }
 
         private async Task LoadDropDown()
@@ -106,6 +109,29 @@ namespace RAMMS.Web.UI.Controllers
             return View(grid);
         }
 
+
+        public ActionResult EidtFormG1G2(int id)
+        {
+
+            LoadLookupService("Year", "User", "Photo Type~CV");
+            ViewBag.Dis_Severity = LookupService.GetDdlLookupByCode("Form C1C2");
+            FormG1DTO frmG1G2  =null;
+            if (id > 0)
+            {
+                ViewBag.IsAdd = false;
+                ViewBag.isEdit = true;
+                frmG1G2 = _formG1G2Service.FindByHeaderID(id).Result;
+            }
+            else
+            {
+                ViewBag.IsAdd = true ;
+                ViewBag.isEdit = false;
+                LoadLookupService("RMU", "Section Code", "Division", "RD_Code");
+                ViewData["AssetIds"] = _AssetService.ListOfGantorySignAssestIds().Result;
+            }
+
+            return View("~/Views/FormG1G2/_AddFormG1G2.cshtml", frmG1G2);
+        }
         public async Task<JsonResult> HeaderList(DataTableAjaxPostModel searchData)
         {
             if (searchData.order != null && searchData.order.Count > 0)

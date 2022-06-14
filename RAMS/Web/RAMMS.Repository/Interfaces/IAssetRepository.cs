@@ -40,5 +40,7 @@ namespace RAMMS.Repository.Interfaces
         Task<int> CheckRefNo(string refNo);
         Task<List<DTO.ResponseBO.AssetId>> ListOfCulvertAssestIds();
         IQueryable<RmAllassetInventory> ListOfAssestByRoadCode(string roadCode);
+
+        Task<List<DTO.ResponseBO.AssetId>> ListOfGantorySignAssestIds();
     }
 }

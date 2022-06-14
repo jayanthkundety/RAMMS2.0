@@ -446,5 +446,10 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             return await _repoUnit.AllAssetRepository.ListOfCulvertAssestIds();
         }
+
+        public async Task<List<DTO.ResponseBO.AssetId>> ListOfGantorySignAssestIds()
+        {
+            return await _repoUnit.AllAssetRepository.ListOfGantorySignAssestIds();
+        }
     }
 }
