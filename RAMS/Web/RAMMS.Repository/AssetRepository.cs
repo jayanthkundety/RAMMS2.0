@@ -1158,7 +1158,7 @@ namespace RAMMS.Repository
 
         public async Task<List<DTO.ResponseBO.AssetId>> ListOfGantorySignAssestIds()
         {
-            return await _context.RmAllassetInventory.Where(x => x.AiAssetGrpCode == "G" && x.AiActiveYn == true).OrderBy(x => x.AiLocChKm).ThenBy(x => x.AiLocChM).Select(x => new AssetId { RefId = x.AiPkRefNo, AssestyID = x.AiAssetId, Rmu = x.AiRmuCode, SectionCode = x.AiSecCode, RoadCode = x.AiRdCode }).ToListAsync();
+            return await _context.RmAllassetInventory.Where(x => x.AiAssetGrpCode == "SG" && x.AiStrucCode == "Y" && x.AiActiveYn == true).OrderBy(x => x.AiLocChKm).ThenBy(x => x.AiLocChM).Select(x => new AssetId { RefId = x.AiPkRefNo, AssestyID = x.AiAssetId, Rmu = x.AiRmuCode, SectionCode = x.AiSecCode, RoadCode = x.AiRdCode }).ToListAsync();
         }
     }
 }
