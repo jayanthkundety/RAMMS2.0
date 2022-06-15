@@ -13,6 +13,7 @@ namespace RAMMS.Domain.Models
 
         public int Fg1hPkRefNo { get; set; }
         public string Fg1hRefNo { get; set; }
+        public int? FgihAiPkRefNo { get; set; }
         public string Fg1hAssetId { get; set; }
         public string Fg1hDivCode { get; set; }
         public string Fg1hRmuCode { get; set; }
@@ -30,30 +31,26 @@ namespace RAMMS.Domain.Models
         public bool? Fg1hPrkPosition { get; set; }
         public bool? Fg1hAccessibility { get; set; }
         public bool? Fg1hPotentialHazards { get; set; }
-        public bool? Fg1hInspBarrier { get; set; }
-        public bool? Fg1hInspBarrierCritical { get; set; }
-        public bool? Fg1hInspBarrierClosed { get; set; }
-        public bool? Fg1hInspGBeam { get; set; }
-        public bool? Fg1hInspGBeamCritical { get; set; }
-        public bool? Fg1hInspGBeamClosed { get; set; }
-        public bool? Fg1hInspGColumn { get; set; }
-        public bool? Fg1hInspGColumnCritical { get; set; }
-        public bool? Fg1hInspGColumnClosed { get; set; }
-        public bool? Fg1hInspFootings { get; set; }
-        public bool? Fg1hInspFootingsCritical { get; set; }
-        public bool? Fg1hInspFootingsClosed { get; set; }
-        public bool? Fg1hInspGPads { get; set; }
-        public bool? Fg1hInspGPadsCritical { get; set; }
-        public bool? Fg1hInspGPadsClosed { get; set; }
-        public bool? Fg1hInspMaintenance { get; set; }
-        public bool? Fg1hInspMaintenanceCritical { get; set; }
-        public bool? Fg1hInspMaintenanceClosed { get; set; }
-        public bool? Fg1hInspStaticSigns { get; set; }
-        public bool? Fg1hInspStaticSignsCritical { get; set; }
-        public bool? Fg1hInspStaticSignsClosed { get; set; }
-        public bool? Fg1hInspVms { get; set; }
-        public bool? Fg1hInspVmsCritical { get; set; }
-        public bool? Fg1hInspVmsClosed { get; set; }
+        public string Fg1hInspBarrier { get; set; }
+        public string Fg1hInspGBeam { get; set; }
+        public string Fg1hInspGColumn { get; set; }
+        public string Fg1hInspFootings { get; set; }
+        public string Fg1hInspGPads { get; set; }
+        public string Fg1hInspMaintenance { get; set; }
+        public string Fg1hInspStaticSigns { get; set; }
+        public string Fg1hInspVms { get; set; }
+        public int? Fg1hInspectedBy { get; set; }
+        public string Fg1hInspectedName { get; set; }
+        public string Fg1hInspectedDesig { get; set; }
+        public DateTime? Fg1hInspectedDt { get; set; }
+        public bool? Fg1hInspectedSign { get; set; }
+        public int? Fg1hCondRating { get; set; }
+        public bool? Fg1hIssuesFound { get; set; }
+        public int? Fg1hAuditedBy { get; set; }
+        public string Fg1hAuditedName { get; set; }
+        public string Fg1hAuditedDesig { get; set; }
+        public DateTime? Fg1hAuditedDt { get; set; }
+        public bool? Fg1hAuditedSign { get; set; }
         public int? Fg1hModBy { get; set; }
         public DateTime? Fg1hModDt { get; set; }
         public int? Fg1hCrBy { get; set; }

@@ -119,35 +119,37 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             return await _repo.GetExitingPhotoType(headerId);
         }
-        public async Task<RmFormGImages> AddImage(FormC1C2ImageDTO imageDTO)
+        public async Task<RmFormGImages> AddImage(FormGImagesDTO imageDTO)
         {
             RmFormGImages image = _mapper.Map<RmFormGImages>(imageDTO);
             return await _repo.AddImage(image);
         }
-        public async Task<(IList<RmFormGImages>, int)> AddMultiImage(IList<FormC1C2ImageDTO> imagesDTO)
+        public async Task<(IList<RmFormGImages>, int)> AddMultiImage(IList<FormGImagesDTO> imagesDTO)
         {
             IList<RmFormGImages> images = new List<RmFormGImages>();
             foreach (var img in imagesDTO)
             {
-                var count = await _repo.ImageCount(img.ImageTypeCode, img.hPkRefNo.Value);
+                var count = await _repo.ImageCount(img.ImageTypeCode, img.Fg1hPkRefNo.Value);
                 if (count > 2)
                 {
                     return (null, -1);
                 }
-
-                images.Add(_mapper.Map<RmFormGImages>(img));
+                var imgs = _mapper.Map<RmFormGImages>(img);
+                imgs.FgiPkRefNo = img.PkRefNo;
+                imgs.FgiFg1hPkRefNo = img.Fg1hPkRefNo;
+                images.Add(imgs);
             }
             return (await _repo.AddMultiImage(images), 1);
         }
-        public List<FormC1C2ImageDTO> ImageList(int headerId)
+        public List<FormGImagesDTO> ImageList(int headerId)
         {
             List<RmFormGImages> lstImages = _repo.ImageList(headerId).Result;
-            List<FormC1C2ImageDTO> lstResult = new List<FormC1C2ImageDTO>();
+            List<FormGImagesDTO> lstResult = new List<FormGImagesDTO>();
             if (lstImages != null && lstImages.Count > 0)
             {
                 lstImages.ForEach((RmFormGImages img) =>
                 {
-                    lstResult.Add(_mapper.Map<FormC1C2ImageDTO>(img));
+                    lstResult.Add(_mapper.Map<FormGImagesDTO>(img));
                 });
             }
             return lstResult;
@@ -617,34 +619,5 @@ namespace RAMMS.Business.ServiceProvider.Services
         //    return await _repo.GetCVId(request);
         //}
 
-        Task<List<FormG1G2PhotoTypeDTO>> IFormG1G2Service.GetExitingPhotoType(int headerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RmFormGImages> AddImage(FormGImagesDTO imageDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<(IList<RmFormGImages>, int)> AddMultiImage(IList<FormGImagesDTO> imagesDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        List<FormGImagesDTO> IFormG1G2Service.ImageList(int headerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<RmFormCvInsImage> IFormG1G2Service.AddImage(FormGImagesDTO imageDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<(IList<RmFormCvInsImage>, int)> IFormG1G2Service.AddMultiImage(IList<FormGImagesDTO> imagesDTO)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

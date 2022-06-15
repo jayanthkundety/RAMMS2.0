@@ -8,11 +8,10 @@ namespace RAMMS.Domain.Models
         public int Ff3dPkRefNo { get; set; }
         public int? Ff3dFf3hPkRefNo { get; set; }
         public string Ff3dAssetId { get; set; }
-        public int? RdmFrmCh { get; set; }
-        public int? RdmFrmChDeci { get; set; }
-        public int? RdmToCh { get; set; }
-        public int? RdmToChDeci { get; set; }
+        public int? Ff3dLocCh { get; set; }
+        public int? Ff3dLocChDeci { get; set; }
         public string Ff3dCode { get; set; }
+        public string Ff3dBound { get; set; }
         public int? Ff3dConditionI { get; set; }
         public int? Ff3dConditionIi { get; set; }
         public int? Ff3dConditionIii { get; set; }

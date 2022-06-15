@@ -144,6 +144,8 @@ namespace RAMMS.Repository
                              RoadName = hdr.Fg1hRdName,
                              RoadId = rdcode.RdmRdCdSort,// asset.AiRdmPkRefNoNavigation.RdmRdCdSort,
                              LocationCH = Convert.ToDecimal((hdr.Fg1hLocChKm.HasValue ? hdr.Fg1hLocChKm.Value.ToString() : "") + "." + hdr.Fg1hLocChM),
+                             InspectedBy = hdr.Fg1hInspectedName,
+                             AuditedBy = hdr.Fg1hAuditedName,
                              Active = hdr.Fg1hActiveYn,
                              Status = (hdr.Fg1hSubmitSts ? "Submitted" : "Saved"),
                              ProcessStatus = hdr.Fg1hStatus
@@ -290,9 +292,5 @@ namespace RAMMS.Repository
         //    return resultlst;
         //}
 
-        Task<List<FormG1G2PhotoTypeDTO>> IFormG1Repository.GetExitingPhotoType(int headerId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

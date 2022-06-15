@@ -13,7 +13,7 @@
 }
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @section Scripts{
-<script type="text/javascript" src="~/assets/js/Views/FormG1G2.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/js/FormG1G2.js" asp-append-version="true"></script>
 }
 
 @*@{
@@ -242,8 +242,7 @@
     }
 
     function EditformG1G2(pid,view) {
-        window.location = "@Url.Action("EidtFormG1G2", "FormG1G2")" +
-            "?id=" + pid + "&view=" + view;
+        window.location = "@Url.Action("Add", "FormG1G2")";
     }
 
     function DeleteHeaderRecord(pkId) {
