@@ -1,5 +1,7 @@
 ﻿ 
 using RAMMS.Domain.Models;
+using RAMMS.DTO;
+using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
 using System;
@@ -14,6 +16,9 @@ namespace RAMMS.Repository.Interfaces
     {
         //   Task<IEnumerable<RmFormF3Dtl>> FindFormF3DtlByID(int Id);
 
+
+        Task<long> GetFilteredRecordCount(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions);
+        Task<List<FormF2HeaderRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions);
         Task<List<FormF3DtlGridDTO>> GetFormF3DtlGridList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions);
 
          List<RmAllassetInventory> GetAssetDetails(string Source);

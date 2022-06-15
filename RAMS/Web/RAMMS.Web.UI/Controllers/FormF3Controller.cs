@@ -136,8 +136,8 @@ namespace RAMMS.Web.UI.Controllers
             }
             filteredPagingDefinition.RecordsPerPage = searchData.length; //Convert.ToInt32(Request.Form["length"]);
             filteredPagingDefinition.StartPageNo = searchData.start; //Convert.ToInt32(Request.Form["start"]); //TODO
-                                                                     //  var result = await formF3Service.GetHeaderList(filteredPagingDefinition);
-                                                                     // return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+            var result = await _formF3Service.GetHeaderList(filteredPagingDefinition);
+            return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
 
             return null;
         }
@@ -196,7 +196,7 @@ namespace RAMMS.Web.UI.Controllers
                 //frm.RefNoDS = _formF3Service.FindRefNoFromG1(frm.FormF3);
 
 
-                //return Json(new { FormExist = frm.FormF3.FormExist, RefId = frm.FormF3.RefId, PkRefNo = frm.FormF3.PkRefNo, Status = frm.FormF3.Status, Source = frm.FormF3.Source, RefNoDS = frm.RefNoDS, S1RefNo = frm.FormF3.S1HPkRefNo });
+                return Json(new { FormExist = frm.FormF3.FormExist, RefId = frm.FormF3.PkRefId, PkRefNo = frm.FormF3.PkRefNo, Status = frm.FormF3.Status, Source = frm.FormF3.Source });
             }
             else
             {

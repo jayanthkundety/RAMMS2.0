@@ -7,6 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public int FgiPkRefNo { get; set; }
         public int? FgiFg1hPkRefNo { get; set; }
+        public string FgiImgRefId { get; set; }
         public string FgiImageTypeCode { get; set; }
         public int? FgiImageSrno { get; set; }
         public string FgiImageFilenameSys { get; set; }

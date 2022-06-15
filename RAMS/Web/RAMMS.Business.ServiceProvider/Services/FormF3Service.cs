@@ -11,6 +11,7 @@ using RAMMS.Business.ServiceProvider.Interfaces;
 using RAMMS.Common;
 using RAMMS.Common.RefNumber;
 using RAMMS.Domain.Models;
+using RAMMS.DTO;
 using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.Report;
 using RAMMS.DTO.RequestBO;
@@ -55,6 +56,16 @@ namespace RAMMS.Business.ServiceProvider.Services
         //    return _mapper.Map<IEnumerable<FormF3DtlResponseDTO>>(formF3Dtl);
         //}
 
+        public async Task<PagingResult<FormF2HeaderRequestDTO>> GetHeaderList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions)
+        {
+            PagingResult<FormF2HeaderRequestDTO> result = new PagingResult<FormF2HeaderRequestDTO>();
+            List<FormF2HeaderRequestDTO> formAlist = new List<FormF2HeaderRequestDTO>();
+            result.PageResult = await _repo.GetFilteredRecordList(filterOptions);
+            result.TotalRecords = await _repo.GetFilteredRecordCount(filterOptions);
+            result.PageNo = filterOptions.StartPageNo;
+            result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            return result;
+        }
 
         public async Task<PagingResult<FormF3DtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions)
         {

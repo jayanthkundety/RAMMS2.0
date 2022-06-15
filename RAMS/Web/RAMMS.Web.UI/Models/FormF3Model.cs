@@ -18,15 +18,10 @@ namespace RAMMS.Web.UI.Models
 
         public FormF3DtlResponseDTO FormF3Dtl { get; set; }
 
-        public List<SelectListItem> RefNoDS { get; set; }
-
+       
         public int view { get; set; }
 
-        public FormF3Model()
-        {
-            RefNoDS = new List<SelectListItem>();
-        }
-
+       
 
     }
 }

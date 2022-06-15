@@ -6220,6 +6220,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Ff3hSource)
+                    .HasColumnName("FF3H_Source")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Ff3hStatus)
                     .HasColumnName("FF3H_Status")
                     .HasMaxLength(50)
@@ -7243,6 +7248,24 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.Fg1hAuditLog).HasColumnName("FG1H_AuditLog");
 
+                entity.Property(e => e.Fg1hAuditedBy).HasColumnName("FG1H_Audited_By");
+
+                entity.Property(e => e.Fg1hAuditedDesig)
+                    .HasColumnName("FG1H_Audited_Desig")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Fg1hAuditedDt)
+                    .HasColumnName("FG1H_Audited_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Fg1hAuditedName)
+                    .HasColumnName("FG1H_Audited_Name")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Fg1hAuditedSign).HasColumnName("FG1H_Audited_Sign");
+
+                entity.Property(e => e.Fg1hCondRating).HasColumnName("FG1H_Cond_Rating");
+
                 entity.Property(e => e.Fg1hCrBy).HasColumnName("FG1H_CR_By");
 
                 entity.Property(e => e.Fg1hCrDt)
@@ -7266,53 +7289,63 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FG1H_GPS_Northing")
                     .HasColumnType("decimal(6, 3)");
 
-                entity.Property(e => e.Fg1hInspBarrier).HasColumnName("FG1H_Insp_Barrier");
+                entity.Property(e => e.Fg1hInspBarrier)
+                    .HasColumnName("FG1H_Insp_Barrier")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspBarrierClosed).HasColumnName("FG1H_Insp_Barrier_Closed");
+                entity.Property(e => e.Fg1hInspFootings)
+                    .HasColumnName("FG1H_Insp_Footings")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspBarrierCritical).HasColumnName("FG1H_Insp_Barrier_Critical");
+                entity.Property(e => e.Fg1hInspGBeam)
+                    .HasColumnName("FG1H_Insp_G_Beam")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspFootings).HasColumnName("FG1H_Insp_Footings");
+                entity.Property(e => e.Fg1hInspGColumn)
+                    .HasColumnName("FG1H_Insp_G_Column")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspFootingsClosed).HasColumnName("FG1H_Insp_Footings_Closed");
+                entity.Property(e => e.Fg1hInspGPads)
+                    .HasColumnName("FG1H_Insp_G_Pads")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspFootingsCritical).HasColumnName("FG1H_Insp_Footings_Critical");
+                entity.Property(e => e.Fg1hInspMaintenance)
+                    .HasColumnName("FG1H_Insp_Maintenance")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspGBeam).HasColumnName("FG1H_Insp_G_Beam");
+                entity.Property(e => e.Fg1hInspStaticSigns)
+                    .HasColumnName("FG1H_Insp_Static_Signs")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspGBeamClosed).HasColumnName("FG1H_Insp_G_Beam_Closed");
+                entity.Property(e => e.Fg1hInspVms)
+                    .HasColumnName("FG1H_Insp_VMS")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Fg1hInspGBeamCritical).HasColumnName("FG1H_Insp_G_Beam_Critical");
+                entity.Property(e => e.Fg1hInspectedBy).HasColumnName("FG1H_Inspected_By");
 
-                entity.Property(e => e.Fg1hInspGColumn).HasColumnName("FG1H_Insp_G_Column");
+                entity.Property(e => e.Fg1hInspectedDesig)
+                    .HasColumnName("FG1H_Inspected_Desig")
+                    .HasMaxLength(100);
 
-                entity.Property(e => e.Fg1hInspGColumnClosed).HasColumnName("FG1H_Insp_G_Column_Closed");
+                entity.Property(e => e.Fg1hInspectedDt)
+                    .HasColumnName("FG1H_Inspected_DT")
+                    .HasColumnType("datetime");
 
-                entity.Property(e => e.Fg1hInspGColumnCritical).HasColumnName("FG1H_Insp_G_Column_Critical");
+                entity.Property(e => e.Fg1hInspectedName)
+                    .HasColumnName("FG1H_Inspected_Name")
+                    .HasMaxLength(100);
 
-                entity.Property(e => e.Fg1hInspGPads).HasColumnName("FG1H_Insp_G_Pads");
+                entity.Property(e => e.Fg1hInspectedSign).HasColumnName("FG1H_Inspected_Sign");
 
-                entity.Property(e => e.Fg1hInspGPadsClosed).HasColumnName("FG1H_Insp_G_Pads_Closed");
-
-                entity.Property(e => e.Fg1hInspGPadsCritical).HasColumnName("FG1H_Insp_G_Pads_Critical");
-
-                entity.Property(e => e.Fg1hInspMaintenance).HasColumnName("FG1H_Insp_Maintenance");
-
-                entity.Property(e => e.Fg1hInspMaintenanceClosed).HasColumnName("FG1H_Insp_Maintenance_Closed");
-
-                entity.Property(e => e.Fg1hInspMaintenanceCritical).HasColumnName("FG1H_Insp_Maintenance_Critical");
-
-                entity.Property(e => e.Fg1hInspStaticSigns).HasColumnName("FG1H_Insp_Static_Signs");
-
-                entity.Property(e => e.Fg1hInspStaticSignsClosed).HasColumnName("FG1H_Insp_Static_Signs_Closed");
-
-                entity.Property(e => e.Fg1hInspStaticSignsCritical).HasColumnName("FG1H_Insp_Static_Signs_Critical");
-
-                entity.Property(e => e.Fg1hInspVms).HasColumnName("FG1H_Insp_VMS");
-
-                entity.Property(e => e.Fg1hInspVmsClosed).HasColumnName("FG1H_Insp_VMS_Closed");
-
-                entity.Property(e => e.Fg1hInspVmsCritical).HasColumnName("FG1H_Insp_VMS_Critical");
+                entity.Property(e => e.Fg1hIssuesFound).HasColumnName("FG1H_Issues_Found");
 
                 entity.Property(e => e.Fg1hLocChKm).HasColumnName("FG1H_Loc_CH_KM");
 
@@ -7367,6 +7400,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fg1hSubmitSts).HasColumnName("FG1H_SUBMIT_STS");
 
                 entity.Property(e => e.Fg1hYearOfInsp).HasColumnName("FG1H_Year_Of_Insp");
+
+                entity.Property(e => e.FgihAiPkRefNo).HasColumnName("FGIH_AI_PK_Ref_No");
             });
 
             modelBuilder.Entity<RmFormG2Hdr>(entity =>
@@ -7378,8 +7413,6 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fg2hPkRefNo).HasColumnName("FG2H_PK_Ref_No");
 
                 entity.Property(e => e.Fg2hActiveYn).HasColumnName("FG2H_Active_YN");
-
-                entity.Property(e => e.Fg2hAuditLog).HasColumnName("FG2H_AuditLog");
 
                 entity.Property(e => e.Fg2hCrBy).HasColumnName("FG2H_CR_By");
 
@@ -7394,18 +7427,6 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fg2hDistressSp)
                     .HasColumnName("FG2H_Distress_SP")
                     .HasMaxLength(500);
-
-                entity.Property(e => e.Fg2hEcDesignation)
-                    .HasColumnName("FG2H_EC_Designation")
-                    .HasMaxLength(250);
-
-                entity.Property(e => e.Fg2hEcInspDate)
-                    .HasColumnName("FG2H_EC_Insp_Date")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fg2hEcName)
-                    .HasColumnName("FG2H_EC_Name")
-                    .HasMaxLength(100);
 
                 entity.Property(e => e.Fg2hFeedbackEc)
                     .HasColumnName("FG2H_Feedback_EC")
@@ -7425,35 +7446,11 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FG2H_General_SP")
                     .HasMaxLength(500);
 
-                entity.Property(e => e.Fg2hInspectedBy).HasColumnName("FG2H_Inspected_By");
-
-                entity.Property(e => e.Fg2hInspectedBySign).HasColumnName("FG2H_Inspected_By_Sign");
-
-                entity.Property(e => e.Fg2hIssuesFound).HasColumnName("FG2H_Issues_Found");
-
                 entity.Property(e => e.Fg2hModBy).HasColumnName("FG2H_Mod_By");
 
                 entity.Property(e => e.Fg2hModDt)
                     .HasColumnName("FG2H_Mod_DT")
                     .HasColumnType("datetime");
-
-                entity.Property(e => e.Fg2hRating).HasColumnName("FG2H_Rating");
-
-                entity.Property(e => e.Fg2hSpDesignation)
-                    .HasColumnName("FG2H_SP_Designation")
-                    .HasMaxLength(250);
-
-                entity.Property(e => e.Fg2hSpInspDate)
-                    .HasColumnName("FG2H_SP_Insp_Date")
-                    .HasColumnType("datetime");
-
-                entity.Property(e => e.Fg2hSpName)
-                    .HasColumnName("FG2H_SP_Name")
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.Fg2hStatus)
-                    .HasColumnName("FG2H_Status")
-                    .HasMaxLength(30);
 
                 entity.Property(e => e.Fg2hSubmitSts).HasColumnName("FG2H_SUBMIT_STS");
 
@@ -7501,6 +7498,11 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FgiImageUserFilePath)
                     .HasColumnName("FGI_image_user_filePath")
                     .HasMaxLength(250);
+
+                entity.Property(e => e.FgiImgRefId)
+                    .HasColumnName("FGI_Img_Ref_ID")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
 
                 entity.Property(e => e.FgiModBy).HasColumnName("FGI_Mod_By");
 

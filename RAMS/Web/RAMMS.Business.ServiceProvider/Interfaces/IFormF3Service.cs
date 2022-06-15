@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using RAMMS.DTO;
 using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
@@ -15,7 +16,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         //Task<FormF3ResponseDTO> FindFormF3ByID(int id);
         //Task<IEnumerable<FormF3DtlResponseDTO>> FindFormF3DtlByID(int id);
 
-        // Task<PagingResult<FormF2HeaderRequestDTO>> GetHeaderList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions);
+        Task<PagingResult<FormF2HeaderRequestDTO>> GetHeaderList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions);
 
         Task<PagingResult<FormF3DtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions);
 

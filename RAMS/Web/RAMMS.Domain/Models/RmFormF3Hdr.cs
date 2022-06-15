@@ -19,6 +19,7 @@ namespace RAMMS.Domain.Models
         public string Ff3hRdCode { get; set; }
         public string Ff3hSecCode { get; set; }
         public string Ff3hSecName { get; set; }
+        public string Ff3hSource { get; set; }
         public string Ff3hRdName { get; set; }
         public string Ff3hCrewSup { get; set; }
         public string Ff3hCrewName { get; set; }

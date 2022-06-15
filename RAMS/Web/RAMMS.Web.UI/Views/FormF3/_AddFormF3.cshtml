@@ -45,6 +45,7 @@
            Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
            Value = s.DdlTypeCode
        }).ToArray();
+  
     IEnumerable<SelectListItem>
     user = (await usr.GetUserNameRespectToPosition(new UserRequestDTO
     {
@@ -70,7 +71,7 @@
                     <div class="d-flex justify-content-center pt-3 pb-3">
                         <div id="" class="form-group mb-0">
                             @Html.Label("Form F3 No.", "Form F3 No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
-                            <input id="txtHReferenceNo" disabled value="@Model.FormF3.PkRefNo" class="form-control validate {required, Reference No. }" style="width:300px;" type="text">
+                            @Html.TextBoxFor(model => model.FormF3.PkRefId, new { @readonly = "true", @class = "form-control", @style = "width:300px;" })
                         </div>
                     </div>
                     <div class="clear-b"></div>
@@ -99,25 +100,25 @@
                                     <div class="form-group col-md-3">
                                         @Html.Label("Section Code", "Section Code")
 
-                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.SecCode, (IEnumerable<SelectListItem>)ViewData["SectionCode"], "Select Section Code", new { @Id = "ddlSection", @class = "form-control validate {required, Section Code}" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.SecCode, section , "Select Section Code", new { @Id = "ddlSection", @class = "form-control validate {required, Section Code}" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Section Name", "Section Name")
-                                        <input id="txtSectionName" disabled class="form-control" />
+                                        @Html.TextBoxFor(model => model.FormF3.SecName, new { @readonly = true, @class = "form-control" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Road Code", "Road Code")
-                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.RdCode, (IEnumerable<SelectListItem>)roadcode, "Select RoadCode", new { @Id = "ddlRoadCode", @class = "form-control validate {required, Road Code}" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.RdCode, roadcode, "Select RoadCode", new { @Id = "ddlRoadCode", @class = "form-control validate {required, Road Code}" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Road Name", "Road Name")
                                         @*<input id="txtRoadName" disabled="disabled" type="text" class="form-control" />*@
-                                        @Html.TextBoxFor(model => model.FormF3.RdName, new { @id = "txtRoadName", @readonly = true, @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.FormF3.RdName, new { @readonly = true, @class = "form-control" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Road Length (km)", "Road Length (km)")
                                         @*<input id="txtRoadlength" disabled="disabled" type="text" value="@Model.FormF3.RoadLength" class="form-control" />*@
-                                        @Html.TextBoxFor(model => model.FormF3.RoadLength, new { @id = "txtRoadlength", @readonly = true, @class = "form-control" })
+                                        @Html.TextBoxFor(model => model.FormF3.RoadLength, new { @readonly = true, @class = "form-control" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
@@ -125,7 +126,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Source", "Source")
-                                        @Html.DropDownListFor(Adtl => Adtl.FormF3.Source, (new List<SelectListItem> { new SelectListItem { Text = "New Sinages", Value = "New" }, new SelectListItem { Text = "Form G1/G2", Value = "G1G2" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control" })
+                                        @Html.DropDownListFor(Adtl => Adtl.FormF3.Source, (new List<SelectListItem> { new SelectListItem { Text = "New Sinages", Value = "New" }, new SelectListItem { Text = "Form G1/G2", Value = "G1G2" } }), "Select Source", new { @Id = "ddlSource", @class = "form-control validate {required, Source }" })
                                     </div>
 
 
@@ -159,7 +160,7 @@
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Name", "Name")
                                     @*<input id="txtCrewLeaderName" type="text" value="@Model.FormF3.CrewLeaderName" class="form-control svalidate {req,Crew leader Name}" disabled />*@
-                                    @Html.TextBoxFor(model => model.FormF3.CrewName, new { @id = "txtCrewLeaderName", @readonly = true, @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.FormF3.CrewName, new { @readonly = true, @class = "form-control" })
                                 </div>
                             </div>
                         </div>
@@ -176,7 +177,7 @@
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Name", "Name")
                                     @*<input id="txtInspectedbyName" type="text" value="@Model.FormF3.UserNameInspBy" class="form-control svalidate {req,Inspected by User Name}" disabled />*@
-                                    @Html.TextBoxFor(model => model.FormF3.CrewName, new { @id = "txtInspectedbyName", @readonly = true, @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.FormF3.CrewName, new { @readonly = true, @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Road Length", "Road Length")
@@ -389,13 +390,16 @@
     @Html.HiddenFor(m => m.FormF3.SubmitSts)
     @Html.HiddenFor(m => m.FormF3Dtl.AssetID)
 
-    @*<input type="hidden" id="hdnSecCode" value="@Model.FormF3.SecCode" />
-        <input type="hidden" id="hdnView" value="@Model.FormF3.view" />*@
+    <input type="hidden" id="hdnSecCode" value="@Model.FormF3.SecCode" />
+    <input type="hidden" id="hdnRdCode" value="@Model.FormF3.RdCode" />
+    <input type="hidden" id="hdnView" value="@Model.view" />
 
 
 }
 
 <script>
+
+    bindRoadCode();
 
     $('#ddlDivision').val("@Model.FormF3.DivCode");
     $('#ddlDivision').trigger('chosen:updated');
@@ -417,6 +421,9 @@
     $('#ddlYear').trigger('chosen:updated');
     $('#ddlYear').trigger("change");
 
+    $('#ddlSource').val("@Model.FormF3.Source");
+    $('#ddlSource').trigger('chosen:updated');
+    $('#ddlSource').trigger("change");
 
     $('#ddlCrew').val("@Model.FormF3.CrewSup");
     $('#ddlCrew').trigger('chosen:updated');

@@ -1,18 +1,18 @@
 ﻿
 var _hd = {
-    txtHReferenceNo: $("#txtHReferenceNo"),
+    FormF3_PkRefId: $("#FormF3_PkRefId"),
     ddlDivision: $("#ddlDivision"),
     txtDist: $("#txtDist"),
     txtRmu: $("#txtRmu"),
     ddlYear: $("#ddlYear"),
     ddlRoadCode: $("#ddlRoadCode"),
-    txtRoadName: $("#txtRoadName"),
-    txtRoadlength: $("#txtRoadlength"),
+    txtRoadName: $("#FormF3_RdName"),
+    FormF3_RoadLength: $("#FormF3_RoadLength"),
     btnFindDetails: $("#btnFindDetails"),
     ddlCrewleader: $("#ddlCrewleader"),
-    txtCrewLeaderName: $("#txtCrewLeaderName"),
+    FormF3_CrewName: $("#FormF3_CrewName"),
     ddlInspectedby: $("#ddlInspectedby"),
-    txtInspectedbyName: $("#txtInspectedbyName"),
+    FormF3_CrewName: $("#FormF3_CrewName"),
     txtInspectedDesignation: $("#txtInspectedDesignation"),
     txtInspectedDate: $("#txtInspectedDate"),
     btnHCancel: $("#btnHCancel"),
@@ -27,47 +27,32 @@ var _hd = {
     hdnRoadCodeText: $("#hdnRoadCodeText"),
     ddlRMU: $("#ddlRMU"),
     ddlSection: $("#ddlSection"),
-    txtSectionName: $("#txtSectionName"),
+    FormF3_SecName: $("#FormF3_SecName"),
     hdnRoadCode: $("#hdnRoadCode")
 }
 
-var _dt = {
-    btnDCancel: $("#btnDCancel"),
-    btnDSaveAndContinue: $("#btnDSaveAndContinue"),
-    btnDSaveAndExit: $("#btnDSaveAndExit"),
-    txtRemarks: $("#txtRemarks"),
-    txtCondition3: $("#txtCondition3"),
-    txtCondition2: $("#txtCondition2"),
-    txtCondition1: $("#txtCondition1"),
-    txtPostspacing: $("#txtPostspacing"),
-    txtBound: $("#txtBound"),
-    txtStructurecode: $("#txtStructurecode"),
-    txtStartinchKm: $("#txtStartinchKm"),
-    txtStartinchM: $("#txtStartinchM"),
-    txtDReferenceNo: $("#txtDReferenceNo"),
-    IsView: $("#IsDView"),
-    hdnDetailPkNo: $("#hdnDetailPkNo"),
-    txtLength: $("#txtLength")
-};
+
 
 $(document).ready(function () {
 
- 
+    //   DisableHeader();
+
+
     $("#ddlInspectedby").on("change", function () {
         var value = this.value;
 
         if (value == "") {
-            $("#txtInspectedbyName").val('');
-            $("#txtInspectedbyName").attr("readonly", "true");
+            $("#FormF3_CrewName").val('');
+            $("#FormF3_CrewName").attr("readonly", "true");
         }
         else if (value == "99999999") {
-            $("#txtInspectedbyName").val('');
-            $("#txtInspectedbyName").removeAttr("readonly");
+            $("#FormF3_CrewName").val('');
+            $("#FormF3_CrewName").removeAttr("readonly");
         }
         else {
             getUserDetail(value, function (data) {
-                $("#txtInspectedbyName").val(data.userName);
-                $("#txtInspectedbyName").attr("readonly", "true");
+                $("#FormF3_CrewName").val(data.userName);
+                $("#FormF3_CrewName").attr("readonly", "true");
             });
         }
     });
@@ -77,17 +62,17 @@ $(document).ready(function () {
         var value = this.value;
 
         if (value == "") {
-            $("#txtCrewLeaderName").val('');
-            $("#txtCrewLeaderName").attr("readonly", "true");
+            $("#FormF3_CrewName").val('');
+            $("#FormF3_CrewName").attr("readonly", "true");
         }
         else if (value == "99999999") {
-            $("#txtCrewLeaderName").val('');
-            $("#txtCrewLeaderName").removeAttr("readonly");
+            $("#FormF3_CrewName").val('');
+            $("#FormF3_CrewName").removeAttr("readonly");
         }
         else {
             getUserDetail(value, function (data) {
-                $("#txtCrewLeaderName").val(data.userName);
-                $("#txtCrewLeaderName").attr("readonly", "true");
+                $("#FormF3_CrewName").val(data.userName);
+                $("#FormF3_CrewName").attr("readonly", "true");
             });
         }
     });
@@ -97,17 +82,17 @@ $(document).ready(function () {
     $("#ddlRMU").on("change", function () {
         // 
 
-        $("#txtRoadlength").val("");
+        $("#FormF3_RoadLength").val("");
 
         if (this.value == "") {
-            $("#txtHReferenceNo").val("");
-            $("#txtRoadlength").val("");
+            $("#FormF3_PkRefId").val("");
+            $("#FormF3_RoadLength").val("");
             _hd.ddlSection.val("");
             _hd.ddlRMU.trigger("chosen:updated");
             _hd.ddlSection.trigger("chosen:updated");
             _hd.ddlRoadCode.val("").trigger("chosen:updated");
-            $("#txtRoadName").val("");
-            $("#txtSectionName").val("");
+            $("#FormF3_RdName").val("");
+            $("#FormF3_SecName").val("");
             // bindRMU();
             bindSection();
             bindRoadCode();
@@ -120,33 +105,20 @@ $(document).ready(function () {
 
     $("#ddlSection").on("change", function () {
 
-        $("#txtRoadlength").val("");
+        $("#FormF3_RoadLength").val("");
         bindRoadCode();
         if (this.value == "") {
-            $("#txtSectionName").val("");
-            $("#txtHReferenceNo").val("");
-            $("#txtRoadlength").val("");
+            $("#FormF3_SecName").val("");
+            $("#FormF3_PkRefId").val("");
+            $("#FormF3_RoadLength").val("");
         }
         else {
-            $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
+            $("#FormF3_SecName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
 
         }
     });
 
-    _hd.btnFindDetails.on("click", function () {
-        debugger;
-        if (_hd.IsAlreadyExists.val() == "1") {
-            window.location.href = "/FormF2/Add?id=" + _hd.HdnHeaderPkId.val() + "&isview=0";
-        }
-        else {
 
-            if (ValidatePage(_hd.ValidateFind)) {
-                saveHeader(false);
-            }
-
-        }
-
-    });
 
 
     _hd.btnHCancel.on("click", function () {
@@ -168,25 +140,24 @@ $(document).ready(function () {
 
     $("#ddlRoadCode").on("change", function () {
 
-         
+
         var value = this.value;
         if (value != "") {
             bindRoadLength(value);
 
             bindRoadDetail(value, function (data) {
 
-                $("#txtRoadName").val(data.roadName);
+                $("#FormF3_RdName").val(data.roadName);
             });
             generateHeaderReference();
 
 
         }
         else {
-            $("#txtRoadName").val("");
-            $("#txtHReferenceNo").val("");
-            $("#txtRoadlength").val("");
-            //_hd.txtDist.val("");
-            //_hd.txtDivCode.val("");
+            $("#FormF3_RdName").val("");
+            $("#FormF3_PkRefId").val("");
+            $("#FormF3_RoadLength").val("");
+
         }
     });
 
@@ -204,8 +175,8 @@ function bindRMU(callback) {
     req.RdCode = '';
     req.GrpCode = "GR"
     $("#txtRmu").val("");
-    $("#txtSectionName").val("");
-    $("#txtRoadName").val("");
+    $("#FormF3_SecName").val("");
+    $("#FormF3_RdName").val("");
 
     $.ajax({
         url: '/FormF2/RMUSecRoad',
@@ -232,6 +203,8 @@ function bindRMU(callback) {
 }
 
 function bindSection(callback) {
+
+
     // 
     var req = {};
     var _rmu = $("#ddlRMU");
@@ -241,8 +214,8 @@ function bindSection(callback) {
     req.SectionCode = '';
     req.RdCode = '';
     req.GrpCode = "GR"
-    $("#txtRoadName").val("");
-    $("#txtSectionName").val("");
+    $("#FormF3_RdName").val("");
+    $("#FormF3_SecName").val("");
 
     $.ajax({
         url: '/FormF2/RMUSecRoad',
@@ -256,6 +229,12 @@ function bindSection(callback) {
             $.each(data.section, function (index, v) {
                 _sec.append($("<option></option>").val(v.code).html(v.text).attr("code", v.code).attr("text", v.value));
             });
+            debugger
+            if ($("#hdnSecCode").val() != "" && $("#hdnSecCode").val() != undefined) {
+                $("#ddlSection").val($("#hdnSecCode").val());
+                $("#hdnSecCode").val("");
+            }
+
             _sec.trigger("chosen:updated");
             _sec.trigger("change");
             if (callback)
@@ -272,14 +251,12 @@ function bindSection(callback) {
 function bindRoadCode(callback) {
 
     var req = {};
-    var _rmu = $("#ddlRMU");
-    var _sec = $("#ddlSection");
-    var _road = $("#ddlRoadCode");
+     var _road = $("#ddlRoadCode");
     req.RMU = _hd.ddlRMU.val();
     req.SectionCode = _hd.ddlSection.val();
     req.RdCode = '';
     req.GrpCode = "GR"
-    $("#txtRoadName").val("");
+    $("#FormF3_RdName").val("");
 
     $.ajax({
         url: '/FormF2/RMUSecRoad',
@@ -294,7 +271,13 @@ function bindRoadCode(callback) {
                 _road.append($("<option></option>").val(v.value).html(v.text));
                 // _road.append($("<option></option>").val(v.value).html(v.text).attr("Item1", v.item1).attr("Item3", v.item3).attr("PKId", v.pkId).attr("code", v.code));
             });
+
+            if ($("#hdnRdCode").val() != "" && $("#hdnRdCode").val() != undefined) {
+                $("#ddlRoadCode").val($("#hdnRdCode").val());
+                $("#hdnRdCode").val("");
+            }
             _road.trigger("chosen:updated");
+            _road.trigger("change");
             if (callback)
                 callback();
         },
@@ -305,6 +288,58 @@ function bindRoadCode(callback) {
     });
 }
 
+function bindRoadLength(code, callback) {
+
+    var req = {};
+    req.roadcode = code;
+    $.ajax({
+        url: '/FormF2/GetRoadLength',
+        dataType: 'JSON',
+        data: req,
+        type: 'Post',
+        success: function (data) {
+            $("#FormF3_RoadLength").val(data);
+            if (callback)
+                callback(data);
+        },
+        error: function (data) {
+
+            console.error(data);
+        }
+    });
+}
+
+function bindRoadDetail(code, callback) {
+    var req = {};
+
+    req.code = code;
+    $.ajax({
+        url: '/FormF2/GetRoadDetailByCode',
+        dataType: 'JSON',
+        data: req,
+        type: 'Post',
+        success: function (data) {
+
+            _hd.hdnRoadCode.val(data.no);
+            _hd.ddlDivision.val(data.divisionCode);
+            _hd.ddlDivision.trigger("chosen:updated");
+            _hd.ddlRMU.val(data.rmuCode);
+            _hd.ddlRMU.trigger("chosen:updated");
+            _hd.ddlSection.val(data.secCode);
+            _hd.ddlSection.trigger("chosen:updated");
+            _hd.FormF3_SecName.val(data.FormF3_SecName);
+
+            if (callback)
+                callback(data);
+        },
+        error: function (data) {
+
+            console.error(data);
+        }
+    });
+}
+
+ 
 
 function generateHeaderReference() {
     if (_hd.ddlRoadCode.val() != "" && _hd.ddlYear.val() != "") {
@@ -316,10 +351,10 @@ function generateHeaderReference() {
         else {
             var roadcode = v[0];
         }
-        $("#txtHReferenceNo").val(("CI/Form F3/" + roadcode + "/" + $("#ddlYear").val()));
+        $("#FormF3_PkRefId").val(("CI/Form F3/" + roadcode + "/" + $("#ddlYear").val()));
     }
     else {
-        $("#txtHReferenceNo").val("");
+        $("#FormF3_PkRefId").val("");
     }
 }
 
@@ -331,41 +366,31 @@ function OnAssetChange(tis) {
         $('#FormF3Dtl_AssetID').val(ctrl.val());
     if ($('#FormF3Dtl_AssetID').val() != "") {
 
-        $("#FormF3Dtl_UsernameSch").val(ctrl.find("option:selected").attr("Item1"));
-        $("#FormF3Dtl_DesignationSch").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormF3Dtl_LocCh").val(ctrl.find("option:selected").attr("FromKm"));
+        $("#FormF3Dtl_LocChDeci").val(ctrl.find("option:selected").attr("FromM"));
+        $("#FormF3Dtl_Code").val(ctrl.find("option:selected").attr("Item1"));
+        $("#FormF3Dtl_Bound").val(ctrl.find("option:selected").attr("Item2"));
+        $("#FormF3Dtl_Width").val(ctrl.find("option:selected").attr("Item3"));
+        $("#FormF3Dtl_Height").val(ctrl.find("option:selected").attr("CValue"));
 
-        if ($('#FormF3Dtl_UseridSch').val() == "99999999") {
-            $("#FormF3Dtl_UsernameSch").removeAttr("readonly");
-            $("#FormF3Dtl_DesignationSch").removeAttr("readonly");
-
-        } else {
-            $("#FormF3Dtl_UsernameSch").attr("readonly", "true");
-            $("#FormF3Dtl_DesignationSch").attr("readonly", "true");
-        }
-        $('#FormF3Dtl_SignSch').prop('checked', true);
     }
     else {
-        $("#FormF3Dtl_UsernameSch").val('');
-        $("#FormF3Dtl_DesignationSch").val('');
-        $('#FormF3Dtl_SignSch').prop('checked', false);
+        $("#FormF3Dtl_LocCh").val('');
+        $("#FormF3Dtl_LocChDeci").val('');
+        $("#FormF3Dtl_Code").val('');
+        $("#FormF3Dtl_Bound").val('');
+        $("#FormF3Dtl_Width").val('');
+        $("#FormF3Dtl_Height").val('');
     }
 }
 
 
 
- 
+
 function Save(GroupName, SubmitType) {
 
 
     if (SubmitType == "Submitted") {
-
-        if ($("#ddlSource").val() == "G1G2") {
-
-            if ($("#ddlRefNo").val() == "") {
-                app.ShowErrorMessage('please select reference no', false);
-                return;
-            }
-        }
         $("#FormF3_SubmitSts").val(true);
     }
 
@@ -378,7 +403,7 @@ function Save(GroupName, SubmitType) {
 
         InitAjaxLoading();
         EnableDisableElements(false);
-        $.get('/MAM/SaveFormF3', $("form").serialize(), function (data) {
+        $.get('/FormF3/SaveFormF3', $("form").serialize(), function (data) {
             EnableDisableElements(true)
             HideAjaxLoading();
             if (data == -1) {
@@ -388,23 +413,20 @@ function Save(GroupName, SubmitType) {
 
                 if (SubmitType == "") {
                     if (data.formExist) {
-                        location.href = "/MAM/EditFormF3?Id=" + data.pkRefNo + "&view=0";
+                        location.href = "/FormF3/Add?Id=" + data.pkRefNo + "&view=0";
                         return;
                     }
                     $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
-                    $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
                     UpdateFormAfterSave(data);
-                    // app.ShowSuccessMessage('Saved Successfully', false);
+
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
-                    $('#ddlSource').prop('disabled', true).trigger("chosen:updated");
-                    $('#ddlRefNo').prop('disabled', true).trigger("chosen:updated");
-                    location.href = "/MAM/FormF3";
+                    location.href = "/FormF3/Index";
                 }
                 else if (SubmitType == "Submitted") {
                     app.ShowSuccessMessage('Submitted Successfully', false);
-                    location.href = "/MAM/FormF3";
+                    location.href = "/FormF3/Index";
                 }
                 else if (SubmitType == "Verified") {
                     process.ShowApprove(GroupName, SubmitType);
@@ -415,10 +437,73 @@ function Save(GroupName, SubmitType) {
 
 }
 
+function SaveFormF3Dtl() {
+
+    $('#ddlAsset').prop('disabled', false).trigger("chosen:updated");
+    $('#FormF3Dtl_LocCh').attr("readonly", false);
+    $('#FormF3Dtl_LocChDeci').attr("readonly", false);
+    $('#FormF3Dtl_Code').attr("readonly", false);
+    $('#FormF3Dtl_Bound').attr("readonly", false);
+    $('#FormF3Dtl_Width').attr("readonly", false);
+    $('#FormF3Dtl_Height').attr("readonly", false);
+
+    InitAjaxLoading();
+    $.post('/FormF3/SaveFormF3Dtl', $("form").serialize(), function (data) {
+        HideAjaxLoading();
+        if (data == -1) {
+            app.ShowErrorMessage(data.errorMessage);
+        }
+        else {
+            ClearFormF3Dtl()
+
+            InitializeGrid();
+            app.ShowSuccessMessage('Saved Successfully', false);
+        }
+    });
+
+
+}
+
+function ClearFormF3Dtl() {
+    $('#ddlAsset').val("0");
+    $("#FormF3Dtl_LocCh").val('');
+    $("#FormF3Dtl_LocChDeci").val('');
+    $("#FormF3Dtl_Code").val('');
+    $("#FormF3Dtl_Bound").val('');
+    $("#FormF3Dtl_Width").val('');
+    $("#FormF3Dtl_Height").val('');
+    $("#myModal").modal("hide");
+}
+
+
+function UpdateFormAfterSave(data) {
+
+    $("#FormF3_PkRefNo").val(data.pkRefNo);
+    $("#FormF3_PkRefId").val(data.refId);
+    $("#FormF3_Status").val(data.status)
+
+    $("#hdnPkRefNo").val(data.pkRefNo);
+    $("#saveFormF3Btn").show();
+    $("#SubmitFormF3Btn").show();
+
+    DisableHeader();
+    InitializeGrid();
+}
+
+function DisableHeader() {
+    if ($("#FormF3_PkRefNo").val() != "0") {
+
+        $("#headerDiv * > select").attr('disabled', true).trigger("chosen:updated");
+
+        $("#btnFindDetails").hide();
+
+    }
+
+}
 
 function EnableDisableElements(state) {
- 
+
     $('#headerDiv * > select').prop('disabled', state).trigger("chosen:updated");
     $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
-    $('#ddlRefNo').prop('disabled', false).trigger("chosen:updated");
+
 }
