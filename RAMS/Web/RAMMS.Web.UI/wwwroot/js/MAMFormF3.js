@@ -117,21 +117,7 @@ $(document).ready(function () {
         }
     });
 
-
-
-
-    _hd.btnHCancel.on("click", function () {
-
-        if (_hd.IsView.val() == "1") {
-            window.location.href = "/FormF3";
-        }
-        else if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
-            if (e) {
-                window.location.href = "/FormF2";
-            }
-        }));
-    });
-
+     
 
     $("#ddlYear").on("change", function () {
         generateHeaderReference();
@@ -574,4 +560,18 @@ function EnableDisableElements(state) {
     $('#headerDiv * > select').prop('disabled', state).trigger("chosen:updated");
     $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
 
+}
+
+
+function GoBack() {
+    if ($("#hdnView").val() == "0") {
+        if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
+            if (e) {
+                location.href = "/FormF3";
+
+            }
+        }));
+    }
+    else
+        location.href = "/FormF3";
 }

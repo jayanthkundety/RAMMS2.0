@@ -28,6 +28,7 @@ namespace RAMMS.Domain.Models
         public DateTime? Ff3hInspectedDate { get; set; }
         public int? Ff3hInspectedBy { get; set; }
         public string Ff3hInspectedName { get; set; }
+        public string Ff3hInspectedDesig { get; set; }
         public bool? Ff3hInspectedBySign { get; set; }
         public decimal? Ff3hRoadLength { get; set; }
         public int? Ff3hConditionI { get; set; }

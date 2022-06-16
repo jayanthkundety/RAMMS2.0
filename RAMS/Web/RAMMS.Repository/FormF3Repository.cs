@@ -395,10 +395,10 @@ namespace RAMMS.Repository
 
             return list.Select(s => new FormF3DtlGridDTO
             {
-                AssetId =s.x.Ff3dAssetId,
+                AssetId = s.x.Ff3dAssetId,
                 Bound = s.a.AiBound,
                 Ch = s.x.Ff3dLocCh + "+" + s.x.Ff3dLocChDeci,
-                ConditionRating = Convert.ToInt32( s.x.Ff3dConditionI),
+                ConditionRating = Convert.ToInt32(s.x.Ff3dConditionI),
                 Description = s.x.Ff3dDescription,
                 FrmCh = s.x.Ff3dLocCh,
                 FrmChDec = s.x.Ff3dLocChDeci,
@@ -433,36 +433,20 @@ namespace RAMMS.Repository
             try
             {
                 var res = (from g1 in _context.RmFormG1Hdr
-                           where g1.Fg1hDivCode == FormF3.DivCode && g1.Fg1hRmuCode == FormF3.RmuCode  && g1.Fg1hYearOfInsp == FormF3.InspectedYear && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
-                           select g1);
+                           where g1.Fg1hDivCode == FormF3.DivCode && g1.Fg1hRmuCode == FormF3.RmuCode && g1.Fg1hYearOfInsp == FormF3.InspectedYear && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
+                           select new RmFormF3Dtl
+                           {
+                               Ff3dFf3hPkRefNo = FormF3.PkRefNo,
+                               Ff3dAssetId = Convert.ToString(g1.FgihAiPkRefNo),
 
+                           }).ToList();
 
-                //var res = (from dtl in _context.RmFormS1Dtl
-                //           where dtl.FsidFsihPkRefNo == S1PKRefNo && dtl.FsidActCode == ActCode && dtl.FsidActiveYn == true
-                //           orderby dtl.FsidPkRefNo descending
-                //           select new RmFormV1Dtl
-                //           {
-                //               Fv1dFv1hPkRefNo = PKRefNo,
-                //               Fv1dS1dPkRefNo = dtl.FsidPkRefNo,
-                //               Fv1dActiveYn = true,
-                //               Fv1dCrDt = dtl.FsidCrDt,
-                //               Fv1dFrmCh = dtl.FsidFrmChKm,
-                //               Fv1dRemarks = dtl.FsidRemarks,
-                //               Fv1dRoadCode = dtl.FsiidRoadCode,
-                //               Fv1dRoadName = dtl.FsiidRoadName,
-                //               Fv1dFrmChDeci = dtl.FsidFrmChM == "" ? 0 : Convert.ToInt32(dtl.FsidFrmChM),
-                //               Fv1dSiteRef = dtl.FsidFormASiteRef,
-                //               Fv1dStartTime = "",
-                //               Fv1dToCh = dtl.FsidToChKm,
-                //               Fv1dToChDeci = dtl.FsidToChM == "" ? 0 : Convert.ToInt32(dtl.FsidToChM),
-                //           }).ToList();
+                foreach (var item in res)
+                {
+                    _context.RmFormF3Dtl.Add(item);
+                    _context.SaveChanges();
+                }
 
-
-                //foreach (var item in res)
-                //{
-                //    _context.RmFormV1Dtl.Add(item);
-                //    _context.SaveChanges();
-                //}
                 return 1;
             }
             catch (Exception)
@@ -476,21 +460,21 @@ namespace RAMMS.Repository
         public int? DeleteFormF3(int id)
         {
             try
-            { 
-                    IList<RmFormF3Dtl> child = (from r in _context.RmFormF3Dtl where r.Ff3dFf3hPkRefNo == id select r).ToList();
-                    foreach (var item in child)
-                    {
-                        _context.Remove(item);
-                        _context.SaveChanges();
-                    }
-
-                    var res = _context.Set<RmFormF3Hdr>().FindAsync(id);
-                    res.Result.Ff3hActiveYn = false;
-                    _context.Set<RmFormF3Hdr>().Attach(res.Result);
-                    _context.Entry<RmFormF3Hdr>(res.Result).State = EntityState.Modified;
+            {
+                IList<RmFormF3Dtl> child = (from r in _context.RmFormF3Dtl where r.Ff3dFf3hPkRefNo == id select r).ToList();
+                foreach (var item in child)
+                {
+                    _context.Remove(item);
                     _context.SaveChanges();
-                    return 1;
-                
+                }
+
+                var res = _context.Set<RmFormF3Hdr>().FindAsync(id);
+                res.Result.Ff3hActiveYn = false;
+                _context.Set<RmFormF3Hdr>().Attach(res.Result);
+                _context.Entry<RmFormF3Hdr>(res.Result).State = EntityState.Modified;
+                _context.SaveChanges();
+                return 1;
+
             }
             catch (Exception ex)
             {
