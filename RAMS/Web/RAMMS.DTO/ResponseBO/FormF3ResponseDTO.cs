@@ -31,7 +31,8 @@ namespace RAMMS.DTO.ResponseBO
         public DateTime? InspectedDate { get; set; }
         public int? InspectedBy { get; set; }
         public string InspectedName { get; set; }
-        public bool? InspectedBySign { get; set; }
+        public string InspectedDesig { get; set; }
+        public bool InspectedBySign { get; set; }
         public decimal? RoadLength { get; set; }
         public int? ConditionI { get; set; }
         public int? ConditionIi { get; set; }

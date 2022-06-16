@@ -45,16 +45,17 @@
            Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
            Value = s.DdlTypeCode
        }).ToArray();
-  
+
     IEnumerable<SelectListItem>
     user = (await usr.GetUserNameRespectToPosition(new UserRequestDTO
     {
         Position = "Supervisor"
     })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
 
+    bool isSubmit = (security.isOperRAMSExecutive || security.isEnggAssistant || security.IsSupervisor);
+    bool IsApproved = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
-
-    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.FormF3.Status) || Model.FormF3.Status == RAMMS.Common.StatusList.FormF3Init);
 
 }
 
@@ -100,7 +101,7 @@
                                     <div class="form-group col-md-3">
                                         @Html.Label("Section Code", "Section Code")
 
-                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.SecCode, section , "Select Section Code", new { @Id = "ddlSection", @class = "form-control validate {required, Section Code}" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormF3.SecCode, section, "Select Section Code", new { @Id = "ddlSection", @class = "form-control validate {required, Section Code}" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Section Name", "Section Name")
@@ -154,7 +155,7 @@
                             <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                 <div class="form-group col-lg-2 float-left">
                                     @Html.Label("User ID", "User ID")
-                                    @Html.DropDownListFor(Ahdr => Ahdr.FormF3.CrewSup, (IEnumerable<SelectListItem>)ViewData["Supervisor"], "User Id", new { @Id = "ddlCrewleader", @class = "form-control svalidate {required, Crew Leader Id}" })
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormF3.CrewSup, (IEnumerable<SelectListItem>)ViewData["Supervisor"], "User Id", new { @Id = "ddlCrew", @class = "form-control svalidate {required, Crew Leader}" })
 
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
@@ -177,11 +178,11 @@
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Name", "Name")
                                     @*<input id="txtInspectedbyName" type="text" value="@Model.FormF3.UserNameInspBy" class="form-control svalidate {req,Inspected by User Name}" disabled />*@
-                                    @Html.TextBoxFor(model => model.FormF3.CrewName, new { @readonly = true, @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.FormF3.InspectedName, new { @readonly = true, @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
-                                    @Html.Label("Road Length", "Road Length")
-                                    @Html.TextBoxFor(model => model.FormF3.RoadLength, new { @class = "form-control" })
+                                    @Html.Label("Designation", "Designation")
+                                    @Html.TextBoxFor(model => model.FormF3.InspectedDesig, new { @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
@@ -192,143 +193,7 @@
 
 
 
-                        <div id="myModal" class="modal fade" role="dialog">
-                            <div class="modal-dialog modal-dialog-centered modal-custom">
 
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-header">
-
-                                        <h4 class="modal-title">
-                                            Add Form F3 Details
-                                        </h4><button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    </div>
-                                    <div class="modal-body p-0">
-                                        <div class="mh-182 bg-white py-4">
-                                            <div id="AddDetailFormF2">
-                                                <div class="col-lg-12 float-left">
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="Starting_CHKm">Asset ID</label>
-
-                                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Asset"], "Scheduledby", "Select Asset ID", new { Id = "ddlAsset", @class = "form-control  {required,Asset}", @onchange = "OnAssetChange(this);" })
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label for="Location_Chainage_From">Location Chainage</label>
-                                                        <div class="row">
-                                                            <div class="col-6 float-left pr-0">
-                                                                @Html.TextBoxFor(m => m.FormF3Dtl.LocCh, new { @readonly = "readonly", @class = "form-control" })
-                                                            </div>
-                                                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
-                                                            <div class="col-5 float-left pl-0">
-                                                                @Html.TextBoxFor(m => m.FormF3Dtl.LocChDeci, new { @readonly = "readonly", @class = "form-control" })
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="Structure_Code">Structure Code</label>
-                                                        @Html.TextBoxFor(m => m.FormF3Dtl.Code, new { @readonly = "readonly", @class = "form-control" })
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="Bound">Bound</label>
-                                                        @Html.TextBoxFor(m => m.FormF3Dtl.Bound, new { @readonly = "readonly", @class = "form-control" })
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="Post_Spacing">
-                                                            Signboard Width
-
-                                                        </label>
-                                                        @Html.TextBoxFor(m => m.FormF3Dtl.Width, new { @readonly = "readonly", @class = "form-control" })
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="Length__M_"> Signboard Height</label>
-                                                        @Html.TextBoxFor(m => m.FormF3Dtl.Height, new { @readonly = "readonly", @class = "form-control" })
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="Bound">Overall Condition Rating</label>
-                                                        @Html.DropDownListFor(Adtl => Adtl.FormF3Dtl.ConditionI, (new List<SelectListItem> { new SelectListItem { Text = "1", Value = "1" }, new SelectListItem { Text = "2", Value = "2" }, new SelectListItem { Text = "3", Value = "3" } }), "Select Condition Rating", new { @Id = "ddlCondition", @class = "form-control" })
-                                                    </div>
-                                                    <div class="col-lg-10 form-group">
-                                                        <label for="Remarks">
-                                                            Description on the Sign Board
-                                                        </label>
-                                                        @Html.TextAreaFor(m => m.FormF3Dtl.Description, new { @class = "form-control  svalidate {required,Description}" })
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 float-left mt-2">
-                                                <div class="abbrevations-group p-2">
-                                                    <div class="w-100 text-left float-left mb-3 font-weight-bold" style="text-decoration:underline;">Abbrevations</div>
-                                                    <div class="w-100 d-flex flex-column flex-md-row">
-                                                        <div class="d-flex flex-column col-md-3 p-0 mb-2">
-                                                            <span>
-                                                                <span class="font-weight-bold font-14 mr-1">
-                                                                    <span class="float-left" style="width:20px;">
-                                                                        D
-                                                                    </span>:
-                                                                </span><span class="text-nowrap">
-                                                                    Delineator
-                                                                </span>
-                                                            </span>
-                                                            <span>
-                                                                <span class="font-weight-bold font-14 mr-1">
-                                                                    <span class="float-left" style="width:20px;">
-                                                                        W
-                                                                    </span>:
-                                                                </span><span class="text-nowrap">
-                                                                    Warning
-                                                                </span>
-                                                            </span>
-                                                            <span>
-                                                                <span class="font-weight-bold font-14 mr-1">
-                                                                    <span class="float-left" style="width:20px;">
-                                                                        Y
-                                                                    </span>:
-                                                                </span><span class="text-nowrap">
-                                                                    Gantry Sign
-                                                                </span>
-                                                            </span>
-                                                            <span>
-                                                                <span class="font-weight-bold font-14 mr-1">
-                                                                    <span class="float-left" style="width:20px;">
-                                                                        G
-                                                                    </span>:
-                                                                </span><span class="text-nowrap">Guide Sign</span>
-                                                            </span>
-                                                        </div>
-                                                        <div class="d-flex flex-column mb-2">
-                                                            <span class="d-flex flex-row align-items-start">
-                                                                <span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 1</span><span class="float-left" style="padding-top:2px">
-                                                                    Traffic Signs is nearly new Condition, sign face can be seen clearly both during daylight and darkness hours.
-                                                                </span>
-                                                            </span>
-                                                            <span class="d-flex flex-row align-items-start">
-                                                                <span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 2</span>
-                                                                <span class="float-left" style="padding-top:2px">
-                                                                    Sign face is fading but still can be seen both during daylight and darkness hours.
-                                                                </span>
-                                                            </span>
-                                                            <span class="d-flex flex-row align-items-start">
-                                                                <span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 3</span>
-                                                                <span class="float-left" style="padding-top:2px">
-                                                                    Sign face reflective material badly deteriorated and obscured, reinstate or replacement is required.
-                                                                </span>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="btnDCancel" type="button" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
-                                        <button id="btnDSaveAndContinue" type="button" class="btn btn-sm btn-themebtn" hidden="">Save &amp; Continue</button>
-                                        <button id="btnDSaveAndExit" type="button" class="btn btn-sm btn-themebtn">Save &amp; Exit</button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
 
 
                         @{
@@ -345,31 +210,157 @@
 
                 </div>
                 <div class="modal-footer float-left w-100">
-                    <button id="btnHCancel" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
-                    @if (!Model.FormF3.SubmitSts)
-                    {
-                        <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn">Save</button>
-                        @if (IsSupervisor)
+                    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
+                    @{
+
+                        if (isSubmit && (Model.FormF3.Status == "" || Model.FormF3.Status == "Initialise" || Model.FormF3.Status == "Saved"))
                         {
-                            <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn">Submit</button>
+                            <button id="saveFormF3Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
+                            <button id="SubmitFormF3Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
                         }
+
+                        if (IsApproved && (Model.FormF3.Status == RAMMS.Common.StatusList.Submitted || Model.FormF3.Status == RAMMS.Common.StatusList.Rejected))
+                        {
+                            <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                        }
+
                     }
-                    @if (security.IsExecutive && Model.FormF3.Status == RAMMS.Common.StatusList.FormF2Inspected)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
-                    }
-                    else if (security.IsHeadMaintenance && Model.FormF3.Status == RAMMS.Common.StatusList.FormF3ExecutiveApproved)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
-                    }
-                    else if (security.IsRegionManager && Model.FormF3.Status == RAMMS.Common.StatusList.FormF3HeadMaintenanceApproved)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
-                    }
-                    else if (security.IsJKRSSuperiorOfficer && Model.FormF3.Status == RAMMS.Common.StatusList.FormF3RegionManagerApproved)
-                    {
-                        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Reject</button>
-                    }
+                </div>
+            </div>
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-custom">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h4 class="modal-title">
+                                Add Form F3 Details
+                            </h4><button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body p-0">
+                            <div class="mh-182 bg-white py-4">
+                                <div id="AddDetailFormF2">
+                                    <div class="col-lg-12 float-left">
+                                        <div class="form-group col-lg-2">
+                                            <label for="Starting_CHKm">Asset ID</label>
+
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Asset"], "Scheduledby", "Select Asset ID", new { Id = "ddlAsset", @class = "form-control  {required,Asset}", @onchange = "OnAssetChange(this);" })
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="Location_Chainage_From">Location Chainage</label>
+                                            <div class="row">
+                                                <div class="col-6 float-left pr-0">
+                                                    @Html.TextBoxFor(m => m.FormF3Dtl.LocCh, new { @readonly = "readonly", @class = "form-control" })
+                                                </div>
+                                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                                <div class="col-5 float-left pl-0">
+                                                    @Html.TextBoxFor(m => m.FormF3Dtl.LocChDeci, new { @readonly = "readonly", @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-2">
+                                            <label for="Structure_Code">Structure Code</label>
+                                            @Html.TextBoxFor(m => m.FormF3Dtl.Code, new { @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            <label for="Bound">Bound</label>
+                                            @Html.TextBoxFor(m => m.FormF3Dtl.Bound, new { @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            <label for="Post_Spacing">
+                                                Signboard Width
+
+                                            </label>
+                                            @Html.TextBoxFor(m => m.FormF3Dtl.Width, new { @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            <label for="Length__M_"> Signboard Height</label>
+                                            @Html.TextBoxFor(m => m.FormF3Dtl.Height, new { @readonly = "readonly", @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            <label for="Bound">Overall Condition Rating</label>
+                                            @Html.DropDownListFor(Adtl => Adtl.FormF3Dtl.ConditionI, (new List<SelectListItem> { new SelectListItem { Text = "1", Value = "1" }, new SelectListItem { Text = "2", Value = "2" }, new SelectListItem { Text = "3", Value = "3" } }), "Select Condition Rating", new { @Id = "ddlCondition", @class = "form-control {required, Contion Rating}" })
+                                        </div>
+                                        <div class="col-lg-10 form-group">
+                                            <label for="Remarks">
+                                                Description on the Sign Board
+                                            </label>
+                                            @Html.TextAreaFor(m => m.FormF3Dtl.Description, new { @class = "form-control  svalidate {required,Description}" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 float-left mt-2">
+                                    <div class="abbrevations-group p-2">
+                                        <div class="w-100 text-left float-left mb-3 font-weight-bold" style="text-decoration:underline;">Abbrevations</div>
+                                        <div class="w-100 d-flex flex-column flex-md-row">
+                                            <div class="d-flex flex-column col-md-3 p-0 mb-2">
+                                                <span>
+                                                    <span class="font-weight-bold font-14 mr-1">
+                                                        <span class="float-left" style="width:20px;">
+                                                            D
+                                                        </span>:
+                                                    </span><span class="text-nowrap">
+                                                        Delineator
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <span class="font-weight-bold font-14 mr-1">
+                                                        <span class="float-left" style="width:20px;">
+                                                            W
+                                                        </span>:
+                                                    </span><span class="text-nowrap">
+                                                        Warning
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <span class="font-weight-bold font-14 mr-1">
+                                                        <span class="float-left" style="width:20px;">
+                                                            Y
+                                                        </span>:
+                                                    </span><span class="text-nowrap">
+                                                        Gantry Sign
+                                                    </span>
+                                                </span>
+                                                <span>
+                                                    <span class="font-weight-bold font-14 mr-1">
+                                                        <span class="float-left" style="width:20px;">
+                                                            G
+                                                        </span>:
+                                                    </span><span class="text-nowrap">Guide Sign</span>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex flex-column mb-2">
+                                                <span class="d-flex flex-row align-items-start">
+                                                    <span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 1</span><span class="float-left" style="padding-top:2px">
+                                                        Traffic Signs is nearly new Condition, sign face can be seen clearly both during daylight and darkness hours.
+                                                    </span>
+                                                </span>
+                                                <span class="d-flex flex-row align-items-start">
+                                                    <span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 2</span>
+                                                    <span class="float-left" style="padding-top:2px">
+                                                        Sign face is fading but still can be seen both during daylight and darkness hours.
+                                                    </span>
+                                                </span>
+                                                <span class="d-flex flex-row align-items-start">
+                                                    <span class="font-weight-bold font-14 mr-3 float-left text-nowrap">Condition 3</span>
+                                                    <span class="float-left" style="padding-top:2px">
+                                                        Sign face reflective material badly deteriorated and obscured, reinstate or replacement is required.
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btnDCancel" type="button" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
+                            <button id="btnDSaveAndContinue" type="button" class="btn btn-sm btn-themebtn" hidden="">Save &amp; Continue</button>
+                            <button id="btnDSaveAndExit" type="button" onclick="SaveFormF3Dtl();" class="btn btn-sm btn-themebtn">Save &amp; Exit</button>
+                        </div>
+                    </div>
 
                 </div>
             </div>

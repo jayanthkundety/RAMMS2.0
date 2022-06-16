@@ -395,9 +395,10 @@ namespace RAMMS.Repository
 
             return list.Select(s => new FormF3DtlGridDTO
             {
+                AssetId =s.x.Ff3dAssetId,
                 Bound = s.a.AiBound,
                 Ch = s.x.Ff3dLocCh + "+" + s.x.Ff3dLocChDeci,
-                ConditionRating = s.x.Ff3dConditionI,
+                ConditionRating = Convert.ToInt32( s.x.Ff3dConditionI),
                 Description = s.x.Ff3dDescription,
                 FrmCh = s.x.Ff3dLocCh,
                 FrmChDec = s.x.Ff3dLocChDeci,
@@ -431,9 +432,9 @@ namespace RAMMS.Repository
         {
             try
             {
-                //    var res = (from g1 in _context.RmFormG1Hdr
-                //               where g1.Fg1hDivCode == FormF3.DivCode && g1.RmuCode == FormF3.RmuCode && g1.SecCode == FormF3.SecCode && g1.cr == FormF3.RdCode && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
-                //               select g1);
+                var res = (from g1 in _context.RmFormG1Hdr
+                           where g1.Fg1hDivCode == FormF3.DivCode && g1.Fg1hRmuCode == FormF3.RmuCode  && g1.Fg1hYearOfInsp == FormF3.InspectedYear && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
+                           select g1);
 
 
                 //var res = (from dtl in _context.RmFormS1Dtl
@@ -472,6 +473,31 @@ namespace RAMMS.Repository
         }
 
 
+        public int? DeleteFormF3(int id)
+        {
+            try
+            { 
+                    IList<RmFormF3Dtl> child = (from r in _context.RmFormF3Dtl where r.Ff3dFf3hPkRefNo == id select r).ToList();
+                    foreach (var item in child)
+                    {
+                        _context.Remove(item);
+                        _context.SaveChanges();
+                    }
+
+                    var res = _context.Set<RmFormF3Hdr>().FindAsync(id);
+                    res.Result.Ff3hActiveYn = false;
+                    _context.Set<RmFormF3Hdr>().Attach(res.Result);
+                    _context.Entry<RmFormF3Hdr>(res.Result).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    return 1;
+                
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
 
         public int? DeleteFormF3Dtl(int Id)
         {
@@ -502,6 +528,23 @@ namespace RAMMS.Repository
 
             }
         }
+
+        public int? UpdateFormF3Dtl(RmFormF3Dtl FormF3Dtl)
+        {
+            try
+            {
+                _context.Set<RmFormF3Dtl>().Attach(FormF3Dtl);
+                _context.Entry<RmFormF3Dtl>(FormF3Dtl).State = EntityState.Modified;
+                _context.SaveChanges();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                return 500;
+            }
+        }
+
+
 
 
         //public async Task<RmFormF3Hdr> FindF3Byw1ID(int Id)

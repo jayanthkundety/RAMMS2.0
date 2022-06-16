@@ -161,7 +161,21 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
+        public int? DeleteFormF3(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormF3(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
 
+            return rowsAffected;
+        }
         public int? DeleteFormF3Dtl(int Id)
         {
             try
@@ -189,6 +203,28 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw ex;
             }
         }
+
+     
+        public int? UpdateFormF3Dtl(FormF3DtlResponseDTO FormF3Dtl)
+        {
+
+            try
+            {
+                int? Ff3hPkRefNo = FormF3Dtl.Ff3hPkRefNo;
+                int Ff3dPkRefNo = FormF3Dtl.PkRefNo;
+                var model = _mapper.Map<RmFormF3Dtl>(FormF3Dtl);
+                model.Ff3dPkRefNo = Ff3dPkRefNo;
+                model.Ff3dFf3hPkRefNo = Ff3hPkRefNo;
+                return _repo.UpdateFormF3Dtl(model);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+
 
         public async Task<int> Update(FormF3ResponseDTO FormF3)
         {
@@ -268,6 +304,8 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return rowsAffected;
         }
+
+        
 
     }
 }

@@ -35,8 +35,7 @@ var _hd = {
 
 $(document).ready(function () {
 
-    //   DisableHeader();
-
+    DisableHeader();
 
     $("#ddlInspectedby").on("change", function () {
         var value = this.value;
@@ -51,14 +50,14 @@ $(document).ready(function () {
         }
         else {
             getUserDetail(value, function (data) {
-                $("#FormF3_CrewName").val(data.userName);
-                $("#FormF3_CrewName").attr("readonly", "true");
+                $("#FormF3_InspectedDesig").val(data.userName);
+                $("#FormF3_InspectedDesig").attr("readonly", "true");
             });
         }
     });
 
 
-    $("#ddlCrewleader").on("change", function () {
+    $("#ddlCrew").on("change", function () {
         var value = this.value;
 
         if (value == "") {
@@ -166,6 +165,22 @@ $(document).ready(function () {
 });
 
 
+function getUserDetail(id, callback) {
+    var req = {};
+    req.id = id;
+    $.ajax({
+        url: '/NOD/GetUserById',
+        dataType: 'JSON',
+        data: req,
+        type: 'Post',
+        success: function (data) {
+            callback(data);
+        },
+        error: function (data) {
+            console.error(data);
+        }
+    });
+}
 
 function bindRMU(callback) {
     //
@@ -251,7 +266,7 @@ function bindSection(callback) {
 function bindRoadCode(callback) {
 
     var req = {};
-     var _road = $("#ddlRoadCode");
+    var _road = $("#ddlRoadCode");
     req.RMU = _hd.ddlRMU.val();
     req.SectionCode = _hd.ddlSection.val();
     req.RdCode = '';
@@ -339,7 +354,7 @@ function bindRoadDetail(code, callback) {
     });
 }
 
- 
+
 
 function generateHeaderReference() {
     if (_hd.ddlRoadCode.val() != "" && _hd.ddlYear.val() != "") {
@@ -439,39 +454,91 @@ function Save(GroupName, SubmitType) {
 
 function SaveFormF3Dtl() {
 
-    $('#ddlAsset').prop('disabled', false).trigger("chosen:updated");
-    $('#FormF3Dtl_LocCh').attr("readonly", false);
-    $('#FormF3Dtl_LocChDeci').attr("readonly", false);
-    $('#FormF3Dtl_Code').attr("readonly", false);
-    $('#FormF3Dtl_Bound').attr("readonly", false);
-    $('#FormF3Dtl_Width').attr("readonly", false);
-    $('#FormF3Dtl_Height').attr("readonly", false);
+    if (ValidatePage('#myModal')) {
+        InitAjaxLoading();
+        $.post('/FormF3/SaveFormF3Dtl', $("form").serialize(), function (data) {
+            HideAjaxLoading();
+            if (data == -1) {
+                app.ShowErrorMessage(data.errorMessage);
+            }
+            else {
+                ClearFormF3Dtl()
 
-    InitAjaxLoading();
-    $.post('/FormF3/SaveFormF3Dtl', $("form").serialize(), function (data) {
-        HideAjaxLoading();
-        if (data == -1) {
-            app.ShowErrorMessage(data.errorMessage);
-        }
-        else {
-            ClearFormF3Dtl()
+                InitializeGrid();
+                app.ShowSuccessMessage('Saved Successfully', false);
+            }
+        });
 
-            InitializeGrid();
-            app.ShowSuccessMessage('Saved Successfully', false);
-        }
-    });
+    }
+}
+
+function EditFormF3Dtl(obj, view) {
+
+
+    EditModeDtl = true;
+    var currentRow = $(obj).closest("tr");
+    var data = $('#FormF3DtlGridView').DataTable().row(currentRow).data();
+
+    $("#FormF3Dtl_PkRefNo").val(data.pkRefNo);
+    $("#ddlAsset").val(data.assetId);
+    $("#ddlAsset").trigger('chosen:updated');
+    $("#ddlAsset").trigger('change');
+    $("#FormF3Dtl_LocCh").val(data.frmCh);
+    $("#FormF3Dtl_LocChDeci").val(data.frmChDec);
+    $("#FormF3Dtl_Code").val(data.structureCode);
+    $('#FormF3Dtl_Bound').val(data.bound);
+    $('#FormF3Dtl_Width').val(data.width);
+    $("#FormF3Dtl_Height").val(data.height);
+    $("#FormF3Dtl_Description").val(data.description);
+    $("#ddlCondition").val(data.conditionRating);
+    $("#ddlCondition").trigger('chosen:updated');
+    $("#ddlCondition").trigger('change');
+
+    //if (view == 0) {
+    //    if (data.fs1dPkRefNo != 0) {
+    //        $('#ddlRoadCode').prop('disabled', true).trigger("chosen:updated");
+    //        $('#FormF3Dtl_FrmCh').attr("readonly", true);
+    //        $('#FormF3Dtl_FrmChDeci').attr("readonly", true);
+    //        $('#FormF3Dtl_ToCh').attr("readonly", true);
+    //        $('#FormF3Dtl_ToChDeci').attr("readonly", true);
+    //        //   $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
+
+    //    }
+    //    else {
+    //        $('#ddlRoadCode').prop('disabled', false).trigger("chosen:updated");
+    //        $('#FormF3Dtl_FrmCh').attr("readonly", false);
+    //        $('#FormF3Dtl_FrmChDeci').attr("readonly", false);
+    //        $('#FormF3Dtl_ToCh').attr("readonly", false);
+    //        $('#FormF3Dtl_ToChDeci').attr("readonly", false);
+    //        $('#ddlSiteRef').prop('disabled', false).trigger("chosen:updated");
+    //    }
+    //}
+    //else {
+    //    $('#ddlRoadCode').prop('disabled', true).trigger("chosen:updated");
+    //    $('#FormF3Dtl_FrmCh').attr("readonly", true);
+    //    $('#FormF3Dtl_FrmChDeci').attr("readonly", true);
+    //    $('#FormF3Dtl_ToCh').attr("readonly", true);
+    //    $('#FormF3Dtl_ToChDeci').attr("readonly", true);
+    //    $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
+    //    $("#FormF3Dtl_Remarks").attr("readonly", true);
+    //    $("#saveFormF3DtlBtn").hide();
+    //}
 
 
 }
 
 function ClearFormF3Dtl() {
-    $('#ddlAsset').val("0");
+    $('#ddlAsset').val("");
+    $('#ddlAsset').trigger('chosen:updated');
+    $('#ddlCondition').val("");
+    $('#ddlCondition').trigger('chosen:updated');
     $("#FormF3Dtl_LocCh").val('');
     $("#FormF3Dtl_LocChDeci").val('');
     $("#FormF3Dtl_Code").val('');
     $("#FormF3Dtl_Bound").val('');
     $("#FormF3Dtl_Width").val('');
     $("#FormF3Dtl_Height").val('');
+    $("#FormF3Dtl_Description").val('');
     $("#myModal").modal("hide");
 }
 
@@ -491,12 +558,13 @@ function UpdateFormAfterSave(data) {
 }
 
 function DisableHeader() {
+     
     if ($("#FormF3_PkRefNo").val() != "0") {
-
         $("#headerDiv * > select").attr('disabled', true).trigger("chosen:updated");
-
+        if ($("#hdnView").val() != 1 && $("#FormF3_SubmitSts").val() != true)
+            $("#ddlCrew").attr('disabled', false).trigger("chosen:updated");
+        $("#FormF3_Dist").attr("readonly", "true");
         $("#btnFindDetails").hide();
-
     }
 
 }

@@ -103,7 +103,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormQA1":
                     iResult = await SaveFormQA1(process);
                     break;
-
+                case "FormF3":
+                    iResult = await SaveFormF3(process);
+                    break;
             }
             return iResult;
         }
@@ -199,7 +201,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormV4":
                     logs = this.context.RmFormV4Hdr.Where(x => x.Fv4hPkRefNo == RefId).Select(x => x.Fv4hAuditLog).FirstOrDefault();
                     break;
-              
+                case "FormF3":
+                    logs = this.context.RmFormF3Hdr.Where(x => x.Ff3hPkRefNo == RefId).Select(x => x.Ff3hAuditLog).FirstOrDefault();
+                    break;
+
             }
             return Utility.ProcessLog(logs);
         }
@@ -1969,7 +1974,56 @@ namespace RAMMS.Business.ServiceProvider.Services
             return await context.SaveChangesAsync();
         }
 
+        private async Task<int> SaveFormF3(DTO.RequestBO.ProcessDTO process)
+        {
+            var form = context.RmFormF3Hdr.Where(x => x.Ff3hPkRefNo == process.RefId).FirstOrDefault();
+            if (form != null)
+            {
+                string strTitle = "";
+                string strNotURL = "";
+                string strNotMsg = "";
+                string strNotGroupName = "";
+                string strNotUserID = "";
+                string strStatus = "";
+                string strNotStatus = "";
 
+                if (process.Stage == Common.StatusList.Submitted)
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
+                    form.Ff3hStatus = process.IsApprove ? Common.StatusList.Verified : Common.StatusList.Saved;
+                    strTitle = "Verified By";
+                    strStatus = "Verified";
+                    strNotStatus = Common.StatusList.Saved;
+                    form.Ff3hInspectedBy = Convert.ToInt32(process.UserID);
+                    form.Ff3hInspectedName = process.UserName;
+                 //   form.ins = process.UserDesignation;
+                    form.Ff3hInspectedDate = process.ApproveDate;
+                    form.Ff3hInspectedBySign = true;
+                }
+                else
+                {
+                    if (process.Stage == Common.StatusList.Submitted)
+                    {
+                        form.Ff3hSubmitSts = false;
+                    }
+                }
+
+                form.Ff3hAuditLog = Utility.ProcessLog(form.Ff3hAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form f3 (" + form.Ff3hPkRefNo + ")";
+                strNotURL = "/MAM/EditFormf3?id=" + form.Ff3hPkRefNo.ToString() + "&View=0";
+                SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = security.UserName,
+                    RmNotGroup = strNotGroupName,
+                    RmNotMessage = strNotMsg,
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = strNotURL,
+                    RmNotUserId = strNotUserID,
+                    RmNotViewed = ""
+                }, false);
+            }
+            return await context.SaveChangesAsync();
+        }
 
     }
 }

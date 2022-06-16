@@ -24,9 +24,11 @@ namespace RAMMS.Repository.Interfaces
          List<RmAllassetInventory> GetAssetDetails(string Source);
 
         int LoadG1G2Data(FormF3ResponseDTO FormF3);
+
+        int? DeleteFormF3(int id);
         int? DeleteFormF3Dtl(int Id);
         int? SaveFormF3Dtl(RmFormF3Dtl FormF3Dtl);
-
+        int? UpdateFormF3Dtl(RmFormF3Dtl FormF3Dtl);
 
     }
 }
