@@ -7,6 +7,7 @@ using RAMMS.Domain.Models;
 using RAMMS.DTO;
 using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.RequestBO;
+using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
 using RAMMS.Web.UI.Models;
 using System;
@@ -14,13 +15,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
- 
+
+
 namespace RAMMS.Web.UI.Controllers
 {
     public class FormF3Controller : BaseController
     {
 
-        private IFormF3Service formF3Service;
+        private IFormF3Service _formF3Service;
+        private readonly IFormJServices _formJService;
         private ISecurity _security;
         private IWebHostEnvironment _environment;
         private IUserService _userService;
@@ -30,16 +33,19 @@ namespace RAMMS.Web.UI.Controllers
             ISecurity security,
             IUserService userService,
             IWebHostEnvironment webhostenvironment,
-            IRoadMasterService roadMasterService)
+            IRoadMasterService roadMasterService,
+             IFormJServices formJServices)
         {
             _userService = userService;
-            formF3Service = service;
+            _formF3Service = service;
             _security = security;
             _environment = webhostenvironment;
             _roadMasterService = roadMasterService;
+            _formJService = formJServices ?? throw new ArgumentNullException(nameof(formJServices));
         }
         public IActionResult Index()
         {
+            LoadLookupService("RMU", "Section Code", "Division", "RD_Code", "Year");
             return View();
         }
 
@@ -130,12 +136,124 @@ namespace RAMMS.Web.UI.Controllers
             }
             filteredPagingDefinition.RecordsPerPage = searchData.length; //Convert.ToInt32(Request.Form["length"]);
             filteredPagingDefinition.StartPageNo = searchData.start; //Convert.ToInt32(Request.Form["start"]); //TODO
-                                                                     //  var result = await formF3Service.GetHeaderList(filteredPagingDefinition);
-                                                                     // return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+            var result = await _formF3Service.GetHeaderList(filteredPagingDefinition);
+            return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
 
             return null;
         }
 
+        public async Task<IActionResult> GetDetailList(DataTableAjaxPostModel<FormF3DtlResponseDTO> searchData)
+        {
+            FilteredPagingDefinition<FormF3DtlResponseDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormF3DtlResponseDTO>();
+
+            filteredPagingDefinition.Filters = searchData.filterData;
+            if (searchData.order != null)
+            {
+                filteredPagingDefinition.ColumnIndex = searchData.order[0].column;
+                filteredPagingDefinition.sortOrder = searchData.order[0].SortOrder == SortDirection.Asc ? SortOrder.Ascending : SortOrder.Descending;
+            }
+            filteredPagingDefinition.RecordsPerPage = searchData.length; //Convert.ToInt32(Request.Form["length"]);
+            filteredPagingDefinition.StartPageNo = searchData.start; //Convert.ToInt32(Request.Form["start"]); //TODO
+            var result = await _formF3Service.GetDetailList(filteredPagingDefinition);
+            return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
+
+        }
+
+
+        public async Task<IActionResult> Add(int id, int view)
+        {
+            LoadLookupService("Supervisor", "User");
+
+            FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
+            ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
+
+            FormF3Model _model = new FormF3Model();
+            if (id > 0)
+            {
+                _model.FormF3 = await _formF3Service.GetHeaderById(id);
+
+                if (_model.FormF3.Source == "New")
+                    ViewData["Asset"] = _formF3Service.GetAssetDetails("New");
+                else
+                    ViewData["Asset"] = _formF3Service.GetAssetDetails("G1G2");
+            }
+            else
+            {
+                ViewData["Asset"] = _formF3Service.GetAssetDetails("New");
+            }
+
+
+            _model.FormF3 = _model.FormF3 ?? new FormF3ResponseDTO();
+            _model.view = view;
+
+            if ((_model.FormF3.InspectedBy == null || _model.FormF3.InspectedBy == 0) && _model.FormF3.Status == RAMMS.Common.StatusList.Submitted)
+            {
+                _model.FormF3.InspectedBy = _security.UserID;
+                _model.FormF3.InspectedDate = DateTime.Today;
+                _model.FormF3.InspectedBySign = true;
+            }
+
+            return PartialView("~/Views/FormF3/_AddFormF3.cshtml", _model);
+        }
+
+
+
+        public async Task<IActionResult> SaveFormF3(FormF3Model frm)
+        {
+            int refNo = 0;
+            frm.FormF3.ActiveYn = true;
+            if (frm.FormF3.PkRefNo == 0)
+            {
+                frm.FormF3 = await _formF3Service.SaveFormF3(frm.FormF3);
+                //frm.RefNoDS = _formF3Service.FindRefNoFromG1(frm.FormF3);
+
+
+                return Json(new { FormExist = frm.FormF3.FormExist, RefId = frm.FormF3.PkRefId, PkRefNo = frm.FormF3.PkRefNo, Status = frm.FormF3.Status, Source = frm.FormF3.Source });
+            }
+            else
+            {
+                if (frm.FormF3.Status == "Initialize")
+                    frm.FormF3.Status = "Saved";
+                refNo = await _formF3Service.Update(frm.FormF3);
+            }
+            return Json(refNo);
+
+
+        }
+
+
+        public async Task<IActionResult> SaveFormF3Dtl(FormF3Model frm)
+        {
+            int? refNo = 0;
+
+            frm.FormF3Dtl.Ff3hPkRefNo = frm.FormF3.PkRefNo;
+            if (frm.FormF3Dtl.PkRefNo == 0)
+            {
+                refNo = _formF3Service.SaveFormF3Dtl(frm.FormF3Dtl);
+
+            }
+            else
+            {
+                _formF3Service.UpdateFormF3Dtl(frm.FormF3Dtl);
+            }
+            return Json(refNo);
+
+
+        }
+
+        public async Task<IActionResult> DeleteFormF3(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formF3Service.DeleteFormF3(id);
+            return Json(rowsAffected);
+        }
+
+        public async Task<IActionResult> DeleteFormF3Dtl(int id)
+        {
+            int? rowsAffected = 0;
+            rowsAffected = _formF3Service.DeleteFormF3Dtl(id);
+            return Json(rowsAffected);
+        }
 
 
     }

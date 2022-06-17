@@ -14494,6 +14494,7 @@ namespace RAMMS.Domain.Models
             OnModelCreatingPartial(modelBuilder);
         }
 
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
