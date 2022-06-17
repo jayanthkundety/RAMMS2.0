@@ -107,7 +107,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 Item1 = s.AiStrucCode,
                 Item2 = s.AiBound,
                 Item3 = s.AiWidth.ToString(),
-                CValue= s.AiHeight.ToString()
+                CValue = s.AiHeight.ToString()
             }).ToList();
 
         }
@@ -150,7 +150,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 FormF3.PkRefId = domainModelFormF3.Ff3hPkRefId;
                 FormF3.Status = domainModelFormF3.Ff3hStatus;
 
-                _repo.LoadG1G2Data(FormF3);
+                if (FormF3.Source == "G1G2")
+                    _repo.LoadG1G2Data(FormF3);
 
                 return FormF3;
             }
@@ -204,7 +205,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
-     
+
         public int? UpdateFormF3Dtl(FormF3DtlResponseDTO FormF3Dtl)
         {
 
@@ -266,7 +267,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.Ff3hSubmitSts && form.Ff3hStatus == "Saved")
+            if (form.Ff3hSubmitSts && (form.Ff3hStatus == "Saved" || form.Ff3hStatus == "Initialize"))
             {
                 form.Ff3hStatus = Common.StatusList.FormW2Submitted;
                 form.Ff3hAuditLog = Utility.ProcessLog(form.Ff3hAuditLog, "Submitted By", "Submitted", form.Ff3hInspectedName, string.Empty, form.Ff3hInspectedDate, _security.UserName);
@@ -305,7 +306,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             return rowsAffected;
         }
 
-        
+
 
     }
 }

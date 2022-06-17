@@ -37,25 +37,37 @@ $(document).ready(function () {
 
     DisableHeader();
 
+    if ($("#FormF3_PkRefNo").val() == 0 || $("#ddlSource").val() == "G1G2")
+        $("#btnDtlModal").hide();
+
+
+    if ($("#hdnView").val() == 1) {
+        $("#saveFormF3Btn").hide();
+        $("#SubmitFormF3Btn").hide();
+        $("#btnDtlModal").hide();
+    }
+        
+
     $("#ddlInspectedby").on("change", function () {
         var value = this.value;
 
         if (value == "") {
-            $("#FormF3_CrewName").val('');
-            $("#FormF3_CrewName").attr("readonly", "true");
+            $("#FormF3_InspectedName").val('');
+            $("#FormF3_InspectedName").attr("readonly", "true");
         }
         else if (value == "99999999") {
-            $("#FormF3_CrewName").val('');
-            $("#FormF3_CrewName").removeAttr("readonly");
+            $("#FormF3_InspectedName").val('');
+            $("#FormF3_InspectedName").removeAttr("readonly");
         }
         else {
             getUserDetail(value, function (data) {
-                $("#FormF3_InspectedDesig").val(data.userName);
+                $("#FormF3_InspectedName").val(data.userName);
+                $("#FormF3_InspectedDesig").val(data.position);
                 $("#FormF3_InspectedDesig").attr("readonly", "true");
             });
         }
     });
-
+    $("#ddlInspectedby").trigger('change');
 
     $("#ddlCrew").on("change", function () {
         var value = this.value;
@@ -117,7 +129,7 @@ $(document).ready(function () {
         }
     });
 
-     
+
 
     $("#ddlYear").on("change", function () {
         generateHeaderReference();
@@ -393,6 +405,7 @@ function Save(GroupName, SubmitType) {
 
     if (SubmitType == "Submitted") {
         $("#FormF3_SubmitSts").val(true);
+        $("#ddlCrew").addClass("validate");
     }
 
     if (ValidatePage('#headerDiv')) {
@@ -480,37 +493,13 @@ function EditFormF3Dtl(obj, view) {
     $("#ddlCondition").trigger('chosen:updated');
     $("#ddlCondition").trigger('change');
 
-    //if (view == 0) {
-    //    if (data.fs1dPkRefNo != 0) {
-    //        $('#ddlRoadCode').prop('disabled', true).trigger("chosen:updated");
-    //        $('#FormF3Dtl_FrmCh').attr("readonly", true);
-    //        $('#FormF3Dtl_FrmChDeci').attr("readonly", true);
-    //        $('#FormF3Dtl_ToCh').attr("readonly", true);
-    //        $('#FormF3Dtl_ToChDeci').attr("readonly", true);
-    //        //   $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
-
-    //    }
-    //    else {
-    //        $('#ddlRoadCode').prop('disabled', false).trigger("chosen:updated");
-    //        $('#FormF3Dtl_FrmCh').attr("readonly", false);
-    //        $('#FormF3Dtl_FrmChDeci').attr("readonly", false);
-    //        $('#FormF3Dtl_ToCh').attr("readonly", false);
-    //        $('#FormF3Dtl_ToChDeci').attr("readonly", false);
-    //        $('#ddlSiteRef').prop('disabled', false).trigger("chosen:updated");
-    //    }
-    //}
-    //else {
-    //    $('#ddlRoadCode').prop('disabled', true).trigger("chosen:updated");
-    //    $('#FormF3Dtl_FrmCh').attr("readonly", true);
-    //    $('#FormF3Dtl_FrmChDeci').attr("readonly", true);
-    //    $('#FormF3Dtl_ToCh').attr("readonly", true);
-    //    $('#FormF3Dtl_ToChDeci').attr("readonly", true);
-    //    $('#ddlSiteRef').prop('disabled', true).trigger("chosen:updated");
-    //    $("#FormF3Dtl_Remarks").attr("readonly", true);
-    //    $("#saveFormF3DtlBtn").hide();
-    //}
-
-
+    if ($("#hdnView").val() == 0 || view == 0) {
+        $('#ddlAsset').prop('disabled', true).trigger("chosen:updated");
+        $('#ddlCondition').prop('disabled', true).trigger("chosen:updated");
+        $("#FormF3Dtl_Description").attr("readonly", true);
+        $("#btnSaveFormF3Dtl").hide();
+    }
+     
 }
 
 function ClearFormF3Dtl() {
@@ -539,12 +528,15 @@ function UpdateFormAfterSave(data) {
     $("#saveFormF3Btn").show();
     $("#SubmitFormF3Btn").show();
 
+    if ($("#ddlSource").val() == "New")
+        $("#btnDtlModal").show()
+
     DisableHeader();
     InitializeGrid();
 }
 
 function DisableHeader() {
-     
+
     if ($("#FormF3_PkRefNo").val() != "0") {
         $("#headerDiv * > select").attr('disabled', true).trigger("chosen:updated");
         if ($("#hdnView").val() != 1 && $("#FormF3_SubmitSts").val() != true)
@@ -560,6 +552,21 @@ function EnableDisableElements(state) {
     $('#headerDiv * > select').prop('disabled', state).trigger("chosen:updated");
     $('#ddlSource').prop('disabled', false).trigger("chosen:updated");
 
+}
+
+function DeleteFormF3Dtl(id) {
+
+    InitAjaxLoading();
+    $.post('/FormF3/DeleteFormF3Dtl?id=' + id, function (data) {
+        HideAjaxLoading();
+        if (data == -1) {
+            app.ShowErrorMessage(data.errorMessage);
+        }
+        else {
+            InitializeGrid();
+            app.ShowSuccessMessage('Deleted Successfully', false);
+        }
+    });
 }
 
 

@@ -144,7 +144,7 @@ namespace RAMMS.Repository
                          join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
                          //  join r in roads on s.RmFormF3Dtl.Single().Ff3dAssetId equals r.AiAssetId
                          select new { s, d });
-
+            query = query.Where(x => x.s.Ff3hActiveYn == true).OrderByDescending(x => x.s.Ff3hPkRefNo);
             var search = filterOptions.Filters;
             if (search.SecCode.HasValue)
             {

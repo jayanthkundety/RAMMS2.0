@@ -213,7 +213,7 @@
                     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
                     @{
 
-                        if (isSubmit && (Model.FormF3.Status == "" || Model.FormF3.Status == "Initialise" || Model.FormF3.Status == "Saved"))
+                        if (isSubmit && (Model.FormF3.Status == null || Model.FormF3.Status == "" || Model.FormF3.Status == "Initialize" || Model.FormF3.Status == "Saved"))
                         {
                             <button id="saveFormF3Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
                             <button id="SubmitFormF3Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
@@ -356,9 +356,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button id="btnDCancel" type="button" class="btn btn-sm btn-outline-theme Cancel">Cancel</button>
-                            <button id="btnDSaveAndContinue" type="button" class="btn btn-sm btn-themebtn" hidden="">Save &amp; Continue</button>
-                            <button id="btnDSaveAndExit" type="button" onclick="SaveFormF3Dtl();" class="btn btn-sm btn-themebtn">Save &amp; Exit</button>
+                            <button id="btnDCancel" type="button" class="btn btn-sm btn-outline-theme Cancel"  data-dismiss="modal">Cancel</button>
+                            <button id="btnSaveFormF3Dtl" type="button" onclick="SaveFormF3Dtl();" class="btn btn-sm btn-themebtn">Save &amp; Exit</button>
                         </div>
                     </div>
 
@@ -390,6 +389,10 @@
 
 <script>
 
+    $(document).ready(function () {
+        process.Init("FormF3", "@Model.FormF3.Status", @Model.FormF3.PkRefNo);
+       
+    });
     bindRoadCode();
 
     $('#ddlDivision').val("@Model.FormF3.DivCode");

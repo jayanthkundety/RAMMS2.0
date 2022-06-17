@@ -172,7 +172,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 _model.FormF3 = await _formF3Service.GetHeaderById(id);
 
-                if (_model.FormF3.Source=="New")
+                if (_model.FormF3.Source == "New")
                     ViewData["Asset"] = _formF3Service.GetAssetDetails("New");
                 else
                     ViewData["Asset"] = _formF3Service.GetAssetDetails("G1G2");
@@ -186,7 +186,7 @@ namespace RAMMS.Web.UI.Controllers
             _model.FormF3 = _model.FormF3 ?? new FormF3ResponseDTO();
             _model.view = view;
 
-            if (_model.FormF3.InspectedBy == 0 && _model.FormF3.Status == RAMMS.Common.StatusList.Submitted)
+            if ((_model.FormF3.InspectedBy == null || _model.FormF3.InspectedBy == 0) && _model.FormF3.Status == RAMMS.Common.StatusList.Submitted)
             {
                 _model.FormF3.InspectedBy = _security.UserID;
                 _model.FormF3.InspectedDate = DateTime.Today;
@@ -196,7 +196,7 @@ namespace RAMMS.Web.UI.Controllers
             return PartialView("~/Views/FormF3/_AddFormF3.cshtml", _model);
         }
 
-        
+
 
         public async Task<IActionResult> SaveFormF3(FormF3Model frm)
         {
@@ -225,7 +225,7 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> SaveFormF3Dtl(FormF3Model frm)
         {
             int? refNo = 0;
-            
+
             frm.FormF3Dtl.Ff3hPkRefNo = frm.FormF3.PkRefNo;
             if (frm.FormF3Dtl.PkRefNo == 0)
             {
