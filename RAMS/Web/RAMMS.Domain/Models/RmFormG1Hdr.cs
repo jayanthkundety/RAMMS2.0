@@ -13,7 +13,7 @@ namespace RAMMS.Domain.Models
 
         public int Fg1hPkRefNo { get; set; }
         public string Fg1hRefNo { get; set; }
-        public int? FgihAiPkRefNo { get; set; }
+        public int? Fg1hAiPkRefNo { get; set; }
         public string Fg1hAssetId { get; set; }
         public string Fg1hDivCode { get; set; }
         public string Fg1hRmuCode { get; set; }

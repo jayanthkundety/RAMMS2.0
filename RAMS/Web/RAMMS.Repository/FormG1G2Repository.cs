@@ -17,7 +17,7 @@ using RAMMS.DTO.RequestBO;
 
 namespace RAMMS.Repository
 {
-    public class FormG1Repository : RepositoryBase<RmFormG1Hdr> , IFormG1Repository
+    public class FormG1Repository : RepositoryBase<RmFormG1Hdr>, IFormG1Repository
     {
         public FormG1Repository(RAMMSContext context) : base(context)
         {
@@ -33,7 +33,7 @@ namespace RAMMS.Repository
             return await _context.RmFormG1Hdr.Include(x => x.RmFormG2Hdr).ThenInclude(x => x.Fg2hFg1hPkRefNoNavigation).Where(x => x.Fg1hPkRefNo == headerId && x.Fg1hActiveYn == true).FirstOrDefaultAsync();
         }
         public async Task<RmFormG1Hdr> Save(RmFormG1Hdr frmG1G2, bool updateSubmit)
-        {   
+        {
             //bool isAdd = false;
             if (frmG1G2.Fg1hPkRefNo == 0)
             {
@@ -42,20 +42,19 @@ namespace RAMMS.Repository
                 IDictionary<string, string> lstRef = new Dictionary<string, string>();
                 lstRef.Add("Year", Utility.ToString(frmG1G2.Fg1hYearOfInsp));
                 lstRef.Add("AssetID", Utility.ToString(frmG1G2.Fg1hAssetId));
-                frmG1G2.Fg1hRefNo  = Common.RefNumber.FormRefNumber.GetRefNumber(FormType.FormG1G2, lstRef);
+                frmG1G2.Fg1hRefNo = Common.RefNumber.FormRefNumber.GetRefNumber(FormType.FormG1G2, lstRef);
                 _context.RmFormG1Hdr.Add(frmG1G2);
             }
             else
             {
                 string[] arrNotReqUpdate = new string[] { "Fg1hPkRefNo", "Fg1hCInspRefNo", "Fg1hPkRefNo", "Fg1hAssetId",
-                    "Fg1hDivCode", "Fg1hRmuName", "Fg1hRdCode","Fg1hRdName","Fg1hLocChKm","Fg1hLocChM","Fg1hFinRdLevel","Fg1hStrucCode","Fg1hAiCatchArea","Fg1hAiSkew",
-                    "Fg1hAiDesignFlow","Fg1hAiLength","Fg1hAiPrecastSitu","Fg1hAiGrpType","Fg1hAiBarrelNo","Fg1hAiGpsEasting","Fg1hAiGpsNorthing","Fg1hAiMaterial","Fg1hAiIntelLevel","Fg1hAiOutletLevel",
-                    "Fg1hAiIntelStruc","Fg1hAiOutletStruc","Fg1hYearOfInsp","Fg1hCrBy","Fg1hCrDt"
+                    "Fg1hDivCode", "Fg1hRmuName", "Fg1hRdCode","Fg1hRdName","Fg1hLocChKm","Fg1hLocChM"
                 };
                 //_context.RmFormS1Dtl.Update(formS1Details);
                 //var dtls = frmG1G2.RmFormG2Hdr;
                 //frmG1G2.RmFormG2Hdr = null;
                 _context.RmFormG1Hdr.Attach(frmG1G2);
+               
                 var entry = _context.Entry(frmG1G2);
                 entry.Properties.Where(x => !arrNotReqUpdate.Contains(x.Metadata.Name)).ToList().ForEach((p) =>
                 {
@@ -65,23 +64,34 @@ namespace RAMMS.Repository
                 {
                     entry.Property(x => x.Fg1hSubmitSts).IsModified = true;
                 }
-                string[] arrDtlReqUpdate = new string[] { "Fg1dDistress", "Fg1dSeverity", "Fg1dDistressOthers" };
-                foreach (var dtl in frmG1G2.RmFormG2Hdr)
-                {
-                    if (dtl.Fg2hPkRefNo > 0)
-                    {
-                        _context.RmFormG2Hdr.Attach(dtl);
-                        var dtlentry = _context.Entry(dtl);
-                        dtlentry.Properties.Where(x => arrDtlReqUpdate.Contains(x.Metadata.Name)).ToList().ForEach((p) =>
-                        {
-                            p.IsModified = true;
-                        });
-                    }
-                }
+                //string[] arrDtlReqUpdate = new string[] { "Fg1dDistress", "Fg1dSeverity", "Fg1dDistressOthers" };
+                //foreach (var dtl in frmG1G2.RmFormG2Hdr)
+                //{
+                //    if (dtl.Fg2hPkRefNo > 0)
+                //    {
+                //        _context.RmFormG2Hdr.Attach(dtl);
+                //        var dtlentry = _context.Entry(dtl);
+                //        dtlentry.Properties.Where(x => arrDtlReqUpdate.Contains(x.Metadata.Name)).ToList().ForEach((p) =>
+                //        {
+                //            p.IsModified = true;
+                //        });
+                //    }
+                //}
             }
             await _context.SaveChangesAsync();
             return frmG1G2;
         }
+
+        public  async Task<RmFormG2Hdr> SaveG2(RmFormG2Hdr frmG1G2, bool updateSubmit)
+        {
+
+            _context.Entry<RmFormG2Hdr>(frmG1G2).State = frmG1G2.Fg2hPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return frmG1G2;
+
+
+        }
+
         public async Task<List<FormG1G2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
         {
             return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
@@ -125,7 +135,7 @@ namespace RAMMS.Repository
         {
             var query = (from hdr in _context.RmFormG1Hdr.Where(s => s.Fg1hActiveYn == true)
                          from rmu in _context.RmDdLookup.Where(rd => rd.DdlType == "RMU" && (rd.DdlTypeDesc == hdr.Fg1hRmuName)).DefaultIfEmpty()
-                         from asset in _context.RmAllassetInventory.Where(a => a.AiPkRefNo == hdr.Fg1hPkRefNo).DefaultIfEmpty()
+                         from asset in _context.RmAllassetInventory.Where(a => a.AiPkRefNo == hdr.Fg1hAiPkRefNo).DefaultIfEmpty()
                          let rdcode = _context.RmRoadMaster.Where(r => r.RdmRdCode == hdr.Fg1hRdCode && r.RdmActiveYn == true).DefaultIfEmpty().FirstOrDefault()
                          select new
                          {
@@ -134,7 +144,7 @@ namespace RAMMS.Repository
                              Year = hdr.Fg1hYearOfInsp,
                              InsDate = hdr.Fg1hDtOfInsp,
                              AssetRefId = hdr.Fg1hAssetId,
-                             RMUCode = hdr.Fg1hRmuCode,
+                             RMUCode = rmu.DdlTypeCode,
                              RMUDesc = hdr.Fg1hRmuName,
                              SecCode = asset.AiSecCode,
                              SecName = asset.AiSecName,
@@ -259,16 +269,139 @@ namespace RAMMS.Repository
             return frmG1G2.Fg1hPkRefNo;
         }
 
-        //public List<FormC1C2Rpt> GetReportData(int headerid)
-        //{
-        //    return GetReportDataV2(headerid);
-        //}
+        public List<FormG1G2Rpt> GetReportData(int headerid)
+        {
+            return GetReportDataV2(headerid);
+        }
 
 
-        //public List<FormC1C2Rpt> GetReportDataV2(int headerid)
-        //{
-        //    return null;
-        //}
+        public List<FormG1G2Rpt> GetReportDataV2(int headerid)
+        {
+            var type = (from ty in _context.RmDdLookup
+                        where ty.DdlType == "Photo Type" && ty.DdlTypeCode == "SG"
+                        orderby ty.DdlTypeRemarks ascending
+                        select ty).ToList();
+            var roadcode = (from o in _context.RmFormG1Hdr
+                            where o.Fg1hPkRefNo == headerid
+                            select new { o.Fg1hRdCode, o.Fg1hDtOfInsp }).FirstOrDefault();
+
+            List<FormG1G2Rpt> detail = (from o in _context.RmFormG1Hdr
+                                        where (o.Fg1hRdCode == roadcode.Fg1hRdCode && o.Fg1hDtOfInsp.HasValue && o.Fg1hDtOfInsp < roadcode.Fg1hDtOfInsp) || o.Fg1hPkRefNo == headerid
+                                        let formG2 = _context.RmFormG2Hdr.FirstOrDefault(x => x.Fg2hFg1hPkRefNo == o.Fg1hPkRefNo)
+                                        select new FormG1G2Rpt
+                                        {
+                                            RefernceNo = o.Fg1hRefNo,
+                                            RMU = o.Fg1hRmuName,
+                                            RoadCode = o.Fg1hRdCode,
+                                            RoadName = o.Fg1hRdName,
+                                            StructureCode = o.Fg1hStrucCode,
+                                            ParkingPosition = o.Fg1hPrkPosition.HasValue ? o.Fg1hPrkPosition.Value ? "Yes" : "No" : "No",
+                                            PotentialHazards = o.Fg1hPotentialHazards.HasValue ? o.Fg1hPotentialHazards.Value ? "Yes" : "No" : "No",
+                                            Accessiblity = o.Fg1hAccessibility.HasValue ? o.Fg1hAccessibility.Value ? "Yes" : "No" : "No",
+                                            AuditedByDate = o.Fg1hAuditedDt,
+                                            ReportforYear = o.Fg1hYearOfInsp,
+                                            AuditedByDesignation = o.Fg1hAuditedDesig,
+                                            AuditedByName = o.Fg1hAuditedName,
+                                            AssetRefNO = o.Fg1hAssetId,
+                                            BarriersYes = o.Fg1hInspBarrier == "Yes" ? 1 : 0 ,
+                                            BarriersNo = o.Fg1hInspBarrier == "No" ? 1 : 0,
+                                            BarriersCritical = o.Fg1hInspBarrier == "Critical" ? 1 : 0,
+                                            BarriersClosed = o.Fg1hInspBarrier == "Closed" ? 1 : 0,
+                                            GantryBeamsYes = o.Fg1hInspGBeam == "Yes" ? 1 : 0,
+                                            GantryBeamsNo = o.Fg1hInspGBeam == "No" ? 1 : 0,
+                                            GantryBeamsCritical = o.Fg1hInspGBeam == "Critical" ? 1 : 0,
+                                            GantryBeamsClosed = o.Fg1hInspGBeam == "Closed" ? 1 : 0,
+                                            GantryColsYes = o.Fg1hInspGColumn == "Yes" ? 1 : 0,
+                                            GantryColsNo = o.Fg1hInspGColumn == "No" ? 1 : 0,
+                                            GantryColsCritical = o.Fg1hInspGColumn == "Critical" ? 1 : 0,
+                                            GantryColsClosed = o.Fg1hInspGColumn == "Closed" ? 1 : 0,
+                                            FootingYes = o.Fg1hInspFootings == "Yes" ? 1 : 0,
+                                            FootingNo = o.Fg1hInspFootings == "No" ? 1 : 0,
+                                            FootingCritical = o.Fg1hInspFootings == "Critical" ? 1 : 0,
+                                            FootingClosed = o.Fg1hInspFootings == "Closed" ? 1 : 0,
+                                            AnchorYes = o.Fg1hInspGPads == "Yes" ? 1 : 0,
+                                            AnchorNo = o.Fg1hInspGPads == "No" ? 1 : 0,
+                                            AnchorCritical = o.Fg1hInspGPads == "Critical" ? 1 : 0,
+                                            AnchorClosed = o.Fg1hInspGPads == "Closed" ? 1 : 0,
+                                            MaintenanceAccessYes = o.Fg1hInspMaintenance == "Yes" ? 1 : 0,
+                                            MaintenanceAccessNo = o.Fg1hInspMaintenance == "No" ? 1 : 0,
+                                            MaintenanceAccessCritical = o.Fg1hInspMaintenance == "Critical" ? 1 : 0,
+                                            MaintenanceAccessClosed = o.Fg1hInspMaintenance == "Closed" ? 1 : 0,
+                                            StaticSignsYes = o.Fg1hInspStaticSigns == "Yes" ? 1 : 0,
+                                            StaticSignsNo = o.Fg1hInspStaticSigns == "No" ? 1 : 0,
+                                            StaticSignsCritical = o.Fg1hInspStaticSigns == "Critical" ? 1 : 0,
+                                            StaticSignsClosed = o.Fg1hInspStaticSigns == "Closed" ? 1 : 0,
+                                            VariableMessagYes = o.Fg1hInspVms == "Yes" ? 1 : 0,
+                                            VariableMessagNo = o.Fg1hInspVms == "No" ? 1 : 0,
+                                            VariableMessagCritical = o.Fg1hInspVms == "Critical" ? 1 : 0,
+                                            VariableMessagClosed = o.Fg1hInspVms == "Closed" ? 1 : 0,
+                                            Division = o.Fg1hDivCode,
+                                            InspectedByDate = o.Fg1hInspectedDt,
+                                            InspectedByDesignation = o.Fg1hInspectedDesig,
+                                            InspectedByName = o.Fg1hInspectedName,
+                                            GPSEasting = o.Fg1hGpsEasting,
+                                            GPSNorthing = o.Fg1hGpsNorthing,
+                                            GantrySignConditionRate = o.Fg1hCondRating,
+                                            HaveIssueFound = o.Fg1hIssuesFound.HasValue ? o.Fg1hIssuesFound.Value ? "Yes" : "No" : "No",
+                                            Day = o.Fg1hDtOfInsp.Value.Day,
+                                            RatingRecordNo = o.Fg1hRecordNo ,
+                                            LocationChainageKm = o.Fg1hLocChKm,
+                                            LocationChainageM = o.Fg1hLocChM    ,
+                                            Month = o.Fg1hDtOfInsp.Value.Month,
+                                            Year = o.Fg1hDtOfInsp.Value.Year,
+                                            
+                                            PartB2ServiceProvider = formG2.Fg2hDistressSp ,
+                                            PartB2ServicePrvdrCons = formG2.Fg2hDistressEc,
+                                            PartCGeneralComments = formG2.Fg2hGeneralSp,
+                                            PartCGeneralCommentsCons = formG2.Fg2hGeneralSp ,
+                                            PartDFeedback = formG2.Fg2hFeedbackSp, 
+                                            PartDFeedbackCons = formG2.Fg2hFeedbackEc,
+                                            PkRefNo = o.Fg1hPkRefNo
+                                        }).ToList();
+
+            string[] str = type.Select(s => s.DdlTypeDesc).ToArray();
+            foreach (var rpt in detail)
+            { 
+                var p = (from o in _context.RmFormGImages
+                         where o.FgiFg1hPkRefNo == rpt.PkRefNo && o.FgiActiveYn == true
+                         && str.Contains(o.FgiImageTypeCode)
+                         select new Pictures
+                         {
+                             ImageUrl = o.FgiImageUserFilePath,
+                             Type = o.FgiImageTypeCode,
+                             FileName = o.FgiImageFilenameUpload 
+                         }).ToList();
+                rpt.Pictures = new List<Pictures>();
+                int i = 1;
+                foreach (var t in type)
+                {
+                    var picktures = p.Where(s => s.Type == t.DdlTypeDesc).ToList();
+                    if (picktures == null || (picktures != null && picktures.Count == 0))
+                    {
+                        rpt.Pictures.Add(new Pictures { Type = t.DdlTypeValue != "P1" ? $"{t.DdlTypeValue}: {t.DdlTypeDesc}" : "" });
+                        rpt.Pictures.Add(new Pictures { Type = $"{t.DdlTypeValue}: {t.DdlTypeDesc}" });
+                    }
+                    else if (picktures.Count < 2)
+                    {
+                        foreach (var pi in picktures)
+                        {
+                            pi.Type = $"{t.DdlTypeValue}: {t.DdlTypeDesc}";
+                        }
+                        rpt.Pictures.AddRange(picktures);
+                        rpt.Pictures.Add(new Pictures { Type = t.DdlTypeValue != "P1" ? $"{t.DdlTypeValue}: {t.DdlTypeDesc}" : "" });
+                    }
+                    else
+                    {
+                        foreach (var pi in picktures)
+                        {
+                            pi.Type = $"{t.DdlTypeValue}: {t.DdlTypeDesc}";
+                        }
+                        rpt.Pictures.AddRange(picktures);
+                    }
+                }
+            }
+            return detail;
+        }
 
         //public async Task<IEnumerable<SelectListItem>> GetCVId(AssetDDLRequestDTO request)
         //{

@@ -14,7 +14,7 @@
     string strAssestID = string.Empty;
     string strYear = string.Empty;
     string strRefId = string.Empty;
-    bool IsSupervisor = false;
+    bool isSubmit = false;
     if (Model != null)
     {
         strAssestID = Model.AssetId;
@@ -28,34 +28,49 @@
 
 @if (Model != null)
 {
-    IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormG1G2Init);
+    isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsSupervisor || security.isEnggAssistant);
     <script type="text/javascript">
               frmG1G2.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
             frmG1G2.IsEdit = @(ViewBag.IsEdit ? "true" : "false");
             $(document).ready(function () {
              process.Init("FormG1G2", "@Model.Status", @Model.PkRefNo);
+             $("#pkRefNo").val(frmG1G2.HeaderData.PkRefNo);
+             $("#g2pkRefNo").val(frmG1G2.HeaderData.FormG2.PkRefNo);
+
+             if (frmG1G2.HeaderData.Status == "Submitted") {
+
+                  $('#formG1G2InspectedBy').trigger('chosen:updated');
+                  $("#formG1G2InspectedBy").trigger("change");
+                  $("#InspectedSign").prop("checked",true);
+             } else if (frmG1G2.HeaderData.Status == "Verified") {
+                 $('#formG1G2AuditedBy').trigger('chosen:updated');
+                 $("#formG1G2AuditedBy").trigger("change");
+                 $("#AuditedSign").prop("checked",true);
+             }
+
+
         });
     </script>
 }
+@{
+    Html.RenderPartial("_breadcrumb", new BreadCrumb()
+            {
+                Title = "Condition Inspection - Form G1/G2",
+                SimpleNavigation = "Home,Condition Inspection,Form G1/2"
+            });
+}
 
 <div class="row">
-    <div id="frmG1G2Data">
+    <div class="w-100 bg-body" id="frmG1G2Data">
         <form id="">
-            <div class="row bg-white pt-4">
-                <div class="w-100">
-                    <div class="body-header w-100">
-                        <div class="col-lg-12">
-                            <div class=" w-100 d-flex justify-content-center py-1">
-                                <div class="form-group mb-0">
-                                    <label style="float:left; padding: .5rem .5rem 0 !important;">Form G1/G2 No.</label>
-                                    <input id="txtFormG1G2RefNum" class="form-control" style="width:330px;" type="text" value="@strRefId" disabled>
-                                </div>
-                            </div>
-                        </div>
+            <div class="modal-body mh-182 pt-0 pb-0">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div class="form-group mb-0">
+                        <label style="float:left; padding: .5rem .5rem 0 !important;">Form G1/G2 No.</label>
+                        <input id="txtFormG1G2RefNum" class="form-control" style="width:330px;" type="text" value="@strRefId" disabled>
                     </div>
                 </div>
-            </div>
-            <div class="modal-body mh-182 pt-0 pb-0">
+                <div class="clear-b"></div>
                 <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3" id="divFindDetailsFG1G2">
                     <div class="row">
                         <div class="col-lg-10 p-0">
@@ -90,35 +105,36 @@
                                         @Html.Label("Road Name", "Road Name")
                                         <input id="txtRoadName" type="text" class="form-control" disabled />
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        @Html.Label("Asset ID", "Asset ID")
-                                        @if (ViewBag.IsAdd)
-                                        {
-                                            List<RAMMS.DTO.ResponseBO.AssetId> lstIds = (List<RAMMS.DTO.ResponseBO.AssetId>)ViewData["AssetIds"];
-                                            <select name="AiPkRefNo" id="selAssetID" class="form-control validate {req,Asset ID}" onchange="frmG1G2.AssetIDChange(this);">
-                                                <option value="">Select Asset ID</option>
-                                                @foreach (RAMMS.DTO.ResponseBO.AssetId aid in lstIds)
-                                                {
-                                                    <option rmu="@aid.Rmu" rdcode="@aid.RoadCode" scode="@aid.SectionCode" value="@aid.RefId">@aid.AssestyID</option>
-                                                }
-                                            </select>
-                                        }
-                                        <input value="@strAssestID" name="AssetID" id="AiAssetId" type="text" class="form-control" @Html.Raw(ViewBag.IsAdd ? "style='display:none;'" : "disabled='disabled'") />
-
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
-                                        @if (ViewBag.IsAdd)
-                                        {
-                                            @Html.DropDownList("YearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formG1G2InsYear", @class = "form-control validate {req,Year}", @onchange = "frmG1G2.InsYearChange(this);" })
-                                        }
-                                        else
-                                        {
-                                            <input value="@strYear" name="AiAssetId" id="txtG1G2InsYear" type="text" class="form-control" disabled="disabled" />
-                                        }
-
-                                    </div>
                                 }
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Asset ID", "Asset ID")
+                                    @if (ViewBag.IsAdd)
+                                    {
+                                        List<RAMMS.DTO.ResponseBO.AssetId> lstIds = (List<RAMMS.DTO.ResponseBO.AssetId>)ViewData["AssetIds"];
+                                        <select name="AiPkRefNo" id="selAssetID" class="form-control validate {req,Asset ID}" onchange="frmG1G2.AssetIDChange(this);">
+                                            <option value="">Select Asset ID</option>
+                                            @foreach (RAMMS.DTO.ResponseBO.AssetId aid in lstIds)
+                                            {
+                                                <option rmu="@aid.Rmu" rdcode="@aid.RoadCode" scode="@aid.SectionCode" value="@aid.RefId">@aid.AssestyID</option>
+                                            }
+                                        </select>
+                                    }
+                                    <input value="@strAssestID" name="AssetID" id="AiAssetId" type="text" class="form-control" @Html.Raw(ViewBag.IsAdd ? "style='display:none;'" : "disabled='disabled'") />
+
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
+                                    @if (ViewBag.IsAdd)
+                                    {
+                                        @Html.DropDownList("YearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formG1G2InsYear", @class = "form-control validate {req,Year}", @onchange = "frmG1G2.InsYearChange(this);" })
+                                    }
+                                    else
+                                    {
+                                        <input value="@strYear" name="AiAssetId" id="txtG1G2InsYear" type="text" class="form-control" disabled="disabled" />
+                                    }
+
+                                </div>
+
                             </div>
                         </div>
                         <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
@@ -126,10 +142,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="clear-b"></div>
 
-
-                <div class="row bg-white row bg-white pt-3 pb-0" style="border-top:1px solid #dee2e6;">
-                    <div class="col-md-12">
+                <div class="row">
+                    <div class="col-12">
                         <div class="w-100 position-relative pt-2 float-left d-flex justify-content-center">
                             <ul class="nav nav-tabs tabbed round">
                                 <li class="nav-item">
@@ -148,673 +164,637 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                    <div class="col-lg-12 bg-white py-3" id="divG1G2">
+                        <div>
+                            <div id="accordion">
+                                <div class="tab-content">
+                                    <div class="tab-pane show active" id="FormG1TabPage1">
+                                        <div class="row">
+                                            <div class="col-12 bg-white">
+                                                <!--form g1-->
+                                                <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
+                                                    <div id="accordion" class="col-lg-12">
+                                                        <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                                                            <div class="card mb-0">
+                                                                <div class="card-header" id="headingZero">
+                                                                    <h5 class="m-0">
+                                                                        <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                                                            <span class="float-left">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                            </span>
+                                                                            <span class="float-left" style="padding: 4px 8px;">
 
-                        <div class="row bg-white py-3" id="divG1G2">
-                            <div class="col-lg-12">
-                                <div id="accordion">
-                                    <div class="tab-content">
-                                        <div class="tab-pane show active" id="FormG1TabPage1">
-                                            <div class="row">
-                                                <div class="col-12 bg-white">
-                                                    <!--form g1-->
-                                                    <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
-                                                        <div id="accordion" class="col-lg-12">
-                                                            <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
-                                                                <div class="card mb-0">
-                                                                    <div class="card-header" id="headingZero">
-                                                                        <h5 class="m-0">
-                                                                            <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
-                                                                                <span class="float-left">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                </span>
-                                                                                <span class="float-left" style="padding: 4px 8px;">
+                                                                                Asset Identification
 
-                                                                                    Asset Identification
+                                                                            </span>
+                                                                        </a>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <div class="row">
+                                                                                    @*<div class="form-group col-lg-2 pr-0">
+                                                                                        <label for="Reference No">Reference No</label>
+                                                                                        <input type="text" name="AiDivCode" class="form-control" disabled="">
+                                                                                        </div>*@
+                                                                                    <div class="form-group col-lg-3 pr-0">
+                                                                                        <label for="Division">Division</label>
+                                                                                        <input type="text" name="DivCode" class="form-control" disabled="">
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-3 pr-0">
+                                                                                        <label for="RMU">RMU</label>
+                                                                                        <input type="text" name="RmuName" class="form-control" disabled="">
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-2 pr-0">
+                                                                                        <label for="Road_Code">Road Code</label>
+                                                                                        <input type="text" name="RdCode" class="form-control" disabled="">
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-2 pr-0">
+                                                                                        <label for="Road_Name">Road Name</label>
+                                                                                        <input type="text" name="RdName" class="form-control" disabled="">
+                                                                                    </div>
 
-                                                                                </span>
-                                                                            </a>
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
-                                                                        <div class="card-body">
-                                                                            <div class="row">
-                                                                                <div class="form-group col-md-12">
-                                                                                    <div class="row">
-                                                                                        @*<div class="form-group col-lg-2 pr-0">
-                                                                                            <label for="Reference No">Reference No</label>
-                                                                                            <input type="text" name="AiDivCode" class="form-control" disabled="">
-                                                                                            </div>*@
-                                                                                        <div class="form-group col-lg-3 pr-0">
-                                                                                            <label for="Division">Division</label>
-                                                                                            <input type="text" name="DivCode" class="form-control" disabled="">
-                                                                                        </div>
-                                                                                        <div class="form-group col-lg-3 pr-0">
-                                                                                            <label for="RMU">RMU</label>
-                                                                                            <input type="text" name="RmuName" class="form-control" disabled="">
-                                                                                        </div>
-                                                                                        <div class="form-group col-lg-2 pr-0">
-                                                                                            <label for="Road_Code">Road Code</label>
-                                                                                            <input type="text" name="RdCode" class="form-control" disabled="">
-                                                                                        </div>
-                                                                                        <div class="form-group col-lg-2 pr-0">
-                                                                                            <label for="Road_Name">Road Name</label>
-                                                                                            <input type="text" name="RdName" class="form-control" disabled="">
-                                                                                        </div>
-
-                                                                                        <div class="form-group col-lg-2">
-                                                                                            <label for="Structure_Code">Structure Code</label>
-                                                                                            <input type="text" name="StrucCode" class="form-control" disabled="">
-                                                                                        </div>
-                                                                                        <div class="form-group col-lg-3 pr-0">
-                                                                                            <label for="Location_CH">Location CH</label>
-                                                                                            <div class="row">
-                                                                                                <div class="col-6 float-left pr-0">
-                                                                                                    <input name="LocChKm" type="text" class="form-control" disabled="">
-                                                                                                </div>
-                                                                                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
-                                                                                                <div class="col-5 float-left pl-0">
-                                                                                                    <input name="LocChM" type="text" class="form-control" disabled="">
-                                                                                                </div>
+                                                                                    <div class="form-group col-lg-2">
+                                                                                        <label for="Structure_Code">Structure Code</label>
+                                                                                        <input type="text" name="StrucCode" class="form-control" disabled="">
+                                                                                    </div>
+                                                                                    <div class="form-group col-lg-3 pr-0">
+                                                                                        <label for="Location_CH">Location CH</label>
+                                                                                        <div class="row">
+                                                                                            <div class="col-6 float-left pr-0">
+                                                                                                <input name="LocChKm" type="text" class="form-control" disabled="">
                                                                                             </div>
-                                                                                        </div>
-                                                                                        <div class="form-group col-lg-4 mb-0 p-0">
-                                                                                            <div class="form-group col-lg-6">
-                                                                                                <label for="GPS_Easting">GPS Easting</label>
-                                                                                                <div class="position-relative c-path float-left w-100">
-                                                                                                    <span class="current-location path-disabled"></span>
-                                                                                                    <input name="GpsEasting" type="text" class="form-control">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="form-group col-lg-6">
-                                                                                                <label for="GPS_Northing">GPS Northing</label>
-                                                                                                <div class="position-relative c-path float-left w-100">
-                                                                                                    <span class="current-location path-disabled"></span>
-                                                                                                    <input name="GpsNorthing" type="text" class="form-control">
-                                                                                                </div>
+                                                                                            <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
+                                                                                            <div class="col-5 float-left pl-0">
+                                                                                                <input name="LocChM" type="text" class="form-control" disabled="">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-
+                                                                                    <div class="form-group col-lg-4 mb-0 p-0">
+                                                                                        <div class="form-group col-lg-6">
+                                                                                            <label for="GPS_Easting">GPS Easting</label>
+                                                                                            <div class="position-relative c-path float-left w-100">
+                                                                                                <span class="current-location path-disabled"></span>
+                                                                                                <input name="GpsEasting" type="text" class="form-control">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group col-lg-6">
+                                                                                            <label for="GPS_Northing">GPS Northing</label>
+                                                                                            <div class="position-relative c-path float-left w-100">
+                                                                                                <span class="current-location path-disabled"></span>
+                                                                                                <input name="GpsNorthing" type="text" class="form-control">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
 
                                                                             </div>
 
-
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
-                                                                <div class="card mb-0">
-                                                                    <div class="card-header" id="headingOne">
-                                                                        <h5 class="m-0">
-                                                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
-                                                                                <span class="float-left">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                </span>
-                                                                                <span class="float-left" style="padding: 4px 8px;">
-                                                                                    Site Condition
-                                                                                </span>
-                                                                            </a>
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
-                                                                        <div class="card-body">
-
-                                                                            <div class="row">
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label for="Parking_Position">Parking Position</label>
-                                                                                    <select name="PrkPosition" class="form-control  svalidate {req,Parking Position}">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                    </select>
-
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Access Condition</label>
-                                                                                    <select name="Accessibility" class="form-control  svalidate {req,Accessibility}">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                    </select>
-
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Potential Hazards</label>
-                                                                                    <select name="PotentialHazards" class="form-control svalidate {req,Potential Hazards}">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                    </select>
-
-                                                                                </div>
-                                                                            </div>
 
 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
-                                                                <div class="card mb-0">
-                                                                    <div class="card-header" id="headingTwo">
-                                                                        <h5 class="m-0">
-                                                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
-                                                                                <span class="float-left">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                </span>
-                                                                                <span class="float-left" style="padding: 4px 8px;">
-                                                                                    Date of Inspection
-                                                                                </span>
-                                                                            </a>
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
-                                                                        <div class="card-body">
-                                                                            <div class="row">
-                                                                                <div class="form-group col-lg-3">
-                                                                                    @Html.Label("Date of Inspection", "Date of Inspection")
-                                                                                    <input id="dtInspection" name="DtOfInsp" class="form-control svalidate {req,Date of Inspection}" type="date" value="" />
-
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="accordion custom-accordion mb-3" id="custom-accordion-six">
-                                                                <div class="card mb-0">
-                                                                    <div class="card-header" id="headingelsix">
-                                                                        <h5 class="m-0">
-                                                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage6" aria-expanded="false" aria-controls="collapseten">
-                                                                                <span class="float-left">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                </span>
-                                                                                <span class="float-left" style="padding: 4px 8px;">
-                                                                                    Inspection Items
-                                                                                </span>
-                                                                            </a>
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div id="AccordPage6" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingelsix" data-parent="#custom-accordion-six">
-                                                                        <div class="card-body">
-                                                                            <div class="row">
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Barriers</label>
-                                                                                    <select name="PotentialHazards" class="form-control svalidate {req,Barriers}">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Gantry Beams</label>
-                                                                                    <select class="form-control">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Gantry Columns</label>
-                                                                                    <select class="form-control">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Footings</label>
-                                                                                    <select class="form-control">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Anchor Bolts and Mortar Grout Pads</label>
-                                                                                    <select class="form-control">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Maintenance Access</label>
-                                                                                    <select class="form-control">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Static Signs</label>
-                                                                                    <select class="form-control">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                                <div class="form-group col-lg-3">
-                                                                                    <label>Variable Message Signs (VMSs)</label>
-                                                                                    <select class="form-control">
-                                                                                        <option value="">Select</option>
-                                                                                        <option value="true">Yes</option>
-                                                                                        <option value="false">No</option>
-                                                                                        <option value="false">Critical</option>
-                                                                                        <option value="false"> Closed</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+                                                            <div class="card mb-0">
+                                                                <div class="card-header" id="headingOne">
+                                                                    <h5 class="m-0">
+                                                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                                                                            <span class="float-left">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                            </span>
+                                                                            <span class="float-left" style="padding: 4px 8px;">
+                                                                                Site Condition
+                                                                            </span>
+                                                                        </a>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+                                                                    <div class="card-body">
 
+                                                                        <div class="row">
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label for="Parking_Position">Parking Position</label>
+                                                                                <select name="PrkPosition" class="form-control  svalidate {req,Parking Position}">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="true">Yes</option>
+                                                                                    <option value="false">No</option>
+                                                                                </select>
+
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Access Condition</label>
+                                                                                <select name="Accessibility" class="form-control  svalidate {req,Accessibility}">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="true">Yes</option>
+                                                                                    <option value="false">No</option>
+                                                                                </select>
+
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Potential Hazards</label>
+                                                                                <select name="PotentialHazards" class="form-control svalidate {req,Potential Hazards}">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="true">Yes</option>
+                                                                                    <option value="false">No</option>
+                                                                                </select>
+
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+                                                            <div class="card mb-0">
+                                                                <div class="card-header" id="headingTwo">
+                                                                    <h5 class="m-0">
+                                                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                                                                            <span class="float-left">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                            </span>
+                                                                            <span class="float-left" style="padding: 4px 8px;">
+                                                                                Date of Inspection
+                                                                            </span>
+                                                                        </a>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                            <div class="form-group col-lg-3">
+                                                                                @Html.Label("Date of Inspection", "Date of Inspection")
+                                                                                <input id="dtInspection" name="DtOfInsp" class="form-control svalidate {req,Date of Inspection}" type="date" value="" />
+
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="accordion custom-accordion mb-3" id="custom-accordion-six">
+                                                            <div class="card mb-0">
+                                                                <div class="card-header" id="headingelsix">
+                                                                    <h5 class="m-0">
+                                                                        <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage6" aria-expanded="false" aria-controls="collapseten">
+                                                                            <span class="float-left">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                            </span>
+                                                                            <span class="float-left" style="padding: 4px 8px;">
+                                                                                Inspection Items
+                                                                            </span>
+                                                                        </a>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="AccordPage6" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingelsix" data-parent="#custom-accordion-six">
+                                                                    <div class="card-body">
+                                                                        <div class="row">
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Barriers</label>
+                                                                                <select name="InspBarrier" class="form-control svalidate {req,Barriers}">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Gantry Beams</label>
+                                                                                <select class="form-control svalidate {req,Gantry Beams}" name="InspGBeam">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Gantry Columns</label>
+                                                                                <select class="form-control svalidate {req,Gantry Columns}" name="InspGColumn">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Footings</label>
+                                                                                <select class="form-control  svalidate {req,Footings}" name="InspFootings">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Anchor Bolts and Mortar Grout Pads</label>
+                                                                                <select class="form-control svalidate {req,Anchor Bolts and Mortar Grout Pads}" name="InspGPads">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Maintenance Access</label>
+                                                                                <select class="form-control svalidate {req,Maintenance Access}" name="InspMaintenance">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Static Signs</label>
+                                                                                <select class="form-control svalidate {req,Static Signs}" name="InspStaticSigns">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                                <label>Variable Message Signs (VMSs)</label>
+                                                                                <select class="form-control  svalidate {req,Variable Message Signs (VMSs)}" name="InspVms">
+                                                                                    <option value="">Select</option>
+                                                                                    <option value="Yes">Yes</option>
+                                                                                    <option value="No">No</option>
+                                                                                    <option value="Critical">Critical</option>
+                                                                                    <option value="Closed"> Closed</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <!--form g1 -->
+
                                                 </div>
+                                                <!--form g1 -->
                                             </div>
                                         </div>
-                                        <div class="tab-pane show " id="FormG2TabPage2">
-                                            <div class="col-md-12">
-                                                <div class="row" id="div-addformd">
-                                                    <div class="col-12 bg-white">
+                                    </div>
+                                    <div class="tab-pane show " id="FormG2TabPage2">
+                                        <div class="row">
+                                            <div class="col-12 bg-white">
+                                                <input type="hidden" id="pkRefNo" name="FormG2.Fg1hPkRefNo" />
+                                                <input type="hidden" id="g2pkRefNo" name="FormG2.PkRefNo" />
 
-                                                        <div class="row">
-                                                            <div id="accordion" class="col-lg-12">
+
+                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-eight">
+                                                    <div class="card mb-0">
+                                                        <div class="card-header" id="headingeight">
+                                                            <h5 class="m-0">
+                                                                <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage8" aria-expanded="true" aria-controls="collapseeight">
+                                                                    <span class="float-left">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                    </span>
+                                                                    <span class="float-left" style="padding: 4px 8px;">
+
+                                                                        PART A: Photographs of Site (Refer to attachment)
+
+                                                                    </span>
+                                                                </a>
+                                                            </h5>
+                                                        </div>
+                                                        <div id="AccordPage8" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingeight" data-parent="#custom-accordion-eight">
+                                                            <div class="card-body">
+
+
+                                                                <!--remove-->
+                                                                <div id="" class="w-100">
+
+                                                                    <div class="accordion custom-accordion" id="custom-accordion-eight">
+                                                                        <div class="card mb-0">
+                                                                            <div class="card-header" id="headingEight" style="padding: .45rem 1.25rem; ">
+                                                                                <div class="w-100 float-left d-flex justify-content-between">
+                                                                                    <a class="custom-accordion-title py-1" data-toggle="collapse" href="#ImageList" aria-expanded="true" aria-controls="collapseEight">
+                                                                                        <span class="float-left" style="padding-top: 2px;">
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                        </span>
+                                                                                        <span class="float-left" style="padding: 4px 8px;">
+                                                                                            Image List
+                                                                                        </span>
+                                                                                    </a>
+                                                                                    <div class="img-btns mt-1">
+                                                                                        <a id="ancAddImage" class="btn btn-sm btn-themebtn" onclick="frmG1G2.ShowAddImage();" finddetailsdep="">
+                                                                                            <span class="add-icon"></span> Add Image
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div id="ImageList" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#custom-accordion-eight">
+                                                                                <div class="card-body">
+                                                                                    <div id="cancel-row">
+                                                                                        <div class="simple-tbl">
+                                                                                            <table id="tblImageList">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th>S.NO</th>
+                                                                                                        <th>Image Type</th>
+                                                                                                        <th>FileName</th>
+                                                                                                        <th class="deleteImg" id="" style="text-align:center">Delete</th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody></tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div style="display:none" id="ImageListTRTemplate">
+                                                                                        <table>
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td imgsno=""></td>
+                                                                                                    <td imgtype=""></td>
+                                                                                                    <td imgfilename=""></td>
+                                                                                                    <td deleteimg="" class="deleteImg" style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="frmG1G2.DeleteImg(this);"><span class="remove-icon"></span></button></td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="accordion custom-accordion mb-0" id="custom-accordion-Nine">
+                                                                        <div class="card mb-0">
+                                                                            <div class="card-header" id="headingNine">
+                                                                                <a class="custom-accordion-title py-l collapsed" data-toggle="collapse" href="#ImageView" aria-expanded="false" aria-controls="collapseNine">
+                                                                                    <span class="float-left" style="padding-top: 2px;">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                                    </span>
+                                                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                                                        Image View
+                                                                                    </span>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div id="ImageView" class="collapse avowmodal-form" aria-labelledby="headingEight" data-parent="#ImageList">
+                                                                                <div class="card-body" id="ImageViewBody"></div>
+                                                                            </div>
+                                                                            <div style="display:none;" id="ImageViewBodyTemplate">
+                                                                                <div class="container">
+                                                                                    <h6 phototype=""></h6>
+                                                                                    <hr>
+                                                                                </div>
+                                                                                <div class="item">
+                                                                                    <div data-fancybox="gallery" style="text-align:center" gallery="">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="modal hide border-10x addphoto-mdl" id="myModal2" data-backdrop="static" data-keyboard="false">
+                                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h4 class="modal-title">Add Photo</h4>
+                                                                                    <button type="button" onclick="CloseUploadModal()" class="close">×</button>
+                                                                                </div><div class="container"></div>
+                                                                                <div class="modal-body">
+
+                                                                                    <div class="col-12 d-flex align-items-center flex-column">
+                                                                                        <div class="row">
+                                                                                            <div class="form-group col-lg-12">
+                                                                                                @Html.Label("Please Select Photograph Type", "Please Select Photograph Type")
+                                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Photo_Type~SG"], "UserIdAud", "Select Photo Type", new { @Id = "photoType", @class = "form-control {req,Photo Type}", @onchange = "frmG1G2.PhotoTypeChange(this);" })
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                                        <div class="row">
+                                                                                            <div class="form-group col-lg-12 mt-4">
+                                                                                                <input type="file" id="FormFile" name="FormFile" class="form-control" multiple="" onchange="updateFileList(event)" hidden="">
+
+
+                                                                                                <div class="files disabled" id="files1" style="text-align:center">
+
+                                                                                                    <span class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" id="AssetBrowseBtn">
+                                                                                                        Browse files here to upload <input type="file" id="files" name="files1" multiple="" disabled="disabled">
+                                                                                                    </span>
+                                                                                                    <br>
+                                                                                                    <br>
+                                                                                                    <ul id="photolist" class="fileList"></ul>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div id="divImg" class="row">
+                                                                                        <div class="mt-3 col-md-2">
+                                                                                            <output id="Filelist" style="display:inline-flex"></output>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="text-center mt-2">
+                                                                                        <button type="button" id="AssetUploadBtn" class="btn btn-sm btn-themebtn" disabled="">Upload</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-sm btn-outline-theme" onclick="CloseUploadModal()">Cancel</button>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <!--remove-->
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-nine">
+                                                    <div class="card mb-0">
+                                                        <div class="card-header" id="headingnine">
+                                                            <h5 class="m-0">
+                                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage9" aria-expanded="false" aria-controls="collapsenine">
+                                                                    <span class="float-left">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                    </span>
+                                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                                        PART B: Distress Observed (if any)
+                                                                    </span>
+                                                                </a>
+                                                            </h5>
+                                                        </div>
+                                                        <div id="AccordPage9" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingnine" data-parent="#custom-accordion-nine">
+                                                            <div class="card-body">
 
                                                                 <div class="row">
                                                                     <div class="col-12">
-
-                                                                        <div class="w-100 bg-white pt-3" style="border-top:1px solid #dee2e6;">
-                                                                            <div id="accordion" class="col-lg-12">
-                                                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-eight">
-                                                                                    <div class="card mb-0">
-                                                                                        <div class="card-header" id="headingeight">
-                                                                                            <h5 class="m-0">
-                                                                                                <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage8" aria-expanded="true" aria-controls="collapseeight">
-                                                                                                    <span class="float-left">
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                    </span>
-                                                                                                    <span class="float-left" style="padding: 4px 8px;">
-
-                                                                                                        PART A: Photographs of Site (Refer to attachment)
-
-                                                                                                    </span>
-                                                                                                </a>
-                                                                                            </h5>
-                                                                                        </div>
-                                                                                        <div id="AccordPage8" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingeight" data-parent="#custom-accordion-eight">
-                                                                                            <div class="card-body">
-
-
-                                                                                                <!--remove-->
-                                                                                                <div id="" class="w-100">
-
-                                                                                                    <div class="accordion custom-accordion" id="custom-accordion-eight">
-                                                                                                        <div class="card mb-0">
-                                                                                                            <div class="card-header" id="headingEight" style="padding: .45rem 1.25rem; ">
-                                                                                                                <div class="w-100 float-left d-flex justify-content-between">
-                                                                                                                    <a class="custom-accordion-title py-1" data-toggle="collapse" href="#ImageList" aria-expanded="true" aria-controls="collapseEight">
-                                                                                                                        <span class="float-left" style="padding-top: 2px;">
-                                                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                                        </span>
-                                                                                                                        <span class="float-left" style="padding: 4px 8px;">
-                                                                                                                            Image List
-                                                                                                                        </span>
-                                                                                                                    </a>
-                                                                                                                    <div class="img-btns mt-1">
-                                                                                                                        <a id="ancAddImage" class="btn btn-sm btn-themebtn" onclick="frmG1G2.ShowAddImage();" finddetailsdep="">
-                                                                                                                            <span class="add-icon"></span> Add Image
-                                                                                                                        </a>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div id="ImageList" class="collapse show avowmodal-form" aria-labelledby="headingEight" data-parent="#custom-accordion-eight">
-                                                                                                                <div class="card-body">
-                                                                                                                    <div id="cancel-row">
-                                                                                                                        <div class="simple-tbl">
-                                                                                                                            <table id="tblImageList">
-                                                                                                                                <thead>
-                                                                                                                                    <tr>
-                                                                                                                                        <th>S.NO</th>
-                                                                                                                                        <th>Image Type</th>
-                                                                                                                                        <th>FileName</th>
-                                                                                                                                        <th class="deleteImg" id="" style="text-align:center">Delete</th>
-                                                                                                                                    </tr>
-                                                                                                                                </thead>
-                                                                                                                                <tbody></tbody>
-                                                                                                                            </table>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div style="display:none" id="ImageListTRTemplate">
-                                                                                                                        <table>
-                                                                                                                            <tbody>
-                                                                                                                                <tr>
-                                                                                                                                    <td imgsno=""></td>
-                                                                                                                                    <td imgtype=""></td>
-                                                                                                                                    <td imgfilename=""></td>
-                                                                                                                                    <td deleteimg="" class="deleteImg" style="text-align:center"><button type="button" style="border:none;align-content:center;background:transparent" onclick="frmG1G2.DeleteImg(this);"><span class="remove-icon"></span></button></td>
-                                                                                                                                </tr>
-                                                                                                                            </tbody>
-                                                                                                                        </table>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="accordion custom-accordion mb-0" id="custom-accordion-Nine">
-                                                                                                        <div class="card mb-0">
-                                                                                                            <div class="card-header" id="headingNine">
-                                                                                                                <a class="custom-accordion-title py-l collapsed" data-toggle="collapse" href="#ImageView" aria-expanded="false" aria-controls="collapseNine">
-                                                                                                                    <span class="float-left" style="padding-top: 2px;">
-                                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                                    </span>
-                                                                                                                    <span class="float-left" style="padding: 4px 8px;">
-                                                                                                                        Image View
-                                                                                                                    </span>
-                                                                                                                </a>
-                                                                                                            </div>
-                                                                                                            <div id="ImageView" class="collapse avowmodal-form" aria-labelledby="headingEight" data-parent="#ImageList">
-                                                                                                                <div class="card-body" id="ImageViewBody"></div>
-                                                                                                            </div>
-                                                                                                            <div style="display:none;" id="ImageViewBodyTemplate">
-                                                                                                                <div class="container">
-                                                                                                                    <h6 phototype=""></h6>
-                                                                                                                    <hr>
-                                                                                                                </div>
-                                                                                                                <div class="item">
-                                                                                                                    <div data-fancybox="gallery" style="text-align:center" gallery="">
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-
-                                                                                                    <div class="modal hide border-10x addphoto-mdl" id="myModal2" data-backdrop="static" data-keyboard="false">
-                                                                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                                                                            <div class="modal-content">
-                                                                                                                <div class="modal-header">
-                                                                                                                    <h4 class="modal-title">Add Photo</h4>
-                                                                                                                    <button type="button" onclick="CloseUploadModal()" class="close">×</button>
-                                                                                                                </div><div class="container"></div>
-                                                                                                                <div class="modal-body">
-
-                                                                                                                    <div class="col-12 d-flex align-items-center flex-column">
-                                                                                                                        <div class="row">
-                                                                                                                            <div class="form-group col-lg-12">
-                                                                                                                                @Html.Label("Please Select Photograph Type", "Please Select Photograph Type")
-                                                                                                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Photo_Type~CV"], "UserIdAud", "Select Photo Type", new { @Id = "photoType", @class = "form-control {req,Photo Type}", @onchange = "frmG1G2.PhotoTypeChange(this);" })
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-
-                                                                                                                    <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                                                                        <div class="row">
-                                                                                                                            <div class="form-group col-lg-12 mt-4">
-                                                                                                                                <input type="file" id="FormFile" name="FormFile" class="form-control" multiple="" onchange="updateFileList(event)" hidden="">
-
-
-                                                                                                                                <div class="files disabled" id="files1" style="text-align:center">
-
-                                                                                                                                    <span class="btn btn-default btn-file dz-button btn btn-sm btn-outline-primary" id="AssetBrowseBtn">
-                                                                                                                                        Browse files here to upload <input type="file" id="files" name="files1" multiple="" disabled="disabled">
-                                                                                                                                    </span>
-                                                                                                                                    <br>
-                                                                                                                                    <br>
-                                                                                                                                    <ul id="photolist" class="fileList"></ul>
-                                                                                                                                </div>
-
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                    <div id="divImg" class="row">
-                                                                                                                        <div class="mt-3 col-md-2">
-                                                                                                                            <output id="Filelist" style="display:inline-flex"></output>
-                                                                                                                        </div>
-                                                                                                                    </div>
-
-                                                                                                                    <div class="text-center mt-2">
-                                                                                                                        <button type="button" id="AssetUploadBtn" class="btn btn-sm btn-themebtn" disabled="">Upload</button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="modal-footer">
-                                                                                                                    <button type="button" class="btn btn-sm btn-outline-theme" onclick="CloseUploadModal()">Cancel</button>
-                                                                                                                </div>
-
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                                <!--remove-->
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-nine">
-                                                                                    <div class="card mb-0">
-                                                                                        <div class="card-header" id="headingnine">
-                                                                                            <h5 class="m-0">
-                                                                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage9" aria-expanded="false" aria-controls="collapsenine">
-                                                                                                    <span class="float-left">
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                    </span>
-                                                                                                    <span class="float-left" style="padding: 4px 8px;">
-                                                                                                        PART B: Distress Observed (if any)
-                                                                                                    </span>
-                                                                                                </a>
-                                                                                            </h5>
-                                                                                        </div>
-                                                                                        <div id="AccordPage9" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingnine" data-parent="#custom-accordion-nine">
-                                                                                            <div class="card-body">
-
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12">
-                                                                                                        <div id="" class="w-100 dt-tbl-section">
-                                                                                                            <div class="col-lg-12 form-group txtarea-80">
-                                                                                                                <label for="Service_Provider">Service Provider</label>
-                                                                                                                <textarea class="form-control" name="SerProviderDefObs"></textarea>
-                                                                                                            </div>
-                                                                                                            <div class="col-lg-12 form-group txtarea-80">
-                                                                                                                <label for="Engineering_Consultant___S_O____S_O__s_Rep_">Engineering Consultant / S.O. / S.O.'s Rep.</label>
-                                                                                                                <textarea class="form-control" name="AuthDefObs"></textarea>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-ten">
-                                                                                    <div class="card mb-0">
-                                                                                        <div class="card-header" id="headingten">
-                                                                                            <h5 class="m-0">
-                                                                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage10" aria-expanded="false" aria-controls="collapseten">
-                                                                                                    <span class="float-left">
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                    </span>
-                                                                                                    <span class="float-left" style="padding: 4px 8px;">
-                                                                                                        PART C: General Comment (if any)
-
-                                                                                                    </span>
-                                                                                                </a>
-                                                                                            </h5>
-                                                                                        </div>
-                                                                                        <div id="AccordPage10" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingten" data-parent="#custom-accordion-ten">
-                                                                                            <div class="card-body">
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12">
-                                                                                                        <div id="" class="w-100 dt-tbl-section">
-                                                                                                            <div class="col-lg-12 form-group txtarea-80">
-                                                                                                                <label for="Service_Provider">Service Provider</label>
-                                                                                                                <textarea class="form-control" name="SerProviderDefObs"></textarea>
-                                                                                                            </div>
-                                                                                                            <div class="col-lg-12 form-group txtarea-80">
-                                                                                                                <label for="Engineering_Consultant___S_O____S_O__s_Rep_">Engineering Consultant / S.O. / S.O.'s Rep.</label>
-                                                                                                                <textarea class="form-control" name="AuthDefObs"></textarea>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-
-
-                                                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-twelve">
-                                                                                    <div class="card mb-0">
-                                                                                        <div class="card-header" id="headingtwelve">
-                                                                                            <h5 class="m-0">
-                                                                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage12" aria-expanded="false" aria-controls="collapsetwelve">
-                                                                                                    <span class="float-left">
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                                                                                                    </span>
-                                                                                                    <span class="float-left" style="padding: 4px 8px;">
-                                                                                                        PART D: Feedback (If any)
-                                                                                                    </span>
-                                                                                                </a>
-                                                                                            </h5>
-                                                                                        </div>
-                                                                                        <div id="AccordPage12" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingtwelve" data-parent="#custom-accordion-twelve">
-                                                                                            <div class="card-body">
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12">
-                                                                                                        <div id="" class="w-100 dt-tbl-section">
-                                                                                                            <div class="col-lg-12 form-group txtarea-80">
-                                                                                                                <label for="Service_Provider">Service Provider</label>
-                                                                                                                <textarea class="form-control" name="SerProviderDefObs"></textarea>
-                                                                                                            </div>
-                                                                                                            <div class="col-lg-12 form-group txtarea-80">
-                                                                                                                <label for="Engineering_Consultant___S_O____S_O__s_Rep_">Engineering Consultant / S.O. / S.O.'s Rep.</label>
-                                                                                                                <textarea class="form-control" name="AuthDefObs"></textarea>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
+                                                                        <div id="" class="w-100 dt-tbl-section">
+                                                                            <div class="col-lg-12 form-group txtarea-80">
+                                                                                @Html.Label("Service Provider", "Service Provider")
+                                                                                <textarea class="form-control" id="DistressSp" name="FormG2.DistressSp"></textarea>
                                                                             </div>
-
+                                                                            <div class="col-lg-12 form-group txtarea-80">
+                                                                                @Html.Label("Engineering Consultant / S.O. / S.O.'s Rep.", "Engineering Consultant / S.O. / S.O.'s Rep.")
+                                                                                <textarea class="form-control" id="DistressEc" name="FormG2.DistressEc"></textarea>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-
-
                                                                 </div>
-
 
 
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-ten">
+                                                    <div class="card mb-0">
+                                                        <div class="card-header" id="headingten">
+                                                            <h5 class="m-0">
+                                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage10" aria-expanded="false" aria-controls="collapseten">
+                                                                    <span class="float-left">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                    </span>
+                                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                                        PART C: General Comment (if any)
 
+                                                                    </span>
+                                                                </a>
+                                                            </h5>
+                                                        </div>
+                                                        <div id="AccordPage10" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingten" data-parent="#custom-accordion-ten">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div id="" class="w-100 dt-tbl-section">
+                                                                            <div class="col-lg-12 form-group txtarea-80">
+                                                                                @Html.Label("Service Provider", "Service Provider")
+                                                                                <textarea class="form-control" id="GeneralSp" name="FormG2.GeneralSp"></textarea>
+                                                                            </div>
+                                                                            <div class="col-lg-12 form-group txtarea-80">
+                                                                                @Html.Label("Engineering Consultant / S.O. / S.O.'s Rep.", "Engineering Consultant / S.O. / S.O.'s Rep.")
+                                                                                <textarea class="form-control" id="GeneralEc" name="FormG2.GeneralEc"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="accordion custom-accordion mb-3" id="custom-accordion-twelve">
+                                                    <div class="card mb-0">
+                                                        <div class="card-header" id="headingtwelve">
+                                                            <h5 class="m-0">
+                                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage12" aria-expanded="false" aria-controls="collapsetwelve">
+                                                                    <span class="float-left">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                                    </span>
+                                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                                        PART D: Feedback (If any)
+                                                                    </span>
+                                                                </a>
+                                                            </h5>
+                                                        </div>
+                                                        <div id="AccordPage12" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingtwelve" data-parent="#custom-accordion-twelve">
+                                                            <div class="card-body">
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <div id="" class="w-100 dt-tbl-section">
+                                                                            <div class="col-lg-12 form-group txtarea-80">
+                                                                                @Html.Label("Service Provider", "Service Provider")
+                                                                                <textarea class="form-control" id="FeedbackSp" name="FormG2.FeedbackSp"></textarea>
+                                                                            </div>
+                                                                            <div class="col-lg-12 form-group txtarea-80">
+                                                                                @Html.Label("Engineering Consultant / S.O. / S.O.'s Rep.", "Engineering Consultant / S.O. / S.O.'s Rep.")
+                                                                                <textarea class="form-control" id="FeedbackEc" name="FormG2.FeedbackEc"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-                                <div id="divApprovedInfo" class="col-lg-12 px-lg-5">
-                                    <div class="col-12">
-                                        <div class="bg-white rounded landing-division w-100 float-left  my-2">
-                                            <div class="col-lg-12 border-bottom py-2 my-2">
-                                                <span class="font-14 font-weight-bold">
-                                                    Inspected by
+                            </div>
+                            <div id="divApprovedInfo" class="col-lg-12 px-lg-5">
+                                <div class="col-12">
+                                    <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                        <div class="col-lg-12 border-bottom py-2 my-2">
+                                            <span class="font-14 font-weight-bold">
+                                                Inspected by
 
-                                                </span>
-                                            </div>
-
+                                            </span>
+                                        </div>
+                                        <div userIdGroup>
                                             <div class="form-group col-lg-3">
-                                                <label for="Name">
-                                                    User ID
-                                                </label>
-                                                <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                    <option value="">Select Users</option>
-                                                    <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                    <option value="100000034">100000034 - Ramlee Nor</option>
-                                                    <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                    <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                </select>
-
+                                                @Html.Label("User ID", "User ID")
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "InspectedBy", "Select Users", new { @Id = "formG1G2InspectedBy", @class = "form-control ssvalidate {req,Inspected By User Id}", @useridChange = "", @disabled="disabled" })
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="User_Id">
-                                                    Name
-                                                </label>
-                                                <input type="text" class="form-control" disabled />
+                                                @Html.Label("Name", "Name")
+                                                <input name="InspectedName" class="form-control ssvalidate {req,Inspected By User Name}" type="text" value="" userName disabled />
                                             </div>
                                             <div class="form-group col-lg-2">
-                                                <label for="Designation">Designation</label>
-                                                <input type="text" name="UserDesignationPlan" userdest="" class="form-control cvalidate {req,Planned By User Designation}">
+                                                @Html.Label("Designation", "Designation")
+                                                <input name="InspectedDesig" class="form-control ssvalidate {req,Inspected By User Designation}" type="text" value="" userDest disabled />
                                             </div>
                                             <div class="form-group col-lg-3">
-                                                <label for="Date__DD-MM-YYYY_">Date (DD-MM-YYYY)</label>
-                                                <input type="date" name="DtPlan" id="FsiihDtPlan" value="" class="form-control svalidate {req,Planned By Date}">
+                                                @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                                <input name="InspectedDt" class="form-control ssvalidate {req,Inspected by date}" type="date" value="" disabled="disabled" />
                                             </div>
                                             <div class="form-group col-lg-1 float-left">
                                                 <label>
                                                     Sign
-
                                                 </label>
                                                 <div class="clear-b mt-2">
-                                                    <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
+                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox" disabled="disabled">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-4 float-left">
                                                 <label for="Overall_Condition_Rating">Gantry Sign Condition Rating</label>
-                                                <select name="CulvertConditionRat" class="form-control">
+                                                <select name="CondRating" class="form-control validate {req,Overall Condition Rating}">
                                                     <option value="">Select</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
+                                                    @for (int i = 1; i <= 3; i++)
+                                                    {
+                                                        <option value="@i.ToString()">@i.ToString()</option>
+                                                    }
                                                 </select>
 
                                             </div>
                                             <div class="form-group col-lg-6 float-left">
-                                                <label for="Has_issues_been_found_that_require_further_investigation_">Has issues been found that require further investigation?</label>
-                                                <select name="ReqFurtherInv" class="form-control">
+                                                @Html.Label("Has issues been found that require further investigation?", "Has issues been found that require further investigation?")
+                                                <select name="IssuesFound" class="form-control validate {req,Further Investigation}">
                                                     <option value="">Select</option>
                                                     <option value="true">Yes</option>
                                                     <option value="false">No</option>
@@ -823,97 +803,85 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="bg-white rounded landing-division w-100 float-left  my-2">
-                                            <div class="col-lg-12 border-bottom py-2 my-2">
-                                                <span class="font-14 font-weight-bold">
-                                                    Audited by
-                                                </span>
-                                            </div>
-
-                                            <div class="form-group col-lg-3">
-                                                <label for="Name">
-                                                    User ID
-                                                </label>
-                                                <select class="form-control validate {req, Name of Reported By}" id="formDReportedByUserId" name="SaveFormDModel.ReportedByUserId">
-                                                    <option value="">Select Users</option>
-                                                    <option value="100000035">100000035 - Jelayan Anak Mawar</option>
-                                                    <option value="100000034">100000034 - Ramlee Nor</option>
-                                                    <option value="100000015">100000015 - Galigie Anak Ungau</option>
-                                                    <option value="100000020">100000020 - Francis Nanang Anak Edward August</option>
-
-                                                </select>
-
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="User_Id">
-                                                    Name
-                                                </label>
-                                                <input type="text" class="form-control" disabled />
-                                            </div>
-                                            <div class="form-group col-lg-2">
-                                                <label for="Designation">Designation</label>
-                                                <input type="text" name="UserDesignationPlan" userdest="" class="form-control cvalidate {req,Planned By User Designation}">
-                                            </div>
-                                            <div class="form-group col-lg-3">
-                                                <label for="Date__DD-MM-YYYY_">Date of Audit (DD-MM-YYYY)</label>
-                                                <input type="date" name="DtPlan" id="FsiihDtPlan" value="" class="form-control svalidate {req,Planned By Date}">
-                                            </div>
-                                            <div class="form-group col-lg-1 float-left">
-                                                <label>
-                                                    Sign
-
-                                                </label>
-                                                <div class="clear-b mt-2">
-                                                    <input class="{required, Requested By Signature}" data-val="true" data-val-required="The SignReq field is required." id="FormW1_SignReq" name="FormW1.SignReq" type="checkbox" value="true">
-                                                </div>
-                                            </div>
-                                            <input type="hidden" id="txtPhotoValidate" value="" />
+                                </div>
+                                <div class="col-12" userIdGroup>
+                                    <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                        <div class="col-lg-12 border-bottom py-2 my-2">
+                                            <span class="font-14 font-weight-bold">
+                                                Audited by
+                                            </span>
                                         </div>
+
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("User ID", "User ID")
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "AuditedBy", "Select Users", new { @Id = "formG1G2AuditedBy", @class = "form-control ssvalidate {req,Audited By User Id}", @useridChange = "" , @disabled="disabled" })
+
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("Name", "Name")
+                                            <input name="AuditedName" class="form-control ssvalidate {req,Audited By User Name}" type="text" value="" userName disabled />
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Designation", "Designation")
+                                            <input name="AuditedDesig" class="form-control ssvalidate {req,Audited By User Designation}" type="text" value="" userDest disabled />
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                            <input name="AuditedDt" class="form-control ssvalidate {req,Audited by date}" type="date" value="" disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-1 float-left">
+                                            <label>
+                                                Sign
+
+                                            </label>
+                                            <div class="clear-b mt-2">
+                                                <input class="{required, Requested By Signature}" id="AuditedSign" name="AuditedSign" type="checkbox" disabled="disabled">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="txtPhotoValidate" value="" />
                                     </div>
                                 </div>
-                                @{
-                                    if (Model != null)
-                                    {
-                                        Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                            </div>
+                            @{
+                                if (Model != null)
+                                {
+                                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
                 {
                     Form = "FormG1G2",
                     RefId = Model.PkRefNo,
                     Stage = Model.Status
                 });
-                                    }
-                                }
-                            </div>
-                        </div>
 
+                                }
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-12 mb-2 float-right text-right custom-footer">
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmG1G2.Cancel()">Cancel</button>
-                @*@if (Model != null && !Model.SubmitSts)
-                    {*@
+                @{
+                    var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+                    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+
+                }
+
+
                 <button type="button" class="btn btn-sm btn-themebtn" onclick="frmG1G2.Save(false)" finddetailsdep>Save</button>
-                @if (IsSupervisor)
+                @if (isSubmit)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="frmG1G2.Save(true)" finddetailsdep>Submit</button>
                 }
                 @*}*@
-                @if (security.IsExecutive && Model != null && Model.Status == RAMMS.Common.StatusList.FormG1G2Inspected)
+
+                @if (isVerify && (Model != null && (Model.Status == RAMMS.Common.StatusList.FormG1G2Submitted || Model.Status == RAMMS.Common.StatusList.FormG1G2Rejected)))
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
                 }
-                else if (security.IsHeadMaintenance && Model != null && Model.Status == RAMMS.Common.StatusList.FormG1G2ExecutiveApproved)
+                else if (IsApproved && (Model != null && (Model.Status == RAMMS.Common.StatusList.FormG1G2Verified || Model.Status == RAMMS.Common.StatusList.FormG1G2Rejected)))
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
-                }
-                else if (security.IsRegionManager && Model != null && Model.Status == RAMMS.Common.StatusList.FormG1G2HeadMaintenanceApproved)
-                {
-                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
-                }
-                else if (security.IsJKRSSuperiorOfficer && Model != null && Model.Status == RAMMS.Common.StatusList.FormG1G2RegionManagerApproved)
-                {
-                    <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Audited / Reject</button>
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Facilitated By');"> Approve </button>
                 }
             </div>
         </form>
@@ -923,6 +891,17 @@
 <script type="text/javascript">
     //frmG1G2.Dis_Severity = @Html.Raw(RAMMS.Common.Utility.JSerialize(ViewBag.Dis_Severity));
     frmG1G2.Pattern = "@RAMMS.Common.RefNumber.FormRefNumber.GetRawRefNumber(RAMMS.Common.RefNumber.FormType.FormG1G2)";
+
+    jQuery.extend(jQuery.expr[':'], {
+    equals: function (obj, index, meta, stack) {
+        if ($(obj).text() === meta[3]) {
+            return true;
+        }
+        return false;
+    }
+});
+
+
     var filesToUpload = [];
     $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
         var fileIdCounter = 0;
@@ -1074,8 +1053,23 @@
         $("#AssetUploadBtn").click(function (e) {
             var type = $("#photoType").val();
 
+
+            if (type == 'Barriers'){
+                var blength = $("td:equals(Barriers)").length;
+                if (blength >= 1) {
+                    ShowErrorMessage("You cannot upload more than 1 files for Barriers type");
+                    return;
+                }
+            }
+            else {
+                var length = $("td:equals("+type+")").length;
+                if (length >= 2) {
+                    ShowErrorMessage("You cannot upload more than 2 files for " + type + " type");
+                    return;
+                }
+            }
             if (filesToUpload.length > 2) {
-                ShowErrorMessage("You cannot upload more than 2 files for individual type");
+                ShowErrorMessage("You cannot upload more than 2 files for " + type + " type");
                 return;
             }
 
