@@ -88,7 +88,7 @@ namespace RAMMS.Web.UI.Controllers
             await LoadDropDown();
             var grid = new Models.CDataTable() { Name = "tblFG1G2HGrid", APIURL = "/FormG1G2/HeaderList", LeftFixedColumn = 1 };
             grid.IsModify = _security.IsPCModify(ModuleNameList.Condition_Inspection);
-            grid.IsDelete = _security.IsPCDelete(ModuleNameList.Condition_Inspection);
+            grid.IsDelete = _security.IsPCDelete(ModuleNameList.Condition_Inspection) && _security.isOperRAMSExecutive;
             grid.IsView = _security.IsPCView(ModuleNameList.Condition_Inspection);
             grid.Columns.Add(new CDataColumns() { data = null, title = "Action", IsFreeze = true, sortable = false, render = "frmG1G2.HeaderGrid.ActionRender" });
             grid.Columns.Add(new CDataColumns() { data = "RefID", title = "Reference No" });
@@ -142,14 +142,26 @@ namespace RAMMS.Web.UI.Controllers
         }
         private IActionResult ViewRequest(int id)
         {
-            LoadLookupService("Year", "User", "Photo Type~CV");
+            LoadLookupService("Year", "User", "Photo Type~SG");
             ViewBag.Dis_Severity = LookupService.GetDdlLookupByCode("Form C1C2");
             FormG1DTO frmG1G2 = null;
             if (id > 0)
             {
                 ViewBag.IsAdd = false;
-                
                 frmG1G2 = _formG1G2Service.FindByHeaderID(id).Result;
+
+
+                if (frmG1G2.SubmitSts && frmG1G2.Status == Common.StatusList.FormG1G2Verified)
+                {
+                    frmG1G2.AuditedBy = _security.UserID;
+                    frmG1G2.AuditedDt = DateTime.Today;
+                }
+
+                if (frmG1G2.SubmitSts && frmG1G2.Status == Common.StatusList.FormG1G2Submitted)
+                {
+                    frmG1G2.InspectedBy = _security.UserID;
+                    frmG1G2.InspectedDt = DateTime.Today;
+                }
             }
             else
             {
@@ -222,5 +234,40 @@ namespace RAMMS.Web.UI.Controllers
             await _formG1G2Service.DeleteImage(headerId, imgId);
             return ImageList(headerId);
         }
+
+        public IActionResult Delete(int id)
+        {
+            if (id > 0) { return Ok(new { id = _formG1G2Service.Delete(id) }); }
+            else { return BadRequest("Invalid Request!"); }
+
+        }
+
+        public async Task<JsonResult> Save(DTO.ResponseBO.FormG1DTO frmG1G2)
+        {
+            return await SaveAll(frmG1G2, false);
+        }
+        [HttpPost]
+        public async Task<JsonResult> Submit(DTO.ResponseBO.FormG1DTO frmG1G2)
+        {
+            frmG1G2.SubmitSts = true;
+            return await SaveAll(frmG1G2, true);
+        }
+        private async Task<JsonResult> SaveAll(DTO.ResponseBO.FormG1DTO frmG1G2, bool updateSubmit)
+        {
+            frmG1G2.CrBy = _security.UserID;
+            frmG1G2.ModBy = _security.UserID;
+            frmG1G2.ModDt = DateTime.UtcNow;
+            frmG1G2.CrDt = DateTime.UtcNow;
+            var result = await _formG1G2Service.Save(frmG1G2, updateSubmit);
+            return Json(new { RefNo = result.RefNo, Id = result.PkRefNo }, JsonOption());
+        }
+
+        public IActionResult Download(int id)
+        {
+            var content1 = _formG1G2Service.FormDownload("FormG1G2", id, _webHostEnvironment.WebRootPath, _webHostEnvironment.WebRootPath + "/Templates/FormG1G2.xlsx");
+            string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            return File(content1, contentType1, "FormG1G2" + ".xlsx");
+        }
+
     }
 }

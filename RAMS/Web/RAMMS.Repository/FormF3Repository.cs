@@ -437,7 +437,7 @@ namespace RAMMS.Repository
                            select new RmFormF3Dtl
                            {
                                Ff3dFf3hPkRefNo = FormF3.PkRefNo,
-                               Ff3dAssetId = Convert.ToString(g1.FgihAiPkRefNo),
+                               Ff3dAssetId = Convert.ToString(g1.Fg1hAiPkRefNo),
 
                            }).ToList();
 
