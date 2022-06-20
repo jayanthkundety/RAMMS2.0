@@ -21,6 +21,7 @@
                         window.location = _APPLocation + "FormG1G2/View/" + data.PkRefNo;
                     }
                     tis.HeaderData = data;
+                   
                     tis.PageInit();
                 }
             }, "Finding");
@@ -32,6 +33,7 @@
             if (this.IsEdit) { this.IsEdit = this.HeaderData.SubmitSts ? false : true; }
             if (!this.IsEdit) {
                 $("#ancAddImage").remove(); $("#ImageListTRTemplate td[deleteImg]").text("");
+                $("[finddetailsdep]").hide();
             }
             var tis = this;
             var assignFormat = jsMaster.AssignFormat;
@@ -51,12 +53,26 @@
                     if (this.type == "select-one") { obj.trigger("chosen:updated"); };
                 }
             });
-            //tis.InspectionList();
+            $("#pkRefNo").val(tis.HeaderData.PkRefNo); 
+            tis.LoadG2(tis.HeaderData.FormG2);
             tis.RefreshImageList();
             $("#dtInspection").attr("min", this.HeaderData.YearOfInsp + "-01-01").attr("max", this.HeaderData.YearOfInsp + "-12-31");
         }
     }
-    this.AssetIDChange = function (tis) { this.BindRefNumber(); }
+    this.LoadG2 = function (tis) { this.BindG2(tis); }
+    this.BindG2 = (req) => {
+        if (req == null) return;
+        $('#DistressSp').val(req.DistressSp);
+        $('#DistressEc').val(req.DistressEc);
+        $('#GeneralSp').val(req.GeneralSp);
+        $('#GeneralEc').val(req.GeneralEc);
+        $('#FeedbackSp').val(req.FeedbackSp);
+        $('#FeedbackEc').val(req.FeedbackEc);
+    }
+    this.AssetIDChange = function (tis) {
+        
+        this.BindRefNumber();
+    }
     this.InsYearChange = function (tis) { this.BindRefNumber(); }
     this.BindRefNumber = function () {
         var tis = this;
@@ -104,7 +120,12 @@
             $("#frmG1G2Data .svalidate").removeClass("validate");
         }
     }
-
+    this.NavToList = function () {
+        window.location = _APPLocation + "FormG1G2";
+    }
+    this.Cancel = function () {
+        jsMaster.ConfirmCancel(() => { frmG1G2.NavToList(); });
+    }
     this.ShowAddImage = function () {
         $("#myModal2").modal();
     }
@@ -552,8 +573,6 @@
             // console.log("test");
         }
     }
-
-
     this.FilterAssestID = function () {
         var asset = $("#selAssetID");
         if (asset.length > 0) {

@@ -24,7 +24,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData);
         int Delete(int id);
         //List<FormG1G2Rpt> GetReportData(int headerid);
-        //Byte[] FormDownload(string formname, int id, string basepath, string filepath);
+        Byte[] FormDownload(string formname, int id, string basepath, string filepath);
         //Task<IEnumerable<SelectListItem>> GetCVIds(AssetDDLRequestDTO request);
     }
 }

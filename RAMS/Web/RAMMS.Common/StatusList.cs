@@ -124,6 +124,12 @@ namespace RAMMS.Common
         public const string FormF2HeadMaintenanceApproved = "Head Maintenance";
         public const string FormF2RegionManagerApproved = "Region Manager";
 
+        public const string FormF3Init = "Open";
+        public const string FormF3Inspected = "Inspected";
+        public const string FormF3ExecutiveApproved = "Executive";
+        public const string FormF3HeadMaintenanceApproved = "Head Maintenance";
+        public const string FormF3RegionManagerApproved = "Region Manager";
+
         public const string FormF4Init = "Open";
         public const string FormF4Inspected = "Inspected";
         public const string FormF4ExecutiveApproved = "Executive";
@@ -159,11 +165,11 @@ namespace RAMMS.Common
         public const string FormV1Approved = "Approved";
         public const string FormV1Verified = "Verified";
 
-        public const string FormG1G2Init = "Open";
-        public const string FormG1G2Inspected = "Inspected";
-        public const string FormG1G2ExecutiveApproved = "Executive";
-        public const string FormG1G2HeadMaintenanceApproved = "Head Maintenance";
-        public const string FormG1G2RegionManagerApproved = "Region Manager";
+        public const string FormG1G2Saved = "Saved";
+        public const string FormG1G2Submitted = "Submitted";
+        public const string FormG1G2Rejected = "Rejected";
+        public const string FormG1G2Approved = "Approved";
+        public const string FormG1G2Verified = "Verified";
 
     }
 }

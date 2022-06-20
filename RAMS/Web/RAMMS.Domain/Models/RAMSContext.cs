@@ -7411,6 +7411,8 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.Fg1hSubmitSts).HasColumnName("FG1H_SUBMIT_STS");
 
                 entity.Property(e => e.Fg1hYearOfInsp).HasColumnName("FG1H_Year_Of_Insp");
+
+                entity.Property(e => e.Fg1hAiPkRefNo).HasColumnName("FG1H_AI_PK_Ref_No");
             });
 
             modelBuilder.Entity<RmFormG2Hdr>(entity =>

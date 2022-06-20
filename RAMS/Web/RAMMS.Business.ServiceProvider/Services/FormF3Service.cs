@@ -9,11 +9,14 @@ using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RAMMS.Business.ServiceProvider.Interfaces;
 using RAMMS.Common;
+using RAMMS.Common.RefNumber;
 using RAMMS.Domain.Models;
+using RAMMS.DTO;
 using RAMMS.DTO.JQueryModel;
 using RAMMS.DTO.Report;
 using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
+using RAMMS.DTO.Wrappers;
 using RAMMS.Repository.Interfaces;
 
 namespace RAMMS.Business.ServiceProvider.Services
@@ -53,20 +56,104 @@ namespace RAMMS.Business.ServiceProvider.Services
         //    return _mapper.Map<IEnumerable<FormF3DtlResponseDTO>>(formF3Dtl);
         //}
 
-
-
-
-
-        public async Task<int> SaveFormF3(FormF3ResponseDTO FormF3)
+        public async Task<PagingResult<FormF2HeaderRequestDTO>> GetHeaderList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions)
         {
-            FormF3ResponseDTO formF3Response;
+            PagingResult<FormF2HeaderRequestDTO> result = new PagingResult<FormF2HeaderRequestDTO>();
+            List<FormF2HeaderRequestDTO> formAlist = new List<FormF2HeaderRequestDTO>();
+            result.PageResult = await _repo.GetFilteredRecordList(filterOptions);
+            result.TotalRecords = await _repo.GetFilteredRecordCount(filterOptions);
+            result.PageNo = filterOptions.StartPageNo;
+            result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            return result;
+        }
+
+        public async Task<PagingResult<FormF3DtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions)
+        {
+
+
+            PagingResult<FormF3DtlGridDTO> result = new PagingResult<FormF3DtlGridDTO>();
+
+            List<FormF3DtlGridDTO> formF3DtlList = new List<FormF3DtlGridDTO>();
+            try
+            {
+                var filteredRecords = await _repoUnit.FormF3Repository.GetFormF3DtlGridList(filterOptions);
+
+                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+
+                result.PageResult = filteredRecords;
+
+                result.PageNo = filterOptions.StartPageNo;
+                result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
+            }
+            catch (Exception ex)
+            {
+                await _repoUnit.RollbackAsync();
+                throw ex;
+            }
+            return result;
+        }
+
+
+        public IEnumerable<CSelectListItem> GetAssetDetails(string Source)
+        {
+            IEnumerable<RmAllassetInventory> list = _repo.GetAssetDetails(Source);
+
+            return list.Select(s => new CSelectListItem
+            {
+                Text = s.AiAssetId,
+                Value = s.AiPkRefNo.ToString(),
+                FromKm = s.AiLocChKm ?? 0,
+                FromM = s.AiLocChM,
+                Item1 = s.AiStrucCode,
+                Item2 = s.AiBound,
+                Item3 = s.AiWidth.ToString(),
+                CValue = s.AiHeight.ToString()
+            }).ToList();
+
+        }
+
+        public async Task<FormF3ResponseDTO> GetHeaderById(int id)
+        {
+            var header = await _repoUnit.FormF3Repository.FindAsync(s => s.Ff3hPkRefNo == id && s.Ff3hActiveYn == true);
+            if (header == null)
+            {
+                return null;
+            }
+            return _mapper.Map<FormF3ResponseDTO>(header);
+        }
+
+
+        public async Task<FormF3ResponseDTO> SaveFormF3(FormF3ResponseDTO FormF3)
+        {
             try
             {
                 var domainModelFormF3 = _mapper.Map<RmFormF3Hdr>(FormF3);
                 domainModelFormF3.Ff3hPkRefNo = 0;
+
+
+                var obj = _repoUnit.FormF3Repository.FindAsync(x => x.Ff3hRmuCode == domainModelFormF3.Ff3hRmuCode && x.Ff3hSecCode == domainModelFormF3.Ff3hSecCode && x.Ff3hRdCode == domainModelFormF3.Ff3hRdCode && x.Ff3hCrewSup == domainModelFormF3.Ff3hCrewSup && x.Ff3hInspectedYear == domainModelFormF3.Ff3hInspectedYear && x.Ff3hActiveYn == true).Result;
+                if (obj != null)
+                {
+                    var res = _mapper.Map<FormF3ResponseDTO>(obj);
+                    res.FormExist = true;
+                    return res;
+                }
+
+                IDictionary<string, string> lstData = new Dictionary<string, string>();
+
+                lstData.Add("RoadCode", domainModelFormF3.Ff3hRdCode);
+                lstData.Add("Year", domainModelFormF3.Ff3hInspectedYear.ToString());
+                domainModelFormF3.Ff3hPkRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormF3Header, lstData);
+
                 var entity = _repoUnit.FormF3Repository.CreateReturnEntity(domainModelFormF3);
-                formF3Response = _mapper.Map<FormF3ResponseDTO>(entity);
-                return formF3Response.PkRefNo;
+                FormF3.PkRefNo = _mapper.Map<FormF3ResponseDTO>(entity).PkRefNo;
+                FormF3.PkRefId = domainModelFormF3.Ff3hPkRefId;
+                FormF3.Status = domainModelFormF3.Ff3hStatus;
+
+                if (FormF3.Source == "G1G2")
+                    _repo.LoadG1G2Data(FormF3);
+
+                return FormF3;
             }
             catch (Exception ex)
             {
@@ -75,7 +162,21 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
+        public int? DeleteFormF3(int id)
+        {
+            int? rowsAffected;
+            try
+            {
+                rowsAffected = _repo.DeleteFormF3(id);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
 
+            return rowsAffected;
+        }
         public int? DeleteFormF3Dtl(int Id)
         {
             try
@@ -104,6 +205,28 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
         }
 
+
+        public int? UpdateFormF3Dtl(FormF3DtlResponseDTO FormF3Dtl)
+        {
+
+            try
+            {
+                int? Ff3hPkRefNo = FormF3Dtl.Ff3hPkRefNo;
+                int Ff3dPkRefNo = FormF3Dtl.PkRefNo;
+                var model = _mapper.Map<RmFormF3Dtl>(FormF3Dtl);
+                model.Ff3dPkRefNo = Ff3dPkRefNo;
+                model.Ff3dFf3hPkRefNo = Ff3hPkRefNo;
+                return _repo.UpdateFormF3Dtl(model);
+            }
+            catch (Exception ex)
+            {
+                _repoUnit.RollbackAsync();
+                throw ex;
+            }
+        }
+
+
+
         public async Task<int> Update(FormF3ResponseDTO FormF3)
         {
             int rowsAffected;
@@ -111,11 +234,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 int PkRefNo = FormF3.PkRefNo;
                 int? Fw1PkRefNo = FormF3.PkRefNo;
-               
+
                 var domainModelformF3 = _mapper.Map<RmFormF3Hdr>(FormF3);
                 domainModelformF3.Ff3hPkRefNo = PkRefNo;
-               // domainModelformF3.FF3Fw1PkRefNo = Fw1PkRefNo;
- 
+                // domainModelformF3.FF3Fw1PkRefNo = Fw1PkRefNo;
+
                 domainModelformF3.Ff3hActiveYn = true;
                 domainModelformF3 = UpdateStatus(domainModelformF3);
                 _repoUnit.FormF3Repository.Update(domainModelformF3);
@@ -144,7 +267,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-            if (form.Ff3hSubmitSts && form.Ff3hStatus == "Saved")
+            if (form.Ff3hSubmitSts && (form.Ff3hStatus == "Saved" || form.Ff3hStatus == "Initialize"))
             {
                 form.Ff3hStatus = Common.StatusList.FormW2Submitted;
                 form.Ff3hAuditLog = Utility.ProcessLog(form.Ff3hAuditLog, "Submitted By", "Submitted", form.Ff3hInspectedName, string.Empty, form.Ff3hInspectedDate, _security.UserName);
@@ -182,6 +305,8 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             return rowsAffected;
         }
+
+
 
     }
 }

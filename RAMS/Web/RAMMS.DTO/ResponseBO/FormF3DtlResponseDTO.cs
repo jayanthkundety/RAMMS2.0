@@ -10,11 +10,11 @@ namespace RAMMS.DTO.ResponseBO
     {
         public int PkRefNo { get; set; }
         public int? Ff3hPkRefNo { get; set; }
-        public int? RdmFrmCh { get; set; }
-        public int? RdmFrmChDeci { get; set; }
-        public int? RdmToCh { get; set; }
-        public int? RdmToChDeci { get; set; }
+        public int? LocCh { get; set; }
+        public int? LocChDeci { get; set; }
         public string Code { get; set; }
+        public string Bound { get; set; }
+        public string AssetID { get; set; }
         public int? ConditionI { get; set; }
         public int? ConditionIi { get; set; }
         public int? ConditionIii { get; set; }
