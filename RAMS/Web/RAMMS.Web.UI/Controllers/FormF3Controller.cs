@@ -28,6 +28,7 @@ namespace RAMMS.Web.UI.Controllers
         private IWebHostEnvironment _environment;
         private IUserService _userService;
         private IRoadMasterService _roadMasterService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public FormF3Controller(
             IFormF3Service service,
             ISecurity security,
@@ -39,9 +40,9 @@ namespace RAMMS.Web.UI.Controllers
             _userService = userService;
             _formF3Service = service;
             _security = security;
-            _environment = webhostenvironment;
             _roadMasterService = roadMasterService;
             _formJService = formJServices ?? throw new ArgumentNullException(nameof(formJServices));
+            _webHostEnvironment = webhostenvironment;
         }
         public IActionResult Index()
         {
@@ -171,16 +172,12 @@ namespace RAMMS.Web.UI.Controllers
             if (id > 0)
             {
                 _model.FormF3 = await _formF3Service.GetHeaderById(id);
-
-                if (_model.FormF3.Source == "New")
-                    ViewData["Asset"] = _formF3Service.GetAssetDetails("New");
-                else
-                    ViewData["Asset"] = _formF3Service.GetAssetDetails("G1G2");
             }
             else
             {
-                ViewData["Asset"] = _formF3Service.GetAssetDetails("New");
+                _model.FormF3 = new FormF3ResponseDTO();
             }
+            ViewData["Asset"] = _formF3Service.GetAssetDetails(_model.FormF3);
 
 
             _model.FormF3 = _model.FormF3 ?? new FormF3ResponseDTO();
@@ -205,10 +202,21 @@ namespace RAMMS.Web.UI.Controllers
             if (frm.FormF3.PkRefNo == 0)
             {
                 frm.FormF3 = await _formF3Service.SaveFormF3(frm.FormF3);
-                //frm.RefNoDS = _formF3Service.FindRefNoFromG1(frm.FormF3);
+                var AssetDS = _formF3Service.GetAssetDetails(frm.FormF3);
 
+                frm.AssetDS = AssetDS.Select(s => new AssetListItem
+                {
+                    Text = s.Text,
+                    Value = s.Value,
+                    FromKm = s.FromKm,
+                    FromM = s.FromM,
+                    Item1 = s.Item1,
+                    Item2 = s.Item2,
+                    Item3 = s.Item3,
+                    CValue = s.CValue
+                }).ToList();
 
-                return Json(new { FormExist = frm.FormF3.FormExist, RefId = frm.FormF3.PkRefId, PkRefNo = frm.FormF3.PkRefNo, Status = frm.FormF3.Status, Source = frm.FormF3.Source });
+                return Json(new { FormExist = frm.FormF3.FormExist, RefId = frm.FormF3.PkRefId, PkRefNo = frm.FormF3.PkRefNo, Status = frm.FormF3.Status, Source = frm.FormF3.Source, AssetDS = frm.AssetDS });
             }
             else
             {
@@ -255,6 +263,13 @@ namespace RAMMS.Web.UI.Controllers
             return Json(rowsAffected);
         }
 
+
+        //public IActionResult Download(int id)
+        //{
+        //var content1 = _formF3Service.FormDownload("FormG1G2", id, _webHostEnvironment.WebRootPath, _webHostEnvironment.WebRootPath + "/Templates/FormG1G2.xlsx");
+        //string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        //return File(content1, contentType1, "FormF3" + ".xlsx");
+        // }
 
     }
 }

@@ -21,7 +21,7 @@ namespace RAMMS.Repository.Interfaces
         Task<List<FormF2HeaderRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions);
         Task<List<FormF3DtlGridDTO>> GetFormF3DtlGridList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions);
 
-         List<RmAllassetInventory> GetAssetDetails(string Source);
+         List<RmAllassetInventory> GetAssetDetails(FormF3ResponseDTO FormF3);
 
         int LoadG1G2Data(FormF3ResponseDTO FormF3);
 

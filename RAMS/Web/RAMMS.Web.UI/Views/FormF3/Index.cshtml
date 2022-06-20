@@ -10,7 +10,7 @@
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
     IEnumerable<SelectListItem> assetType = (await ddlService
-       .GetLookups(new DDLookUpDTO { Type = "Asset Type", TypeCode = "GR" }))
+       .GetLookups(new DDLookUpDTO { Type = "Asset Type", TypeCode = "SG" }))
        .Select(s => new SelectListItem
        {
            Text = s.DdlTypeDesc,
@@ -321,7 +321,7 @@
                         <div class="row">
                             <div class="form-group col-md-3">
                                 @Html.Label("Asset Group", "Asset Group")
-                                <input class="form-control" value="Guardrail" disabled />
+                                <input class="form-control" value="Signs" disabled />
                             </div>
                             <div class="form-group col-md-3">
                                 @Html.Label("Asset Type", "Asset Type")

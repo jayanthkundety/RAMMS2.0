@@ -30,10 +30,14 @@ namespace RAMMS.Repository
             //             where filterOptions.Filters.AssertType != "" ? a.AiGrpType == filterOptions.Filters.AssertType : a.AiGrpType.Contains(filterOptions.Filters.SmartSearch) && a.AiActiveYn == true
             //             select a.AiRdCode).ToArray();
 
+            
+
             var query = (from s in _context.RmFormF3Hdr
                          join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
+                         from a in _context.RmAllassetInventory.Where(a => a.AiPkRefNo == 0).DefaultIfEmpty()
                          where s.Ff3hActiveYn == true
-                         select new { s, d });
+                         select new { s, d, a });
+
 
             var search = filterOptions.Filters;
             if (search.SecCode.HasValue)
@@ -42,8 +46,12 @@ namespace RAMMS.Repository
             }
             if (!string.IsNullOrEmpty(search.AssertType))
             {
-
-                // query = query.Where(s => s.s.RmFormF3Dtl.Any(x => x.aser == search.AssertType ));
+                query = (from s in _context.RmFormF3Hdr
+                         join dtl in _context.RmFormF3Dtl on s.Ff3hPkRefNo equals dtl.Ff3dFf3hPkRefNo
+                         join a in _context.RmAllassetInventory on dtl.Ff3dAssetId equals Convert.ToString(a.AiPkRefNo)
+                         join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
+                         select new { s, d, a });
+                query = query.Where(s => s.a.AiStrucCode == search.AssertType);
             }
             if (!string.IsNullOrEmpty(search.RmuCode))
             {
@@ -130,20 +138,15 @@ namespace RAMMS.Repository
         public async Task<List<FormF2HeaderRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions)
         {
 
-            //var roads = (from a in _context.RmAllassetInventory
-            //             where filterOptions.Filters.AssertType != "" ? a.AiGrpType == filterOptions.Filters.AssertType : a.AiGrpType.Contains(filterOptions.Filters.SmartSearch) && a.AiActiveYn == true
-            //             select a).ToList();
-
-
-            //string[] StructCode = { "W", "GS", "DEL", "Y" };
-            //var Asset = (from r in _context.RmAllassetInventory.Where(s => StructCode.Contains(s.AiStrucCode)) select r).ToList();
-
 
 
             var query = (from s in _context.RmFormF3Hdr
                          join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
-                         //  join r in roads on s.RmFormF3Dtl.Single().Ff3dAssetId equals r.AiAssetId
-                         select new { s, d });
+                         from a in _context.RmAllassetInventory.Where(a => a.AiPkRefNo == 0).DefaultIfEmpty()
+                         select new { s, d, a });
+
+
+
             query = query.Where(x => x.s.Ff3hActiveYn == true).OrderByDescending(x => x.s.Ff3hPkRefNo);
             var search = filterOptions.Filters;
             if (search.SecCode.HasValue)
@@ -152,8 +155,13 @@ namespace RAMMS.Repository
             }
             if (!string.IsNullOrEmpty(search.AssertType))
             {
-                //query = query.Where(s => roads.Contains(s.d.RdmRdCode));
-                //query = query.Where(s => s.s.RmFormF3Dtl.Any(x => x.FgridGrCode == search.AssertType));
+
+                query = (from s in _context.RmFormF3Hdr
+                         join dtl in _context.RmFormF3Dtl on s.Ff3hPkRefNo equals dtl.Ff3dFf3hPkRefNo
+                         join a in _context.RmAllassetInventory on dtl.Ff3dAssetId equals Convert.ToString(a.AiPkRefNo)
+                         join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
+                         select new { s, d, a });
+                query = query.Where(s => s.a.AiStrucCode == search.AssertType);
             }
             if (!string.IsNullOrEmpty(search.RmuCode))
             {
@@ -301,9 +309,12 @@ namespace RAMMS.Repository
                 //    query = query.OrderByDescending(s => s.s.FgrihPkRefNo);
             }
 
+
+
+
             var list = await query.Skip(filterOptions.StartPageNo)
-               .Take(filterOptions.RecordsPerPage)
-               .ToListAsync();
+  .Take(filterOptions.RecordsPerPage)
+  .ToListAsync();
 
             return list.Select(s => new FormF2HeaderRequestDTO
             {
@@ -413,17 +424,17 @@ namespace RAMMS.Repository
         }
 
 
-        public List<RmAllassetInventory> GetAssetDetails(string Source)
+        public List<RmAllassetInventory> GetAssetDetails(FormF3ResponseDTO FormF3)
         {
 
-            if (Source == "New")
+            if (FormF3.Source == "New")
             {
                 string[] StructCode = { "W", "GS", "DEL" };
-                return (from r in _context.RmAllassetInventory.Where(s => StructCode.Contains(s.AiStrucCode)) select r).ToList();
+                return (from r in _context.RmAllassetInventory.Where(s => StructCode.Contains(s.AiStrucCode) && s.AiRmuCode == FormF3.RmuCode && s.AiDivCode == FormF3.DivCode && s.AiSecCode == FormF3.SecCode && s.AiRdCode == FormF3.RdCode) select r).ToList();
             }
             else
             {
-                return (from r in _context.RmAllassetInventory.Where(s => s.AiStrucCode == "Y") select r).ToList();
+                return (from r in _context.RmAllassetInventory.Where(s => s.AiStrucCode == "Y" && s.AiRmuCode == FormF3.RmuCode && s.AiDivCode == FormF3.DivCode && s.AiSecCode == FormF3.SecCode && s.AiRdCode == FormF3.RdCode) select r).ToList();
             }
 
         }
