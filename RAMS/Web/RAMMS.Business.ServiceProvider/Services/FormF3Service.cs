@@ -307,250 +307,161 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-        //public List<FormG1G2Rpt> GetReportData(int headerid)
-        //{
-        //    return _repo.GetReportData(headerid);
-        //}
+        public async Task<FORMF3Rpt> GetReportData(int headerid)
+        {
+            return await _repo.GetReportData(headerid);
+        }
 
-        //public byte[] FormDownload(string formname, int id, string basepath, string filepath)
-        //{
-        //    //string structureCode = _repoUnit.DDLookUpRepository.GetConcatenateDdlTypeValue(new DTO.RequestBO.DDLookUpDTO { Type = "Structure Code", TypeCode = "Y" });
-        //    string Oldfilename = "";
-        //    string filename = "";
-        //    string cachefile = "";
-        //    basepath = $"{basepath}/Uploads";
-        //    if (!filepath.Contains(".xlsx"))
-        //    {
-        //        Oldfilename = filepath + formname + ".xlsx";// formdetails.FgdFilePath+"\\" + formdetails.FgdFileName+ ".xlsx";
-        //        filename = formname + DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString();
-        //        cachefile = filepath + filename + ".xlsx";
-        //    }
-        //    else
-        //    {
-        //        Oldfilename = filepath;
-        //        filename = filepath.Replace(".xlsx", DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString() + ".xlsx");
-        //        cachefile = filename;
-        //    }
+        public async Task<byte[]> FormDownload(string formname, int id, string filepath)
+        {
+            string Oldfilename = "";
+            string filename = "";
+            string cachefile = "";
+            if (!filepath.Contains(".xlsx"))
+            {
+                Oldfilename = filepath + formname + ".xlsx";
+                filename = formname + DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString();
+                cachefile = filepath + filename + ".xlsx";
+            }
+            else
+            {
+                Oldfilename = filepath;
+                filename = filepath.Replace(".xlsx", DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString() + ".xlsx");
+                cachefile = filename;
+            }
 
-        //    try
-        //    {
-        //        List<FormG1G2Rpt> _rpt = this.GetReportData(id);
-        //        System.IO.File.Copy(Oldfilename, cachefile, true);
-        //        using (var workbook = new XLWorkbook(cachefile))
-        //        {
-        //            IXLWorksheet worksheet = workbook.Worksheet(1);
-
-        //            using (var book = new XLWorkbook(cachefile))
-        //            {
-        //                if (worksheet != null)
-        //                {
-        //                    var rpt = _rpt[0];
-        //                    worksheet.Cell(7, 3).Value = rpt.RefernceNo;
-        //                    worksheet.Cell(9, 10).Value = rpt.Division;
-        //                    worksheet.Cell(9, 10).Value = rpt.RMU;
-        //                    worksheet.Cell(8, 10).Value = rpt.RoadName;
-        //                    worksheet.Cell(7, 10).Value = rpt.RoadCode;
-        //                    worksheet.Cell(9, 3).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-        //                    var structureCode = rpt.StructureCode;
-        //                    if (!string.IsNullOrEmpty(structureCode))
-        //                    {
-        //                        worksheet.Cell(8, 3).Value = structureCode;
-        //                        worksheet.Cell(8, 3).RichText.Substring(0, structureCode.Length).Strikethrough = true;
-        //                        if (!string.IsNullOrEmpty(rpt.StructureCode) && structureCode.IndexOf(" " + rpt.StructureCode + " ") > -1)
-        //                        {
-        //                            worksheet.Cell(8, 3).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Bold = true;
-        //                            worksheet.Cell(8, 3).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Strikethrough = false;
-        //                        }
-        //                    }
-
-        //                    worksheet.Cell(10, 3).Value = rpt.GPSEasting;
-        //                    worksheet.Cell(10, 10).Value = rpt.GPSNorthing;
-
-        //                    worksheet.Cell(13, 2).Value = rpt.ParkingPosition;
-        //                    worksheet.Cell(14, 2).Value = rpt.Accessiblity;
-        //                    worksheet.Cell(15, 2).Value = rpt.PotentialHazards;
+            try
+            {
+                FORMF3Rpt rpt = await this.GetReportData(id);
+                System.IO.File.Copy(Oldfilename, cachefile, true);
+                using (var workbook = new XLWorkbook(cachefile))
+                {
+                    int noofsheets = (rpt.Details.Count() / 24) + ((rpt.Details.Count() % 24) > 0 ? 1 : 1);
+                    for (int sheet = 2; sheet <= noofsheets; sheet++)
+                    {
+                        using (var tempworkbook = new XLWorkbook(cachefile))
+                        {
+                            string sheetname = "sheet" + Convert.ToString(sheet);
+                            IXLWorksheet copysheet = tempworkbook.Worksheet(1);
+                            copysheet.Worksheet.Name = sheetname;
+                            copysheet.Cell(5, 7).Value = rpt.Division;
+                            copysheet.Cell(5, 26).Value = rpt.District;
+                            copysheet.Cell(5, 47).Value = rpt.RMU;
+                            copysheet.Cell(6, 7).Value = rpt.RoadCode;
+                            copysheet.Cell(7, 7).Value = rpt.RoadName;
+                            copysheet.Cell(6, 26).Value = rpt.CrewLeader;
+                            copysheet.Cell(5, 72).Value = rpt.InspectedByName;
+                            copysheet.Cell(6, 72).Value = rpt.InspectedDate.HasValue ? rpt.InspectedDate.Value.ToString("dd-MM-yyyy") : "";
+                            copysheet.Cell(7, 74).Value = rpt.RoadLength;
+                            copysheet.Cell(2, 73).Value = sheet;
+                            copysheet.Cell(2, 80).Value = noofsheets;
+                            workbook.AddWorksheet(copysheet);
+                        }
+                    }
+                    int index = 1;
+                    int? condition1 = 0;
+                    int? condition2 = 0;
+                    int? condition3 = 0;
+                    string conditiondata1 = "";
+                    string conditiondata2 = "";
+                    string conditiondata3 = "";
+                    for (int sheet = 1; sheet <= noofsheets; sheet++)
+                    {
 
 
-        //                    for (int i = 0; i < _rpt.Count; i++)
-        //                    {
-        //                        rpt = _rpt[i];
-        //                        worksheet.Cell(13, 6 + i).Value = rpt.Year;
-        //                        worksheet.Cell(14, 6 + i).Value = rpt.Month;
-        //                        worksheet.Cell(15, 6 + i).Value = rpt.Day;
+                        IXLWorksheet worksheet;
+                        workbook.Worksheets.TryGetWorksheet($"sheet{sheet}", out worksheet);
 
-        //                        worksheet.Cell(18, 6 + i).Value = rpt.BarriersYes == 1 ? "/" : "";
-        //                        worksheet.Cell(19, 6 + i).Value = rpt.BarriersNo == 1 ? "/" : "";
-        //                        worksheet.Cell(20, 6 + i).Value = rpt.BarriersCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(21, 6 + i).Value = rpt.BarriersClosed == 1 ? "/" : "";
+                        if (worksheet != null)
+                        {
+                            worksheet.Cell(5, 7).Value = (rpt.Division == "MIRI" ? "Miri" : rpt.Division);
+                            worksheet.Cell(5, 26).Value = (rpt.District == "MIRI" ? "Miri" : rpt.District);
+                            worksheet.Cell(5, 47).Value = (rpt.RMU == "MIRI" ? "Miri" : rpt.RMU);
+                            worksheet.Cell(6, 7).Value = rpt.RoadCode;
+                            worksheet.Cell(7, 7).Value = rpt.RoadName;
+                            worksheet.Cell(6, 26).Value = rpt.CrewLeader;
+                            worksheet.Cell(5, 72).Value = rpt.InspectedByName;
+                            worksheet.Cell(6, 72).Value = rpt.InspectedDate.HasValue ? rpt.InspectedDate.Value.ToString("dd-MM-yyyy") : "";
+                            worksheet.Cell(7, 74).Value = rpt.RoadLength;
+                            worksheet.Cell(2, 80).Value = noofsheets;
+                            //worksheet.Cell(9, 8).Value = condition1.ToString() == "0" ? "" : condition1.ToString();
+                            //worksheet.Cell(9, 24).Value = condition2.ToString() == "0" ? "" : condition1.ToString();
+                            //worksheet.Cell(9, 45).Value = condition3.ToString() == "0" ? "" : condition1.ToString();
+                            int i = 13;
 
-        //                        worksheet.Cell(22, 6 + i).Value = rpt.GantryBeamsYes == 1 ? "/" : "";
-        //                        worksheet.Cell(23, 6 + i).Value = rpt.GantryBeamsNo == 1 ? "/" : "";
-        //                        worksheet.Cell(24, 6 + i).Value = rpt.GantryBeamsCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(25, 6 + i).Value = rpt.GantryBeamsClosed == 1 ? "/" : "";
+                            var data = rpt.Details.Skip((sheet - 1) * 24).Take(24);
+                            foreach (var r in data)
+                            {
+                                conditiondata1 = "";
+                                conditiondata2 = "";
+                                conditiondata3 = "";
 
-        //                        worksheet.Cell(26, 6 + i).Value = rpt.GantryColsYes == 1 ? "/" : "";
-        //                        worksheet.Cell(27, 6 + i).Value = rpt.GantryColsNo == 1 ? "/" : "";
-        //                        worksheet.Cell(28, 6 + i).Value = rpt.GantryColsCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(29, 6 + i).Value = rpt.GantryColsClosed == 1 ? "/" : "";
-
-        //                        worksheet.Cell(30, 6 + i).Value = rpt.FootingYes == 1 ? "/" : "";
-        //                        worksheet.Cell(31, 6 + i).Value = rpt.FootingNo == 1 ? "/" : "";
-        //                        worksheet.Cell(32, 6 + i).Value = rpt.FootingCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(33, 6 + i).Value = rpt.FootingClosed == 1 ? "/" : "";
-
-        //                        worksheet.Cell(34, 6 + i).Value = rpt.AnchorYes == 1 ? "/" : "";
-        //                        worksheet.Cell(35, 6 + i).Value = rpt.AnchorNo == 1 ? "/" : "";
-        //                        worksheet.Cell(36, 6 + i).Value = rpt.AnchorCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(37, 6 + i).Value = rpt.AnchorClosed == 1 ? "/" : "";
-
-        //                        worksheet.Cell(38, 6 + i).Value = rpt.MaintenanceAccessYes == 1 ? "/" : "";
-        //                        worksheet.Cell(39, 6 + i).Value = rpt.MaintenanceAccessNo == 1 ? "/" : "";
-        //                        worksheet.Cell(40, 6 + i).Value = rpt.MaintenanceAccessCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(41, 6 + i).Value = rpt.MaintenanceAccessClosed == 1 ? "/" : "";
-
-        //                        worksheet.Cell(42, 6 + i).Value = rpt.StaticSignsYes == 1 ? "/" : "";
-        //                        worksheet.Cell(43, 6 + i).Value = rpt.StaticSignsNo == 1 ? "/" : "";
-        //                        worksheet.Cell(44, 6 + i).Value = rpt.StaticSignsCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(45, 6 + i).Value = rpt.StaticSignsClosed == 1 ? "/" : "";
-
-        //                        worksheet.Cell(46, 6 + i).Value = rpt.VariableMessagYes == 1 ? "/" : "";
-        //                        worksheet.Cell(47, 6 + i).Value = rpt.VariableMessagNo == 1 ? "/" : "";
-        //                        worksheet.Cell(48, 6 + i).Value = rpt.VariableMessagCritical == 1 ? "/" : "";
-        //                        worksheet.Cell(49, 6 + i).Value = rpt.VariableMessagClosed == 1 ? "/" : "";
+                                if (r.Condition == 1)
+                                {
+                                    condition1 += 1;
+                                    conditiondata1 = "/";
+                                }
+                                if (r.Condition == 2)
+                                {
+                                    condition2 += 1;
+                                    conditiondata2 = "/";
+                                }
+                                if (r.Condition == 3)
+                                {
+                                    condition3 += 1;
+                                    conditiondata3 = "/";
+                                }
 
 
-        //                    }
 
-        //                    worksheet.Cell(71, 3).Value = rpt.ReportforYear;
+                                worksheet.Cell(i, 2).Value = index;
 
-        //                    worksheet.Cell(72, 3).Value = rpt.StructureCode;
-        //                    worksheet.Cell(73, 3).Value = rpt.RoadCode;
-        //                    worksheet.Cell(74, 3).Value = rpt.RoadName;
+                                worksheet.Cell(i, 4).Value = $"{r.LocationChKm}+{r.LocationChM}";
+                                worksheet.Cell(i, 8).Value = r.StructCode;
+                                worksheet.Cell(i, 10).Value = conditiondata1;
+                                worksheet.Cell(i, 17).Value = conditiondata2;
+                                worksheet.Cell(i, 24).Value = conditiondata3;
+                                worksheet.Cell(i, 31).Value = r.Bound;
+                                worksheet.Cell(i, 38).Value = r.Width;
+                                worksheet.Cell(i, 45).Value = r.Height;
+                                worksheet.Cell(i, 52).Value = r.Descriptions;
 
-        //                    worksheet.Cell(71, 11).Value = rpt.RefernceNo;
-        //                    worksheet.Cell(72, 11).Value = rpt.RatingRecordNo;
-        //                    worksheet.Cell(73, 11).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
+                                index++;
+                                i++;
 
-        //                    worksheet.Cell(81, 1).Value = rpt.PartB2ServiceProvider;
-        //                    worksheet.Cell(81, 8).Value = rpt.PartB2ServicePrvdrCons;
-        //                    worksheet.Cell(95, 1).Value = rpt.PartCGeneralComments;
-        //                    worksheet.Cell(95, 8).Value = rpt.PartCGeneralCommentsCons;
-        //                    worksheet.Cell(109, 1).Value = rpt.PartDFeedback;
-        //                    worksheet.Cell(109, 8).Value = rpt.PartDFeedbackCons;
-        //                    worksheet.Cell(127, 2).Value = rpt.InspectedByName;
-        //                    worksheet.Cell(128, 2).Value = rpt.InspectedByDesignation;
-        //                    worksheet.Cell(129, 2).Value = rpt.InspectedByDate;
-        //                    worksheet.Cell(127, 10).Value = rpt.AuditedByName;
-        //                    worksheet.Cell(128, 10).Value = rpt.AuditedByDesignation;
-        //                    worksheet.Cell(129, 10).Value = rpt.AuditedByDate;
-        //                    worksheet.Cell(130, 14).Value = rpt.GantrySignConditionRate;
-        //                    worksheet.Cell(131, 14).Value = rpt.HaveIssueFound;
-
-        //                    worksheet.Cell(136, 3).Value = rpt.ReportforYear;
-        //                    worksheet.Cell(137, 3).Value = rpt.StructureCode;
-        //                    worksheet.Cell(138, 3).Value = rpt.RoadCode;
-        //                    worksheet.Cell(139, 3).Value = rpt.RoadName;
-
-        //                    worksheet.Cell(136, 13).Value = rpt.RefernceNo;
-        //                    worksheet.Cell(137, 13).Value = rpt.RatingRecordNo;
-        //                    worksheet.Cell(138, 13).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-
-        //                    worksheet.Cell(200, 3).Value = rpt.ReportforYear;
-        //                    worksheet.Cell(201, 3).Value = rpt.StructureCode;
-        //                    worksheet.Cell(202, 3).Value = rpt.RoadCode;
-        //                    worksheet.Cell(203, 3).Value = rpt.RoadName;
-
-        //                    worksheet.Cell(200, 13).Value = rpt.RefernceNo;
-        //                    worksheet.Cell(201, 13).Value = rpt.RatingRecordNo;
-        //                    worksheet.Cell(202, 13).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
+                            }
+                            worksheet.Cell(38, 8).Value = condition1;
+                            worksheet.Cell(38, 24).Value = condition2;
+                            worksheet.Cell(38, 45).Value = condition3;
+                        }
+                    }
 
 
-        //                    for (int index = 0; index < rpt.Pictures.Count; ++index)
-        //                    {
-        //                        if (File.Exists(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName))
-        //                        {
-        //                            MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName));
-        //                            switch (index)
-        //                            {
-        //                                case 0:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(143, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 2:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 3:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 9), new Point(45, 6)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 4:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(167, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 5:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(167, 9), new Point(45, 6)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 6:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(180, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 7:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(180, 9), new Point(45, 6)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 8:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 9:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 9), new Point(45, 6)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 10:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 11:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 9), new Point(45, 6)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 12:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                    continue;
-        //                                case 13:
-        //                                    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 9), new Point(45, 6)).WithSize(347, 178);
-        //                                    continue;
-        //                                //case 14:
-        //                                //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 1), new Point(45, 4)).WithSize(347, 178);
-        //                                //    continue;
-        //                                //case 15:
-        //                                //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 9), new Point(4, 6)).WithSize(347, 178);
-        //                                //    continue;
-        //                                default:
-        //                                    continue;
-        //                            }
-        //                        }
-        //                    }
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        System.IO.File.Delete(cachefile);
+                        return content;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.Copy(Oldfilename, cachefile, true);
+                using (var workbook = new XLWorkbook(cachefile))
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        System.IO.File.Delete(cachefile);
+                        return content;
+                    }
+                }
 
-
-        //                }
-        //                using (var stream = new MemoryStream())
-        //                {
-        //                    workbook.SaveAs(stream);
-        //                    var content = stream.ToArray();
-        //                    System.IO.File.Delete(cachefile);
-        //                    return content;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.IO.File.Copy(Oldfilename, cachefile, true);
-        //        using (var workbook = new XLWorkbook(cachefile))
-        //        {
-        //            using (var stream = new MemoryStream())
-        //            {
-        //                workbook.SaveAs(stream);
-        //                var content = stream.ToArray();
-        //                System.IO.File.Delete(cachefile);
-        //                return content;
-        //            }
-        //        }
-
-        //    }
-        //}
+            }
+        }
 
     }
 }

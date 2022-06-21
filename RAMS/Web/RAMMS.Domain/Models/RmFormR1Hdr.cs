@@ -5,9 +5,18 @@ namespace RAMMS.Domain.Models
 {
     public partial class RmFormR1Hdr
     {
+        public RmFormR1Hdr()
+        {
+            RmFormR2Hdr = new HashSet<RmFormR2Hdr>();
+            RmFormRImages = new HashSet<RmFormRImages>();
+        }
+
         public int Fr1hPkRefNo { get; set; }
-        public string Fr1hContNo { get; set; }
+        public string Fr1hRefNo { get; set; }
+        public int? Fr1hAiPkRefNo { get; set; }
+        public string Fr1hAssetId { get; set; }
         public string Fr1hAiDivCode { get; set; }
+        public string Fr1hAiRmuCode { get; set; }
         public string Fr1hAiRmuName { get; set; }
         public string Fr1hAiRdCode { get; set; }
         public string Fr1hAiRdName { get; set; }
@@ -26,11 +35,28 @@ namespace RAMMS.Domain.Models
         public string Fr1hDistressObserved2 { get; set; }
         public string Fr1hDistressObserved3 { get; set; }
         public int? Fr1hSeverity { get; set; }
+        public int? Fr1hInspectedBy { get; set; }
+        public string Fr1hInspectedName { get; set; }
+        public string Fr1hInspectedDesig { get; set; }
+        public DateTime? Fr1hInspectedDt { get; set; }
+        public bool? Fr1hInspectedSign { get; set; }
+        public int? Fr1hCondRating { get; set; }
+        public bool? Fr1hIssuesFound { get; set; }
+        public int? Fr1hAuditedBy { get; set; }
+        public string Fr1hAuditedName { get; set; }
+        public string Fr1hAuditedDesig { get; set; }
+        public DateTime? Fr1hAuditedDt { get; set; }
+        public bool? Fr1hAuditedSign { get; set; }
         public int? Fr1hModBy { get; set; }
         public DateTime? Fr1hModDt { get; set; }
         public int? Fr1hCrBy { get; set; }
         public DateTime? Fr1hCrDt { get; set; }
         public bool Fr1hSubmitSts { get; set; }
         public bool Fr1hActiveYn { get; set; }
+        public string Fr1hStatus { get; set; }
+        public string Fr1hAuditLog { get; set; }
+
+        public virtual ICollection<RmFormR2Hdr> RmFormR2Hdr { get; set; }
+        public virtual ICollection<RmFormRImages> RmFormRImages { get; set; }
     }
 }
