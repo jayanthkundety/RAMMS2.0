@@ -451,7 +451,7 @@ namespace RAMMS.Repository
                            {
                                Ff3dFf3hPkRefNo = FormF3.PkRefNo,
                                Ff3dAssetId = Convert.ToString(g1.Fg1hAiPkRefNo),
-                               Ff3G1hPkRefNo = g1.Fg1hPkRefNo
+                               Ff3dG1hPkRefNo = g1.Fg1hPkRefNo
                            }).ToList();
 
                 foreach (var item in res)

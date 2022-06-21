@@ -35,6 +35,8 @@ namespace RAMMS.Repository.Interfaces
         //Task<IEnumerable<SelectListItem>> GetCVId(AssetDDLRequestDTO request);
         Task<int> ImageCount(string type, long headerId);
 
+        bool isF3Exist(int id);
+
     }
 
     public interface IFormG2Repository : IRepositoryBase<RmFormG2Hdr>

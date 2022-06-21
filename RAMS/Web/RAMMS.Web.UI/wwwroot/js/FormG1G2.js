@@ -285,6 +285,10 @@
                         app.Confirm("Are you sure you want to delete this record? <br/>(Ref: " + data.RefID + ")", (status) => {
                             if (status) {
                                 DeleteRequest("Delete/" + data.RefNo, "FormG1G2", {}, function (sdata) {
+                                    if (sdata.id == "-1") {
+                                        app.ShowErrorMessage("Form G1G2 cannot be deleted, first delete Form F3");
+                                        return false;
+                                    }
                                     tblFG1G2HGrid.Refresh();
                                     app.ShowSuccessMessage("Deleted Sucessfully! <br/>(Ref: " + data.RefID + ")");
                                 });

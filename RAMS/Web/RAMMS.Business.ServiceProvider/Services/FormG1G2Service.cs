@@ -222,9 +222,13 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
         public int Delete(int id)
         {
-            if (id > 0)
+            if (id > 0 && !_repo.isF3Exist(id))
             {
                 id = _repo.DeleteHeader(new RmFormG1Hdr() { Fg1hActiveYn = false, Fg1hPkRefNo = id });
+            }
+            else
+            {
+                return -1;
             }
             return id;
         }

@@ -271,7 +271,11 @@ namespace RAMMS.Repository
 
         public bool isF3Exist(int id)
         {
-            return true;
+           var rmF2dtl =  _context.RmFormF3Dtl.FirstOrDefault(x => x.Ff3dG1hPkRefNo == id);
+            if (rmF2dtl != null)
+                return true;
+
+            return false;
         }
 
         public List<FormG1G2Rpt> GetReportData(int headerid)
