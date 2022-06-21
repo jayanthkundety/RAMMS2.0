@@ -29,5 +29,7 @@ namespace RAMMS.Domain.Models
         public DateTime? Fr2hCrDt { get; set; }
         public bool Fr2hSubmitSts { get; set; }
         public bool Fr2hActiveYn { get; set; }
+
+        public virtual RmFormR1Hdr Fr2hFr1hPkRefNoNavigation { get; set; }
     }
 }

@@ -18,5 +18,7 @@ namespace RAMMS.Domain.Models
         public DateTime? FriCrDt { get; set; }
         public bool FriSubmitSts { get; set; }
         public bool FriActiveYn { get; set; }
+
+        public virtual RmFormR1Hdr FriFr1hPkRefNoNavigation { get; set; }
     }
 }
