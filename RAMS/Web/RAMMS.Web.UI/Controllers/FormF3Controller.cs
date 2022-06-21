@@ -264,12 +264,12 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        //public IActionResult Download(int id)
-        //{
-        //var content1 = _formF3Service.FormDownload("FormG1G2", id, _webHostEnvironment.WebRootPath, _webHostEnvironment.WebRootPath + "/Templates/FormG1G2.xlsx");
-        //string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        //return File(content1, contentType1, "FormF3" + ".xlsx");
-        // }
+        public async Task<IActionResult> FormF3Download(int id, [FromServices] IWebHostEnvironment _environment)
+        {
+            var content1 = await _formF3Service.FormDownload("FORMF3", id, _environment.WebRootPath + "/Templates/FORMF3.xlsx");
+            string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            return File(content1, contentType1, "FORMF3" + ".xlsx");
+        }
 
     }
 }

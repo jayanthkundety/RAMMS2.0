@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RAMMS.Domain.Models;
 using RAMMS.DTO;
+using RAMMS.DTO.Report;
 using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
@@ -30,7 +31,7 @@ namespace RAMMS.Repository
             //             where filterOptions.Filters.AssertType != "" ? a.AiGrpType == filterOptions.Filters.AssertType : a.AiGrpType.Contains(filterOptions.Filters.SmartSearch) && a.AiActiveYn == true
             //             select a.AiRdCode).ToArray();
 
-            
+
 
             var query = (from s in _context.RmFormF3Hdr
                          join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
@@ -403,6 +404,7 @@ namespace RAMMS.Repository
             var list = await query.Skip(filterOptions.StartPageNo)
             .Take(filterOptions.RecordsPerPage)
             .ToListAsync();
+            int i = 1;
 
             return list.Select(s => new FormF3DtlGridDTO
             {
@@ -414,7 +416,7 @@ namespace RAMMS.Repository
                 FrmCh = s.x.Ff3dLocCh,
                 FrmChDec = s.x.Ff3dLocChDeci,
                 Height = s.a.AiHeight,
-                PkRefNo = s.x.Ff3dPkRefNo,
+                PkRefNo = i++,
                 StructureCode = s.a.AiStrucCode,
                 Width = s.a.AiWidth
 
@@ -449,7 +451,7 @@ namespace RAMMS.Repository
                            {
                                Ff3dFf3hPkRefNo = FormF3.PkRefNo,
                                Ff3dAssetId = Convert.ToString(g1.Fg1hAiPkRefNo),
-
+                               Ff3G1hPkRefNo = g1.Fg1hPkRefNo
                            }).ToList();
 
                 foreach (var item in res)
@@ -540,23 +542,40 @@ namespace RAMMS.Repository
         }
 
 
+        public async Task<FORMF3Rpt> GetReportData(int headerid)
+        {
+            FORMF3Rpt result = (from s in _context.RmFormF3Hdr
+                                where s.Ff3hPkRefNo == headerid && s.Ff3hActiveYn == true
+                                select new FORMF3Rpt
+                                {
+                                    CrewLeader = s.Ff3hCrewName,
+                                    District = s.Ff3hDist,
+                                    InspectedByDesignation = s.Ff3hInspectedDesig,
+                                    InspectedByName = s.Ff3hInspectedName,
+                                    InspectedDate = s.Ff3hInspectedDate,
+                                    Division = s.Ff3hDivCode,
+                                    RMU = s.Ff3hRmuCode,
+                                    RoadCode = s.Ff3hRdCode,
+                                    RoadName = s.Ff3hRdName,
+                                    RoadLength = s.Ff3hRoadLength
+                                }).FirstOrDefault();
 
 
-        //public async Task<RmFormF3Hdr> FindF3Byw1ID(int Id)
-        //{
-        //    return await _context.RmFormF3Hdr.Where(x => x.FF3Fw1PkRefNo == Id && x.FF3ActiveYn == true).FirstOrDefaultAsync();
-        //}
+            result.Details = (from d in _context.RmFormF3Dtl
+                              where d.Ff3dFf3hPkRefNo == headerid
+                              orderby d.Ff3dPkRefNo descending
+                              select new FORMF3RptDetail
+                              {
+                                  Descriptions = d.Ff3dDescription,
+                                  LocationChKm = d.Ff3dLocCh,
+                                  LocationChM = d.Ff3dLocChDeci,
+                                  Width = d.Ff3dWidth,
+                                  Height = d.Ff3dHeight,
+                                  Condition = d.Ff3dConditionI
+                              }).ToArray();
+            return result;
 
-        //public async Task<RmFormF3Hdr> FindFormF3ByID(int Id)
-        //{
-        //    return await _context.RmFormF3Hdr.Where(x => x.FF3PkRefNo == Id && x.FF3ActiveYn == true).FirstOrDefaultAsync();
-        //}
-
-        //public async Task<IEnumerable<RmFormF3HdrDtl>> FindFormF3DtlByID(int Id)
-        //{
-        //    return await _context.RmFormF3HdrDtl.Where(x => x.FF3dFF3PkRefNo == Id).ToListAsync();
-        //}
-
+        }
 
 
     }

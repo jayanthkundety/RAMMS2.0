@@ -6,6 +6,7 @@ namespace RAMMS.Domain.Models
     public partial class RmFormF3Dtl
     {
         public int Ff3dPkRefNo { get; set; }
+        public int Ff3G1hPkRefNo { get; set; }
         public int? Ff3dFf3hPkRefNo { get; set; }
         public string Ff3dAssetId { get; set; }
         public int? Ff3dLocCh { get; set; }
