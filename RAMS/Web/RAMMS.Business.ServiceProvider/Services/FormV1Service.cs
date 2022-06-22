@@ -83,11 +83,16 @@ namespace RAMMS.Business.ServiceProvider.Services
             List<FormV1WorkScheduleGridDTO> formV1WorkScheduleList = new List<FormV1WorkScheduleGridDTO>();
             try
             {
-                var filteredRecords = await _repoUnit.FormV1Repository.GetFormV1WorkScheduleGridList(filterOptions, V1PkRefNo);
+               
+                var Records = await _repoUnit.FormV1Repository.GetFormV1WorkScheduleGridList(filterOptions, V1PkRefNo);
 
-                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                var list = Records.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).ToList();
 
-                foreach (var listData in filteredRecords)
+                result.TotalRecords = Records.Count();
+                              
+
+
+                foreach (var listData in list)
                 {
                     FormV1WorkScheduleGridDTO obj = new FormV1WorkScheduleGridDTO();
 
@@ -353,11 +358,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             List<FormV3DtlGridDTO> formV3DtlList = new List<FormV3DtlGridDTO>();
             try
             {
-                var filteredRecords = await _repoUnit.FormV1Repository.GetFormv3DtlGridList(filterOptions, V3PkRefNo);
+                var Records = await _repoUnit.FormV1Repository.GetFormv3DtlGridList(filterOptions, V3PkRefNo);
 
-                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                var list = Records.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).ToList();
 
-                foreach (var listData in filteredRecords)
+                result.TotalRecords = Records.Count();
+                               
+                foreach (var listData in list)
                 {
                     FormV3DtlGridDTO obj = new FormV3DtlGridDTO();
 
@@ -703,11 +710,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             List<FormV5DtlResponseDTO> formV5WorkScheduleList = new List<FormV5DtlResponseDTO>();
             try
             {
-                var filteredRecords = await _repoUnit.FormV1Repository.GetFormv5DtlGridList(filterOptions, V5PkRefNo);
+                var Records = await _repoUnit.FormV1Repository.GetFormv5DtlGridList(filterOptions, V5PkRefNo);
 
-                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                var list = Records.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).ToList();
 
-                foreach (var listData in filteredRecords)
+                result.TotalRecords = Records.Count();
+ 
+                foreach (var listData in list)
                 {
                     FormV5DtlResponseDTO obj = new FormV5DtlResponseDTO();
 
