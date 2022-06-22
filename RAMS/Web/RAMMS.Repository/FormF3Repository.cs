@@ -356,7 +356,7 @@ namespace RAMMS.Repository
             var query = from x in _context.RmFormF3Dtl
                         join a in _context.RmAllassetInventory on Convert.ToInt32(x.Ff3dAssetId) equals a.AiPkRefNo
                         where x.Ff3dFf3hPkRefNo == filterOptions.Filters.Ff3hPkRefNo
-
+                        orderby x.Ff3dPkRefNo descending
                         select new { x, a };
 
 
@@ -401,9 +401,13 @@ namespace RAMMS.Repository
 
             }
 
-            var list = await query.Skip(filterOptions.StartPageNo)
-            .Take(filterOptions.RecordsPerPage)
-            .ToListAsync();
+
+
+            var list = await query.ToListAsync();
+
+
+
+
             int i = 1;
 
             return list.Select(s => new FormF3DtlGridDTO
@@ -446,12 +450,18 @@ namespace RAMMS.Repository
             try
             {
                 var res = (from g1 in _context.RmFormG1Hdr
+                           join a in _context.RmAllassetInventory on g1.Fg1hAiPkRefNo equals a.AiPkRefNo
                            where g1.Fg1hDivCode == FormF3.DivCode && g1.Fg1hRmuCode == FormF3.RmuCode && g1.Fg1hYearOfInsp == FormF3.InspectedYear && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
                            select new RmFormF3Dtl
                            {
                                Ff3dFf3hPkRefNo = FormF3.PkRefNo,
                                Ff3dAssetId = Convert.ToString(g1.Fg1hAiPkRefNo),
-                               Ff3dG1hPkRefNo = g1.Fg1hPkRefNo
+                               Ff3dG1hPkRefNo = g1.Fg1hPkRefNo,
+                               Ff3dBound = a.AiBound,
+                               Ff3dCode = a.AiStrucCode,
+                               Ff3dHeight = Convert.ToDecimal(a.AiHeight),
+                               Ff3dWidth = Convert.ToDecimal(a.AiWidth),
+                               Ff3dConditionI = g1.Fg1hCondRating
                            }).ToList();
 
                 foreach (var item in res)
@@ -571,7 +581,9 @@ namespace RAMMS.Repository
                                   LocationChM = d.Ff3dLocChDeci,
                                   Width = d.Ff3dWidth,
                                   Height = d.Ff3dHeight,
-                                  Condition = d.Ff3dConditionI
+                                  Condition = d.Ff3dConditionI,
+                                  Bound = d.Ff3dBound,
+                                  StructCode = d.Ff3dCode
                               }).ToArray();
             return result;
 

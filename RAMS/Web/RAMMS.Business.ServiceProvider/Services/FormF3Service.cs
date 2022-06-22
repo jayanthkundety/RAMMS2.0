@@ -76,11 +76,13 @@ namespace RAMMS.Business.ServiceProvider.Services
             List<FormF3DtlGridDTO> formF3DtlList = new List<FormF3DtlGridDTO>();
             try
             {
-                var filteredRecords = await _repoUnit.FormF3Repository.GetFormF3DtlGridList(filterOptions);
+                var Records = await _repoUnit.FormF3Repository.GetFormF3DtlGridList(filterOptions);
+ 
+                var list = Records.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).ToList();
 
-                result.TotalRecords = filteredRecords.Count();  // await _repoUnit.FormDRepository.GetFilteredRecordCount(filterOptions).ConfigureAwait(false);
+                result.TotalRecords = Records.Count();   
 
-                result.PageResult = filteredRecords;
+                result.PageResult = list;
 
                 result.PageNo = filterOptions.StartPageNo;
                 result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;

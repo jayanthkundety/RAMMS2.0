@@ -307,9 +307,7 @@ namespace RAMMS.Repository
 
 
             result = await query.Select(s => s.x)
-                    .Skip(filterOptions.StartPageNo)
-                    .Take(filterOptions.RecordsPerPage)
-                    .ToListAsync();
+                                       .ToListAsync();
 
             return result;
         }
@@ -815,9 +813,7 @@ namespace RAMMS.Repository
 
 
             result = await query.Select(s => s.x)
-                    .Skip(filterOptions.StartPageNo)
-                    .Take(filterOptions.RecordsPerPage)
-                    .ToListAsync();
+                                       .ToListAsync();
 
             return result;
         }
@@ -1597,9 +1593,7 @@ namespace RAMMS.Repository
 
 
             result = await query.Select(s => s.x)
-                    .Skip(filterOptions.StartPageNo)
-                    .Take(filterOptions.RecordsPerPage)
-                    .ToListAsync();
+                                      .ToListAsync();
 
             return result;
         }
