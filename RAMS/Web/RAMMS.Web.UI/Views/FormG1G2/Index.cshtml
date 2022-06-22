@@ -8,7 +8,7 @@
     ViewBag.TabTitle = "Form G1/G2";
     ViewData["Title"] = "Form G1/G2";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
-     var isModifyPerm = security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
     var isDeletePerm = security.IsPCDelete(ModuleNameList.Condition_Inspection) ? "" : "hidden";
 }
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
@@ -125,7 +125,7 @@
             $("#formG1G2ActivityName").val(val);
         });
 
-        
+
     });
 
     function clearHeaderSearch() {
@@ -142,11 +142,16 @@
         $("#formG1G2Crew").val("").trigger("chosen:updated");
         $("#txtCrewName").val("");
 
-        $("#formG1G2ActivityCode").val("").trigger("chosen:updated");
-        $("#formG1G2ActivityName").val("");
+        $("#formG1G2FromYear").val("").trigger("chosen:updated");
+        $("#formG1G2FromYear").val("");
 
-        $("#formG1G2FromDate").val('');
-        $("#formG1G2EndDate").val('');
+        $("#formC1C2InsToYear").val("").trigger("chosen:updated");
+        $("#formC1C2InsToYear").val("");
+
+        $("#txtChFromKm").val('');
+        $("#txtChFromM").val('');
+        $("#txtChFromKm").val('');
+        $("#txtChFromM").val('');
 
         var req = {};
         var _rmu = $("#formG1G2RMU");
@@ -183,7 +188,7 @@
                 console.error(data);
             }
         });
-        $("#btnSearch").click();
+        $("[searchsectionbtn]").click();
     }
 
     function detailSearch() {
@@ -270,7 +275,7 @@
         });
     }
 
- 
+
 </script>
 
 <div class="container-fluid">
