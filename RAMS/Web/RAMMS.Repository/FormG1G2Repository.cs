@@ -94,7 +94,7 @@ namespace RAMMS.Repository
 
         public async Task<List<FormG1G2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
         {
-            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
+            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId && x.FgiActiveYn == true).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
             {
                 SNO = x.Max(y => y.FgiImageSrno.Value),
                 Type = x.Key
