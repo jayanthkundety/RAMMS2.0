@@ -215,9 +215,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 int? Ff3hPkRefNo = FormF3Dtl.Ff3hPkRefNo;
                 int Ff3dPkRefNo = FormF3Dtl.PkRefNo;
+                int? G1PkRefNo = FormF3Dtl.Ff3dG1hPkRefNo;
                 var model = _mapper.Map<RmFormF3Dtl>(FormF3Dtl);
                 model.Ff3dPkRefNo = Ff3dPkRefNo;
                 model.Ff3dFf3hPkRefNo = Ff3hPkRefNo;
+                model.Ff3dG1hPkRefNo = G1PkRefNo;
                 return _repo.UpdateFormF3Dtl(model);
             }
             catch (Exception ex)
