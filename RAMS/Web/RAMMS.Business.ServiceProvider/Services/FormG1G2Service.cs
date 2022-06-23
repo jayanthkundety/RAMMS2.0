@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -396,46 +398,52 @@ namespace RAMMS.Business.ServiceProvider.Services
                                 if (File.Exists(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName))
                                 {
                                     MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName));
+
+                                    //var Img = resizeImage(GetImage(memoryStream, ImageFormat.Png, 100), new Size(347, 178));
+                                    Stream imgStream = ResizeImage(memoryStream, ImageFormat.Png, new Size(390, 192), 800, 380);
+                                    //Bitmap imgStream = new Bitmap(347, 178 , Image.FromStream(memoryStream).PixelFormat);
+
+
                                     switch (index)
                                     {
                                         case 0:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(143, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(143, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 2:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(155, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 3:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(155, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 4:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(167, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(167, 1), new Point(42, 4));//.WithSize(347, 178);
                                             continue;
                                         case 5:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(167, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(167, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 6:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(180, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(180, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 7:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(180, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(180, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 8:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(207, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 9:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(207, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 10:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(220, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 11:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(220, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 12:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(232, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 13:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(232, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         //case 14:
                                         //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 1), new Point(45, 4)).WithSize(347, 178);
@@ -475,6 +483,46 @@ namespace RAMMS.Business.ServiceProvider.Services
                     }
                 }
 
+            }
+        }
+
+        public Stream ResizeImage(Stream imgStream, ImageFormat format, Size size , int boxHeight, int boxWidth)
+        {
+            try
+            {
+                using (Image img = Image.FromStream(imgStream))
+                {
+                    int width = img.Width;
+                    int height = img.Height;
+
+                    double dbl = (double)width / (double)height;
+                    Image thumbNail;
+
+                    if ((int)((double)boxHeight * dbl) <= boxWidth)
+                    {
+                        thumbNail = new Bitmap(img, (int)((double)boxHeight * dbl), boxHeight);
+                    }
+                    else
+                    {
+                        thumbNail = new Bitmap(img, boxWidth, (int)((double)boxWidth / dbl));
+                    }
+
+                    Graphics g = Graphics.FromImage(thumbNail);
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    //Rectangle rect = new Rectangle(0, 0, width, height);
+                    //g.DrawImage(img, rect);
+                    var ms = new MemoryStream();
+                    thumbNail.Save(ms, format);
+                    //thumbNail.Dispose();
+                    //thumbNail = null;
+                    return ms;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

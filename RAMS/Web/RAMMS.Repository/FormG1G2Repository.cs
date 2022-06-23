@@ -300,6 +300,7 @@ namespace RAMMS.Repository
 
             List<FormG1G2Rpt> detail = (from o in _context.RmFormG1Hdr
                                         where (o.Fg1hRdCode == roadcode.Fg1hRdCode && o.Fg1hDtOfInsp.HasValue && o.Fg1hDtOfInsp < roadcode.Fg1hDtOfInsp && o.Fg1hAiPkRefNo == AssetId && o.Fg1hActiveYn == true) || o.Fg1hPkRefNo == headerid
+                                        orderby o.Fg1hYearOfInsp ascending
                                         let formG2 = _context.RmFormG2Hdr.FirstOrDefault(x => x.Fg2hFg1hPkRefNo == o.Fg1hPkRefNo)
                                         select new FormG1G2Rpt
                                         {
