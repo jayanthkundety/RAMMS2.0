@@ -420,7 +420,8 @@ namespace RAMMS.Repository
                 FrmCh = s.x.Ff3dLocCh,
                 FrmChDec = s.x.Ff3dLocChDeci,
                 Height = s.a.AiHeight,
-                PkRefNo = i++,
+                SNo = i++,
+                PkRefNo = s.x.Ff3dPkRefNo,
                 StructureCode = s.a.AiStrucCode,
                 Width = s.a.AiWidth
 
@@ -449,7 +450,7 @@ namespace RAMMS.Repository
         {
             try
             {
-               
+
                 var res = (from g1 in _context.RmFormG1Hdr
                            join a in _context.RmAllassetInventory on g1.Fg1hAiPkRefNo equals a.AiPkRefNo
                            where g1.Fg1hDivCode == FormF3.DivCode && g1.Fg1hRmuCode == FormF3.RmuCode && g1.Fg1hYearOfInsp == FormF3.InspectedYear && g1.Fg1hRdCode == FormF3.RdCode && g1.Fg1hActiveYn == true
@@ -463,8 +464,8 @@ namespace RAMMS.Repository
                                Ff3dHeight = Convert.ToDecimal(a.AiHeight),
                                Ff3dWidth = Convert.ToDecimal(a.AiWidth),
                                Ff3dConditionI = g1.Fg1hCondRating,
-                               Ff3dLocCh= a.AiLocChKm,
-                               Ff3dLocChDeci =  a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM)
+                               Ff3dLocCh = a.AiLocChKm,
+                               Ff3dLocChDeci = a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM)
 
                            }).ToList();
 

@@ -10,6 +10,7 @@ namespace RAMMS.DTO.ResponseBO
     {
         public int PkRefNo { get; set; }
         public int? Ff3hPkRefNo { get; set; }
+        public int? Ff3dG1hPkRefNo { get; set; }
         public int? LocCh { get; set; }
         public int? LocChDeci { get; set; }
         public string Code { get; set; }
