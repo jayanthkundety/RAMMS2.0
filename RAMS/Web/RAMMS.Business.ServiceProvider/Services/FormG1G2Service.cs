@@ -163,8 +163,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 //frmG1G2.AiIntelStruc = asset.InletStruc;
                 //frmG1G2.AiOutletStruc = asset.OutletStruc;
                 frmG1G2.Status = "Initialize";
-                //frmG1G2.InspectedBy = _security.UserID;
-                //frmG1G2.InspectedName = _security.UserName;
+                frmG1G2.InspectedBy = _security.UserID;
+                frmG1G2.InspectedName = _security.UserName;
+                frmG1G2.InspectedDt = DateTime.Today;
                 frmG1G2.CrBy = frmG1G2.ModBy = createdBy;
                 frmG1G2.CrDt = frmG1G2.ModDt = DateTime.UtcNow;
 

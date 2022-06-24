@@ -653,14 +653,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
                     form.Fg1hStatus = process.IsApprove ? Common.StatusList.FormG1G2Verified : Common.StatusList.FormG1G2Saved;
-                    strTitle = "Inspected By";
-                    strStatus = "Inspected";
+                    strTitle = "Verified By";
+                    strStatus = "Verified";
                     strNotStatus = Common.StatusList.FormG1G2Saved;
-                    form.Fg1hInspectedBy = Convert.ToInt32(process.UserID);
-                    form.Fg1hInspectedName = process.UserName;
-                    form.Fg1hInspectedDesig = process.UserDesignation;
-                    form.Fg1hInspectedDt = process.ApproveDate;
-                    form.Fg1hInspectedSign = true;
                 }
                 else if (process.Stage == Common.StatusList.FormG1G2Verified)
                 {
@@ -679,16 +674,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                 if (process.IsApprove)
                 {
                     List<int> lstNotUserId = new List<int>();
-                    if (form.Fg1hAuditedBy.HasValue)
-                        lstNotUserId.Add(form.Fg1hAuditedBy.Value);
+
+                    if (form.Fg1hInspectedBy.HasValue)
+                        lstNotUserId.Add(form.Fg1hInspectedBy.Value);
                     if (form.Fg1hAuditedBy.HasValue)
                         lstNotUserId.Add(form.Fg1hAuditedBy.Value);
 
-                    form.Fg1hAuditedBy = Convert.ToInt32(process.UserID);
-                    form.Fg1hAuditedName = process.UserName;
-                    form.Fg1hAuditedDesig = process.UserDesignation;
-                    form.Fg1hAuditedDt = process.ApproveDate;
-                    form.Fg1hAuditedSign = true;
 
                     strNotUserID = string.Join(",", lstNotUserId.Distinct());
                 }

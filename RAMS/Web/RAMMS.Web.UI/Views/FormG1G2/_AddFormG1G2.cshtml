@@ -37,12 +37,7 @@
              $("#pkRefNo").val(frmG1G2.HeaderData.PkRefNo);
              $("#g2pkRefNo").val(frmG1G2.HeaderData.FormG2.PkRefNo);
 
-             if (frmG1G2.HeaderData.Status == "Submitted") {
-
-                  $('#formG1G2InspectedBy').trigger('chosen:updated');
-                  $("#formG1G2InspectedBy").trigger("change");
-                  $("#InspectedSign").prop("checked",true);
-             } else if (frmG1G2.HeaderData.Status == "Verified") {
+              if (frmG1G2.HeaderData.Status == "Verified") {
                  $('#formG1G2AuditedBy').trigger('chosen:updated');
                  $("#formG1G2AuditedBy").trigger("change");
                  $("#AuditedSign").prop("checked",true);
@@ -778,7 +773,7 @@
                                                     Sign
                                                 </label>
                                                 <div class="clear-b mt-2">
-                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox" disabled="disabled">
+                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox" >
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-4 float-left">
@@ -835,7 +830,7 @@
 
                                             </label>
                                             <div class="clear-b mt-2">
-                                                <input class="{required, Requested By Signature}" id="AuditedSign" name="AuditedSign" type="checkbox" disabled="disabled">
+                                                <input class="{required, Requested By Signature}" id="AuditedSign" name="AuditedSign" type="checkbox">
                                             </div>
                                         </div>
                                         <input type="hidden" id="txtPhotoValidate" value="" />
@@ -862,7 +857,7 @@
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmG1G2.Cancel()">Cancel</button>
                 @{
                     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
-                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.IsExecutive );
                     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
                 }

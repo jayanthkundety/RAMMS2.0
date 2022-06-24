@@ -150,8 +150,8 @@
 
         $("#txtChFromKm").val('');
         $("#txtChFromM").val('');
-        $("#txtChFromKm").val('');
-        $("#txtChFromM").val('');
+        $("#txtChToKm").val('');
+        $("#txtChToM").val('');
 
         var req = {};
         var _rmu = $("#formG1G2RMU");
@@ -406,11 +406,11 @@
                                         <label for="Location_Chainage_From">Location Chainage To</label>
                                         <div class="row">
                                             <div class="col-6 float-left pr-0">
-                                                <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" ngkeypress="">
+                                                <input id="txtChToKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage To Km" param="chToKM">
                                             </div>
                                             <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
                                             <div class="col-5 float-left pl-0">
-                                                <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage From M" param="chFromM" ngkeypress="">
+                                                <input id="txtChToM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage To M" param="chToM">
                                             </div>
                                         </div>
                                     </div>

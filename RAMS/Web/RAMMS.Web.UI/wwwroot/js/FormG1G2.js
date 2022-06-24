@@ -17,12 +17,16 @@
                     //debugger;
                     $("[finddetailhide]").hide();
                     $("#selAssetID,#formG1G2InsYear").prop("disabled", true).trigger("change").trigger("chosen:updated");
+
                     if (data.SubmitSts) {
                         window.location = _APPLocation + "FormG1G2/View/" + data.PkRefNo;
                     }
                     tis.HeaderData = data;
-                   
                     tis.PageInit();
+
+                    $('#formG1G2InspectedBy').trigger('chosen:updated');
+                    $("#formG1G2InspectedBy").trigger("change");
+                    $("#InspectedSign").prop("checked", true);
                 }
             }, "Finding");
         }
@@ -53,7 +57,7 @@
                     if (this.type == "select-one") { obj.trigger("chosen:updated"); };
                 }
             });
-            $("#pkRefNo").val(tis.HeaderData.PkRefNo); 
+            $("#pkRefNo").val(tis.HeaderData.PkRefNo);
             tis.LoadG2(tis.HeaderData.FormG2);
             tis.RefreshImageList();
             $("#dtInspection").attr("min", this.HeaderData.YearOfInsp + "-01-01").attr("max", this.HeaderData.YearOfInsp + "-12-31");
@@ -70,7 +74,7 @@
         $('#FeedbackEc').val(req.FeedbackEc);
     }
     this.AssetIDChange = function (tis) {
-        
+
         this.BindRefNumber();
     }
     this.InsYearChange = function (tis) { this.BindRefNumber(); }
@@ -241,7 +245,7 @@
             $("#btnFindDetails").show();
             $("#selRMU").trigger("change");
         }
-       this.BindData();
+        this.BindData();
     }
     this.HeaderGrid = new function () {
         this.ActionRender = function (data, type, row, meta) {

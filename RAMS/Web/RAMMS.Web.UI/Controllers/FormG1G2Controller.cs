@@ -148,7 +148,7 @@ namespace RAMMS.Web.UI.Controllers
             if (id > 0)
             {
                 ViewBag.IsAdd = false;
-                frmG1G2 = _formG1G2Service.FindByHeaderID(id).Result;
+                frmG1G2 = _formG1G2Service.FindByHeaderID(id).Result;                
 
 
                 if (frmG1G2.SubmitSts && frmG1G2.Status == Common.StatusList.FormG1G2Verified)
@@ -157,11 +157,7 @@ namespace RAMMS.Web.UI.Controllers
                     frmG1G2.AuditedDt = DateTime.Today;
                 }
 
-                if (frmG1G2.SubmitSts && frmG1G2.Status == Common.StatusList.FormG1G2Submitted)
-                {
-                    frmG1G2.InspectedBy = _security.UserID;
-                    frmG1G2.InspectedDt = DateTime.Today;
-                }
+                
             }
             else
             {
