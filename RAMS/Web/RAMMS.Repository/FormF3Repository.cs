@@ -569,7 +569,7 @@ namespace RAMMS.Repository
                                     InspectedByName = s.Ff3hInspectedName,
                                     InspectedDate = s.Ff3hInspectedDate,
                                     Division = s.Ff3hDivCode,
-                                    RMU = s.Ff3hRmuCode,
+                                    RMU = (from r in _context.RmDdLookup where r.DdlType == "RMU" && r.DdlTypeCode == s.Ff3hRmuCode select r.DdlTypeDesc).FirstOrDefault(),
                                     RoadCode = s.Ff3hRdCode,
                                     RoadName = s.Ff3hRdName,
                                     RoadLength = s.Ff3hRoadLength
