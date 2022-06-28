@@ -83,6 +83,7 @@ namespace RAMMS.Web.UI.Controllers
 
 
         }
+      
         public async Task<IActionResult> Index()
         {
             await LoadDropDown();
@@ -135,11 +136,13 @@ namespace RAMMS.Web.UI.Controllers
             ViewBag.IsEdit = true;
             return id > 0 ? ViewRequest(id) : RedirectToAction("404", "Error");
         }
+      
         public IActionResult View(int id)
         {
             ViewBag.IsEdit = false;
             return id > 0 ? ViewRequest(id) : RedirectToAction("404", "Error");
         }
+       
         private IActionResult ViewRequest(int id)
         {
             LoadLookupService("Year", "User", "Photo Type~SG");
@@ -169,7 +172,6 @@ namespace RAMMS.Web.UI.Controllers
         }
 
         //Image
-
         public async Task<IActionResult> ImageUploaded(IList<IFormFile> FormFile, int headerId, string InspRefNum, List<string> PhotoType)
         {
             if (FormFile != null && FormFile.Count > 0)
@@ -225,6 +227,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             return Json(_formG1G2Service.ImageList(headerId), JsonOption());
         }
+      
         public async Task<IActionResult> DeleteImage(int headerId, int imgId)
         {
             await _formG1G2Service.DeleteImage(headerId, imgId);
@@ -242,12 +245,14 @@ namespace RAMMS.Web.UI.Controllers
         {
             return await SaveAll(frmG1G2, false);
         }
+       
         [HttpPost]
         public async Task<JsonResult> Submit(DTO.ResponseBO.FormG1DTO frmG1G2)
         {
             frmG1G2.SubmitSts = true;
             return await SaveAll(frmG1G2, true);
         }
+       
         private async Task<JsonResult> SaveAll(DTO.ResponseBO.FormG1DTO frmG1G2, bool updateSubmit)
         {
             frmG1G2.CrBy = _security.UserID;

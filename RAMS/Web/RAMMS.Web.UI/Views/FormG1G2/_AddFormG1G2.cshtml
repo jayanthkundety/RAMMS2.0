@@ -20,7 +20,7 @@
         strAssestID = Model.AssetId;
         strYear = Model.YearOfInsp.Value.ToString();
         strRefId = Model.RefNo;
-        ViewBag.IsEdit = ViewBag.IsEdit ? (Model.SubmitSts ? false : true) : false;
+        ViewBag.IsEdit = ViewBag.IsEdit ? (Model.Status == "Approved" ? false : true) : false;
     }
 }
 
@@ -225,7 +225,7 @@
                                                                                             </div>
                                                                                             <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
                                                                                             <div class="col-5 float-left pl-0">
-                                                                                                <input name="LocChM" type="text" class="form-control" disabled="" >
+                                                                                                <input name="LocChM" type="text" class="form-control" disabled="">
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -366,6 +366,7 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2" style="min-height:96px"><b>Protection to gantry columns:</b> are they accident damage? Connections/Alignment/material defects observed?</p>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                                 <label>Gantry Beams</label>
@@ -376,6 +377,9 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2" style="min-height:96px">
+                                                                                    <b> Connections to the columns:</b> material defects? impact damage? large deflections? Corrosion? flexible sealant? coatings/paint deterioration observed?
+                                                                                </p>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                                 <label>Gantry Columns</label>
@@ -386,6 +390,9 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2 " style="min-height:96px">
+                                                                                    <b>Columns supporting the beam Base Plates/Gussets : </b>material defects? impact damage? Buckling? Corrosion? cracked welds? coatings/paint deterioration observed?
+                                                                                </p>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                                 <label>Footings</label>
@@ -396,6 +403,10 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2" style="min-height:96px">
+                                                                                    <b> Gantry column foundations below ground? Concrete:</b>
+                                                                                    material defects, cracking, spalling, movement or settlement?
+                                                                                </p>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                                 <label>Anchor Bolts and Mortar Grout Pads</label>
@@ -406,6 +417,13 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2" style="min-height:96px">
+                                                                                    <b> Gantry column anchor bolts below ground? Bolts, Nuts, Washers:</b>
+                                                                                    material defects, missing, corrosion, projection of thread Grout Fill: material defects, cracking or spalling observed?
+
+
+
+                                                                                </p>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                                 <label>Maintenance Access</label>
@@ -416,6 +434,10 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2" style="min-height:96px">
+                                                                                    <b> walkway balustrades:</b>
+                                                                                    material defects, corrosion, missing seals, coatings/paint, locks deteoration observed?
+                                                                                </p>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                                 <label>Static Signs</label>
@@ -426,6 +448,10 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2" style="min-height:96px">
+                                                                                    <b> Static signs, sign lights:</b>
+                                                                                    material defects, corrosion, mounting brackets (welded, bolted, clipped, etc.), support angles, reflective paint, graffiti, generally not readable?
+                                                                                </p>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                                 <label>Variable Message Signs (VMSs)</label>
@@ -436,6 +462,23 @@
                                                                                     <option value="Critical">Critical</option>
                                                                                     <option value="Closed"> Closed</option>
                                                                                 </select>
+                                                                                <p class="abbrevations-group p-2 mt-2" style="min-height:96px">
+                                                                                    <b> Variable Message Signs:</b>
+                                                                                    material defects, corrosion, mounting brackets (welded, bolted, clipped, etc.), support angles, exposed wires, graffiti, generally not readable?
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="col-md-10 offset-md-1 col-lg-9 offset-lg-1 float-left mt-2">
+                                                                                <div class="abbrevations-group p-2">
+                                                                                    <div class="container-fluid mb-2">
+
+                                                                                        <div class="d-flex flex-row">
+                                                                                            <p> <b><u>Note:</u></b> If distress as per above descriptions observed, tick YES. If structure condition at Critical state, tick Critical. If Previous Critical Condition resolved, tick Closed.</p>
+
+
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
 
@@ -773,7 +816,7 @@
                                                     Sign
                                                 </label>
                                                 <div class="clear-b mt-2">
-                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox" >
+                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-4 float-left">
@@ -857,7 +900,7 @@
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmG1G2.Cancel()">Cancel</button>
                 @{
                     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
-                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.IsExecutive );
+                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.IsExecutive);
                     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
                 }
@@ -884,233 +927,233 @@
 </div>
 
 <script type="text/javascript">
-    //frmG1G2.Dis_Severity = @Html.Raw(RAMMS.Common.Utility.JSerialize(ViewBag.Dis_Severity));
-    frmG1G2.Pattern = "@RAMMS.Common.RefNumber.FormRefNumber.GetRawRefNumber(RAMMS.Common.RefNumber.FormType.FormG1G2)";
+        //frmG1G2.Dis_Severity = @Html.Raw(RAMMS.Common.Utility.JSerialize(ViewBag.Dis_Severity));
+        frmG1G2.Pattern = "@RAMMS.Common.RefNumber.FormRefNumber.GetRawRefNumber(RAMMS.Common.RefNumber.FormType.FormG1G2)";
 
-    jQuery.extend(jQuery.expr[':'], {
-    equals: function (obj, index, meta, stack) {
-        if ($(obj).text() === meta[3]) {
-            return true;
+        jQuery.extend(jQuery.expr[':'], {
+        equals: function (obj, index, meta, stack) {
+            if ($(obj).text() === meta[3]) {
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
-});
+    });
 
 
-    var filesToUpload = [];
-    $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
-        var fileIdCounter = 0;
+        var filesToUpload = [];
+        $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
+            var fileIdCounter = 0;
 
-        this.closest(".files").change(function (evt) {
-            var output = [];
-            for (var i = 0; i < evt.target.files.length; i++) {
-                fileIdCounter++;
-                var file = evt.target.files[i];
-                var fileId = sectionIdentifier + fileIdCounter;
-                var fileType = $("#photoType").val();
+            this.closest(".files").change(function (evt) {
+                var output = [];
+                for (var i = 0; i < evt.target.files.length; i++) {
+                    fileIdCounter++;
+                    var file = evt.target.files[i];
+                    var fileId = sectionIdentifier + fileIdCounter;
+                    var fileType = $("#photoType").val();
 
-                //PDF--application / pdf
-                //docx--application / vnd.openxmlformats - officedocument.wordprocessingml.document
-                //doc--application / msword
-                //xlsx--application / vnd.openxmlformats - officedocument.spreadsheetml.sheet
-                //csv--text / csv
-                //xls--application / vnd.ms - excel
-                //PNG--image / png
-                //JPG--image / jpeg
-                //JPEG--image / jpeg
-                var ext = file.name.split('.').pop().toLowerCase();
+                    //PDF--application / pdf
+                    //docx--application / vnd.openxmlformats - officedocument.wordprocessingml.document
+                    //doc--application / msword
+                    //xlsx--application / vnd.openxmlformats - officedocument.spreadsheetml.sheet
+                    //csv--text / csv
+                    //xls--application / vnd.ms - excel
+                    //PNG--image / png
+                    //JPG--image / jpeg
+                    //JPEG--image / jpeg
+                    var ext = file.name.split('.').pop().toLowerCase();
 
-                if (fileType != 'Others') {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
-                        app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
-                        evt.target.value = null;
-                        return
-                    }
-                    if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
-                        app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
-                        evt.target.value = null;
-                        return
-                    }
-                }
-                else {
-
-                    //if (file.type != "image/png" && file.type != "image/jpeg" && file.type != "application/vnd.ms-excel" && file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.type != "application/msword" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.type != "application/pdf") {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf', 'jfif']) == -1) {
-                        app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
-                        evt.target.value = null;
-                        return
-                    }
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
-                        if (file.size > 26214400) {// should not be exceed 25 mb for documents
-                            app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 25 MB");
+                    if (fileType != 'Others') {
+                        if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
+                            app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
                             evt.target.value = null;
                             return
                         }
-                    }
-                    else {
-
                         if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
                             app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
                             evt.target.value = null;
                             return
                         }
                     }
-                }
+                    else {
 
-                filesToUpload.push({
-                    id: fileId,
-                    file: file,
-                    fileType: fileType
-                });
-                if (fileType != 'Others') {
-                    if (file.type == "image/png" || file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/jfif") {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+                        //if (file.type != "image/png" && file.type != "image/jpeg" && file.type != "application/vnd.ms-excel" && file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.type != "application/msword" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.type != "application/pdf") {
+                        if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf', 'jfif']) == -1) {
+                            app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
+                            evt.target.value = null;
+                            return
+                        }
+                        if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
+                            if (file.size > 26214400) {// should not be exceed 25 mb for documents
+                                app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 25 MB");
+                                evt.target.value = null;
+                                return
+                            }
+                        }
+                        else {
+
+                            if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                                app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                                evt.target.value = null;
+                                return
+                            }
+                        }
+                    }
+
+                    filesToUpload.push({
+                        id: fileId,
+                        file: file,
+                        fileType: fileType
+                    });
+                    if (fileType != 'Others') {
+                        if (file.type == "image/png" || file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/jfif") {
+                            var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                            output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+                        }
+                        else {
+                            var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                            output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
+                        }
                     }
                     else {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
+
+                        if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg" || file.type != "image/jfif") {
+                            var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                            output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
+                        }
+                        else {
+                            var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                            output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+                        }
+                    }
+                };
+
+                $(this).children(".fileList")
+                    .append(output.join(""));
+
+                //reset the input to null - nice little chrome bug!
+                //evt.target.value = null;
+                document.getElementById("AssetUploadBtn").disabled = false;
+            });
+
+            $(this).on("click", ".removeFile", function (e) {
+                e.preventDefault();
+                var fileId = $(this).parent().children("a").data("fileid");
+
+                // loop through the files array and check if the name of that file matches FileName
+                // and get the index of the match
+                for (var i = 0; i < filesToUpload.length; ++i) {
+                    if (filesToUpload[i].id === fileId)
+                        filesToUpload.splice(i, 1);
+                }
+
+                $(this).parent().remove();
+                if (filesToUpload.length == 0) {
+                    document.getElementById("AssetUploadBtn").disabled = true;
+
+                }
+                else {
+                    document.getElementById("files").disabled = false;
+                    document.getElementById("AssetUploadBtn").disabled = false;
+                    $("#files1").removeClass("disabled");
+                }
+            });
+
+            this.clear = function () {
+                for (var i = 0; i < filesToUpload.length; ++i) {
+                    if (filesToUpload[i].id.indexOf(sectionIdentifier) >= 0)
+                        filesToUpload.splice(i, 1);
+                }
+
+                $(this).children(".fileList").empty();
+            }
+
+            return this;
+        };
+        (function () {
+
+            var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
+
+            $("#imageClear").click(function (e) {
+                filesToUpload.length = 0;
+                $("#photolist li").remove();
+                $("#myModal2").modal('hide');
+                $("#photoType").val("").trigger("chosen:updated");
+            });
+
+            $("#btnclose").click(function (e) {
+                filesToUpload.length = 0;
+                $("#photolist li").remove();
+                $("#myModal2").modal('hide');
+                $("#photoType").val("").trigger("chosen:updated");
+            });
+
+            $("#AssetUploadBtn").click(function (e) {
+                var type = $("#photoType").val();
+
+
+                if (type == 'Barriers'){
+                    var blength = $("td:equals(Barriers)").length;
+                    if (blength >= 1) {
+                        ShowErrorMessage("You cannot upload more than 1 files for Barriers type");
+                        return;
                     }
                 }
                 else {
-
-                    if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg" || file.type != "image/jfif") {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
-                    }
-                    else {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
+                    var length = $("td:equals("+type+")").length;
+                    if (length >= 2) {
+                        ShowErrorMessage("You cannot upload more than 2 files for " + type + " type");
+                        return;
                     }
                 }
-            };
-
-            $(this).children(".fileList")
-                .append(output.join(""));
-
-            //reset the input to null - nice little chrome bug!
-            //evt.target.value = null;
-            document.getElementById("AssetUploadBtn").disabled = false;
-        });
-
-        $(this).on("click", ".removeFile", function (e) {
-            e.preventDefault();
-            var fileId = $(this).parent().children("a").data("fileid");
-
-            // loop through the files array and check if the name of that file matches FileName
-            // and get the index of the match
-            for (var i = 0; i < filesToUpload.length; ++i) {
-                if (filesToUpload[i].id === fileId)
-                    filesToUpload.splice(i, 1);
-            }
-
-            $(this).parent().remove();
-            if (filesToUpload.length == 0) {
-                document.getElementById("AssetUploadBtn").disabled = true;
-
-            }
-            else {
-                document.getElementById("files").disabled = false;
-                document.getElementById("AssetUploadBtn").disabled = false;
-                $("#files1").removeClass("disabled");
-            }
-        });
-
-        this.clear = function () {
-            for (var i = 0; i < filesToUpload.length; ++i) {
-                if (filesToUpload[i].id.indexOf(sectionIdentifier) >= 0)
-                    filesToUpload.splice(i, 1);
-            }
-
-            $(this).children(".fileList").empty();
-        }
-
-        return this;
-    };
-    (function () {
-
-        var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
-
-        $("#imageClear").click(function (e) {
-            filesToUpload.length = 0;
-            $("#photolist li").remove();
-            $("#myModal2").modal('hide');
-            $("#photoType").val("").trigger("chosen:updated");
-        });
-
-        $("#btnclose").click(function (e) {
-            filesToUpload.length = 0;
-            $("#photolist li").remove();
-            $("#myModal2").modal('hide');
-            $("#photoType").val("").trigger("chosen:updated");
-        });
-
-        $("#AssetUploadBtn").click(function (e) {
-            var type = $("#photoType").val();
-
-
-            if (type == 'Barriers'){
-                var blength = $("td:equals(Barriers)").length;
-                if (blength >= 1) {
-                    ShowErrorMessage("You cannot upload more than 1 files for Barriers type");
-                    return;
-                }
-            }
-            else {
-                var length = $("td:equals("+type+")").length;
-                if (length >= 2) {
+                if (filesToUpload.length > 2) {
                     ShowErrorMessage("You cannot upload more than 2 files for " + type + " type");
                     return;
                 }
-            }
-            if (filesToUpload.length > 2) {
-                ShowErrorMessage("You cannot upload more than 2 files for " + type + " type");
-                return;
-            }
 
-            var formData = new FormData();
-            formData.append("headerId", frmG1G2.HeaderData.PkRefNo);
-            formData.append("InspRefNum", frmG1G2.HeaderData.RefNo);
-            for (var i = 0, len = filesToUpload.length; i < len; i++) {
-                formData.append("FormFile", filesToUpload[i].file);
-                formData.append("phototype", filesToUpload[i].fileType);
-            }
-            InitAjaxLoading();
-            $.ajax(
-                {
-                    url: "/FormG1G2/ImageUploaded",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: "POST",
-                    dataType: 'JSON',
-                    success: function (data) {
-
-                        if (data == -1) {
-                            ShowErrorMessage("You cannot upload more than 2 files for individual type");
-                        }
-                        frmG1G2.RefreshImageList();
-                        HideAjaxLoading();
-                        CloseUploadModal();
-                        filesToUpload.length = 0;
-                    },
-                    error: function (data) {
-                        HideAjaxLoading();
-                        app.ShowErrorMessage("Upload Failed. Kindly retry later.")
-
-                    }
+                var formData = new FormData();
+                formData.append("headerId", frmG1G2.HeaderData.PkRefNo);
+                formData.append("InspRefNum", frmG1G2.HeaderData.RefNo);
+                for (var i = 0, len = filesToUpload.length; i < len; i++) {
+                    formData.append("FormFile", filesToUpload[i].file);
+                    formData.append("phototype", filesToUpload[i].fileType);
                 }
-            );
+                InitAjaxLoading();
+                $.ajax(
+                    {
+                        url: "/FormG1G2/ImageUploaded",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        dataType: 'JSON',
+                        success: function (data) {
 
-        });
-    })()
-    function CloseUploadModal() {
-        filesToUpload.length = 0;
-        $("#Filelist").empty();
-        $("#photolist").empty();
-        $("#myModal2").modal('hide');
-        $("#photoType").val("").trigger("change").trigger("chosen:updated");
-    }
+                            if (data == -1) {
+                                ShowErrorMessage("You cannot upload more than 2 files for individual type");
+                            }
+                            frmG1G2.RefreshImageList();
+                            HideAjaxLoading();
+                            CloseUploadModal();
+                            filesToUpload.length = 0;
+                        },
+                        error: function (data) {
+                            HideAjaxLoading();
+                            app.ShowErrorMessage("Upload Failed. Kindly retry later.")
+
+                        }
+                    }
+                );
+
+            });
+        })()
+        function CloseUploadModal() {
+            filesToUpload.length = 0;
+            $("#Filelist").empty();
+            $("#photolist").empty();
+            $("#myModal2").modal('hide');
+            $("#photoType").val("").trigger("change").trigger("chosen:updated");
+        }
 </script>
 <style>
     div.item {

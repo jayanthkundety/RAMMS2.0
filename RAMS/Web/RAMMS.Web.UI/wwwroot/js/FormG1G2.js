@@ -34,7 +34,7 @@
     this.BindData = function () {
         //debugger;
         if (this.HeaderData && this.HeaderData.PkRefNo && this.HeaderData.PkRefNo > 0) {
-            if (this.IsEdit) { this.IsEdit = this.HeaderData.SubmitSts ? false : true; }
+            if (this.IsEdit) { this.IsEdit = this.HeaderData.Status == "Approved" ? false : true; }
             if (!this.IsEdit) {
                 $("#ancAddImage").remove(); $("#ImageListTRTemplate td[deleteImg]").text("");
                 $("[finddetailsdep]").hide();
@@ -252,7 +252,7 @@
             var actionSection = "<div class='btn-group dropright' rowidx='" + meta.row + "'><button type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button>";
             actionSection += "<div class='dropdown-menu'>";//dorpdown menu start
 
-            if (data.Status != "Submitted" && tblFG1G2HGrid.Base.IsModify) {
+            if (data.ProcessStatus != "Approved" && tblFG1G2HGrid.Base.IsModify) {
                 actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmG1G2.HeaderGrid.ActionClick(this);'>";
                 actionSection += "<span class='edit-icon'></span> Edit </button>";
             }
