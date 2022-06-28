@@ -17,12 +17,16 @@
                     //debugger;
                     $("[finddetailhide]").hide();
                     $("#selAssetID,#formG1G2InsYear").prop("disabled", true).trigger("change").trigger("chosen:updated");
+
                     if (data.SubmitSts) {
                         window.location = _APPLocation + "FormG1G2/View/" + data.PkRefNo;
                     }
                     tis.HeaderData = data;
-                   
                     tis.PageInit();
+
+                    $('#formG1G2InspectedBy').trigger('chosen:updated');
+                    $("#formG1G2InspectedBy").trigger("change");
+                    $("#InspectedSign").prop("checked", true);
                 }
             }, "Finding");
         }
@@ -30,7 +34,7 @@
     this.BindData = function () {
         //debugger;
         if (this.HeaderData && this.HeaderData.PkRefNo && this.HeaderData.PkRefNo > 0) {
-            if (this.IsEdit) { this.IsEdit = this.HeaderData.SubmitSts ? false : true; }
+            if (this.IsEdit) { this.IsEdit = this.HeaderData.Status == "Approved" ? false : true; }
             if (!this.IsEdit) {
                 $("#ancAddImage").remove(); $("#ImageListTRTemplate td[deleteImg]").text("");
                 $("[finddetailsdep]").hide();
@@ -53,7 +57,7 @@
                     if (this.type == "select-one") { obj.trigger("chosen:updated"); };
                 }
             });
-            $("#pkRefNo").val(tis.HeaderData.PkRefNo); 
+            $("#pkRefNo").val(tis.HeaderData.PkRefNo);
             tis.LoadG2(tis.HeaderData.FormG2);
             tis.RefreshImageList();
             $("#dtInspection").attr("min", this.HeaderData.YearOfInsp + "-01-01").attr("max", this.HeaderData.YearOfInsp + "-12-31");
@@ -70,7 +74,7 @@
         $('#FeedbackEc').val(req.FeedbackEc);
     }
     this.AssetIDChange = function (tis) {
-        
+
         this.BindRefNumber();
     }
     this.InsYearChange = function (tis) { this.BindRefNumber(); }
@@ -241,14 +245,14 @@
             $("#btnFindDetails").show();
             $("#selRMU").trigger("change");
         }
-       this.BindData();
+        this.BindData();
     }
     this.HeaderGrid = new function () {
         this.ActionRender = function (data, type, row, meta) {
             var actionSection = "<div class='btn-group dropright' rowidx='" + meta.row + "'><button type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button>";
             actionSection += "<div class='dropdown-menu'>";//dorpdown menu start
 
-            if (data.Status != "Submitted" && tblFG1G2HGrid.Base.IsModify) {
+            if (data.ProcessStatus != "Approved" && tblFG1G2HGrid.Base.IsModify) {
                 actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmG1G2.HeaderGrid.ActionClick(this);'>";
                 actionSection += "<span class='edit-icon'></span> Edit </button>";
             }
@@ -285,6 +289,10 @@
                         app.Confirm("Are you sure you want to delete this record? <br/>(Ref: " + data.RefID + ")", (status) => {
                             if (status) {
                                 DeleteRequest("Delete/" + data.RefNo, "FormG1G2", {}, function (sdata) {
+                                    if (sdata.id == "-1") {
+                                        app.ShowErrorMessage("Form G1G2 cannot be deleted, first delete Form F3");
+                                        return false;
+                                    }
                                     tblFG1G2HGrid.Refresh();
                                     app.ShowSuccessMessage("Deleted Sucessfully! <br/>(Ref: " + data.RefID + ")");
                                 });
@@ -669,5 +677,49 @@ $(document).ready(function () {
             $('[searchsectionbtn]').trigger('onclick');
         }
     })
+
+
+    $('.allow_numeric').keypress(function (event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
+            ((event.which < 48 || event.which > 57) &&
+                (event.which != 0 && event.which != 8))) {
+            event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') == -1)) {
+            setTimeout(function () {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+
+        if ((text.indexOf('.') != -1) &&
+            (text.substring(text.indexOf('.')).length > 3) &&
+            (event.which != 0 && event.which != 8) &&
+            ($(this)[0].selectionStart >= text.length - 3)) {
+            event.preventDefault();
+        }
+    });
+
+    $('.allow_numericWOD').keypress(function (event) {
+        var $this = $(this);
+        if ((event.which != 46 || $this.val().indexOf('.') == -1) &&
+            ((event.which < 48 || event.which > 57) &&
+                (event.which != 0 && event.which != 8))) {
+            event.preventDefault();
+        }
+
+        var text = $(this).val();
+        if ((event.which == 46) && (text.indexOf('.') != -1)) {
+            setTimeout(function () {
+                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
+                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
+                }
+            }, 1);
+        }
+    });
 
 });

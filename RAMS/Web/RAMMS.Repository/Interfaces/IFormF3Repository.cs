@@ -1,6 +1,7 @@
 ﻿ 
 using RAMMS.Domain.Models;
 using RAMMS.DTO;
+using RAMMS.DTO.Report;
 using RAMMS.DTO.RequestBO;
 using RAMMS.DTO.ResponseBO;
 using RAMMS.DTO.Wrappers;
@@ -21,7 +22,7 @@ namespace RAMMS.Repository.Interfaces
         Task<List<FormF2HeaderRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormF2SearchGridDTO> filterOptions);
         Task<List<FormF3DtlGridDTO>> GetFormF3DtlGridList(FilteredPagingDefinition<FormF3DtlResponseDTO> filterOptions);
 
-         List<RmAllassetInventory> GetAssetDetails(string Source);
+         List<RmAllassetInventory> GetAssetDetails(FormF3ResponseDTO FormF3);
 
         int LoadG1G2Data(FormF3ResponseDTO FormF3);
 
@@ -29,6 +30,7 @@ namespace RAMMS.Repository.Interfaces
         int? DeleteFormF3Dtl(int Id);
         int? SaveFormF3Dtl(RmFormF3Dtl FormF3Dtl);
         int? UpdateFormF3Dtl(RmFormF3Dtl FormF3Dtl);
+        Task<FORMF3Rpt> GetReportData(int headerid);
 
     }
 }

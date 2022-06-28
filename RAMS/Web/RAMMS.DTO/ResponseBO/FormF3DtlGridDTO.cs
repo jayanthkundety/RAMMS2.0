@@ -7,7 +7,7 @@ namespace RAMMS.DTO.ResponseBO
 {
     public class FormF3DtlGridDTO
     {
-
+        public int SNo { get; set; }
         public int PkRefNo { get; set; }
         public string AssetId { get; set; }
         public string Ch { get; set; }

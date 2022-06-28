@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -161,8 +163,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 //frmG1G2.AiIntelStruc = asset.InletStruc;
                 //frmG1G2.AiOutletStruc = asset.OutletStruc;
                 frmG1G2.Status = "Initialize";
-                //frmG1G2.InspectedBy = _security.UserID;
-                //frmG1G2.InspectedName = _security.UserName;
+                frmG1G2.InspectedBy = _security.UserID;
+                frmG1G2.InspectedName = _security.UserName;
+                frmG1G2.InspectedDt = DateTime.Today;
                 frmG1G2.CrBy = frmG1G2.ModBy = createdBy;
                 frmG1G2.CrDt = frmG1G2.ModDt = DateTime.UtcNow;
 
@@ -222,9 +225,13 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
         public int Delete(int id)
         {
-            if (id > 0)
+            if (id > 0 && !_repo.isF3Exist(id))
             {
                 id = _repo.DeleteHeader(new RmFormG1Hdr() { Fg1hActiveYn = false, Fg1hPkRefNo = id });
+            }
+            else
+            {
+                return -1;
             }
             return id;
         }
@@ -277,7 +284,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                             if (!string.IsNullOrEmpty(structureCode))
                             {
                                 worksheet.Cell(8, 3).Value = structureCode;
-                                worksheet.Cell(8, 3).RichText.Substring(0, structureCode.Length).Strikethrough = true;
+                                //worksheet.Cell(8, 3).RichText.Substring(0, structureCode.Length).Strikethrough = true;
                                 if (!string.IsNullOrEmpty(rpt.StructureCode) && structureCode.IndexOf(" " + rpt.StructureCode + " ") > -1)
                                 {
                                     worksheet.Cell(8, 3).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Bold = true;
@@ -392,46 +399,58 @@ namespace RAMMS.Business.ServiceProvider.Services
                                 if (File.Exists(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName))
                                 {
                                     MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName));
+
+                                    //var Img = resizeImage(GetImage(memoryStream, ImageFormat.Png, 100), new Size(347, 178));
+                                    //Stream imgStream = ResizeImage(memoryStream, ImageFormat.Png, new Size(390, 192),206,300);
+
+                                    //Stream imgStream = ScaleImage(memoryStream, 290, 480);
+                                    //Stream imgStream = ResizePhoto(memoryStream,394,200);
+                                    //Bitmap imgStream = new Bitmap(347, 178 , Image.FromStream(memoryStream).PixelFormat);
+
+                                    Tuple<int, int> getDimension = GetScale(memoryStream, 196, 380);
+                                    Stream imgStream = GetImage(memoryStream, getDimension.Item2, getDimension.Item1);
+                                    //Stream imgStream = ResizeImage(memoryStream, ImageFormat.Png, new Size(390, 192), getDimension.Item2, getDimension.Item1);
+
                                     switch (index)
                                     {
                                         case 0:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(143, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(142, 1), new Point(40, 13));//.WithSize(347, 178);
                                             continue;
                                         case 2:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(155, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 3:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(155, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 4:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(167, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(167, 1), new Point(42, 4));//.WithSize(347, 178);
                                             continue;
                                         case 5:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(167, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(167, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 6:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(180, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(180, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 7:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(180, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(180, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 8:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(207, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 9:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(207, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 10:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(220, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 11:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(220, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         case 12:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 1), new Point(45, 4)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(232, 1), new Point(42, 1));//.WithSize(347, 178);
                                             continue;
                                         case 13:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 9), new Point(45, 6)).WithSize(347, 178);
+                                            worksheet.AddPicture((Stream)imgStream).MoveTo(worksheet.Cell(232, 9), new Point(31, 6));//.WithSize(347, 178);
                                             continue;
                                         //case 14:
                                         //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 1), new Point(45, 4)).WithSize(347, 178);
@@ -473,5 +492,173 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             }
         }
+
+        private Stream GetImage(Stream imgStream, int dH, int dW)
+        {
+            using (Image img = Image.FromStream(imgStream))
+            {
+                var newImage = new Bitmap(dW, dH);
+                using (var graphics = Graphics.FromImage(newImage))
+                    graphics.DrawImage(img, 0, 0, dW, dH);
+                var ms = new MemoryStream();
+                newImage.Save(ms, ImageFormat.Png);
+                return ms;
+            }
+        }
+
+        private Tuple<int, int> GetScale(Stream imgStream, int dH, int dW)
+        {
+            using (Image img = Image.FromStream(imgStream))
+            {
+                var width = img.Width;
+                var height = img.Height;
+                double ratio = (double)height / (double)width;
+                height = (int)(dW * (double)ratio);
+                height = height > dH ? dH : height;
+                return new Tuple<int, int>(dW, height);
+            }
+        }
+
+        public Stream ResizeImage(Stream imgStream, ImageFormat format, Size size, int boxHeight, int boxWidth)
+        {
+            try
+            {
+                using (Image img = Image.FromStream(imgStream))
+                {
+                    int width = img.Width;
+                    int height = img.Height;
+
+                    double dbl = (double)width / (double)height;
+                    Image thumbNail;
+
+                    if ((int)((double)boxHeight * dbl) <= boxWidth)
+                    {
+                        thumbNail = new Bitmap(img, (int)((double)boxHeight * dbl), boxHeight);
+                    }
+                    else
+                    {
+                        thumbNail = new Bitmap(img, boxWidth, (int)((double)boxWidth / dbl));
+                    }
+
+                    Graphics g = Graphics.FromImage(thumbNail);
+                    g.CompositingQuality = CompositingQuality.HighQuality;
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    //Rectangle rect = new Rectangle(0, 0, width, height);
+                    //g.DrawImage(img, rect);
+                    var ms = new MemoryStream();
+                    thumbNail.Save(ms, format);
+                    //thumbNail.Dispose();
+                    //thumbNail = null;
+                    return ms;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public Stream ScaleImage(Stream imgStream, int maxWidth, int maxHeight)
+        {
+            using (Image image = Image.FromStream(imgStream))
+            {
+                var ratioX = (double)maxWidth / image.Width;
+                var ratioY = (double)maxHeight / image.Height;
+                var ratio = Math.Min(ratioX, ratioY);
+
+                var newWidth = (int)(image.Width * ratio);
+                var newHeight = (int)(image.Height * ratio);
+
+                var newImage = new Bitmap(newWidth, newHeight);
+
+                using (var graphics = Graphics.FromImage(newImage))
+                    graphics.DrawImage(image, 0, 0, newWidth, newHeight);
+                var ms = new MemoryStream();
+                newImage.Save(ms, ImageFormat.Png);
+                return ms;
+            }
+        }
+
+
+        private Stream ResizePhoto(Stream imgStream, int desiredWidth, int desiredHeight)
+        {
+            //throw error if bouning box is to small
+            if (desiredWidth < 4 || desiredHeight < 4)
+                throw new InvalidOperationException("Bounding Box of Resize Photo must be larger than 4X4 pixels.");
+            var original = Bitmap.FromStream(imgStream);
+            var ms = new MemoryStream();
+            //store image widths in variable for easier use
+            var oW = (decimal)original.Width;
+            var oH = (decimal)original.Height;
+            var dW = (decimal)desiredWidth;
+            var dH = (decimal)desiredHeight;
+
+            //check if image already fits
+            if (oW < dW && oH < dH)
+            {
+                original.Save(ms, ImageFormat.Png);  //image fits in bounding box, keep size (center with css) If we made it bigger it would stretch the image resulting in loss of quality.
+                return ms;
+            }
+            //check for double squares
+            if (oW == oH && dW == dH)
+            {
+                //image and bounding box are square, no need to calculate aspects, just downsize it with the bounding box
+                Bitmap square = new Bitmap(original, (int)dW, (int)dH);
+                original.Dispose();
+                square.Save(ms, ImageFormat.Png);
+                return ms;
+            }
+
+            //check original image is square
+            if (oW == oH)
+            {
+                //image is square, bounding box isn't.  Get smallest side of bounding box and resize to a square of that center the image vertically and horizontally with Css there will be space on one side.
+                int smallSide = (int)Math.Min(dW, dH);
+                Bitmap square = new Bitmap(original, smallSide, smallSide);
+                original.Dispose();
+                square.Save(ms, ImageFormat.Png);
+                return ms;
+            }
+
+            //not dealing with squares, figure out resizing within aspect ratios            
+            if (oW > dW && oH > dH) //image is wider and taller than bounding box
+            {
+                var r = Math.Min(dW, dH) / Math.Min(oW, oH); //two dimensions so figure out which bounding box dimension is the smallest and which original image dimension is the smallest, already know original image is larger than bounding box
+                var nH = oH * r; //will downscale the original image by an aspect ratio to fit in the bounding box at the maximum size within aspect ratio.
+                var nW = oW * r;
+                var resized = new Bitmap(original, (int)nW, (int)nH);
+                original.Dispose();
+                resized.Save(ms, ImageFormat.Png);
+                return ms;
+            }
+            else
+            {
+                if (oW > dW) //image is wider than bounding box
+                {
+                    var r = dW / oW; //one dimension (width) so calculate the aspect ratio between the bounding box width and original image width
+                    var nW = oW * r; //downscale image by r to fit in the bounding box...
+                    var nH = oH * r;
+                    var resized = new Bitmap(original, (int)nW, (int)nH);
+                    original.Dispose();
+                    resized.Save(ms, ImageFormat.Png);
+                    return ms;
+                }
+                else
+                {
+                    //original image is taller than bounding box
+                    var r = dH / oH;
+                    var nH = oH * r;
+                    var nW = oW * r;
+                    var resized = new Bitmap(original, (int)nW, (int)nH);
+                    original.Dispose();
+                    resized.Save(ms, ImageFormat.Png);
+                    return ms;
+                }
+            }
+
+            return null;
+        }
+
     }
 }

@@ -94,7 +94,7 @@ namespace RAMMS.Repository
 
         public async Task<List<FormG1G2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
         {
-            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
+            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId && x.FgiActiveYn == true).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
             {
                 SNO = x.Max(y => y.FgiImageSrno.Value),
                 Type = x.Key
@@ -205,25 +205,25 @@ namespace RAMMS.Repository
                             }
                             break;
                         case "chFromKM":
-                            string strM = Utility.ToString(searchData.filter["chFromM"]);
+                            string strM = Utility.ToString(searchData.filter["chFromKM"]);
                             decimal flKm = Utility.ToDecimal(strVal + (strM != "" ? "." + strM : ""));
                             query = query.Where(x => x.LocationCH >= flKm);
                             break;
                         case "chFromM":
-                            string strKm = Utility.ToString(searchData.filter["chFromKM"]);
+                            string strKm = Utility.ToString(searchData.filter["chFromM"]);
                             if (strKm == "")
                             {
                                 decimal flM = Utility.ToDecimal("0." + strVal);
                                 query = query.Where(x => x.LocationCH >= flM);
                             }
                             break;
-                        case "chToKm":
-                            string strTM = Utility.ToString(searchData.filter["chToM"]);
+                        case "chToKM":
+                            string strTM = Utility.ToString(searchData.filter["chToKM"]);
                             decimal flTKm = Utility.ToDecimal(strVal + (strTM != "" ? "." + strTM : ""));
                             query = query.Where(x => x.LocationCH <= flTKm);
                             break;
                         case "chToM":
-                            string strTKm = Utility.ToString(searchData.filter["chToKm"]);
+                            string strTKm = Utility.ToString(searchData.filter["chToM"]);
                             if (strTKm == "")
                             {
                                 decimal flTM = Utility.ToDecimal("0." + strVal);
@@ -269,6 +269,15 @@ namespace RAMMS.Repository
             return frmG1G2.Fg1hPkRefNo;
         }
 
+        public bool isF3Exist(int id)
+        {
+           var rmF2dtl =  _context.RmFormF3Dtl.FirstOrDefault(x => x.Ff3dG1hPkRefNo == id);
+            if (rmF2dtl != null)
+                return true;
+
+            return false;
+        }
+
         public List<FormG1G2Rpt> GetReportData(int headerid)
         {
             return GetReportDataV2(headerid);
@@ -282,11 +291,16 @@ namespace RAMMS.Repository
                         orderby ty.DdlTypeRemarks ascending
                         select ty).ToList();
             var roadcode = (from o in _context.RmFormG1Hdr
-                            where o.Fg1hPkRefNo == headerid
+                            where o.Fg1hPkRefNo == headerid && o.Fg1hActiveYn == true
                             select new { o.Fg1hRdCode, o.Fg1hDtOfInsp }).FirstOrDefault();
 
+            var AssetId = (from ast in _context.RmFormG1Hdr
+                           where ast.Fg1hPkRefNo == headerid
+                           select ast.Fg1hAiPkRefNo).First();
+
             List<FormG1G2Rpt> detail = (from o in _context.RmFormG1Hdr
-                                        where (o.Fg1hRdCode == roadcode.Fg1hRdCode && o.Fg1hDtOfInsp.HasValue && o.Fg1hDtOfInsp < roadcode.Fg1hDtOfInsp) || o.Fg1hPkRefNo == headerid
+                                        where (o.Fg1hRdCode == roadcode.Fg1hRdCode && o.Fg1hDtOfInsp.HasValue && o.Fg1hDtOfInsp < roadcode.Fg1hDtOfInsp && o.Fg1hAiPkRefNo == AssetId && o.Fg1hActiveYn == true) || o.Fg1hPkRefNo == headerid
+                                        orderby o.Fg1hYearOfInsp ascending
                                         let formG2 = _context.RmFormG2Hdr.FirstOrDefault(x => x.Fg2hFg1hPkRefNo == o.Fg1hPkRefNo)
                                         select new FormG1G2Rpt
                                         {

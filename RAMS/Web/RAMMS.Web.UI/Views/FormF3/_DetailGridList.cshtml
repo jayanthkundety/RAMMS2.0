@@ -40,22 +40,24 @@
             return $("#FormF3_SubmitSts").val() == "True" ? viewaction : actionSection;
         }
     };
-    var PkRefNoCol = { data: "pkRefNo", name: "ReferenceNo", title: "Reference No", autoWidth: true,  sortable: true };
+    var sNoCol = { data: "sNo", name: "sno", title: "SNo", autoWidth: true,  sortable: true };
     var chCol = { data: "ch", name: "ch", title: "Chainage", autoWidth: true, sortable: true };
     var structureCodeCol = { data: "structureCode", name: "StructureCode", title: "Structure Code", autoWidth: true, sortable: true };
     var conditionRatingCol = { data: "conditionRating", name: "conditionRating", title: "Overall Condition Rating", autoWidth: true, sortable: true };
     var boundCol = { data: "bound", name: "Bound", title: "Bound", autoWidth: true, sortable: true };
     var widthCol = { data: "width", name: "Bound", title: "Width(m)", autoWidth: true, sortable: true };
     var heightCol = { data: "height", name: "Height", title: "Height(m)", autoWidth: true, sortable: true };
+    var descriptionCol = { data: "description", name: "description", title: "Description", autoWidth: true, sortable: true };
 
     table_columns.push(actionCol);
-    table_columns.push(PkRefNoCol);
+    table_columns.push(sNoCol);
     table_columns.push(chCol);
     table_columns.push(structureCodeCol);
     table_columns.push(conditionRatingCol);
     table_columns.push(boundCol);
     table_columns.push(widthCol);
     table_columns.push(heightCol);
+    table_columns.push(descriptionCol);
 
 
     var filterData = new Object();

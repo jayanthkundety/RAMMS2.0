@@ -46,7 +46,7 @@ $(document).ready(function () {
         $("#SubmitFormF3Btn").hide();
         $("#btnDtlModal").hide();
     }
-        
+
 
     $("#ddlInspectedby").on("change", function () {
         var value = this.value;
@@ -242,7 +242,7 @@ function bindSection(callback) {
             $.each(data.section, function (index, v) {
                 _sec.append($("<option></option>").val(v.code).html(v.text).attr("code", v.code).attr("text", v.value));
             });
-            debugger
+             
             if ($("#hdnSecCode").val() != "" && $("#hdnSecCode").val() != undefined) {
                 $("#ddlSection").val($("#hdnSecCode").val());
                 $("#hdnSecCode").val("");
@@ -493,13 +493,25 @@ function EditFormF3Dtl(obj, view) {
     $("#ddlCondition").trigger('chosen:updated');
     $("#ddlCondition").trigger('change');
 
-    if ($("#hdnView").val() == 0 || view == 0) {
+    if ($("#hdnView").val() == 1 || view == 1) {
         $('#ddlAsset').prop('disabled', true).trigger("chosen:updated");
         $('#ddlCondition').prop('disabled', true).trigger("chosen:updated");
         $("#FormF3Dtl_Description").attr("readonly", true);
         $("#btnSaveFormF3Dtl").hide();
     }
-     
+    else {
+        if ($("#ddlSource").val() == "New") {
+            $('#ddlAsset').prop('disabled', false).trigger("chosen:updated");
+            $('#ddlCondition').prop('disabled', false).trigger("chosen:updated");
+        }
+        else {
+            $('#ddlAsset').prop('disabled', true).trigger("chosen:updated");
+            $('#ddlCondition').prop('disabled', true).trigger("chosen:updated");
+        }
+        $("#FormF3Dtl_Description").attr("readonly", false);
+        $("#btnSaveFormF3Dtl").show();
+    }
+
 }
 
 function ClearFormF3Dtl() {
@@ -530,9 +542,23 @@ function UpdateFormAfterSave(data) {
 
     if ($("#ddlSource").val() == "New")
         $("#btnDtlModal").show()
-
+    BindAsset(data);
     DisableHeader();
     InitializeGrid();
+}
+
+
+
+function BindAsset(data) {
+    var _asset = $("#ddlAsset");
+    _asset.empty();
+    _asset.append($("<option></option>").val("").html("Select Asset"));
+    $.each(data.assetDS, function (index, v) {
+        _asset.append($("<option></option>").val(v.value).html(v.text).attr("Item1", v.item1).attr("Item2", v.item2).attr("Item3", v.item3).attr("FromKm", v.fromKm).attr("FromM", v.fromM).attr("CValue", v.cValue));
+    });
+
+    _asset.trigger("chosen:updated");
+    _asset.trigger("change");
 }
 
 function DisableHeader() {
