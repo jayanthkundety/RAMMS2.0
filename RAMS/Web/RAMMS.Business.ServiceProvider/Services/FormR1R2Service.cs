@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -20,57 +21,108 @@ namespace RAMMS.Business.ServiceProvider.Services
 {
     public class FormR1R2Service : IFormR1R2Service
     {
-        private readonly IFormR1R2Repository _repo;
+        private readonly IFormR1Repository _repo;
         private readonly IRepositoryUnit _repoUnit;
         private readonly IMapper _mapper;
         private readonly IAssetsService _assetsService;
         private readonly IProcessService processService;
-
-        public FormR1R2Service(IRepositoryUnit repoUnit, IFormR1R2Repository repo,
-    IAssetsService assetsService, IMapper mapper, IProcessService proService)
+        private readonly ISecurity _security;
+        public FormR1R2Service(IRepositoryUnit repoUnit, IFormR1Repository repo,
+            IAssetsService assetsService, IMapper mapper, IProcessService proService,
+            ISecurity security)
         {
             _repo = repo;
             _mapper = mapper;
             _assetsService = assetsService;
             _repoUnit = repoUnit;
             processService = proService;
+            _security = security;
         }
-
         public async Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData)
         {
             return await _repo.GetHeaderGrid(searchData);
         }
-        public async Task<FormC1C2DTO> Save(FormC1C2DTO frmC1C2, bool updateSubmit)
+        public async Task<FormR1DTO> Save(FormR1DTO frmR1R2, bool updateSubmit)
         {
-            RmFormCvInsHdr frmC1C2_1 = this._mapper.Map<RmFormCvInsHdr>((object)frmC1C2);
-            frmC1C2_1.FcvihStatus = "Open";
-            foreach (RmFormCvInsDtl rmFormCvInsDtl in (IEnumerable<RmFormCvInsDtl>)frmC1C2_1.RmFormCvInsDtl)
-                rmFormCvInsDtl.FcvidIimPkRefNoNavigation = (RmInspItemMas)null;
-            RmFormCvInsHdr source = await this._repo.Save(frmC1C2_1, updateSubmit);
-            if (source != null && source.FcvihSubmitSts)
-            {
-                int result = this.processService.Save(new ProcessDTO()
-                {
-                    ApproveDate = new System.DateTime?(System.DateTime.Now),
-                    Form = "FormC1C2",
-                    IsApprove = true,
-                    RefId = source.FcvihPkRefNo,
-                    Remarks = "",
-                    Stage = source.FcvihStatus
-                }).Result;
-            }
-            frmC1C2 = this._mapper.Map<FormC1C2DTO>((object)source);
-            return frmC1C2;
+            RmFormR1Hdr frmR1R2_1 = this._mapper.Map<RmFormR1Hdr>((object)frmR1R2);
+            frmR1R2_1 = UpdateStatus(frmR1R2_1);
+
+            RmFormR2Hdr frmR2 = this._mapper.Map<RmFormR2Hdr>(frmR1R2.FormR2);
+            frmR2.Fr2hPkRefNo = frmR1R2.FormR2.PkRefNo;
+            frmR2.Fr2hFr1hPkRefNo = frmR1R2.FormR2.FR1hPkRefNo;
+
+
+            RmFormR1Hdr source = await this._repo.Save(frmR1R2_1, updateSubmit);
+
+            RmFormR2Hdr sourceG2 = await this._repo.SaveR2(frmR2, updateSubmit);
+
+            //if (source != null && source.Fg1hSubmitSts)
+            //{
+            //    int result = this.processService.Save(new ProcessDTO()
+            //    {
+            //        ApproveDate = new System.DateTime?(System.DateTime.Now),
+            //        Form = "FormG1G2",
+            //        IsApprove = true,
+            //        RefId = source.Fg1hPkRefNo,
+            //        Remarks = "",
+            //        Stage = source.Fg1hStatus
+            //    }).Result;
+            //}
+            frmR1R2 = this._mapper.Map<FormR1DTO>((object)source);
+            return frmR1R2;
         }
+
+        public RmFormR1Hdr UpdateStatus(RmFormR1Hdr form)
+        {
+            if (form.Fr1hPkRefNo > 0)
+            {
+                var existsObj = _repoUnit.FormG1Repository._context.RmFormR1Hdr.Where(x => x.Fr1hPkRefNo == form.Fr1hPkRefNo).Select(x => new { Status = x.Fr1hStatus, Log = x.Fr1hAuditLog }).FirstOrDefault();
+                if (existsObj != null)
+                {
+                    form.Fr1hAuditLog = existsObj.Log;
+                    form.Fr1hStatus = existsObj.Status;
+                }
+
+            }
+
+
+            if (form.Fr1hSubmitSts && (string.IsNullOrEmpty(form.Fr1hStatus) || form.Fr1hStatus == Common.StatusList.FormQA1Saved || form.Fr1hStatus == Common.StatusList.FormQA1Rejected))
+            {
+                //form.Fg1hInspectedBy = _security.UserID;
+                //form.Fg1hInspectedName = _security.UserName;
+                //form.Fg1hInspectedDt = DateTime.Today;
+                form.Fr1hStatus = Common.StatusList.FormQA1Submitted;
+                form.Fr1hAuditLog = Utility.ProcessLog(form.Fr1hAuditLog, "Submitted", "Submitted", form.Fr1hInspectedName, string.Empty, form.Fr1hDtOfInsp, _security.UserName);
+                processService.SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = _security.UserName,
+                    RmNotGroup = GroupNames.OperationsExecutive,
+                    RmNotMessage = "Executed By:"+ form.Fr1hInspectedName + " - Form G1 (" + form.Fr1hPkRefNo + ")",//doubt
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = "/FormG1G2/Edit/" + form.Fr1hPkRefNo.ToString() + "?view=1",
+                    RmNotUserId = "",
+                    RmNotViewed = ""
+                }, true);
+            }
+            else if (string.IsNullOrEmpty(form.Fr1hStatus) || form.Fr1hStatus == "Initialize")
+                form.Fr1hStatus = Common.StatusList.FormG1G2Saved;
+
+            return form;
+        }
+
+
         public async Task<FormR1DTO> FindByHeaderID(int headerId)
         {
-            RmFormCvInsHdr header = await _repo.FindByHeaderID(headerId);
-            if (header.RmFormCvInsDtl != null)
+            RmFormR1Hdr header = await _repo.FindByHeaderID(headerId);
+            RmFormR2Hdr frmR2 = new RmFormR2Hdr();
+            if (header.RmFormR2Hdr != null)
             {
-                var lst = header.RmFormCvInsDtl.OrderBy(x => x.FcvidInspCode).ThenBy(x => x.FcvidInspCodeDesc);
-                header.RmFormCvInsDtl = lst.ToList();
+                frmR2 = header.RmFormR2Hdr.FirstOrDefault(x => x.Fr2hFr1hPkRefNo == headerId);
             }
-            return _mapper.Map<FormC1C2DTO>(header);
+            var frmR1 = _mapper.Map<FormR1DTO>(header);
+
+            frmR1.FormR2 = frmR2 != null ? _mapper.Map<FormR2DTO>(frmR2) : new FormR2DTO();
+            return frmR1;
         }
         public async Task<FormR1DTO> FindDetails(FormR1DTO frmR1R2, int createdBy)
         {
@@ -83,18 +135,22 @@ namespace RAMMS.Business.ServiceProvider.Services
             else
             {
                 List<string> lstCVUNChar = Utility.GetAlphabets(1);
-                var asset = _assetsService.GetAssetById(frmR1R2.AiPkRefNo.Value).Result;
-                var assetother = _assetsService.GetOtherAssetByIdAsync(frmR1R2.AiPkRefNo.Value).Result;
+                var asset = _assetsService.GetAssetById(frmR1R2.AidPkRefNo.Value).Result;
+                var assetother = _assetsService.GetOtherAssetByIdAsync(frmR1R2.AidPkRefNo.Value).Result;
                 frmR1R2.DivCode = asset.DivisionCode;
+                frmR1R2.RmuCode = asset.RMUCode;
                 frmR1R2.RmuName = asset.RmuName;
                 frmR1R2.RdCode = asset.RoadCode;
                 frmR1R2.RdName = asset.RoadName;
                 frmR1R2.StrucCode = asset.StructureCode;
                 frmR1R2.LocChKm = asset.LocationChKm;
                 frmR1R2.LocChM = Convert.ToInt32(asset.LocationChM);
+
                 frmR1R2.GpsEasting = (decimal?)asset.GpsEasting;
                 frmR1R2.GpsNorthing = (decimal?)asset.GpsNorthing;
 
+                frmR1R2.Status = "Initialize";
+                
                 frmR1R2.CrBy = frmR1R2.ModBy = createdBy;
                 frmR1R2.CrDt = frmR1R2.ModDt = DateTime.UtcNow;
 
@@ -105,72 +161,69 @@ namespace RAMMS.Business.ServiceProvider.Services
             //frmG1G2.PotentialHazards = true;
             return frmR1R2;
         }
-        public async Task<List<FormC1C2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
+        public async Task<List<FormR1R2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
         {
             return await _repo.GetExitingPhotoType(headerId);
         }
-        public async Task<RmFormCvInsImage> AddImage(FormC1C2ImageDTO imageDTO)
+        public async Task<RmFormRImages> AddImage(FormRImagesDTO imageDTO)
         {
-            RmFormCvInsImage image = _mapper.Map<RmFormCvInsImage>(imageDTO);
+            RmFormRImages image = _mapper.Map<RmFormRImages>(imageDTO);
             return await _repo.AddImage(image);
         }
-        public async Task<(IList<RmFormCvInsImage>, int)> AddMultiImage(IList<FormC1C2ImageDTO> imagesDTO)
+        public async Task<(IList<RmFormRImages>, int)> AddMultiImage(IList<FormRImagesDTO> imagesDTO)
         {
-            IList<RmFormCvInsImage> images = new List<RmFormCvInsImage>();
+            IList<RmFormRImages> images = new List<RmFormRImages>();
             foreach (var img in imagesDTO)
             {
-                var count = await _repo.ImageCount(img.ImageTypeCode, img.hPkRefNo.Value);
+                var count = await _repo.ImageCount(img.ImageTypeCode, img.FR1hPkRefNo.Value);
                 if (count > 2)
                 {
                     return (null, -1);
                 }
-
-                images.Add(_mapper.Map<RmFormCvInsImage>(img));
+                var imgs = _mapper.Map<RmFormRImages>(img);
+                imgs.FriPkRefNo = img.PkRefNo;
+                imgs.FriFr1hPkRefNo = img.FR1hPkRefNo;
+                images.Add(imgs);
             }
             return (await _repo.AddMultiImage(images), 1);
         }
-        public List<FormC1C2ImageDTO> ImageList(int headerId)
+        public List<FormRImagesDTO> ImageList(int headerId)
         {
-            List<RmFormCvInsImage> lstImages = _repo.ImageList(headerId).Result;
-            List<FormC1C2ImageDTO> lstResult = new List<FormC1C2ImageDTO>();
+            List<RmFormRImages> lstImages = _repo.ImageList(headerId).Result;
+            List<FormRImagesDTO> lstResult = new List<FormRImagesDTO>();
             if (lstImages != null && lstImages.Count > 0)
             {
-                lstImages.ForEach((RmFormCvInsImage img) =>
+                lstImages.ForEach((RmFormRImages img) =>
                 {
-                    lstResult.Add(_mapper.Map<FormC1C2ImageDTO>(img));
+                    lstResult.Add(_mapper.Map<FormRImagesDTO>(img));
                 });
             }
             return lstResult;
         }
         public async Task<int> DeleteImage(int headerId, int imgId)
         {
-            RmFormCvInsImage img = new RmFormCvInsImage();
-            img.FcviPkRefNo = imgId;
-            img.FcviFcvihPkRefNo = headerId;
-            img.FcviActiveYn = false;
+            RmFormRImages img = new RmFormRImages();
+            img.FriPkRefNo = imgId;
+            img.FriFr1hPkRefNo = headerId;
+            img.FriActiveYn = false;
             return await _repo.DeleteImage(img);
         }
         public int Delete(int id)
         {
             if (id > 0)
             {
-                id = _repo.DeleteHeader(new RmFormCvInsHdr() { FcvihActiveYn = false, FcvihPkRefNo = id });
+                id = _repo.DeleteHeader(new RmFormR1Hdr() { Fr1hActiveYn = false, Fr1hPkRefNo = id });
             }
             return id;
         }
 
-        public List<FormC1C2Rpt> GetReportData(int headerid)
+        public List<FormR1R2Rpt> GetReportData(int headerid)
         {
             return _repo.GetReportData(headerid);
         }
 
         public byte[] FormDownload(string formname, int id, string basepath, string filepath)
         {
-            string structureCode = _repoUnit.DDLookUpRepository.GetConcatenateDdlTypeValue(new DTO.RequestBO.DDLookUpDTO { Type = "Structure Code", TypeCode = "CV" });
-            string culvertType = _repoUnit.DDLookUpRepository.GetConcatenateDdlTypeDesc(new DTO.RequestBO.DDLookUpDTO { Type = "Culvert Type", TypeCode = "CV" });
-            string culvertMaterial = _repoUnit.DDLookUpRepository.GetConcatenateDdlTypeDesc(new DTO.RequestBO.DDLookUpDTO { Type = "Culvert Material", TypeCode = "CV" });
-            string inletStructure = _repoUnit.DDLookUpRepository.GetConcatenateDdlTypeDesc(new DTO.RequestBO.DDLookUpDTO { Type = "Inlet Structure", TypeCode = "CV" });
-            string outletStructure = _repoUnit.DDLookUpRepository.GetConcatenateDdlTypeDesc(new DTO.RequestBO.DDLookUpDTO { Type = "Outlet Structure", TypeCode = "CV" });
             string Oldfilename = "";
             string filename = "";
             string cachefile = "";
@@ -190,398 +243,264 @@ namespace RAMMS.Business.ServiceProvider.Services
 
             try
             {
-                List<FormC1C2Rpt> _rpt = this.GetReportData(id);
+                List<FormR1R2Rpt> _rpt = this.GetReportData(id);
                 System.IO.File.Copy(Oldfilename, cachefile, true);
                 using (var workbook = new XLWorkbook(cachefile))
                 {
-
                     IXLWorksheet worksheet = workbook.Worksheet(1);
-                    int nextoadd = 0;
-                    int sheetNo = 3;
-                    bool IsFirst = true;
-                    int index = 0;
-                    foreach (var rpt in _rpt)
+
+                    using (var book = new XLWorkbook(cachefile))
                     {
-                        Pictures[] pictures;
-                        pictures = rpt.Pictures.Skip(index * 6).Take(6).ToArray();
-                        index++;
-                        int noofsheets = (rpt.Pictures.Count() / 6) + ((rpt.Pictures.Count() % 6) > 0 ? 1 : 1);
-                        using (var book = new XLWorkbook(cachefile))
+                        if (worksheet != null)
                         {
-                            IXLWorksheet image = nextoadd == 0 && IsFirst ? workbook.Worksheet(2) : book.Worksheet(2);
-                            image.Cell(4, 6).Value = rpt.ReportforYear;
-                            image.Cell(5, 6).Value = rpt.AssetRefNO;
-                            image.Cell(6, 6).Value = rpt.RoadCode;
-                            image.Cell(7, 6).Value = rpt.RoadName;
-                            image.Cell(4, 17).Value = rpt.RefernceNo;
-                            image.Cell(5, 17).Value = index;
-                            image.Cell(6, 17).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                            pictures = rpt.Pictures.Take(6).ToArray();
-                            for (int i = 0; i < pictures.Count(); i++)
+                            var rpt = _rpt[0];
+                            worksheet.Cell(4, 21).Value = rpt.RefernceNo;
+                            worksheet.Cell(5, 7).Value = rpt.RoadCode;
+                            worksheet.Cell(5, 17).Value = rpt.RoadName;
+                            var structureCode = rpt.StructureCode;
+                            if (!string.IsNullOrEmpty(structureCode))
                             {
-                                if (File.Exists($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}"))
+                                worksheet.Cell(6, 7).Value = structureCode;
+                                worksheet.Cell(6, 7).RichText.Substring(0, structureCode.Length).Strikethrough = true;
+                                if (!string.IsNullOrEmpty(rpt.StructureCode) && structureCode.IndexOf(" " + rpt.StructureCode + " ") > -1)
                                 {
-                                    byte[] buff = File.ReadAllBytes($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}");
-                                    System.IO.MemoryStream str = new System.IO.MemoryStream(buff);
-                                    switch (i)
+                                    worksheet.Cell(6, 6).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Bold = true;
+                                    worksheet.Cell(6, 6).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Strikethrough = false;
+                                }
+                            }
+                            worksheet.Cell(6, 17).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
+                            worksheet.Cell(6, 27).Value = rpt.Division;
+                            worksheet.Cell(7, 7).Value = rpt.RMU;
+                            worksheet.Cell(7, 17).Value = rpt.GPSEasting;
+                            worksheet.Cell(7, 27).Value = rpt.GPSNorthing;
+                            if (!string.IsNullOrEmpty(rpt.WallFunction))
+                            {
+                                if (rpt.WallFunction == "F1")
+                                    worksheet.Cell(10, 3).Value = "✓";
+                                else if (rpt.WallFunction == "F2")
+                                    worksheet.Cell(11, 3).Value = "✓";
+                                else if (rpt.WallFunction == "F3")
+                                    worksheet.Cell(10, 10).Value = "✓";
+                                else if (rpt.WallFunction == "F4")
+                                    worksheet.Cell(11, 10).Value = "✓";
+                                else if (rpt.WallFunction == "F5")
+                                    worksheet.Cell(10, 17).Value = "✓";
+                                else if (rpt.WallFunction == "F6")
+                                    worksheet.Cell(11, 17).Value = "✓";
+                                else if (rpt.WallFunction == "F7")
+                                    worksheet.Cell(10, 24).Value = "✓";
+                                else if (rpt.WallFunction == "F8")
+                                    worksheet.Cell(11, 24).Value = "✓";
+                            }
+                            if (!string.IsNullOrEmpty(rpt.WallMember))
+                            {
+                                if (rpt.WallMember == "M1")
+                                    worksheet.Cell(15, 3).Value = "✓";
+                                else if (rpt.WallMember == "M2")
+                                    worksheet.Cell(16, 3).Value = "✓";
+                                else if (rpt.WallMember == "M3")
+                                    worksheet.Cell(17, 3).Value = "✓";
+                                else if (rpt.WallMember == "M4")
+                                    worksheet.Cell(18, 3).Value = "✓";
+                                else if (rpt.WallMember == "M5")
+                                    worksheet.Cell(19, 3).Value = "✓";
+                                else if (rpt.WallMember == "M6")
+                                    worksheet.Cell(20, 3).Value = "✓";
+                                else if (rpt.WallMember == "M7")
+                                    worksheet.Cell(21, 3).Value = "✓";
+                                else if (rpt.WallMember == "M8")
+                                    worksheet.Cell(22, 3).Value = "✓";
+
+                                else if (rpt.WallMember == "M9")
+                                    worksheet.Cell(15, 13).Value = "✓";
+                                else if (rpt.WallMember == "M10")
+                                    worksheet.Cell(16, 13).Value = "✓";
+                                else if (rpt.WallMember == "M11")
+                                    worksheet.Cell(17, 13).Value = "✓";
+                                else if (rpt.WallMember == "M12")
+                                    worksheet.Cell(18, 13).Value = "✓";
+                                else if (rpt.WallMember == "M13")
+                                    worksheet.Cell(19, 13).Value = "✓";
+                                else if (rpt.WallMember == "M14")
+                                    worksheet.Cell(20, 13).Value = "✓";
+                                else if (rpt.WallMember == "M15")
+                                    worksheet.Cell(21, 13).Value = "✓";
+                                else if (rpt.WallMember == "M16")
+                                    worksheet.Cell(22, 13).Value = "✓";
+
+                                else if (rpt.WallMember == "M17")
+                                    worksheet.Cell(15, 24).Value = "✓";
+                                else if (rpt.WallMember == "M18")
+                                    worksheet.Cell(16, 24).Value = "✓";
+                                else if (rpt.WallMember == "M19")
+                                    worksheet.Cell(17, 24).Value = "✓";
+                                else if (rpt.WallMember == "M20")
+                                    worksheet.Cell(18, 24).Value = "✓";
+                                else if (rpt.WallMember == "M21")
+                                    worksheet.Cell(19, 24).Value = "✓";
+                                else if (rpt.WallMember == "M22")
+                                    worksheet.Cell(20, 24).Value = "✓";
+                                else if (rpt.WallMember == "M23")
+                                    worksheet.Cell(21, 24).Value = "✓";
+                                else if (rpt.WallMember == "M24")
+                                    worksheet.Cell(22, 24).Value = "✓";
+
+                            }
+                            if (!string.IsNullOrEmpty(rpt.FacingType))
+                            {
+                                if (rpt.FacingType == "T1")
+                                    worksheet.Cell(26, 3).Value = "✓";
+                                else if (rpt.FacingType == "T2")
+                                    worksheet.Cell(27, 3).Value = "✓";
+                                else if (rpt.FacingType == "T3")
+                                    worksheet.Cell(28, 3).Value = "✓";
+                                else if (rpt.FacingType == "T4")
+                                    worksheet.Cell(29, 3).Value = "✓";
+                                else if (rpt.FacingType == "T5")
+                                    worksheet.Cell(30, 3).Value = "✓";
+
+                                else if (rpt.FacingType == "T6")
+                                    worksheet.Cell(26, 13).Value = "✓";
+                                else if (rpt.FacingType == "T7")
+                                    worksheet.Cell(27, 13).Value = "✓";
+                                else if (rpt.FacingType == "T8")
+                                    worksheet.Cell(28, 13).Value = "✓";
+                                else if (rpt.FacingType == "T9")
+                                    worksheet.Cell(29, 13).Value = "✓";
+                                else if (rpt.FacingType == "T10")
+                                    worksheet.Cell(30, 13).Value = "✓";
+
+                                else if (rpt.FacingType == "T11")
+                                    worksheet.Cell(26, 24).Value = "✓";
+                                else if (rpt.FacingType == "T12")
+                                    worksheet.Cell(27, 24).Value = "✓";
+                                else if (rpt.FacingType == "T13")
+                                    worksheet.Cell(28, 24).Value = "✓";
+                                else if (rpt.FacingType == "T14")
+                                    worksheet.Cell(29, 24).Value = "✓";
+                                else if (rpt.FacingType == "T15")
+                                    worksheet.Cell(30, 24).Value = "✓";
+                            }
+
+                            for (int i = 0; i < _rpt.Count; i++)
+                            {
+                                rpt = _rpt[i];
+                                int j = i == 0 ? i : i + 1;
+                                worksheet.Cell(34, 5 + j).Value = rpt.Year;
+                                worksheet.Cell(35, 5 + j).Value = rpt.Month;
+                                worksheet.Cell(36, 5 + j).Value = rpt.Day;
+
+                                worksheet.Cell(37, 5 + j).Value = rpt.DistressObserved.Split(',').Length >=1 ? rpt.DistressObserved.Split(',')[0] : "";
+                                worksheet.Cell(38, 5 + j).Value = rpt.DistressObserved.Split(',').Length == 2 ? rpt.DistressObserved.Split(',')[1] : "";
+                                worksheet.Cell(39, 5 + j).Value = rpt.DistressObserved.Split(',').Length == 3 ? rpt.DistressObserved.Split(',')[2] : "";
+                                
+                                worksheet.Cell(40, 5 + j).Value = rpt.Severity;
+                            }
+
+                            worksheet.Cell(65, 8).Value = rpt.ReportforYear;
+                            worksheet.Cell(65, 21).Value = rpt.RefernceNo;
+
+                            worksheet.Cell(66, 7).Value = rpt.RoadCode;
+                            worksheet.Cell(66, 21).Value = rpt.RoadName;
+
+                            worksheet.Cell(67, 8).Value = rpt.StructureCode;
+                            worksheet.Cell(67, 23).Value = rpt.RatingRecordNo;
+
+                            worksheet.Cell(73, 2).Value = rpt.PartB2ServiceProvider;
+                            worksheet.Cell(73, 19).Value = rpt.PartB2ServicePrvdrCons;
+
+                            worksheet.Cell(83, 1).Value = rpt.PartCGeneralComments;
+                            worksheet.Cell(83, 19).Value = rpt.PartCGeneralCommentsCons;
+
+                            worksheet.Cell(93, 1).Value = rpt.PartDFeedback;
+                            worksheet.Cell(93, 8).Value = rpt.PartDFeedbackCons;
+
+                            worksheet.Cell(107, 6).Value = rpt.InspectedByName;
+                            worksheet.Cell(108, 2).Value = rpt.InspectedByDesignation;
+                            worksheet.Cell(109, 2).Value = rpt.InspectedByDate;
+
+                            worksheet.Cell(107, 23).Value = rpt.AuditedByName;
+                            worksheet.Cell(108, 23).Value = rpt.AuditedByDesignation;
+                            worksheet.Cell(129, 23).Value = rpt.AuditedByDate;
+
+                            worksheet.Cell(110, 32).Value = rpt.RatingWallConditionRate;
+                            worksheet.Cell(111, 32).Value = rpt.HaveIssueFound;
+
+                            worksheet.Cell(116, 8).Value = rpt.ReportforYear;
+                            worksheet.Cell(116, 21).Value = rpt.RefernceNo;
+
+                            worksheet.Cell(117, 7).Value = rpt.RoadCode;
+                            worksheet.Cell(117, 21).Value = rpt.RoadName;
+
+                            worksheet.Cell(118, 8).Value = rpt.StructureCode;
+                            worksheet.Cell(118, 23).Value = rpt.RatingRecordNo;
+
+                            for (int index = 0; index < rpt.Pictures.Count; ++index)
+                            {
+                                if (File.Exists(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName))
+                                {
+                                    MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(basepath + "/" + rpt.Pictures[index].ImageUrl + "/" + rpt.Pictures[index].FileName));
+                                    switch (index)
                                     {
                                         case 0:
-                                            image.AddPicture(str).MoveTo(image.Cell(9, 4)).WithSize(360, 170);
-                                            image.Cell(17, 4).Value = pictures[i].Type;
-                                            break;
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(124, 2), new Point(45, 4)).WithSize(305, 150);
+                                            continue;
                                         case 1:
-                                            image.AddPicture(str).MoveTo(image.Cell(9, 15)).WithSize(360, 170);
-                                            image.Cell(17, 15).Value = pictures[i].Type;
-                                            if (!pictures[i].Type.Contains("P1"))
-                                            {
-                                                image.Range("O9:W9").Style.Border.TopBorder = XLBorderStyleValues.Thick;
-                                                image.Range("O9:O16").Style.Border.LeftBorder = XLBorderStyleValues.Thick;
-                                                image.Range("W9:W16").Style.Border.RightBorder = XLBorderStyleValues.Thick;
-                                                image.Range("O16:W16").Style.Border.BottomBorder = XLBorderStyleValues.Thick;
-                                            }
-                                            break;
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(124, 19), new Point(45, 4)).WithSize(300, 145);
+                                            continue;
                                         case 2:
-                                            image.AddPicture(str).MoveTo(image.Cell(20, 4)).WithSize(360, 170);
-                                            image.Cell(28, 4).Value = pictures[i].Type;
-                                            break;
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(135, 2), new Point(45, 6)).WithSize(305, 150);
+                                            continue;
                                         case 3:
-                                            image.AddPicture(str).MoveTo(image.Cell(20, 15)).WithSize(360, 170);
-                                            image.Cell(28, 15).Value = pictures[i].Type;
-                                            break;
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(135, 19), new Point(45, 4)).WithSize(300, 145);
+                                            continue;
                                         case 4:
-                                            image.AddPicture(str).MoveTo(image.Cell(31, 4)).WithSize(360, 170);
-                                            image.Cell(39, 4).Value = pictures[i].Type;
-                                            break;
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(146, 2), new Point(45, 6)).WithSize(305, 150);
+                                            continue;
                                         case 5:
-                                            image.AddPicture(str).MoveTo(image.Cell(31, 15)).WithSize(360, 170);
-                                            image.Cell(39, 15).Value = pictures[i].Type;
-                                            break;
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(146, 19), new Point(45, 4)).WithSize(300, 145);
+                                            continue;
+                                        case 6:
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 2), new Point(45, 6)).WithSize(305, 150);
+                                            continue;
+                                        case 7:
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 19), new Point(45, 4)).WithSize(300, 145);
+                                            continue;
+                                        //case 9:
+                                        //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 9), new Point(45, 6)).WithSize(347, 178);
+                                        //    continue;
+                                        //case 10:
+                                        //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 1), new Point(45, 4)).WithSize(347, 178);
+                                        //    continue;
+                                        //case 11:
+                                        //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(220, 9), new Point(45, 6)).WithSize(347, 178);
+                                        //    continue;
+                                        //case 12:
+                                        //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 1), new Point(45, 4)).WithSize(347, 178);
+                                        //    continue;
+                                        //case 13:
+                                        //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(232, 9), new Point(45, 6)).WithSize(347, 178);
+                                        //    continue;
+                                        //case 14:
+                                        //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 1), new Point(45, 4)).WithSize(347, 178);
+                                        //    continue;
+                                        //case 15:
+                                        //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 9), new Point(4, 6)).WithSize(347, 178);
+                                        //    continue;
+                                        default:
+                                            continue;
                                     }
                                 }
-
-                                switch (i)
-                                {
-                                    case 0:
-                                        image.Cell(17, 4).Value = pictures[i].Type;
-                                        break;
-                                    case 1:
-                                        image.Cell(17, 15).Value = pictures[i].Type;
-                                        break;
-                                    case 2:
-                                        image.Cell(28, 4).Value = pictures[i].Type;
-                                        break;
-                                    case 3:
-                                        image.Cell(28, 15).Value = pictures[i].Type;
-                                        break;
-                                    case 4:
-                                        image.Cell(39, 4).Value = pictures[i].Type;
-                                        break;
-                                    case 5:
-                                        image.Cell(39, 15).Value = pictures[i].Type;
-                                        break;
-                                }
                             }
-                            if (nextoadd > 0 || !IsFirst)
-                            {
 
-                                image.Worksheet.Name = $"sheet{sheetNo}";
-                                workbook.AddWorksheet(image);
-                                nextoadd++;
-                                sheetNo++;
-                            }
-                            IsFirst = false;
                         }
-                        int tobeskipped = 1 + index;
-                        for (int sheet = 2; sheet <= noofsheets; sheet++)
+                        using (var stream = new MemoryStream())
                         {
-                            using (var tempworkbook = new XLWorkbook(cachefile))
-                            {
-                                string sheetname = $"sheet{sheetNo}";
-                                IXLWorksheet copysheet = tempworkbook.Worksheet(2);
-                                copysheet.Worksheet.Name = sheetname;
-                                copysheet.Cell(4, 6).Value = rpt.ReportforYear;
-                                copysheet.Cell(5, 6).Value = rpt.AssetRefNO;
-                                copysheet.Cell(6, 6).Value = rpt.RoadCode;
-                                copysheet.Cell(7, 6).Value = rpt.RoadName;
-                                copysheet.Cell(4, 17).Value = rpt.RefernceNo;
-                                copysheet.Cell(5, 17).Value = index;
-                                copysheet.Cell(6, 17).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                                pictures = rpt.Pictures.Skip((tobeskipped - 1) * 6).Take(6).ToArray();
-                                for (int i = 0; i < pictures.Count(); i++)
-                                {
-                                    if (File.Exists($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}"))
-                                    {
-                                        byte[] buff = File.ReadAllBytes($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}");
-                                        System.IO.MemoryStream str = new System.IO.MemoryStream(buff);
-                                        switch (i)
-                                        {
-                                            case 0:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(9, 4)).WithSize(360, 170);
-                                                copysheet.Cell(17, 4).Value = pictures[i].Type;
-                                                break;
-                                            case 1:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(9, 15)).WithSize(360, 170);
-                                                copysheet.Cell(17, 15).Value = pictures[i].Type;
-
-                                                break;
-                                            case 2:
-
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(20, 4)).WithSize(360, 170);
-                                                copysheet.Cell(28, 4).Value = pictures[i].Type;
-                                                break;
-                                            case 3:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(20, 15)).WithSize(360, 170);
-                                                copysheet.Cell(28, 15).Value = pictures[i].Type;
-                                                break;
-                                            case 4:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(31, 4)).WithSize(360, 170);
-                                                copysheet.Cell(39, 4).Value = pictures[i].Type;
-                                                break;
-                                            case 5:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(31, 15)).WithSize(360, 170);
-                                                copysheet.Cell(39, 15).Value = pictures[i].Type;
-                                                break;
-                                        }
-                                    }
-
-                                    switch (i)
-                                    {
-                                        case 0:
-                                            copysheet.Cell(17, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 1:
-                                            copysheet.Cell(17, 15).Value = pictures[i].Type;
-                                            if (!pictures[i].Type.Contains("P1"))
-                                            {
-                                                copysheet.Range("O9:W9").Style.Border.TopBorder = XLBorderStyleValues.Thick;
-                                                copysheet.Range("O9:O16").Style.Border.LeftBorder = XLBorderStyleValues.Thick;
-                                                copysheet.Range("W9:W16").Style.Border.RightBorder = XLBorderStyleValues.Thick;
-                                                copysheet.Range("O16:W16").Style.Border.BottomBorder = XLBorderStyleValues.Thick;
-                                            }
-                                            break;
-                                        case 2:
-                                            copysheet.Cell(28, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 3:
-                                            copysheet.Cell(28, 15).Value = pictures[i].Type;
-                                            break;
-                                        case 4:
-                                            copysheet.Cell(39, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 5:
-                                            copysheet.Cell(39, 15).Value = pictures[i].Type;
-                                            break;
-                                    }
-                                }
-
-                                tobeskipped++;
-                                nextoadd++;
-                                workbook.AddWorksheet(copysheet);
-                                sheetNo++;
-                                if (nextoadd == 0)
-                                {
-                                    nextoadd++;
-                                }
-                            }
+                            workbook.SaveAs(stream);
+                            var content = stream.ToArray();
+                            System.IO.File.Delete(cachefile);
+                            return content;
                         }
-                    }
-
-                    if (worksheet != null)
-                    {
-                        var rpt = _rpt[0];
-                        worksheet.Cell(6, 3).Value = rpt.RefernceNo;
-                        worksheet.Cell(7, 3).Value = rpt.Division;
-                        worksheet.Cell(8, 3).Value = rpt.RMU;
-                        worksheet.Cell(9, 3).Value = rpt.FinishedRoadLevel;
-                        worksheet.Cell(10, 3).Value = rpt.CatchmentArea;
-                        worksheet.Cell(11, 3).Value = rpt.DesignFlow;
-                        worksheet.Cell(12, 3).Value = rpt.Precast;
-                        worksheet.Cell(13, 3).Value = rpt.BarrelNumber;
-                        worksheet.Cell(14, 3).Value = rpt.InletLevel;
-                        worksheet.Cell(15, 3).Value = rpt.OutletLevel;
-                        worksheet.Cell(6, 11).Value = rpt.RoadName;
-                        worksheet.Cell(7, 11).Value = rpt.RoadCode;
-                        worksheet.Cell(8, 11).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                        worksheet.Cell(10, 11).Value = rpt.CulverSkew;
-                        worksheet.Cell(11, 11).Value = rpt.CulvertLength;
-
-                        if (!string.IsNullOrEmpty(structureCode))
-                        {
-                            worksheet.Cell(9, 11).Value = structureCode;
-                            worksheet.Cell(9, 11).RichText.Substring(0, structureCode.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.StructureCode) && structureCode.IndexOf(" " + rpt.StructureCode + " ") > -1)
-                            {
-                                worksheet.Cell(9, 11).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Bold = true;
-                                worksheet.Cell(9, 11).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Strikethrough = false;
-                            }
-                        }
-
-                        if (!string.IsNullOrEmpty(culvertType))
-                        {
-                            worksheet.Cell(12, 11).Value = culvertType;
-                            worksheet.Cell(12, 11).RichText.Substring(0, culvertType.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.CulvertType) && culvertType.IndexOf(" " + rpt.CulvertType + " ") > -1)
-                            {
-                                worksheet.Cell(12, 11).RichText.Substring(culvertType.IndexOf(" " + rpt.CulvertType + " "), (" " + rpt.CulvertType + " ").Length).Bold = true;
-                                worksheet.Cell(12, 11).RichText.Substring(culvertType.IndexOf(" " + rpt.CulvertType + " "), (" " + rpt.CulvertType + " ").Length).Strikethrough = false;
-                            }
-                        }
-                        if (!string.IsNullOrEmpty(culvertMaterial))
-                        {
-                            worksheet.Cell(13, 11).Value = culvertMaterial;
-                            worksheet.Cell(13, 11).RichText.Substring(0, culvertMaterial.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.Culvertmaterial) && culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " ") > -1)
-                            {
-                                worksheet.Cell(13, 11).RichText.Substring(culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " "), (" " + rpt.Culvertmaterial + " ").Length).Bold = true;
-                                worksheet.Cell(13, 11).RichText.Substring(culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " "), (" " + rpt.Culvertmaterial + " ").Length).Strikethrough = false;
-                            }
-                        }
-
-                        if (!string.IsNullOrEmpty(inletStructure))
-                        {
-                            worksheet.Cell(14, 11).Value = inletStructure;
-                            worksheet.Cell(14, 11).RichText.Substring(0, inletStructure.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.InletStructure) && inletStructure.IndexOf(" " + rpt.InletStructure + " ") > -1)
-                            {
-                                worksheet.Cell(14, 11).RichText.Substring(inletStructure.IndexOf(" " + rpt.InletStructure + " "), (" " + rpt.InletStructure + " ").Length).Bold = true;
-                                worksheet.Cell(14, 11).RichText.Substring(inletStructure.IndexOf(" " + rpt.InletStructure + " "), (" " + rpt.InletStructure + " ").Length).Strikethrough = false;
-                            }
-                        }
-
-                        if (!string.IsNullOrEmpty(outletStructure))
-                        {
-                            worksheet.Cell(15, 11).Value = outletStructure;
-                            worksheet.Cell(15, 11).RichText.Substring(0, outletStructure.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.OutletStructure) && outletStructure.IndexOf(" " + rpt.OutletStructure + " ") > -1)
-                            {
-                                worksheet.Cell(15, 11).RichText.Substring(outletStructure.IndexOf(" " + rpt.OutletStructure + " "), (" " + rpt.OutletStructure + " ").Length).Bold = true;
-                                worksheet.Cell(15, 11).RichText.Substring(outletStructure.IndexOf(" " + rpt.OutletStructure + " "), (" " + rpt.OutletStructure + " ").Length).Strikethrough = false;
-                            }
-                        }
-
-                        worksheet.Cell(10, 15).Value = rpt.GPSEasting;
-                        worksheet.Cell(11, 15).Value = rpt.GPSNorthing;
-
-                        worksheet.Cell(18, 2).Value = rpt.ParkingPosition;
-                        worksheet.Cell(19, 2).Value = rpt.Accessiblity;
-                        worksheet.Cell(20, 2).Value = rpt.PotentialHazards;
-
-                        //int j = 0;
-                        //{
-                        //    rpt = _rpt[0];
-                        //    worksheet.Cell(18, 7 + j).Value = rpt.Year;
-                        //    worksheet.Cell(19, 7 + j).Value = rpt.Month;
-                        //    worksheet.Cell(20, 7 + j).Value = rpt.Day;
-
-                        //    worksheet.Cell(23, 7 + j).Value = rpt.CulvertDistress != null ? (rpt.CulvertDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(24, 7 + j).Value = rpt.CulvertSeverity != null ? (rpt.CulvertSeverity == -1 ? "/" : rpt.CulvertSeverity.ToString()) : null;
-                        //    worksheet.Cell(25, 7 + j).Value = rpt.WaterwayDistress != null ? (rpt.WaterwayDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(26, 7 + j).Value = rpt.WaterwaySeverity != null ? (rpt.WaterwaySeverity == -1 ? "/" : rpt.WaterwaySeverity.ToString()) : null;
-                        //    worksheet.Cell(27, 7 + j).Value = rpt.EmbankmentDistress != null ? (rpt.EmbankmentDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(28, 7 + j).Value = rpt.EmbankmentSeverity != null ? (rpt.EmbankmentSeverity == -1 ? "/" : rpt.EmbankmentSeverity.ToString()) : null;
-                        //    worksheet.Cell(29, 7 + j).Value = rpt.HeadwallInletDistress != null ? (rpt.HeadwallInletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(30, 7 + j).Value = rpt.HeadwallInletSeverity != null ? (rpt.HeadwallInletSeverity == -1 ? "/" : rpt.HeadwallInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(31, 7 + j).Value = rpt.WingwallInletDistress != null ? (rpt.WingwallInletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(32, 7 + j).Value = rpt.WingwalInletSeverity != null ? (rpt.WingwalInletSeverity == -1 ? "/" : rpt.WingwalInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(33, 7 + j).Value = rpt.ApronInletDistress != null ? (rpt.ApronInletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(34, 7 + j).Value = rpt.ApronInletSeverity != null ? (rpt.ApronInletSeverity == -1 ? "/" : rpt.ApronInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(35, 7 + j).Value = rpt.RiprapInletDistress != null ? (rpt.RiprapInletDistress == "-1" ? "/" : rpt.RiprapInletDistress) : null;
-                        //    worksheet.Cell(36, 7 + j).Value = rpt.RiprapInletSeverity != null ? (rpt.RiprapInletSeverity == -1 ? "/" : rpt.RiprapInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(37, 7 + j).Value = rpt.HeadwallOutletDistress != null ? (rpt.HeadwallOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(38, 7 + j).Value = rpt.HeadwallOutletSeverity != null ? (rpt.HeadwallOutletSeverity == -1 ? "/" : rpt.HeadwallOutletSeverity.ToString()) : null;
-                        //    worksheet.Cell(39, 7 + j).Value = rpt.WingwallOutletDistress != null ? (rpt.WingwallOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(40, 7 + j).Value = rpt.WingwallOutletSeverity != null ? (rpt.WingwallOutletSeverity == -1 ? "/" : rpt.WingwallOutletSeverity.ToString()) : null;
-                        //    worksheet.Cell(41, 7 + j).Value = rpt.ApronOutletDistress != null ? (rpt.ApronOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(42, 7 + j).Value = rpt.ApronOutletSeverity != null ? (rpt.ApronOutletSeverity == -1 ? "/" : rpt.ApronOutletSeverity.ToString()) : null;
-                        //    worksheet.Cell(43, 7 + j).Value = rpt.RiprapOutletDistress != null ? (rpt.RiprapOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(44, 7 + j).Value = rpt.RiprapOutletSeverity != null ? (rpt.RiprapOutletSeverity == -1 ? "/" : rpt.RiprapOutletSeverity.ToString()) : null;
-
-                        //    worksheet.Cell(45, 7 + j).Value = rpt.Barrel_1_Distress != null ? rpt.Barrel_1_Distress.Replace("-1", "/") : null;
-                        //    worksheet.Cell(46, 7 + j).Value = rpt.Barrel_1_Severity != null ? (rpt.Barrel_1_Severity == -1 ? "/" : rpt.Barrel_1_Severity.ToString()) : null;
-                        //    worksheet.Cell(47, 7 + j).Value = rpt.Barrel_2_Distress != null ? (rpt.Barrel_2_Distress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(48, 7 + j).Value = rpt.Barrel_2_Severity != null ? (rpt.Barrel_2_Severity == -1 ? "/" : rpt.Barrel_2_Severity.ToString()) : null;
-                        //    worksheet.Cell(49, 7 + j).Value = rpt.Barrel_3_Distress != null ? (rpt.Barrel_3_Distress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(50, 7 + j).Value = rpt.Barrel_3_Severity != null ? (rpt.Barrel_3_Severity == -1 ? "/" : rpt.Barrel_3_Severity.ToString()) : null;
-                        //    worksheet.Cell(51, 7 + j).Value = rpt.Barrel_4_Distress != null ? (rpt.Barrel_4_Distress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(52, 7 + j).Value = rpt.Barrel_4_Severity != null ? (rpt.Barrel_4_Severity == -1 ? "/" : rpt.Barrel_4_Severity.ToString()) : null;
-
-                        //    int furthercellincrement = rpt.BarrelList.Count * 2;
-
-                        //    if (rpt.BarrelList.Count > 0)
-                        //    {
-                        //        worksheet.Row(52).InsertRowsBelow(rpt.BarrelList.Count * 2);
-                        //        worksheet.Range(worksheet.Cell(46, 1), worksheet.Cell(52 + furthercellincrement, 2)).Merge();
-                        //        int d = 1;
-                        //        for (int i = 0; i < rpt.BarrelList.Count; i++)
-                        //        {
-                        //            worksheet.Range(worksheet.Cell(52 + (d), 3), worksheet.Cell(52 + (d), 4)).Merge();
-                        //            worksheet.Range(worksheet.Cell(52 + (d), 8), worksheet.Cell(52 + (d), 9)).Merge();
-                        //            worksheet.Range(worksheet.Cell(52 + (d + 1), 8), worksheet.Cell(52 + (d + 1), 9)).Merge();
-                        //            worksheet.Cell(52 + (d), 3).Value = rpt.BarrelList[i].Description;
-                        //            worksheet.Cell(52 + (d), 5).Style.Fill.SetBackgroundColor(XLColor.Gray);
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.FontSize = 10;
-                        //            worksheet.Cell(52 + (d), 3).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d), 3).Style.Font.Italic = false;
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.Italic = false;
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.FontColor = XLColor.White;
-                        //            worksheet.Cell(52 + (d), 5).Value = rpt.BarrelList[i].Code;
-                        //            worksheet.Cell(52 + (d), 6).Value = "DISTRESS";
-                        //            worksheet.Cell(52 + (d + 1), 6).Value = "SEVERITY";
-                        //            worksheet.Cell(52 + (d), 6).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d), 6).Style.Font.Italic = false;
-                        //            worksheet.Cell(52 + (d + 1), 6).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d + 1), 6).Style.Font.Italic = false;
-                        //            worksheet.Range(worksheet.Cell(52 + (d + 1), 3), worksheet.Cell(52 + (d + 1), 5)).Merge();
-                        //            worksheet.Cell(52 + (d + 1), 3).Value = "* for multi cells culvert";
-                        //            worksheet.Cell(52 + (d), 7 + j).Value = rpt.BarrelList[i].Distress != null ? (rpt.BarrelList[i].Distress.Replace("-1", "/")) : null;
-                        //            worksheet.Cell(52 + (d + 1), 7 + j).Value = rpt.BarrelList[i].Severity != null ? (rpt.BarrelList[i].Severity == -1 ? "/" : rpt.BarrelList[i].Severity.ToString()) : null;
-                        //            d += 2;
-                        //        }
-                        //    }
-
-
-
-
-                        //    worksheet.Cell(53 + furthercellincrement, 7 + j).Value = rpt.CulvertApproachDistress != null ? (rpt.CulvertApproachDistress.ToString() == "-1" ? "/" : rpt.CulvertApproachDistress) : null;
-                        //    worksheet.Cell(54 + furthercellincrement, 7 + j).Value = rpt.CulvertApproachSeverity != null ? (rpt.CulvertApproachSeverity.ToString() == "-1" ? "/" : rpt.CulvertApproachSeverity.ToString()) : null;
-
-
-                        //    worksheet.Cell(74 + furthercellincrement, 3).Value = rpt.ReportforYear;
-                        //    worksheet.Cell(75 + furthercellincrement, 3).Value = rpt.AssetRefNO;
-                        //    worksheet.Cell(76 + furthercellincrement, 3).Value = rpt.RoadCode;
-                        //    worksheet.Cell(77 + furthercellincrement, 3).Value = rpt.RoadName;
-
-                        //    worksheet.Cell(74 + furthercellincrement, 13).Value = rpt.RefernceNo;
-                        //    // worksheet.Cell(75 + furthercellincrement, 13).Value = rpt.RatingRecordNo;
-                        //    worksheet.Cell(76 + furthercellincrement, 13).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                        //    worksheet.Cell(87 + furthercellincrement, 1).Value = rpt.PartB2ServiceProvider;
-                        //    worksheet.Cell(87 + furthercellincrement, 9).Value = rpt.PartB2ServicePrvdrCons;
-                        //    worksheet.Cell(100 + furthercellincrement, 1).Value = rpt.PartCGeneralComments;
-                        //    worksheet.Cell(100 + furthercellincrement, 9).Value = rpt.PartCGeneralCommentsCons;
-                        //    worksheet.Cell(113 + furthercellincrement, 1).Value = rpt.PartDFeedback;
-                        //    worksheet.Cell(113 + furthercellincrement, 9).Value = rpt.PartDFeedbackCons;
-
-
-                        //    worksheet.Cell(129 + furthercellincrement, 2).Value = rpt.InspectedByName;
-                        //    worksheet.Cell(130 + furthercellincrement, 2).Value = rpt.InspectedByDesignation;
-                        //    worksheet.Cell(131 + furthercellincrement, 2).Value = rpt.InspectedByDate;
-
-                        //    worksheet.Cell(129 + furthercellincrement, 12).Value = rpt.AuditedByName;
-                        //    worksheet.Cell(130 + furthercellincrement, 12).Value = rpt.AuditedByDesignation;
-                        //    worksheet.Cell(131 + furthercellincrement, 12).Value = rpt.AuditedByDate;
-
-                        //    worksheet.Cell(132 + furthercellincrement, 16).Value = rpt.CulverConditionRate;
-                        //    worksheet.Cell(133 + furthercellincrement, 16).Value = rpt.HaveIssueFound;
-                        //}
-
-                    }
-                    using (var stream = new MemoryStream())
-                    {
-                        workbook.SaveAs(stream);
-                        var content = stream.ToArray();
-                        System.IO.File.Delete(cachefile);
-                        return content;
                     }
                 }
             }
@@ -600,11 +519,6 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
 
             }
-        }
-
-        public async Task<IEnumerable<SelectListItem>> GetCVIds(DTO.RequestBO.AssetDDLRequestDTO request)
-        {
-            return await _repo.GetCVId(request);
         }
     }
 }

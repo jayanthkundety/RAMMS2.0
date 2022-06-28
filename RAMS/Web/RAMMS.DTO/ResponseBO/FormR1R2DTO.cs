@@ -9,7 +9,8 @@ namespace RAMMS.DTO.ResponseBO
     public class FormR1DTO
     {
         public int PkRefNo { get; set; }
-        public string ContNo { get; set; }
+        public string RefNo { get; set; }
+        public int? AidPkRefNo { get; set; }
         public string AssetId { get; set; }
         public string DivCode { get; set; }
         public string RmuCode { get; set; }
@@ -27,10 +28,22 @@ namespace RAMMS.DTO.ResponseBO
         public string WallMember { get; set; }
         public string FacingType { get; set; }
         public int? RecordNo { get; set; }
-        public string Observed1 { get; set; }
-        public string Observed2 { get; set; }
-        public string Observed3 { get; set; }
+        public string DistressObserved1 { get; set; }
+        public string DistressObserved2 { get; set; }
+        public string DistressObserved3 { get; set; }
         public int? Severity { get; set; }
+        public int? InspectedBy { get; set; }
+        public string InspectedName { get; set; }
+        public string InspectedDesig { get; set; }
+        public DateTime? InspectedDt { get; set; }
+        public bool? InspectedSign { get; set; }
+        public int? CondRating { get; set; }
+        public bool? IssuesFound { get; set; }
+        public int? AuditedBy { get; set; }
+        public string AuditedName { get; set; }
+        public string AuditedDesig { get; set; }
+        public DateTime? AuditedDt { get; set; }
+        public bool? AuditedSign { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }
@@ -39,6 +52,8 @@ namespace RAMMS.DTO.ResponseBO
         public bool ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
+
+        public FormR2DTO FormR2 { get; set; }
     }
 
     public class FormR2DTO
@@ -51,16 +66,6 @@ namespace RAMMS.DTO.ResponseBO
         public string GeneralEc { get; set; }
         public string FeedbackSp { get; set; }
         public string FeedbackEc { get; set; }
-        public string SPName { get; set; }
-        public string SPDesignation { get; set; }
-        public DateTime? SPInspDate { get; set; }
-        public string InspectedBy { get; set; }
-        public string InspectedBySign { get; set; }
-        public string ECName { get; set; }
-        public string ECDesignation { get; set; }
-        public DateTime? ECInspDate { get; set; }
-        public int? Rating { get; set; }
-        public bool? IssueFound { get; set; }
         public int? ModBy { get; set; }
         public DateTime? ModDt { get; set; }
         public int? CrBy { get; set; }

@@ -7,6 +7,7 @@ namespace RAMMS.Domain.Models
     {
         public int FriPkRefNo { get; set; }
         public int? FriFr1hPkRefNo { get; set; }
+        public string FriImgRefId { get; set; }
         public string FriImageTypeCode { get; set; }
         public int? FriImageSrno { get; set; }
         public string FriImageFilenameSys { get; set; }
@@ -18,7 +19,5 @@ namespace RAMMS.Domain.Models
         public DateTime? FriCrDt { get; set; }
         public bool FriSubmitSts { get; set; }
         public bool FriActiveYn { get; set; }
-
-        public virtual RmFormR1Hdr FgiFg1hPkRefNoNavigation { get; set; }
     }
 }

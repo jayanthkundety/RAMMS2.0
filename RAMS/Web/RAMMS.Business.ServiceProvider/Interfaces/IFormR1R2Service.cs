@@ -18,13 +18,11 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData);
         Task<FormR1DTO> Save(FormR1DTO frmR1R2, bool updateSubmit);
         Task<List<FormR1R2PhotoTypeDTO>> GetExitingPhotoType(int headerId);
-        Task<RmFormCvInsImage> AddImage(FormRImagesDTO imageDTO);
-        Task<(IList<RmFormCvInsImage>, int)> AddMultiImage(IList<FormRImagesDTO> imagesDTO);
+        Task<RmFormRImages> AddImage(FormRImagesDTO imageDTO);
+        Task<(IList<RmFormRImages>, int)> AddMultiImage(IList<FormRImagesDTO> imagesDTO);
         List<FormRImagesDTO> ImageList(int headerId);
         Task<int> DeleteImage(int headerId, int imgId);
         int Delete(int id);
-        List<FormC1C2Rpt> GetReportData(int headerid);
         Byte[] FormDownload(string formname, int id, string basepath, string filepath);
-        Task<IEnumerable<SelectListItem>> GetCVIds(AssetDDLRequestDTO request);
     }
 }

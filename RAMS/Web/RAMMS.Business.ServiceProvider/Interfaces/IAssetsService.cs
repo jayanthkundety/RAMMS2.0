@@ -45,5 +45,6 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<List<DTO.ResponseBO.AssetId>> ListOfCulvertAssestIds();
 
         Task<List<DTO.ResponseBO.AssetId>> ListOfGantorySignAssestIds();
+        Task<List<DTO.ResponseBO.AssetId>> ListOfReatiningWallAssestIds();
     }
 }

@@ -138,9 +138,10 @@ namespace RAMMS.Web.UI.Controllers
         }
         private IActionResult ViewRequest(int id)
         {
-            LoadLookupService("Year", "User", "Photo Type~CV");
+            LoadLookupService("Year", "User", "Photo Type~RWG");
+            ViewData["DistressObserved1"] = _ddLookupService.GetDdDistressDetails().Result;
             ViewBag.Dis_Severity = LookupService.GetDdlLookupByCode("Form C1C2");
-            FormR1DTO frmR1R2 = null;
+            FormR1DTO frmR1R2 = new FormR1DTO();
             if (id > 0)
             {
                 ViewBag.IsAdd = false;
@@ -150,7 +151,7 @@ namespace RAMMS.Web.UI.Controllers
             else
             {
                 LoadLookupService("RMU", "Section Code", "Division", "RD_Code");
-                ViewData["AssetIds"] = _AssetService.ListOfCulvertAssestIds().Result;
+                ViewData["AssetIds"] = _AssetService.ListOfReatiningWallAssestIds().Result;
             }
 
             return View("~/Views/FormR1R2/_AddFormR1R2.cshtml", frmR1R2);
@@ -251,65 +252,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             var content1 = _formR1R2Service.FormDownload("FormR1R2", id, _webHostEnvironment.WebRootPath, _webHostEnvironment.WebRootPath + "/Templates/FormR1R2.xlsx");
             string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            return File(content1, contentType1, "FormC1C2" + ".xlsx");
-        }
-
-
-        [HttpPost] ///Tab
-        public async Task<int> ImageR1R2Tab(IFormCollection FormFile, int headerId, string InspRefNum, string PhotoType)
-        {
-            IFormCollection files = Request.ReadFormAsync().Result;
-            if (files != null && files.Count > 0)
-            {
-                List<FormRImagesDTO> lstImages = new List<FormRImagesDTO>();
-                var objExistsPhotoType = _formR1R2Service.GetExitingPhotoType(headerId).Result;
-                if (objExistsPhotoType == null) { objExistsPhotoType = new List<FormR1R2PhotoTypeDTO>(); }
-                InspRefNum = Regex.Replace(InspRefNum, @"[^0-9a-zA-Z]+", "");
-                string wwwPath = this._webHostEnvironment.WebRootPath;
-
-                foreach (var file in files.Files)
-                {
-                    var objSNo = objExistsPhotoType.Where(x => x.Type == PhotoType).FirstOrDefault();
-                    if (objSNo == null) { objSNo = new FormR1R2PhotoTypeDTO() { SNO = 1, Type = PhotoType }; objExistsPhotoType.Add(objSNo); }
-                    else { objSNo.SNO = objSNo.SNO + 1; }
-                    IFormFile postedFile = file;
-                    string photoType = Regex.Replace(PhotoType, @"[^a-zA-Z]", "");
-                    string strFileUploadDir = Path.Combine("Form C1C2", InspRefNum, photoType);
-                    string strSaveDir = Path.Combine(wwwPath, "Uploads", strFileUploadDir);
-                    string strSysFileName = InspRefNum + "_" + photoType + "_" + objSNo.SNO.ToString("000");
-                    string strUploadFileName = objSNo.SNO.ToString() + "_" + photoType + "_" + postedFile.FileName;
-                    if (!Directory.Exists(strSaveDir)) { Directory.CreateDirectory(strSaveDir); }
-                    using (FileStream stream = new FileStream(Path.Combine(strSaveDir, strUploadFileName), FileMode.Create))
-                    {
-                        await postedFile.CopyToAsync(stream);
-                    }
-                    lstImages.Add(new FormRImagesDTO()
-                    {
-                        ActiveYn = true,
-                        CrBy = _security.UserID,
-                        ModBy = _security.UserID,
-                        CrDt = DateTime.UtcNow,
-                        ModDt = DateTime.UtcNow,
-                        FR1hPkRefNo = headerId,
-                        ImageFilenameSys = strSysFileName,
-                        ImageFilenameUpload = strUploadFileName,
-                        ImageSrno = objSNo.SNO,
-                        ImageTypeCode = PhotoType,
-                        ImageUserFilePath = strFileUploadDir,
-                        SubmitSts = true
-                    });
-
-                }
-                if (lstImages.Count > 0)
-                {
-                    await _formR1R2Service.AddMultiImage(lstImages);
-                }
-            }
-            else
-            {
-                return -1;
-            }
-            return 1;
+            return File(content1, contentType1, "FormR1R2" + ".xlsx");
         }
     }
 }

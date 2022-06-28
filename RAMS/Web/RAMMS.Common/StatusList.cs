@@ -171,5 +171,11 @@ namespace RAMMS.Common
         public const string FormG1G2Approved = "Approved";
         public const string FormG1G2Verified = "Verified";
 
+        public const string FormR1R2Saved = "Saved";
+        public const string FormR1R2Submitted = "Submitted";
+        public const string FormR1R2Rejected = "Rejected";
+        public const string FormR1R2Approved = "Approved";
+        public const string FormR1R2Verified = "Verified";
+
     }
 }

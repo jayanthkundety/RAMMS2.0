@@ -451,5 +451,10 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             return await _repoUnit.AllAssetRepository.ListOfGantorySignAssestIds();
         }
+
+        public async Task<List<DTO.ResponseBO.AssetId>> ListOfReatiningWallAssestIds()
+        {
+            return await _repoUnit.AllAssetRepository.ListOfReatiningWallAssestIds();
+        }
     }
 }
