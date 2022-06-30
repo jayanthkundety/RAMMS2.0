@@ -8,12 +8,11 @@ namespace RAMMS.Domain.Models
         public RmFormR1Hdr()
         {
             RmFormR2Hdr = new HashSet<RmFormR2Hdr>();
-            RmFormRImages = new HashSet<RmFormRImages>();
         }
 
         public int Fr1hPkRefNo { get; set; }
         public string Fr1hRefNo { get; set; }
-        public int? Fr1hAiPkRefNo { get; set; }
+        public int? Fr1hAidPkRefNo { get; set; }
         public string Fr1hAssetId { get; set; }
         public string Fr1hAiDivCode { get; set; }
         public string Fr1hAiRmuCode { get; set; }
@@ -57,6 +56,5 @@ namespace RAMMS.Domain.Models
         public string Fr1hAuditLog { get; set; }
 
         public virtual ICollection<RmFormR2Hdr> RmFormR2Hdr { get; set; }
-        public virtual ICollection<RmFormRImages> RmFormRImages { get; set; }
     }
 }

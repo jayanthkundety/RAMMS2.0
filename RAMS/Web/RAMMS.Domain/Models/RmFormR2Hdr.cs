@@ -13,16 +13,6 @@ namespace RAMMS.Domain.Models
         public string Fr2hGeneralEc { get; set; }
         public string Fr2hFeedbackSp { get; set; }
         public string Fr2hFeedbackEc { get; set; }
-        public string Fr2hSpName { get; set; }
-        public string Fr2hSpDesignation { get; set; }
-        public DateTime? Fr2hSpInspDate { get; set; }
-        public string Fr2hInspectedBy { get; set; }
-        public string Fr2hInspectedBySign { get; set; }
-        public string Fr2hEcName { get; set; }
-        public string Fr2hEcDesignation { get; set; }
-        public DateTime? Fr2hEcInspDate { get; set; }
-        public int? Fr2hRating { get; set; }
-        public bool? Fr2hIssuesFound { get; set; }
         public int? Fr2hModBy { get; set; }
         public DateTime? Fr2hModDt { get; set; }
         public int? Fr2hCrBy { get; set; }
