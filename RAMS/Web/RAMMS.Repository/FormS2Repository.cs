@@ -208,6 +208,8 @@ namespace RAMMS.Repository
                           let gagruser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridAgrd.HasValue ? x.FsiihUseridAgrd.Value : 0))
                           let gpuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridPrioritised.HasValue ? x.FsiihUseridPrioritised.Value : 0))
                           let gsubuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridSub.HasValue ? x.FsiihUseridSub.Value : 0))
+                          
+
 
                           where x.FsiihPkRefNo == headerId
                           select new FORMS2HeaderRpt
@@ -265,6 +267,21 @@ namespace RAMMS.Repository
                               join c in _context.RmWeekLookup on cal.FsiiqdClkPkRefNo equals c.ClkPkRefNo
                               where cal.FsiiqdFsiidPkRefNo == q.DetailId
                               select c.ClkWeekNo.Value).ToArray();
+
+
+                    // rmFormS2DaySchedules.Where(s => s.FsiidsFsiiqdClkPkRefNo == days.FsiidsFsiiqdClkPkRefNo && s.FsiidsFsiiqdPkRefNo == days.FsiidsFsiiqdPkRefNo  && s.FsiidsFsiidPkRefNo == detailId)
+                    // .Select(s => @"""" + DateTime.Parse(s.FsiidsScheduledDt.ToString()).ToString("yyyy-MM-dd") + @"""").ToList();
+
+                    q.daySchedules = (from day in _context.RmFormS2DaySchedule
+                                      join c in _context.RmWeekLookup on day.FsiidsFsiiqdClkPkRefNo equals c.ClkPkRefNo
+                                      where day.FsiidsFsiidPkRefNo == q.DetailId
+                                      select new FORMS2DaySchedule
+                                      {
+                                          weekno = c.ClkWeekNo.Value ,
+                                          dateTime = day.FsiidsScheduledDt,
+                                          Day = ((int)Convert.ToDateTime(day.FsiidsScheduledDt).DayOfWeek)
+                                      }).ToList() ;
+
                 }
             }
             return rpt;
