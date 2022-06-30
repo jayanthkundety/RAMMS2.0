@@ -91,12 +91,12 @@
                                     </div>
                                     <div class="form-group col-md-3" finddetailhide="">
                                         @Html.Label("RMU", "RMU")
-                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "selRMU", @class = "form-control", @onchange = "frmR1R2.Search.RmuChange(this);", @rmuCode = "rmuCode" })
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "selRMU", @class = "form-control validate {req,RMU}", @onchange = "frmR1R2.Search.RmuChange(this);", @rmuCode = "rmuCode" })
 
                                     </div>
                                     <div class="form-group col-md-3" finddetailhide="">
                                         @Html.Label("Section Code", "Section Code")
-                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "selSectionCode", "Select Section Code", new { @Id = "selSectionCode", @class = "form-control", @onchange = "frmR1R2.Search.SecCodeChange(this,true);", @sectionCode = "sectionCode" })
+                                        @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "selSectionCode", "Select Section Code", new { @Id = "selSectionCode", @class = "form-control validate {req,Section Code}", @onchange = "frmR1R2.Search.SecCodeChange(this,true);", @sectionCode = "sectionCode" })
 
                                     </div>
                                     <div class="form-group col-md-3" finddetailhide="">
@@ -118,7 +118,7 @@
                                     @if (ViewBag.IsAdd)
                                     {
                                         List<RAMMS.DTO.ResponseBO.AssetId> lstIds = (List<RAMMS.DTO.ResponseBO.AssetId>)ViewData["AssetIds"];
-                                        <select name="AidPkRefNo" id="selAssetID" class="form-control validate {req,Asset ID}" onchange="frmR1R2.AssetIDChange(this);">
+                                        <select name="AidPkRefNo" id="selAssetID" class="form-control" onchange="frmR1R2.AssetIDChange(this);">
                                             <option value="">Select Asset ID</option>
                                             @foreach (RAMMS.DTO.ResponseBO.AssetId aid in lstIds)
                                             {
@@ -133,7 +133,7 @@
                                     @Html.Label("Year of Inspection (YYYY)", "Year of Inspection (YYYY)")
                                     @if (ViewBag.IsAdd)
                                     {
-                                        @Html.DropDownList("YearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formR1R2InsYear", @class = "form-control validate {req,Year}", @onchange = "frmR1R2.InsYearChange(this);" })
+                                        @Html.DropDownList("YearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formR1R2InsYear", @class = "form-control", @onchange = "frmR1R2.InsYearChange(this);" })
                                     }
                                     else
                                     {
@@ -287,7 +287,7 @@
                                                                         <div class="row">
                                                                             <div class="form-group col-lg-3">
                                                                                 <label for="Wall_Function">Wall Function</label>
-                                                                                <select name="WallFunction" class="form-control  svalidate {req,Wall Function}">
+                                                                                <select name="WallFunction" class="form-control">
                                                                                     <option value="">Select</option>
                                                                                     <option value="F1">F1 - Fill Wall</option>
                                                                                     <option value="F2">F2 - Bridge Wall</option>
@@ -326,7 +326,7 @@
                                                                         <div class="row">
                                                                             <div class="form-group col-lg-3">
                                                                                 <label for="Wall_Member">Wall Member</label>
-                                                                                <select name="WallMember" class="form-control  svalidate {req,Wall Member}">
+                                                                                <select name="WallMember" class="form-control">
                                                                                     <option value="">Select</option>
                                                                                     <option value="M1">M1 - Anchor, Tieback H-Pile</option>
                                                                                     <option value="M2">M2 - Anchor, Micropile</option>
@@ -381,7 +381,7 @@
                                                                         <div class="row">
                                                                             <div class="form-group col-lg-3">
                                                                                 <label for="Facing_Type">Facting Type</label>
-                                                                                <select name="FacingType" class="form-control  svalidate {req,Facing Type}">
+                                                                                <select name="FacingType" class="form-control">
                                                                                     <option value="">Select</option>
                                                                                     <option value="T1">T1 - Brick Veneer</option>
                                                                                     <option value="T2">T2 - Cemetitous Overlay</option>
@@ -426,7 +426,7 @@
                                                                         <div class="row">
                                                                             <div class="form-group col-lg-3">
                                                                                 @Html.Label("Date", "Date")
-                                                                                <input id="dtInspection" name="DtOfInsp" class="form-control svalidate {req,Rating Record Date}" type="date" value="" />
+                                                                                <input id="dtInspection" name="DtOfInsp" class="form-control" type="date" value="" />
 
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
@@ -771,7 +771,7 @@
                                         <div userIdGroup>
                                             <div class="form-group col-lg-3">
                                                 @Html.Label("User ID", "User ID")
-                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "InspectedBy", "Select Users", new { @Id = "formR1R2InspectedBy", @class = "form-control ssvalidate {req,Inspected By User Id}", @useridChange = "", @disabled = "disabled" })
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "InspectedBy", "Select Users", new { @Id = "formR1R2InspectedBy", @class = "form-control", @useridChange = "", @disabled = "disabled" })
                                             </div>
                                             <div class="form-group col-lg-3">
                                                 @Html.Label("Name", "Name")
@@ -790,11 +790,11 @@
                                                     Sign
                                                 </label>
                                                 <div class="clear-b mt-2">
-                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox" disabled="disabled">
+                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-4 float-left">
-                                                <label for="Overall_Condition_Rating">Gantry Sign Condition Rating</label>
+                                                <label for="Overall_Condition_Rating">Overall Condition Rating</label>
                                                 <select name="CondRating" class="form-control validate {req,Overall Condition Rating}">
                                                     <option value="">Select</option>
                                                     @for (int i = 1; i <= 3; i++)
@@ -826,7 +826,7 @@
 
                                         <div class="form-group col-lg-3">
                                             @Html.Label("User ID", "User ID")
-                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "AuditedBy", "Select Users", new { @Id = "formR1R2AuditedBy", @class = "form-control ssvalidate {req,Audited By User Id}", @useridChange = "", @disabled = "disabled" })
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "AuditedBy", "Select Users", new { @Id = "formR1R2AuditedBy", @class = "form-control", @useridChange = "", @disabled = "disabled" })
 
                                         </div>
                                         <div class="form-group col-lg-3">
@@ -847,14 +847,25 @@
 
                                             </label>
                                             <div class="clear-b mt-2">
-                                                <input class="{required, Requested By Signature}" id="AuditedSign" name="AuditedSign" type="checkbox" disabled="disabled">
+                                                <input class="{required, Requested By Signature}" id="AuditedSign" name="AuditedSign" type="checkbox">
                                             </div>
                                         </div>
                                         <input type="hidden" id="txtPhotoValidate" value="" />
                                     </div>
                                 </div>
                             </div>
-                            @*sakthi*@
+                            @{
+                                if (Model != null)
+                                {
+                                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                                    {
+                                        Form = "FormR1R2",
+                                        RefId = Model.PkRefNo,
+                                        Stage = Model.Status
+                                    });
+
+                                }
+                            }
                         </div>
                     </div>
                 </div>

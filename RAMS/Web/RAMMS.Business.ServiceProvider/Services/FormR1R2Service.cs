@@ -76,7 +76,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         {
             if (form.Fr1hPkRefNo > 0)
             {
-                var existsObj = _repoUnit.FormG1Repository._context.RmFormR1Hdr.Where(x => x.Fr1hPkRefNo == form.Fr1hPkRefNo).Select(x => new { Status = x.Fr1hStatus, Log = x.Fr1hAuditLog }).FirstOrDefault();
+                var existsObj = _repoUnit.FormR1Repository._context.RmFormR1Hdr.Where(x => x.Fr1hPkRefNo == form.Fr1hPkRefNo).Select(x => new { Status = x.Fr1hStatus, Log = x.Fr1hAuditLog }).FirstOrDefault();
                 if (existsObj != null)
                 {
                     form.Fr1hAuditLog = existsObj.Log;
@@ -97,15 +97,15 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     RmNotCrBy = _security.UserName,
                     RmNotGroup = GroupNames.OperationsExecutive,
-                    RmNotMessage = "Executed By:"+ form.Fr1hInspectedName + " - Form G1 (" + form.Fr1hPkRefNo + ")",//doubt
+                    RmNotMessage = "Executed By:"+ form.Fr1hInspectedName + " - Form R1 (" + form.Fr1hPkRefNo + ")",//doubt
                     RmNotOn = DateTime.Now,
-                    RmNotUrl = "/FormG1G2/Edit/" + form.Fr1hPkRefNo.ToString() + "?view=1",
+                    RmNotUrl = "/FormR1R2/Edit/" + form.Fr1hPkRefNo.ToString() + "?view=1",
                     RmNotUserId = "",
                     RmNotViewed = ""
                 }, true);
             }
             else if (string.IsNullOrEmpty(form.Fr1hStatus) || form.Fr1hStatus == "Initialize")
-                form.Fr1hStatus = Common.StatusList.FormG1G2Saved;
+                form.Fr1hStatus = Common.StatusList.FormR1R2Saved;
 
             return form;
         }
@@ -150,7 +150,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                 frmR1R2.GpsNorthing = (decimal?)asset.GpsNorthing;
 
                 frmR1R2.Status = "Initialize";
-                
+
+                frmR1R2.InspectedBy = _security.UserID;
+                frmR1R2.InspectedName = _security.UserName;
+                frmR1R2.InspectedDt = DateTime.Today;
                 frmR1R2.CrBy = frmR1R2.ModBy = createdBy;
                 frmR1R2.CrDt = frmR1R2.ModDt = DateTime.UtcNow;
 
@@ -390,10 +393,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                                 worksheet.Cell(35, 5 + j).Value = rpt.Month;
                                 worksheet.Cell(36, 5 + j).Value = rpt.Day;
 
-                                worksheet.Cell(37, 5 + j).Value = rpt.DistressObserved.Split(',').Length >=1 ? rpt.DistressObserved.Split(',')[0] : "";
-                                worksheet.Cell(38, 5 + j).Value = rpt.DistressObserved.Split(',').Length == 2 ? rpt.DistressObserved.Split(',')[1] : "";
-                                worksheet.Cell(39, 5 + j).Value = rpt.DistressObserved.Split(',').Length == 3 ? rpt.DistressObserved.Split(',')[2] : "";
-                                
+                                if (rpt.DistressObserved != null)
+                                {
+                                    worksheet.Cell(37, 5 + j).Value = rpt.DistressObserved.Split(',').Length >= 1 ? rpt.DistressObserved.Split(',')[0] : "";
+                                    worksheet.Cell(38, 5 + j).Value = rpt.DistressObserved.Split(',').Length >= 2 ? rpt.DistressObserved.Split(',')[1] : "";
+                                    worksheet.Cell(39, 5 + j).Value = rpt.DistressObserved.Split(',').Length == 3 ? rpt.DistressObserved.Split(',')[2] : "";
+                                }
                                 worksheet.Cell(40, 5 + j).Value = rpt.Severity;
                             }
 

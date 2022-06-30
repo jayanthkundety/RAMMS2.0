@@ -14,7 +14,6 @@
             $("#AiAssetId").val($("#selAssetID option:selected").text());
             GetResponseValue("FindDetails", "FormR1R2", FormValueCollection("#divFindDetailsFR1R2"), function (data) {
                 if (data) {
-                    //debugger;
                     $("[finddetailhide]").hide();
                     $("#selAssetID,#formR1R2InsYear").prop("disabled", true).trigger("change").trigger("chosen:updated");
                     if (data.SubmitSts) {
@@ -23,6 +22,10 @@
                     tis.HeaderData = data;
 
                     tis.PageInit();
+
+                    $('#formR1R2InspectedBy').trigger('chosen:updated');
+                    $("#formR1R2InspectedBy").trigger("change");
+                    $("#InspectedSign").prop("checked", true);
                 }
             }, "Finding");
         }
@@ -246,7 +249,7 @@
             var actionSection = "<div class='btn-group dropright' rowidx='" + meta.row + "'><button type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button>";
             actionSection += "<div class='dropdown-menu'>";//dorpdown menu start
 
-            if (data.Status != "Submitted" && tblFR1R2HGrid.Base.IsModify) {
+            if (data.ProcessStatus != "Approved" && tblFR1R2HGrid.Base.IsModify) {
                 actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmR1R2.HeaderGrid.ActionClick(this);'>";
                 actionSection += "<span class='edit-icon'></span> Edit </button>";
             }
