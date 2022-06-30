@@ -94,7 +94,7 @@ namespace RAMMS.Repository
 
         public async Task<List<FormG1G2PhotoTypeDTO>> GetExitingPhotoType(int headerId)
         {
-            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
+            return await _context.RmFormGImages.Where(x => x.FgiFg1hPkRefNo == headerId && x.FgiActiveYn == true).GroupBy(x => x.FgiImageTypeCode).Select(x => new FormG1G2PhotoTypeDTO()
             {
                 SNO = x.Max(y => y.FgiImageSrno.Value),
                 Type = x.Key
@@ -205,25 +205,25 @@ namespace RAMMS.Repository
                             }
                             break;
                         case "chFromKM":
-                            string strM = Utility.ToString(searchData.filter["chFromM"]);
+                            string strM = Utility.ToString(searchData.filter["chFromKM"]);
                             decimal flKm = Utility.ToDecimal(strVal + (strM != "" ? "." + strM : ""));
                             query = query.Where(x => x.LocationCH >= flKm);
                             break;
                         case "chFromM":
-                            string strKm = Utility.ToString(searchData.filter["chFromKM"]);
+                            string strKm = Utility.ToString(searchData.filter["chFromM"]);
                             if (strKm == "")
                             {
                                 decimal flM = Utility.ToDecimal("0." + strVal);
                                 query = query.Where(x => x.LocationCH >= flM);
                             }
                             break;
-                        case "chToKm":
-                            string strTM = Utility.ToString(searchData.filter["chToM"]);
+                        case "chToKM":
+                            string strTM = Utility.ToString(searchData.filter["chToKM"]);
                             decimal flTKm = Utility.ToDecimal(strVal + (strTM != "" ? "." + strTM : ""));
                             query = query.Where(x => x.LocationCH <= flTKm);
                             break;
                         case "chToM":
-                            string strTKm = Utility.ToString(searchData.filter["chToKm"]);
+                            string strTKm = Utility.ToString(searchData.filter["chToM"]);
                             if (strTKm == "")
                             {
                                 decimal flTM = Utility.ToDecimal("0." + strVal);

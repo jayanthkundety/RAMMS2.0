@@ -3,41 +3,33 @@
 @using RAMMS.Web.UI.Models;
 @using RAMMS.Business.ServiceProvider;
 
-
 @{
-    ViewBag.TabTitle = "Form G1/G2";
-    ViewData["Title"] = "Form G1/G2";
+    ViewBag.TabTitle = "Form R1/R2";
+    ViewData["Title"] = "Form R1/R2";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
     var isModifyPerm = security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
     var isDeletePerm = security.IsPCDelete(ModuleNameList.Condition_Inspection) ? "" : "hidden";
 }
+
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @section Scripts{
-<script type="text/javascript" src="~/js/FormG1G2.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/js/FormR1R2.js" asp-append-version="true"></script>
 }
 
-@*@{
-    Html.RenderPartial("_breadcrumb", new BreadCrumb()
-    {
-    Title = "Condition Inspection - Form G1/G2",
-    SimpleNavigation = "Home,Condition Inspection,Form G1/G2"
-    });
-    }
-*@
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#formG1G2RMU").chosen();
-        $('#formG1G2SectionCode').chosen();
-        $("#formG1G2AdvSearch").hide();
+        $("#formR1R2RMU").chosen();
+        $('#formR1R2SectionCode').chosen();
+        $("#formR1R2AdvSearch").hide();
 
-        $("#formG1G2RMU").on("change", function () {
+        $("#formR1R2RMU").on("change", function () {
             var val = $(this).find(":selected").text();
             val = val.split("-").length > 0 ? val.split("-")[1] : val;
             $("#txtRmuName").val(val);
             var req = {};
             req.Section = '';
             req.RoadCode = '';
-            req.RMU = $("#formG1G2RMU option:selected").text().split("-")[1];
+            req.RMU = $("#formR1R2RMU option:selected").text().split("-")[1];
             $.ajax({
                 url: '/MAM/RMUSecRoad',
                 dataType: 'JSON',
@@ -45,13 +37,13 @@
                 type: 'Post',
                 success: function (data) {
                     if (data != null) {
-                        $("#formG1G2SectionCode").empty();
-                        $("#formG1G2SectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                        $("#formR1R2SectionCode").empty();
+                        $("#formR1R2SectionCode").append($("<option></option>").val("").html("Select Section Code"));
                         $.each(data.section, function (index, v) {
-                            $("#formG1G2SectionCode").append($("<option></option>").val(v.value).html(v.text));
+                            $("#formR1R2SectionCode").append($("<option></option>").val(v.value).html(v.text));
                         });
-                        $("#formG1G2SectionCode").trigger("change");
-                        $('#formG1G2SectionCode').trigger("chosen:updated");
+                        $("#formR1R2SectionCode").trigger("change");
+                        $('#formR1R2SectionCode').trigger("chosen:updated");
 
                     } else {
 
@@ -65,11 +57,11 @@
         });
 
 
-        $("#formG1G2SectionCode").on("change", function () {
+        $("#formR1R2SectionCode").on("change", function () {
             var ddldata = $(this).val();
-            var secCode = $("#formG1G2SectionCode option:selected").text().split("-")[0];
+            var secCode = $("#formR1R2SectionCode option:selected").text().split("-")[0];
             if (ddldata != "") {
-                $("#formG1G2SectionName").val(ddldata);
+                $("#formR1R2SectionName").val(ddldata);
                 //GetAllRoadCodeDataBySectionCode
                 $.ajax({
                     url: '/FormQa1/GetRoadCodeBySection',
@@ -78,14 +70,14 @@
                     type: 'Post',
                     success: function (data) {
                         if (data != null) {
-                            $("#formG1G2RoadCode").empty();
-                            $("#formG1G2RoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                            $("#formR1R2RoadCode").empty();
+                            $("#formR1R2RoadCode").append($("<option></option>").val("").html("Select Road Code"));
                             $.each(data, function (index, v) {
                                 var text = v.roadCode + " - " + v.roadName;
-                                $("#formG1G2RoadCode").append($("<option></option>").val(v.roadCode).html(text).attr("Item1", v.roadName));
+                                $("#formR1R2RoadCode").append($("<option></option>").val(v.roadCode).html(text).attr("Item1", v.roadName));
                             });
-                            $("#formG1G2RoadCode").trigger("change");
-                            $('#formG1G2RoadCode').trigger("chosen:updated");
+                            $("#formR1R2RoadCode").trigger("change");
+                            $('#formR1R2RoadCode').trigger("chosen:updated");
 
                         } else {
 
@@ -103,7 +95,7 @@
             return false;
         });
 
-        $("#formG1G2SectionCode").on("change", function () {
+        $("#formR1R2SectionCode").on("change", function () {
             var ddldata = $(this).val();
             if (ddldata != "") {
                 $("#txtSectionName").val(ddldata);
@@ -114,48 +106,43 @@
             return false;
         });
 
-        $("#formG1G2RoadCode").on("change", function () {
+        $("#formR1R2RoadCode").on("change", function () {
             var val = $(this).find(":selected").attr("Item1");
             $("#txtRoadName").val(val);
         });
 
-         $("#formG1G2ActivityCode").on("change", function () {
+         $("#formR1R2ActivityCode").on("change", function () {
             var val = $(this).find(":selected").text();
             val = val.split("-").length > 0 ? val.split("-")[1] : val;
-            $("#formG1G2ActivityName").val(val);
+             $("#txtActivityName").val(val);
         });
 
 
     });
 
     function clearHeaderSearch() {
-        $("#formG1G2SmartSearch").val('');
-        $("#formG1G2RMU").val("").trigger("chosen:updated");
+        $("#formR1R2SmartSearch").val('');
+        $("#formR1R2RMU").val("").trigger("chosen:updated");
         $("#txtRmuName").val("");
 
-        $("#formG1G2RoadCode").val("").trigger("chosen:updated");
+        $("#formR1R2RoadCode").val("").trigger("chosen:updated");
         $("#txtRoadName").val("");
 
-        $('#formG1G2SectionCode').val("").trigger("chosen:updated");
+        $('#formR1R2SectionCode').val("").trigger("chosen:updated");
         $("#txtSectionName").val("");
 
-        $("#formG1G2Crew").val("").trigger("chosen:updated");
+        $("#formR1R2Crew").val("").trigger("chosen:updated");
         $("#txtCrewName").val("");
 
-        $("#formG1G2FromYear").val("").trigger("chosen:updated");
-        $("#formG1G2FromYear").val("");
+        $("#formR1R2ActivityCode").val("").trigger("chosen:updated");
+        $("#txtActivityName").val("");
 
-        $("#formC1C2InsToYear").val("").trigger("chosen:updated");
-        $("#formC1C2InsToYear").val("");
-
-        $("#txtChFromKm").val('');
-        $("#txtChFromM").val('');
-        $("#txtChToKm").val('');
-        $("#txtChToM").val('');
+        $("#formR1R2FromDate").val('');
+        $("#formR1R2EndDate").val('');
 
         var req = {};
-        var _rmu = $("#formG1G2RMU");
-        var _road = $("#formG1G2SectionCode");
+        var _rmu = $("#formR1R2RMU");
+        var _road = $("#formR1R2SectionCode");
         req.RMU = this.value;
         req.Section = '';
         req.RoadCode = '';
@@ -167,20 +154,20 @@
             type: 'Post',
             success: function (data) {
                 if (req.RMU == "") {
-                    $("#formG1G2RMU").empty();
-                    $("#formG1G2RMU").append($("<option></option>").val("").html("Select RMU"));
+                    $("#formR1R2RMU").empty();
+                    $("#formR1R2RMU").append($("<option></option>").val("").html("Select RMU"));
                     $.each(data.rmu, function (index, v) {
-                        $("#formG1G2RMU").append($("<option></option>").val(v.value).html(v.text));
+                        $("#formR1R2RMU").append($("<option></option>").val(v.value).html(v.text));
                     });
                 }
                 if (req.Section == "") {
-                    $("#formG1G2SectionCode").empty();
-                    $("#formG1G2SectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $("#formR1R2SectionCode").empty();
+                    $("#formR1R2SectionCode").append($("<option></option>").val("").html("Select Section Code"));
                     $.each(data.section, function (index, v) {
-                        $("#formG1G2SectionCode").append($("<option></option>").val(v.value).html(v.text));
+                        $("#formR1R2SectionCode").append($("<option></option>").val(v.value).html(v.text));
                     });
 
-                    $('#formG1G2SectionCode').trigger("chosen:updated");
+                    $('#formR1R2SectionCode').trigger("chosen:updated");
                 }
             },
             error: function (data) {
@@ -188,33 +175,32 @@
                 console.error(data);
             }
         });
-        $("[searchsectionbtn]").click();
+        $("#btnSearch").click();
     }
 
     function detailSearch() {
-        $("#formG1G2AdvSearch").slideToggle(500);
+        $("#formR1R2AdvSearch").slideToggle(500);
     }
 
-    function formG1G2GridRefresh() {
+    function formR1R2GridRefresh() {
+        oTable = $('#formR1R2GridView').DataTable();
+        oTable.columns(0).search($("#formR1R2SmartSearch").val().trim());
 
-        oTable = $('#formG1G2GridView').DataTable();
-        oTable.columns(0).search($("#formG1G2SmartSearch").val().trim());
-
-        var rmuCode = $("#formG1G2RMU").val();
+        var rmuCode = $("#formR1R2RMU").val();
         if (rmuCode != "") {
             oTable.columns(1).search(rmuCode);
         } else {
                 oTable.columns(1).search("");
         }
 
-        var secCode = $("#formG1G2SectionCode").val();
+        var secCode = $("#formR1R2SectionCode").val();
         if (secCode != "") {
             oTable.columns(2).search(secCode);
         } else {
                 oTable.columns(2).search("");
         }
 
-        var crewCode = $("#formG1G2Crew").val().trim();
+        var crewCode = $("#formR1R2Crew").val().trim();
 
         if (crewCode != "" ){
             oTable.columns(3).search(crewCode);
@@ -223,7 +209,7 @@
             oTable.columns(3).search("");
         }
 
-        var actCode = $("#formG1G2ActivityCode").val().trim();
+        var actCode = $("#formR1R2ActivityCode").val().trim();
 
         if (actCode != "" ){
             oTable.columns(4).search(actCode);
@@ -232,10 +218,10 @@
             oTable.columns(4).search("");
         }
 
-        oTable.columns(5).search($("#formG1G2FromDate").val());
-        oTable.columns(6).search($("#formG1G2EndDate").val());
+        oTable.columns(5).search($("#formR1R2FromDate").val());
+        oTable.columns(6).search($("#formR1R2EndDate").val());
 
-        var rdCode = $("#formG1G2RoadCode").val().trim();
+        var rdCode = $("#formR1R2RoadCode").val().trim();
 
         if (rdCode != "" ){
             oTable.columns(7).search(rdCode);
@@ -248,8 +234,8 @@
         oTable.draw();
     }
 
-    function EditformG1G2(pid,view) {
-        window.location = "@Url.Action("Add", "FormG1G2")";
+    function EditformR1R2(pid,view) {
+        window.location = "@Url.Action("Add", "FormR1R2")";
     }
 
     function DeleteHeaderRecord(pkId) {
@@ -257,13 +243,13 @@
             if (e) {
                 InitAjaxLoading();
                 $.ajax({
-                    url: '/FormG1G2/HeaderListformG1G2Delete',
+                    url: '/FormR1R2/HeaderListformR1R2Delete',
                     data: { pkId },
                     type: 'POST',
                     success: function (data) {
                         if (data > 0) {
                             app.ShowSuccessMessage('Successfully Deleted', false);
-                            formG1G2GridRefresh();
+                            formR1R2GridRefresh();
                         }
                         else {
                             app.ShowErrorMessage("Error in Deleted. Kindly retry later.", false);
@@ -288,16 +274,16 @@
                         <div class="col-lg-12">
                             <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
                                 <span class="mb-0 font-weight-bold font-20">
-                                    Gantry Sign Visual Isual Inspection Record - Form G1/G2
+                                    Retaining  Wall Visual Inspection Record - (Form R1/R2)
                                 </span>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
                                         <li class="breadcrumb-item">Home</li>
                                         <li class="breadcrumb-item">
-                                            Gantry Sign Visual Isual Inspection Record
+                                            Retaining  Wall Visual Inspection Record
                                         </li>
                                         <li class="breadcrumb-item" aria-current="page">
-                                            Form G1/G2
+                                            Form R1/R2
                                         </li>
                                     </ol>
                                 </nav>
@@ -314,10 +300,12 @@
                 <div class="justify-content-center mb-1">
                     <div class="search-content">
                         <div class="input-group">
-                            <input autocomplete="off" class="form-control" id="formG1G2SmartSearch" name="SearchObj.SmartInputValue" onfocus="this.removeAttribute('readonly')" placeholder="Search..." spellcheck="false" type="text" value="" param="KeySearch">
+
+                            <input autocomplete="off" class="form-control" id="formR1R2SmartSearch" name="SearchObj.SmartInputValue" onfocus="this.removeAttribute('readonly')" placeholder="Search..." spellcheck="false" type="text" value="" param="KeySearch">
                             <div class="input-group-append">
                                 <div class="btn-group">
-                                    <button onclick="tblFG1G2HGrid.Search(this,'#formG1G2Search');" SearchSectionBtn type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                    @*<button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>*@
+                                    <button onclick="tblFR1R2HGrid.Search(this,'#formR1R2Search');" SearchSectionBtn type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
                                     <button id="btnAdvSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0" data-toggle="collapse" data-target="#div_advsearch"><span class="filter-icon"></span></button>
                                     <button id="btnClearSearch" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
                                 </div>
@@ -333,7 +321,7 @@
                                         <div class="row">
                                             <div class="form-group col-6">
                                                 @Html.Label("RMU ", "RMU ")
-                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "formG1G2RMU", @class = "form-control" ,  @param = "RMUCode" ,  @rmuCode = "rmuCode", @clear = "rebind"  })
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "formR1R2RMU", @class = "form-control", @param = "RMUCode", @rmuCode = "rmuCode", @clear = "rebind" })
                                             </div>
                                             <div class="form-group col-lg-6 mb-0">
                                                 @Html.Label("RMU Name", "RMU Name")
@@ -341,13 +329,11 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-lg-4">
                                         <div class="row">
                                             <div class="col-6 form-group">
                                                 @Html.Label("Section Code ", "Section Code")
-                                                @Html.DropDownList((IEnumerable
-                                                <CSelectListItem>)ViewData["Section_Code"],"selSectionCode", "Select Section Code", new { @Id = "formG1G2SectionCode", @class = "form-control widget-content-area" })
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "selSectionCode", "Select Section Code", new { @Id = "formR1R2SectionCode", @class = "form-control widget-content-area" })
                                             </div>
                                             <div class="form-group col-lg-6 mb-0">
                                                 @Html.Label("Section Name", "Section Name")
@@ -356,17 +342,11 @@
                                         </div>
 
                                     </div>
-                                    @*<div class="form-group col-2">
-                                        <label for="RMU"> Division Code</label>
-                                        <input class="form-control" id="formDrmuDesc" name="RmuDescription" readonly="readonly" type="text" value="">
-                                        </div>*@
-
-
                                     <div class="col-lg-4">
                                         <div class="row">
                                             <div class="col-6 form-group">
                                                 @Html.Label("Road Code", "Road Code")
-                                                @Html.DropDownList("RoadCode",(IEnumerable<SelectListItem>)ViewData["RD_Code"],  "Select Road Code", new { @id = "formG1G2RoadCode", @class = "form-control" , @param = "RoadCode" })
+                                                @Html.DropDownList("RoadCode", (IEnumerable<SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @id = "formR1R2RoadCode", @class = "form-control", @param = "RoadCode" })
                                             </div>
                                             <div class="form-group col-lg-6 mb-0">
                                                 @Html.Label("Road Name", "Road Name")
@@ -374,27 +354,33 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @*<div class="form-group col-2">
-                                        @Html.Label("Activity Code", "Activity Code")
-                                        @Html.DropDownList("formG1G2ActivityCode",(IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formG1G2ActivityCode", @class = "form-control" })
+
+                                    @*<div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="col-6 form-group">
+                                                @Html.Label("Activity Code", "Activity Code")
+                                                @Html.DropDownList("formR1R2ActivityCode", (IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formR1R2ActivityCode", @class = "form-control" })
+                                            </div>
+                                            <div class="form-group col-lg-6 mb-0">
+                                                @Html.Label("Activity Name", "Activity Name")
+                                                <input type="text" class="form-control" id="txtActivityName" disabled />
+                                            </div>
                                         </div>
-                                        <div class="form-group col-2">
-                                        @Html.Label("Activity Name ", "Activity Name")
-                                        @Html.TextBoxFor(m => m.SearchObj.ActivityCode, new { @id="formG1G2ActivityName", @class = "form-control" })
-                                        </div>*@
+                                    </div>*@
+                                    
                                     <div class="form-group col-2">
                                         @Html.Label("Year of Inspection From", "Year of Inspection From")
-                                        @Html.DropDownList("FromYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formG1G2FromYear", @class = "form-control", @param = "FromYear" })
+                                        @Html.DropDownList("FromYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formR1R2FromYear", @class = "form-control", @param = "FromYear" })
                                     </div>
                                     <div class="form-group col-2">
                                         @Html.Label("Year of Inspection To", "Year of Inspection To")
-                                        @Html.DropDownList("ToYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formC1C2InsToYear", @class = "form-control", @param = "ToYear" })
+                                        @Html.DropDownList("ToYearOfInsp", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formR1R2InsToYear", @class = "form-control", @param = "ToYear" })
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="Location_Chainage_From">Location Chainage From</label>
                                         <div class="row">
                                             <div class="col-6 float-left pr-0">
-                                                <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM">
+                                                <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" ngkeypress="">
                                             </div>
                                             <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
                                             <div class="col-5 float-left pl-0">
@@ -406,30 +392,28 @@
                                         <label for="Location_Chainage_From">Location Chainage To</label>
                                         <div class="row">
                                             <div class="col-6 float-left pr-0">
-                                                <input id="txtChToKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage To Km" param="chToKM">
+                                                <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" ngkeypress="">
                                             </div>
                                             <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
                                             <div class="col-5 float-left pl-0">
-                                                <input id="txtChToM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage To M" param="chToM">
+                                                <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage From M" param="chFromM" ngkeypress="">
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
-
+        <div class="col-12">
             <div class="w-100 float-left position-relative">
                 <div class="grid-btns">
-                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditformG1G2(0,0);"><span class="add-icon"></span> Add Form G1 G2</button>
+                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditformR1R2(0,0);"><span class="add-icon"></span> Add Form R1 R2</button>
                 </div>
                 <div id="headerListGrid" class="w-100 dt-tbl-section">
                     @{
@@ -437,12 +421,9 @@
                     }
                 </div>
             </div>
-
         </div>
 
 
     </div>
+
 </div>
-
-
-

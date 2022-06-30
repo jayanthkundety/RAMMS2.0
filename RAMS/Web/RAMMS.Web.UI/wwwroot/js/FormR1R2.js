@@ -1,4 +1,4 @@
-﻿var frmG1G2 = new function () {
+﻿var frmR1R2 = new function () {
     this.HeaderData = {};
     this.ImageList = [];
     this.Dis_Severity = {};
@@ -8,40 +8,38 @@
     this.IsEdit = true;
     this.Pattern = "";
     this.FindDetails = function () {
-        if (ValidatePage("#divFindDetailsFG1G2")) {
+        if (ValidatePage("#divFindDetailsFR1R2")) {
             //debugger;
             var tis = this;
             $("#AiAssetId").val($("#selAssetID option:selected").text());
-            GetResponseValue("FindDetails", "FormG1G2", FormValueCollection("#divFindDetailsFG1G2"), function (data) {
+            GetResponseValue("FindDetails", "FormR1R2", FormValueCollection("#divFindDetailsFR1R2"), function (data) {
                 if (data) {
-                    //debugger;
                     $("[finddetailhide]").hide();
-                    $("#selAssetID,#formG1G2InsYear").prop("disabled", true).trigger("change").trigger("chosen:updated");
-
+                    $("#selAssetID,#formR1R2InsYear").prop("disabled", true).trigger("change").trigger("chosen:updated");
                     if (data.SubmitSts) {
-                        window.location = _APPLocation + "FormG1G2/View/" + data.PkRefNo;
+                        window.location = _APPLocation + "FormR1R2/View/" + data.PkRefNo;
                     }
                     tis.HeaderData = data;
+
                     tis.PageInit();
 
-                    $('#formG1G2InspectedBy').trigger('chosen:updated');
-                    $("#formG1G2InspectedBy").trigger("change");
+                    $('#formR1R2InspectedBy').trigger('chosen:updated');
+                    $("#formR1R2InspectedBy").trigger("change");
                     $("#InspectedSign").prop("checked", true);
                 }
             }, "Finding");
         }
     }
     this.BindData = function () {
-        //debugger;
         if (this.HeaderData && this.HeaderData.PkRefNo && this.HeaderData.PkRefNo > 0) {
-            if (this.IsEdit) { this.IsEdit = this.HeaderData.Status == "Approved" ? false : true; }
+            if (this.IsEdit) { this.IsEdit = this.HeaderData.SubmitSts ? false : true; }
             if (!this.IsEdit) {
                 $("#ancAddImage").remove(); $("#ImageListTRTemplate td[deleteImg]").text("");
                 $("[finddetailsdep]").hide();
             }
             var tis = this;
             var assignFormat = jsMaster.AssignFormat;
-            $("#divG1G2").find("input,select,textarea").filter("[name]").each(function () {
+            $("#divR1R2").find("input,select,textarea").filter("[name]").each(function () {
                 var obj = $(this);
                 var name = obj.attr("name");
                 if (tis.HeaderData[name] != null) {
@@ -58,13 +56,13 @@
                 }
             });
             $("#pkRefNo").val(tis.HeaderData.PkRefNo);
-            tis.LoadG2(tis.HeaderData.FormG2);
+            tis.LoadR2(tis.HeaderData.FormR2);
             tis.RefreshImageList();
             $("#dtInspection").attr("min", this.HeaderData.YearOfInsp + "-01-01").attr("max", this.HeaderData.YearOfInsp + "-12-31");
         }
     }
-    this.LoadG2 = function (tis) { this.BindG2(tis); }
-    this.BindG2 = (req) => {
+    this.LoadR2 = function (tis) { this.BindR2(tis); }
+    this.BindR2 = (req) => {
         if (req == null) return;
         $('#DistressSp').val(req.DistressSp);
         $('#DistressEc').val(req.DistressEc);
@@ -80,13 +78,13 @@
     this.InsYearChange = function (tis) { this.BindRefNumber(); }
     this.BindRefNumber = function () {
         var tis = this;
-        var yr = $("#formG1G2InsYear").val();
+        var yr = $("#formR1R2InsYear").val();
         var assid = $("#selAssetID");
         if (yr != "" && assid.val() != "") {
-            $("#txtFormG1G2RefNum").val(tis.Pattern.replace("{AssetID}", assid.find(":selected").text()).replace("{Year}", yr));
+            $("#txtFormR1R2RefNum").val(tis.Pattern.replace("{AssetID}", assid.find(":selected").text()).replace("{Year}", yr));
         }
         else {
-            $("#txtFormG1G2RefNum").val("");
+            $("#txtFormR1R2RefNum").val("");
         }
     }
     this.UserIdChange = function (tis) {
@@ -105,30 +103,29 @@
         }
     }
     this.Save = function (isSubmit) {
-        //debugger;
         var tis = this;
         if (isSubmit) {
-            $("#frmG1G2Data .svalidate").addClass("validate");
+            $("#frmR1R2Data .svalidate").addClass("validate");
         }
-        Validation.ResetErrStyles("#frmG1G2Data");
+        Validation.ResetErrStyles("#frmR1R2Data");
         $("#txtPhotoValidate").val(this.IsUploadAllImage(isSubmit) ? "valid" : "");
-        if (ValidatePage("#frmG1G2Data", "", "")) {
+        if (ValidatePage("#frmR1R2Data", "", "")) {
             //var refNo = $("#txtS1RefNumber");
             var action = isSubmit ? "Submit" : "Save";
-            GetResponseValue(action, "FormG1G2", FormValueCollection("#AccordPage1,#AccordPage2,#AccordPage6,#FormG2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {
+            GetResponseValue(action, "FormR1R2", FormValueCollection1("#AccordPage1,#AccordPage2,#AccordPage3,#AccordPage4,#FormR2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {
                 app.ShowSuccessMessage('Successfully Saved', false);
                 setTimeout(tis.NavToList, 2000);
             }, "Saving");
         }
         if (isSubmit) {
-            $("#frmG1G2Data .svalidate").removeClass("validate");
+            $("#frmR1R2Data .svalidate").removeClass("validate");
         }
     }
     this.NavToList = function () {
-        window.location = _APPLocation + "FormG1G2";
+        window.location = _APPLocation + "FormR1R2";
     }
     this.Cancel = function () {
-        jsMaster.ConfirmCancel(() => { frmG1G2.NavToList(); });
+        jsMaster.ConfirmCancel(() => { frmR1R2.NavToList(); });
     }
     this.ShowAddImage = function () {
         $("#myModal2").modal();
@@ -144,8 +141,8 @@
     this.RefreshImageList = function () {
         var tis = this;
         var post = {};
-        post.headerId = frmG1G2.HeaderData.PkRefNo;
-        GetResponseValue("ImageList", "FormG1G2", post, function (data) {
+        post.headerId = frmR1R2.HeaderData.PkRefNo;
+        GetResponseValue("ImageList", "FormR1R2", post, function (data) {
             if (data) {
                 tis.BindImageList(data);
             }
@@ -162,7 +159,7 @@
             $("#photoType option").each(function () {
                 var val = $(this).val();
                 if (val != "" && val != "Others") {
-                    var cv = frmG1G2.StanImageTypeCode(val);
+                    var cv = frmR1R2.StanImageTypeCode(val);
                     if (imageList.find("[" + cv + "]").length == 0 && imageList.find("[" + cv + "]").length <= 2) {
                         error += "<li><label class='error'>" + val + "</label></li>";
                         isValid = false;
@@ -192,7 +189,7 @@
             tr.find("[imgfilename]").text(obj.ImageFilenameSys);
             tbody.append(tr);
 
-            var cattr = frmG1G2.StanImageTypeCode(obj.ImageTypeCode); //.replace(/\(/g, "").replace(/\)/g, "").replace(/ /g, "");
+            var cattr = frmR1R2.StanImageTypeCode(obj.ImageTypeCode); //.replace(/\(/g, "").replace(/\)/g, "").replace(/ /g, "");
             var ctrl = imageList.find("div.container[" + cattr + "]");
             if (ctrl.length == 0) {
                 var template = imageListTemplate.clone();
@@ -225,8 +222,8 @@
             if (ok) {
                 var post = {};
                 post.imgId = obj.PkRefNo;
-                post.headerId = obj.Fg1hPkRefNo;
-                GetResponseValue("DeleteImage", "FormG1G2", post, function (data) {
+                post.headerId = obj.Fr1hPkRefNo;
+                GetResponseValue("DeleteImage", "FormR1R2", post, function (data) {
                     if (data) {
                         app.ShowSuccessMessage("Deleted Sucessfully! <br/>(File Name : " + obj.ImageFilenameSys + ")");
                         tis.BindImageList(data);
@@ -236,7 +233,7 @@
         }, "Yes", "No");
     }
     this.PageInit = function () {
-        if (frmG1G2.HeaderData && frmG1G2.HeaderData.PkRefNo && frmG1G2.HeaderData.PkRefNo > 0) {
+        if (frmR1R2.HeaderData && frmR1R2.HeaderData.PkRefNo && frmR1R2.HeaderData.PkRefNo > 0) {
             $("[finddetailsdep]").show();
             $("#btnFindDetails").hide();
         }
@@ -252,19 +249,19 @@
             var actionSection = "<div class='btn-group dropright' rowidx='" + meta.row + "'><button type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button>";
             actionSection += "<div class='dropdown-menu'>";//dorpdown menu start
 
-            if (data.ProcessStatus != "Approved" && tblFG1G2HGrid.Base.IsModify) {
-                actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmG1G2.HeaderGrid.ActionClick(this);'>";
+            if (data.ProcessStatus != "Approved" && tblFR1R2HGrid.Base.IsModify) {
+                actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmR1R2.HeaderGrid.ActionClick(this);'>";
                 actionSection += "<span class='edit-icon'></span> Edit </button>";
             }
-            if (tblFG1G2HGrid.Base.IsView) {
-                actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmG1G2.HeaderGrid.ActionClick(this);'>";
+            if (tblFR1R2HGrid.Base.IsView) {
+                actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmR1R2.HeaderGrid.ActionClick(this);'>";
                 actionSection += "<span class='view-icon'></span> View </button>";
             }
-            if (tblFG1G2HGrid.Base.IsDelete) {
-                actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmG1G2.HeaderGrid.ActionClick(this);'>";
+            if (tblFR1R2HGrid.Base.IsDelete) {
+                actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmR1R2.HeaderGrid.ActionClick(this);'>";
                 actionSection += "<span class='del-icon'></span> Delete </button>";
             }
-            actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmG1G2.HeaderGrid.ActionClick(this);'>";
+            actionSection += "<button type='button' class='dropdown-item editdel-btns' onclick='frmR1R2.HeaderGrid.ActionClick(this);'>";
             actionSection += "<span class='print-icon'></span> Print </button>";
 
             actionSection += "</div>"; //dorpdown menu close
@@ -277,30 +274,26 @@
             var type = $.trim(obj.text());
             var rowidx = parseInt(obj.closest("[rowidx]").attr("rowidx"), 10);
             if (rowidx >= 0) {
-                var data = tblFG1G2HGrid.dataTable.row(rowidx).data();
+                var data = tblFR1R2HGrid.dataTable.row(rowidx).data();
                 switch (type.toLowerCase()) {
                     case "edit":
-                        window.location = _APPLocation + "FormG1G2/Edit/" + data.RefNo;
+                        window.location = _APPLocation + "FormR1R2/Edit/" + data.RefNo;
                         break;
                     case "view":
-                        window.location = _APPLocation + "FormG1G2/View/" + data.RefNo;
+                        window.location = _APPLocation + "FormR1R2/View/" + data.RefNo;
                         break;
                     case "delete":
                         app.Confirm("Are you sure you want to delete this record? <br/>(Ref: " + data.RefID + ")", (status) => {
                             if (status) {
-                                DeleteRequest("Delete/" + data.RefNo, "FormG1G2", {}, function (sdata) {
-                                    if (sdata.id == "-1") {
-                                        app.ShowErrorMessage("Form G1G2 cannot be deleted, first delete Form F3");
-                                        return false;
-                                    }
-                                    tblFG1G2HGrid.Refresh();
+                                DeleteRequest("Delete/" + data.RefNo, "FormR1R2", {}, function (sdata) {
+                                    tblFR1R2HGrid.Refresh();
                                     app.ShowSuccessMessage("Deleted Sucessfully! <br/>(Ref: " + data.RefID + ")");
                                 });
                             }
                         }, "Yes", "No");
                         break;
                     case "print":
-                        window.location = _APPLocation + "FormG1G2/download?id=" + data.RefNo;
+                        window.location = _APPLocation + "FormR1R2/download?id=" + data.RefNo;
                         break;
                 }
             }
@@ -340,7 +333,7 @@
                 req.SectionCode = ctrl.find("option:selected").attr("code");
                 req.RdCode = '';
                 req.GrpCode = "G"
-                frmG1G2.DropDownBind(req);
+                frmR1R2.DropDownBind(req);
                 $("#txtSectionName").val(ctrl.find("option:selected").attr("value"));
             }
             else {
@@ -354,7 +347,7 @@
             //    var ctrl = $("#selRoadCode"); ctrl.find("option:hidden").show(); ctrl.val("").trigger("change").trigger("chosen:updated");
             //}
 
-            frmG1G2.FilterAssestID();
+            frmR1R2.FilterAssestID();
         }
         this.RoadCodeChange = function (tis, isAdd) {
             //debugger;
@@ -372,7 +365,7 @@
                 }
                 req.RdCode = ctrl.find("option:selected").attr("code");
                 req.GrpCode = "CV"
-                frmG1G2.DropDownBind(req);
+                frmR1R2.DropDownBind(req);
                 var div = $("#selDivision");
                 if (div.val() == "") { div.val("MIRI").trigger("chosen:updated"); }
 
@@ -390,7 +383,7 @@
             //    if (rmu.val() == "") { rmu.val(obj.attr("cvalue")).trigger("chosen:updated"); }
 
             //}
-            frmG1G2.FilterAssestID();
+            frmR1R2.FilterAssestID();
         }
         this.RmuChange = function (tis) {
             var ctrl = $(tis);
@@ -401,7 +394,7 @@
                 req.SectionCode = '';
                 req.RdCode = '';
                 req.GrpCode = "CV"
-                frmG1G2.DropDownBind(req);
+                frmR1R2.DropDownBind(req);
                 //var sec = $("#selSectionCode"); sec.find("option").hide().filter("[cvalue='" + $(tis).find("option:selected").attr("cvalue") + "']").show();
                 //if (sec.find("option:selected:visible").length == 0) { sec.val("").trigger("change"); }
                 //sec.trigger("chosen:updated");
@@ -412,13 +405,13 @@
 
             var div = $("#selDivision");
             if (div.val() == "") { div.val("MIRI").trigger("chosen:updated"); }
-            frmG1G2.FilterAssestID();
+            frmR1R2.FilterAssestID();
         }
     }
     this.InspectionList = function () {
-        if (this.HeaderData && this.HeaderData.PkRefNo && this.HeaderData.PkRefNo > 0 && frmG1G2.HeaderData.InsDtl && frmG1G2.HeaderData.InsDtl.length > 0) {
+        if (this.HeaderData && this.HeaderData.PkRefNo && this.HeaderData.PkRefNo > 0 && frmR1R2.HeaderData.InsDtl && frmR1R2.HeaderData.InsDtl.length > 0) {
             var tis = this;
-            var dtl = frmG1G2.HeaderData.InsDtl;
+            var dtl = frmR1R2.HeaderData.InsDtl;
             var template = $("#divInsDtlTemplate");
             var _lst = $("#divInspectionList");
 
@@ -648,23 +641,23 @@
     }
 }
 
-$(document).ready(function () {
+$(document).ready(function () {   
     $("[useridChange]").on("change", function () {
-        frmG1G2.UserIdChange(this);
+        frmR1R2.UserIdChange(this);
     });
-    //frmG1G2.InitDis_Severity();
-    frmG1G2.PageInit();
+    //frmR1R2.InitDis_Severity();
+    frmR1R2.PageInit();
     $("#smartSearch").focus();//Header Grid focus    
     if ($("#btnFindDetails:visible").length > 0) {
         setTimeout(function () { $('#selDivision').trigger('chosen:activate'); }, 200);
     }
     else {
-        setTimeout(function () { $("#formG1G2InspectedBy").trigger('chosen:activate'); }, 200);
+        setTimeout(function () { $("#formR1R2InspectedBy").trigger('chosen:activate'); }, 200);
     }
 
     //Listener for Smart and Detail Search
-    $("#FG1G2SrchSection").find("#smartSearch").focus();
-    element = document.querySelector("#formG1G2AdvSearch");
+    $("#FR1R2SrchSection").find("#smartSearch").focus();
+    element = document.querySelector("#formR1R2AdvSearch");
     if (element) {
         element.addEventListener("keyup", () => {
             if (event.keyCode === 13) {
@@ -678,48 +671,30 @@ $(document).ready(function () {
         }
     })
 
-
-    $('.allow_numeric').keypress(function (event) {
-        var $this = $(this);
-        if ((event.which != 46 || $this.val().indexOf('.') != -1) &&
-            ((event.which < 48 || event.which > 57) &&
-                (event.which != 0 && event.which != 8))) {
-            event.preventDefault();
-        }
-
-        var text = $(this).val();
-        if ((event.which == 46) && (text.indexOf('.') == -1)) {
-            setTimeout(function () {
-                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
-                }
-            }, 1);
-        }
-
-        if ((text.indexOf('.') != -1) &&
-            (text.substring(text.indexOf('.')).length > 3) &&
-            (event.which != 0 && event.which != 8) &&
-            ($(this)[0].selectionStart >= text.length - 3)) {
-            event.preventDefault();
-        }
-    });
-
-    $('.allow_numericWOD').keypress(function (event) {
-        var $this = $(this);
-        if ((event.which != 46 || $this.val().indexOf('.') == -1) &&
-            ((event.which < 48 || event.which > 57) &&
-                (event.which != 0 && event.which != 8))) {
-            event.preventDefault();
-        }
-
-        var text = $(this).val();
-        if ((event.which == 46) && (text.indexOf('.') != -1)) {
-            setTimeout(function () {
-                if ($this.val().substring($this.val().indexOf('.')).length > 3) {
-                    $this.val($this.val().substring(0, $this.val().indexOf('.') + 3));
-                }
-            }, 1);
-        }
-    });
-
 });
+
+function FormValueCollection1(selector, post) {
+    if (!post) { post = {}; }
+    var obj = $(selector);
+    var _form = obj.find("[name]:not(':radio'):not(':checkbox')");
+    _form.each(function () {
+        if (this.name == "DistressObserved1") {
+            if ($(this).val() != "" && $(this).val() != null) {
+                post[this.name] = $(this).val().filter(function (v) { return v !== '' }).join(",")
+            }
+        }
+        else {
+            post[this.name] = $(this).val();
+        }
+    });
+    _form = obj.find("[name]:radio:checked");
+    _form.each(function () {
+        post[this.name] = $(this).val();
+    });
+    _form = obj.find("[name]:checkbox");
+    _form.each(function () {
+        post[this.name] = this.checked;
+    });        
+    return post;
+}
+

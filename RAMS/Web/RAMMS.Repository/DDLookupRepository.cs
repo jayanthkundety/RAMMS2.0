@@ -175,6 +175,12 @@ namespace RAMS.Repository
                 return "";
             }
         }
+
+        public async Task<IEnumerable<RmFormRDistressDetails>> GetDdDistressDetails()
+        {
+            return await _context.RmFormRDistressDetails.ToListAsync();
+
+        }
     }
 }
 

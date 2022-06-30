@@ -23,5 +23,6 @@ namespace RAMMS.Repository.Interfaces
         Task<List<UvwSearchData>> GlobalSearchData(string keyWord);
         string GetConcatenateDdlTypeDesc(DDLookUpDTO dto);
         string GetConcatenateDdlTypeValue(DDLookUpDTO dto);
+        Task<IEnumerable<RmFormRDistressDetails>> GetDdDistressDetails();
     }
 }

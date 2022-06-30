@@ -12,6 +12,7 @@ namespace RAMMS.Common.RefNumber
         public const string FormDHeader = "ERT/FORM D/{WeekNo}- {MonthNo}-{Year}/{CrewUnit}/{" + NewRunningNumber + "}";
         public const string FormC1C2 = "CI/Form C1/C2/{AssetID}/{Year}";
         public const string FormG1G2 = "CI/Form G1/G2/{AssetID}/{Year}";
+        public const string FormR1R2 = "CI/Form R1/R2/{AssetID}/{Year}";
         public const string FormF4Header = "CI/Form F4/{RoadCode}/{Year}";
         public const string FormF5Header = "CI/Form F5/{RoadCode}/{Year}";
         public const string FormFCHeader = "CI/Form FC/{RoadCode}/{Year}";
@@ -63,6 +64,9 @@ namespace RAMMS.Common.RefNumber
                     break;
                 case FormType.FormG1G2:
                     format = FormG1G2;
+                    break;
+                case FormType.FormR1R2:
+                    format = FormR1R2;
                     break;
                 case FormType.FormF4Header:
                     format = FormF4Header;
@@ -121,6 +125,7 @@ namespace RAMMS.Common.RefNumber
         FormB1B2,
         FormC1C2,
         FormG1G2,
+        FormR1R2,
         FormF4Header,
         FormF5Header,
         FormFCHeader,

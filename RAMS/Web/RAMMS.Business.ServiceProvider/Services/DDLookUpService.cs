@@ -433,5 +433,28 @@ namespace RAMMS.Business.ServiceProvider.Services
                 throw ex;
             }
         }
+
+        public async Task<IEnumerable<SelectListItem>> GetDdDistressDetails()
+        {
+            var ddLookUpItem = new List<SelectListItem>();
+            try
+            {
+                var ddList = await _lookupRepo.GetDdDistressDetails();
+                foreach (var list in ddList)
+                {
+                    ddLookUpItem.Add(new SelectListItem
+                    {
+                        Value = list.FrdTypeValue.ToString(),
+                        Text = list.FrdTypeDesc.ToString()
+                    });
+                }
+                return ddLookUpItem.ToList();
+            }
+            catch (Exception Ex)
+            {
+                throw Ex;
+            }
+
+        }
     }
 }

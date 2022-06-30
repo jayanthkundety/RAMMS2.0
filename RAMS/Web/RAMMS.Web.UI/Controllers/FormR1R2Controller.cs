@@ -18,11 +18,11 @@ using System.Globalization;
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 using System.IO;
+
 namespace RAMMS.Web.UI.Controllers
 {
-    public class FormG1G2Controller : Models.BaseController
+    public class FormR1R2Controller : Models.BaseController
     {
-
         private IHostingEnvironment Environment;
         private readonly ILogger _logger;
         private readonly IDDLookUpService _ddLookupService;
@@ -33,10 +33,10 @@ namespace RAMMS.Web.UI.Controllers
         private readonly IFormJServices _formJService;
         private readonly IRoadMasterService _roadMasterService;
         private readonly IDDLookupBO _dDLookupBO;
-        private readonly IFormG1G2Service _formG1G2Service;
+        private readonly IFormR1R2Service _formR1R2Service;
         private readonly IAssetsService _AssetService;
 
-        public FormG1G2Controller(IHostingEnvironment _environment,
+        public FormR1R2Controller(IHostingEnvironment _environment,
            IDDLookupBO _ddLookupBO,
            IDDLookUpService ddLookupService,
            IUserService userService,
@@ -46,9 +46,8 @@ namespace RAMMS.Web.UI.Controllers
            ISecurity security,
            IRoadMasterService roadMasterService,
            ILogger logger,
-           IFormG1G2Service formG1G2Service,
-           IAssetsService assestService
-           )
+           IFormR1R2Service formR1R2Service,
+           IAssetsService assestService)
         {
             _userService = userService;
             _dDLookupBO = _ddLookupBO;
@@ -60,7 +59,7 @@ namespace RAMMS.Web.UI.Controllers
             _formJService = formJServices ?? throw new ArgumentNullException(nameof(formJServices));
             _roadMasterService = roadMasterService ?? throw new ArgumentNullException(nameof(roadMasterService));
             _logger = logger;
-            _formG1G2Service = formG1G2Service ?? throw new ArgumentNullException(nameof(formG1G2Service));
+            _formR1R2Service = formR1R2Service ?? throw new ArgumentNullException(nameof(formR1R2Service));
             _AssetService = assestService;
         }
 
@@ -80,22 +79,19 @@ namespace RAMMS.Web.UI.Controllers
             ViewData["WeekNo"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
             //FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
-
-
         }
-      
         public async Task<IActionResult> Index()
         {
             await LoadDropDown();
-            var grid = new Models.CDataTable() { Name = "tblFG1G2HGrid", APIURL = "/FormG1G2/HeaderList", LeftFixedColumn = 1 };
+            var grid = new Models.CDataTable() { Name = "tblFR1R2HGrid", APIURL = "/FormR1R2/HeaderList", LeftFixedColumn = 1 };
             grid.IsModify = _security.IsPCModify(ModuleNameList.Condition_Inspection);
-            grid.IsDelete = _security.IsPCDelete(ModuleNameList.Condition_Inspection) && _security.isOperRAMSExecutive;
+            grid.IsDelete = _security.IsPCDelete(ModuleNameList.Condition_Inspection);
             grid.IsView = _security.IsPCView(ModuleNameList.Condition_Inspection);
-            grid.Columns.Add(new CDataColumns() { data = null, title = "Action", IsFreeze = true, sortable = false, render = "frmG1G2.HeaderGrid.ActionRender" });
+            grid.Columns.Add(new CDataColumns() { data = null, title = "Action", IsFreeze = true, sortable = false, render = "frmR1R2.HeaderGrid.ActionRender" });
+            grid.Columns.Add(new CDataColumns() { data = "AssetRefId", title = "Asset ID" });
             grid.Columns.Add(new CDataColumns() { data = "RefID", title = "Reference No" });
             grid.Columns.Add(new CDataColumns() { data = "Year", title = "Year of Inspection" });
-            grid.Columns.Add(new CDataColumns() { data = "InsDate", title = "Date of Inspection", render = "frmG1G2.HeaderGrid.DateOfIns" });
-            grid.Columns.Add(new CDataColumns() { data = "AssetRefId", title = "Asset ID" });
+            grid.Columns.Add(new CDataColumns() { data = "InsDate", title = "Date of Inspection", render = "frmR1R2.HeaderGrid.DateOfIns" });            
             grid.Columns.Add(new CDataColumns() { data = "RMUCode", title = "RMU" });
             grid.Columns.Add(new CDataColumns() { data = "RMUDesc", title = "RMU Name" });
             grid.Columns.Add(new CDataColumns() { data = "SecCode", title = "Section Code" });
@@ -110,9 +106,9 @@ namespace RAMMS.Web.UI.Controllers
             return View(grid);
         }
 
-        public async Task<IActionResult> FindDetails(DTO.ResponseBO.FormG1DTO frmG1)
+        public async Task<IActionResult> FindDetails(DTO.ResponseBO.FormR1DTO frmR1)
         {
-            return Json(await _formG1G2Service.FindDetails(frmG1, _security.UserID), JsonOption());
+            return Json(await _formR1R2Service.FindDetails(frmR1, _security.UserID), JsonOption());
         }
 
         public async Task<JsonResult> HeaderList(DataTableAjaxPostModel searchData)
@@ -121,7 +117,7 @@ namespace RAMMS.Web.UI.Controllers
             {
                 searchData.order = searchData.order.Select(x => { if (x.column == 4 || x.column == 1 || x.column == 9) { x.column = 16; } return x; }).ToList();
             }
-            return Json(await _formG1G2Service.GetHeaderGrid(searchData), JsonOption());
+            return Json(await _formR1R2Service.GetHeaderGrid(searchData), JsonOption());
         }
 
         public IActionResult Add()
@@ -130,65 +126,76 @@ namespace RAMMS.Web.UI.Controllers
             ViewBag.IsEdit = true;
             return ViewRequest(0);
         }
-
         public IActionResult Edit(int id)
         {
             ViewBag.IsEdit = true;
             return id > 0 ? ViewRequest(id) : RedirectToAction("404", "Error");
         }
-      
         public IActionResult View(int id)
         {
             ViewBag.IsEdit = false;
             return id > 0 ? ViewRequest(id) : RedirectToAction("404", "Error");
         }
-       
         private IActionResult ViewRequest(int id)
         {
-            LoadLookupService("Year", "User", "Photo Type~SG");
+            LoadLookupService("Year", "User", "Photo Type~RWG");
+            ViewData["DistressObserved1"] = _ddLookupService.GetDdDistressDetails().Result;
             ViewBag.Dis_Severity = LookupService.GetDdlLookupByCode("Form C1C2");
-            FormG1DTO frmG1G2 = null;
+            FormR1DTO frmR1R2 = new FormR1DTO();
             if (id > 0)
             {
                 ViewBag.IsAdd = false;
-                frmG1G2 = _formG1G2Service.FindByHeaderID(id).Result;                
 
-
-                if (frmG1G2.SubmitSts && frmG1G2.Status == Common.StatusList.FormG1G2Verified)
-                {
-                    frmG1G2.AuditedBy = _security.UserID;
-                    frmG1G2.AuditedDt = DateTime.Today;
-                }
-
-                
+                frmR1R2 = _formR1R2Service.FindByHeaderID(id).Result;
             }
             else
             {
                 LoadLookupService("RMU", "Section Code", "Division", "RD_Code");
-                ViewData["AssetIds"] = _AssetService.ListOfGantorySignAssestIds().Result;
+                ViewData["AssetIds"] = _AssetService.ListOfReatiningWallAssestIds().Result;
             }
 
-            return View("~/Views/FormG1G2/_AddFormG1G2.cshtml", frmG1G2);
+            return View("~/Views/FormR1R2/_AddFormR1R2.cshtml", frmR1R2);
         }
 
-        //Image
+        [HttpPost]
+        public async Task<JsonResult> Save(DTO.ResponseBO.FormR1DTO frmR1R2)
+        {
+            return await SaveAll(frmR1R2, false);
+        }
+        [HttpPost]
+        public async Task<JsonResult> Submit(DTO.ResponseBO.FormR1DTO frmR1R2)
+        {
+            frmR1R2.SubmitSts = true;
+            return await SaveAll(frmR1R2, true);
+        }
+        private async Task<JsonResult> SaveAll(DTO.ResponseBO.FormR1DTO frmR1R2, bool updateSubmit)
+        {
+            frmR1R2.CrBy = _security.UserID;
+            frmR1R2.ModBy = _security.UserID;
+            frmR1R2.ModDt = DateTime.UtcNow;
+            frmR1R2.CrDt = DateTime.UtcNow;
+            var result = await _formR1R2Service.Save(frmR1R2, updateSubmit);
+            return Json(new { Id = result.PkRefNo }, JsonOption());
+        }
+        [HttpPost]
+        //[DisableRequestSizeLimit]
         public async Task<IActionResult> ImageUploaded(IList<IFormFile> FormFile, int headerId, string InspRefNum, List<string> PhotoType)
         {
             if (FormFile != null && FormFile.Count > 0)
             {
-                List<FormGImagesDTO> lstImages = new List<FormGImagesDTO>();
-                var objExistsPhotoType = _formG1G2Service.GetExitingPhotoType(headerId).Result;
-                if (objExistsPhotoType == null) { objExistsPhotoType = new List<FormG1G2PhotoTypeDTO>(); }
+                List<FormRImagesDTO> lstImages = new List<FormRImagesDTO>();
+                var objExistsPhotoType = _formR1R2Service.GetExitingPhotoType(headerId).Result;
+                if (objExistsPhotoType == null) { objExistsPhotoType = new List<FormR1R2PhotoTypeDTO>(); }
                 InspRefNum = Regex.Replace(InspRefNum, @"[^0-9a-zA-Z]+", "");
                 string wwwPath = this._webHostEnvironment.WebRootPath;
                 for (int j = 0; j < FormFile.Count; j++)
                 {
                     var objSNo = objExistsPhotoType.Where(x => x.Type == PhotoType[j]).FirstOrDefault();
-                    if (objSNo == null) { objSNo = new FormG1G2PhotoTypeDTO() { SNO = 1, Type = PhotoType[j] }; objExistsPhotoType.Add(objSNo); }
+                    if (objSNo == null) { objSNo = new FormR1R2PhotoTypeDTO() { SNO = 1, Type = PhotoType[j] }; objExistsPhotoType.Add(objSNo); }
                     else { objSNo.SNO = objSNo.SNO + 1; }
                     IFormFile postedFile = FormFile[j];
                     string photoType = Regex.Replace(PhotoType[j], @"[^a-zA-Z]", "");
-                    string strFileUploadDir = Path.Combine("Form G1G2", InspRefNum, photoType);
+                    string strFileUploadDir = Path.Combine("Form R1R2", InspRefNum, photoType);
                     string strSaveDir = Path.Combine(wwwPath, "Uploads", strFileUploadDir);
                     string strSysFileName = InspRefNum + "_" + photoType + "_" + objSNo.SNO.ToString("000");
                     string strUploadFileName = objSNo.SNO.ToString() + "_" + photoType + "_" + postedFile.FileName;
@@ -197,14 +204,14 @@ namespace RAMMS.Web.UI.Controllers
                     {
                         await postedFile.CopyToAsync(stream);
                     }
-                    lstImages.Add(new FormGImagesDTO()
+                    lstImages.Add(new FormRImagesDTO()
                     {
                         ActiveYn = true,
                         CrBy = _security.UserID,
                         ModBy = _security.UserID,
                         CrDt = DateTime.UtcNow,
                         ModDt = DateTime.UtcNow,
-                        Fg1hPkRefNo = headerId,
+                        FR1hPkRefNo = headerId,
                         ImageFilenameSys = strSysFileName,
                         ImageFilenameUpload = strUploadFileName,
                         ImageSrno = objSNo.SNO,
@@ -216,7 +223,7 @@ namespace RAMMS.Web.UI.Controllers
                 }
                 if (lstImages.Count > 0)
                 {
-                    var a = await _formG1G2Service.AddMultiImage(lstImages);
+                    var a = await _formR1R2Service.AddMultiImage(lstImages);
                     return Json(a.Item2);
                 }
             }
@@ -225,50 +232,27 @@ namespace RAMMS.Web.UI.Controllers
 
         public IActionResult ImageList(int headerId)
         {
-            return Json(_formG1G2Service.ImageList(headerId), JsonOption());
+            return Json(_formR1R2Service.ImageList(headerId), JsonOption());
         }
-      
         public async Task<IActionResult> DeleteImage(int headerId, int imgId)
         {
-            await _formG1G2Service.DeleteImage(headerId, imgId);
+            await _formR1R2Service.DeleteImage(headerId, imgId);
             return ImageList(headerId);
+            //return Json(new { Message = "Sucess" }, JsonOption());
         }
-
+        [HttpPost] //Tab
         public IActionResult Delete(int id)
         {
-            if (id > 0) { return Ok(new { id = _formG1G2Service.Delete(id) }); }
+            if (id > 0) { return Ok(new { id = _formR1R2Service.Delete(id) }); }
             else { return BadRequest("Invalid Request!"); }
 
         }
 
-        public async Task<JsonResult> Save(DTO.ResponseBO.FormG1DTO frmG1G2)
-        {
-            return await SaveAll(frmG1G2, false);
-        }
-       
-        [HttpPost]
-        public async Task<JsonResult> Submit(DTO.ResponseBO.FormG1DTO frmG1G2)
-        {
-            frmG1G2.SubmitSts = true;
-            return await SaveAll(frmG1G2, true);
-        }
-       
-        private async Task<JsonResult> SaveAll(DTO.ResponseBO.FormG1DTO frmG1G2, bool updateSubmit)
-        {
-            frmG1G2.CrBy = _security.UserID;
-            frmG1G2.ModBy = _security.UserID;
-            frmG1G2.ModDt = DateTime.UtcNow;
-            frmG1G2.CrDt = DateTime.UtcNow;
-            var result = await _formG1G2Service.Save(frmG1G2, updateSubmit);
-            return Json(new { RefNo = result.RefNo, Id = result.PkRefNo }, JsonOption());
-        }
-
         public IActionResult Download(int id)
         {
-            var content1 = _formG1G2Service.FormDownload("FormG1G2", id, _webHostEnvironment.WebRootPath, _webHostEnvironment.WebRootPath + "/Templates/FormG1G2.xlsx");
+            var content1 = _formR1R2Service.FormDownload("FormR1R2", id, _webHostEnvironment.WebRootPath, _webHostEnvironment.WebRootPath + "/Templates/FormR1R2.xlsx");
             string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            return File(content1, contentType1, "FormG1G2" + ".xlsx");
+            return File(content1, contentType1, "FormR1R2" + ".xlsx");
         }
-
     }
 }

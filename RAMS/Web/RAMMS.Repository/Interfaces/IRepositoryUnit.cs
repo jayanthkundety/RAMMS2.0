@@ -71,7 +71,9 @@ namespace RAMMS.Repository.Interfaces
         //End Vforms
 
 
-        public FormG1Repository FormG1Repository { get; }   
+        public FormG1Repository FormG1Repository { get; }
+
+        public FormR1R2Repository FormR1Repository { get; }
 
         FormS2QuarterDtlRepository FormS2QuarterDtlRepository { get; }
         CalendarRepository CalendarRepository { get; }
