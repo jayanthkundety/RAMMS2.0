@@ -28,6 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\FormF1\Index.cshtml" />
+    <None Include="Views\FormF1\_AddFormF1.cshtml" />
+    <None Include="Views\FormF1\_DetailGridList.cshtml" />
+    <None Include="Views\FormF1\_HeaderListGrid.cshtml" />
     <None Include="Views\NOD\NewFormJ\FormJ.cshtml" />
     <None Include="wwwroot\js\AddAssets.js" />
   </ItemGroup>
