@@ -45,9 +45,19 @@ namespace RAMMS.DTO.Report
         public int? CrewdayRequired { get; set; }
         public int? CrewdaysAllocated { get; set; }
         public int[] week { get; set; }
+
+        public List<FORMS2DaySchedule> daySchedules { get; set; }   
         public decimal? Target { get; set; }
         public string Remark { get; set; }
         public int DetailId { get; set; }
         public string WorkQty { get; set; }
+    }
+
+    public class FORMS2DaySchedule
+    {
+
+        public int weekno { get; set; } 
+        public int Day { get; set; }    
+        public DateTime? dateTime { get; set; }  
     }
 }
