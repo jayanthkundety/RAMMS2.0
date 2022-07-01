@@ -17,7 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace RAMMS.Repository
 {
-    public class FormS2Repository: RepositoryBase<RmFormS2Hdr>
+    public class FormS2Repository : RepositoryBase<RmFormS2Hdr>
     {
 
         public FormS2Repository(RAMMSContext context) : base(context)
@@ -27,7 +27,7 @@ namespace RAMMS.Repository
 
         public int LastHeaderInsertedNo()
         {
-           var result = _context.RmFormS2Hdr.OrderByDescending(s => s.FsiihPkRefNo).FirstOrDefault();
+            var result = _context.RmFormS2Hdr.OrderByDescending(s => s.FsiihPkRefNo).FirstOrDefault();
             if (result != null)
                 return result.FsiihPkRefNo;
             else
@@ -37,37 +37,38 @@ namespace RAMMS.Repository
         public async Task<List<S2HeaderResponse>> GetFilteredRecordList(FilteredPagingDefinition<S2HeaderSearchRequestDTO> filterOptions)
         {
             var query = (from x in _context.RmFormS2Hdr
-                               let rm = _context.RmDdLookup.FirstOrDefault(s => s.DdlTypeCode == x.FsiihRmu && s.DdlType == "RMU")
-                               let r = _context.RmDdLookup.FirstOrDefault(s => s.DdlPkRefNo == x.FsiihActId)
-                               let gscuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridSchld.HasValue ? x.FsiihUseridSchld.Value : 0))
-                               let gvetuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridVet.HasValue ? x.FsiihUseridVet.Value : 0))
-                               let gagruser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridAgrd.HasValue ? x.FsiihUseridAgrd.Value : 0))
-                               let gpuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridPrioritised.HasValue ? x.FsiihUseridPrioritised.Value : 0))
-                               let gsubuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridSub.HasValue ? x.FsiihUseridSub.Value : 0))
-                               where x.FsiihQuaterId == (filterOptions.Filters.Quarter.HasValue ? filterOptions.Filters.Quarter.Value : x.FsiihQuaterId)
-                               && (filterOptions.Filters.ActivityCode.HasValue ? filterOptions.Filters.ActivityCode.Value : x.FsiihActId) == x.FsiihActId
+                         let rm = _context.RmDdLookup.FirstOrDefault(s => s.DdlTypeCode == x.FsiihRmu && s.DdlType == "RMU")
+                         let r = _context.RmDdLookup.FirstOrDefault(s => s.DdlPkRefNo == x.FsiihActId)
+                         let gscuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridSchld.HasValue ? x.FsiihUseridSchld.Value : 0))
+                         let gvetuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridVet.HasValue ? x.FsiihUseridVet.Value : 0))
+                         let gagruser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridAgrd.HasValue ? x.FsiihUseridAgrd.Value : 0))
+                         let gpuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridPrioritised.HasValue ? x.FsiihUseridPrioritised.Value : 0))
+                         let gsubuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridSub.HasValue ? x.FsiihUseridSub.Value : 0))
+                         let actid = _context.RmDdLookup.FirstOrDefault(s => s.DdlType == "Act-FormS2" && s.DdlTypeCode == (filterOptions.Filters.ActivityCode.HasValue ? filterOptions.Filters.ActivityCode.Value.ToString() : ""))
+                         where x.FsiihQuaterId == (filterOptions.Filters.Quarter.HasValue ? filterOptions.Filters.Quarter.Value : x.FsiihQuaterId)
+                               && (filterOptions.Filters.ActivityCode.HasValue ? actid.DdlPkRefNo : x.FsiihActId) == x.FsiihActId
                                && (filterOptions.Filters.Rmu != "" && filterOptions.Filters.Rmu != null ? filterOptions.Filters.Rmu : x.FsiihRmu) == x.FsiihRmu
                                && (filterOptions.Filters.Year.HasValue ? filterOptions.Filters.Year.Value : x.FsiihYear) == x.FsiihYear
                                && x.FsiihActiveYn == true
-                               select new S2HeaderResponse
-                               {
-                                   ScheduledBy = x.FsiihUserNameSchId,
-                                   ActivityCode = x.FsiihActCode,
-                                   AgreedBy = x.FsiihUserNameAgrd,
-                                   Id = x.FsiihPkRefNo,
-                                   PrioritizedBy = x.FsiihUserNamePrioritised,
-                                   Quarter = x.FsiihQuaterId == 1 ? "Q1" : x.FsiihQuaterId == 2 ? "Q2" : x.FsiihQuaterId == 3 ? "Q3" : x.FsiihQuaterId == 4? "Q4" : "",
-                                   ReferenceNo = x.FsiihRefId,
-                                   SubmittedBy = x.FsiihUserNameSub,
-                                   VettedBy = x.FsiihUserNameVet,
-                                   Year = x.FsiihYear,
-                                   Rmu = x.FsiihRmu,
-                                   RmuName = rm != null ? rm.DdlTypeDesc : "",
-                                   SubmitSts = x.FsiihSubmitSts,
-                                   Status = x.FsiihSubmitSts ? "Submitted" : "Saved",
-                                   ModifiedOn = x.FsiihModDt,
-                                   ProcessStatus = x.FsiihStatus
-                               });
+                         select new S2HeaderResponse
+                         {
+                             ScheduledBy = x.FsiihUserNameSchId,
+                             ActivityCode = x.FsiihActCode,
+                             AgreedBy = x.FsiihUserNameAgrd,
+                             Id = x.FsiihPkRefNo,
+                             PrioritizedBy = x.FsiihUserNamePrioritised,
+                             Quarter = x.FsiihQuaterId == 1 ? "Q1" : x.FsiihQuaterId == 2 ? "Q2" : x.FsiihQuaterId == 3 ? "Q3" : x.FsiihQuaterId == 4 ? "Q4" : "",
+                             ReferenceNo = x.FsiihRefId,
+                             SubmittedBy = x.FsiihUserNameSub,
+                             VettedBy = x.FsiihUserNameVet,
+                             Year = x.FsiihYear,
+                             Rmu = x.FsiihRmu,
+                             RmuName = rm != null ? rm.DdlTypeDesc : "",
+                             SubmitSts = x.FsiihSubmitSts,
+                             Status = x.FsiihSubmitSts ? "Submitted" : "Saved",
+                             ModifiedOn = x.FsiihModDt,
+                             ProcessStatus = x.FsiihStatus
+                         });
             if (!string.IsNullOrEmpty(filterOptions.Filters.SmartInput))
             {
                 query = query.Where(s => s.ReferenceNo.Contains(filterOptions.Filters.SmartInput)
@@ -143,7 +144,7 @@ namespace RAMMS.Repository
             var result = await query.Skip(filterOptions.StartPageNo)
                                 .Take(filterOptions.RecordsPerPage)
                                 .ToListAsync();
-            
+
             return result;
         }
 
@@ -208,7 +209,7 @@ namespace RAMMS.Repository
                           let gagruser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridAgrd.HasValue ? x.FsiihUseridAgrd.Value : 0))
                           let gpuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridPrioritised.HasValue ? x.FsiihUseridPrioritised.Value : 0))
                           let gsubuser = _context.RmUsers.FirstOrDefault(s => s.UsrPkId == (x.FsiihUseridSub.HasValue ? x.FsiihUseridSub.Value : 0))
-                          
+
 
 
                           where x.FsiihPkRefNo == headerId
@@ -247,7 +248,7 @@ namespace RAMMS.Repository
                                CIL = x.FsiidPriority == 320,
                                CrewdayRequired = x.FsiidCrwDaysReq,
                                CrewdaysAllocated = x.FsiidCrwAllwcdQuar,
-                               PaveLength = r!=null ? r.RdmLengthPaved : null,
+                               PaveLength = r != null ? r.RdmLengthPaved : null,
                                PriorityI = x.FsiidPriority == 321,
                                PriorityII = x.FsiidPriority == 322,
                                Remark = x.FsiidRemarks,
@@ -259,7 +260,7 @@ namespace RAMMS.Repository
                                DetailId = x.FsiidPkRefNo,
                                WorkQty = x.FsiidWorkQty
                            }).ToList();
-            if (rpt.Details!=null)
+            if (rpt.Details != null)
             {
                 foreach (var q in rpt.Details)
                 {
@@ -277,10 +278,10 @@ namespace RAMMS.Repository
                                       where day.FsiidsFsiidPkRefNo == q.DetailId
                                       select new FORMS2DaySchedule
                                       {
-                                          weekno = c.ClkWeekNo.Value ,
+                                          weekno = c.ClkWeekNo.Value,
                                           dateTime = day.FsiidsScheduledDt,
                                           Day = ((int)Convert.ToDateTime(day.FsiidsScheduledDt).DayOfWeek)
-                                      }).ToList() ;
+                                      }).ToList();
 
                 }
             }
