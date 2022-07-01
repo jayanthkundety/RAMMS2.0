@@ -403,6 +403,7 @@ namespace RAMMS.Repository
                          select new Pictures
                          {
                              ImageUrl = o.FcviImageUserFilePath,
+                             FileName = o.FcviImageFilenameUpload,
                              Type = o.FcviImageTypeCode
                          }).ToList();
                 rpt.Pictures = new List<Pictures>();
