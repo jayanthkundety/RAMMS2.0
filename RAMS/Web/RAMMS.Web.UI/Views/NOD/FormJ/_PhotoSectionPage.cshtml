@@ -519,7 +519,7 @@
         $("#AssetUploadBtn").click(function (e) {debugger;
             var type = $("#photoType").val();
 
-            if ($("#formAFadPKRefNO").val() != "0" || $("#formAFadPKRefNO").val() != "") {
+            if ($("#formAFadPKRefNO").val() != "0") { // || $("#formAFadPKRefNO").val() != "") {
 
                 var formData = new FormData();
                 formData.append("AssetId", document.getElementById("formAFadPKRefNO").value);
@@ -597,7 +597,7 @@
                         formData.append("AssetId", document.getElementById("formAFadPKRefNO").value);
                         for (var i = 0, len = filesToUpload.length; i < len; i++) {
                             formData.append("FormFile", filesToUpload[i].file);
-                            formData.append("phototype", filesToUpload[i].fileType);
+                            formData.append("photoTypes", filesToUpload[i].fileType);
                         }
                         InitAjaxLoading();
                         $.ajax(
