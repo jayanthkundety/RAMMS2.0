@@ -375,52 +375,46 @@ namespace RAMMS.Business.ServiceProvider.Services
                             //worksheet.Cell(9, 8).Value = condition1.ToString() == "0" ? "" : condition1.ToString();
                             //worksheet.Cell(9, 24).Value = condition2.ToString() == "0" ? "" : condition1.ToString();
                             //worksheet.Cell(9, 45).Value = condition3.ToString() == "0" ? "" : condition1.ToString();
-                            int i = 13;
+                            int i = 14;
 
                             var data = rpt.Details.Skip((sheet - 1) * 24).Take(24);
                             foreach (var r in data)
                             {
-                                conditiondata1 = "";
-                                conditiondata2 = "";
-                                conditiondata3 = "";
+
 
                                 if (r.Condition == 1)
                                 {
                                     condition1 += 1;
-                                    conditiondata1 = "/";
                                 }
                                 if (r.Condition == 2)
                                 {
                                     condition2 += 1;
-                                    conditiondata2 = "/";
+                                    
                                 }
                                 if (r.Condition == 3)
                                 {
                                     condition3 += 1;
-                                    conditiondata3 = "/";
                                 }
-
-
 
                                 worksheet.Cell(i, 2).Value = index;
 
                                 worksheet.Cell(i, 4).Value = $"{r.LocationChKm}+{r.LocationChM}";
                                 worksheet.Cell(i, 8).Value = r.StructCode;
-                                worksheet.Cell(i, 10).Value = conditiondata1;
-                                worksheet.Cell(i, 17).Value = conditiondata2;
-                                worksheet.Cell(i, 24).Value = conditiondata3;
-                                worksheet.Cell(i, 31).Value = r.Bound;
-                                worksheet.Cell(i, 38).Value = r.Width;
-                                worksheet.Cell(i, 45).Value = r.Height;
+                                worksheet.Cell(i, 10).Value = r.Tier;
+                                worksheet.Cell(i, 17).Value = r.Length;
+                                worksheet.Cell(i, 24).Value = r.Width;
+                                worksheet.Cell(i, 31).Value = r.BottomWidth;
+                                worksheet.Cell(i, 38).Value = r.Height;
+                                worksheet.Cell(i, 45).Value = r.Condition;
                                 worksheet.Cell(i, 52).Value = r.Descriptions;
 
                                 index++;
                                 i++;
 
                             }
-                            worksheet.Cell(38, 8).Value = condition1;
-                            worksheet.Cell(38, 24).Value = condition2;
-                            worksheet.Cell(38, 45).Value = condition3;
+                            worksheet.Cell(39, 8).Value = condition1;
+                            worksheet.Cell(39, 24).Value = condition2;
+                            worksheet.Cell(39, 45).Value = condition3;
                         }
                     }
 

@@ -24,10 +24,12 @@ namespace RAMMS.DTO.Report
         public int? LocationChKm { get; set; }
         public int? LocationChM { get; set; }
         public string StructCode { get; set; }
-        public string Bound { get; set; }
+        public int? Tier { get; set; }
         public int? Condition { get; set; }
         public decimal? Width { get; set; }
+        public decimal? BottomWidth { get; set; }
         public decimal? Height { get; set; }
+        public decimal? Length { get; set; }
         public string Descriptions { get; set; }
        
     }
