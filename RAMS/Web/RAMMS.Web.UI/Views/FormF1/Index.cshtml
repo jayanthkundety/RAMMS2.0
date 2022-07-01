@@ -8,7 +8,7 @@
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
     IEnumerable<SelectListItem> assetType = (await ddlService
-       .GetLookups(new DDLookUpDTO { Type = "Asset Type", TypeCode = "SG" }))
+       .GetLookups(new DDLookUpDTO { Type = "Asset Type", TypeCode = "RW" }))
        .Select(s => new SelectListItem
        {
            Text = s.DdlTypeDesc,

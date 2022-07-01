@@ -567,9 +567,9 @@ namespace RAMMS.Repository
                                 where s.Ff1hPkRefNo == headerid && s.Ff1hActiveYn == true
                                 select new FORMF1Rpt
                                 {
-                                    //CrewLeader = s.Ff1hCrewName,
-                                    //District = s.Ff1hDist,
-                                    //InspectedByDesignation = s.Ff1hInspectedDesig,
+                                    CrewLeader = s.Ff1hCrewName,
+                                    District = s.Ff1hDist,
+                                    InspectedByDesignation = s.Ff1hInspectedDesg,
                                     InspectedByName = s.Ff1hInspectedName,
                                     InspectedDate = s.Ff1hInspectedDate,
                                     Division = s.Ff1hDivCode,
@@ -588,10 +588,11 @@ namespace RAMMS.Repository
                                   Descriptions = d.Ff1dDescription,
                                   LocationChKm = d.Ff1dLocCh,
                                   LocationChM = d.Ff1dLocChDeci,
-                                  //Width = d.Ff1dWidth,
-                                  //Height = d.Ff1dHeight,
-                                  //Condition = d.Ff1dConditionI,
-                                  //Bound = d.Ff1dBound,
+                                  Width = d.Ff1dTopWidth,
+                                  BottomWidth = d.Ff1dBottomWidth,
+                                  Height = d.Ff1dHeight,
+                                  Condition = d.Ff1dOverallCondition,
+                                  Tier = d.Ff1dTier,
                                   StructCode = d.Ff1dCode
                               }).ToArray();
             return result;

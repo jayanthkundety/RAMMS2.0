@@ -496,7 +496,7 @@ function EditFormF1Dtl(obj, view) {
     $("#FormF1Dtl_Height").val(data.height);
     $("#FormF1Dtl_TotalLength").val(data.length);
     $("#FormF1Dtl_Description").val(data.description);
-    $("#ddlCondition").val(data.conditionRating);
+    $("#FormF1Dtl_OverallCondition").val(data.conditionRating);
     $("#FormF1Dtl_AssetId").val(data.assetId);
   
 
