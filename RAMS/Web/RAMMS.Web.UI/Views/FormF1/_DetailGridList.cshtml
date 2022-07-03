@@ -1,0 +1,98 @@
+﻿@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+
+<div class="main-container" id="container">
+    <div id="content">
+        <div class="w-100 position-relative in-tbl-btns">
+            <div class="grid-btns">
+                @*<button type="button" id="btnDtlModal" class="btn btn-sm btn-themebtn" onclick="ClearFormF1Dtl()" data-toggle="modal" data-target="#myModal" title="Add New">
+                    <span class="intbl-add-icon"></span>
+                </button>*@
+
+            </div>
+            <table id="FormF1DtlGridView" class="table w-100 nowrap">
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Jquery DataTable JS library -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/js/CDTGrid.js"></script>
+<script>
+     
+    var table = null;
+    var isModifyPerm =@security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    isModifyPerm = '';
+    isDeletePerm = '';
+    var table_columns = [];
+    var actionCol = {
+        data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formF1DtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormF1Dtl(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormF1Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormF1Dtl(this,1);'><span class='view-icon'></span> View</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormF1Dtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormF1Dtl(this,1);'><span class='view-icon'></span> View</button> </div></div>";
+            if ($("#hdnView").val() == "1") {
+                return viewaction;
+            }
+            return $("#FormF1_SubmitSts").val() == "True" ? viewaction : actionSection;
+        }
+    };
+   // var sNoCol = { data: "sNo", name: "sno", title: "SNo", autoWidth: true,  sortable: true };
+    var chCol = { data: "ch", name: "ch", title: "Starting CH", autoWidth: true, sortable: true };
+    var structureCodeCol = { data: "structureCode", name: "StructureCode", title: "Structure Code", autoWidth: true, sortable: true };
+    var tierCol = { data: "tier", name: "Tier", title: "Tier", autoWidth: true, sortable: true };
+    var lengthCol = { data: "length", name: "TotalLength", title: "Total Length", autoWidth: true, sortable: true };
+    var widthCol = { data: "width", name: "TopWidth", title: "Top Width", autoWidth: true, sortable: true };
+    var bottomWidthCol = { data: "bottomWidth", name: "BottomWidth", title: "BottomWidth", autoWidth: true, sortable: true };
+    var heightCol = { data: "height", name: "Height", title: "Height", autoWidth: true, sortable: true };
+    var overallConditionCol = { data: "overallCondition", name: "Overall Condition", title: "Overall Condition", autoWidth: true, sortable: true };
+    var descriptionCol = { data: "description", name: "description", title: "Description", autoWidth: true, sortable: true };
+
+    table_columns.push(actionCol);
+  //  table_columns.push(sNoCol);
+    table_columns.push(chCol);
+    table_columns.push(structureCodeCol);
+    table_columns.push(tierCol);
+    table_columns.push(lengthCol);
+    table_columns.push(widthCol);
+    table_columns.push(bottomWidthCol);
+    table_columns.push(heightCol);
+    table_columns.push(overallConditionCol);
+    table_columns.push(descriptionCol);
+
+
+    var filterData = new Object();
+    function InitializeGrid() {
+        var _currentGridSettings = new CustomGridSettings();
+        filterData.Ff1hPkRefNo = $("#FormF1_PkRefNo").val();
+        $.extend($.fn.dataTable.defaults, _currentGridSettings);
+
+        if (table != null) {
+            table.destroy();
+            $('#FormF1DtlGridView').empty();
+        }
+
+
+        table =  $('#FormF1DtlGridView').DataTable({
+            ajax: {
+                url: "/FormF1/GetDetailList" ,
+                type: "POST",
+                datatype: "json",
+                data: {
+                    filterData
+                }
+            },
+            columns: table_columns
+        });
+
+       // table.columns.adjust().draw();
+    }
+
+    $(document).ready(function () {
+        InitializeGrid();
+
+    });
+</script>

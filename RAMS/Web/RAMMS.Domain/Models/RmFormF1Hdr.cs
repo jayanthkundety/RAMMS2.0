@@ -26,6 +26,7 @@ namespace RAMMS.Domain.Models
         public DateTime? Ff1hInspectedDate { get; set; }
         public int? Ff1hInspectedBy { get; set; }
         public string Ff1hInspectedName { get; set; }
+        public string Ff1hInspectedDesg { get; set; }
         public bool? Ff1hInspectedBySign { get; set; }
         public decimal? Ff1hRoadLength { get; set; }
         public int? Ff1hConditionI { get; set; }
@@ -35,8 +36,8 @@ namespace RAMMS.Domain.Models
         public DateTime? Ff1hModDt { get; set; }
         public int? Ff1hCrBy { get; set; }
         public DateTime? Ff1hCrDt { get; set; }
-        public bool? Ff1hSubmitSts { get; set; }
-        public bool? Ff1hActiveYn { get; set; }
+        public bool Ff1hSubmitSts { get; set; }
+        public bool Ff1hActiveYn { get; set; }
         public string Ff1hStatus { get; set; }
         public string Ff1hAuditLog { get; set; }
 
