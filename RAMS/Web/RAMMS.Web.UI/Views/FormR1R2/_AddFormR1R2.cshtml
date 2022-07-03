@@ -118,7 +118,7 @@
                                     @if (ViewBag.IsAdd)
                                     {
                                         List<RAMMS.DTO.ResponseBO.AssetId> lstIds = (List<RAMMS.DTO.ResponseBO.AssetId>)ViewData["AssetIds"];
-                                        <select name="AidPkRefNo" id="selAssetID" class="form-control" onchange="frmR1R2.AssetIDChange(this);">
+                                        <select name="AidPkRefNo" id="selAssetID" class="form-control validate {req,Asset ID}" onchange="frmR1R2.AssetIDChange(this);">
                                             <option value="">Select Asset ID</option>
                                             @foreach (RAMMS.DTO.ResponseBO.AssetId aid in lstIds)
                                             {
