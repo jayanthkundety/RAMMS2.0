@@ -40,7 +40,7 @@
             return $("#FormF1_SubmitSts").val() == "True" ? viewaction : actionSection;
         }
     };
-   // var sNoCol = { data: "sNo", name: "sno", title: "SNo", autoWidth: true,  sortable: true };
+    var assetIdCol = { data: "assetId", name: "assetId", title: "AssetId", autoWidth: true,  sortable: true };
     var chCol = { data: "ch", name: "ch", title: "Starting CH", autoWidth: true, sortable: true };
     var structureCodeCol = { data: "structureCode", name: "StructureCode", title: "Structure Code", autoWidth: true, sortable: true };
     var tierCol = { data: "tier", name: "Tier", title: "Tier", autoWidth: true, sortable: true };
@@ -52,7 +52,7 @@
     var descriptionCol = { data: "description", name: "description", title: "Description", autoWidth: true, sortable: true };
 
     table_columns.push(actionCol);
-  //  table_columns.push(sNoCol);
+    table_columns.push(assetIdCol);
     table_columns.push(chCol);
     table_columns.push(structureCodeCol);
     table_columns.push(tierCol);

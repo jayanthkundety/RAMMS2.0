@@ -491,12 +491,12 @@ function EditFormF1Dtl(obj, view) {
     $("#FormF1Dtl_LocChDeci").val(data.frmChDec);
     $("#FormF1Dtl_Code").val(data.structureCode);
     $('#FormF1Dtl_Tier').val(data.tier);
-    $('#FormF1Dtl_Width').val(data.width);
+    $('#FormF1Dtl_TopWidth').val(data.width);
     $('#FormF1Dtl_BottomWidth').val(data.bottomWidth);
     $("#FormF1Dtl_Height").val(data.height);
     $("#FormF1Dtl_TotalLength").val(data.length);
     $("#FormF1Dtl_Description").val(data.description);
-    $("#FormF1Dtl_OverallCondition").val(data.conditionRating);
+    $("#FormF1Dtl_OverallCondition").val(data.overallCondition);
     $("#FormF1Dtl_AssetId").val(data.assetId);
   
 

@@ -414,7 +414,7 @@ namespace RAMMS.Repository
                            select new RmFormF1Dtl
                            {
                                Ff1dFf1hPkRefNo = FormF1.PkRefNo,
-                               //Ff1dAssetId = Convert.ToString(r1.Fr1hAiPkRefNo),
+                               Ff1dAssetId = a.AiAssetId,
                                Ff1dPkRefNo = r1.Fr1hPkRefNo,
                                Ff1dTier = Convert.ToInt32(a.AiTier),
                                Ff1dCode = a.AiStrucCode,
