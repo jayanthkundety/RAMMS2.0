@@ -73,7 +73,7 @@
                 <div class="d-flex justify-content-center pt-3 pb-3">
                     <div class="form-group mb-0">
                         <label style="float:left; padding: .5rem .5rem 0 !important;">Form R1/R2 No.</label>
-                        <input id="txtFormR1R2RefNum" class="form-control" style="width:330px;" type="text" value="@strRefId" disabled>
+                        <input id="txtFormR1R2RefNum" class="form-control" style="width:355px;" type="text" value="@strRefId" disabled>
                     </div>
                 </div>
                 <div class="clear-b"></div>
@@ -118,7 +118,7 @@
                                     @if (ViewBag.IsAdd)
                                     {
                                         List<RAMMS.DTO.ResponseBO.AssetId> lstIds = (List<RAMMS.DTO.ResponseBO.AssetId>)ViewData["AssetIds"];
-                                        <select name="AidPkRefNo" id="selAssetID" class="form-control" onchange="frmR1R2.AssetIDChange(this);">
+                                        <select name="AidPkRefNo" id="selAssetID" class="form-control validate {req,Asset ID}" onchange="frmR1R2.AssetIDChange(this);">
                                             <option value="">Select Asset ID</option>
                                             @foreach (RAMMS.DTO.ResponseBO.AssetId aid in lstIds)
                                             {

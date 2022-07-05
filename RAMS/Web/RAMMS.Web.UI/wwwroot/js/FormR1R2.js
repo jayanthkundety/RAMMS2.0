@@ -32,7 +32,8 @@
     }
     this.BindData = function () {
         if (this.HeaderData && this.HeaderData.PkRefNo && this.HeaderData.PkRefNo > 0) {
-            if (this.IsEdit) { this.IsEdit = this.HeaderData.SubmitSts ? false : true; }
+            //if (this.IsEdit) { this.IsEdit = this.HeaderData.SubmitSts ? false : true; }
+            if (this.IsEdit) { this.IsEdit = this.HeaderData.Status == "Approved" ? false : true; }
             if (!this.IsEdit) {
                 $("#ancAddImage").remove(); $("#ImageListTRTemplate td[deleteImg]").text("");
                 $("[finddetailsdep]").hide();

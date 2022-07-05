@@ -286,7 +286,8 @@ namespace RAMMS.Repository
 
             List<FormR1R2Rpt> detail = (from o in _context.RmFormR1Hdr
                                         where (o.Fr1hAiRdCode == roadcode.Fr1hAiRdCode && o.Fr1hDtOfInsp.HasValue && o.Fr1hDtOfInsp < roadcode.Fr1hDtOfInsp) || o.Fr1hPkRefNo == headerid
-                                        let formR2 = _context.RmFormR2Hdr.FirstOrDefault(x => x.Fr2hFr1hPkRefNo == o.Fr1hPkRefNo)
+                                        orderby o.Fr1hYearOfInsp ascending
+                                        let formR2 = _context.RmFormR2Hdr.FirstOrDefault(x => x.Fr2hFr1hPkRefNo == o.Fr1hPkRefNo)                                        
                                         select new FormR1R2Rpt
                                         {
                                             RefernceNo = o.Fr1hRefNo,

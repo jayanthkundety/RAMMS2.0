@@ -264,7 +264,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                             if (!string.IsNullOrEmpty(structureCode))
                             {
                                 worksheet.Cell(6, 7).Value = structureCode;
-                                worksheet.Cell(6, 7).RichText.Substring(0, structureCode.Length).Strikethrough = true;
+                                //worksheet.Cell(6, 7).RichText.Substring(0, structureCode.Length).Strikethrough = true;
                                 if (!string.IsNullOrEmpty(rpt.StructureCode) && structureCode.IndexOf(" " + rpt.StructureCode + " ") > -1)
                                 {
                                     worksheet.Cell(6, 6).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Bold = true;
