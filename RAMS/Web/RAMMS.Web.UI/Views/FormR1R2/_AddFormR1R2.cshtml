@@ -876,7 +876,7 @@
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmR1R2.Cancel()">Cancel</button>
                 @{
                     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
-                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.IsExecutive);
                     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
                 }
