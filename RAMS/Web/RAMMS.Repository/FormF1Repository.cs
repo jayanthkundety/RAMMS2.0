@@ -46,7 +46,7 @@ namespace RAMMS.Repository
             {
                 query = (from s in _context.RmFormF1Hdr
                          join dtl in _context.RmFormF1Dtl on s.Ff1hPkRefNo equals dtl.Ff1dFf1hPkRefNo
-                         join a in _context.RmAllassetInventory on dtl.Ff1dDescription equals Convert.ToString(a.AiPkRefNo)
+                         join a in _context.RmAllassetInventory on dtl.Ff1dAssetId equals  a.AiAssetId
                          join d in _context.RmRoadMaster on s.Ff1hRdCode equals d.RdmRdCode
                          select new { s, d, a });
                 query = query.Where(s => s.a.AiStrucCode == search.AssertType);
@@ -140,7 +140,7 @@ namespace RAMMS.Repository
 
                 query = (from s in _context.RmFormF1Hdr
                          join dtl in _context.RmFormF1Dtl on s.Ff1hPkRefNo equals dtl.Ff1dFf1hPkRefNo
-                         join a in _context.RmAllassetInventory on dtl.Ff1dDescription equals Convert.ToString(a.AiPkRefNo)
+                         join a in _context.RmAllassetInventory on dtl.Ff1dAssetId equals a.AiAssetId
                          join d in _context.RmRoadMaster on s.Ff1hRdCode equals d.RdmRdCode
                          select new { s, d, a });
                 query = query.Where(s => s.a.AiStrucCode == search.AssertType);
