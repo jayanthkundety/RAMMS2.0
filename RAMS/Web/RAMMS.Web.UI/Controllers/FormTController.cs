@@ -65,31 +65,18 @@ namespace RAMMS.Web.UI.Controllers
             {
                 searchData.filterData.RmuCode = Request.Form["columns[1][search][value]"].ToString() == "null" ? "" : Request.Form["columns[1][search][value]"].ToString();
             }
-
-         
+            if (Request.Form.ContainsKey("columns[2][search][value]"))
+            {
+                searchData.filterData.RoadCode = Request.Form["columns[2][search][value]"].ToString();
+            }
             if (Request.Form.ContainsKey("columns[3][search][value]"))
             {
-                searchData.filterData.RoadCode = Request.Form["columns[3][search][value]"].ToString();
+                searchData.filterData.FromInspectionDate = Request.Form["columns[3][search][value]"].ToString();
             }
-
             if (Request.Form.ContainsKey("columns[4][search][value]"))
             {
-                if (int.TryParse(Request.Form["columns[4][search][value]"].ToString(), out _id))
-                {
-                    searchData.filterData.FromYear = _id;
-                }
+                searchData.filterData.ToInspectionDate = Request.Form["columns[4][search][value]"].ToString();
             }
-
-            if (Request.Form.ContainsKey("columns[5][search][value]"))
-            {
-                if (int.TryParse(Request.Form["columns[5][search][value]"].ToString(), out _id))
-                {
-                    searchData.filterData.ToYear = _id;
-                }
-            }
-
-           
-          
 
 
             filteredPagingDefinition.Filters = searchData.filterData;
@@ -102,8 +89,7 @@ namespace RAMMS.Web.UI.Controllers
             filteredPagingDefinition.StartPageNo = searchData.start; //Convert.ToInt32(Request.Form["start"]); //TODO
             var result = await _formTService.GetHeaderList(filteredPagingDefinition);
             return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
-
-            return null;
+ 
         }
 
         public async Task<IActionResult> GetDetailList(DataTableAjaxPostModel<FormTDtlResponseDTO> searchData)
@@ -170,8 +156,8 @@ namespace RAMMS.Web.UI.Controllers
                     FormExist = frm.FormT.FormExist
                 });
 
-                    // return Json(new { FormExist = frm.FormT.FormExist, RefId = frm.FormT.PkRefId, PkRefNo = frm.FormT.PkRefNo, Status = frm.FormT.Status });
-                }
+                // return Json(new { FormExist = frm.FormT.FormExist, RefId = frm.FormT.PkRefId, PkRefNo = frm.FormT.PkRefNo, Status = frm.FormT.Status });
+            }
             else
             {
                 if (frm.FormT.Status == "Initialize")

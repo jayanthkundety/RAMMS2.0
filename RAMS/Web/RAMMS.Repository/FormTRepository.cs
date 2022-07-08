@@ -32,13 +32,15 @@ namespace RAMMS.Repository
 
 
             var query = (from hdr in _context.RmFormTHdr.Where(s => s.FmtActiveYn == true)
+                         join r in _context.RmRoadMaster on hdr.FmtRdCode equals r.RdmRdCode
                          let vehicle = _context.RmFormTVechicle.Where(r => r.FmtvFmtdiPkRefNo == hdr.FmtPkRefNo).DefaultIfEmpty()
+                        
                          select new
                          {
                              RefNo = hdr.FmtPkRefNo,
-                             RefId = hdr.FmtDesignationRcd,
+                             RefId = hdr.FmtPkRefId,
                              Date = hdr.FmtInspectionDate,
-                             RMU = hdr.FmtRmuCode,
+                             RMU = r.RdmRdName,
                              RoadCode = hdr.FmtRdCode,
                              RoadName = hdr.FmtRdName,
                              TotalPC = vehicle.Where(x => x.FmtvVechicleType == "PC").Sum(y => y.FmtvCount),

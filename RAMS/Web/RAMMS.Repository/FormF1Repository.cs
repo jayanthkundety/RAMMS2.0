@@ -588,6 +588,7 @@ namespace RAMMS.Repository
                                   Descriptions = d.Ff1dDescription,
                                   LocationChKm = d.Ff1dLocCh,
                                   LocationChM = d.Ff1dLocChDeci,
+                                  Length=d.Ff1dTotalLength,
                                   Width = d.Ff1dTopWidth,
                                   BottomWidth = d.Ff1dBottomWidth,
                                   Height = d.Ff1dHeight,

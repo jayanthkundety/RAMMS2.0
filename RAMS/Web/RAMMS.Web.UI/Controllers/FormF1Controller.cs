@@ -146,6 +146,8 @@ namespace RAMMS.Web.UI.Controllers
             if (id > 0)
             {
                 _model.FormF1 = await _formF1Service.GetHeaderById(id);
+                if (_model.FormF1.Status == "Submitted")
+                    view = 0;
             }
             else
             {
