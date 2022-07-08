@@ -17,13 +17,7 @@
            Value = s.DdlTypeValue
        }).ToArray();
 
-    IEnumerable<SelectListItem> year = (await ddlService
-        .GetLookups(new DDLookUpDTO { Type = "Year" }))
-        .Select(s => new SelectListItem
-        {
-            Text = s.DdlTypeValue,
-            Value = s.DdlTypeValue
-        }).ToArray();
+    
     IEnumerable<SelectListItem> section = (await ddlService
        .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
        .Select(s => new SelectListItem
@@ -204,13 +198,10 @@
                     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
                     @{
 
-                        if (isSubmit && (Model.FormF1.Status == null || Model.FormF1.Status == "" || Model.FormF1.Status == "Initialize" || Model.FormF1.Status == "Saved" || Model.FormF1.Status == "Submitted"))
+                        if (isSubmit && (Model.FormF1.Status == null || Model.FormF1.Status == "" || Model.FormF1.Status == "Initialize" || Model.FormF1.Status == "Saved"))
                         {
                             <button id="saveFormF1Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
-                            if (Model.FormF1.Status != "Submitted")
-                            {
-                                <button id="SubmitFormF1Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
-                            }
+                            <button id="SubmitFormF1Btn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
                         }
 
                         if (IsApproved && (Model.FormF1.Status == RAMMS.Common.StatusList.Submitted || Model.FormF1.Status == RAMMS.Common.StatusList.Rejected))

@@ -7,7 +7,7 @@
 </style>
 <div class="main-container" id="container">
     <div id="content">
-        <table id="FormF1GridView" class="table w-100 nowrap">
+        <table id="FormTGridView" class="table w-100 nowrap">
         </table>
     </div>
 </div>
@@ -26,7 +26,7 @@
             if (data.pkRefNo != "" && data.pkRefNo != null) {
                 title = data.pkRefNo;
             }
-            if (data.submitSts && data.status !="Submitted") {
+            if (data.submitSts && data.status != "Submitted") {
                 var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  data-backdrop='static' " + isViewPerm + " onclick='javascript:viewDetail(" + data.pkRefNo + ");'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:deleteHeader(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
                 return actionSection;
             }
@@ -36,11 +36,10 @@
             }
         }
     };
-    var noCol = { data: "pkRefNo", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
-    var refNoCol = { data: "formRefId", name: "Id", title: "Reference No", autoWidth: true, sortable: true };
-    var year = { data: "yearOfInsp", name: "Year", title: "Year of Inspection", autoWidth: true, sortable: true, visible: false };
+    var noCol = { data: "refNo", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
+    var refNoCol = { data: "refId", name: "Id", title: "Reference No", autoWidth: true, sortable: true };
     var dateofInspection = {
-        data: null, name: "dtOfInsp", title: "Date Of Inspection", autoWidth: true, sortable: true,
+        data: null, name: "date", title: "Date", autoWidth: true, sortable: true,
         render: function (data) {
             if (data.dtOfInsp) {
                 var d = new Date(data.dtOfInsp);
@@ -60,47 +59,41 @@
                 return "";
         }
     };
-    var inspectedby = { data: "userNameInspBy", name: "userNameInspBy", title: "Inspected By", autoWidth: true, sortable: true };
-    var division = { data: "divCode", name: "Division", title: "Division", autoWidth: true, sortable: true };
-    var district = { data: "dist", name: "District", title: "District", autoWidth: true, sortable: true };
-    var rmucode = { data: "rmuCode", name: "rmuCode", title: "RMU Abbreviation", autoWidth: true, sortable: true };
-    var rmuname = { data: "rmuName", name: "rmuName", title: "RMU Name", autoWidth: true, sortable: true };
-    var seccode = { data: "sectionCode", name: "SectionCode", title: "Section Code", autoWidth: true, sortable: true };
-    var secname = { data: "sectionName", name: "sectionName", title: "Section Name", autoWidth: true, sortable: true };
-    var roadcode = { data: "roadCode", name: "roadCode", title: "Road Code", autoWidth: true, sortable: true };
-    //var roadname = { data: "roadName", name: "Roadname", title: "Road Name", autoWidth: true, sortable: true,visible: false };
-    //var year = { data: "yearOfInsp", name: "Year", title: "Year", autoWidth: true, sortable: true, visible: false };
-    var crewLeader = { data: "crewLeaderName", name: "CrewLeaderName", title: "Crew Leader", autoWidth: true, sortable: true };
+   
+    var rmuname = { data: "rMU", name: "rmuName", title: "RMU", autoWidth: true, sortable: true };
+    var roadname = { data: "roadName", name: "Roadname", title: "Road Name", autoWidth: true, sortable: true, visible: false };
+    var totalPC = { data: "totalPC", name: "TotalPC", title: "Total Passenger Car", autoWidth: true, sortable: true, visible: false };
+    var totalHV = { data: "totalHV", name: "TotalHV", title: "Total Heavy Vechicle", autoWidth: true, sortable: true, visible: false };
+    var totalMC = { data: "totalMC", name: "TotalMC", title: "Total MotorCycle", autoWidth: true, sortable: true, visible: false };
     var statuscol = { data: "status", name: "status", title: "Status", autoWidth: true, sortable: true };
-
-
+    var recordedby = { data: "recordedby", name: "Recordedby", title: "Recorded By", autoWidth: true, sortable: true };
+    var headedby = { data: "headedby", name: "Recordedby", title: "Headed By", autoWidth: true, sortable: true };
+     
 
     table_columns.push(noCol);
     table_columns.push(actionCol);
     table_columns.push(refNoCol);
-    table_columns.push(year);
     table_columns.push(dateofInspection);
-    table_columns.push(inspectedby);
-    table_columns.push(division);
-    table_columns.push(district);
-    table_columns.push(rmucode);
     table_columns.push(rmuname);
-    table_columns.push(seccode);
-    table_columns.push(secname);
-    table_columns.push(roadcode);
-    table_columns.push(crewLeader);
+    table_columns.push(roadname);
+    table_columns.push(totalPC);
+    table_columns.push(totalHV);
+    table_columns.push(totalMC);
     table_columns.push(statuscol);
-
+    table_columns.push(recordedby);
+    table_columns.push(headedby);
+     
+   
     function PrintForm(id) {
-        window.location.href = '/FormF1/FormF1Download?id=' + id;
+        window.location.href = '/FormT/FormTDownload?id=' + id;
     }
 
     function editDetail(id) {
-        window.location.href = '/FormF1/Add?id=' + id + '&isview=0';
+        window.location.href = '/FormT/Add?id=' + id + '&isview=0';
     }
 
     function viewDetail(id) {
-        window.location.href = '/FormF1/Add?id=' + id + '&isview=1';
+        window.location.href = '/FormT/Add?id=' + id + '&isview=1';
     }
 
     function deleteHeader(id) {
@@ -109,7 +102,7 @@
                 var req = {};
                 req.id = id;
                 $.ajax({
-                    url: '/FormF1/DeleteFormF1',
+                    url: '/FormT/DeleteFormT',
                     dataType: 'JSON',
                     data: req,
                     type: 'Post',
@@ -140,18 +133,15 @@
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
         filterData.SmartSearch = $("#txtSmartSearch").val();
-        filterData.Division = $("#ddlDivision").val();
+        filterData.RmuCode = $("#ddlRMU").val()
         filterData.RoadCode = $("#ddlRoadCode").val()
-        filterData.Year = $("#ddlYear").val();
-        filterData.FromInspectionDate = $("#txtFromInspectiondate").val();
-        filterData.ToInspectionDate = $("#txtToInspectionDate").val();
+        filterData.FromInspectionDate = $("#txtStartDtFrom").val();
+        filterData.ToInspectionDate = $("#txtEndDtTo").val();
+ 
 
-
-
-
-        $('#FormF1GridView').DataTable({
+        $('#FormTGridView').DataTable({
             ajax: {
-                url: "/FormF1/GetHeaderList",
+                url: "/FormT/GetHeaderList",
                 type: "POST",
                 datatype: "json",
                 data: {
@@ -166,27 +156,21 @@
         InitializeGrid();
 
         //Apply Custom search on jQuery DataTables here
-        oTable = $('#FormF1GridView').DataTable();
+        oTable = $('#FormTGridView').DataTable();
 
         $("#btnClearSearch").click(function () {
             //debugger;
             $("#txtSmartSearch").val('');
-            $("#ddlSection").val('');
-            $("#ddlSection").trigger("chosen:updated");
-            $("#txtSectionName").val('');
             $("#ddlRMU").val('');
             $("#ddlRMU").trigger("chosen:updated");
             $("#ddlRoadCode").val('');
             $("#ddlRoadCode").trigger("chosen:updated");
-            $("#ddlFrom").val('');
-            $("#ddlFrom").trigger("chosen:updated");
-            $("#ddlTo").val('');
-            $("#ddlTo").trigger("chosen:updated");
             $("#txtRoadName").val('');
-            $("#ddlAssetType").val('');
-            $("#ddlAssetType").trigger("chosen:updated");
+            $("#txtEndDtTo").val('');
+            $("#txtStartDtFrom").val('');
+            
 
-
+           
 
             var req = {};
             req.RMU = "";
@@ -205,13 +189,7 @@
                         $("#ddlRMU").append($("<option></option>").val(x.value).html(x.text));
                     });
                     $("#ddlRMU").trigger("chosen:updated");
-
-                    $("#ddlSection").empty();
-                    $("#ddlSection").append($("<option></option>").val("").html("Select Section Code"));
-                    $.each(data.section, function (index, v) {
-                        $("#ddlSection").append($("<option></option>").val(v.value).html(v.text));
-                    });
-                    $("#ddlSection").trigger("chosen:updated");
+                                     
 
                     $("#ddlRoadCode").empty();
                     $("#ddlRoadCode").append($("<option></option>").val("").html("Select Road Code"));
@@ -231,17 +209,12 @@
         });
         $('#btnSearch').click(function () {
             //debugger;
-            var secCode = $("#ddlSection").find("option:selected").attr("code");
+           
             oTable.columns(0).search($("#txtSmartSearch").val());
             oTable.columns(1).search($("#ddlRMU").val());
-            oTable.columns(2).search(secCode);
-            oTable.columns(3).search($("#ddlRoadCode").val());
-            oTable.columns(4).search($("#ddlFrom").val());
-            oTable.columns(5).search($("#ddlTo").val());
-            oTable.columns(6).search($("#ddlAssetType").val());
-
-
-
+            oTable.columns(2).search($("#ddlRoadCode").val());
+            oTable.columns(3).search($("#txtStartDtFrom").val());
+            oTable.columns(4).search($("#txtEndDtTo").val());
             oTable.data = filterData;
             oTable.draw();
         });
