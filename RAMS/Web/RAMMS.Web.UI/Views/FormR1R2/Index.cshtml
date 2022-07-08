@@ -137,8 +137,19 @@
         $("#formR1R2ActivityCode").val("").trigger("chosen:updated");
         $("#txtActivityName").val("");
 
-        $("#formR1R2FromDate").val('');
-        $("#formR1R2EndDate").val('');
+        
+        $("#formR1R2FromYear").val("").trigger("chosen:updated");
+        $("#formR1R2FromYear").val("");
+
+        $("#formR1R2InsToYear").val("").trigger("chosen:updated");
+        $("#formR1R2InsToYear").val("");
+
+
+        $("#txtChFromKm").val('');
+        $("#txtChFromM").val('');
+        $("#txtChToKm").val('');
+        $("#txtChToM").val('');
+        
 
         var req = {};
         var _rmu = $("#formR1R2RMU");
@@ -392,11 +403,11 @@
                                         <label for="Location_Chainage_From">Location Chainage To</label>
                                         <div class="row">
                                             <div class="col-6 float-left pr-0">
-                                                <input id="txtChFromKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" ngkeypress="">
+                                                <input id="txtChToKm" type="text" class="form-control" onkeypressvalidate="num,max,5,Chainage From Km" param="chFromKM" ngkeypress="">
                                             </div>
                                             <div class="col-1 float-left p-0 text-center font-weight-bold lh30">+</div>
                                             <div class="col-5 float-left pl-0">
-                                                <input id="txtChFromM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage From M" param="chFromM" ngkeypress="">
+                                                <input id="txtChToM" type="text" class="form-control" onkeypressvalidate="num,max,3,Chainage From M" param="chFromM" ngkeypress="">
                                             </div>
                                         </div>
                                     </div>
