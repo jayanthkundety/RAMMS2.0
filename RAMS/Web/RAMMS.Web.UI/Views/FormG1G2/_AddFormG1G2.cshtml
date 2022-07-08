@@ -28,7 +28,7 @@
 
 @if (Model != null)
 {
-    isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsSupervisor || security.isEnggAssistant);
+    isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsSupervisor || security.isEnggAssistant) && Model.SubmitSts == false;
     <script type="text/javascript">
               frmG1G2.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
             frmG1G2.IsEdit = @(ViewBag.IsEdit ? "true" : "false");

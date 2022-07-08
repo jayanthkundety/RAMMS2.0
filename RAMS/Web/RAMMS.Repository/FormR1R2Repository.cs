@@ -269,6 +269,15 @@ namespace RAMMS.Repository
             return frmR1R2.Fr1hPkRefNo;
         }
 
+        public bool isF1Exist(int id)
+        {
+            var rmF2dtl = _context.RmFormF1Dtl.FirstOrDefault(x => x.Ff1dR1hPkRefNo == id);
+            if (rmF2dtl != null)
+                return true;
+
+            return false;
+        }
+
         public List<FormR1R2Rpt> GetReportData(int headerid)
         {
             return GetReportDataV2(headerid);
@@ -284,8 +293,13 @@ namespace RAMMS.Repository
                             where o.Fr1hPkRefNo == headerid
                             select new { o.Fr1hAiRdCode, o.Fr1hDtOfInsp }).FirstOrDefault();
 
+            var AssetId = (from ast in _context.RmFormR1Hdr
+                           where ast.Fr1hPkRefNo == headerid
+                           select ast.Fr1hAidPkRefNo).First();
+
             List<FormR1R2Rpt> detail = (from o in _context.RmFormR1Hdr
-                                        where (o.Fr1hAiRdCode == roadcode.Fr1hAiRdCode && o.Fr1hDtOfInsp.HasValue && o.Fr1hDtOfInsp < roadcode.Fr1hDtOfInsp) || o.Fr1hPkRefNo == headerid
+                                        //where (o.Fr1hAiRdCode == roadcode.Fr1hAiRdCode && o.Fr1hDtOfInsp.HasValue && o.Fr1hDtOfInsp < roadcode.Fr1hDtOfInsp) || o.Fr1hPkRefNo == headerid
+                                        where (o.Fr1hAiRdCode == roadcode.Fr1hAiRdCode && o.Fr1hDtOfInsp.HasValue && o.Fr1hDtOfInsp < roadcode.Fr1hDtOfInsp && o.Fr1hAidPkRefNo == AssetId && o.Fr1hActiveYn == true) || o.Fr1hPkRefNo == headerid
                                         orderby o.Fr1hYearOfInsp ascending
                                         let formR2 = _context.RmFormR2Hdr.FirstOrDefault(x => x.Fr2hFr1hPkRefNo == o.Fr1hPkRefNo)                                        
                                         select new FormR1R2Rpt
@@ -326,7 +340,7 @@ namespace RAMMS.Repository
                                             PartB2ServiceProvider = formR2.Fr2hDistressSp,
                                             PartB2ServicePrvdrCons = formR2.Fr2hDistressEc,
                                             PartCGeneralComments = formR2.Fr2hGeneralSp,
-                                            PartCGeneralCommentsCons = formR2.Fr2hGeneralSp,
+                                            PartCGeneralCommentsCons = formR2.Fr2hGeneralEc,
                                             PartDFeedback = formR2.Fr2hFeedbackSp,
                                             PartDFeedbackCons = formR2.Fr2hFeedbackEc,
                                             PkRefNo = o.Fr1hPkRefNo

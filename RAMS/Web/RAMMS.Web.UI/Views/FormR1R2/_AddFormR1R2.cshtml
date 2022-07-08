@@ -15,18 +15,18 @@
     string strYear = string.Empty;
     string strRefId = string.Empty;
     bool isSubmit = false;
-    if (Model.AidPkRefNo != null)
+    if (Model != null)
     {
         strAssestID = Model.AssetId;
-        strYear = Model.YearOfInsp.Value.ToString();
+        strYear = Model.YearOfInsp.HasValue ? Model.YearOfInsp.Value.ToString() : "";
         strRefId = Model.RefNo;
-        ViewBag.IsEdit = ViewBag.IsEdit ? (Model.SubmitSts ? false : true) : false;
+        ViewBag.IsEdit = ViewBag.IsEdit ? (Model.Status == "Approved" ? false : true) : false;
     }
 }
 
 <script type="text/javascript" src="~/js/FormR1R2.js" asp-append-version="true"></script>
 
-@if (Model.AidPkRefNo != null)
+@if (Model != null)
 {
     isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.IsSupervisor || security.isEnggAssistant);
     <script type="text/javascript">
@@ -38,16 +38,22 @@
              $("#pkRefNo").val(frmR1R2.HeaderData.PkRefNo);
              $("#r2pkRefNo").val(frmR1R2.HeaderData.FormR2.PkRefNo);
 
-             if (frmR1R2.HeaderData.Status == "Submitted") {
+            // if (frmR1R2.HeaderData.Status == "Submitted") {
 
-                  $('#formR1R2InspectedBy').trigger('chosen:updated');
-                  $("#formR1R2InspectedBy").trigger("change");
-                  $("#InspectedSign").prop("checked",true);
-             } else if (frmR1R2.HeaderData.Status == "Verified") {
-                 $('#formR1R2AuditedBy').trigger('chosen:updated');
-                 $("#formR1R2AuditedBy").trigger("change");
-                 $("#AuditedSign").prop("checked",true);
-             }
+            //      $('#formR1R2InspectedBy').trigger('chosen:updated');
+            //      $("#formR1R2InspectedBy").trigger("change");
+            //      $("#InspectedSign").prop("checked",true);
+            // } else if (frmR1R2.HeaderData.Status == "Verified") {
+            //     $('#formR1R2AuditedBy').trigger('chosen:updated');
+            //     $("#formR1R2AuditedBy").trigger("change");
+            //     $("#AuditedSign").prop("checked",true);
+            //}
+
+            if (frmR1R2.HeaderData.Status == "Verified") {
+                $('#formR1R2AuditedBy').trigger('chosen:updated');
+                $("#formR1R2AuditedBy").trigger("change");
+                $("#AuditedSign").prop("checked", true);
+            }
 
             $('#DistressObserved1').chosen();
             if (frmR1R2.HeaderData.DistressObserved1 != "" && frmR1R2.HeaderData.DistressObserved1 != null) {
@@ -876,7 +882,7 @@
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmR1R2.Cancel()">Cancel</button>
                 @{
                     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
-                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.IsExecutive);
                     bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
 
                 }

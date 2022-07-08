@@ -213,9 +213,13 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
         public int Delete(int id)
         {
-            if (id > 0)
+            if (id > 0&& !_repo.isF1Exist(id))
             {
                 id = _repo.DeleteHeader(new RmFormR1Hdr() { Fr1hActiveYn = false, Fr1hPkRefNo = id });
+            }
+            else
+            {
+                return -1;
             }
             return id;
         }
@@ -256,7 +260,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                     {
                         if (worksheet != null)
                         {
-                            var rpt = _rpt[0];
+                            var rptCount = _rpt.Count;
+                            var rpt = _rpt[rptCount-1];
                             worksheet.Cell(4, 21).Value = rpt.RefernceNo;
                             worksheet.Cell(5, 7).Value = rpt.RoadCode;
                             worksheet.Cell(5, 17).Value = rpt.RoadName;
@@ -409,15 +414,15 @@ namespace RAMMS.Business.ServiceProvider.Services
                             worksheet.Cell(66, 21).Value = rpt.RoadName;
 
                             worksheet.Cell(67, 8).Value = rpt.StructureCode;
-                            worksheet.Cell(67, 23).Value = rpt.RatingRecordNo;
+                            worksheet.Cell(67, 23).Value = rptCount;//rpt.RatingRecordNo;
 
                             worksheet.Cell(73, 2).Value = rpt.PartB2ServiceProvider;
                             worksheet.Cell(73, 19).Value = rpt.PartB2ServicePrvdrCons;
 
-                            worksheet.Cell(83, 1).Value = rpt.PartCGeneralComments;
+                            worksheet.Cell(83, 2).Value = rpt.PartCGeneralComments;
                             worksheet.Cell(83, 19).Value = rpt.PartCGeneralCommentsCons;
 
-                            worksheet.Cell(93, 1).Value = rpt.PartDFeedback;
+                            worksheet.Cell(93, 2).Value = rpt.PartDFeedback;
                             worksheet.Cell(93, 8).Value = rpt.PartDFeedbackCons;
 
                             worksheet.Cell(107, 6).Value = rpt.InspectedByName;
@@ -438,7 +443,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                             worksheet.Cell(117, 21).Value = rpt.RoadName;
 
                             worksheet.Cell(118, 8).Value = rpt.StructureCode;
-                            worksheet.Cell(118, 23).Value = rpt.RatingRecordNo;
+                            worksheet.Cell(118, 23).Value = rptCount; //rpt.RatingRecordNo;
 
                             for (int index = 0; index < rpt.Pictures.Count; ++index)
                             {
@@ -448,28 +453,28 @@ namespace RAMMS.Business.ServiceProvider.Services
                                     switch (index)
                                     {
                                         case 0:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(124, 2), new Point(45, 4)).WithSize(305, 150);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(124, 2), new Point(45, 4)).WithSize(290, 140);
                                             continue;
                                         case 1:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(124, 19), new Point(45, 4)).WithSize(300, 145);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(124, 19), new Point(45, 4)).WithSize(290, 140);
                                             continue;
                                         case 2:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(135, 2), new Point(45, 6)).WithSize(305, 150);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(135, 2), new Point(45, 6)).WithSize(290, 140);
                                             continue;
                                         case 3:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(135, 19), new Point(45, 4)).WithSize(300, 145);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(135, 19), new Point(45, 4)).WithSize(290, 140);
                                             continue;
                                         case 4:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(146, 2), new Point(45, 6)).WithSize(305, 150);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(146, 2), new Point(45, 6)).WithSize(290, 140);
                                             continue;
                                         case 5:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(146, 19), new Point(45, 4)).WithSize(300, 145);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(146, 19), new Point(45, 4)).WithSize(290, 140);
                                             continue;
                                         case 6:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 2), new Point(45, 6)).WithSize(305, 150);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 2), new Point(45, 6)).WithSize(290, 140);
                                             continue;
                                         case 7:
-                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 19), new Point(45, 4)).WithSize(300, 145);
+                                            worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(155, 19), new Point(45, 4)).WithSize(290, 140);
                                             continue;
                                         //case 9:
                                         //    worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(207, 9), new Point(45, 6)).WithSize(347, 178);
