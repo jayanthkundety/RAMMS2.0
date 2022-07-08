@@ -273,7 +273,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                     {
                         if (worksheet != null)
                         {
-                            var rpt = _rpt[0];
+                            var rptCount = _rpt.Count;
+                            var rpt = _rpt[rptCount - 1];
                             worksheet.Cell(7, 3).Value = rpt.RefernceNo;
                             worksheet.Cell(9, 10).Value = rpt.Division;
                             worksheet.Cell(9, 10).Value = rpt.RMU;
@@ -357,7 +358,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                             worksheet.Cell(74, 3).Value = rpt.RoadName;
 
                             worksheet.Cell(71, 11).Value = rpt.RefernceNo;
-                            worksheet.Cell(72, 11).Value = rpt.RatingRecordNo;
+                            worksheet.Cell(72, 11).Value = rptCount;// rpt.RatingRecordNo;
                             worksheet.Cell(73, 11).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
 
                             worksheet.Cell(81, 1).Value = rpt.PartB2ServiceProvider;
@@ -381,7 +382,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                             worksheet.Cell(139, 3).Value = rpt.RoadName;
 
                             worksheet.Cell(136, 13).Value = rpt.RefernceNo;
-                            worksheet.Cell(137, 13).Value = rpt.RatingRecordNo;
+                            worksheet.Cell(137, 13).Value = rptCount;//rpt.RatingRecordNo;
                             worksheet.Cell(138, 13).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
 
                             worksheet.Cell(200, 3).Value = rpt.ReportforYear;
@@ -390,7 +391,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                             worksheet.Cell(203, 3).Value = rpt.RoadName;
 
                             worksheet.Cell(200, 13).Value = rpt.RefernceNo;
-                            worksheet.Cell(201, 13).Value = rpt.RatingRecordNo;
+                            worksheet.Cell(201, 13).Value = rptCount;// rpt.RatingRecordNo;
                             worksheet.Cell(202, 13).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
 
 
