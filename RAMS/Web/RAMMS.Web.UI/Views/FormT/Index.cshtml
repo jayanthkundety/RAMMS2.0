@@ -1,0 +1,359 @@
+﻿@using RAMMS.DTO.RequestBO;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    ViewData["Title"] = "TRAFFIC VOLUME COUNT FORM (FORM T)";
+    ViewBag.TabTitle = "TRAFFIC VOLUME COUNT FORM (FORM T)";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+
+  
+
+    IEnumerable<SelectListItem> roadcode = (IEnumerable<SelectListItem>)ViewData["RD_Code"];
+
+    IEnumerable<SelectListItem> rmu = (await ddlService
+.GetLookups(new DDLookUpDTO { Type = "RMU" }))
+.Select(s => new SelectListItem
+{
+    Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+    Value = s.DdlTypeCode
+}).ToArray();
+
+    
+}
+<script type="text/javascript">
+    function fnEditForm(pid, view) {
+        window.location = '@Url.Action("Add", "FormT")' + "?id=" + pid + "&view=" + view;
+    }
+
+
+    function bindRoadCode() {
+        var _ddlRoadCode = $("#ddlRoadCode");
+        _ddlRoadCode.chosen();
+        var req = {};
+        //req.code = $("#ddlDivision").val();
+        req.RMU =null;
+        req.SectionCode = 0;
+        req.RdCode = null;
+        req.GrpCode = "GR"
+        $.ajax({
+            //url: '/FormF2/GetRoadListByDivisionCode',
+            url: '/FormF2/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                _ddlRoadCode.empty();
+                _ddlRoadCode.append($("<option></option>").val("").html("Select Road Code"));
+                $.each(data.rdCode, function (index, v) {
+                    _ddlRoadCode.append($("<option></option>").val(v.value).html(v.text));
+                    //var text = v.roadCode + " - " + v.roadName;
+                    //_ddlRoadCode.append($("<option></option>").val(v.roadCode).html(text));
+                });
+
+                _ddlRoadCode.trigger("chosen:updated");
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#btnAdvSearch").on("click", function () {
+            $("#formTAdvSearch").toggle();
+        });
+
+        $("#ddlRMU").on("change", function () {
+
+            var req = {};
+            var _rmu = $("#ddlRMU");
+            var _sec = $("#ddlSection");
+            var _road = $("#ddlRoadCode");
+           // req.RMU = $("#ddlRMU").find("option:selected").text();
+            req.RMU = $("#ddlRMU").find("option:selected").val();
+            //if (rmu.toUpperCase() == "MIRI") {
+            //    req.RMU = "MRI";
+            //} else if (rmu == "Batu Niah") {
+            //    req.RMU = "BTN";
+            //}
+            //else {
+            //    req.RMU = '';
+            //}
+            //if (this.value == "") {
+            //    req.RMU = '';
+            //}
+            req.Section = '';
+            req.RdCode = '';
+             req.GrpCode = "GR"
+            $("#txtRoadName").val("");
+            $("#txtSectionName").val("");
+
+            $.ajax({
+                //url: '/NOD/RMUSecRoad',
+                url: '/FormF2/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+
+                    //if (req.Section == "") {
+                    _sec.empty();
+                    if (data.section.length != 1) {
+                        _sec.append($("<option></option>").val("").html("Select Section"));
+                    }
+
+                    $.each(data.section, function (index, v) {
+                        _sec.append($("<option></option>").val(v.value).html(v.text).attr("code",v.code));
+                    });
+                    $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
+                    //}
+                    //if (req.RoadCode == "") {
+                    _road.empty();
+                    _road.append($("<option></option>").val("").html("Select Road Code"));
+                    $.each(data.rdCode, function (index, v) {
+                        _road.append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    //}
+                    _sec.trigger("chosen:updated");
+                    _road.trigger("chosen:updated");
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+        $("#ddlRMU").trigger("change");
+        $("#ddlSection").on("change", function () {
+
+            if (this.value == "") {
+                $("#txtSectionName").val("");
+            }
+            else {
+                $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
+            }
+            var req = {};
+            var _rmu = $("#ddlRMU");
+            var _sec = $("#ddlSection");
+            var _road = $("#ddlRoadCode");
+            var rmu = $("#ddlRMU").find("option:selected").text();
+            if (rmu == "Select RMU") {
+                req.RMU = null;
+            }
+           // req.SectionCode = $("#ddlSection").find("option:selected").attr('code');
+            req.SectionCode = $("#ddlSection").find("option:selected").text().split("-")[0];
+             req.GrpCode = "GR"
+            $.ajax({
+                url: '/FormF2/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+
+                    _rmu.empty();
+                    if (data.rmu.length != 1) {
+                        _rmu.append($("<option></option>").val("").html("Select RMU"));
+                    }
+
+                    $.each(data.rmu, function (index, x) {
+                        _rmu.append($("<option></option>").val(x.value).html(x.text));
+                    });
+                    _rmu.trigger("chosen:updated");
+
+                    _road.empty();
+                    _road.append($("<option></option>").val("").html("Select Road Code"));
+                    $.each(data.rdCode, function (index, v) {
+                        _road.append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    _road.trigger("chosen:updated");
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+
+        $("#ddlRoadCode").on("change", function () {
+            if (this.value != "") {
+                $("#txtRoadName").val($("#ddlRoadCode").find(":selected").text().split("-")[1].trim());
+            }
+            else {
+                $("#txtRoadName").val("");
+            }
+
+            var req = {};
+            var _rmu = $("#ddlRMU");
+            var _sec = $("#ddlSection");
+            var _road = $("#ddlRoadCode");
+            var rmu = $("#ddlRMU").find("option:selected").text();
+            if (rmu == "Select RMU") {
+                req.RMU = null;
+            }
+            req.rdCode = $("#ddlRoadCode").find("option:selected").val();
+             req.GrpCode = "GR"
+            $.ajax({
+                url: '/FormF2/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    _rmu.empty();
+                    if (data.rmu.length != 1) {
+                        _rmu.append($("<option></option>").val("").html("Select RMU"));
+                    }
+                    $.each(data.rmu, function (index, x) {
+                        _rmu.append($("<option></option>").val(x.value).html(x.text));
+                    });
+                    _rmu.trigger("chosen:updated");
+
+                    _sec.empty();
+                    if (data.section.length != 1) {
+                        _sec.append($("<option></option>").val("").html("Select Section"));
+                    }
+                     $.each(data.section, function (index, v) {
+                        _sec.append($("<option></option>").val(v.value).html(v.text));
+                    });
+                    _sec.trigger("chosen:updated");
+
+                    $("#txtSectionName").val($("#ddlSection").find("option:selected").text().split("-")[1]);
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+
+        bindRoadCode();
+            //Listener for Smart and Detail Search
+        document.getElementById("txtSmartSearch").focus();
+          element = document.querySelector("#formTAdvSearch");
+          element.addEventListener("keyup", () => {
+          if (event.keyCode === 13) {
+           $("#btnSearch").click();
+          }
+        });
+        $("#txtSmartSearch").keyup(function () {
+          if (event.keyCode === 13) {
+            $("#btnSearch").click();
+           }
+        })
+    });
+
+
+</script>
+<!--BreadCrumbs-->
+<div class="row">
+    <div class="body-header w-100">
+        <div class="col-lg-12">
+            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                <span class="mb-0 font-weight-bold font-20">TRAFFIC VOLUME COUNT FORM (FORM T)</span>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Condition Inspection</li>
+                        <li class="breadcrumb-item" aria-current="page">
+                            Form T
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Search Section -->
+<div class="search-section">
+    <div class="row justify-content-center mb-1">
+        <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6 search-content">
+            <div class="input-group">
+                @*@Html.TextBoxFor(m => m.SearchObj.SmartInputValue, new { @Id = "FormB1B2SmartSearch", placeholder = "Search...", @class = "form-control" })*@
+                <input type="text" id="txtSmartSearch" placeholder="Search..." class="form-control" />
+                <div class="input-group-append">
+                    <div class="btn-group">
+                        <button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                        <button id="btnAdvSearch" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0"><span class="filter-icon"></span></button>
+                        <button id="btnClearSearch" type="button" onclick="" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Detail Search Screen*@
+    <div id="detailSearch">
+        <div class="row" id="formTAdvSearch" style="display:none">
+            <div id="formF2DetailsearchForm" name="formF2DetailsearchForm">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="bg-white rounded float-left pt-3 pb-1 advance-search-group col-md-12 px-4">
+                        <div class="row">
+
+                            <div class="form-group col-md-3">
+                                @Html.Label("RMU", "RMU")
+                                <select id="ddlRMU" class="form-control">
+                                    <option value="">Select RMU</option>
+                                    @foreach (var div in rmu)
+                                    {
+                                        <option value="@div.Value">@div.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Code", "Road Code")
+                                <select id="ddlRoadCode" class="form-control">
+                                    <option value="">Select Road Code</option>
+                                    @foreach (var road in roadcode)
+                                    {
+                                        <option value="@road.Value">@road.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Road Name", "Road Name")
+                                <input id="txtRoadName" disabled="disabled" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Date From", "Date From")
+                                <input class="form-control" type="date" id="txtStartDtFrom">
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("Date To", "Date To")
+                                <input class="form-control" type="date" id="txtEndDtTo">
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Main Container -->
+<main id="main-container" class="row">
+    <div class="col-lg-12">
+        <div class="w-100 float-left position-relative">
+
+            <div class="grid-btns">
+
+                @if (security.IsPCModify(ModuleNameList.Condition_Inspection))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="javascript:fnEditForm(0,0);"><span class="add-icon"></span> Add Form T</button>
+
+                }
+            </div>
+
+            @*Form F2 Grid*@
+            <div id="headerListGrid" class="w-100 dt-tbl-section">
+                @{
+                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                }
+            </div>
+        </div>
+    </div>
+</main>

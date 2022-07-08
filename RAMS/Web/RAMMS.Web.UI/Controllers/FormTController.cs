@@ -19,18 +19,18 @@ using System.Threading.Tasks;
 
 namespace RAMMS.Web.UI.Controllers
 {
-    public class FormF1Controller : BaseController
+    public class FormTController : BaseController
     {
 
-        private IFormF1Service _formF1Service;
+        private IFormTService _formTService;
         private readonly IFormJServices _formJService;
         private ISecurity _security;
         private IWebHostEnvironment _environment;
         private IUserService _userService;
         private IRoadMasterService _roadMasterService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public FormF1Controller(
-            IFormF1Service service,
+        public FormTController(
+            IFormTService service,
             ISecurity security,
             IUserService userService,
             IWebHostEnvironment webhostenvironment,
@@ -38,7 +38,7 @@ namespace RAMMS.Web.UI.Controllers
              IFormJServices formJServices)
         {
             _userService = userService;
-            _formF1Service = service;
+            _formTService = service;
             _security = security;
             _roadMasterService = roadMasterService;
             _formJService = formJServices ?? throw new ArgumentNullException(nameof(formJServices));
@@ -50,12 +50,12 @@ namespace RAMMS.Web.UI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetHeaderList(DataTableAjaxPostModel<FormF1SearchGridDTO> searchData)
+        public async Task<IActionResult> GetHeaderList(DataTableAjaxPostModel<FormTSearchGridDTO> searchData)
         {
             int _id = 0;
             DateTime dt;
-            FilteredPagingDefinition<FormF1SearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormF1SearchGridDTO>();
-            searchData.filterData = searchData.filterData ?? new FormF1SearchGridDTO();
+            FilteredPagingDefinition<FormTSearchGridDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormTSearchGridDTO>();
+            searchData.filterData = searchData.filterData ?? new FormTSearchGridDTO();
             if (Request.Form.ContainsKey("columns[0][search][value]"))
             {
                 searchData.filterData.SmartSearch = Request.Form["columns[0][search][value]"].ToString();
@@ -65,42 +65,18 @@ namespace RAMMS.Web.UI.Controllers
             {
                 searchData.filterData.RmuCode = Request.Form["columns[1][search][value]"].ToString() == "null" ? "" : Request.Form["columns[1][search][value]"].ToString();
             }
-
             if (Request.Form.ContainsKey("columns[2][search][value]"))
             {
-                if (int.TryParse(Request.Form["columns[2][search][value]"].ToString(), out _id))
-                {
-                    searchData.filterData.SecCode = _id;
-                }
+                searchData.filterData.RoadCode = Request.Form["columns[2][search][value]"].ToString();
             }
-
             if (Request.Form.ContainsKey("columns[3][search][value]"))
             {
-                searchData.filterData.RoadCode = Request.Form["columns[3][search][value]"].ToString();
+                searchData.filterData.FromInspectionDate = Request.Form["columns[3][search][value]"].ToString();
             }
-
             if (Request.Form.ContainsKey("columns[4][search][value]"))
             {
-                if (int.TryParse(Request.Form["columns[4][search][value]"].ToString(), out _id))
-                {
-                    searchData.filterData.FromYear = _id;
-                }
+                searchData.filterData.ToInspectionDate = Request.Form["columns[4][search][value]"].ToString();
             }
-
-            if (Request.Form.ContainsKey("columns[5][search][value]"))
-            {
-                if (int.TryParse(Request.Form["columns[5][search][value]"].ToString(), out _id))
-                {
-                    searchData.filterData.ToYear = _id;
-                }
-            }
-
-            if (Request.Form.ContainsKey("columns[6][search][value]"))
-            {
-                searchData.filterData.AssertType = Request.Form["columns[6][search][value]"].ToString();
-            }
-
-          
 
 
             filteredPagingDefinition.Filters = searchData.filterData;
@@ -111,15 +87,14 @@ namespace RAMMS.Web.UI.Controllers
             }
             filteredPagingDefinition.RecordsPerPage = searchData.length; //Convert.ToInt32(Request.Form["length"]);
             filteredPagingDefinition.StartPageNo = searchData.start; //Convert.ToInt32(Request.Form["start"]); //TODO
-            var result = await _formF1Service.GetHeaderList(filteredPagingDefinition);
+            var result = await _formTService.GetHeaderList(filteredPagingDefinition);
             return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
-
-            return null;
+ 
         }
 
-        public async Task<IActionResult> GetDetailList(DataTableAjaxPostModel<FormF1DtlResponseDTO> searchData)
+        public async Task<IActionResult> GetDetailList(DataTableAjaxPostModel<FormTDtlResponseDTO> searchData)
         {
-            FilteredPagingDefinition<FormF1DtlResponseDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormF1DtlResponseDTO>();
+            FilteredPagingDefinition<FormTDtlResponseDTO> filteredPagingDefinition = new FilteredPagingDefinition<FormTDtlResponseDTO>();
 
             filteredPagingDefinition.Filters = searchData.filterData;
             if (searchData.order != null)
@@ -129,7 +104,7 @@ namespace RAMMS.Web.UI.Controllers
             }
             filteredPagingDefinition.RecordsPerPage = searchData.length; //Convert.ToInt32(Request.Form["length"]);
             filteredPagingDefinition.StartPageNo = searchData.start; //Convert.ToInt32(Request.Form["start"]); //TODO
-            var result = await _formF1Service.GetDetailList(filteredPagingDefinition);
+            var result = await _formTService.GetDetailList(filteredPagingDefinition);
             return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
 
         }
@@ -142,51 +117,52 @@ namespace RAMMS.Web.UI.Controllers
             FormASearchDropdown ddl = _formJService.GetDropdown(new RequestDropdownFormA { });
             ViewData["SectionCode"] = ddl.Section.Select(s => new SelectListItem { Text = s.Text, Value = s.Value }).ToArray();
 
-            FormF1Model _model = new FormF1Model();
+            FormTModel _model = new FormTModel();
             if (id > 0)
             {
-                _model.FormF1 = await _formF1Service.GetHeaderById(id);
-                if (_model.FormF1.Status == "Submitted")
-                    view = 0;
+                _model.FormT = await _formTService.GetHeaderById(id);
             }
             else
             {
-                _model.FormF1 = new FormF1ResponseDTO();
+                _model.FormT = new FormTResponseDTO();
             }
-            ViewData["Asset"] = _formF1Service.GetAssetDetails(_model.FormF1);
+            ViewData["Asset"] = _formTService.GetAssetDetails(_model.FormT);
 
 
-            _model.FormF1 = _model.FormF1 ?? new FormF1ResponseDTO();
+            _model.FormT = _model.FormT ?? new FormTResponseDTO();
             _model.view = view;
 
-            if ((_model.FormF1.InspectedBy == null || _model.FormF1.InspectedBy == 0) && _model.FormF1.Status == RAMMS.Common.StatusList.Submitted)
-            {
-                _model.FormF1.InspectedBy = _security.UserID;
-                _model.FormF1.InspectedDate = DateTime.Today;
-                _model.FormF1.InspectedBySign = true;
-            }
+            //if ((_model.FormT.InspectedBy == null || _model.FormT.InspectedBy == 0) && _model.FormT.Status == RAMMS.Common.StatusList.Submitted)
+            //{
+            //    _model.FormT.InspectedBy = _security.UserID;
+            //    _model.FormT.InspectedDate = DateTime.Today;
+            //    _model.FormT.InspectedBySign = true;
+            //}
 
-            return PartialView("~/Views/FormF1/_AddFormF1.cshtml", _model);
+            return PartialView("~/Views/FormT/_AddFormT.cshtml", _model);
         }
 
 
 
-        public async Task<IActionResult> SaveFormF1(FormF1Model frm)
+        public async Task<IActionResult> SaveFormT(FormTModel frm)
         {
             int refNo = 0;
-            frm.FormF1.ActiveYn = true;
-            if (frm.FormF1.PkRefNo == 0)
+            frm.FormT.ActiveYn = true;
+            if (frm.FormT.PkRefNo == 0)
             {
-                frm.FormF1 = await _formF1Service.SaveFormF1(frm.FormF1);
-               
+                frm.FormT = await _formTService.SaveFormT(frm.FormT);
+                return Json(new
+                {
+                    FormExist = frm.FormT.FormExist
+                });
 
-                return Json(new { FormExist = frm.FormF1.FormExist, RefId = frm.FormF1.PkRefId, PkRefNo = frm.FormF1.PkRefNo, Status = frm.FormF1.Status });
+                // return Json(new { FormExist = frm.FormT.FormExist, RefId = frm.FormT.PkRefId, PkRefNo = frm.FormT.PkRefNo, Status = frm.FormT.Status });
             }
             else
             {
-                if (frm.FormF1.Status == "Initialize")
-                    frm.FormF1.Status = "Saved";
-                refNo = await _formF1Service.Update(frm.FormF1);
+                if (frm.FormT.Status == "Initialize")
+                    frm.FormT.Status = "Saved";
+                refNo = await _formTService.Update(frm.FormT);
             }
             return Json(refNo);
 
@@ -194,46 +170,46 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        public async Task<IActionResult> SaveFormF1Dtl(FormF1Model frm)
+        public async Task<IActionResult> SaveFormTDtl(FormTModel frm)
         {
             int? refNo = 0;
 
-            frm.FormF1Dtl.Ff1hPkRefNo = frm.FormF1.PkRefNo;
-            if (frm.FormF1Dtl.PkRefNo == 0)
+            frm.FormTDtl.FmtPkRefNo = frm.FormT.PkRefNo;
+            if (frm.FormTDtl.PkRefNo == 0)
             {
-                refNo = _formF1Service.SaveFormF1Dtl(frm.FormF1Dtl);
+                refNo = _formTService.SaveFormTDtl(frm.FormTDtl);
 
             }
             else
             {
-                _formF1Service.UpdateFormF1Dtl(frm.FormF1Dtl);
+                _formTService.UpdateFormTDtl(frm.FormTDtl);
             }
             return Json(refNo);
 
 
         }
 
-        public async Task<IActionResult> DeleteFormF1(int id)
+        public async Task<IActionResult> DeleteFormT(int id)
         {
             int? rowsAffected = 0;
-            rowsAffected = _formF1Service.DeleteFormF1(id);
+            rowsAffected = _formTService.DeleteFormT(id);
             return Json(rowsAffected);
         }
 
-        public async Task<IActionResult> DeleteFormF1Dtl(int id)
+        public async Task<IActionResult> DeleteFormTDtl(int id)
         {
             int? rowsAffected = 0;
-            rowsAffected = _formF1Service.DeleteFormF1Dtl(id);
+            rowsAffected = _formTService.DeleteFormTDtl(id);
             return Json(rowsAffected);
         }
 
 
-        public async Task<IActionResult> FormF1Download(int id, [FromServices] IWebHostEnvironment _environment)
-        {
-            var content1 = await _formF1Service.FormDownload("FORMF1", id, _environment.WebRootPath + "/Templates/FORMF1.xlsx");
-            string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            return File(content1, contentType1, "FORMF1" + ".xlsx");
-        }
+        //public async Task<IActionResult> FormTDownload(int id, [FromServices] IWebHostEnvironment _environment)
+        //{
+        //    var content1 = await _formTService.FormDownload("FORMT", id, _environment.WebRootPath + "/Templates/FORMT.xlsx");
+        //    string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        //    return File(content1, contentType1, "FORMT" + ".xlsx");
+        //}
 
     }
 }
