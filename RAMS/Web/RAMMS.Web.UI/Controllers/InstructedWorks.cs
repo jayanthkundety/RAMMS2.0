@@ -105,8 +105,8 @@ namespace RAMMS.Web.UI.Controllers
             ddLookup.TypeCode = "";
             ViewData["IWBYDE"] = await _ddLookupService.GetDdDescValue(ddLookup);
 
-            var irights = _security.IWRights.GroupBy(m => m.MfrModFormName);
-            ViewData["IWRights"] = JsonConvert.SerializeObject(irights);
+            //var irights = _security.IWRights.GroupBy(m => m.MfrModFormName);
+            ViewData["IWRights"] = "{}"; //JsonConvert.SerializeObject(irights);
             ViewData["Groups"] = JsonConvert.SerializeObject(_security.Groups);
 
             return View();
