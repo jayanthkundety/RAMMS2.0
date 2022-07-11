@@ -423,15 +423,15 @@ namespace RAMMS.Business.ServiceProvider.Services
                             worksheet.Cell(83, 19).Value = rpt.PartCGeneralCommentsCons;
 
                             worksheet.Cell(93, 2).Value = rpt.PartDFeedback;
-                            worksheet.Cell(93, 8).Value = rpt.PartDFeedbackCons;
+                            worksheet.Cell(93, 19).Value = rpt.PartDFeedbackCons;
 
                             worksheet.Cell(107, 6).Value = rpt.InspectedByName;
-                            worksheet.Cell(108, 2).Value = rpt.InspectedByDesignation;
-                            worksheet.Cell(109, 2).Value = rpt.InspectedByDate;
+                            worksheet.Cell(108, 6).Value = rpt.InspectedByDesignation;
+                            worksheet.Cell(109, 6).Value = rpt.InspectedByDate;
 
                             worksheet.Cell(107, 23).Value = rpt.AuditedByName;
                             worksheet.Cell(108, 23).Value = rpt.AuditedByDesignation;
-                            worksheet.Cell(129, 23).Value = rpt.AuditedByDate;
+                            worksheet.Cell(109, 23).Value = rpt.AuditedByDate;
 
                             worksheet.Cell(110, 32).Value = rpt.RatingWallConditionRate;
                             worksheet.Cell(111, 32).Value = rpt.HaveIssueFound;
