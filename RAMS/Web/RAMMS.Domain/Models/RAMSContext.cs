@@ -11239,16 +11239,6 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmtPkRefNo).HasColumnName("FMT_PK_Ref_No");
 
-                entity.Property(e => e.FmtActCode)
-                    .HasColumnName("FMT_ACT_Code")
-                    .HasMaxLength(16)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FmtActName)
-                    .HasColumnName("FMT_ACT_Name")
-                    .HasMaxLength(4000)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.FmtActiveYn).HasColumnName("FMT_Active_YN");
 
                 entity.Property(e => e.FmtAuditLog)
@@ -11297,6 +11287,16 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FmtDivCode)
+                    .HasColumnName("FMT_Div_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmtDivName)
+                    .HasColumnName("FMT_Div_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.FmtHvTotal).HasColumnName("FMT_HV_Total");
 
                 entity.Property(e => e.FmtInspectionDate)
@@ -11328,9 +11328,24 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FmtReferenceNo)
+                    .HasColumnName("FMT_Reference_No")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.FmtRmuCode)
                     .HasColumnName("FMT_RMU_Code")
                     .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmtSecCode)
+                    .HasColumnName("FMT_Sec_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmtSecName)
+                    .HasColumnName("FMT_Sec_Name")
+                    .HasMaxLength(250)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FmtSignHdd).HasColumnName("FMT_Sign_HDD");

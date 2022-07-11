@@ -10,11 +10,14 @@ namespace RAMMS.DTO.ResponseBO
     {
 
         public int PkRefNo { get; set; }
+        public string PkRefId { get; set; }
         public string RmuCode { get; set; }
+        public string DivCode { get; set; }
+        public string SecCode { get; set; }
+        public string SecName { get; set; }
         public string RdCode { get; set; }
         public string RdName { get; set; }
-        public string ActCode { get; set; }
-        public string ActName { get; set; }
+        public string ReferenceNo { get; set; }
         public string DirectionFrm { get; set; }
         public string DirectionTo { get; set; }
         [DataType(DataType.Date)]
@@ -47,7 +50,7 @@ namespace RAMMS.DTO.ResponseBO
         public bool? ActiveYn { get; set; }
         public string Status { get; set; }
         public string AuditLog { get; set; }
- 
+
         public bool FormExist { get; set; }
 
     }

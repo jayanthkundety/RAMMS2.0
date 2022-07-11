@@ -6,7 +6,7 @@ namespace RAMMS.DTO.RequestBO
     public class FormTHeaderRequestDTO
     {
          
-        public int RefNo { get; set; }
+        public int PkRefNo { get; set; }
         public string RefId { get; set; }
         public string RMU { get; set; }
         public string RoadCode { get; set; }

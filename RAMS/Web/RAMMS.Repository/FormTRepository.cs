@@ -193,7 +193,7 @@ namespace RAMMS.Repository
                 Date = s.Date,
                 Headedby = s.Headedby,
                 Recordedby = s.Headedby,
-                RefNo = s.RefNo,
+                PkRefNo = s.RefNo,
                 RefId = s.RefId,
                 RMU = s.RMU,
                 RoadCode = s.RoadCode,
@@ -209,27 +209,49 @@ namespace RAMMS.Repository
 
         public async Task<List<FormTDtlGridDTO>> GetFormTDtlGridList(FilteredPagingDefinition<FormTDtlResponseDTO> filterOptions)
         {
-            List<RmFormTDailyInspection> result = new List<RmFormTDailyInspection>();
+            //List<RmFormTDailyInspection> result = new List<RmFormTDailyInspection>();
 
             //var query = from x in _context.RmFormTDailyInspection
-            //            join a in _context.RmAllassetInventory on x.Ff1dAssetId equals a.AiAssetId
-            //            where x.Ff1dFmtPkRefNo == filterOptions.Filters.FmtPkRefNo
+            //            join v in _context.RmFormTVechicle on x.FmtdiPkRefNo equals v.FmtvPkRefNo
+            //            let PC in 
+            //            where x.FmtdiFmtPkRefNo == filterOptions.Filters.FmtPkRefNo
             //            orderby x.FmtdiPkRefNo descending
-            //            select new { x, a };
+            //            select new { x };
+          
+            //var list = await query.ToListAsync();
+            //var  list1 = list.AsQueryable();
+            //list.Select(s => new FormTDtlGridDTO
+            //{
+
+            //    AssetId = s.a.AiAssetId,
+            //    Ch = s.x.Ff1dLocCh + "+" + s.x.Ff1dLocChDeci,
+            //    OverallCondition = Convert.ToInt32(s.x.Ff1dOverallCondition),
+            //    Description = s.x.Ff1dDescription,
+            //    FrmCh = s.x.Ff1dLocCh,
+            //    FrmChDec = s.x.Ff1dLocChDeci,
+            //    Height = s.a.AiHeight,
+            //    PkRefNo = s.x.FmtdiPkRefNo,
+            //    StructureCode = s.a.AiStrucCode,
+            //    Length = s.a.AiLength,
+            //    Width = s.a.AiWidth,
+            //    BottomWidth = s.a.AiBotWidth,
+            //    Tier = s.a.AiTier
+
+            //}).ToList();
 
 
             //if (filterOptions.sortOrder == SortOrder.Ascending)
             //{
             //    if (filterOptions.ColumnIndex == 1)
-            //        query = query.OrderBy(x => x.x.FmtdiPkRefNo);
+            //        list = list.OrderBy(x => x.x.FmtdiPkRefNo);
             //    if (filterOptions.ColumnIndex == 2)
-            //        query = query.OrderBy(x => x.x.Ff1dLocCh);
+            //        query = query.OrderBy(x => x.x.FmtdiInspectionDate);
             //    if (filterOptions.ColumnIndex == 3)
-            //        query = query.OrderBy(x => x.x.Ff1dCode);
+            //        query = query.OrderBy(x => x.x.FmtdiAuditTimeFrm);
             //    if (filterOptions.ColumnIndex == 4)
-            //        query = query.OrderBy(x => x.x.Ff1dOverallCondition);
+            //        query = query.OrderBy(x => x.x.FmtdiAuditTimeTo);
             //    if (filterOptions.ColumnIndex == 5)
-            //        query = query.OrderBy(x => x.a.AiBound);
+            //        query = query.OrderBy(x => x.x.FmtdiDescription);
             //    if (filterOptions.ColumnIndex == 6)
             //        query = query.OrderBy(x => x.a.AiWidth);
             //    if (filterOptions.ColumnIndex == 7)
@@ -333,53 +355,7 @@ namespace RAMMS.Repository
         }
 
 
-        public async Task<RmFormTHdr> SaveFormT(RmFormTHdr FormT)
-        {
-            try
-            {
-
-                //var search = (from r1 in _context.RmFormR1Hdr
-                //              where r1.Fr1hAiDivCode == FormT.Ff1hDivCode && r1.Fr1hAiRmuCode == FormT.Ff1hRmuCode && r1.Fr1hYearOfInsp == FormT.Ff1hInspectedYear && r1.Fr1hAiRdCode == FormT.Ff1hRdCode && r1.Fr1hActiveYn == true
-                //              select r1);
-
-                //if (search.Count() > 0)
-                //{
-                //    _context.RmFormTHdr.Add(FormT);
-                //    _context.SaveChanges();
-
-                //    var res = (from r1 in _context.RmFormR1Hdr
-                //               join a in _context.RmAllassetInventory on r1.Fr1hAidPkRefNo equals a.AiPkRefNo
-                //               where r1.Fr1hAiDivCode == FormT.Ff1hDivCode && r1.Fr1hAiRmuCode == FormT.Ff1hRmuCode && r1.Fr1hYearOfInsp == FormT.Ff1hInspectedYear && r1.Fr1hAiRdCode == FormT.Ff1hRdCode && r1.Fr1hActiveYn == true
-                //               select new RmFormTDailyInspection
-                //               {
-                //                   Ff1dFmtPkRefNo = FormT.FmtPkRefNo,
-                //                   Ff1dAssetId =r1.Fr1hAssetId,
-                //                   Ff1dR1hPkRefNo = r1.Fr1hPkRefNo,
-                //                   Ff1dTier = Convert.ToInt32(a.AiTier),
-                //                   Ff1dCode = a.AiStrucCode,
-                //                   Ff1dHeight = Convert.ToDecimal(a.AiHeight),
-                //                   Ff1dTopWidth = Convert.ToDecimal(a.AiWidth),
-                //                   Ff1dOverallCondition = r1.Fr1hCondRating,
-                //                   Ff1dLocCh = a.AiLocChKm,
-                //                   Ff1dLocChDeci = a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM)
-
-                //               }).ToList();
-
-                //    foreach (var item in res)
-                //    {
-                //        _context.RmFormTDailyInspection.Add(item);
-                //        _context.SaveChanges();
-                //    }
-
-                //}
-
-                return FormT;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
+       
         public int? DeleteFormT(int id)
         {
             try

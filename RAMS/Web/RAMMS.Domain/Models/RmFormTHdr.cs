@@ -12,11 +12,14 @@ namespace RAMMS.Domain.Models
 
         public int FmtPkRefNo { get; set; }
         public string FmtPkRefId { get; set; }
+        public string FmtReferenceNo { get; set; }
         public string FmtRmuCode { get; set; }
         public string FmtRdCode { get; set; }
         public string FmtRdName { get; set; }
-        public string FmtActCode { get; set; }
-        public string FmtActName { get; set; }
+        public string FmtDivCode { get; set; }
+        public string FmtDivName { get; set; }
+        public string FmtSecCode { get; set; }
+        public string FmtSecName { get; set; }
         public string FmtDirectionFrm { get; set; }
         public string FmtDirectionTo { get; set; }
         public DateTime? FmtInspectionDate { get; set; }
