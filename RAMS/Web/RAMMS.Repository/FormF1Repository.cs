@@ -28,8 +28,6 @@ namespace RAMMS.Repository
         public async Task<long> GetFilteredRecordCount(FilteredPagingDefinition<FormF1SearchGridDTO> filterOptions)
         {
 
-
-
             var query = (from s in _context.RmFormF1Hdr
                          join d in _context.RmRoadMaster on s.Ff1hRdCode equals d.RdmRdCode
                          from a in _context.RmAllassetInventory.Where(a => a.AiPkRefNo == 0).DefaultIfEmpty()
@@ -46,7 +44,7 @@ namespace RAMMS.Repository
             {
                 query = (from s in _context.RmFormF1Hdr
                          join dtl in _context.RmFormF1Dtl on s.Ff1hPkRefNo equals dtl.Ff1dFf1hPkRefNo
-                         join a in _context.RmAllassetInventory on dtl.Ff1dAssetId equals  a.AiAssetId
+                         join a in _context.RmAllassetInventory on dtl.Ff1dAssetId equals a.AiAssetId
                          join d in _context.RmRoadMaster on s.Ff1hRdCode equals d.RdmRdCode
                          select new { s, d, a });
                 query = query.Where(s => s.a.AiStrucCode == search.AssertType);
@@ -144,6 +142,8 @@ namespace RAMMS.Repository
                          join d in _context.RmRoadMaster on s.Ff1hRdCode equals d.RdmRdCode
                          select new { s, d, a });
                 query = query.Where(s => s.a.AiStrucCode == search.AssertType);
+                query = query.Where(x => x.s.Ff1hActiveYn == true).OrderByDescending(x => x.s.Ff1hPkRefNo);
+                
             }
             if (!string.IsNullOrEmpty(search.RmuCode))
             {
@@ -277,14 +277,12 @@ namespace RAMMS.Repository
 
             }
 
+            var list = await query.ToListAsync();
+            var Dlist = list.GroupBy(x => x.s.Ff1hPkRefNo).Select(g => g.First()).AsEnumerable();
+            var Flist = Dlist.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).Distinct().ToList();
 
 
-
-            var list = await query.Skip(filterOptions.StartPageNo)
-  .Take(filterOptions.RecordsPerPage)
-  .ToListAsync();
-
-            return list.Select(s => new FormF1HeaderRequestDTO
+            return Flist.Select(s => new FormF1HeaderRequestDTO
             {
                 ActiveYn = s.s.Ff1hActiveYn,
                 CrBy = s.s.Ff1hCrBy,
@@ -313,6 +311,8 @@ namespace RAMMS.Repository
                 Status = s.s.Ff1hStatus
 
             }).ToList();
+
+           
         }
 
 
@@ -369,7 +369,7 @@ namespace RAMMS.Repository
             }
 
             var list = await query.ToListAsync();
-            
+
 
             return list.Select(s => new FormF1DtlGridDTO
             {
@@ -417,6 +417,7 @@ namespace RAMMS.Repository
                                Ff1dAssetId = a.AiAssetId,
                                Ff1dPkRefNo = r1.Fr1hPkRefNo,
                                Ff1dTier = Convert.ToInt32(a.AiTier),
+                               Ff1dTotalLength = Convert.ToDecimal(a.AiLength),
                                Ff1dCode = a.AiStrucCode,
                                Ff1dHeight = Convert.ToDecimal(a.AiHeight),
                                Ff1dTopWidth = Convert.ToDecimal(a.AiWidth),
@@ -462,7 +463,7 @@ namespace RAMMS.Repository
                                select new RmFormF1Dtl
                                {
                                    Ff1dFf1hPkRefNo = FormF1.Ff1hPkRefNo,
-                                   Ff1dAssetId =r1.Fr1hAssetId,
+                                   Ff1dAssetId = r1.Fr1hAssetId,
                                    Ff1dR1hPkRefNo = r1.Fr1hPkRefNo,
                                    Ff1dTier = Convert.ToInt32(a.AiTier),
                                    Ff1dCode = a.AiStrucCode,
@@ -588,7 +589,7 @@ namespace RAMMS.Repository
                                   Descriptions = d.Ff1dDescription,
                                   LocationChKm = d.Ff1dLocCh,
                                   LocationChM = d.Ff1dLocChDeci,
-                                  Length=d.Ff1dTotalLength,
+                                  Length = d.Ff1dTotalLength,
                                   Width = d.Ff1dTopWidth,
                                   BottomWidth = d.Ff1dBottomWidth,
                                   Height = d.Ff1dHeight,

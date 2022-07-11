@@ -36,13 +36,13 @@
             }
         }
     };
-    var noCol = { data: "refNo", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
+    var noCol = { data: "pkRefNo", name: "No", title: "NO", autoWidth: true, sortable: false, visible: false };
     var refNoCol = { data: "refId", name: "Id", title: "Reference No", autoWidth: true, sortable: true };
     var dateofInspection = {
         data: null, name: "date", title: "Date", autoWidth: true, sortable: true,
         render: function (data) {
-            if (data.dtOfInsp) {
-                var d = new Date(data.dtOfInsp);
+            if (data.date) {
+                var d = new Date(data.date);
                 var day = d.getDate();
                 var month = d.getMonth() + 1;
                 var year = d.getFullYear();
@@ -60,7 +60,7 @@
         }
     };
    
-    var rmuname = { data: "rMU", name: "rmuName", title: "RMU", autoWidth: true, sortable: true };
+    var rmuname = { data: "rmu", name: "rmuName", title: "RMU", autoWidth: true, sortable: true };
     var roadname = { data: "roadName", name: "Roadname", title: "Road Name", autoWidth: true, sortable: true, visible: false };
     var totalPC = { data: "totalPC", name: "TotalPC", title: "Total Passenger Car", autoWidth: true, sortable: true, visible: false };
     var totalHV = { data: "totalHV", name: "TotalHV", title: "Total Heavy Vechicle", autoWidth: true, sortable: true, visible: false };

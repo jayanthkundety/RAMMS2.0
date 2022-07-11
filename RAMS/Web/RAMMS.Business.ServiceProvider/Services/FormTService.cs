@@ -116,7 +116,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 domainModelFormT.FmtPkRefNo = 0;
 
 
-                var obj = _repoUnit.FormTRepository.FindAsync(x => x.FmtRmuCode == domainModelFormT.FmtRmuCode  && x.FmtRdCode == domainModelFormT.FmtRdCode  && x.FmtInspectionDate == domainModelFormT.FmtInspectionDate && x.FmtActiveYn == true).Result;
+                var obj = _repoUnit.FormTRepository.FindAsync(x => x.FmtRmuCode == domainModelFormT.FmtRmuCode && x.FmtRdCode == domainModelFormT.FmtRdCode && x.FmtInspectionDate == domainModelFormT.FmtInspectionDate && x.FmtActiveYn == true).Result;
                 if (obj != null)
                 {
                     var res = _mapper.Map<FormTResponseDTO>(obj);
@@ -128,15 +128,15 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 IDictionary<string, string> lstData = new Dictionary<string, string>();
                 lstData.Add("RoadCode", domainModelFormT.FmtRdCode);
-                lstData.Add("Date", domainModelFormT.FmtInspectionDate.ToString());
-                //domainModelFormT.FmtPkRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormTHeader, lstData);
- 
-                //var entity = _repo.SaveFormT(domainModelFormT).Result;
-                //FormT.PkRefNo = _mapper.Map<FormTResponseDTO>(entity).PkRefNo;
-                //FormT.PkRefId = domainModelFormT.FmtPkRefId;
-                //FormT.Status = domainModelFormT.FmtStatus;
+                lstData.Add("YYYYMMDD", Utility.ToString(Convert.ToDateTime(domainModelFormT.FmtInspectionDate).ToString("yyyyMMdd")));
+                domainModelFormT.FmtPkRefId = FormRefNumber.GetRefNumber(RAMMS.Common.RefNumber.FormType.FormTHeader, lstData);
 
-               
+                var entity = _repoUnit.FormTRepository.CreateReturnEntity(domainModelFormT);
+                FormT.PkRefNo = _mapper.Map<FormTResponseDTO>(entity).PkRefNo;
+                FormT.PkRefId = domainModelFormT.FmtPkRefId;
+                FormT.Status = domainModelFormT.FmtStatus;
+
+
                 return FormT;
             }
             catch (Exception ex)
@@ -387,7 +387,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         //                        if (r.Condition == 2)
         //                        {
         //                            condition2 += 1;
-                                    
+
         //                        }
         //                        if (r.Condition == 3)
         //                        {

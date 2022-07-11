@@ -11,6 +11,7 @@ namespace RAMMS.DTO.ResponseBO
 
         public int PkRefNo { get; set; }
         public string PkRefId { get; set; }
+        public string ReferenceNo { get; set; }
         public string DivCode { get; set; }
         public string AssetId { get; set; }
         public string Dist { get; set; }

@@ -53,6 +53,7 @@ namespace RAMMS.Repository
                          join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
                          select new { s, d, a });
                 query = query.Where(s => s.a.AiStrucCode == search.AssertType);
+                query = query.Where(x => x.s.Ff3hActiveYn == true).OrderByDescending(x => x.s.Ff3hPkRefNo);
             }
             if (!string.IsNullOrEmpty(search.RmuCode))
             {

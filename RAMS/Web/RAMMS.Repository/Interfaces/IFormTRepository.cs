@@ -24,7 +24,7 @@ namespace RAMMS.Repository.Interfaces
 
       //  int LoadG1G2Data(FormTResponseDTO FormT);
 
-        Task<RmFormTHdr> SaveFormT(RmFormTHdr domainModelFormT);
+       
         int? DeleteFormT(int id);
         int? DeleteFormTDtl(int Id);
         int? SaveFormTDtl(RmFormTDailyInspection FormTDtl);

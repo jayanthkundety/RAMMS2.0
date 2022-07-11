@@ -22,7 +22,6 @@
     <Content Remove="Views\ERT\FormX\FormX - Copy.cshtml" />
     <Content Remove="Views\ERT\FormX\_AddFormX - Copy.cshtml" />
     <Content Remove="Views\FormT\Index.cshtml" />
-    <Content Remove="Views\FormT\_AddFormT.cshtml" />
     <Content Remove="Views\FormT\_DetailGridList.cshtml" />
     <Content Remove="Views\FormT\_HeaderListGrid.cshtml" />
     <Content Remove="Views\FormG1G2\_HeaderListGrid.cshtml" />
@@ -33,7 +32,6 @@
 
   <ItemGroup>
     <None Include="Views\FormT\Index.cshtml" />
-    <None Include="Views\FormT\_AddFormT.cshtml" />
     <None Include="Views\FormT\_DetailGridList.cshtml" />
     <None Include="Views\FormT\_HeaderListGrid.cshtml" />
     <None Include="Views\FormF1\Index.cshtml" />

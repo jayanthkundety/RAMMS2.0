@@ -44,7 +44,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             PagingResult<FormF1HeaderRequestDTO> result = new PagingResult<FormF1HeaderRequestDTO>();
             List<FormF1HeaderRequestDTO> formAlist = new List<FormF1HeaderRequestDTO>();
             result.PageResult = await _repo.GetFilteredRecordList(filterOptions);
-            result.TotalRecords = await _repo.GetFilteredRecordCount(filterOptions);
+            result.TotalRecords = result.PageResult.Count(); // await _repo.GetFilteredRecordCount(filterOptions);
             result.PageNo = filterOptions.StartPageNo;
             result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
             return result;
