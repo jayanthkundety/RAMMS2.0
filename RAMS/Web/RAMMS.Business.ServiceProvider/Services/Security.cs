@@ -67,7 +67,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 this.IsInstructedWorkEngg = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.InstructedWorksEngineer);
                 this.IsDirector = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.Director);
                 this.isOperRAMSExecutive = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.OperRAMSExecutive);
-                this.IWRights = repModuleFormRights.GetIWRightsByUser(UserID);
+                //this.IWRights = repModuleFormRights.GetIWRightsByUser(UserID);
                 this.isEnggAssistant = this.HasAnyGroup(Common.GroupNames.Admin, Common.GroupNames.EngineeringAssistant);
             }
             else

@@ -814,9 +814,12 @@
                                             <div class="form-group col-lg-1 float-left">
                                                 <label>
                                                     Sign
+                                                    @{
+                                                            var _inspSign = Model.InspectedSign == null || Model.InspectedSign == false ? false : true;
+                                                      }
                                                 </label>
                                                 <div class="clear-b mt-2">
-                                                    <input class="{required, Requested By Signature}" id="InspectedSign" name="InspectedSign" type="checkbox">
+                                                    <input class="{required, Requested By Signature}" checked="@_inspSign" id="InspectedSign" name="InspectedSign" type="checkbox">
                                                 </div>
                                             </div>
                                             <div class="form-group col-lg-4 float-left">
@@ -870,10 +873,12 @@
                                         <div class="form-group col-lg-1 float-left">
                                             <label>
                                                 Sign
-
+                                                @{
+                                                     var _audSign = Model.AuditedSign == null || Model.AuditedSign == false ? false : true;
+                                                 }
                                             </label>
                                             <div class="clear-b mt-2">
-                                                <input class="{required, Requested By Signature}" id="AuditedSign" name="AuditedSign" type="checkbox">
+                                                <input class="{required, Requested By Signature}" checked="@_audSign" id="AuditedSign" name="AuditedSign" type="checkbox">
                                             </div>
                                         </div>
                                         <input type="hidden" id="txtPhotoValidate" value="" />
