@@ -550,7 +550,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                                         //foreach (FORMS2DaySchedule daySchedule in day)
                                         //{
-                                        //    var t = daySchedule.Day + (s-1);
+                                        //    var t = (daySchedule.Day == 0 ? 7 : daySchedule.Day)  + (s-1);
                                         //    workSheet.Cell(i, t).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
                                         //    workSheet.Cell(i, t).Style.Fill.PatternColor = XLColor.Gray;
                                         //    workSheet.Cell(i, t).Style.Fill.SetBackgroundColor(XLColor.White);
