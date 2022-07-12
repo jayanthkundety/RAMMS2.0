@@ -25,7 +25,7 @@ namespace RAMMS.Repository
 
 
 
-       
+
         public async Task<List<FormTHeaderRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormTSearchGridDTO> filterOptions)
         {
 
@@ -34,7 +34,7 @@ namespace RAMMS.Repository
             var query = (from hdr in _context.RmFormTHdr.Where(s => s.FmtActiveYn == true)
                          join r in _context.RmRoadMaster on hdr.FmtRdCode equals r.RdmRdCode
                          let vehicle = _context.RmFormTVechicle.Where(r => r.FmtvFmtdiPkRefNo == hdr.FmtPkRefNo).DefaultIfEmpty()
-                        
+
                          select new
                          {
                              RefNo = hdr.FmtPkRefNo,
@@ -209,101 +209,75 @@ namespace RAMMS.Repository
 
         public async Task<List<FormTDtlGridDTO>> GetFormTDtlGridList(FilteredPagingDefinition<FormTDtlResponseDTO> filterOptions)
         {
-            //List<RmFormTDailyInspection> result = new List<RmFormTDailyInspection>();
+            List<RmFormTDailyInspection> result = new List<RmFormTDailyInspection>();
 
-            //var query = from x in _context.RmFormTDailyInspection
-            //            join v in _context.RmFormTVechicle on x.FmtdiPkRefNo equals v.FmtvPkRefNo
-            //            let PC in 
-            //            where x.FmtdiFmtPkRefNo == filterOptions.Filters.FmtPkRefNo
-            //            orderby x.FmtdiPkRefNo descending
-            //            select new { x };
-          
-            //var list = await query.ToListAsync();
-            //var  list1 = list.AsQueryable();
-            //list.Select(s => new FormTDtlGridDTO
-            //{
-
-            //    AssetId = s.a.AiAssetId,
-            //    Ch = s.x.Ff1dLocCh + "+" + s.x.Ff1dLocChDeci,
-            //    OverallCondition = Convert.ToInt32(s.x.Ff1dOverallCondition),
-            //    Description = s.x.Ff1dDescription,
-            //    FrmCh = s.x.Ff1dLocCh,
-            //    FrmChDec = s.x.Ff1dLocChDeci,
-            //    Height = s.a.AiHeight,
-            //    PkRefNo = s.x.FmtdiPkRefNo,
-            //    StructureCode = s.a.AiStrucCode,
-            //    Length = s.a.AiLength,
-            //    Width = s.a.AiWidth,
-            //    BottomWidth = s.a.AiBotWidth,
-            //    Tier = s.a.AiTier
-
-            //}).ToList();
+            var query = from x in _context.RmFormTDailyInspection
+                        let PC = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "PC").Select(pc => pc.FmtvCount).Sum()
+                        let HV = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "HV").Select(pc => pc.FmtvCount).Sum()
+                        let MC = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "MC").Select(pc => pc.FmtvCount).Sum()
+                        where x.FmtdiFmtPkRefNo == filterOptions.Filters.FmtPkRefNo
+                        orderby x.FmtdiPkRefNo descending
+                        select new { x, PC, HV, MC };
 
 
-            //if (filterOptions.sortOrder == SortOrder.Ascending)
-            //{
-            //    if (filterOptions.ColumnIndex == 1)
-            //        list = list.OrderBy(x => x.x.FmtdiPkRefNo);
-            //    if (filterOptions.ColumnIndex == 2)
-            //        query = query.OrderBy(x => x.x.FmtdiInspectionDate);
-            //    if (filterOptions.ColumnIndex == 3)
-            //        query = query.OrderBy(x => x.x.FmtdiAuditTimeFrm);
-            //    if (filterOptions.ColumnIndex == 4)
-            //        query = query.OrderBy(x => x.x.FmtdiAuditTimeTo);
-            //    if (filterOptions.ColumnIndex == 5)
-            //        query = query.OrderBy(x => x.x.FmtdiDescription);
-            //    if (filterOptions.ColumnIndex == 6)
-            //        query = query.OrderBy(x => x.a.AiWidth);
-            //    if (filterOptions.ColumnIndex == 7)
-            //        query = query.OrderBy(x => x.a.AiHeight);
-            //    if (filterOptions.ColumnIndex == 8)
-            //        query = query.OrderBy(x => x.x.Ff1dDescription);
+            if (filterOptions.sortOrder == SortOrder.Ascending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderBy(x => x.x.FmtdiPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderBy(x => x.x.FmtdiInspectionDate);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderBy(x => x.x.FmtdiAuditTimeFrm);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderBy(x => x.x.FmtdiAuditTimeTo);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderBy(x => x.x.FmtdiDescription);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderBy(x => x.PC);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderBy(x => x.HV);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderBy(x => x.MC);
 
-            //}
-            //else if (filterOptions.sortOrder == SortOrder.Descending)
-            //{
-            //    if (filterOptions.ColumnIndex == 1)
-            //        query = query.OrderByDescending(x => x.x.FmtdiPkRefNo);
-            //    if (filterOptions.ColumnIndex == 2)
-            //        query = query.OrderByDescending(x => x.x.Ff1dLocCh);
-            //    if (filterOptions.ColumnIndex == 3)
-            //        query = query.OrderByDescending(x => x.x.Ff1dCode);
-            //    if (filterOptions.ColumnIndex == 4)
-            //        query = query.OrderByDescending(x => x.x.Ff1dOverallCondition);
-            //    if (filterOptions.ColumnIndex == 5)
-            //        query = query.OrderByDescending(x => x.a.AiBound);
-            //    if (filterOptions.ColumnIndex == 6)
-            //        query = query.OrderByDescending(x => x.a.AiWidth);
-            //    if (filterOptions.ColumnIndex == 7)
-            //        query = query.OrderByDescending(x => x.a.AiHeight);
-            //    if (filterOptions.ColumnIndex == 8)
-            //        query = query.OrderByDescending(x => x.x.Ff1dDescription);
+            }
+            else if (filterOptions.sortOrder == SortOrder.Descending)
+            {
+                if (filterOptions.ColumnIndex == 1)
+                    query = query.OrderByDescending(x => x.x.FmtdiPkRefNo);
+                if (filterOptions.ColumnIndex == 2)
+                    query = query.OrderByDescending(x => x.x.FmtdiInspectionDate);
+                if (filterOptions.ColumnIndex == 3)
+                    query = query.OrderByDescending(x => x.x.FmtdiAuditTimeFrm);
+                if (filterOptions.ColumnIndex == 4)
+                    query = query.OrderByDescending(x => x.x.FmtdiAuditTimeTo);
+                if (filterOptions.ColumnIndex == 5)
+                    query = query.OrderByDescending(x => x.x.FmtdiDescription);
+                if (filterOptions.ColumnIndex == 6)
+                    query = query.OrderByDescending(x => x.PC);
+                if (filterOptions.ColumnIndex == 7)
+                    query = query.OrderByDescending(x => x.HV);
+                if (filterOptions.ColumnIndex == 8)
+                    query = query.OrderByDescending(x => x.MC);
 
-            //}
+            }
 
-            //var list = await query.ToListAsync();
+            var list = await query.ToListAsync();
 
+            int sl = 1;
+            return list.Select(s => new FormTDtlGridDTO
+            {
+                Date = s.x.FmtdiInspectionDate,
+                Description = s.x.FmtdiDescription,
+                FromTime = s.x.FmtdiAuditTimeFrm,
+                ToTime = s.x.FmtdiAuditTimeTo,
+                HV = s.HV,
+                MC = s.MC,
+                PC = s.PC,
+                PkRefNo = s.x.FmtdiPkRefNo,
+                SNo = sl++
 
-            //return list.Select(s => new FormTDtlGridDTO
-            //{
-
-            //    AssetId = s.a.AiAssetId,
-            //    Ch = s.x.Ff1dLocCh + "+" + s.x.Ff1dLocChDeci,
-            //    OverallCondition = Convert.ToInt32(s.x.Ff1dOverallCondition),
-            //    Description = s.x.Ff1dDescription,
-            //    FrmCh = s.x.Ff1dLocCh,
-            //    FrmChDec = s.x.Ff1dLocChDeci,
-            //    Height = s.a.AiHeight,
-            //    PkRefNo = s.x.FmtdiPkRefNo,
-            //    StructureCode = s.a.AiStrucCode,
-            //    Length = s.a.AiLength,
-            //    Width = s.a.AiWidth,
-            //    BottomWidth = s.a.AiBotWidth,
-            //    Tier = s.a.AiTier
-
-            //}).ToList();
-
-            return null;
+            }).ToList();
+ 
         }
 
 
@@ -311,7 +285,7 @@ namespace RAMMS.Repository
         {
 
 
-            return (from r in _context.RmAllassetInventory.Where(s => s.AiStrucCode == "Y" && s.AiRmuCode == FormT.RmuCode  && s.AiRdCode == FormT.RdCode) select r).ToList();
+            return (from r in _context.RmAllassetInventory.Where(s => s.AiStrucCode == "Y" && s.AiRmuCode == FormT.RmuCode && s.AiRdCode == FormT.RdCode) select r).ToList();
 
 
         }
@@ -323,7 +297,7 @@ namespace RAMMS.Repository
 
                 var res = (from r1 in _context.RmFormR1Hdr
                            join a in _context.RmAllassetInventory on r1.Fr1hAidPkRefNo equals a.AiPkRefNo
-                           where    r1.Fr1hAiRdCode == FormT.RdCode && r1.Fr1hActiveYn == true
+                           where r1.Fr1hAiRdCode == FormT.RdCode && r1.Fr1hActiveYn == true
                            select new RmFormTDailyInspection
                            {
                                //Ff1dFmtPkRefNo = FormT.PkRefNo,
@@ -355,7 +329,7 @@ namespace RAMMS.Repository
         }
 
 
-       
+
         public int? DeleteFormT(int id)
         {
             try

@@ -11178,11 +11178,13 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmtdiAuditTimeFrm)
                     .HasColumnName("FMTDI_Audit_Time_FRM")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FmtdiAuditTimeTo)
                     .HasColumnName("FMTDI_Audit_Time_TO")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FmtdiCrBy).HasColumnName("FMTDI_CR_By");
 
@@ -11315,7 +11317,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmtPkRefId)
                     .HasColumnName("FMT_PK_Ref_Id")
-                    .HasMaxLength(16)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FmtRdCode)

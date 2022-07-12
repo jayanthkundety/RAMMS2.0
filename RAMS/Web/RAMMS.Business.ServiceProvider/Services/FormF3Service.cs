@@ -61,7 +61,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             PagingResult<FormF2HeaderRequestDTO> result = new PagingResult<FormF2HeaderRequestDTO>();
             List<FormF2HeaderRequestDTO> formAlist = new List<FormF2HeaderRequestDTO>();
             result.PageResult = await _repo.GetFilteredRecordList(filterOptions);
-            result.TotalRecords = await _repo.GetFilteredRecordCount(filterOptions);
+            result.TotalRecords = result.PageResult.Count();//await _repo.GetFilteredRecordCount(filterOptions);
             result.PageNo = filterOptions.StartPageNo;
             result.FilteredRecords = result.PageResult != null ? result.PageResult.Count : 0;
             return result;
@@ -77,10 +77,10 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 var Records = await _repoUnit.FormF3Repository.GetFormF3DtlGridList(filterOptions);
- 
+
                 var list = Records.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).ToList();
 
-                result.TotalRecords = Records.Count();   
+                result.TotalRecords = Records.Count();
 
                 result.PageResult = list;
 
