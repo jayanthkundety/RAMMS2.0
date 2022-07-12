@@ -164,6 +164,7 @@ namespace RAMMS.Repository
                          join d in _context.RmRoadMaster on s.Ff3hRdCode equals d.RdmRdCode
                          select new { s, d, a });
                 query = query.Where(s => s.a.AiStrucCode == search.AssertType);
+                query = query.Where(x => x.s.Ff3hActiveYn == true).OrderByDescending(x => x.s.Ff3hPkRefNo);
             }
             if (!string.IsNullOrEmpty(search.RmuCode))
             {
@@ -312,13 +313,11 @@ namespace RAMMS.Repository
             }
 
 
+            var list = await query.ToListAsync();
+            var Dlist = list.GroupBy(x => x.s.Ff3hPkRefNo).Select(g => g.First()).AsEnumerable();
+            var Flist = Dlist.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).ToList();
 
-
-            var list = await query.Skip(filterOptions.StartPageNo)
-  .Take(filterOptions.RecordsPerPage)
-  .ToListAsync();
-
-            return list.Select(s => new FormF2HeaderRequestDTO
+            return Flist.Select(s => new FormF2HeaderRequestDTO
             {
                 ActiveYn = s.s.Ff3hActiveYn,
                 CrBy = s.s.Ff3hCrBy,
@@ -347,6 +346,7 @@ namespace RAMMS.Repository
                 UserNameInspBy = s.s.Ff3hInspectedName
 
             }).ToList();
+ 
         }
 
 

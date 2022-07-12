@@ -279,7 +279,7 @@ namespace RAMMS.Repository
 
             var list = await query.ToListAsync();
             var Dlist = list.GroupBy(x => x.s.Ff1hPkRefNo).Select(g => g.First()).AsEnumerable();
-            var Flist = Dlist.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).Distinct().ToList();
+            var Flist = Dlist.Skip(filterOptions.StartPageNo).Take(filterOptions.RecordsPerPage).ToList();
 
 
             return Flist.Select(s => new FormF1HeaderRequestDTO
@@ -403,45 +403,7 @@ namespace RAMMS.Repository
 
         }
 
-        public int LoadR1Data(FormF1ResponseDTO FormF1)
-        {
-            try
-            {
-
-                var res = (from r1 in _context.RmFormR1Hdr
-                           join a in _context.RmAllassetInventory on r1.Fr1hAidPkRefNo equals a.AiPkRefNo
-                           where r1.Fr1hAiDivCode == FormF1.DivCode && r1.Fr1hAiRmuCode == FormF1.RmuCode && r1.Fr1hYearOfInsp == FormF1.InspectedYear && r1.Fr1hAiRdCode == FormF1.RdCode && r1.Fr1hActiveYn == true
-                           select new RmFormF1Dtl
-                           {
-                               Ff1dFf1hPkRefNo = FormF1.PkRefNo,
-                               Ff1dAssetId = a.AiAssetId,
-                               Ff1dPkRefNo = r1.Fr1hPkRefNo,
-                               Ff1dTier = Convert.ToInt32(a.AiTier),
-                               Ff1dTotalLength = Convert.ToDecimal(a.AiLength),
-                               Ff1dCode = a.AiStrucCode,
-                               Ff1dHeight = Convert.ToDecimal(a.AiHeight),
-                               Ff1dTopWidth = Convert.ToDecimal(a.AiWidth),
-                               Ff1dOverallCondition = r1.Fr1hCondRating,
-                               Ff1dLocCh = a.AiLocChKm,
-                               Ff1dLocChDeci = a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM)
-
-                           }).ToList();
-
-                foreach (var item in res)
-                {
-                    _context.RmFormF1Dtl.Add(item);
-                    _context.SaveChanges();
-                }
-
-                return 1;
-            }
-            catch (Exception)
-            {
-                return 500;
-
-            }
-        }
-
+       
 
         public async Task<RmFormF1Hdr> SaveFormF1(RmFormF1Hdr FormF1)
         {
@@ -467,6 +429,7 @@ namespace RAMMS.Repository
                                    Ff1dR1hPkRefNo = r1.Fr1hPkRefNo,
                                    Ff1dTier = Convert.ToInt32(a.AiTier),
                                    Ff1dCode = a.AiStrucCode,
+                                   Ff1dTotalLength = Convert.ToDecimal(a.AiLength),
                                    Ff1dHeight = Convert.ToDecimal(a.AiHeight),
                                    Ff1dTopWidth = Convert.ToDecimal(a.AiWidth),
                                    Ff1dOverallCondition = r1.Fr1hCondRating,

@@ -9,17 +9,12 @@ namespace RAMMS.DTO.ResponseBO
     {
         public int SNo { get; set; }
         public int PkRefNo { get; set; }
-        public string Ch { get; set; }
-        public int? FrmCh { get; set; }
-        public int? FrmChDec { get; set; }
-        public string StructureCode { get; set; }
-        public int OverallCondition { get; set; }
-        public string AssetId { get; set; }
-        public double? Tier { get; set; }
-        public double? Length { get; set; }
-        public double? Width { get; set; }
-        public double? BottomWidth { get; set; }
-        public double? Height { get; set; }
+        public DateTime? Date { get; set; }
+        public string FromTime { get; set; }
+        public string ToTime { get; set; }
+        public int? PC { get; set; }
+        public int? HV { get; set; }
+        public int? MC { get; set; }
         public string Description { get; set; }
        
 

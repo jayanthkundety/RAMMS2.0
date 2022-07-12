@@ -13,8 +13,8 @@ namespace RAMMS.Domain.Models
         public int FmtdiPkRefNo { get; set; }
         public int? FmtdiFmtPkRefNo { get; set; }
         public DateTime? FmtdiInspectionDate { get; set; }
-        public DateTime? FmtdiAuditTimeFrm { get; set; }
-        public DateTime? FmtdiAuditTimeTo { get; set; }
+        public string FmtdiAuditTimeFrm { get; set; }
+        public string FmtdiAuditTimeTo { get; set; }
         public string FmtdiDirectionFrm { get; set; }
         public string FmtdiDirectionTo { get; set; }
         public int? FmtdiHourlyCountPerDay { get; set; }
