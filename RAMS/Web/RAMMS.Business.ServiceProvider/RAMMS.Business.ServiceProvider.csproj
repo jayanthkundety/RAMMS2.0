@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Interfaces\IFormTService.cs" />
-    <Compile Remove="Services\FormTService.cs" />
     <Compile Remove="Services\ProcessService - Copy.cs" />
   </ItemGroup>
 
