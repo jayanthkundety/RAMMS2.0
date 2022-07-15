@@ -18,7 +18,7 @@
     if (Model != null)
     {
         strAssestID = Model.AssetId;
-        strYear = Model.YearOfInsp.Value.ToString();
+        strYear = Model.YearOfInsp != null ? Model.YearOfInsp.Value.ToString() : "";
         strRefId = Model.RefNo;
         ViewBag.IsEdit = ViewBag.IsEdit ? (Model.Status == "Approved" ? false : true) : false;
     }
