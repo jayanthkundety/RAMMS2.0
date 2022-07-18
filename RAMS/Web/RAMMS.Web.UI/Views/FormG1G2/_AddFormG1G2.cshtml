@@ -911,10 +911,10 @@
                 }
 
 
-                <button type="button" class="btn btn-sm btn-themebtn" onclick="frmG1G2.Save(false)" finddetailsdep>Save</button>
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="frmG1G2.Save(false,0)" finddetailsdep>Save</button>
                 @if (isSubmit)
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn" onclick="frmG1G2.Save(true)" finddetailsdep>Submit</button>
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="frmG1G2.Save(true,0)" finddetailsdep>Submit</button>
                 }
                 @*}*@
 
@@ -924,7 +924,7 @@
                 }
                 else if (IsApproved && (Model != null && (Model.Status == RAMMS.Common.StatusList.FormG1G2Verified || Model.Status == RAMMS.Common.StatusList.FormG1G2Rejected)))
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname', 'Facilitated By');"> Approve </button>
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="frmG1G2.Save(false,1);process.ShowApprove('@groupname', 'Facilitated By');"> Approve </button>
                 }
             </div>
         </form>
