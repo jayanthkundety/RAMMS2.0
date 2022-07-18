@@ -1,0 +1,1178 @@
+﻿@model RAMMS.Web.UI.Models.FormTModel;
+<div id="accordion" class="p-2 w-100 float-left">
+    <div class="tab-content">
+        <div class="tab-pane show active">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="form-group col-md-2">
+                            @Html.Label("Date", "Date")
+                            @Html.EditorFor(m => m.FormTDtl.InspectionDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="Asset_ID">From Time </label>
+                                    @Html.TextBoxFor(m => m.FormTDtl.AuditTimeFrm, new { @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Time Taken From }", @onchange = "CalToTime()", @rows = 1 })
+                                </div>
+                                <div class="col-6">
+                                    <label for="Asset_ID">To Time </label>
+                                    @Html.TextBoxFor(m => m.FormTDtl.AuditTimeTo, new { @readonly = true, @type = "text", @autocomplete = "off", @class = "form-control  validate {required,Time Taken From }", @rows = 1 })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="Asset_ID">
+                                Hourly Count per Day
+                            </label>
+                            @Html.TextBoxFor(m => m.FormTDtl.HourlyCountPerDay, new { @type = "numeric", @class = "form-control  validate {required,Hourly Count PerDay}", @rows = 1 })
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Direction from</label>
+                            @Html.TextBoxFor(m => m.FormTDtl.DirectionFrm, new { @type = "text", @class = "form-control  validate {required,Hourly Count PerDay}", @rows = 1 })
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Direction To</label>
+                            @Html.TextBoxFor(m => m.FormTDtl.DirectionTo, new { @type = "text", @class = "form-control  validate {required,Hourly Count PerDay}", @rows = 1 })
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label for="Asset_ID">
+                                Number of Day
+                            </label>
+                            <div class="row">
+                                <div class="col-5 pr-0">
+                                    @Html.TextBoxFor(m => m.FormTDtl.Day, new { @type = "numeric", @class = "form-control  validate {required,Hourly Count PerDay}", @rows = 1 })
+                                </div>
+                                <div class="col-1">
+                                    <label class="pt-2"> of</label>
+                                </div>
+                                <div class="col-5 pl-0">
+                                    @Html.TextBoxFor(m => m.FormTDtl.TotalDay, new { @type = "numeric", @class = "form-control  validate {required,Hourly Count PerDay}", @rows = 1 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-9">
+                            <label>Description</label>
+                            @Html.TextAreaFor(m => m.FormTDtl.Description, new { @class = "form-control  svalidate {required,Description}" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <!--form g1-->
+                    <div class="w-100 bg-white">
+                        <div id="accordion">
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingZero">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Passenger Car
+                                                    Signs
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                        <div class="card-body">
+                                            <div id="content">
+                                                <div class="w-100 position-relative in-tbl-btns custom-tbl">
+
+                                                    <div id="FormDLabourGridView_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+                                                        <div id="FormDLabourGridView_processing" class="dataTables_processing card" style="display: none;">Processing...</div>
+                                                        <div class="dataTables_scroll" style="height:130px">
+
+                                                            <div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 100%; height: 100%;">
+                                                                <table class="table table-striped tblPC">
+                                                                    <thead style="background-color: #c8e1ff">
+                                                                        <tr>
+
+                                                                            <td colspan="1" style=" width:120px; display: block !important">
+                                                                                From time
+                                                                            </td>
+
+                                                                            <th colspan="1">
+                                                                                :05
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :10
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :15
+                                                                            </th>
+
+                                                                            <th colspan="1">
+                                                                                :20
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :25
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :30
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :35
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :40
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :45
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :50
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :55
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :00
+                                                                            </th>
+                                                                        </tr>
+
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                Passenger Car
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+
+                                                <div class="form-group col-md-12">
+                                                    <label>
+                                                        Remarks
+                                                    </label>
+                                                    @Html.TextAreaFor(m => m.FormTDtl.DescriptionPC, new { @class = "form-control  svalidate {required,Description}" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingOne">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Heavy Vehicle
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+
+                                        <div class="card-body">
+                                            <div id="content">
+                                                <div class="w-100 position-relative in-tbl-btns custom-tbl">
+
+                                                    <div id="FormDLabourGridView_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+                                                        <div id="FormDLabourGridView_processing" class="dataTables_processing card" style="display: none;">Processing...</div>
+                                                        <div class="dataTables_scroll">
+
+                                                            <div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 100%; height: 100%;">
+                                                                <table class="table table-striped table-bordered tblHV">
+                                                                    <thead style="background-color: #c8e1ff">
+                                                                        <tr>
+
+                                                                            <th colspan="3">
+                                                                                From time
+                                                                            </th>
+
+                                                                            <th colspan="1">
+                                                                                :05
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :10
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :15
+                                                                            </th>
+
+                                                                            <th colspan="1">
+                                                                                :20
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :25
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :30
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :35
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :40
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :45
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :50
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :55
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :00
+                                                                            </th>
+                                                                        </tr>
+
+                                                                    </thead>
+                                                                    <tbody>
+
+
+                                                                        <tr>
+                                                                            <td rowspan="3" style="background:#fff">
+                                                                                <img src="~/Images/1.PNG" />
+                                                                            </td>
+                                                                            <td rowspan="3">
+                                                                                2R
+                                                                            </td>
+                                                                            <td>
+                                                                                2RE
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                2RN
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                2RO
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td rowspan="3" style="background:#fff">
+
+                                                                                <img src="~/Images/2.PNG" />
+                                                                            </td>
+                                                                            <td rowspan="3">
+                                                                                3R
+                                                                            </td>
+                                                                            <td>
+                                                                                3RE
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                3RN
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                3RO
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td rowspan="3" style="background:#fff">
+
+                                                                                <img src="~/Images/3.PNG" />
+                                                                            </td>
+                                                                            <td rowspan="3">
+                                                                                3A
+                                                                            </td>
+                                                                            <td>
+                                                                                3AE
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                3AN
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                3AO
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td rowspan="3" style="background:#fff">
+
+                                                                                <img src="~/Images/4.PNG" />
+                                                                            </td>
+                                                                            <td rowspan="3">
+                                                                                4A
+                                                                            </td>
+                                                                            <td>
+                                                                                4AE
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                4AN
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                4AO
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <tbody>
+
+
+                                                                        <tr>
+                                                                            <td rowspan="3" style="background:#fff">
+                                                                                <img src="~/Images/5.PNG" />
+                                                                            </td>
+                                                                            <td rowspan="3">
+                                                                                5A
+                                                                            </td>
+                                                                            <td>
+                                                                                5AE
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                5AN
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                5AO
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td rowspan="3" style="background:#fff">
+
+                                                                                <img src="~/Images/6.PNG" />
+                                                                            </td>
+                                                                            <td rowspan="3">
+                                                                                6A
+                                                                            </td>
+                                                                            <td>
+                                                                                6AE
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                6AN
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                6AO
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <tbody>
+
+                                                                        <tr>
+                                                                            <td rowspan="3" style="background:#fff">
+
+                                                                                <img src="~/Images/7.PNG" />
+                                                                            </td>
+                                                                            <td rowspan="3">
+                                                                                7A
+                                                                            </td>
+                                                                            <td>
+                                                                                7AE
+                                                                            </td>
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                7AN
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+
+                                                                            <td>
+                                                                                7AO
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                    <tfoot>
+                                                                        <tr>
+
+                                                                            <th>
+                                                                                Sub-total:
+                                                                            </th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th>  </th>
+                                                                            <th> </th>
+                                                                            <th> </th>
+                                                                        </tr>
+
+                                                                    </tfoot>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+
+                                                <div class="form-group col-md-12">
+                                                    <label>
+                                                        Remarks
+                                                    </label>
+                                                    @Html.TextAreaFor(m => m.FormTDtl.DescriptionHV, new { @class = "form-control  svalidate {required,Description}" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+                                <div class="card mb-0">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="m-0">
+                                            <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                                                <span class="float-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                </span>
+                                                <span class="float-left" style="padding: 4px 8px;">
+                                                    Motorcycle
+                                                </span>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                        <div class="card-body">
+                                            <div id="content">
+                                                <div class="w-100 position-relative in-tbl-btns custom-tbl">
+
+
+
+
+
+                                                    <div id="FormDLabourGridView_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+                                                        <div id="FormDLabourGridView_processing" class="dataTables_processing card" style="display: none;">Processing...</div>
+                                                        <div class="dataTables_scroll" style="height:128px">
+
+                                                            <div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 100%; height: 100%;">
+                                                                <table class="table w-100 nowrap dataTable   no-footer tblMc">
+                                                                    <thead style="background-color: #c8e1ff">
+                                                                        <tr>
+
+                                                                            <th colspan="1">
+                                                                                From time
+                                                                            </th>
+
+                                                                            <th colspan="1">
+                                                                                :05
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :10
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :15
+                                                                            </th>
+
+                                                                            <th colspan="1">
+                                                                                :20
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :25
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :30
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :35
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :40
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :45
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :50
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :55
+                                                                            </th>
+                                                                            <th colspan="1">
+                                                                                :00
+                                                                            </th>
+                                                                        </tr>
+
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                        <tr>
+
+
+                                                                            <td>
+                                                                                Motorcycle
+                                                                            </td>
+
+
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                            <td class="editable" style="cursor: pointer;">
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+
+                                                <div class="form-group col-md-12">
+                                                    <label>
+                                                        Remarks
+                                                    </label>
+                                                    @Html.TextAreaFor(m => m.FormTDtl.DescriptionMC, new { @class = "form-control  svalidate {required,Description}" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <!--form g1 -->
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -169,25 +169,29 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-
-        public async Task<IActionResult> SaveFormTDtl(FormTModel frm)
+        [HttpPost]
+        public async Task<IActionResult> SaveFormTDtl(FormTDtlResponseDTO FormTDtl)
         {
             int? refNo = 0;
 
-            frm.FormTDtl.FmtPkRefNo = frm.FormT.PkRefNo;
-            if (frm.FormTDtl.PkRefNo == 0)
+           
+            if (FormTDtl.PkRefNo == 0)
             {
-                refNo = _formTService.SaveFormTDtl(frm.FormTDtl);
+                refNo = _formTService.SaveFormTDtl(FormTDtl);
 
             }
             else
             {
-                _formTService.UpdateFormTDtl(frm.FormTDtl);
+                _formTService.UpdateFormTDtl(FormTDtl);
             }
+
+
             return Json(refNo);
 
 
         }
+
+       
 
         public async Task<IActionResult> DeleteFormT(int id)
         {

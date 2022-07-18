@@ -16,6 +16,14 @@ $(document).ready(function () {
     }
 
 
+    $('.editable').on('dblclick', function (e) {
+        var $this = $(this);
+        typein($this);
+        e.preventDefault();
+    });
+
+
+
     $("#ddlRecordedby").on("change", function () {
         var value = this.value;
 
@@ -356,7 +364,13 @@ function generateHeaderReference() {
     }
 }
 
+function CalToTime() {
 
+    if ($('#FormTDtl_AuditTimeFrm').timeEntry('getTime') != null) {
+        var time = $('#FormTDtl_AuditTimeFrm').timeEntry('getTime');
+        $('#FormTDtl_AuditTimeTo').timeEntry('setTime', new Date(0, 0, 0, time.getHours() + 1, time.getMinutes(), 0));
+    }
+}
 
 
 
@@ -421,18 +435,121 @@ function SaveFormTDtl() {
 
     if (ValidatePage('#myModal')) {
         InitAjaxLoading();
-        $.post('/FormT/SaveFormTDtl', $("form").serialize(), function (data) {
-            HideAjaxLoading();
-            if (data == -1) {
-                app.ShowErrorMessage(data.errorMessage);
-            }
-            else {
-                ClearFormTDtl()
+        debugger
+        var FormTDtl = new Object();
+        FormTDtl.PkRefNo = $("#FormTDtl_PkRefNo").val()
+        FormTDtl.FmtPkRefNo = $("#FormT_PkRefNo").val()
+        FormTDtl.InspectionDate = $("#FormTDtl_InspectionDate").val()
+        FormTDtl.AuditTimeFrm = $("#FormTDtl_AuditTimeFrm").val();
+        FormTDtl.AuditTimeTo = $("#FormTDtl_AuditTimeTo").val();
+        FormTDtl.DirectionFrm = $("#FormTDtl_DirectionFrm").val();
+        FormTDtl.DirectionTo = $("#FormTDtl_Directionto").val();
+        FormTDtl.Day = $("#FormTDtl_Day").val();
+        FormTDtl.TotalDay = $("#FormTDtl_TotalDay").val();
+        FormTDtl.Description = $("#FormTDtl_Description").val();
+        FormTDtl.DescriptionPC = $("#FormTDtl_DescriptionPC").val();
+        FormTDtl.DescriptionHV = $("#FormTDtl_DescriptionHV").val();
+        FormTDtl.DescriptionMC = $("#FormTDtl_DescriptionMC").val();
 
-                InitializeGrid();
-                app.ShowSuccessMessage('Saved Successfully', false);
+        var Vechicles = []
+
+        $('.tblPC > tbody  > tr').each(function (index, tr) {
+            $(tr).find('td').each(function (index, td) {
+                if (index != 0) {
+                    if ($(td).html().trim() != "") {
+                        var Vechicle = new Object();
+                        Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
+                        Vechicle.VechicleType = "PC";
+                        Vechicle.Axle = "";
+                        Vechicle.Loading = "";
+                        Vechicle.Time = index * 5;
+                        Vechicle.Count = $(td).html().trim();
+                        Vechicles.push(Vechicle);
+                    }
+                }
+            });
+        });
+
+        var Axle;
+        var Load;
+        $('.tblHV > tbody  > tr').each(function (i, tr) {
+            $(tr).find('td').each(function (index, td) {
+                if (index == 0 && (i == 0 || (i % 3) == 0)) {
+                    return;
+                }
+                if (index == 1 && (i == 0 || (i % 3) == 0)) {
+                    Axle = $(td).html().trim();
+                    return;
+                }
+                if (index == 2 && (i == 0 || (i % 3) == 0)) {
+                    Load = $(td).html().trim();
+                    return;
+                }
+                if (index == 0) {
+                    Load = $(td).html().trim();
+                    return;
+                }
+
+                if ($(td).html().trim() != "") {
+                    var Time;
+                    if (i == 0 || (i % 3) == 0) {
+                        Time = (index - 2) * 5;
+                    }
+                    else {
+                        Time = index * 5;
+                    }
+                    var Vechicle = new Object();
+                    Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
+                    Vechicle.VechicleType = "PC";
+                    Vechicle.Axle = Axle;
+                    Vechicle.Loading = Load;
+                    Vechicle.Time = Time;
+                    Vechicle.Count = $(td).html().trim();
+                    Vechicles.push(Vechicle);
+                }
+
+
+            });
+        });
+
+        $('.tblMC > tbody  > tr').each(function (i, tr) {
+            $(tr).find('td').each(function (index, td) {
+                if (index != 0) {
+                    if ($(td).html().trim() != "") {
+                        var Vechicle = new Object();
+                        Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
+                        Vechicle.VechicleType = "MC";
+                        Vechicle.Axle = "";
+                        Vechicle.Loading = "";
+                        Vechicle.Time = index * 5;
+                        Vechicle.Count = $(td).html().trim();
+                        Vechicles.push(Vechicle);
+                    }
+                }
+            });
+        });
+
+        FormTDtl.Vechicles = Vechicles;
+
+        $.ajax({
+            url: '/FormT/SaveFormTDtl',
+            data: FormTDtl,
+            type: 'POST',
+            success: function (data) {
+                HideAjaxLoading();
+                if (data == -1) {
+                    app.ShowErrorMessage(data.errorMessage);
+                }
+                else {
+                    ClearFormTDtl()
+
+                    InitializeGrid();
+                    app.ShowSuccessMessage('Saved Successfully', false);
+                }
             }
         });
+
+         
 
     }
 }
@@ -502,7 +619,10 @@ function DisableHeader() {
         $("#headerDiv * > select").attr('disabled', true).trigger("chosen:updated");
 
         $("#FormT_Dist").attr("readonly", "true");
+        $("#FormT_InspectionDate").attr("readonly", "true");
+        $("#FormT_ReferenceNo").attr("readonly", "true");
         $("#btnFindDetails").hide();
+
     }
 
 }
@@ -541,3 +661,62 @@ function GoBack() {
     else
         location.href = "/FormT";
 }
+
+
+function typein($this) {
+
+    var width = ($($this).css('max-width').substr(0, 3)) - 10;
+
+    if (isNaN(width)) {
+        width = ($($this).css('width').substr(0, 3)) - 10;
+    }
+
+    var $input = $('<input>', {
+        value: $($this).html().trim(),
+        type: 'text',
+        width: width,
+        blur: function () {
+
+            if (isNaN($($input).val())) {
+                alert("Please enter numeric values");
+            }
+            else {
+
+                $($input).parent().html($($input).val());
+            }
+
+        },
+        keyup: function (e) {
+            if (e.which === 13) {
+                // saveEdit(event, $input);
+                $input.blur();
+            };
+
+        }
+    }).appendTo($this.empty()).focus();
+
+    SetCaretAtEnd($input[0]);
+}
+
+function SetCaretAtEnd(elem) {
+    var elemLen = elem.value.length;
+    // For IE Only
+    if (document.selection) {
+        // Set focus
+        elem.focus();
+        // Use IE Ranges
+        var oSel = document.selection.createRange();
+        // Reset position to 0 & then set at end
+        oSel.moveStart('character', -elemLen);
+        oSel.moveStart('character', elemLen);
+        oSel.moveEnd('character', 0);
+        oSel.select();
+    }
+    else if (elem.selectionStart || elem.selectionStart == '0') {
+        // Firefox/Chrome
+        elem.selectionStart = elemLen;
+        elem.selectionEnd = elemLen;
+        elem.focus();
+    } // if
+}
+

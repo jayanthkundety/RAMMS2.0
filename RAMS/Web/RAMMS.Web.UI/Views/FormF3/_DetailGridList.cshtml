@@ -37,7 +37,13 @@
             if ($("#hdnView").val() == "1") {
                 return viewaction;
             }
-            return $("#FormF3_SubmitSts").val() == "True" ? viewaction : actionSection;
+           // return $("#FormF3_SubmitSts").val() == "True" ? viewaction : actionSection;
+            if ($("#FormF3_SubmitSts").val() == "False" || ($("#FormF3_SubmitSts").val() == "True" && data.status == "Submitted")) {
+                return actionSection;
+            }
+            else {
+                return viewaction
+            }
         }
     };
     var sNoCol = { data: "sNo", name: "sno", title: "SNo", autoWidth: true,  sortable: true };

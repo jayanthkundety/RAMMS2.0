@@ -432,6 +432,7 @@ namespace RAMMS.Repository
                                    Ff1dTotalLength = Convert.ToDecimal(a.AiLength),
                                    Ff1dHeight = Convert.ToDecimal(a.AiHeight),
                                    Ff1dTopWidth = Convert.ToDecimal(a.AiWidth),
+                                   Ff1dBottomWidth  = Convert.ToDecimal(a.AiBotWidth),
                                    Ff1dOverallCondition = r1.Fr1hCondRating,
                                    Ff1dLocCh = a.AiLocChKm,
                                    Ff1dLocChDeci = a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM)
@@ -545,20 +546,22 @@ namespace RAMMS.Repository
 
 
             result.Details = (from d in _context.RmFormF1Dtl
+                              join a in _context.RmAllassetInventory on d.Ff1dAssetId equals a.AiAssetId
                               where d.Ff1dFf1hPkRefNo == headerid
                               orderby d.Ff1dPkRefNo descending
                               select new FORMF1RptDetail
                               {
+                                  
                                   Descriptions = d.Ff1dDescription,
-                                  LocationChKm = d.Ff1dLocCh,
-                                  LocationChM = d.Ff1dLocChDeci,
-                                  Length = d.Ff1dTotalLength,
-                                  Width = d.Ff1dTopWidth,
-                                  BottomWidth = d.Ff1dBottomWidth,
-                                  Height = d.Ff1dHeight,
+                                  LocationChKm = a.AiLocChKm,
+                                  LocationChM = a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM),
+                                  Length = Convert.ToDecimal(a.AiLength),
+                                  Width = Convert.ToDecimal(a.AiWidth),
+                                  BottomWidth = Convert.ToDecimal(a.AiBotWidth),
+                                  Height = Convert.ToDecimal(a.AiHeight),
                                   Condition = d.Ff1dOverallCondition,
-                                  Tier = d.Ff1dTier,
-                                  StructCode = d.Ff1dCode
+                                  Tier = Convert.ToInt32(a.AiTier),
+                                  StructCode = a.AiStrucCode
                               }).ToArray();
             return result;
 

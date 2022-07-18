@@ -212,9 +212,9 @@ namespace RAMMS.Repository
             List<RmFormTDailyInspection> result = new List<RmFormTDailyInspection>();
 
             var query = from x in _context.RmFormTDailyInspection
-                        let PC = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "PC").Select(pc => pc.FmtvCount).Sum()
-                        let HV = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "HV").Select(pc => pc.FmtvCount).Sum()
-                        let MC = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "MC").Select(pc => pc.FmtvCount).Sum()
+                        let PC = (from p in _context.RmFormTVechicle where p.FmtvPkRefNo == x.FmtdiPkRefNo && p.FmtvVechicleType == "PC" select p.FmtvCount ?? 0).DefaultIfEmpty().Sum()
+                        let HV = (from p in _context.RmFormTVechicle where p.FmtvPkRefNo == x.FmtdiPkRefNo && p.FmtvVechicleType == "HV" select p.FmtvCount ?? 0).DefaultIfEmpty().Sum()
+                        let MC = (from p in _context.RmFormTVechicle where p.FmtvPkRefNo == x.FmtdiPkRefNo && p.FmtvVechicleType == "MC" select p.FmtvCount ?? 0).DefaultIfEmpty().Sum()
                         where x.FmtdiFmtPkRefNo == filterOptions.Filters.FmtPkRefNo
                         orderby x.FmtdiPkRefNo descending
                         select new { x, PC, HV, MC };
@@ -277,7 +277,7 @@ namespace RAMMS.Repository
                 SNo = sl++
 
             }).ToList();
- 
+
         }
 
 
@@ -289,54 +289,24 @@ namespace RAMMS.Repository
 
 
         }
-
-        public int LoadR1Data(FormTResponseDTO FormT)
-        {
-            try
-            {
-
-                var res = (from r1 in _context.RmFormR1Hdr
-                           join a in _context.RmAllassetInventory on r1.Fr1hAidPkRefNo equals a.AiPkRefNo
-                           where r1.Fr1hAiRdCode == FormT.RdCode && r1.Fr1hActiveYn == true
-                           select new RmFormTDailyInspection
-                           {
-                               //Ff1dFmtPkRefNo = FormT.PkRefNo,
-                               //Ff1dAssetId = a.AiAssetId,
-                               FmtdiPkRefNo = r1.Fr1hPkRefNo,
-                               //Ff1dTier = Convert.ToInt32(a.AiTier),
-                               //Ff1dCode = a.AiStrucCode,
-                               //Ff1dHeight = Convert.ToDecimal(a.AiHeight),
-                               //Ff1dTopWidth = Convert.ToDecimal(a.AiWidth),
-                               //Ff1dOverallCondition = r1.Fr1hCondRating,
-                               //Ff1dLocCh = a.AiLocChKm,
-                               //Ff1dLocChDeci = a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM)
-
-                           }).ToList();
-
-                foreach (var item in res)
-                {
-                    _context.RmFormTDailyInspection.Add(item);
-                    _context.SaveChanges();
-                }
-
-                return 1;
-            }
-            catch (Exception)
-            {
-                return 500;
-
-            }
-        }
-
-
-
+ 
         public int? DeleteFormT(int id)
         {
             try
             {
-                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiPkRefNo == id select r).ToList();
+
+
+             
+
+                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiFmtPkRefNo  == id select r).ToList();
                 foreach (var item in child)
                 {
+                    IList<RmFormTVechicle> vech = (from r in _context.RmFormTVechicle where r.FmtvFmtdiPkRefNo == item.FmtdiPkRefNo select r).ToList();
+                    foreach (var Vitem in vech)
+                    {
+                        _context.Remove(Vitem);
+                        _context.SaveChanges();
+                    }
                     _context.Remove(item);
                     _context.SaveChanges();
                 }
@@ -358,6 +328,12 @@ namespace RAMMS.Repository
 
         public int? DeleteFormTDtl(int Id)
         {
+            IList<RmFormTVechicle> vech = (from r in _context.RmFormTVechicle where r.FmtvFmtdiPkRefNo == Id select r).ToList();
+            foreach (var item in vech)
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
             var res = (from r in _context.RmFormTDailyInspection where r.FmtdiPkRefNo == Id select r).SingleOrDefault();
             if (res != null)
             {
@@ -368,14 +344,19 @@ namespace RAMMS.Repository
             return 0;
         }
 
-        public int? SaveFormTDtl(RmFormTDailyInspection FormTDtl)
+        public int? SaveFormTDtl(RmFormTDailyInspection FormTDtl,  List<RmFormTVechicle> Vechicles)
         {
             try
             {
-
-
                 _context.Entry<RmFormTDailyInspection>(FormTDtl).State = FormTDtl.FmtdiPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
                 _context.SaveChanges();
+
+                foreach (var item in Vechicles)
+                {
+                    item.FmtvFmtdiPkRefNo = FormTDtl.FmtdiPkRefNo;
+                    _context.RmFormTVechicle.Add(item);
+                    _context.SaveChanges();
+                }
 
                 return FormTDtl.FmtdiPkRefNo;
             }
@@ -386,13 +367,25 @@ namespace RAMMS.Repository
             }
         }
 
-        public int? UpdateFormTDtl(RmFormTDailyInspection FormTDtl)
+        public int? UpdateFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles)
         {
             try
             {
                 _context.Set<RmFormTDailyInspection>().Attach(FormTDtl);
                 _context.Entry<RmFormTDailyInspection>(FormTDtl).State = EntityState.Modified;
                 _context.SaveChanges();
+
+                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiPkRefNo == FormTDtl.FmtdiPkRefNo select r).ToList();
+                foreach (var item in child)
+                {
+                    _context.Remove(item);
+                    _context.SaveChanges();
+                }
+                foreach (var item in Vechicles)
+                {
+                    _context.RmFormTVechicle.Add(item);
+                    _context.SaveChanges();
+                }
                 return 1;
             }
             catch (Exception ex)

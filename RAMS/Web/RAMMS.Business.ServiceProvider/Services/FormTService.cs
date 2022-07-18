@@ -180,7 +180,10 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 var model = _mapper.Map<RmFormTDailyInspection>(FormTDtl);
                 model.FmtdiPkRefNo = 0;
-                return _repo.SaveFormTDtl(model);
+
+                var veh = _mapper.Map<List<RmFormTVechicle>>(FormTDtl.Vechicles);
+               
+                return _repo.SaveFormTDtl(model,veh);
             }
             catch (Exception ex)
             {
@@ -202,7 +205,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 model.FmtdiPkRefNo = Ff1dPkRefNo;
                 //model.Ff1dFmtPkRefNo = FmtPkRefNo;
                 //model.Ff1dG1hPkRefNo = G1PkRefNo;
-                return _repo.UpdateFormTDtl(model);
+                var veh = _mapper.Map<List<RmFormTVechicle>>(FormTDtl.Vechicles);
+                return _repo.UpdateFormTDtl(model, veh);
             }
             catch (Exception ex)
             {

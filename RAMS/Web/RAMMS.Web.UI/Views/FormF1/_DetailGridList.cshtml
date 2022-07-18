@@ -38,7 +38,7 @@
                 return viewaction;
             }
 
-            if ($("#FormF1_SubmitSts").val() == "True" && data.status != "Submitted") {
+            if ($("#FormF1_SubmitSts").val() == "False" ||  ($("#FormF1_SubmitSts").val() == "True" && data.status == "Submitted")) {
                 return actionSection;
             }
             else {
