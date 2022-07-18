@@ -34,17 +34,23 @@ namespace RAMMS.Domain.Models
         public string FmhFindings { get; set; }
         public string FmhCorrectiveActions { get; set; }
         public bool? FmhSignAudit { get; set; }
-        public string FmhUseridAudit { get; set; }
+        public int? FmhUseridAudit { get; set; }
         public string FmhUsernameAudit { get; set; }
         public string FmhDesignationAudit { get; set; }
         public DateTime? FmhDateAudit { get; set; }
         public string FmhOfAudit { get; set; }
         public bool? FmhSignWit { get; set; }
-        public string FmhUseridWit { get; set; }
+        public int? FmhUseridWit { get; set; }
         public string FmhUsernameWit { get; set; }
         public string FmhDesignationWit { get; set; }
         public DateTime? FmhDateWit { get; set; }
         public string FmhOfWit { get; set; }
+        public bool? FmhSignWitone { get; set; }
+        public int? FmhUseridWitone { get; set; }
+        public string FmhUsernameWitone { get; set; }
+        public string FmhDesignationWitone { get; set; }
+        public DateTime? FmhDateWitone { get; set; }
+        public string FmhOfWitone { get; set; }
         public int? FmhModBy { get; set; }
         public DateTime? FmhModDt { get; set; }
         public int? FmhCrBy { get; set; }

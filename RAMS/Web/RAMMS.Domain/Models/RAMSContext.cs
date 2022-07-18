@@ -8289,7 +8289,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditActivities>(entity =>
             {
                 entity.HasKey(e => e.FmaaPkRefNo)
-                    .HasName("PK__RM_FormM__311EF8F005BBBB04");
+                    .HasName("PK__RM_FormM__311EF8F0012DDFD6");
 
                 entity.ToTable("RM_FormM_Audit_Activities");
 
@@ -8330,7 +8330,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditDetails>(entity =>
             {
                 entity.HasKey(e => e.FmadPkRefNo)
-                    .HasName("PK__RM_FormM__11153A4C9F65DD76");
+                    .HasName("PK__RM_FormM__11153A4C28747887");
 
                 entity.ToTable("RM_FormM_Audit_Details");
 
@@ -8384,7 +8384,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMHdr>(entity =>
             {
                 entity.HasKey(e => e.FmhPkRefNo)
-                    .HasName("PK__RM_FormM__D3A2F14456BB9B99");
+                    .HasName("PK__RM_FormM__D3A2F144D3AEF635");
 
                 entity.ToTable("RM_FormM_HDR");
 
@@ -8444,6 +8444,10 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FMH_Date_WIT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.FmhDateWitone)
+                    .HasColumnName("FMH_Date_WITONE")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.FmhDesc)
                     .HasColumnName("FMH_Desc")
                     .HasMaxLength(250)
@@ -8456,6 +8460,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmhDesignationWit)
                     .HasColumnName("FMH_Designation_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhDesignationWitone)
+                    .HasColumnName("FMH_Designation_WITONE")
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
@@ -8501,6 +8510,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FmhOfWitone)
+                    .HasColumnName("FMH_Of_WITONE")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.FmhRdCode)
                     .HasColumnName("FMH_Rd_Code")
                     .HasMaxLength(16)
@@ -8530,6 +8544,8 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmhSignWit).HasColumnName("FMH_Sign_WIT");
 
+                entity.Property(e => e.FmhSignWitone).HasColumnName("FMH_Sign_WITONE");
+
                 entity.Property(e => e.FmhSrProvider)
                     .HasColumnName("FMH_SR_Provider")
                     .HasMaxLength(100);
@@ -8541,15 +8557,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FmhUseridAudit)
-                    .HasColumnName("FMH_Userid_AUDIT")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FmhUseridAudit).HasColumnName("FMH_Userid_AUDIT");
 
-                entity.Property(e => e.FmhUseridWit)
-                    .HasColumnName("FMH_Userid_WIT")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FmhUseridWit).HasColumnName("FMH_Userid_WIT");
+
+                entity.Property(e => e.FmhUseridWitone).HasColumnName("FMH_Userid_WITONE");
 
                 entity.Property(e => e.FmhUsernameAudit)
                     .HasColumnName("FMH_Username_AUDIT")
@@ -8558,6 +8570,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmhUsernameWit)
                     .HasColumnName("FMH_Username_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhUsernameWitone)
+                    .HasColumnName("FMH_Username_WITONE")
                     .HasMaxLength(250)
                     .IsUnicode(false);
 

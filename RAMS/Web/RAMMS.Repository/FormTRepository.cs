@@ -281,24 +281,23 @@ namespace RAMMS.Repository
         }
 
 
-        public List<RmAllassetInventory> GetAssetDetails(FormTResponseDTO FormT)
-        {
 
+        public RmFormTDailyInspection GetFormTDtlById(int id)
+        {    
+            RmFormTDailyInspection res= (from DI in _context.RmFormTDailyInspection where DI.FmtdiPkRefNo == id select DI).FirstOrDefault();
+          
+            res.RmFormTVechicle = (from DI in _context.RmFormTVechicle where DI.FmtvFmtdiPkRefNo == id select DI).ToList();
 
-            return (from r in _context.RmAllassetInventory.Where(s => s.AiStrucCode == "Y" && s.AiRmuCode == FormT.RmuCode && s.AiRdCode == FormT.RdCode) select r).ToList();
-
-
+            return res;
         }
- 
+
+
         public int? DeleteFormT(int id)
         {
             try
             {
 
-
-             
-
-                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiFmtPkRefNo  == id select r).ToList();
+                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiFmtPkRefNo == id select r).ToList();
                 foreach (var item in child)
                 {
                     IList<RmFormTVechicle> vech = (from r in _context.RmFormTVechicle where r.FmtvFmtdiPkRefNo == item.FmtdiPkRefNo select r).ToList();
@@ -344,7 +343,7 @@ namespace RAMMS.Repository
             return 0;
         }
 
-        public int? SaveFormTDtl(RmFormTDailyInspection FormTDtl,  List<RmFormTVechicle> Vechicles)
+        public int? SaveFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles)
         {
             try
             {
@@ -375,7 +374,7 @@ namespace RAMMS.Repository
                 _context.Entry<RmFormTDailyInspection>(FormTDtl).State = EntityState.Modified;
                 _context.SaveChanges();
 
-                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiPkRefNo == FormTDtl.FmtdiPkRefNo select r).ToList();
+                IList<RmFormTVechicle> child = (from r in _context.RmFormTVechicle where r.FmtvFmtdiPkRefNo == FormTDtl.FmtdiPkRefNo select r).ToList();
                 foreach (var item in child)
                 {
                     _context.Remove(item);
@@ -383,6 +382,7 @@ namespace RAMMS.Repository
                 }
                 foreach (var item in Vechicles)
                 {
+                     item.FmtvPkRefNo = 0;
                     _context.RmFormTVechicle.Add(item);
                     _context.SaveChanges();
                 }

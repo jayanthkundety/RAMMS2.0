@@ -79,23 +79,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-        public IEnumerable<CSelectListItem> GetAssetDetails(FormTResponseDTO FormT)
-        {
-            IEnumerable<RmAllassetInventory> list = _repo.GetAssetDetails(FormT);
-
-            return list.Select(s => new CSelectListItem
-            {
-                Text = s.AiAssetId,
-                Value = s.AiPkRefNo.ToString(),
-                FromKm = s.AiLocChKm ?? 0,
-                FromM = s.AiLocChM,
-                Item1 = s.AiStrucCode,
-                Item2 = s.AiBound,
-                Item3 = s.AiWidth.ToString(),
-                CValue = s.AiHeight.ToString()
-            }).ToList();
-
-        }
+       
 
         public async Task<FormTResponseDTO> GetHeaderById(int id)
         {
@@ -105,6 +89,15 @@ namespace RAMMS.Business.ServiceProvider.Services
                 return null;
             }
             return _mapper.Map<FormTResponseDTO>(header);
+        }
+
+        public async Task<FormTDtlResponseDTO> GetFormTDtlById(int id)
+        {
+            RmFormTDailyInspection res = _repo.GetFormTDtlById(id);
+            FormTDtlResponseDTO DI = new FormTDtlResponseDTO();
+            DI = _mapper.Map<FormTDtlResponseDTO>(res);
+            DI.Vechicles = _mapper.Map<List<FormTVehicleResponseDTO>>(res.RmFormTVechicle);
+            return DI;
         }
 
 

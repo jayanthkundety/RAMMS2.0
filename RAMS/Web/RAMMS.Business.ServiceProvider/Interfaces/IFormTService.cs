@@ -20,8 +20,8 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
 
         Task<PagingResult<FormTDtlGridDTO>> GetDetailList(FilteredPagingDefinition<FormTDtlResponseDTO> filterOptions);
 
-        IEnumerable<CSelectListItem> GetAssetDetails(FormTResponseDTO FormT);
         Task<FormTResponseDTO> GetHeaderById(int id);
+        Task<FormTDtlResponseDTO> GetFormTDtlById(int id);
         Task<FormTResponseDTO> SaveFormT(FormTResponseDTO FormT);
         Task<int> Update(FormTResponseDTO FormW1);
         int? DeleteFormT(int id);

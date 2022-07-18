@@ -126,9 +126,8 @@ namespace RAMMS.Web.UI.Controllers
             {
                 _model.FormT = new FormTResponseDTO();
             }
-            ViewData["Asset"] = _formTService.GetAssetDetails(_model.FormT);
 
-
+            _model.FormTDtl = new FormTDtlResponseDTO();
             _model.FormT = _model.FormT ?? new FormTResponseDTO();
             _model.view = view;
 
@@ -191,7 +190,14 @@ namespace RAMMS.Web.UI.Controllers
 
         }
 
-       
+
+        public async Task<IActionResult> GetFormTDtlById(int id)
+        {
+            FormTModel _model = new FormTModel();
+            _model.FormTDtl = await _formTService.GetFormTDtlById(id);
+            return PartialView("~/Views/FormT/_VechicleDetails.cshtml", _model);
+            
+        }
 
         public async Task<IActionResult> DeleteFormT(int id)
         {

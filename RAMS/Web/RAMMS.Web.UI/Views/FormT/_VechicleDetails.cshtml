@@ -1057,10 +1057,9 @@
                                                         <div class="dataTables_scroll" style="height:128px">
 
                                                             <div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%; max-height: 100%; height: 100%;">
-                                                                <table class="table w-100 nowrap dataTable   no-footer tblMc">
+                                                                <table class="table w-100 nowrap dataTable no-footer tblMC">
                                                                     <thead style="background-color: #c8e1ff">
                                                                         <tr>
-
                                                                             <th colspan="1">
                                                                                 From time
                                                                             </th>
@@ -1108,12 +1107,9 @@
                                                                     <tbody>
 
                                                                         <tr>
-
-
                                                                             <td>
                                                                                 Motorcycle
                                                                             </td>
-
 
                                                                             <td class="editable" style="cursor: pointer;">
                                                                             </td>
@@ -1176,3 +1172,21 @@
 
     </div>
 </div>
+
+<script>
+    debugger
+
+    var veh = JSON.parse('@Json.Serialize(@Model.FormTDtl.Vechicles)');
+
+    for (i = 0; i < veh.length; i++) {
+
+        if (veh[i].vechicleType == "PC") {
+
+            $(".tblPC > tbody  > tr > td:nth-child(" + ((veh[i].time / 5) + 1) + ")").html(veh[i].count)
+        }
+        else if (veh[i].vechicleType == "MC") {
+
+            $(".tblMC > tbody  > tr > td:nth-child(" + ((veh[i].time / 5) + 1) + ")").html(veh[i].count)
+        }
+    }
+</script>
