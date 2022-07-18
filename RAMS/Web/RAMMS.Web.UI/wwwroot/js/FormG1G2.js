@@ -104,7 +104,7 @@
             par.find("[userDest]").val(item2).removeClass("validate").prop("disabled", true);
         }
     }
-    this.Save = function (isSubmit) {
+    this.Save = function (isSubmit, isApproveSave) {
         //debugger;
         var tis = this;
         if (isSubmit) {
@@ -115,10 +115,16 @@
         if (ValidatePage("#frmG1G2Data", "", "")) {
             //var refNo = $("#txtS1RefNumber");
             var action = isSubmit ? "Submit" : "Save";
-            GetResponseValue(action, "FormG1G2", FormValueCollection("#AccordPage1,#AccordPage2,#AccordPage6,#FormG2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {
-                app.ShowSuccessMessage('Successfully Saved', false);
-                setTimeout(tis.NavToList, 2000);
-            }, "Saving");
+            if (isApproveSave == 1) {
+                GetResponseValue(action, "FormG1G2", FormValueCollection("#AccordPage1,#AccordPage2,#AccordPage6,#FormG2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {
+                }, "Saving");
+            }
+            else {
+                GetResponseValue(action, "FormG1G2", FormValueCollection("#AccordPage1,#AccordPage2,#AccordPage6,#FormG2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {
+                    app.ShowSuccessMessage('Successfully Saved', false);
+                    setTimeout(tis.NavToList, 2000);
+                }, "Saving");
+            }
         }
         if (isSubmit) {
             $("#frmG1G2Data .svalidate").removeClass("validate");

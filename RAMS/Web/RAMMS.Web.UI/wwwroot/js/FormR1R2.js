@@ -103,7 +103,7 @@
             par.find("[userDest]").val(item2).removeClass("validate").prop("disabled", true);
         }
     }
-    this.Save = function (isSubmit) {
+    this.Save = function (isSubmit,isApproveSave) {
         var tis = this;
         if (isSubmit) {
             $("#frmR1R2Data .svalidate").addClass("validate");
@@ -113,10 +113,16 @@
         if (ValidatePage("#frmR1R2Data", "", "")) {
             //var refNo = $("#txtS1RefNumber");
             var action = isSubmit ? "Submit" : "Save";
-            GetResponseValue(action, "FormR1R2", FormValueCollection1("#AccordPage1,#AccordPage2,#AccordPage3,#AccordPage4,#FormR2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {
-                app.ShowSuccessMessage('Successfully Saved', false);
-                setTimeout(tis.NavToList, 2000);
-            }, "Saving");
+            if (isApproveSave == 1) {
+                GetResponseValue(action, "FormR1R2", FormValueCollection1("#AccordPage1,#AccordPage2,#AccordPage3,#AccordPage4,#FormR2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {                    
+                }, "Saving");
+            }
+            else {
+                GetResponseValue(action, "FormR1R2", FormValueCollection1("#AccordPage1,#AccordPage2,#AccordPage3,#AccordPage4,#FormR2TabPage2,#divApprovedInfo", tis.HeaderData), function (data) {
+                    app.ShowSuccessMessage('Successfully Saved', false);
+                    setTimeout(tis.NavToList, 2000);
+                }, "Saving");
+            }
         }
         if (isSubmit) {
             $("#frmR1R2Data .svalidate").removeClass("validate");

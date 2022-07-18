@@ -65,8 +65,8 @@ namespace RAMMS.Business.ServiceProvider.Services
             string retValue = "[";
             foreach (var days in daySchedules)
             {
-                retValue += @"[""" + days.FsiidsFsiiqdClkPkRefNo  + @""",[";
-                var _days = rmFormS2DaySchedules.Where(s => s.FsiidsFsiiqdClkPkRefNo == days.FsiidsFsiiqdClkPkRefNo && s.FsiidsFsiiqdPkRefNo == days.FsiidsFsiiqdPkRefNo  && s.FsiidsFsiidPkRefNo == detailId).Select(s => @"""" + DateTime.Parse(s.FsiidsScheduledDt.ToString()).ToString("yyyy-MM-dd") + @"""").ToList();
+                retValue += @"[""" + days.FsiidsFsiiqdClkPkRefNo + @""",[";
+                var _days = rmFormS2DaySchedules.Where(s => s.FsiidsFsiiqdClkPkRefNo == days.FsiidsFsiiqdClkPkRefNo && s.FsiidsFsiiqdPkRefNo == days.FsiidsFsiiqdPkRefNo && s.FsiidsFsiidPkRefNo == detailId).Select(s => @"""" + DateTime.Parse(s.FsiidsScheduledDt.ToString()).ToString("yyyy-MM-dd") + @"""").ToList();
                 retValue += string.Join(",", _days) + "]],";
             }
             retValue = retValue == "[" ? "" : retValue.Substring(0, retValue.Length - 1) + "]";
@@ -546,34 +546,45 @@ namespace RAMMS.Business.ServiceProvider.Services
                                     {
                                         int s = weekNo[r.week[week]];
 
-                                        workSheet.Cell(i, s).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                        workSheet.Cell(i, s).Style.Fill.PatternColor = XLColor.Gray;
-                                        workSheet.Cell(i, s).Style.Fill.SetBackgroundColor(XLColor.White);
+                                        List<FORMS2DaySchedule> day = r.daySchedules.FindAll(x => x.weekno == r.week[week]);
 
-                                        workSheet.Cell(i, s + 1).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                        workSheet.Cell(i, s + 1).Style.Fill.PatternColor = XLColor.Gray;
-                                        workSheet.Cell(i, s + 1).Style.Fill.SetBackgroundColor(XLColor.White);
+                                        foreach (FORMS2DaySchedule daySchedule in day)
+                                        {
+                                            var t = (daySchedule.Day == 0 ? 7 : daySchedule.Day) + (s - 1);
+                                            workSheet.Cell(i, t).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                            workSheet.Cell(i, t).Style.Fill.PatternColor = XLColor.Gray;
+                                            workSheet.Cell(i, t).Style.Fill.SetBackgroundColor(XLColor.White);
+                                        }
 
-                                        workSheet.Cell(i, s + 2).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                        workSheet.Cell(i, s + 2).Style.Fill.PatternColor = XLColor.Gray;
-                                        workSheet.Cell(i, s + 2).Style.Fill.SetBackgroundColor(XLColor.White);
+                                        /* 
+                                         * workSheet.Cell(i, s).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                         workSheet.Cell(i, s).Style.Fill.PatternColor = XLColor.Gray;
+                                         workSheet.Cell(i, s).Style.Fill.SetBackgroundColor(XLColor.White);
 
-                                        workSheet.Cell(i, s + 3).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                        workSheet.Cell(i, s + 3).Style.Fill.PatternColor = XLColor.Gray;
-                                        workSheet.Cell(i, s + 3).Style.Fill.SetBackgroundColor(XLColor.White);
+                                         workSheet.Cell(i, s + 1).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                         workSheet.Cell(i, s + 1).Style.Fill.PatternColor = XLColor.Gray;
+                                         workSheet.Cell(i, s + 1).Style.Fill.SetBackgroundColor(XLColor.White);
 
-                                        workSheet.Cell(i, s + 4).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                        workSheet.Cell(i, s + 4).Style.Fill.PatternColor = XLColor.Gray;
-                                        workSheet.Cell(i, s + 4).Style.Fill.SetBackgroundColor(XLColor.White);
+                                         workSheet.Cell(i, s + 2).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                         workSheet.Cell(i, s + 2).Style.Fill.PatternColor = XLColor.Gray;
+                                         workSheet.Cell(i, s + 2).Style.Fill.SetBackgroundColor(XLColor.White);
 
-                                        workSheet.Cell(i, s + 5).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                        workSheet.Cell(i, s + 5).Style.Fill.PatternColor = XLColor.Gray;
-                                        workSheet.Cell(i, s + 5).Style.Fill.SetBackgroundColor(XLColor.White);
+                                         workSheet.Cell(i, s + 3).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                         workSheet.Cell(i, s + 3).Style.Fill.PatternColor = XLColor.Gray;
+                                         workSheet.Cell(i, s + 3).Style.Fill.SetBackgroundColor(XLColor.White);
 
-                                        workSheet.Cell(i, s + 6).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                        workSheet.Cell(i, s + 6).Style.Fill.PatternColor = XLColor.Gray;
-                                        workSheet.Cell(i, s + 6).Style.Fill.SetBackgroundColor(XLColor.White);
+                                         workSheet.Cell(i, s + 4).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                         workSheet.Cell(i, s + 4).Style.Fill.PatternColor = XLColor.Gray;
+                                         workSheet.Cell(i, s + 4).Style.Fill.SetBackgroundColor(XLColor.White);
 
+                                         workSheet.Cell(i, s + 5).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                         workSheet.Cell(i, s + 5).Style.Fill.PatternColor = XLColor.Gray;
+                                         workSheet.Cell(i, s + 5).Style.Fill.SetBackgroundColor(XLColor.White);
+
+                                         workSheet.Cell(i, s + 6).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                         workSheet.Cell(i, s + 6).Style.Fill.PatternColor = XLColor.Gray;
+                                         workSheet.Cell(i, s + 6).Style.Fill.SetBackgroundColor(XLColor.White);
+                                        */
 
                                     }
                                     workSheet.Cell(i, 112).Value = r.Target;

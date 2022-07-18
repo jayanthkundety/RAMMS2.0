@@ -14,6 +14,7 @@
   <ItemGroup>
     <Compile Remove="AppRoot.cs" />
     <Compile Remove="Controllers\ADownloadController.cs" />
+    <Compile Remove="Controllers\FormTController.cs" />
     <Compile Remove="Models\Class.cs" />
     <Compile Remove="Models\FormV2UserDetailsModel.cs" />
   </ItemGroup>

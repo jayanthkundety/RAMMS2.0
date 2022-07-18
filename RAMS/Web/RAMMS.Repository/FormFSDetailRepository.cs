@@ -165,6 +165,16 @@ namespace RAMMS.Repository
                     lst.Add(obj);
             }
 
+            //SIGNS
+
+            var signs = GetAsset().Where(s => s.DdlTypeCode == "CV").ToList();
+            foreach (var cw in signs)
+            {
+                //var obj = GetSgns(cw.DdlTypeDesc, cw.DdlTypeValue, userid, headerid, hdr);
+                //if (obj != null)
+                //    lst.Add(obj);
+            }
+            //
 
             var culverts = GetAsset().Where(s => s.DdlTypeCode == "CV").ToList();
             foreach (var cw in culverts)
@@ -189,6 +199,16 @@ namespace RAMMS.Repository
                 if (obj != null)
                     lst.Add(obj);
             }
+
+            //RW
+            var retainingWall = GetAsset().Where(s => s.DdlTypeCode == "RW").ToList();
+            foreach (var cw in retainingWall)
+            {
+                //var obj = GetRetainingWall(cw.DdlTypeDesc, cw.DdlTypeValue, userid, headerid, hdr);
+                //if (obj != null)
+                //    lst.Add(obj);
+            }
+            //
 
             var c = lst.Where(s => s != null);
             _context.RmFormFsInsDtl.AddRange(c);
@@ -913,6 +933,120 @@ namespace RAMMS.Repository
                     FsdCondition2 = (decimal?)condition2,
                     FsdCondition3 = (decimal?)condition3,
                     FsdFeature = "GUARDRAIL",
+                    FsdFshPkRefNo = headerid,
+                    FsdGrpType = grptype,
+                    FsdGrpCode = StructureCode,
+                    FsdLength = Length,
+                    FsdWidth = AvgWidth,
+                    FsdStrucCode = StructureCode,
+                    FsdSubmitSts = false,
+                    FsdUnit = "m",
+                    FsdCrBy = userid,
+                    FsdCrDt = DateTime.UtcNow,
+                    FsdModBy = userid,
+                    FsdModDt = DateTime.UtcNow
+                };
+                return detail;
+            }
+            else
+                return null;
+        }
+
+
+        //RW/S
+        public RmFormFsInsDtl GetRetainingWall(string grptype, string StructureCode, int userid, int headerid, RmFormFsInsHdr hdr)
+        {
+            var count = (from o in _context.RmFormF2GrInsDtl
+                         join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                         where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                         && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                         select 1).Count();
+            var Length = (from o in _context.RmFormF2GrInsDtl
+                          join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                          where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                          && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                          select o.FgridLength)?.Sum();
+            var AvgWidth = 0;
+            double? condition1 = (from o in _context.RmFormF2GrInsDtl
+                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                                  select o.FgridGrCondition1)?.Sum();
+            double? condition2 = (from o in _context.RmFormF2GrInsDtl
+                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                                  select o.FgridGrCondition2)?.Sum();
+            double? condition3 = (from o in _context.RmFormF2GrInsDtl
+                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                                  select o.FgridGrCondition3)?.Sum();
+            if (count > 0)
+            {
+                var detail = new RmFormFsInsDtl
+                {
+                    FsdActiveYn = true,
+                    FsdCondition1 = (decimal?)condition1,
+                    FsdCondition2 = (decimal?)condition2,
+                    FsdCondition3 = (decimal?)condition3,
+                    FsdFeature = "RETAINING WALL",
+                    FsdFshPkRefNo = headerid,
+                    FsdGrpType = grptype,
+                    FsdGrpCode = StructureCode,
+                    FsdLength = Length,
+                    FsdWidth = AvgWidth,
+                    FsdStrucCode = StructureCode,
+                    FsdSubmitSts = false,
+                    FsdUnit = "m",
+                    FsdCrBy = userid,
+                    FsdCrDt = DateTime.UtcNow,
+                    FsdModBy = userid,
+                    FsdModDt = DateTime.UtcNow
+                };
+                return detail;
+            }
+            else
+                return null;
+        }
+
+        public RmFormFsInsDtl GetSgns(string grptype, string StructureCode, int userid, int headerid, RmFormFsInsHdr hdr)
+        {
+            var count = (from o in _context.RmFormF2GrInsDtl
+                         join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                         where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                         && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                         select 1).Count();
+            var Length = (from o in _context.RmFormF2GrInsDtl
+                          join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                          where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                          && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                          select o.FgridLength)?.Sum();
+            var AvgWidth = 0;
+            double? condition1 = (from o in _context.RmFormF2GrInsDtl
+                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                                  select o.FgridGrCondition1)?.Sum();
+            double? condition2 = (from o in _context.RmFormF2GrInsDtl
+                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                                  select o.FgridGrCondition2)?.Sum();
+            double? condition3 = (from o in _context.RmFormF2GrInsDtl
+                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
+                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
+                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+                                  select o.FgridGrCondition3)?.Sum();
+            if (count > 0)
+            {
+                var detail = new RmFormFsInsDtl
+                {
+                    FsdActiveYn = true,
+                    FsdCondition1 = (decimal?)condition1,
+                    FsdCondition2 = (decimal?)condition2,
+                    FsdCondition3 = (decimal?)condition3,
+                    FsdFeature = "RETAINING WALL",
                     FsdFshPkRefNo = headerid,
                     FsdGrpType = grptype,
                     FsdGrpCode = StructureCode,

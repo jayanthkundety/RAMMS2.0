@@ -141,7 +141,7 @@ namespace RAMMS.Web.UI.Controllers
             LoadLookupService("Year", "User", "Photo Type~RWG");
             ViewData["DistressObserved1"] = _ddLookupService.GetDdDistressDetails().Result;
             ViewBag.Dis_Severity = LookupService.GetDdlLookupByCode("Form C1C2");
-            FormR1DTO frmR1R2 = null;
+            FormR1DTO frmR1R2 = new FormR1DTO();
             if (id > 0)
             {
                 ViewBag.IsAdd = false;

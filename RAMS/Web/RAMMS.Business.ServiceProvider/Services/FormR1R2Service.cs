@@ -393,18 +393,52 @@ namespace RAMMS.Business.ServiceProvider.Services
                             for (int i = 0; i < _rpt.Count; i++)
                             {
                                 rpt = _rpt[i];
-                                int j = i == 0 ? i : i + 1;
-                                worksheet.Cell(34, 5 + j).Value = rpt.Year;
-                                worksheet.Cell(35, 5 + j).Value = rpt.Month;
-                                worksheet.Cell(36, 5 + j).Value = rpt.Day;
+                                int j = 0;
+                                #region looping Data
+                                if (i == 0)
+                                    j=5;
+                                else if(i==1)
+                                    j = 7;
+                                else if (i == 2)
+                                    j = 9;
+                                else if (i == 3)
+                                    j = 11;
+                                else if (i == 4)
+                                    j = 13;
+                                else if (i == 5)
+                                    j = 15;
+                                else if (i == 6)
+                                    j = 17;
+                                else if (i == 7)
+                                    j = 19;
+                                else if (i == 8)
+                                    j = 21;
+                                else if (i == 9)
+                                    j = 23;
+                                else if (i == 10)
+                                    j = 25;
+                                else if (i == 11)
+                                    j = 27;
+                                else if (i == 12)
+                                    j = 29;
+                                else if (i == 13)
+                                    j = 31;
+                                else if (i == 14)
+                                    j = 33;
+                                else if (i == 15)
+                                    j = 35;
+                                #endregion
+                                worksheet.Cell(34, j).Value = rpt.Year;
+                                worksheet.Cell(35, j).Value = rpt.Month;
+                                worksheet.Cell(36, j).Value = rpt.Day;
 
                                 if (rpt.DistressObserved != null)
                                 {
-                                    worksheet.Cell(37, 5 + j).Value = rpt.DistressObserved.Split(',').Length >= 1 ? rpt.DistressObserved.Split(',')[0] : "";
-                                    worksheet.Cell(38, 5 + j).Value = rpt.DistressObserved.Split(',').Length >= 2 ? rpt.DistressObserved.Split(',')[1] : "";
-                                    worksheet.Cell(39, 5 + j).Value = rpt.DistressObserved.Split(',').Length == 3 ? rpt.DistressObserved.Split(',')[2] : "";
+                                    worksheet.Cell(37, j).Value = rpt.DistressObserved.Split(',').Length >= 1 ? rpt.DistressObserved.Split(',')[0] : "";
+                                    worksheet.Cell(38, j).Value = rpt.DistressObserved.Split(',').Length >= 2 ? rpt.DistressObserved.Split(',')[1] : "";
+                                    worksheet.Cell(39, j).Value = rpt.DistressObserved.Split(',').Length == 3 ? rpt.DistressObserved.Split(',')[2] : "";
                                 }
-                                worksheet.Cell(40, 5 + j).Value = rpt.Severity;
+                                worksheet.Cell(40, j).Value = rpt.Severity;
                             }
 
                             worksheet.Cell(65, 8).Value = rpt.ReportforYear;
