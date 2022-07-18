@@ -82,6 +82,9 @@ namespace RAMMS.Domain.Models
         public virtual DbSet<RmFormHHdr> RmFormHHdr { get; set; }
         public virtual DbSet<RmFormJDtl> RmFormJDtl { get; set; }
         public virtual DbSet<RmFormJHdr> RmFormJHdr { get; set; }
+        public virtual DbSet<RmFormMAuditActivities> RmFormMAuditActivities { get; set; }
+        public virtual DbSet<RmFormMAuditDetails> RmFormMAuditDetails { get; set; }
+        public virtual DbSet<RmFormMHdr> RmFormMHdr { get; set; }
         public virtual DbSet<RmFormN1Hdr> RmFormN1Hdr { get; set; }
         public virtual DbSet<RmFormN2Hdr> RmFormN2Hdr { get; set; }
         public virtual DbSet<RmFormQa1EqVh> RmFormQa1EqVh { get; set; }
@@ -8283,6 +8286,286 @@ namespace RAMMS.Domain.Models
                 entity.Property(e => e.FjhYear).HasColumnName("FJH_Year");
             });
 
+            modelBuilder.Entity<RmFormMAuditActivities>(entity =>
+            {
+                entity.HasKey(e => e.FmaaPkRefNo)
+                    .HasName("PK__RM_FormM__311EF8F005BBBB04");
+
+                entity.ToTable("RM_FormM_Audit_Activities");
+
+                entity.Property(e => e.FmaaPkRefNo).HasColumnName("FMAA_PK_Ref_No");
+
+                entity.Property(e => e.FmaaActivityCode)
+                    .HasColumnName("FMAA_Activity_Code")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmaaActivityFor)
+                    .HasColumnName("FMAA_Activity_For")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmaaActivityName)
+                    .HasColumnName("FMAA_Activity_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmaaCategory).HasColumnName("FMAA_Category");
+
+                entity.Property(e => e.FmaaCrBy).HasColumnName("FMAA_CR_By");
+
+                entity.Property(e => e.FmaaCrDt)
+                    .HasColumnName("FMAA_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmaaIsEditable).HasColumnName("FMAA_Is_Editable");
+
+                entity.Property(e => e.FmaaModBy).HasColumnName("FMAA_Mod_By");
+
+                entity.Property(e => e.FmaaModDt)
+                    .HasColumnName("FMAA_Mod_DT")
+                    .HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<RmFormMAuditDetails>(entity =>
+            {
+                entity.HasKey(e => e.FmadPkRefNo)
+                    .HasName("PK__RM_FormM__11153A4C9F65DD76");
+
+                entity.ToTable("RM_FormM_Audit_Details");
+
+                entity.Property(e => e.FmadPkRefNo).HasColumnName("FMAD_PK_Ref_No");
+
+                entity.Property(e => e.FmadActivityCode)
+                    .HasColumnName("FMAD_Activity_Code")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmadActivityFor)
+                    .HasColumnName("FMAD_Activity_For")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmadActivityName)
+                    .HasColumnName("FMAD_Activity_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmadCategory).HasColumnName("FMAD_Category");
+
+                entity.Property(e => e.FmadCrBy).HasColumnName("FMAD_CR_By");
+
+                entity.Property(e => e.FmadCrDt)
+                    .HasColumnName("FMAD_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmadFmhPkRefNo).HasColumnName("FMAD_FMH_PK_Ref_No");
+
+                entity.Property(e => e.FmadIsEditable).HasColumnName("FMAD_Is_Editable");
+
+                entity.Property(e => e.FmadModBy).HasColumnName("FMAD_Mod_By");
+
+                entity.Property(e => e.FmadModDt)
+                    .HasColumnName("FMAD_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmadTallyBox).HasColumnName("FMAD_Tally_Box");
+
+                entity.Property(e => e.FmadTotal).HasColumnName("FMAD_Total");
+
+                entity.Property(e => e.FmadWeightage).HasColumnName("FMAD_Weightage");
+
+                entity.HasOne(d => d.FmadFmhPkRefNoNavigation)
+                    .WithMany(p => p.RmFormMAuditDetails)
+                    .HasForeignKey(d => d.FmadFmhPkRefNo)
+                    .HasConstraintName("FK_RM_FormM_Audit_Details_RM_FormM_HDR");
+            });
+
+            modelBuilder.Entity<RmFormMHdr>(entity =>
+            {
+                entity.HasKey(e => e.FmhPkRefNo)
+                    .HasName("PK__RM_FormM__D3A2F14456BB9B99");
+
+                entity.ToTable("RM_FormM_HDR");
+
+                entity.Property(e => e.FmhPkRefNo).HasColumnName("FMH_PK_Ref_No");
+
+                entity.Property(e => e.FmhActCode)
+                    .HasColumnName("FMH_ACT_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhActiveYn).HasColumnName("FMH_Active_YN");
+
+                entity.Property(e => e.FmhAuditLog).HasColumnName("FMH_AuditLog");
+
+                entity.Property(e => e.FmhAuditTimeFrm)
+                    .HasColumnName("FMH_Audit_Time_FRM")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmhAuditTimeTo)
+                    .HasColumnName("FMH_Audit_Time_TO")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmhAuditType)
+                    .HasColumnName("FMH_Audit_Type")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.FmhAuditedBy)
+                    .HasColumnName("FMH_Audited_By")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhAuditedDate)
+                    .HasColumnName("FMH_Audited_Date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmhCorrectiveActions)
+                    .HasColumnName("FMH_Corrective_Actions")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhCrBy).HasColumnName("FMH_CR_By");
+
+                entity.Property(e => e.FmhCrDt)
+                    .HasColumnName("FMH_CR_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmhCrewSup)
+                    .HasColumnName("FMH_Crew_Sup")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhDateAudit)
+                    .HasColumnName("FMH_Date_AUDIT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmhDateWit)
+                    .HasColumnName("FMH_Date_WIT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmhDesc)
+                    .HasColumnName("FMH_Desc")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhDesignationAudit)
+                    .HasColumnName("FMH_Designation_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhDesignationWit)
+                    .HasColumnName("FMH_Designation_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhDist)
+                    .HasColumnName("FMH_Dist")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhDivCode)
+                    .HasColumnName("FMH_Div_Code")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhFinalResult).HasColumnName("FMH_Final_Result");
+
+                entity.Property(e => e.FmhFinalResultValue)
+                    .HasColumnName("FMH_Final_Result_Value")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.FmhFindings)
+                    .HasColumnName("FMH_Findings")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhMethod)
+                    .HasColumnName("FMH_Method")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhModBy).HasColumnName("FMH_Mod_By");
+
+                entity.Property(e => e.FmhModDt)
+                    .HasColumnName("FMH_Mod_DT")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.FmhOfAudit)
+                    .HasColumnName("FMH_Of_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhOfWit)
+                    .HasColumnName("FMH_Of_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhRdCode)
+                    .HasColumnName("FMH_Rd_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhRdName)
+                    .HasColumnName("FMH_Rd_name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhRefId)
+                    .HasColumnName("FMH_Ref_ID")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhRmuCode)
+                    .HasColumnName("FMH_RMU_Code")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhRmuName)
+                    .HasColumnName("FMH_RMU_Name")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhSignAudit).HasColumnName("FMH_Sign_AUDIT");
+
+                entity.Property(e => e.FmhSignWit).HasColumnName("FMH_Sign_WIT");
+
+                entity.Property(e => e.FmhSrProvider)
+                    .HasColumnName("FMH_SR_Provider")
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.FmhSubmitSts).HasColumnName("FMH_SUBMIT_STS");
+
+                entity.Property(e => e.FmhType)
+                    .HasColumnName("FMH_Type")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhUseridAudit)
+                    .HasColumnName("FMH_Userid_AUDIT")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhUseridWit)
+                    .HasColumnName("FMH_Userid_WIT")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhUsernameAudit)
+                    .HasColumnName("FMH_Username_AUDIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhUsernameWit)
+                    .HasColumnName("FMH_Username_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fmhstatus)
+                    .HasColumnName("FMHStatus")
+                    .HasDefaultValueSql("(N'Initialize')");
+            });
+
             modelBuilder.Entity<RmFormN1Hdr>(entity =>
             {
                 entity.HasKey(e => e.FnihPkRefNo)
@@ -11192,8 +11475,25 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FMTDI_CR_DT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.FmtdiDay).HasColumnName("FMTDI_Day");
+
                 entity.Property(e => e.FmtdiDescription)
                     .HasColumnName("FMTDI_Description")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmtdiDescriptionHv)
+                    .HasColumnName("FMTDI_DescriptionHV")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmtdiDescriptionMc)
+                    .HasColumnName("FMTDI_DescriptionMC")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmtdiDescriptionPc)
+                    .HasColumnName("FMTDI_DescriptionPC")
                     .HasMaxLength(4000)
                     .IsUnicode(false);
 
@@ -11226,6 +11526,8 @@ namespace RAMMS.Domain.Models
                     .HasColumnType("datetime");
 
                 entity.Property(e => e.FmtdiPcsSubTotal).HasColumnName("FMTDI_PCS_Sub_Total");
+
+                entity.Property(e => e.FmtdiTotalDay).HasColumnName("FMTDI_TotalDay");
 
                 entity.HasOne(d => d.FmtdiFmtPkRefNoNavigation)
                     .WithMany(p => p.RmFormTDailyInspection)
