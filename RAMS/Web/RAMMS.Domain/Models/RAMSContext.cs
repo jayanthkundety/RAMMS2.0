@@ -11475,27 +11475,27 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FMTDI_CR_DT")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.FmtdiDay).HasColumnName("FMTDI_Day");
+                //entity.Property(e => e.FmtdiDay).HasColumnName("FMTDI_Day");
 
                 entity.Property(e => e.FmtdiDescription)
                     .HasColumnName("FMTDI_Description")
                     .HasMaxLength(4000)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FmtdiDescriptionHv)
-                    .HasColumnName("FMTDI_DescriptionHV")
-                    .HasMaxLength(4000)
-                    .IsUnicode(false);
+                //entity.Property(e => e.FmtdiDescriptionHv)
+                //    .HasColumnName("FMTDI_DescriptionHV")
+                //    .HasMaxLength(4000)
+                //    .IsUnicode(false);
 
-                entity.Property(e => e.FmtdiDescriptionMc)
-                    .HasColumnName("FMTDI_DescriptionMC")
-                    .HasMaxLength(4000)
-                    .IsUnicode(false);
+                //entity.Property(e => e.FmtdiDescriptionMc)
+                //    .HasColumnName("FMTDI_DescriptionMC")
+                //    .HasMaxLength(4000)
+                //    .IsUnicode(false);
 
-                entity.Property(e => e.FmtdiDescriptionPc)
-                    .HasColumnName("FMTDI_DescriptionPC")
-                    .HasMaxLength(4000)
-                    .IsUnicode(false);
+                //entity.Property(e => e.FmtdiDescriptionPc)
+                //    .HasColumnName("FMTDI_DescriptionPC")
+                //    .HasMaxLength(4000)
+                //    .IsUnicode(false);
 
                 entity.Property(e => e.FmtdiDirectionFrm)
                     .HasColumnName("FMTDI_Direction_Frm")
@@ -11527,7 +11527,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmtdiPcsSubTotal).HasColumnName("FMTDI_PCS_Sub_Total");
 
-                entity.Property(e => e.FmtdiTotalDay).HasColumnName("FMTDI_TotalDay");
+                //entity.Property(e => e.FmtdiTotalDay).HasColumnName("FMTDI_TotalDay");
 
                 entity.HasOne(d => d.FmtdiFmtPkRefNoNavigation)
                     .WithMany(p => p.RmFormTDailyInspection)

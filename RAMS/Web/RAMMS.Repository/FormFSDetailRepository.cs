@@ -167,12 +167,12 @@ namespace RAMMS.Repository
 
             //SIGNS
 
-            var signs = GetAsset().Where(s => s.DdlTypeCode == "CV").ToList();
+            var signs = GetAsset().Where(s => s.DdlTypeCode == "SG").ToList();
             foreach (var cw in signs)
             {
-                //var obj = GetSgns(cw.DdlTypeDesc, cw.DdlTypeValue, userid, headerid, hdr);
-                //if (obj != null)
-                //    lst.Add(obj);
+                var obj = GetSigns(cw.DdlTypeDesc, cw.DdlTypeValue, userid, headerid, hdr);
+                if (obj != null)
+                    lst.Add(obj);
             }
             //
 
@@ -1010,18 +1010,17 @@ namespace RAMMS.Repository
                 return null;
         }
 
-        public RmFormFsInsDtl GetSgns(string grptype, string StructureCode, int userid, int headerid, RmFormFsInsHdr hdr)
+        public RmFormFsInsDtl GetSigns(string grptype, string StructureCode, int userid, int headerid, RmFormFsInsHdr hdr)
         {
-            var count = (from o in _context.RmFormF2GrInsDtl
-                         join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
-                         where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
-                         && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
+            var count = (from o in _context.RmFormG1Hdr
+                         where o.Fg1hRdCode == hdr.FshRoadCode && o.Fg1hYearOfInsp == hdr.FshYearOfInsp
+                         && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode 
                          select 1).Count();
-            var Length = (from o in _context.RmFormF2GrInsDtl
-                          join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
-                          where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
-                          && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
-                          select o.FgridLength)?.Sum();
+
+            var Length = (from o in _context.RmFormG1Hdr
+                          where o.Fg1hRdCode == hdr.FshRoadCode && o.Fg1hYearOfInsp == hdr.FshYearOfInsp
+                          && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode 
+                          select o.Fg1hLocChKm)?.Sum();
             var AvgWidth = 0;
             double? condition1 = (from o in _context.RmFormF2GrInsDtl
                                   join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
@@ -1046,7 +1045,7 @@ namespace RAMMS.Repository
                     FsdCondition1 = (decimal?)condition1,
                     FsdCondition2 = (decimal?)condition2,
                     FsdCondition3 = (decimal?)condition3,
-                    FsdFeature = "RETAINING WALL",
+                    FsdFeature = "SIGNS",
                     FsdFshPkRefNo = headerid,
                     FsdGrpType = grptype,
                     FsdGrpCode = StructureCode,
