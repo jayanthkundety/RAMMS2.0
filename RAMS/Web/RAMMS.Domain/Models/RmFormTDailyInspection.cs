@@ -17,11 +17,16 @@ namespace RAMMS.Domain.Models
         public string FmtdiAuditTimeTo { get; set; }
         public string FmtdiDirectionFrm { get; set; }
         public string FmtdiDirectionTo { get; set; }
+        public int? FmtdiDay { get; set; }
+        public int? FmtdiTotalDay { get; set; }
         public int? FmtdiHourlyCountPerDay { get; set; }
         public int? FmtdiPcsSubTotal { get; set; }
         public int? FmtdiHvSubTotal { get; set; }
         public int? FmtdiMcSubTotal { get; set; }
         public string FmtdiDescription { get; set; }
+        public string FmtdiDescriptionPc { get; set; }
+        public string FmtdiDescriptionHv { get; set; }
+        public string FmtdiDescriptionMc { get; set; }
         public int? FmtdiModBy { get; set; }
         public DateTime? FmtdiModDt { get; set; }
         public int? FmtdiCrBy { get; set; }

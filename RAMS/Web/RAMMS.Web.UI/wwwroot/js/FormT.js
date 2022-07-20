@@ -435,7 +435,7 @@ function SaveFormTDtl() {
 
     if (ValidatePage('#myModal')) {
         InitAjaxLoading();
-        debugger
+         
         var FormTDtl = new Object();
         FormTDtl.PkRefNo = $("#FormTDtl_PkRefNo").val()
         FormTDtl.FmtPkRefNo = $("#FormT_PkRefNo").val()
@@ -443,7 +443,8 @@ function SaveFormTDtl() {
         FormTDtl.AuditTimeFrm = $("#FormTDtl_AuditTimeFrm").val();
         FormTDtl.AuditTimeTo = $("#FormTDtl_AuditTimeTo").val();
         FormTDtl.DirectionFrm = $("#FormTDtl_DirectionFrm").val();
-        FormTDtl.DirectionTo = $("#FormTDtl_Directionto").val();
+        FormTDtl.DirectionTo = $("#FormTDtl_DirectionTo").val();
+        FormTDtl.HourlyCountPerDay = $("#FormTDtl_HourlyCountPerDay").val();
         FormTDtl.Day = $("#FormTDtl_Day").val();
         FormTDtl.TotalDay = $("#FormTDtl_TotalDay").val();
         FormTDtl.Description = $("#FormTDtl_Description").val();
@@ -500,7 +501,7 @@ function SaveFormTDtl() {
                     }
                     var Vechicle = new Object();
                     Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
-                    Vechicle.VechicleType = "PC";
+                    Vechicle.VechicleType = "HV";
                     Vechicle.Axle = Axle;
                     Vechicle.Loading = Load;
                     Vechicle.Time = Time;
@@ -562,29 +563,33 @@ function EditFormTDtl(obj, view) {
     var data = $('#FormTDtlGridView').DataTable().row(currentRow).data();
 
     $("#FormTDtl_PkRefNo").val(data.pkRefNo);
-    $("#FormTDtl_LocCh").val(data.frmCh);
-    $("#FormTDtl_LocChDeci").val(data.frmChDec);
-    $("#FormTDtl_Code").val(data.structureCode);
-    $('#FormTDtl_Tier').val(data.tier);
-    $('#FormTDtl_TopWidth').val(data.width);
-    $('#FormTDtl_BottomWidth').val(data.bottomWidth);
-    $("#FormTDtl_Height").val(data.height);
-    $("#FormTDtl_TotalLength").val(data.length);
-    $("#FormTDtl_Description").val(data.description);
-    $("#FormTDtl_OverallCondition").val(data.overallCondition);
-    $("#FormTDtl_AssetId").val(data.assetId);
+
+    $.get('/FormT/GetFormTDtlById?id=' + data.pkRefNo, function (data) {
+
+        $('#divVechicleDetails').html(data).promise().done(function () {
+
+            $('.editable').on('dblclick', function (e) {
+                var $this = $(this);
+                typein($this);
+                e.preventDefault();
+            });
+
+            if ($("#hdnView").val() == 1 || view == 1) {
+
+                $("#FormTDtl_Description").attr("readonly", true);
+                $("#btnSaveFormTDtl").hide();
+            }
+            else {
+
+                $("#FormTDtl_Description").attr("readonly", false);
+                $("#btnSaveFormTDtl").show();
+            }
+        });
+
+    });
 
 
-    if ($("#hdnView").val() == 1 || view == 1) {
 
-        $("#FormTDtl_Description").attr("readonly", true);
-        $("#btnSaveFormTDtl").hide();
-    }
-    else {
-
-        $("#FormTDtl_Description").attr("readonly", false);
-        $("#btnSaveFormTDtl").show();
-    }
 
 }
 
