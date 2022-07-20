@@ -11,6 +11,7 @@ using RAMMS.DTO.Report;
 using ClosedXML.Excel;
 using System.IO;
 using System.Collections.Generic;
+using RAMMS.Domain.Models;
 
 namespace RAMMS.Business.ServiceProvider.Services
 {
@@ -51,6 +52,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 bool IsAdd = false;
+                List<RmFormFsInsDtl> details = null;
                 var form = _mapper.Map<Domain.Models.RmFormFsInsHdr>(model);
                 form.FshStatus = "Open";
                 var road = _repoUnit.RoadmasterRepository.FindAll(s => s.RdmRdCode == form.FshRoadCode).FirstOrDefault();
@@ -64,10 +66,18 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
                     form.FshModBy = _security.UserID;
                     form.FshModDt = DateTime.Now;
+                    if (form.FshSubmitSts)
+                    {
+                        if (_repoUnit.FormFSDetailRepository.FindAll(s => s.FsdFshPkRefNo == form.FshPkRefNo && (s.FsdRemarks == ""  || s.FsdNeeded == "" ) && s.FsdActiveYn == true).Count() > 0)
+                            return -2;
+                    }
                     _repoUnit.FormFSHeaderRepository.Update(form);
                 }
                 else
                 {
+                    details = this._repoUnit.FormFSDetailRepository.GetDetailsforInsert(form.FshPkRefNo, this._security.UserID, form);
+                    if (details == null || details.Count == 0)
+                        return -1;
                     form.FshCrBy = _security.UserID;
                     form.FshModBy = _security.UserID;
                     form.FshCrDt = DateTime.Now;
@@ -79,7 +89,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 if (IsAdd)
                 {
-                    _repoUnit.FormFSDetailRepository.BulkInsert(form.FshPkRefNo, _security.UserID, form);
+                    _repoUnit.FormFSDetailRepository.BulkInsert(details, form.FshPkRefNo);
                 }
                 if (form != null && form.FshSubmitSts)
                 {
@@ -115,6 +125,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                     form.FshRoadLength = road.RdmLengthPaved;
                 }
                 form.FshActiveYn = true;
+                List<RmFormFsInsDtl> details = null;
                 if (form.FshPkRefNo != 0)
                 {
                     form.FshModBy = _security.UserID;
@@ -123,6 +134,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
                 else
                 {
+                    details = this._repoUnit.FormFSDetailRepository.GetDetailsforInsert(form.FshPkRefNo, this._security.UserID, form);
+                    if (details == null || details.Count == 0)
+                        return -1;
+
                     form.FshCrBy = _security.UserID;
                     form.FshModBy = _security.UserID;
                     form.FshCrDt = DateTime.Now;
@@ -134,7 +149,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 if (IsAdd)
                 {
-                    _repoUnit.FormFSDetailRepository.BulkInsert(form.FshPkRefNo, _security.UserID, form);
+                    _repoUnit.FormFSDetailRepository.BulkInsert(details, _security.UserID);
                 }
                 if (form != null && form.FshSubmitSts)
                 {
