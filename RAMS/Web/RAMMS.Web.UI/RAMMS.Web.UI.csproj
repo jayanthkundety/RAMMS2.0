@@ -21,26 +21,40 @@
   <ItemGroup>
     <Content Remove="Views\ERT\FormX\FormX - Copy.cshtml" />
     <Content Remove="Views\ERT\FormX\_AddFormX - Copy.cshtml" />
-    <Content Remove="Views\FormT\Index.cshtml" />
-    <Content Remove="Views\FormT\_DetailGridList.cshtml" />
-    <Content Remove="Views\FormT\_HeaderListGrid.cshtml" />
+    <Content Remove="Views\FormsT\Index.cshtml" />
+    <Content Remove="Views\FormsT\_DetailGridList.cshtml" />
+    <Content Remove="Views\FormsT\_HeaderListGrid.cshtml" />
     <Content Remove="Views\FormG1G2\_HeaderListGrid.cshtml" />
-    <Content Remove="Views\FormT\_VechicleDetails.cshtml" />
+    <Content Remove="Views\FormsT\_VechicleDetails.cshtml" />
     <Content Remove="Views\InstructedWorks\_AddFormW2.cshtml" />
     <Content Remove="Views\InstructedWorks\_PhotoSectionPageW1.cshtml" />
+    <Content Remove="wwwroot\Images\1.PNG" />
+    <Content Remove="wwwroot\Images\2.PNG" />
+    <Content Remove="wwwroot\Images\3.PNG" />
+    <Content Remove="wwwroot\Images\4.PNG" />
+    <Content Remove="wwwroot\Images\5.PNG" />
+    <Content Remove="wwwroot\Images\6.PNG" />
+    <Content Remove="wwwroot\Images\7.PNG" />
     <Content Remove="wwwroot\js\jquery.mast.min.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\FormT\Index.cshtml" />
-    <None Include="Views\FormT\_VechicleDetails.cshtml" />
-    <None Include="Views\FormT\_DetailGridList.cshtml" />
-    <None Include="Views\FormT\_HeaderListGrid.cshtml" />
+    <None Include="Views\FormsT\Index.cshtml" />
+    <None Include="Views\FormsT\_VechicleDetails.cshtml" />
+    <None Include="Views\FormsT\_DetailGridList.cshtml" />
+    <None Include="Views\FormsT\_HeaderListGrid.cshtml" />
     <None Include="Views\FormF1\Index.cshtml" />
     <None Include="Views\FormF1\_AddFormF1.cshtml" />
     <None Include="Views\FormF1\_DetailGridList.cshtml" />
     <None Include="Views\FormF1\_HeaderListGrid.cshtml" />
     <None Include="Views\NOD\NewFormJ\FormJ.cshtml" />
+    <None Include="wwwroot\Images\1.PNG" />
+    <None Include="wwwroot\Images\2.PNG" />
+    <None Include="wwwroot\Images\3.PNG" />
+    <None Include="wwwroot\Images\4.PNG" />
+    <None Include="wwwroot\Images\5.PNG" />
+    <None Include="wwwroot\Images\6.PNG" />
+    <None Include="wwwroot\Images\7.PNG" />
     <None Include="wwwroot\js\AddAssets.js" />
   </ItemGroup>
 

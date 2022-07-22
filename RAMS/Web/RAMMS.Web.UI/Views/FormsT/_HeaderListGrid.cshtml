@@ -85,15 +85,15 @@
      
    
     function PrintForm(id) {
-        window.location.href = '/FormT/FormTDownload?id=' + id;
+        window.location.href = '/FormsT/FormTDownload?id=' + id;
     }
 
     function editDetail(id) {
-        window.location.href = '/FormT/Add?id=' + id + '&isview=0';
+        window.location.href = '/FormsT/Add?id=' + id + '&isview=0';
     }
 
     function viewDetail(id) {
-        window.location.href = '/FormT/Add?id=' + id + '&isview=1';
+        window.location.href = '/FormsT/Add?id=' + id + '&isview=1';
     }
 
     function deleteHeader(id) {
@@ -102,7 +102,7 @@
                 var req = {};
                 req.id = id;
                 $.ajax({
-                    url: '/FormT/DeleteFormT',
+                    url: '/FormsT/DeleteFormT',
                     dataType: 'JSON',
                     data: req,
                     type: 'Post',
@@ -141,7 +141,7 @@
 
         $('#FormTGridView').DataTable({
             ajax: {
-                url: "/FormT/GetHeaderList",
+                url: "/FormsT/GetHeaderList",
                 type: "POST",
                 datatype: "json",
                 data: {

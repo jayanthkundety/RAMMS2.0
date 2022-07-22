@@ -2279,7 +2279,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
                 form.FmtAuditLog = Utility.ProcessLog(form.FmtAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
                 strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form f1 (" + form.FmtPkRefNo + ")";
-                strNotURL = "/MAM/EditFormf1?id=" + form.FmtPkRefNo.ToString() + "&View=0";
+                strNotURL = "/FormsT/EditFormT?id=" + form.FmtPkRefNo.ToString() + "&View=0";
                 SaveNotification(new RmUserNotification()
                 {
                     RmNotCrBy = security.UserName,
