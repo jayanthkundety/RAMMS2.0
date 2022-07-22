@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace RAMMS.Web.UI.Controllers
 {
-    public class FormTController : BaseController
+    public class FormsTController : BaseController
     {
 
         private IFormTService _formTService;
@@ -29,7 +29,7 @@ namespace RAMMS.Web.UI.Controllers
         private IUserService _userService;
         private IRoadMasterService _roadMasterService;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public FormTController(
+        public FormsTController(
             IFormTService service,
             ISecurity security,
             IUserService userService,
@@ -89,7 +89,7 @@ namespace RAMMS.Web.UI.Controllers
             filteredPagingDefinition.StartPageNo = searchData.start; //Convert.ToInt32(Request.Form["start"]); //TODO
             var result = await _formTService.GetHeaderList(filteredPagingDefinition);
             return Json(new { draw = searchData.draw, recordsFiltered = result.TotalRecords, recordsTotal = result.TotalRecords, data = result.PageResult });
- 
+
         }
 
         public async Task<IActionResult> GetDetailList(DataTableAjaxPostModel<FormTDtlResponseDTO> searchData)
@@ -130,13 +130,13 @@ namespace RAMMS.Web.UI.Controllers
             _model.FormTDtl = new FormTDtlResponseDTO();
             _model.FormT = _model.FormT ?? new FormTResponseDTO();
             _model.view = view;
- 
+
 
             if (_model.FormT.UseridRcd == 0)
             {
                 _model.FormT.UseridRcd = _security.UserID;
                 _model.FormT.DateRcd = DateTime.Today;
-                _model.FormT.SignRcd  = true;
+                _model.FormT.SignRcd = true;
 
             }
             if (_model.FormT.UseridHdd == 0 && _model.FormT.Status == RAMMS.Common.StatusList.Submitted)
@@ -146,7 +146,7 @@ namespace RAMMS.Web.UI.Controllers
                 _model.FormT.SignHdd = true;
             }
 
-            return PartialView("~/Views/FormT/_AddFormT.cshtml", _model);
+            return PartialView("~/Views/FormsT/_AddFormT.cshtml", _model);
         }
 
 
@@ -158,8 +158,8 @@ namespace RAMMS.Web.UI.Controllers
             if (frm.FormT.PkRefNo == 0)
             {
                 frm.FormT = await _formTService.SaveFormT(frm.FormT);
-                
-               return Json(new { FormExist = frm.FormT.FormExist, RefId = frm.FormT.PkRefId, PkRefNo = frm.FormT.PkRefNo, Status = frm.FormT.Status });
+
+                return Json(new { FormExist = frm.FormT.FormExist, RefId = frm.FormT.PkRefId, PkRefNo = frm.FormT.PkRefNo, Status = frm.FormT.Status });
             }
             else
             {
@@ -177,7 +177,7 @@ namespace RAMMS.Web.UI.Controllers
         {
             int? refNo = 0;
 
-           
+
             if (FormTDtl.PkRefNo == 0)
             {
                 refNo = _formTService.SaveFormTDtl(FormTDtl);
@@ -198,9 +198,14 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<IActionResult> GetFormTDtlById(int id)
         {
             FormTModel _model = new FormTModel();
-            _model.FormTDtl = await _formTService.GetFormTDtlById(id);
-            return PartialView("~/Views/FormT/_VechicleDetails.cshtml", _model);
-            
+            _model.FormTDtl = new FormTDtlResponseDTO();
+            _model.FormTVechicle = new FormTVehicleResponseDTO();
+            if (id > 0)
+            {
+                _model.FormTDtl = await _formTService.GetFormTDtlById(id);
+            }
+            return PartialView("~/Views/FormsT/_VechicleDetails.cshtml", _model);
+
         }
 
         public async Task<IActionResult> DeleteFormT(int id)

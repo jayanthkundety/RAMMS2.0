@@ -395,7 +395,7 @@ function Save(GroupName, SubmitType) {
 
         InitAjaxLoading();
         EnableDisableElements(false);
-        $.get('/FormT/SaveFormT', $("form").serialize(), function (data) {
+        $.get('/FormsT/SaveFormT', $("form").serialize(), function (data) {
             EnableDisableElements(true)
             HideAjaxLoading();
             if (data == -1) {
@@ -405,7 +405,7 @@ function Save(GroupName, SubmitType) {
 
                 if (SubmitType == "") {
                     if (data.formExist) {
-                        location.href = "/FormT/Add?Id=" + data.pkRefNo + "&view=0";
+                        location.href = "/FormsT/Add?Id=" + data.pkRefNo + "&view=0";
                         return;
                     }
                     else {
@@ -415,11 +415,11 @@ function Save(GroupName, SubmitType) {
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
-                    location.href = "/FormT/Index";
+                    location.href = "/FormsT/Index";
                 }
                 else if (SubmitType == "Submitted") {
                     app.ShowSuccessMessage('Submitted Successfully', false);
-                    location.href = "/FormT/Index";
+                    location.href = "/FormsT/Index";
                 }
                 else if (SubmitType == "Verified") {
                     process.ShowApprove(GroupName, SubmitType);
@@ -565,7 +565,7 @@ function SaveFormTDtl() {
     FormTDtl.Vechicles = Vechicles;
 
     $.ajax({
-        url: '/FormT/SaveFormTDtl',
+        url: '/FormsT/SaveFormTDtl',
         data: FormTDtl,
         type: 'POST',
         success: function (data) {
@@ -587,6 +587,39 @@ function SaveFormTDtl() {
     // }
 }
 
+function NewFormTDtl() {
+     
+
+    $.get('/FormsT/GetFormTDtlById?id=' + 0, function (data) {
+
+        $('#divVechicleDetails').html(data).promise().done(function () {
+
+            $('.editable').on('click', function (e) {
+                var $this = $(this);
+                typein($this);
+                e.preventDefault();
+            });
+
+            if ($("#hdnView").val() == 1 || view == 1) {
+
+                $("#FormTDtl_Description").attr("readonly", true);
+                $("#btnSaveFormTDtl").hide();
+            }
+            else {
+
+                $("#FormTDtl_Description").attr("readonly", false);
+                $("#btnSaveFormTDtl").show();
+            }
+        });
+
+    });
+
+
+
+
+}
+
+
 function EditFormTDtl(obj, view) {
 
 
@@ -596,7 +629,7 @@ function EditFormTDtl(obj, view) {
 
     $("#FormTDtl_PkRefNo").val(data.pkRefNo);
 
-    $.get('/FormT/GetFormTDtlById?id=' + data.pkRefNo, function (data) {
+    $.get('/FormsT/GetFormTDtlById?id=' + data.pkRefNo, function (data) {
 
         $('#divVechicleDetails').html(data).promise().done(function () {
 
@@ -673,7 +706,7 @@ function EnableDisableElements(state) {
 function DeleteFormTDtl(id) {
 
     InitAjaxLoading();
-    $.post('/FormT/DeleteFormTDtl?id=' + id, function (data) {
+    $.post('/FormsT/DeleteFormTDtl?id=' + id, function (data) {
         HideAjaxLoading();
         if (data == -1) {
             app.ShowErrorMessage(data.errorMessage);
