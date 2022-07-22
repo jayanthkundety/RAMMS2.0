@@ -126,9 +126,10 @@
     }
 
     var filterData = new Object();
+
     function InitializeGrid() {
 
-        debugger
+
         var _currentGridSettings = new CustomGridSettings();
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
@@ -137,7 +138,7 @@
         filterData.RoadCode = $("#ddlRoadCode").val()
         filterData.FromInspectionDate = $("#txtStartDtFrom").val();
         filterData.ToInspectionDate = $("#txtEndDtTo").val();
- 
+
 
         $('#FormTGridView').DataTable({
             ajax: {
@@ -152,6 +153,7 @@
         });
     }
 
+   
     $(document).ready(function () {
         InitializeGrid();
 
