@@ -4,6 +4,11 @@
         position: sticky;
         left: 0;
     }
+
+    input {
+        border-width: 0px;
+        padding-inline:4px
+    }
 </style>
 <div class="main-container" id="container">
     <div hidden id="content">
@@ -441,7 +446,7 @@
                     <td R_RRSRemark></td>
                 </tr>
 
-                <tr sgDId>
+                <tr SGDId>
                     <td rowspan="4" colspan="2">SIGNS</td>
                     <td><b>D</b>elineator</td>
                     <td>D</td>
@@ -454,7 +459,7 @@
                     <td sgDUnit>nr</td>
                     <td sgDRemark></td>
                 </tr>
-                <tr sgWId>
+                <tr SGWId>
                     <td><b>W</b>arning</td>
                     <td>W</td>
                     <td sgWwidth></td>
@@ -466,7 +471,7 @@
                     <td sgWUnit>nr</td>
                     <td sgWRemark></td>
                 </tr>
-                <tr sqYId>
+                <tr SGYId>
                     <td>Gantr<b>y</b>  Sign</td>
                     <td>Y</td>
                     <td sgYwidth></td>
@@ -478,7 +483,7 @@
                     <td sgYUnit>nr</td>
                     <td sgYRemark></td>
                 </tr>
-                <tr sgGId>
+                <tr SGGId>
                     <td><b>G</b>uide Sign</td>
                     <td>G</td>
                     <td sgGwidth></td>
@@ -770,42 +775,42 @@
                     <td rwPUnit>m</td>
                     <td rwPRemark></td>
                 </tr>
-                <t rwTId>
-            <td><b>T</b>imber</td>
-            <td>T</td>
-            <td rwTwidth></td>
-            <td rwTTotallength></td>
-            <td rwTc1></td>
-            <td rwTc2></td>
-            <td rwTc3></td>
-            <td rwTNeeded></td>
-            <td rwTUnit>m</td>
-            <td rwTRemark></td>
-            </tr>
-            <tr rwNId>
-                <td>Soil <b>N</b>ail</td>
-                <td>N</td>
-                <td rwNwidth></td>
-                <td rwNTotallength></td>
-                <td rwNc1></td>
-                <td rwNc2></td>
-                <td rwNc3></td>
-                <td rwNNeeded></td>
-                <td rwNUnit>m</td>
-                <td rwNRemark></td>
-            </tr>
-            <tr rwOId>
-                <td><b>O</b>thers</td>
-                <td>O</td>
-                <td rwOwidth></td>
-                <td rwOTotallength></td>
-                <td rwOc1></td>
-                <td rwOc2></td>
-                <td rwOc3></td>
-                <td rwONeeded></td>
-                <td rwOUnit>m</td>
-                <td rwORemark></td>
-            </tr>
+                <tr rwTId>
+                    <td><b>T</b>imber</td>
+                    <td>T</td>
+                    <td rwTwidth></td>
+                    <td rwTTotallength></td>
+                    <td rwTc1></td>
+                    <td rwTc2></td>
+                    <td rwTc3></td>
+                    <td rwTNeeded></td>
+                    <td rwTUnit>m</td>
+                    <td rwTRemark></td>
+                </tr>
+                <tr rwNId>
+                    <td>Soil <b>N</b>ail</td>
+                    <td>N</td>
+                    <td rwNwidth></td>
+                    <td rwNTotallength></td>
+                    <td rwNc1></td>
+                    <td rwNc2></td>
+                    <td rwNc3></td>
+                    <td rwNNeeded></td>
+                    <td rwNUnit>m</td>
+                    <td rwNRemark></td>
+                </tr>
+                <tr rwOId>
+                    <td><b>O</b>thers</td>
+                    <td>O</td>
+                    <td rwOwidth></td>
+                    <td rwOTotallength></td>
+                    <td rwOc1></td>
+                    <td rwOc2></td>
+                    <td rwOc3></td>
+                    <td rwONeeded></td>
+                    <td rwOUnit>m</td>
+                    <td rwORemark></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -867,8 +872,13 @@
         }
     }; table_columns.push(feature);
     table_columns.push(code);
-    var grpType = { data: "grpType", name: "grpType", title: "Type", autoWidth: true, sortable: false, visible: true }; table_columns.push(grpType);
-    var strucCode = { data: "strucCode", name: "strucCode", title: "Structure Code", autoWidth: true, sortable: false, visible: true }; table_columns.push(strucCode);
+    
+    var grpType = { data: "grpType", name: "grpType", title: "Type", autoWidth: true, sortable: false, visible: true }; 
+    table_columns.push(grpType);
+    
+    var strucCode = { data: "strucCode", name: "strucCode", title: "Structure Code", autoWidth: true, sortable: false, visible: true }; 
+    table_columns.push(strucCode);
+    
     var width = {
         data: null, name: "width", title: "Average Width", autoWidth: true, sortable: false, visible: true, render: function (data) {
             if (data.width != null) {
@@ -878,7 +888,9 @@
                 return "0.000";
             }
         }
-    }; table_columns.push(width);
+    }; 
+    table_columns.push(width);
+    
     var length = {
         data: null, name: "length", title: "Total Length", autoWidth: true, sortable: false, visible: true, render: function (data) {
             if (data.length != null && (data.unit == "km" || data.unit == "m")) {
@@ -892,6 +904,7 @@
             }
         }
     };
+    
     var condition1 = {
         data: null, name: "condition1", title: "Condition1", autoWidth: true, sortable: false, visible: true, render: function (data) {
             var value = data.condition1 != null ? (data.condition1 / 10).toFixed(1): "";
@@ -901,6 +914,7 @@
         }
     };
     table_columns.push(condition1);
+    
     var condition2 = {
         data: null, name: "condition2", title: "Condition2", autoWidth: true, sortable: false, visible: true, render: function (data) {
             var value = data.condition2 != null ? (data.condition2/10).toFixed(1): "";
@@ -910,6 +924,7 @@
         }
     };
     table_columns.push(condition2);
+    
     var condition3 = {
         data: null, name: "condition3", title: "Condition3", autoWidth: true, sortable: false, visible: true, render: function (data) {
             var value = data.condition3 != null ? (data.condition3/10).toFixed(1): "";
@@ -917,8 +932,10 @@
             d += "<span id='lblCondition3_" + data.pkRefNo + "'>" + value + "</span>";
             return d;
         }
-    }; table_columns.push(condition3);
+    }; 
+    table_columns.push(condition3);
     table_columns.push(length);
+    
     var needed = {
         data: null, name: "needed", title: "Needed", autoWidth: true, sortable: false, visible: true, render: function (data) {
             var value = data.needed != null ? data.needed : "";
@@ -928,7 +945,9 @@
         }
     };
     table_columns.push(needed);
-    var unit = { data: "unit", name: "unit", title: "Unit", autoWidth: true, sortable: false, visible: true }; table_columns.push(unit);
+    var unit = { data: "unit", name: "unit", title: "Unit", autoWidth: true, sortable: false, visible: true }; 
+    table_columns.push(unit);
+    
     var remarks = {
         data: null, name: "remarks", title: "Remarks", autoWidth: true, sortable: false, visible: true, render: function (data) {
             var value = data.remarks != null ? data.remarks : "";
@@ -936,16 +955,17 @@
             d += "<span id='lblRemarks_" + data.pkRefNo + "'>" + value + "</span>";
             return d;
         }
-    }; table_columns.push(remarks);
+    }; 
+    table_columns.push(remarks);
+    
     var oDTable = null;
 
 
-
-    function editDetail(id) {
+ function editDetail(id, needed, remark) {
         $("#hdnDetailPkNo").val(id);
         $("#FormFSAdddetailsModal").modal("show");
-        $("#txtDNeeded").val($("#lblNeeded_" + id).text());
-        $("#txtDRemarks").val($("#lblRemarks_" + id).text());
+        $("#txtDNeeded").val(needed);
+        $("#txtDRemarks").val(remark);
     }
 
     function cancelSubDetail(id) {
@@ -957,9 +977,6 @@
 
         var req = {};
         req.PkRefNo = $("#hdnDetailPkNo").val();
-        @*req.Condition1 = $("#txtCondition1_" + id).val();
-        req.Condition2 = $("#txtCondition2_" + id).val();
-        req.Condition3 = $("#txtCondition3_" + id).val();*@
         req.Remarks = $("#txtDRemarks").val();
         req.Needed = $("#txtDNeeded").val();
 
@@ -1021,29 +1038,7 @@
 
     var filterData = new Object();
     function InitializeDetailsGrid() {
-
         bindDetails($("#hdnHeaderId").val());
-        var _currentGridSettings = new CustomGridSettings();
-        $.extend($.fn.dataTable.defaults, _currentGridSettings);
-
-
-        filterData.FshPkRefNo = $("#hdnHeaderId").val();
-        if (oDTable != null) {
-            oDTable.destroy();
-        }
-
-        oDTable = $('#FormF2DetailGridView').DataTable({
-                ajax: {
-                    url: "/FormFS/GetDetailList",
-                    type: "POST",
-                    datatype: "json",
-                    data: {
-                        filterData
-                    }
-                },
-                columns: table_columns
-            });
-        oDTable.columns.adjust().draw();
     }
 
     $(document).ready(function () {
@@ -1054,13 +1049,6 @@
         $("#btnDCancel").on("click", function () {
             cancelSubDetail();
         });
-        @*$("#FormF2DetailGridView tbody").on("click", "tr", function () {
-            var data = oDTable.row(this).data();
-            if ($("#txtCondition1_" + data.pkRefNo).is(":visible")) {
-                $("#txtCondition1_" + data.pkRefNo).show();
-                $("#btnCondition1_" + data.pkRefNo).show();
-                $("#lblCondition1_" + data.pkRefNo).hide();
-            }
-        });*@
+  
     });
 </script>

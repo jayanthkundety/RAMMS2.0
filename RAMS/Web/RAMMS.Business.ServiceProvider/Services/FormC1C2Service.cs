@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IMapper _mapper;
         private readonly IAssetsService _assetsService;
         private readonly IProcessService processService;
-        public FormC1C2Service(IRepositoryUnit repoUnit, IFormC1C2Repository repo, 
+        public FormC1C2Service(IRepositoryUnit repoUnit, IFormC1C2Repository repo,
             IAssetsService assetsService, IMapper mapper, IProcessService proService)
         {
             _repo = repo;
@@ -256,195 +257,6 @@ namespace RAMMS.Business.ServiceProvider.Services
                 {
 
                     IXLWorksheet worksheet = workbook.Worksheet(1);
-                    int nextoadd = 0;
-                    int sheetNo = 3;
-                    bool IsFirst = true;
-                    int index = 0;
-                    foreach (var rpt in _rpt)
-                    {
-                        Pictures[] pictures;
-                        pictures = rpt.Pictures.Skip(index * 6).Take(6).ToArray();
-                        index++;
-                        int noofsheets = (rpt.Pictures.Count() / 6) + ((rpt.Pictures.Count() % 6) > 0 ? 1 : 1);
-                        using (var book = new XLWorkbook(cachefile))
-                        {
-                            IXLWorksheet image = nextoadd == 0 && IsFirst ? workbook.Worksheet(2) : book.Worksheet(2);
-                            image.Cell(4, 6).Value = rpt.ReportforYear;
-                            image.Cell(5, 6).Value = rpt.AssetRefNO;
-                            image.Cell(6, 6).Value = rpt.RoadCode;
-                            image.Cell(7, 6).Value = rpt.RoadName;
-                            image.Cell(4, 17).Value = rpt.RefernceNo;
-                            image.Cell(5, 17).Value = index;
-                            image.Cell(6, 17).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                            pictures = rpt.Pictures.Take(6).ToArray();
-                            for (int i = 0; i < pictures.Count(); i++)
-                            {
-                                if (File.Exists($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}"))
-                                {
-                                    byte[] buff = File.ReadAllBytes($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}");
-                                    System.IO.MemoryStream str = new System.IO.MemoryStream(buff);
-                                    switch (i)
-                                    {
-                                        case 0:
-                                            image.AddPicture(str).MoveTo(image.Cell(9, 4)).WithSize(360, 170);
-                                            image.Cell(17, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 1:
-                                            image.AddPicture(str).MoveTo(image.Cell(9, 15)).WithSize(360, 170);
-                                            image.Cell(17, 15).Value = pictures[i].Type;
-                                            if (!pictures[i].Type.Contains("P1"))
-                                            {
-                                                image.Range("O9:W9").Style.Border.TopBorder = XLBorderStyleValues.Thick;
-                                                image.Range("O9:O16").Style.Border.LeftBorder = XLBorderStyleValues.Thick;
-                                                image.Range("W9:W16").Style.Border.RightBorder = XLBorderStyleValues.Thick;
-                                                image.Range("O16:W16").Style.Border.BottomBorder = XLBorderStyleValues.Thick;
-                                            }
-                                            break;
-                                        case 2:
-                                            image.AddPicture(str).MoveTo(image.Cell(20, 4)).WithSize(360, 170);
-                                            image.Cell(28, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 3:
-                                            image.AddPicture(str).MoveTo(image.Cell(20, 15)).WithSize(360, 170);
-                                            image.Cell(28, 15).Value = pictures[i].Type;
-                                            break;
-                                        case 4:
-                                            image.AddPicture(str).MoveTo(image.Cell(31, 4)).WithSize(360, 170);
-                                            image.Cell(39, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 5:
-                                            image.AddPicture(str).MoveTo(image.Cell(31, 15)).WithSize(360, 170);
-                                            image.Cell(39, 15).Value = pictures[i].Type;
-                                            break;
-                                    }
-                                }
-
-                                switch (i)
-                                {
-                                    case 0:
-                                        image.Cell(17, 4).Value = pictures[i].Type;
-                                        break;
-                                    case 1:
-                                        image.Cell(17, 15).Value = pictures[i].Type;
-                                        break;
-                                    case 2:
-                                        image.Cell(28, 4).Value = pictures[i].Type;
-                                        break;
-                                    case 3:
-                                        image.Cell(28, 15).Value = pictures[i].Type;
-                                        break;
-                                    case 4:
-                                        image.Cell(39, 4).Value = pictures[i].Type;
-                                        break;
-                                    case 5:
-                                        image.Cell(39, 15).Value = pictures[i].Type;
-                                        break;
-                                }
-                            }
-                            if (nextoadd > 0 || !IsFirst)
-                            {
-
-                                image.Worksheet.Name = $"sheet{sheetNo}";
-                                workbook.AddWorksheet(image);
-                                nextoadd++;
-                                sheetNo++;
-                            }
-                            IsFirst = false;
-                        }
-                        int tobeskipped = 1 + index;
-                        for (int sheet = 2; sheet <= noofsheets; sheet++)
-                        {
-                            using (var tempworkbook = new XLWorkbook(cachefile))
-                            {
-                                string sheetname = $"sheet{sheetNo}";
-                                IXLWorksheet copysheet = tempworkbook.Worksheet(2);
-                                copysheet.Worksheet.Name = sheetname;
-                                copysheet.Cell(4, 6).Value = rpt.ReportforYear;
-                                copysheet.Cell(5, 6).Value = rpt.AssetRefNO;
-                                copysheet.Cell(6, 6).Value = rpt.RoadCode;
-                                copysheet.Cell(7, 6).Value = rpt.RoadName;
-                                copysheet.Cell(4, 17).Value = rpt.RefernceNo;
-                                copysheet.Cell(5, 17).Value = index;
-                                copysheet.Cell(6, 17).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                                pictures = rpt.Pictures.Skip((tobeskipped - 1) * 6).Take(6).ToArray();
-                                for (int i = 0; i < pictures.Count(); i++)
-                                {
-                                    if (File.Exists($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}"))
-                                    {
-                                        byte[] buff = File.ReadAllBytes($"{basepath}/{pictures[i].ImageUrl}/{pictures[i].FileName}");
-                                        System.IO.MemoryStream str = new System.IO.MemoryStream(buff);
-                                        switch (i)
-                                        {
-                                            case 0:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(9, 4)).WithSize(360, 170);
-                                                copysheet.Cell(17, 4).Value = pictures[i].Type;
-                                                break;
-                                            case 1:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(9, 15)).WithSize(360, 170);
-                                                copysheet.Cell(17, 15).Value = pictures[i].Type;
-
-                                                break;
-                                            case 2:
-
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(20, 4)).WithSize(360, 170);
-                                                copysheet.Cell(28, 4).Value = pictures[i].Type;
-                                                break;
-                                            case 3:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(20, 15)).WithSize(360, 170);
-                                                copysheet.Cell(28, 15).Value = pictures[i].Type;
-                                                break;
-                                            case 4:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(31, 4)).WithSize(360, 170);
-                                                copysheet.Cell(39, 4).Value = pictures[i].Type;
-                                                break;
-                                            case 5:
-                                                copysheet.AddPicture(str).MoveTo(copysheet.Cell(31, 15)).WithSize(360, 170);
-                                                copysheet.Cell(39, 15).Value = pictures[i].Type;
-                                                break;
-                                        }
-                                    }
-
-                                    switch (i)
-                                    {
-                                        case 0:
-                                            copysheet.Cell(17, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 1:
-                                            copysheet.Cell(17, 15).Value = pictures[i].Type;
-                                            if (!pictures[i].Type.Contains("P1"))
-                                            {
-                                                copysheet.Range("O9:W9").Style.Border.TopBorder = XLBorderStyleValues.Thick;
-                                                copysheet.Range("O9:O16").Style.Border.LeftBorder = XLBorderStyleValues.Thick;
-                                                copysheet.Range("W9:W16").Style.Border.RightBorder = XLBorderStyleValues.Thick;
-                                                copysheet.Range("O16:W16").Style.Border.BottomBorder = XLBorderStyleValues.Thick;
-                                            }
-                                            break;
-                                        case 2:
-                                            copysheet.Cell(28, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 3:
-                                            copysheet.Cell(28, 15).Value = pictures[i].Type;
-                                            break;
-                                        case 4:
-                                            copysheet.Cell(39, 4).Value = pictures[i].Type;
-                                            break;
-                                        case 5:
-                                            copysheet.Cell(39, 15).Value = pictures[i].Type;
-                                            break;
-                                    }
-                                }
-
-                                tobeskipped++;
-                                nextoadd++;
-                                workbook.AddWorksheet(copysheet);
-                                sheetNo++;
-                                if (nextoadd == 0)
-                                {
-                                    nextoadd++;
-                                }
-                            }
-                        }
-                    }
 
                     if (worksheet != null)
                     {
@@ -459,182 +271,551 @@ namespace RAMMS.Business.ServiceProvider.Services
                         worksheet.Cell(13, 3).Value = rpt.BarrelNumber;
                         worksheet.Cell(14, 3).Value = rpt.InletLevel;
                         worksheet.Cell(15, 3).Value = rpt.OutletLevel;
-                        worksheet.Cell(6, 11).Value = rpt.RoadName;
-                        worksheet.Cell(7, 11).Value = rpt.RoadCode;
-                        worksheet.Cell(8, 11).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                        worksheet.Cell(10, 11).Value = rpt.CulverSkew;
-                        worksheet.Cell(11, 11).Value = rpt.CulvertLength;
+                        worksheet.Cell(6, 10).Value = rpt.RoadName;
+                        worksheet.Cell(7, 10).Value = rpt.RoadCode;
+                        worksheet.Cell(8, 10).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
+                        worksheet.Cell(10, 10).Value = rpt.CulverSkew;
+                        worksheet.Cell(11, 10).Value = rpt.CulvertLength;
 
                         if (!string.IsNullOrEmpty(structureCode))
                         {
-                            worksheet.Cell(9, 11).Value = structureCode;
-                            worksheet.Cell(9, 11).RichText.Substring(0, structureCode.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.StructureCode) && structureCode.IndexOf(" " + rpt.StructureCode + " ") > -1)
-                            {
-                                worksheet.Cell(9, 11).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Bold = true;
-                                worksheet.Cell(9, 11).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Strikethrough = false;
-                            }
+                            worksheet.Cell(9, 10).Value = structureCode;
+                            //worksheet.Cell(9, 10).RichText.Substring(0, structureCode.Length).Strikethrough = true;
+                            //if (!string.IsNullOrEmpty(rpt.StructureCode) && structureCode.IndexOf(" " + rpt.StructureCode + " ") > -1)
+                            //{
+                            //    worksheet.Cell(9, 10).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Bold = true;
+                            //    worksheet.Cell(9, 10).RichText.Substring(structureCode.IndexOf(" " + rpt.StructureCode + " "), (" " + rpt.StructureCode + " ").Length).Strikethrough = false;
+                            //}
                         }
 
                         if (!string.IsNullOrEmpty(culvertType))
                         {
-                            worksheet.Cell(12, 11).Value = culvertType;
-                            worksheet.Cell(12, 11).RichText.Substring(0, culvertType.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.CulvertType) && culvertType.IndexOf(" " + rpt.CulvertType + " ") > -1)
-                            {
-                                worksheet.Cell(12, 11).RichText.Substring(culvertType.IndexOf(" " + rpt.CulvertType + " "), (" " + rpt.CulvertType + " ").Length).Bold = true;
-                                worksheet.Cell(12, 11).RichText.Substring(culvertType.IndexOf(" " + rpt.CulvertType + " "), (" " + rpt.CulvertType + " ").Length).Strikethrough = false;
-                            }
+                            worksheet.Cell(12, 10).Value = culvertType;
+                            //worksheet.Cell(12, 10).RichText.Substring(0, culvertType.Length).Strikethrough = true;
+                            //if (!string.IsNullOrEmpty(rpt.CulvertType) && culvertType.IndexOf(" " + rpt.CulvertType + " ") > -1)
+                            //{
+                            //    worksheet.Cell(12, 10).RichText.Substring(culvertType.IndexOf(" " + rpt.CulvertType + " "), (" " + rpt.CulvertType + " ").Length).Bold = true;
+                            //    worksheet.Cell(12, 10).RichText.Substring(culvertType.IndexOf(" " + rpt.CulvertType + " "), (" " + rpt.CulvertType + " ").Length).Strikethrough = false;
+                            //}
                         }
                         if (!string.IsNullOrEmpty(culvertMaterial))
                         {
-                            worksheet.Cell(13, 11).Value = culvertMaterial;
-                            worksheet.Cell(13, 11).RichText.Substring(0, culvertMaterial.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.Culvertmaterial) && culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " ") > -1)
-                            {
-                                worksheet.Cell(13, 11).RichText.Substring(culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " "), (" " + rpt.Culvertmaterial + " ").Length).Bold = true;
-                                worksheet.Cell(13, 11).RichText.Substring(culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " "), (" " + rpt.Culvertmaterial + " ").Length).Strikethrough = false;
-                            }
+                            worksheet.Cell(13, 10).Value = culvertMaterial;
+                            //worksheet.Cell(13, 10).RichText.Substring(0, culvertMaterial.Length).Strikethrough = true;
+                            //if (!string.IsNullOrEmpty(rpt.Culvertmaterial) && culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " ") > -1)
+                            //{
+                            //    worksheet.Cell(13, 10).RichText.Substring(culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " "), (" " + rpt.Culvertmaterial + " ").Length).Bold = true;
+                            //    worksheet.Cell(13, 10).RichText.Substring(culvertMaterial.IndexOf(" " + rpt.Culvertmaterial + " "), (" " + rpt.Culvertmaterial + " ").Length).Strikethrough = false;
+                            //}
                         }
 
                         if (!string.IsNullOrEmpty(inletStructure))
                         {
-                            worksheet.Cell(14, 11).Value = inletStructure;
-                            worksheet.Cell(14, 11).RichText.Substring(0, inletStructure.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.InletStructure) && inletStructure.IndexOf(" " + rpt.InletStructure + " ") > -1)
-                            {
-                                worksheet.Cell(14, 11).RichText.Substring(inletStructure.IndexOf(" " + rpt.InletStructure + " "), (" " + rpt.InletStructure + " ").Length).Bold = true;
-                                worksheet.Cell(14, 11).RichText.Substring(inletStructure.IndexOf(" " + rpt.InletStructure + " "), (" " + rpt.InletStructure + " ").Length).Strikethrough = false;
-                            }
+                            worksheet.Cell(14, 10).Value = inletStructure;
+                            //worksheet.Cell(14, 10).RichText.Substring(0, inletStructure.Length).Strikethrough = true;
+                            //if (!string.IsNullOrEmpty(rpt.InletStructure) && inletStructure.IndexOf(" " + rpt.InletStructure + " ") > -1)
+                            //{
+                            //    worksheet.Cell(14, 10).RichText.Substring(inletStructure.IndexOf(" " + rpt.InletStructure + " "), (" " + rpt.InletStructure + " ").Length).Bold = true;
+                            //    worksheet.Cell(14, 10).RichText.Substring(inletStructure.IndexOf(" " + rpt.InletStructure + " "), (" " + rpt.InletStructure + " ").Length).Strikethrough = false;
+                            //}
                         }
 
                         if (!string.IsNullOrEmpty(outletStructure))
                         {
-                            worksheet.Cell(15, 11).Value = outletStructure;
-                            worksheet.Cell(15, 11).RichText.Substring(0, outletStructure.Length).Strikethrough = true;
-                            if (!string.IsNullOrEmpty(rpt.OutletStructure) && outletStructure.IndexOf(" " + rpt.OutletStructure + " ") > -1)
-                            {
-                                worksheet.Cell(15, 11).RichText.Substring(outletStructure.IndexOf(" " + rpt.OutletStructure + " "), (" " + rpt.OutletStructure + " ").Length).Bold = true;
-                                worksheet.Cell(15, 11).RichText.Substring(outletStructure.IndexOf(" " + rpt.OutletStructure + " "), (" " + rpt.OutletStructure + " ").Length).Strikethrough = false;
-                            }
+                            worksheet.Cell(15, 10).Value = outletStructure;
+                            //worksheet.Cell(15, 10).RichText.Substring(0, outletStructure.Length).Strikethrough = true;
+                            //if (!string.IsNullOrEmpty(rpt.OutletStructure) && outletStructure.IndexOf(" " + rpt.OutletStructure + " ") > -1)
+                            //{
+                            //    worksheet.Cell(15, 10).RichText.Substring(outletStructure.IndexOf(" " + rpt.OutletStructure + " "), (" " + rpt.OutletStructure + " ").Length).Bold = true;
+                            //    worksheet.Cell(15, 10).RichText.Substring(outletStructure.IndexOf(" " + rpt.OutletStructure + " "), (" " + rpt.OutletStructure + " ").Length).Strikethrough = false;
+                            //}
                         }
 
-                        worksheet.Cell(10, 15).Value = rpt.GPSEasting;
-                        worksheet.Cell(11, 15).Value = rpt.GPSNorthing;
+                        worksheet.Cell(10, 14).Value = rpt.GPSEasting;
+                        worksheet.Cell(11, 14).Value = rpt.GPSNorthing;
 
                         worksheet.Cell(18, 2).Value = rpt.ParkingPosition;
                         worksheet.Cell(19, 2).Value = rpt.Accessiblity;
                         worksheet.Cell(20, 2).Value = rpt.PotentialHazards;
 
-                        //int j = 0;
-                        //{
-                        //    rpt = _rpt[0];
-                        //    worksheet.Cell(18, 7 + j).Value = rpt.Year;
-                        //    worksheet.Cell(19, 7 + j).Value = rpt.Month;
-                        //    worksheet.Cell(20, 7 + j).Value = rpt.Day;
+                        for (int index1 = 0; index1 < _rpt.Count(); ++index1)
+                        {
+                            var formC1C2Rpt = _rpt[index1];
+                            worksheet.Cell(18, 7 + index1).Value = formC1C2Rpt.Year;
+                            worksheet.Cell(19, 7 + index1).Value = formC1C2Rpt.Month;
+                            worksheet.Cell(20, 7 + index1).Value = formC1C2Rpt.Day;
+                            worksheet.Cell(23, 7 + index1).Value = formC1C2Rpt.CulvertDistress != null ? formC1C2Rpt.CulvertDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell1 = worksheet.Cell(24, 7 + index1);
+                            int? nullable = formC1C2Rpt.CulvertSeverity;
+                            string str3;
+                            if (!nullable.HasValue)
+                            {
+                                str3 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.CulvertSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.CulvertSeverity;
+                                    str3 = nullable.ToString();
+                                }
+                                else
+                                    str3 = "/";
+                            }
+                            xlCell1.Value = str3;
+                            worksheet.Cell(25, 7 + index1).Value = formC1C2Rpt.WaterwayDistress != null ? formC1C2Rpt.WaterwayDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell2 = worksheet.Cell(26, 7 + index1);
+                            nullable = formC1C2Rpt.WaterwaySeverity;
+                            string str4;
+                            if (!nullable.HasValue)
+                            {
+                                str4 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.WaterwaySeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.WaterwaySeverity;
+                                    str4 = nullable.ToString();
+                                }
+                                else
+                                    str4 = "/";
+                            }
+                            xlCell2.Value = str4;
+                            worksheet.Cell(27, 7 + index1).Value = formC1C2Rpt.EmbankmentDistress != null ? formC1C2Rpt.EmbankmentDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell3 = worksheet.Cell(28, 7 + index1);
+                            nullable = formC1C2Rpt.EmbankmentSeverity;
+                            string str5;
+                            if (!nullable.HasValue)
+                            {
+                                str5 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.EmbankmentSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.EmbankmentSeverity;
+                                    str5 = nullable.ToString();
+                                }
+                                else
+                                    str5 = "/";
+                            }
+                            xlCell3.Value = str5;
+                            worksheet.Cell(29, 7 + index1).Value = formC1C2Rpt.HeadwallInletDistress != null ? formC1C2Rpt.HeadwallInletDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell4 = worksheet.Cell(30, 7 + index1);
+                            nullable = formC1C2Rpt.HeadwallInletSeverity;
+                            string str6;
+                            if (!nullable.HasValue)
+                            {
+                                str6 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.HeadwallInletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.HeadwallInletSeverity;
+                                    str6 = nullable.ToString();
+                                }
+                                else
+                                    str6 = "/";
+                            }
+                            xlCell4.Value = str6;
+                            worksheet.Cell(31, 7 + index1).Value = formC1C2Rpt.WingwallInletDistress != null ? formC1C2Rpt.WingwallInletDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell5 = worksheet.Cell(32, 7 + index1);
+                            nullable = formC1C2Rpt.WingwalInletSeverity;
+                            string str7;
+                            if (!nullable.HasValue)
+                            {
+                                str7 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.WingwalInletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.WingwalInletSeverity;
+                                    str7 = nullable.ToString();
+                                }
+                                else
+                                    str7 = "/";
+                            }
+                            xlCell5.Value = str7;
+                            worksheet.Cell(33, 7 + index1).Value = formC1C2Rpt.ApronInletDistress != null ? formC1C2Rpt.ApronInletDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell6 = worksheet.Cell(34, 7 + index1);
+                            nullable = formC1C2Rpt.ApronInletSeverity;
+                            string str8;
+                            if (!nullable.HasValue)
+                            {
+                                str8 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.ApronInletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.ApronInletSeverity;
+                                    str8 = nullable.ToString();
+                                }
+                                else
+                                    str8 = "/";
+                            }
+                            xlCell6.Value = str8;
+                            worksheet.Cell(35, 7 + index1).Value = formC1C2Rpt.RiprapInletDistress != null ? (formC1C2Rpt.RiprapInletDistress == "-1" ? "/" : formC1C2Rpt.RiprapInletDistress) : (string)null;
+                            IXLCell xlCell7 = worksheet.Cell(36, 7 + index1);
+                            nullable = formC1C2Rpt.RiprapInletSeverity;
+                            string str9;
+                            if (!nullable.HasValue)
+                            {
+                                str9 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.RiprapInletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.RiprapInletSeverity;
+                                    str9 = nullable.ToString();
+                                }
+                                else
+                                    str9 = "/";
+                            }
+                            xlCell7.Value = str9;
+                            worksheet.Cell(37, 7 + index1).Value = formC1C2Rpt.HeadwallOutletDistress != null ? formC1C2Rpt.HeadwallOutletDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell8 = worksheet.Cell(38, 7 + index1);
+                            nullable = formC1C2Rpt.HeadwallOutletSeverity;
+                            string str10;
+                            if (!nullable.HasValue)
+                            {
+                                str10 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.HeadwallOutletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.HeadwallOutletSeverity;
+                                    str10 = nullable.ToString();
+                                }
+                                else
+                                    str10 = "/";
+                            }
+                            xlCell8.Value = str10;
+                            worksheet.Cell(39, 7 + index1).Value = formC1C2Rpt.WingwallOutletDistress != null ? formC1C2Rpt.WingwallOutletDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell9 = worksheet.Cell(40, 7 + index1);
+                            nullable = formC1C2Rpt.WingwallOutletSeverity;
+                            string str11;
+                            if (!nullable.HasValue)
+                            {
+                                str11 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.WingwallOutletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.WingwallOutletSeverity;
+                                    str11 = nullable.ToString();
+                                }
+                                else
+                                    str11 = "/";
+                            }
+                            xlCell9.Value = str11;
+                            worksheet.Cell(41, 7 + index1).Value = formC1C2Rpt.ApronOutletDistress != null ? formC1C2Rpt.ApronOutletDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell10 = worksheet.Cell(42, 7 + index1);
+                            nullable = formC1C2Rpt.ApronOutletSeverity;
+                            string str12;
+                            if (!nullable.HasValue)
+                            {
+                                str12 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.ApronOutletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.ApronOutletSeverity;
+                                    str12 = nullable.ToString();
+                                }
+                                else
+                                    str12 = "/";
+                            }
+                            xlCell10.Value = str12;
+                            worksheet.Cell(43, 7 + index1).Value = formC1C2Rpt.RiprapOutletDistress != null ? formC1C2Rpt.RiprapOutletDistress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell11 = worksheet.Cell(44, 7 + index1);
+                            nullable = formC1C2Rpt.RiprapOutletSeverity;
+                            string str13;
+                            if (!nullable.HasValue)
+                            {
+                                str13 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.RiprapOutletSeverity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.RiprapOutletSeverity;
+                                    str13 = nullable.ToString();
+                                }
+                                else
+                                    str13 = "/";
+                            }
+                            xlCell11.Value = str13;
+                            worksheet.Cell(45, 7 + index1).Value = formC1C2Rpt.Barrel_1_Distress != null ? formC1C2Rpt.Barrel_1_Distress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell12 = worksheet.Cell(46, 7 + index1);
+                            nullable = formC1C2Rpt.Barrel_1_Severity;
+                            string str14;
+                            if (!nullable.HasValue)
+                            {
+                                str14 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.Barrel_1_Severity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.Barrel_1_Severity;
+                                    str14 = nullable.ToString();
+                                }
+                                else
+                                    str14 = "/";
+                            }
+                            xlCell12.Value = str14;
+                            worksheet.Cell(47, 7 + index1).Value = formC1C2Rpt.Barrel_2_Distress != null ? formC1C2Rpt.Barrel_2_Distress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell13 = worksheet.Cell(48, 7 + index1);
+                            nullable = formC1C2Rpt.Barrel_2_Severity;
+                            string str15;
+                            if (!nullable.HasValue)
+                            {
+                                str15 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.Barrel_2_Severity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.Barrel_2_Severity;
+                                    str15 = nullable.ToString();
+                                }
+                                else
+                                    str15 = "/";
+                            }
+                            xlCell13.Value = str15;
+                            worksheet.Cell(49, 7 + index1).Value = formC1C2Rpt.Barrel_3_Distress != null ? formC1C2Rpt.Barrel_3_Distress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell14 = worksheet.Cell(50, 7 + index1);
+                            nullable = formC1C2Rpt.Barrel_3_Severity;
+                            string str16;
+                            if (!nullable.HasValue)
+                            {
+                                str16 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.Barrel_3_Severity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.Barrel_3_Severity;
+                                    str16 = nullable.ToString();
+                                }
+                                else
+                                    str16 = "/";
+                            }
+                            xlCell14.Value = str16;
+                            worksheet.Cell(51, 7 + index1).Value = formC1C2Rpt.Barrel_4_Distress != null ? formC1C2Rpt.Barrel_4_Distress.Replace("-1", "/") : (string)null;
+                            IXLCell xlCell15 = worksheet.Cell(52, 7 + index1);
+                            nullable = formC1C2Rpt.Barrel_4_Severity;
+                            string str17;
+                            if (!nullable.HasValue)
+                            {
+                                str17 = (string)null;
+                            }
+                            else
+                            {
+                                nullable = formC1C2Rpt.Barrel_4_Severity;
+                                int num = -1;
+                                if (!(nullable.GetValueOrDefault() == num & nullable.HasValue))
+                                {
+                                    nullable = formC1C2Rpt.Barrel_4_Severity;
+                                    str17 = nullable.ToString();
+                                }
+                                else
+                                    str17 = "/";
+                            }
+                            xlCell15.Value = str17;
+                            int num1 = formC1C2Rpt.BarrelList.Count * 2;
+                            if (formC1C2Rpt.BarrelList.Count > 0)
+                            {
+                                worksheet.Row(52).InsertRowsBelow(formC1C2Rpt.BarrelList.Count * 2);
+                                worksheet.Range(worksheet.Cell(46, 1), worksheet.Cell(52 + num1, 2)).Merge();
+                                int num2 = 1;
+                                for (int index2 = 0; index2 < formC1C2Rpt.BarrelList.Count; ++index2)
+                                {
+                                    worksheet.Range(worksheet.Cell(52 + num2, 3), worksheet.Cell(52 + num2, 4)).Merge();
+                                    worksheet.Range(worksheet.Cell(52 + num2, 8), worksheet.Cell(52 + num2, 9)).Merge();
+                                    worksheet.Range(worksheet.Cell(52 + (num2 + 1), 8), worksheet.Cell(52 + (num2 + 1), 9)).Merge();
+                                    worksheet.Cell(52 + num2, 3).Value = formC1C2Rpt.BarrelList[index2].Description;
+                                    worksheet.Cell(52 + num2, 5).Style.Fill.SetBackgroundColor(XLColor.Gray);
+                                    worksheet.Cell(52 + num2, 5).Style.Font.FontSize = 10.0;
+                                    worksheet.Cell(52 + num2, 3).Style.Font.Bold = true;
+                                    worksheet.Cell(52 + num2, 3).Style.Font.Italic = false;
+                                    worksheet.Cell(52 + num2, 5).Style.Font.Bold = true;
+                                    worksheet.Cell(52 + num2, 5).Style.Font.Italic = false;
+                                    worksheet.Cell(52 + num2, 5).Style.Font.FontColor = XLColor.White;
+                                    worksheet.Cell(52 + num2, 5).Value = formC1C2Rpt.BarrelList[index2].Code;
+                                    worksheet.Cell(52 + num2, 6).Value = "DISTRESS";
+                                    worksheet.Cell(52 + (num2 + 1), 6).Value = "SEVERITY";
+                                    worksheet.Cell(52 + num2, 6).Style.Font.Bold = true;
+                                    worksheet.Cell(52 + num2, 6).Style.Font.Italic = false;
+                                    worksheet.Cell(52 + (num2 + 1), 6).Style.Font.Bold = true;
+                                    worksheet.Cell(52 + (num2 + 1), 6).Style.Font.Italic = false;
+                                    worksheet.Range(worksheet.Cell(52 + (num2 + 1), 3), worksheet.Cell(52 + (num2 + 1), 5)).Merge();
+                                    worksheet.Cell(52 + (num2 + 1), 3).Value = "* for multi cells culvert";
+                                    worksheet.Cell(52 + num2, 7 + index1).Value = formC1C2Rpt.BarrelList[index2].Distress != null ? formC1C2Rpt.BarrelList[index2].Distress.Replace("-1", "/") : (string)null;
+                                    IXLCell xlCell16 = worksheet.Cell(52 + (num2 + 1), 7 + index1);
+                                    nullable = formC1C2Rpt.BarrelList[index2].Severity;
+                                    string str18;
+                                    if (!nullable.HasValue)
+                                    {
+                                        str18 = (string)null;
+                                    }
+                                    else
+                                    {
+                                        nullable = formC1C2Rpt.BarrelList[index2].Severity;
+                                        int num3 = -1;
+                                        if (!(nullable.GetValueOrDefault() == num3 & nullable.HasValue))
+                                        {
+                                            nullable = formC1C2Rpt.BarrelList[index2].Severity;
+                                            str18 = nullable.ToString();
+                                        }
+                                        else
+                                            str18 = "/";
+                                    }
+                                    xlCell16.Value = str18;
+                                    num2 += 2;
+                                }
+                            }
+                            worksheet.Cell(53 + num1, 7 + index1).Value = formC1C2Rpt.CulvertApproachDistress != null ? (formC1C2Rpt.CulvertApproachDistress.ToString() == "-1" ? "/" : formC1C2Rpt.CulvertApproachDistress) : null;
+                            worksheet.Cell(54 + num1, 7 + index1).Value = formC1C2Rpt.CulvertApproachSeverity != null ? (formC1C2Rpt.CulvertApproachSeverity.ToString() == "-1" ? "/" : formC1C2Rpt.CulvertApproachSeverity.ToString()) : null;
+                            worksheet.Cell(74 + num1, 3).Value = formC1C2Rpt.ReportforYear;
+                            worksheet.Cell(75 + num1, 3).Value = formC1C2Rpt.AssetRefNO;
+                            worksheet.Cell(76 + num1, 3).Value = formC1C2Rpt.RoadCode;
+                            worksheet.Cell(77 + num1, 3).Value = formC1C2Rpt.RoadName;
+                            worksheet.Cell(74 + num1, 13).Value = formC1C2Rpt.RefernceNo;
+                            worksheet.Cell(76 + num1, 13).Value = string.Format("{0}+{1}", formC1C2Rpt.LocationChainageKm, formC1C2Rpt.LocationChainageM);
+                            worksheet.Cell(87 + num1, 1).Value = formC1C2Rpt.PartB2ServiceProvider;
+                            worksheet.Cell(87 + num1, 9).Value = formC1C2Rpt.PartB2ServicePrvdrCons;
+                            worksheet.Cell(100 + num1, 1).Value = formC1C2Rpt.PartCGeneralComments;
+                            worksheet.Cell(100 + num1, 9).Value = formC1C2Rpt.PartCGeneralCommentsCons;
+                            worksheet.Cell(113 + num1, 1).Value = formC1C2Rpt.PartDFeedback;
+                            worksheet.Cell(113 + num1, 9).Value = formC1C2Rpt.PartDFeedbackCons;
+                            worksheet.Cell(129 + num1, 2).Value = formC1C2Rpt.InspectedByName;
+                            worksheet.Cell(130 + num1, 2).Value = formC1C2Rpt.InspectedByDesignation;
+                            worksheet.Cell(131 + num1, 2).Value = formC1C2Rpt.InspectedByDate;
+                            worksheet.Cell(129 + num1, 12).Value = formC1C2Rpt.AuditedByName;
+                            worksheet.Cell(130 + num1, 12).Value = formC1C2Rpt.AuditedByDesignation;
+                            worksheet.Cell(131 + num1, 12).Value = formC1C2Rpt.AuditedByDate;
+                            worksheet.Cell(132 + num1, 16).Value = formC1C2Rpt.CulverConditionRate;
+                            worksheet.Cell(133 + num1, 16).Value = formC1C2Rpt.HaveIssueFound;
+                        }
 
-                        //    worksheet.Cell(23, 7 + j).Value = rpt.CulvertDistress != null ? (rpt.CulvertDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(24, 7 + j).Value = rpt.CulvertSeverity != null ? (rpt.CulvertSeverity == -1 ? "/" : rpt.CulvertSeverity.ToString()) : null;
-                        //    worksheet.Cell(25, 7 + j).Value = rpt.WaterwayDistress != null ? (rpt.WaterwayDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(26, 7 + j).Value = rpt.WaterwaySeverity != null ? (rpt.WaterwaySeverity == -1 ? "/" : rpt.WaterwaySeverity.ToString()) : null;
-                        //    worksheet.Cell(27, 7 + j).Value = rpt.EmbankmentDistress != null ? (rpt.EmbankmentDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(28, 7 + j).Value = rpt.EmbankmentSeverity != null ? (rpt.EmbankmentSeverity == -1 ? "/" : rpt.EmbankmentSeverity.ToString()) : null;
-                        //    worksheet.Cell(29, 7 + j).Value = rpt.HeadwallInletDistress != null ? (rpt.HeadwallInletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(30, 7 + j).Value = rpt.HeadwallInletSeverity != null ? (rpt.HeadwallInletSeverity == -1 ? "/" : rpt.HeadwallInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(31, 7 + j).Value = rpt.WingwallInletDistress != null ? (rpt.WingwallInletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(32, 7 + j).Value = rpt.WingwalInletSeverity != null ? (rpt.WingwalInletSeverity == -1 ? "/" : rpt.WingwalInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(33, 7 + j).Value = rpt.ApronInletDistress != null ? (rpt.ApronInletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(34, 7 + j).Value = rpt.ApronInletSeverity != null ? (rpt.ApronInletSeverity == -1 ? "/" : rpt.ApronInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(35, 7 + j).Value = rpt.RiprapInletDistress != null ? (rpt.RiprapInletDistress == "-1" ? "/" : rpt.RiprapInletDistress) : null;
-                        //    worksheet.Cell(36, 7 + j).Value = rpt.RiprapInletSeverity != null ? (rpt.RiprapInletSeverity == -1 ? "/" : rpt.RiprapInletSeverity.ToString()) : null;
-                        //    worksheet.Cell(37, 7 + j).Value = rpt.HeadwallOutletDistress != null ? (rpt.HeadwallOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(38, 7 + j).Value = rpt.HeadwallOutletSeverity != null ? (rpt.HeadwallOutletSeverity == -1 ? "/" : rpt.HeadwallOutletSeverity.ToString()) : null;
-                        //    worksheet.Cell(39, 7 + j).Value = rpt.WingwallOutletDistress != null ? (rpt.WingwallOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(40, 7 + j).Value = rpt.WingwallOutletSeverity != null ? (rpt.WingwallOutletSeverity == -1 ? "/" : rpt.WingwallOutletSeverity.ToString()) : null;
-                        //    worksheet.Cell(41, 7 + j).Value = rpt.ApronOutletDistress != null ? (rpt.ApronOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(42, 7 + j).Value = rpt.ApronOutletSeverity != null ? (rpt.ApronOutletSeverity == -1 ? "/" : rpt.ApronOutletSeverity.ToString()) : null;
-                        //    worksheet.Cell(43, 7 + j).Value = rpt.RiprapOutletDistress != null ? (rpt.RiprapOutletDistress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(44, 7 + j).Value = rpt.RiprapOutletSeverity != null ? (rpt.RiprapOutletSeverity == -1 ? "/" : rpt.RiprapOutletSeverity.ToString()) : null;
+                        worksheet.Cell(138, 3).Value = rpt.ReportforYear;
+                        worksheet.Cell(139, 3).Value = rpt.AssetRefNO;
+                        worksheet.Cell(140, 3).Value = rpt.RoadCode;
+                        worksheet.Cell(141, 3).Value = rpt.RoadName;
+                        worksheet.Cell(138, 12).Value = rpt.RefernceNo;
+                        worksheet.Cell(139, 12).Value = 1;
+                        worksheet.Cell(140, 12).Value = string.Format("{0}+{1}", rpt.LocationChainageKm, rpt.LocationChainageM);
+                        worksheet.Cell(202, 3).Value = rpt.ReportforYear;
+                        worksheet.Cell(203, 3).Value = rpt.AssetRefNO;
+                        worksheet.Cell(204, 3).Value = rpt.RoadCode;
+                        worksheet.Cell(205, 3).Value = rpt.RoadName;
+                        worksheet.Cell(202, 12).Value = rpt.RefernceNo;
+                        worksheet.Cell(203, 12).Value = 1;
+                        worksheet.Cell(204, 12).Value = string.Format("{0}+{1}", rpt.LocationChainageKm, rpt.LocationChainageM);
+                        worksheet.Cell(74, 3).Value = rpt.ReportforYear;
+                        worksheet.Cell(75, 3).Value = rpt.AssetRefNO;
+                        worksheet.Cell(76, 3).Value = rpt.RoadCode;
+                        worksheet.Cell(77, 3).Value = rpt.RoadName;
+                        worksheet.Cell(74, 12).Value = rpt.RefernceNo;
+                        worksheet.Cell(75, 12).Value = 1;
+                        worksheet.Cell(76, 12).Value = string.Format("{0}+{1}", rpt.LocationChainageKm, rpt.LocationChainageM);
 
-                        //    worksheet.Cell(45, 7 + j).Value = rpt.Barrel_1_Distress != null ? rpt.Barrel_1_Distress.Replace("-1", "/") : null;
-                        //    worksheet.Cell(46, 7 + j).Value = rpt.Barrel_1_Severity != null ? (rpt.Barrel_1_Severity == -1 ? "/" : rpt.Barrel_1_Severity.ToString()) : null;
-                        //    worksheet.Cell(47, 7 + j).Value = rpt.Barrel_2_Distress != null ? (rpt.Barrel_2_Distress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(48, 7 + j).Value = rpt.Barrel_2_Severity != null ? (rpt.Barrel_2_Severity == -1 ? "/" : rpt.Barrel_2_Severity.ToString()) : null;
-                        //    worksheet.Cell(49, 7 + j).Value = rpt.Barrel_3_Distress != null ? (rpt.Barrel_3_Distress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(50, 7 + j).Value = rpt.Barrel_3_Severity != null ? (rpt.Barrel_3_Severity == -1 ? "/" : rpt.Barrel_3_Severity.ToString()) : null;
-                        //    worksheet.Cell(51, 7 + j).Value = rpt.Barrel_4_Distress != null ? (rpt.Barrel_4_Distress.Replace("-1", "/")) : null;
-                        //    worksheet.Cell(52, 7 + j).Value = rpt.Barrel_4_Severity != null ? (rpt.Barrel_4_Severity == -1 ? "/" : rpt.Barrel_4_Severity.ToString()) : null;
+                        //picture
 
-                        //    int furthercellincrement = rpt.BarrelList.Count * 2;
-
-                        //    if (rpt.BarrelList.Count > 0)
-                        //    {
-                        //        worksheet.Row(52).InsertRowsBelow(rpt.BarrelList.Count * 2);
-                        //        worksheet.Range(worksheet.Cell(46, 1), worksheet.Cell(52 + furthercellincrement, 2)).Merge();
-                        //        int d = 1;
-                        //        for (int i = 0; i < rpt.BarrelList.Count; i++)
-                        //        {
-                        //            worksheet.Range(worksheet.Cell(52 + (d), 3), worksheet.Cell(52 + (d), 4)).Merge();
-                        //            worksheet.Range(worksheet.Cell(52 + (d), 8), worksheet.Cell(52 + (d), 9)).Merge();
-                        //            worksheet.Range(worksheet.Cell(52 + (d + 1), 8), worksheet.Cell(52 + (d + 1), 9)).Merge();
-                        //            worksheet.Cell(52 + (d), 3).Value = rpt.BarrelList[i].Description;
-                        //            worksheet.Cell(52 + (d), 5).Style.Fill.SetBackgroundColor(XLColor.Gray);
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.FontSize = 10;
-                        //            worksheet.Cell(52 + (d), 3).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d), 3).Style.Font.Italic = false;
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.Italic = false;
-                        //            worksheet.Cell(52 + (d), 5).Style.Font.FontColor = XLColor.White;
-                        //            worksheet.Cell(52 + (d), 5).Value = rpt.BarrelList[i].Code;
-                        //            worksheet.Cell(52 + (d), 6).Value = "DISTRESS";
-                        //            worksheet.Cell(52 + (d + 1), 6).Value = "SEVERITY";
-                        //            worksheet.Cell(52 + (d), 6).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d), 6).Style.Font.Italic = false;
-                        //            worksheet.Cell(52 + (d + 1), 6).Style.Font.Bold = true;
-                        //            worksheet.Cell(52 + (d + 1), 6).Style.Font.Italic = false;
-                        //            worksheet.Range(worksheet.Cell(52 + (d + 1), 3), worksheet.Cell(52 + (d + 1), 5)).Merge();
-                        //            worksheet.Cell(52 + (d + 1), 3).Value = "* for multi cells culvert";
-                        //            worksheet.Cell(52 + (d), 7 + j).Value = rpt.BarrelList[i].Distress != null ? (rpt.BarrelList[i].Distress.Replace("-1", "/")) : null;
-                        //            worksheet.Cell(52 + (d + 1), 7 + j).Value = rpt.BarrelList[i].Severity != null ? (rpt.BarrelList[i].Severity == -1 ? "/" : rpt.BarrelList[i].Severity.ToString()) : null;
-                        //            d += 2;
-                        //        }
-                        //    }
-
-
-
-
-                        //    worksheet.Cell(53 + furthercellincrement, 7 + j).Value = rpt.CulvertApproachDistress != null ? (rpt.CulvertApproachDistress.ToString() == "-1" ? "/" : rpt.CulvertApproachDistress) : null;
-                        //    worksheet.Cell(54 + furthercellincrement, 7 + j).Value = rpt.CulvertApproachSeverity != null ? (rpt.CulvertApproachSeverity.ToString() == "-1" ? "/" : rpt.CulvertApproachSeverity.ToString()) : null;
-
-
-                        //    worksheet.Cell(74 + furthercellincrement, 3).Value = rpt.ReportforYear;
-                        //    worksheet.Cell(75 + furthercellincrement, 3).Value = rpt.AssetRefNO;
-                        //    worksheet.Cell(76 + furthercellincrement, 3).Value = rpt.RoadCode;
-                        //    worksheet.Cell(77 + furthercellincrement, 3).Value = rpt.RoadName;
-
-                        //    worksheet.Cell(74 + furthercellincrement, 13).Value = rpt.RefernceNo;
-                        //    // worksheet.Cell(75 + furthercellincrement, 13).Value = rpt.RatingRecordNo;
-                        //    worksheet.Cell(76 + furthercellincrement, 13).Value = $"{rpt.LocationChainageKm}+{rpt.LocationChainageM}";
-                        //    worksheet.Cell(87 + furthercellincrement, 1).Value = rpt.PartB2ServiceProvider;
-                        //    worksheet.Cell(87 + furthercellincrement, 9).Value = rpt.PartB2ServicePrvdrCons;
-                        //    worksheet.Cell(100 + furthercellincrement, 1).Value = rpt.PartCGeneralComments;
-                        //    worksheet.Cell(100 + furthercellincrement, 9).Value = rpt.PartCGeneralCommentsCons;
-                        //    worksheet.Cell(113 + furthercellincrement, 1).Value = rpt.PartDFeedback;
-                        //    worksheet.Cell(113 + furthercellincrement, 9).Value = rpt.PartDFeedbackCons;
-
-
-                        //    worksheet.Cell(129 + furthercellincrement, 2).Value = rpt.InspectedByName;
-                        //    worksheet.Cell(130 + furthercellincrement, 2).Value = rpt.InspectedByDesignation;
-                        //    worksheet.Cell(131 + furthercellincrement, 2).Value = rpt.InspectedByDate;
-
-                        //    worksheet.Cell(129 + furthercellincrement, 12).Value = rpt.AuditedByName;
-                        //    worksheet.Cell(130 + furthercellincrement, 12).Value = rpt.AuditedByDesignation;
-                        //    worksheet.Cell(131 + furthercellincrement, 12).Value = rpt.AuditedByDate;
-
-                        //    worksheet.Cell(132 + furthercellincrement, 16).Value = rpt.CulverConditionRate;
-                        //    worksheet.Cell(133 + furthercellincrement, 16).Value = rpt.HaveIssueFound;
-                        //}
-
+                        for (int index = 0; index < _rpt[0].Pictures.Count<Pictures>(); ++index)
+                        {
+                            if (File.Exists(basepath + "/" + _rpt[0].Pictures[index].ImageUrl + "/" + _rpt[0].Pictures[index].FileName))
+                            {
+                                MemoryStream memoryStream = new MemoryStream(File.ReadAllBytes(basepath + "/" + _rpt[0].Pictures[index].ImageUrl + "/" + _rpt[0].Pictures[index].FileName));
+                                switch (index)
+                                {
+                                    case 0:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(144, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 2:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(157, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 3:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(157, 9), new Point(4, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 4:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(170, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 5:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(170, 9), new Point(4, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 6:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(183, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 7:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(183, 9), new Point(4, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 8:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(208, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 9:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(208, 9), new Point(4, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 10:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(221, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 11:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(221, 9), new Point(4, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 12:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(234, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 13:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(234, 9), new Point(4, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 14:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 1), new Point(25, 6)).WithSize(347, 178);
+                                        continue;
+                                    case 15:
+                                        worksheet.AddPicture((Stream)memoryStream).MoveTo(worksheet.Cell(247, 9), new Point(4, 6)).WithSize(347, 178);
+                                        continue;
+                                    default:
+                                        continue;
+                                }
+                            }
+                        }
                     }
                     using (var stream = new MemoryStream())
                     {

@@ -32,6 +32,7 @@ namespace RAMMS.Repository
 
             return await _context.RmFormCvInsHdr.Include(x => x.RmFormCvInsDtl).ThenInclude(x => x.FcvidIimPkRefNoNavigation).Where(x => x.FcvihPkRefNo == headerId && x.FcvihActiveYn == true).FirstOrDefaultAsync();
         }
+
         public async Task<RmFormCvInsHdr> Save(RmFormCvInsHdr frmC1C2, bool updateSubmit)
         {
             //bool isAdd = false;
@@ -379,7 +380,8 @@ namespace RAMMS.Repository
                 rpt.Barrel_3_Severity = distressSeverity("4C", rpt.PkRefNo).severity;
                 rpt.Barrel_4_Distress = distressSeverity("4D", rpt.PkRefNo).distress;
                 rpt.Barrel_4_Severity = distressSeverity("4D", rpt.PkRefNo).severity;
-
+                rpt.CulvertApproachDistress = distressSeverity("5A", rpt.PkRefNo).Item1;
+                rpt.CulvertApproachSeverity = distressSeverity("5A", rpt.PkRefNo).Item2;
                 rpt.BarrelList = (from d in _context.RmFormCvInsDtl
                                   where d.FcvidFcvihPkRefNo == rpt.PkRefNo
                                   && d.FcvidInspCodeDesc.Contains("Barrel") && d.FcvidActiveYn == true
