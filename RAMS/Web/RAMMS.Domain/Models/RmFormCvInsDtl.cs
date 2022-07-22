@@ -23,6 +23,5 @@ namespace RAMMS.Domain.Models
 
         public virtual RmFormCvInsHdr FcvidFcvihPkRefNoNavigation { get; set; }
         public virtual RmInspItemMas FcvidIimPkRefNoNavigation { get; set; }
-        public virtual RmInspItemMasDtl FcvidIimdPkRefNoNavigation { get; set; }
     }
 }

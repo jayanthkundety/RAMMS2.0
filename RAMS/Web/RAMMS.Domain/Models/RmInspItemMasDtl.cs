@@ -5,11 +5,6 @@ namespace RAMMS.Domain.Models
 {
     public partial class RmInspItemMasDtl
     {
-        public RmInspItemMasDtl()
-        {
-            RmFormCvInsDtl = new HashSet<RmFormCvInsDtl>();
-        }
-
         public int IimdPkRefNo { get; set; }
         public int? IimdIimPkRefNo { get; set; }
         public string IimdInspCode { get; set; }
@@ -22,6 +17,5 @@ namespace RAMMS.Domain.Models
         public bool? IimActiveYn { get; set; }
 
         public virtual RmInspItemMas IimdIimPkRefNoNavigation { get; set; }
-        public virtual ICollection<RmFormCvInsDtl> RmFormCvInsDtl { get; set; }
     }
 }

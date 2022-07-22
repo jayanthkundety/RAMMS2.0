@@ -4549,11 +4549,6 @@ namespace RAMMS.Domain.Models
                     .WithMany(p => p.RmFormCvInsDtl)
                     .HasForeignKey(d => d.FcvidIimPkRefNo)
                     .HasConstraintName("FK__RM_Form_C__FCVID__047AA831");
-
-                entity.HasOne(d => d.FcvidIimdPkRefNoNavigation)
-                    .WithMany(p => p.RmFormCvInsDtl)
-                    .HasForeignKey(d => d.FcvidIimdPkRefNo)
-                    .HasConstraintName("FK__RM_Form_C__FCVID__0662F0A3");
             });
 
             modelBuilder.Entity<RmFormCvInsHdr>(entity =>
@@ -8289,7 +8284,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditActivities>(entity =>
             {
                 entity.HasKey(e => e.FmaaPkRefNo)
-                    .HasName("PK__RM_FormM__311EF8F0B5111EAD");
+                    .HasName("PK__RM_FormM__311EF8F0CC208A4A");
 
                 entity.ToTable("RM_FormM_Audit_Activities");
 
@@ -8330,7 +8325,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditDetails>(entity =>
             {
                 entity.HasKey(e => e.FmadPkRefNo)
-                    .HasName("PK__RM_FormM__11153A4C16277EA6");
+                    .HasName("PK__RM_FormM__11153A4CDA13091F");
 
                 entity.ToTable("RM_FormM_Audit_Details");
 
@@ -8568,7 +8563,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMHdr>(entity =>
             {
                 entity.HasKey(e => e.FmhPkRefNo)
-                    .HasName("PK__RM_FormM__D3A2F1442627B775");
+                    .HasName("PK__RM_FormM__D3A2F144C1B2D4DB");
 
                 entity.ToTable("RM_FormM_HDR");
 
@@ -11697,27 +11692,27 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FMTDI_CR_DT")
                     .HasColumnType("datetime");
 
-                //entity.Property(e => e.FmtdiDay).HasColumnName("FMTDI_Day");
+                entity.Property(e => e.FmtdiDay).HasColumnName("FMTDI_Day");
 
                 entity.Property(e => e.FmtdiDescription)
                     .HasColumnName("FMTDI_Description")
                     .HasMaxLength(4000)
                     .IsUnicode(false);
 
-                //entity.Property(e => e.FmtdiDescriptionHv)
-                //    .HasColumnName("FMTDI_DescriptionHV")
-                //    .HasMaxLength(4000)
-                //    .IsUnicode(false);
+                entity.Property(e => e.FmtdiDescriptionHv)
+                    .HasColumnName("FMTDI_DescriptionHV")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
 
-                //entity.Property(e => e.FmtdiDescriptionMc)
-                //    .HasColumnName("FMTDI_DescriptionMC")
-                //    .HasMaxLength(4000)
-                //    .IsUnicode(false);
+                entity.Property(e => e.FmtdiDescriptionMc)
+                    .HasColumnName("FMTDI_DescriptionMC")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
 
-                //entity.Property(e => e.FmtdiDescriptionPc)
-                //    .HasColumnName("FMTDI_DescriptionPC")
-                //    .HasMaxLength(4000)
-                //    .IsUnicode(false);
+                entity.Property(e => e.FmtdiDescriptionPc)
+                    .HasColumnName("FMTDI_DescriptionPC")
+                    .HasMaxLength(4000)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FmtdiDirectionFrm)
                     .HasColumnName("FMTDI_Direction_Frm")
@@ -11751,7 +11746,7 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmtdiPcsSubTotal).HasColumnName("FMTDI_PCS_Sub_Total");
 
-                //entity.Property(e => e.FmtdiTotalDay).HasColumnName("FMTDI_TotalDay");
+                entity.Property(e => e.FmtdiTotalDay).HasColumnName("FMTDI_TotalDay");
 
                 entity.HasOne(d => d.FmtdiFmtPkRefNoNavigation)
                     .WithMany(p => p.RmFormTDailyInspection)
