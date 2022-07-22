@@ -1,0 +1,440 @@
+﻿@model RAMMS.Web.UI.Models.CDataTable
+
+@using RAMMS.Web.UI.Models;
+@using RAMMS.Business.ServiceProvider;
+
+@{
+    ViewBag.TabTitle = "Form M";
+    ViewData["Title"] = "Form M";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    var isModifyPerm = security.IsPCModify(ModuleNameList.Condition_Inspection) ? "" : "hidden";
+    var isDeletePerm = security.IsPCDelete(ModuleNameList.Condition_Inspection) ? "" : "hidden";
+}
+
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@section Scripts{
+    <script type="text/javascript" src="~/js/FormM.js" asp-append-version="true"></script>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#formMRMU").chosen();
+        $('#formMSectionCode').chosen();
+        $("#formMAdvSearch").hide();
+
+        $("#formMRMU").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#txtRmuName").val(val);
+            var req = {};
+            req.Section = '';
+            req.RoadCode = '';
+            req.RMU = $("#formMRMU option:selected").text().split("-")[1];
+            $.ajax({
+                url: '/MAM/RMUSecRoad',
+                dataType: 'JSON',
+                data: req,
+                type: 'Post',
+                success: function (data) {
+                    if (data != null) {
+                        $("#formMSectionCode").empty();
+                        $("#formMSectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                        $.each(data.section, function (index, v) {
+                            $("#formMSectionCode").append($("<option></option>").val(v.value).html(v.text));
+                        });
+                        $("#formMSectionCode").trigger("change");
+                        $('#formMSectionCode').trigger("chosen:updated");
+
+                    } else {
+
+                    }
+                },
+                error: function (data) {
+
+                    console.error(data);
+                }
+            });
+        });
+
+
+        $("#formMSectionCode").on("change", function () {
+            var ddldata = $(this).val();
+            var secCode = $("#formMSectionCode option:selected").text().split("-")[0];
+            if (ddldata != "") {
+                $("#formMSectionName").val(ddldata);
+                //GetAllRoadCodeDataBySectionCode
+                $.ajax({
+                    url: '/FormQa1/GetRoadCodeBySection',
+                    dataType: 'JSON',
+                    data: { secCode },
+                    type: 'Post',
+                    success: function (data) {
+                        if (data != null) {
+                            $("#formMRoadCode").empty();
+                            $("#formMRoadCode").append($("<option></option>").val("").html("Select Road Code"));
+                            $.each(data, function (index, v) {
+                                var text = v.roadCode + " - " + v.roadName;
+                                $("#formMRoadCode").append($("<option></option>").val(v.roadCode).html(text).attr("Item1", v.roadName));
+                            });
+                            $("#formMRoadCode").trigger("change");
+                            $('#formMRoadCode').trigger("chosen:updated");
+
+                        } else {
+
+                        }
+                    },
+                    error: function (data) {
+
+                        console.error(data);
+                    }
+                });
+            }
+            else {
+                $("#txtSectionName").val("");
+            }
+            return false;
+        });
+
+        $("#formMSectionCode").on("change", function () {
+            var ddldata = $(this).val();
+            if (ddldata != "") {
+                $("#txtSectionName").val(ddldata);
+            }
+            else {
+                $("#txtSectionName").val("");
+            }
+            return false;
+        });
+
+        $("#formMRoadCode").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+            $("#txtRoadName").val(val);
+        });
+
+         $("#formMActivityCode").on("change", function () {
+            var val = $(this).find(":selected").text();
+            val = val.split("-").length > 0 ? val.split("-")[1] : val;
+             $("#txtActivityName").val(val);
+        });
+
+
+    });
+
+    function clearHeaderSearch() {
+        $("#formMSmartSearch").val('');
+        $("#formMRMU").val("").trigger("chosen:updated");
+        $("#txtRmuName").val("");
+
+        $("#formMRoadCode").val("").trigger("chosen:updated");
+        $("#txtRoadName").val("");
+
+        $('#formMSectionCode').val("").trigger("chosen:updated");
+        $("#txtSectionName").val("");
+
+        $("#formMCrew").val("").trigger("chosen:updated");
+        $("#txtCrewName").val("");
+
+        $("#formMActivityCode").val("").trigger("chosen:updated");
+        $("#txtActivityName").val("");
+
+
+        $("#formMAuditDateFrom").val("").trigger("chosen:updated");
+        $("#formMAuditDateFrom").val("");
+
+        $("#formMAuditDateTo").val("").trigger("chosen:updated");
+        $("#formMAuditDateTo").val("");
+
+        var req = {};
+        var _rmu = $("#formMRMU");
+        var _road = $("#formMSectionCode");
+        req.RMU = this.value;
+        req.Section = '';
+        req.RoadCode = '';
+
+        $.ajax({
+            url: '/ERT/RMUSecRoad',
+            dataType: 'JSON',
+            data: req,
+            type: 'Post',
+            success: function (data) {
+                if (req.RMU == "") {
+                    $("#formMRMU").empty();
+                    $("#formMRMU").append($("<option></option>").val("").html("Select RMU"));
+                    $.each(data.rmu, function (index, v) {
+                        $("#formMRMU").append($("<option></option>").val(v.value).html(v.text));
+                    });
+                }
+                if (req.Section == "") {
+                    $("#formMSectionCode").empty();
+                    $("#formMSectionCode").append($("<option></option>").val("").html("Select Section Code"));
+                    $.each(data.section, function (index, v) {
+                        $("#formMSectionCode").append($("<option></option>").val(v.value).html(v.text));
+                    });
+
+                    $('#formMSectionCode').trigger("chosen:updated");
+                }
+            },
+            error: function (data) {
+
+                console.error(data);
+            }
+        });
+        $("#btnSearch").click();
+    }
+
+    function detailSearch() {
+        $("#formMAdvSearch").slideToggle(500);
+    }
+
+    function formMGridRefresh() {
+        oTable = $('#formMGridView').DataTable();
+        oTable.columns(0).search($("#formMSmartSearch").val().trim());
+
+        var rmuCode = $("#formMRMU").val();
+        if (rmuCode != "") {
+            oTable.columns(1).search(rmuCode);
+        } else {
+                oTable.columns(1).search("");
+        }
+
+        var secCode = $("#formMSectionCode").val();
+        if (secCode != "") {
+            oTable.columns(2).search(secCode);
+        } else {
+                oTable.columns(2).search("");
+        }
+
+        var crewCode = $("#formMCrew").val().trim();
+
+        if (crewCode != "" ){
+            oTable.columns(3).search(crewCode);
+        }
+        else {
+            oTable.columns(3).search("");
+        }
+
+        var actCode = $("#formMActivityCode").val().trim();
+
+        if (actCode != "" ){
+            oTable.columns(4).search(actCode);
+        }
+        else {
+            oTable.columns(4).search("");
+        }
+
+        oTable.columns(5).search($("#formMAuditDateFrom").val());
+        oTable.columns(6).search($("#formMAuditDateTo").val());
+
+        var rdCode = $("#formMRoadCode").val().trim();
+
+        if (rdCode != "" ){
+            oTable.columns(7).search(rdCode);
+        }
+        else {
+            oTable.columns(7).search("");
+        }
+
+        oTable.data = filterData;
+        oTable.draw();
+    }
+
+    function EditformM(pid,view) {
+        window.location = "@Url.Action("Add", "FormM")";
+    }
+
+    function DeleteHeaderRecord(pkId) {
+        app.Confirm("Are you sure you want to delete the record?, If Yes click OK.", function (e) {
+            if (e) {
+                InitAjaxLoading();
+                $.ajax({
+                    url: '/FormM/HeaderListformMDelete',
+                    data: { pkId },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data > 0) {
+                            app.ShowSuccessMessage('Successfully Deleted', false);
+                            formMGridRefresh();
+                        }
+                        else {
+                            app.ShowErrorMessage("Error in Deleted. Kindly retry later.", false);
+                        }
+                        HideAjaxLoading();
+                    }
+                });
+            }
+        });
+    }
+
+
+</script>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="body-header w-100">
+            <div class="row bg-white pt-4">
+                <div class="w-100">
+                    <div class="body-header w-100">
+                        <div class="col-lg-12">
+                            <div class="w-100 d-flex justify-content-md-between py-2 align-items-center">
+                                <span class="mb-0 font-weight-bold font-20">
+                                    Form M
+                                </span>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb breadcrumb-alt mb-0 bg-transparent">
+                                        <li class="breadcrumb-item">Home</li>
+                                        <li class="breadcrumb-item">
+                                            Retaining  Wall Visual Inspection Record
+                                        </li>
+                                        <li class="breadcrumb-item" aria-current="page">
+                                            Form M
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="search-section" searchSection>
+                <div class="justify-content-center mb-1">
+                    <div class="search-content">
+                        <div class="input-group">
+
+                            <input autocomplete="off" class="form-control" id="formMSmartSearch" name="SearchObj.SmartInputValue" onfocus="this.removeAttribute('readonly')" placeholder="Search..." spellcheck="false" type="text" value="" param="KeySearch">
+                            <div class="input-group-append">
+                                <div class="btn-group">
+                                    @*<button id="btnSearch" type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>*@
+                                    <button onclick="tblFMHGrid.Search(this,'#formMSearch');" SearchSectionBtn type="button" class="bg-theme-color js-tooltip-enabled px-2 border-0" style="line-height: 18px;"><span class="search-icon"></span></button>
+                                    <button id="btnAdvSearch" type="button" class="bg-theme-color js-tooltip-enabled px-3 border-0" data-toggle="collapse" data-target="#div_advsearch"><span class="filter-icon"></span></button>
+                                    <button id="btnClearSearch" type="button" onclick="clearHeaderSearch()" class="bg-theme-color js-tooltip-enabled px-3 border-0 rounded-right">Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="div_advsearch" class="collapse">
+                        <div class="col-lg-10 offset-lg-1">
+                            <div class="bg-white rounded float-left pt-3 pb-1 px-lg-4 px-md-3 advance-search-group w-100">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                @Html.Label("RMU ", "RMU ")
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "selRMU", "Select RMU", new { @Id = "formMRMU", @class = "form-control", @param = "RMUCode", @rmuCode = "rmuCode", @clear = "rebind" })
+                                            </div>
+                                            <div class="form-group col-lg-6 mb-0">
+                                                @Html.Label("RMU Name", "RMU Name")
+                                                <input type="text" class="form-control" id="txtRmuName" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="col-6 form-group">
+                                                @Html.Label("Section Code ", "Section Code")
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "selSectionCode", "Select Section Code", new { @Id = "formMSectionCode", @class = "form-control widget-content-area" })
+                                            </div>
+                                            <div class="form-group col-lg-6 mb-0">
+                                                @Html.Label("Section Name", "Section Name")
+                                                <input type="text" class="form-control" id="txtSectionName" disabled />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="col-6 form-group">
+                                                @Html.Label("Road Code", "Road Code")
+                                                @Html.DropDownList("RoadCode", (IEnumerable<SelectListItem>)ViewData["RD_Code"], "Select Road Code", new { @id = "formMRoadCode", @class = "form-control", @param = "RoadCode" })
+                                            </div>
+                                            <div class="form-group col-lg-6 mb-0">
+                                                @Html.Label("Road Name", "Road Name")
+                                                <input type="text" class="form-control" id="txtRoadName" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                            <div class="row">
+                                                <div class="col-6 form-group">
+                                                    @Html.Label("Activity Code", "Activity Code")
+                                                    @Html.DropDownList("formMActivityCode", (IEnumerable<SelectListItem>)ViewData["Activity"], "Select Activity Code", new { @Id = "formMActivityCode", @class = "form-control", @param = "ActivityCode" })
+                                                </div>
+                                                <div class="form-group col-lg-6 mb-0">
+                                                    @Html.Label("Activity Name", "Activity Name")
+                                                    <input type="text" class="form-control" id="txtActivityName" disabled />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <div class="form-group col-2">
+                                        @Html.Label("Audit Date From", "Audit Date From")
+                                        @*@Html.DropDownList("FromAuditDate", (IEnumerable<SelectListItem>)ViewData["Year"], "Select Year", new { @Id = "formMAuditDateFrom", @class = "form-control", @param = "FromAuditDate" })*@
+                                        <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="formMAuditDateFrom" value="" name="formMAuditDateFrom" onfocusout="onFocusOut();" param="FromAuditDate">
+                                    </div>
+                                    <div class="form-group col-2">
+                                        @Html.Label("Audit Date To", "Audit Date To")
+                                        <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control" id="formMAuditDateTo" value="" name="formMAuditDateTo" onfocusout="onFocusOut();" param="ToAuditDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="w-100 float-left position-relative">
+                <div class="grid-btns">
+                    <button type="button" class="btn btn-sm btn-themebtn" @isModifyPerm onclick="javascript:EditformM(0,0);"><span class="add-icon"></span> Add Form M</button>
+                </div>
+                <div id="headerListGrid" class="w-100 dt-tbl-section">
+                    @{
+                        Html.RenderPartial("_CDataTable", Model);
+                    }
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function onFocusOut() {
+        //debugger;
+
+        var frmdate = $("#formMAuditDateFrom").val();
+        if (frmdate != "") {
+            d = new Date(frmdate);
+            var frmYear = d.getFullYear();
+            if (frmYear < 2019 || frmYear > 2099) {
+                app.ShowErrorMessage('Year should between 2019 to 2099')
+                //$("#dtFromDate").val('');
+                $("#formMAuditDateFrom").focus();
+                $('#formN1SearchBtn').attr("disabled", true);
+            }
+        }
+
+        var todate = $("#formMAuditDateTo").val();
+        if (todate != "") {
+            x = new Date(todate);
+            var toYear = x.getFullYear();
+            if (toYear < 2019 || toYear > 2099) {
+                app.ShowErrorMessage('Year should between 2019 to 2099')
+                //$("#dtFromDate").val('');
+                $("#formMAuditDateTo").focus();
+            } 
+        }
+    }
+</script>

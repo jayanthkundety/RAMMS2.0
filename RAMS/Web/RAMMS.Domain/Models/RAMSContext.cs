@@ -8289,7 +8289,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditActivities>(entity =>
             {
                 entity.HasKey(e => e.FmaaPkRefNo)
-                    .HasName("PK__RM_FormM__311EF8F005BBBB04");
+                    .HasName("PK__RM_FormM__311EF8F0008E2C25");
 
                 entity.ToTable("RM_FormM_Audit_Activities");
 
@@ -8330,11 +8330,43 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditDetails>(entity =>
             {
                 entity.HasKey(e => e.FmadPkRefNo)
-                    .HasName("PK__RM_FormM__11153A4C9F65DD76");
+                    .HasName("PK__RM_FormM__11153A4CC6D9EA32");
 
                 entity.ToTable("RM_FormM_Audit_Details");
 
                 entity.Property(e => e.FmadPkRefNo).HasColumnName("FMAD_PK_Ref_No");
+
+                entity.Property(e => e.FmadA1tallyBox).HasColumnName("FMAD_A1Tally_Box");
+
+                entity.Property(e => e.FmadA1total).HasColumnName("FMAD_A1Total");
+
+                entity.Property(e => e.FmadA2tallyBox).HasColumnName("FMAD_A2Tally_Box");
+
+                entity.Property(e => e.FmadA2total).HasColumnName("FMAD_A2Total");
+
+                entity.Property(e => e.FmadA3tallyBox).HasColumnName("FMAD_A3Tally_Box");
+
+                entity.Property(e => e.FmadA3total).HasColumnName("FMAD_A3Total");
+
+                entity.Property(e => e.FmadA4tallyBox).HasColumnName("FMAD_A4Tally_Box");
+
+                entity.Property(e => e.FmadA4total).HasColumnName("FMAD_A4Total");
+
+                entity.Property(e => e.FmadA5tallyBox).HasColumnName("FMAD_A5Tally_Box");
+
+                entity.Property(e => e.FmadA5total).HasColumnName("FMAD_A5Total");
+
+                entity.Property(e => e.FmadA6tallyBox).HasColumnName("FMAD_A6Tally_Box");
+
+                entity.Property(e => e.FmadA6total).HasColumnName("FMAD_A6Total");
+
+                entity.Property(e => e.FmadA7tallyBox).HasColumnName("FMAD_A7Tally_Box");
+
+                entity.Property(e => e.FmadA7total).HasColumnName("FMAD_A7Total");
+
+                entity.Property(e => e.FmadA8tallyBox).HasColumnName("FMAD_A8Tally_Box");
+
+                entity.Property(e => e.FmadA8total).HasColumnName("FMAD_A8Total");
 
                 entity.Property(e => e.FmadActivityCode)
                     .HasColumnName("FMAD_Activity_Code")
@@ -8351,6 +8383,50 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FmadB1tallyBox).HasColumnName("FMAD_B1Tally_Box");
+
+                entity.Property(e => e.FmadB1total).HasColumnName("FMAD_B1Total");
+
+                entity.Property(e => e.FmadB2tallyBox).HasColumnName("FMAD_B2Tally_Box");
+
+                entity.Property(e => e.FmadB2total).HasColumnName("FMAD_B2Total");
+
+                entity.Property(e => e.FmadB3tallyBox).HasColumnName("FMAD_B3Tally_Box");
+
+                entity.Property(e => e.FmadB3total).HasColumnName("FMAD_B3Total");
+
+                entity.Property(e => e.FmadB4tallyBox).HasColumnName("FMAD_B4Tally_Box");
+
+                entity.Property(e => e.FmadB4total).HasColumnName("FMAD_B4Total");
+
+                entity.Property(e => e.FmadB5tallyBox).HasColumnName("FMAD_B5Tally_Box");
+
+                entity.Property(e => e.FmadB5total).HasColumnName("FMAD_B5Total");
+
+                entity.Property(e => e.FmadB6tallyBox).HasColumnName("FMAD_B6Tally_Box");
+
+                entity.Property(e => e.FmadB6total).HasColumnName("FMAD_B6Total");
+
+                entity.Property(e => e.FmadB7tallyBox).HasColumnName("FMAD_B7Tally_Box");
+
+                entity.Property(e => e.FmadB7total).HasColumnName("FMAD_B7Total");
+
+                entity.Property(e => e.FmadB8tallyBox).HasColumnName("FMAD_B8Tally_Box");
+
+                entity.Property(e => e.FmadB8total).HasColumnName("FMAD_B8Total");
+
+                entity.Property(e => e.FmadB9tallyBox).HasColumnName("FMAD_B9Tally_Box");
+
+                entity.Property(e => e.FmadB9total).HasColumnName("FMAD_B9Total");
+
+                entity.Property(e => e.FmadC1tallyBox).HasColumnName("FMAD_C1Tally_Box");
+
+                entity.Property(e => e.FmadC1total).HasColumnName("FMAD_C1Total");
+
+                entity.Property(e => e.FmadC2tallyBox).HasColumnName("FMAD_C2Tally_Box");
+
+                entity.Property(e => e.FmadC2total).HasColumnName("FMAD_C2Total");
+
                 entity.Property(e => e.FmadCategory).HasColumnName("FMAD_Category");
 
                 entity.Property(e => e.FmadCrBy).HasColumnName("FMAD_CR_By");
@@ -8359,7 +8435,115 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FMAD_CR_DT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.FmadD1tallyBox).HasColumnName("FMAD_D1Tally_Box");
+
+                entity.Property(e => e.FmadD1total).HasColumnName("FMAD_D1Total");
+
+                entity.Property(e => e.FmadD2tallyBox).HasColumnName("FMAD_D2Tally_Box");
+
+                entity.Property(e => e.FmadD2total).HasColumnName("FMAD_D2Total");
+
+                entity.Property(e => e.FmadD3tallyBox).HasColumnName("FMAD_D3Tally_Box");
+
+                entity.Property(e => e.FmadD3total).HasColumnName("FMAD_D3Total");
+
+                entity.Property(e => e.FmadD4tallyBox).HasColumnName("FMAD_D4Tally_Box");
+
+                entity.Property(e => e.FmadD4total).HasColumnName("FMAD_D4Total");
+
+                entity.Property(e => e.FmadD5tallyBox).HasColumnName("FMAD_D5Tally_Box");
+
+                entity.Property(e => e.FmadD5total).HasColumnName("FMAD_D5Total");
+
+                entity.Property(e => e.FmadD6tallyBox).HasColumnName("FMAD_D6Tally_Box");
+
+                entity.Property(e => e.FmadD6total).HasColumnName("FMAD_D6Total");
+
+                entity.Property(e => e.FmadD7tallyBox).HasColumnName("FMAD_D7Tally_Box");
+
+                entity.Property(e => e.FmadD7total).HasColumnName("FMAD_D7Total");
+
+                entity.Property(e => e.FmadD8tallyBox).HasColumnName("FMAD_D8Tally_Box");
+
+                entity.Property(e => e.FmadD8total).HasColumnName("FMAD_D8Total");
+
+                entity.Property(e => e.FmadE1tallyBox).HasColumnName("FMAD_E1Tally_Box");
+
+                entity.Property(e => e.FmadE1total).HasColumnName("FMAD_E1Total");
+
+                entity.Property(e => e.FmadE2tallyBox).HasColumnName("FMAD_E2Tally_Box");
+
+                entity.Property(e => e.FmadE2total).HasColumnName("FMAD_E2Total");
+
+                entity.Property(e => e.FmadF1tallyBox).HasColumnName("FMAD_F1Tally_Box");
+
+                entity.Property(e => e.FmadF1total).HasColumnName("FMAD_F1Total");
+
+                entity.Property(e => e.FmadF2tallyBox).HasColumnName("FMAD_F2Tally_Box");
+
+                entity.Property(e => e.FmadF2total).HasColumnName("FMAD_F2Total");
+
+                entity.Property(e => e.FmadF3tallyBox).HasColumnName("FMAD_F3Tally_Box");
+
+                entity.Property(e => e.FmadF3total).HasColumnName("FMAD_F3Total");
+
+                entity.Property(e => e.FmadF4tallyBox).HasColumnName("FMAD_F4Tally_Box");
+
+                entity.Property(e => e.FmadF4total).HasColumnName("FMAD_F4Total");
+
+                entity.Property(e => e.FmadF5tallyBox).HasColumnName("FMAD_F5Tally_Box");
+
+                entity.Property(e => e.FmadF5total).HasColumnName("FMAD_F5Total");
+
+                entity.Property(e => e.FmadF6tallyBox).HasColumnName("FMAD_F6Tally_Box");
+
+                entity.Property(e => e.FmadF6total).HasColumnName("FMAD_F6Total");
+
+                entity.Property(e => e.FmadF7tallyBox).HasColumnName("FMAD_F7Tally_Box");
+
+                entity.Property(e => e.FmadF7total).HasColumnName("FMAD_F7Total");
+
                 entity.Property(e => e.FmadFmhPkRefNo).HasColumnName("FMAD_FMH_PK_Ref_No");
+
+                entity.Property(e => e.FmadG10tallyBox).HasColumnName("FMAD_G10Tally_Box");
+
+                entity.Property(e => e.FmadG10total).HasColumnName("FMAD_G10Total");
+
+                entity.Property(e => e.FmadG1tallyBox).HasColumnName("FMAD_G1Tally_Box");
+
+                entity.Property(e => e.FmadG1total).HasColumnName("FMAD_G1Total");
+
+                entity.Property(e => e.FmadG2tallyBox).HasColumnName("FMAD_G2Tally_Box");
+
+                entity.Property(e => e.FmadG2total).HasColumnName("FMAD_G2Total");
+
+                entity.Property(e => e.FmadG3tallyBox).HasColumnName("FMAD_G3Tally_Box");
+
+                entity.Property(e => e.FmadG3total).HasColumnName("FMAD_G3Total");
+
+                entity.Property(e => e.FmadG4tallyBox).HasColumnName("FMAD_G4Tally_Box");
+
+                entity.Property(e => e.FmadG4total).HasColumnName("FMAD_G4Total");
+
+                entity.Property(e => e.FmadG5tallyBox).HasColumnName("FMAD_G5Tally_Box");
+
+                entity.Property(e => e.FmadG5total).HasColumnName("FMAD_G5Total");
+
+                entity.Property(e => e.FmadG6tallyBox).HasColumnName("FMAD_G6Tally_Box");
+
+                entity.Property(e => e.FmadG6total).HasColumnName("FMAD_G6Total");
+
+                entity.Property(e => e.FmadG7tallyBox).HasColumnName("FMAD_G7Tally_Box");
+
+                entity.Property(e => e.FmadG7total).HasColumnName("FMAD_G7Total");
+
+                entity.Property(e => e.FmadG8tallyBox).HasColumnName("FMAD_G8Tally_Box");
+
+                entity.Property(e => e.FmadG8total).HasColumnName("FMAD_G8Total");
+
+                entity.Property(e => e.FmadG9tallyBox).HasColumnName("FMAD_G9Tally_Box");
+
+                entity.Property(e => e.FmadG9total).HasColumnName("FMAD_G9Total");
 
                 entity.Property(e => e.FmadIsEditable).HasColumnName("FMAD_Is_Editable");
 
@@ -8384,7 +8568,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMHdr>(entity =>
             {
                 entity.HasKey(e => e.FmhPkRefNo)
-                    .HasName("PK__RM_FormM__D3A2F14456BB9B99");
+                    .HasName("PK__RM_FormM__D3A2F14474DEEF52");
 
                 entity.ToTable("RM_FormM_HDR");
 
@@ -8395,17 +8579,24 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(16)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FmhActName)
+                    .HasColumnName("FMH_ACT_Name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.FmhActiveYn).HasColumnName("FMH_Active_YN");
 
                 entity.Property(e => e.FmhAuditLog).HasColumnName("FMH_AuditLog");
 
                 entity.Property(e => e.FmhAuditTimeFrm)
                     .HasColumnName("FMH_Audit_Time_FRM")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FmhAuditTimeTo)
                     .HasColumnName("FMH_Audit_Time_TO")
-                    .HasColumnType("datetime");
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.FmhAuditType)
                     .HasColumnName("FMH_Audit_Type")
@@ -8444,6 +8635,10 @@ namespace RAMMS.Domain.Models
                     .HasColumnName("FMH_Date_WIT")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.FmhDateWitone)
+                    .HasColumnName("FMH_Date_WITONE")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.FmhDesc)
                     .HasColumnName("FMH_Desc")
                     .HasMaxLength(250)
@@ -8456,6 +8651,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmhDesignationWit)
                     .HasColumnName("FMH_Designation_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhDesignationWitone)
+                    .HasColumnName("FMH_Designation_WITONE")
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
@@ -8480,6 +8680,10 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FmhLocChKm).HasColumnName("FMH_Loc_CH_KM");
+
+                entity.Property(e => e.FmhLocChM).HasColumnName("FMH_Loc_CH_M");
+
                 entity.Property(e => e.FmhMethod)
                     .HasColumnName("FMH_Method")
                     .HasMaxLength(50)
@@ -8498,6 +8702,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmhOfWit)
                     .HasColumnName("FMH_Of_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhOfWitone)
+                    .HasColumnName("FMH_Of_WITONE")
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
@@ -8526,9 +8735,21 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
+                entity.Property(e => e.FmhSecCode)
+                    .HasColumnName("FMH_Sec_Code")
+                    .HasMaxLength(16)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhSecName)
+                    .HasColumnName("FMH_Sec_name")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.FmhSignAudit).HasColumnName("FMH_Sign_AUDIT");
 
                 entity.Property(e => e.FmhSignWit).HasColumnName("FMH_Sign_WIT");
+
+                entity.Property(e => e.FmhSignWitone).HasColumnName("FMH_Sign_WITONE");
 
                 entity.Property(e => e.FmhSrProvider)
                     .HasColumnName("FMH_SR_Provider")
@@ -8541,15 +8762,11 @@ namespace RAMMS.Domain.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FmhUseridAudit)
-                    .HasColumnName("FMH_Userid_AUDIT")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FmhUseridAudit).HasColumnName("FMH_Userid_AUDIT");
 
-                entity.Property(e => e.FmhUseridWit)
-                    .HasColumnName("FMH_Userid_WIT")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FmhUseridWit).HasColumnName("FMH_Userid_WIT");
+
+                entity.Property(e => e.FmhUseridWitone).HasColumnName("FMH_Userid_WITONE");
 
                 entity.Property(e => e.FmhUsernameAudit)
                     .HasColumnName("FMH_Username_AUDIT")
@@ -8558,6 +8775,11 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmhUsernameWit)
                     .HasColumnName("FMH_Username_WIT")
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FmhUsernameWitone)
+                    .HasColumnName("FMH_Username_WITONE")
                     .HasMaxLength(250)
                     .IsUnicode(false);
 
@@ -11509,7 +11731,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmtdiFmtPkRefNo).HasColumnName("FMTDI_FMT_PK_Ref_No");
 
-                entity.Property(e => e.FmtdiHourlyCountPerDay).HasColumnName("FMTDI_Hourly_Count_Per_Day");
+                entity.Property(e => e.FmtdiHourlyCountPerDay)
+                    .HasColumnName("FMTDI_Hourly_Count_Per_Day")
+                    .HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.FmtdiHvSubTotal).HasColumnName("FMTDI_HV_Sub_Total");
 
@@ -11663,15 +11887,9 @@ namespace RAMMS.Domain.Models
 
                 entity.Property(e => e.FmtSubmitSts).HasColumnName("FMT_SUBMIT_STS");
 
-                entity.Property(e => e.FmtUseridHdd)
-                    .HasColumnName("FMT_Userid_HDD")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FmtUseridHdd).HasColumnName("FMT_Userid_HDD");
 
-                entity.Property(e => e.FmtUseridRcd)
-                    .HasColumnName("FMT_Userid_RCD")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.FmtUseridRcd).HasColumnName("FMT_Userid_RCD");
 
                 entity.Property(e => e.FmtUsernameHdd)
                     .HasColumnName("FMT_Username_HDD")

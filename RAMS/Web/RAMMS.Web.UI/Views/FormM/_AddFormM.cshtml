@@ -1,0 +1,2009 @@
+﻿@model RAMMS.DTO.ResponseBO.FormMDTO
+
+
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@using RAMMS.Business.ServiceProvider
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.TabTitle = "Form M";
+    ViewData["Title"] = "Form M";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+
+    string strAssestID = string.Empty;
+    string strYear = string.Empty;
+    string strRefId = string.Empty;
+    bool isSubmit = false;
+    if (Model != null)
+    {
+        //strAssestID = Model.AssetId;
+        //strYear = Model.YearOfInsp.HasValue ? Model.YearOfInsp.Value.ToString() : "";
+        strRefId = Model.RefId;
+        ViewBag.IsEdit = ViewBag.IsEdit ? (Model.status == "Approved" ? false : true) : false;
+    }
+}
+
+<script type="text/javascript" src="~/js/FormM.js" asp-append-version="true"></script>
+
+@if (Model != null)
+{
+    isSubmit = ((security.isOperRAMSExecutive || security.IsExecutive || security.IsSupervisor || security.isEnggAssistant) && Model.SubmitSts == false);
+
+    <script type="text/javascript">
+
+            frmM.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
+        frmM.IsEdit = @(ViewBag.IsEdit ? "true" : "false");
+        $(document).ready(function () {
+            debugger;
+            process.Init("frmM", "@Model.status", @Model.PkRefNo);
+            $("#pkRefNo").val(frmM.HeaderData.PkRefNo);
+            $("#r2pkRefNo").val(frmM.HeaderData.FormMAD.PkRefNo);
+
+            // if (frmR1R2.HeaderData.Status == "Submitted") {
+
+            //      $('#formR1R2InspectedBy').trigger('chosen:updated');
+            //      $("#formR1R2InspectedBy").trigger("change");
+            //      $("#InspectedSign").prop("checked",true);
+            // } else if (frmR1R2.HeaderData.Status == "Verified") {
+            //     $('#formR1R2AuditedBy').trigger('chosen:updated');
+            //     $("#formR1R2AuditedBy").trigger("change");
+            //     $("#AuditedSign").prop("checked",true);
+            //}
+
+            if (frmM.HeaderData.status == "Submitted") {
+                $('#formMAuditBy').trigger('chosen:updated');
+                $("#formMAuditBy").trigger("change");
+                $("#AuditedSign").prop("checked", true);
+            }
+            else if (frmM.HeaderData.status == "Verified") {
+                $('#formMUseridWIT').trigger('chosen:updated');
+                $("#formMUseridWIT").trigger("change");
+                $("#WitnessSign").prop("checked", true);
+            }
+            else if (frmM.HeaderData.status == "Approved") {
+                $('#formMUseridWITONE').trigger('chosen:updated');
+                $("#formMUseridWITONE").trigger("change");
+                $("#WitnessOneSign").prop("checked", true);
+            }
+        });
+    </script>
+}
+@{
+    Html.RenderPartial("_breadcrumb", new BreadCrumb()
+    {
+        Title = "Condition Inspection - Form M",
+        SimpleNavigation = "Home,Condition Inspection,M"
+    });
+}
+<div class="row">
+    <div class="w-100 bg-body" id="frmMData">
+        <form id="">
+            <div class="modal-body mh-182 pt-0 pb-0">
+                <div class="d-flex justify-content-center pt-3 pb-3">
+                    <div class="form-group mb-0">
+                        <label style="float:left; padding: .5rem .5rem 0 !important;">Form M No.</label>
+                        <input id="txtFormMRefNum" class="form-control" style="width:355px;" type="text" value="@strRefId" disabled>
+                    </div>
+                </div>
+                <div class="clear-b"></div>
+
+                <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3" id="divFindDetailsFM">
+                    <div class="row">
+
+                        <div class="form-group col-md-2">
+                            @Html.Label("Division", "Division")
+                            @if (ViewBag.IsAdd)
+                            {
+                                @Html.DropDownListFor(Ahdr => Ahdr.DivCode, (IEnumerable<SelectListItem>)ViewData["Division"], "Select Division", new { @id = "selDivision", @class = "form-control" })
+                            }
+                            else
+                            {
+                                <input id="txtDivCode" name="DivCode" type="text" value="@Model.DivCode" class="form-control" disabled />
+                            }
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            @Html.Label("RMU", "RMU")
+                            @if (ViewBag.IsAdd)
+                            {
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RMU"], "RmuCode", "Select RMU", new { @Id = "selRMU", @class = "form-control validate {req,RMU}", @onchange = "frmM.Search.RmuChange(this);", @rmuCode = "rmuCode" })
+                                <input id="txtRMUName" name="RMUName" type="text" class="form-control" style="display:none;" />
+                            }
+                            else
+                            {
+                                <input id="txtRmuCode" name="RmuName" type="text" value="@Model.RmuCode" class="form-control" disabled />
+                            }
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.Label("Section Code", "Section Code")
+                            @if (ViewBag.IsAdd)
+                            {
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Section_Code"], "SecCode", "Select Section Code", new { @Id = "selSectionCode", @class = "form-control validate {req,Section Code}", @onchange = "frmM.Search.SecCodeChange(this,true);", @sectionCode = "sectionCode" })
+                            }
+                            else
+                            {
+                                <input id="txtSecCode" name="SecCode" type="text" value="@Model.SecCode" class="form-control" disabled />
+                            }
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            @Html.Label("Section Name", "Section Name")
+                            <input id="txtSectionName" name="Secname" type="text" value="@Model.SecName" class="form-control" disabled />
+                        </div>
+
+                        <div class="form-group col-lg-2">
+                            <label>Location CH</label>
+                            <div class="row">
+                                <div class="col-6 float-left pr-0">
+                                    @if (ViewBag.IsAdd)
+                                    {
+                                        <input id="txtChFromKm" name="LocChKm" type="text" class="form-control allow_numeric validate {required,number, Location Chainage Km}" maxlength="5">
+                                    }
+                                    else
+                                    {
+                                        <input id="txtChFromKm" name="LocChKm" type="text" value="@Model.LocChKm" class="form-control" disabled />
+                                    }
+                                </div>
+                                <div class="col-1 float-left p-0 text-center font-weight-bold lh30"> +</div>
+                                <div class="col-5 float-left pr-0">
+                                    @if (ViewBag.IsAdd)
+                                    {
+                                        <input id="txtChFromM" name="LocChM" type="text" maxlength="3" class="form-control allow_numeric validate {required,number,Location Chainage m}" param="chFromM" ngkeypress="">
+                                    }
+                                    else
+                                    {
+                                        <input id="txtChFromM" name="LocChM" type="text" value="@Model.LocChM" class="form-control" disabled />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <button id="btnFindDetails" onclick="frmM.FindDetails();" type="button" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right mt-4">Find Details</button>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            @Html.Label("Road Code", "Road Code")
+                            @if (ViewBag.IsAdd)
+                            {
+                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["RD_Code"], "RdCode", "Select Road Code", new { @Id = "selRoadCode", @class = "form-control validate {req,Road Code}", @onchange = "frmM.Search.RoadCodeChange(this,true);", @roadCode = "roadCode" })
+                            }
+                            else
+                            {
+                                <input id="txtRdCode" name="RdCode" type="text" value="@Model.RdCode" class="form-control" disabled />
+                            }
+
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.Label("Road Name", "Road Name")
+                            <input id="txtRoadName" type="text" name="Rdname" value="@Model.RdName" class="form-control" disabled />
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            @Html.Label("Activity Code", "Activity Code")
+                            @if (ViewBag.IsAdd)
+                            {
+                                @*@Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["Activity"], "ActCode", "Select Activity Code", new { @Id = "selActivityCode", @class = "form-control validate {req,Activity Code}", @onchange = "frmM.Search.ActivityCodeChange(this,true);", @roadCode = "activityCode" })*@
+                                @Html.DropDownListFor(Ahdr => Ahdr.ActCode, (IEnumerable<SelectListItem>)ViewData["ActivityCode"], "Select Activity Code", new { @id = "ActCode", @class = "form-control validate {req,Activity Code}", @onchange = "frmM.Search.ActivityCodeChange(this,true);", @param = "ActCode" })
+                            }
+                            else
+                            {
+                                <input id="txtActCode" name="ActCode" type="text" value="@Model.ActCode" class="form-control" disabled />
+                            }
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group w-100 float-left">
+                                @Html.Label("Activity Name", "Activity Name")
+                                <input type="text" class="form-control" name="ACTName" value="@Model.ActName" id="txtActivityName" disabled />
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label>
+                                Audit Date
+                            </label>
+                            @if (ViewBag.IsAdd)
+                            {
+                                <input type="date" min="2019-01-01" max="2099-12-31" class="datepicker form-control validate {required,Audit Date}" id="formMAuditDate" value="@Model.AuditedDate" name="AuditedDate" onchange="frmM.InAuditDateChange(this);">
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control" id="formMAuditDate" value="@Model.AuditedDate" name="AuditedDate" disabled>
+                            }
+                        </div>
+                        <div class="form-group col-2">
+                            <label>
+                                Audit Time From
+                            </label>
+                            <input id="txtAuditTimeFrom" name="AuditTimeFrm" type="time" value="@Model.AuditTimeFrm" class="form-control validate {required,Audit Time From}">
+                        </div>
+                        <div class="form-group col-2">
+                            <label>
+                                Audit Time To
+                            </label>
+                            <input id="txtAuditTimeTo" name="AuditTimeTo" type="time" value="@Model.AuditTimeTo" class="form-control validate {required,Audit Time To}">
+                        </div>
+
+                    </div>
+
+                    <div class="row border-top mt-2 pt-4" id="divSubHeader">
+                        <div class="form-group col-md-2">
+                            @Html.Label("Reference No", "Reference No")
+                            <input id="txtReferenceNo" name="Desc" type="text" class="form-control" maxlength="100">
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.Label("Type", "Type")
+                            <select name="Type" class="form-control">
+                                <option value="">Select</option>
+                                <option value="Partial">Partial</option>
+                                <option value="FRC">Full Road Closure</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.Label("Method", "Method")
+                            <select name="Method" class="form-control">
+                                <option value="">Select</option>
+                                <option value="SG">Stop-Go</option>
+                                <option value="Diversion">Diversion</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.Label("Crew Supervisor", "Crew Supervisor")
+                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "CrewSup", "Select Users", new { @Id = "formMCrewSup", @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.Label("Audit Plan", "Audit Plan")
+                            <select name="AuditType" class="form-control">
+                                <option value="">Select</option>
+                                <option value="Plan">Plan</option>
+                                <option value="Unplanned">Unplanned</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            @Html.Label("Audited by", "Audited by")
+                            <select name="AuditedBy" class="form-control">
+                                <option value="">Select</option>
+                                <option value="SP">S.P</option>
+                                <option value="EC">E.C</option>
+                                <option value="SO">S.O</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            @Html.Label("Name of Service Provider(S.P)", "Name of Service Provider(S.P)")
+                            <input id="txtSP" type="text" value="Endaya Construction" class="form-control" disabled>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="clear-b"></div>
+
+                <div class="row">
+                    <div class="col-lg-12 bg-white py-3" id="divR1R2">
+                        <input type="hidden" id="pkRefNo" name="FormMAD.FmhPkRefNo" />
+                        <input type="hidden" id="r2pkRefNo" name="FormMAD.PkRefNo" />
+                        <div>
+                            <div id="accordion">
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-zero">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingZero">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1" data-toggle="collapse" href="#AccordPage0" aria-expanded="true" aria-controls="collapseZero">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+
+                                                        Signs
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage0" class="collapse show avowmodal-form formgrp-section" aria-labelledby="headingZero" data-parent="#custom-accordion-zero">
+                                            <div class="card-body">
+                                                <div class="row mb-2  border-bottom py-2" disabled="disabled">
+                                                    <div class="col-1" disabled="disabled"></div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Signs
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            For
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center" disabled="disabled"><b disabled="disabled">w%</b></div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Tally box
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Total
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left"> A1</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Missing
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">5</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A1TallyBox" name="FormMAD.A1TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A1Total" name="FormMAD.A1Total" class="form-control" pattern="/^-?\d+\.?\d*$/" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> A2</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Position
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A2TallyBox" name="FormMAD.A2TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A2Total" name="FormMAD.A2Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> A3</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Not visible/Fallen Over
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A3TallyBox" name="FormMAD.A3TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A3Total" name="FormMAD.A3Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> A4</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Wrong Sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A4TallyBox" name="FormMAD.A4TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A4Total" name="FormMAD.A4Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> A5</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Condition unacceptable
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A5TallyBox" name="FormMAD.A5TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A5Total" name="FormMAD.A5Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> A6</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Non-compliant sign used
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A6TallyBox" name="FormMAD.A6TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A6Total" name="FormMAD.A6Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> A7</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Sign too low
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            support
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A7TallyBox" name="FormMAD.A7TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A7Total" name="FormMAD.A7Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> A8</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            <textarea class="form-control p-1" style="font-size: 13px;height: 33px;font-weight: bold;"> Others</textarea>
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            sign
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A8TallyBox" name="FormMAD.A8TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="A8Total" name="FormMAD.A8Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-one">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage1" aria-expanded="false" aria-controls="collapseOne">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Delineation
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage1" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingOne" data-parent="#custom-accordion-one">
+                                            <div class="card-body">
+                                                <div class="row mb-2  border-bottom py-2" disabled="disabled">
+                                                    <div class="col-1" disabled="disabled"></div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Delineation
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            For
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center" disabled="disabled"><b disabled="disabled">w%</b></div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Tally box
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Total
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left"> B1</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Missing/ineffective at Leading Taper
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">5</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B1TallyBox" name="FormMAD.B1TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B1Total" name="FormMAD.B1Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> B2</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Missing/ineffective at Trailing Taper
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B2TallyBox" name="FormMAD.B2TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B2Total" name="FormMAD.B2Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> B3</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Spacing in taper
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B3TallyBox" name="FormMAD.B3TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B3Total" name="FormMAD.B3Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> B4</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Spacing in lanes
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B4TallyBox" name="FormMAD.B4TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B4Total" name="FormMAD.B4Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> B5</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Ineffective delineation along lanes
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B5TallyBox" name="FormMAD.B5TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B5Total" name="FormMAD.B5Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> B7</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Missing delineation along lanes
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B7TallyBox" name="FormMAD.B7TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B7Total" name="FormMAD.B7Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> B8</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Condition unacceptable
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B8TallyBox" name="FormMAD.B8TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B8Total" name="FormMAD.B8Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> B9</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Using non compliant devices
+
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B9TallyBox" name="FormMAD.B9TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="B9Total" name="FormMAD.B9Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-two">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingTwo">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage2" aria-expanded="false" aria-controls="collapseTwo">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Pedestrians/Cyclists
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage2" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingTwo" data-parent="#custom-accordion-two">
+                                            <div class="card-body">
+                                                <div class="row mb-2  border-bottom py-2" disabled="disabled">
+                                                    <div class="col-1" disabled="disabled"></div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Pedestrians/Cyclists
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            For
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center" disabled="disabled"><b disabled="disabled">w%</b></div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Tally box
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Total
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left"> C1</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Inadequate provision for pedestrians
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            feature
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">10</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="C1TallyBox" name="FormMAD.C1TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="C1Total" name="FormMAD.C1Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">C2</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Inadequate provision for cyclists
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            feature
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">10</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="C2TallyBox" name="FormMAD.C2TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="C2Total" name="FormMAD.C2Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-six">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingelsix">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage6" aria-expanded="false" aria-controls="collapseten">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Crews & Equipment
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage6" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingelsix" data-parent="#custom-accordion-six">
+                                            <div class="card-body">
+                                                <div class="row mb-2  border-bottom py-2" disabled="disabled">
+                                                    <div class="col-1" disabled="disabled"></div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Crews & Equipment
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            For
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center" disabled="disabled"><b disabled="disabled">w%</b></div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Tally box
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Total
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">D1</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Crew Supervisor not on site
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            crew
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">10</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D1TallyBox" name="FormMAD.D1TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D1Total" name="FormMAD.D1Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">D2</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Traffic Controller not on site
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            crew
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">10</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D2TallyBox" name="FormMAD.D2TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D2Total" name="FormMAD.D2Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> D3</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Working in live lanes
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            crew
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">15</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D3TallyBox" name="FormMAD.D3TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D3Total" name="FormMAD.D3Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>15){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> D4</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Safety zone compromised
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            crew
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">10</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D4TallyBox" name="FormMAD.D4TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D4Total" name="FormMAD.D4Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> D5</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Low visibility of PPE
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            crew
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D5TallyBox" name="FormMAD.D5TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D5Total" name="FormMAD.D5Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> D6</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            No Handheld beacons/Flags/Signs
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            crew
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D6TallyBox" name="FormMAD.D6TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D6Total" name="FormMAD.D6Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> D7</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            No Hazard lights/beacons
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            vehicle
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D7TallyBox" name="FormMAD.D7TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D7Total" name="FormMAD.D7Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> D8</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Unsafe/illegal parking of equipment
+
+
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            unit
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D8TallyBox" name="FormMAD.D8TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="D8Total" name="FormMAD.D8Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-seven">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingelseven">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage7" aria-expanded="false" aria-controls="collapseten">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Cone & Barriers
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage7" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingelseven" data-parent="#custom-accordion-seven">
+                                            <div class="card-body">
+                                                <div class="row mb-2  border-bottom py-2" disabled="disabled">
+                                                    <div class="col-1" disabled="disabled"></div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Cone & Barriers
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            For
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center" disabled="disabled"><b disabled="disabled">w%</b></div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Tally box
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Total
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">E1</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Barrier defects/missing/non compliant
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">15</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="E1TallyBox" name="FormMAD.E1TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="E1Total" name="FormMAD.E1Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>15){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">E2</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Traffic cones defects/missing/non compliant
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">15</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="E2TallyBox" name="FormMAD.E2TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="E2Total" name="FormMAD.E2Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>15){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-eight">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingeleight">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage8" aria-expanded="false" aria-controls="collapseten">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Truck Mounted Attenuator
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage8" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingeleight" data-parent="#custom-accordion-eight">
+                                            <div class="card-body">
+                                                <div class="row mb-2  border-bottom py-2" disabled="disabled">
+                                                    <div class="col-1" disabled="disabled"></div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Truck Mounted Attenuator
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            For
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center" disabled="disabled"><b disabled="disabled">w%</b></div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Tally box
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Total
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">F1</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            TMA Incorrect Location
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">20</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F1TallyBox" name="FormMAD.F1TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F1Total" name="FormMAD.F1Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>20){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">F2</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Variable Message Sign(VMS) non compliant
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">10</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F2TallyBox" name="FormMAD.F2TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F2Total" name="FormMAD.F2Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">F3</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Advanced Warning VMS missing
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">25</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F3TallyBox" name="FormMAD.F3TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F3Total" name="FormMAD.F3Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>25){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">F4</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Arrow Board non compliant
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">15</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F4TallyBox" name="FormMAD.F4TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F4Total" name="FormMAD.F4Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>15){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">F5</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            TMA missing or non compliant
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">25</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F5TallyBox" name="FormMAD.F5TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F5Total" name="FormMAD.F5Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>25){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">F6</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Tail pilot vehicle missing/non compliant
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">25</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F6TallyBox" name="FormMAD.F6TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F6Total" name="FormMAD.F6Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>25){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">F7</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Lead Pilot vehicle missing/non compliant
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            device
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">15</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F7TallyBox" name="FormMAD.F7TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="F7Total" name="FormMAD.F7Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>15){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-nine">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingelnine">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage9" aria-expanded="false" aria-controls="collapseten">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Miscellaneous
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage9" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingelnine" data-parent="#custom-accordion-nine">
+                                            <div class="card-body">
+                                                <div class="row mb-2  border-bottom py-2" disabled="disabled">
+                                                    <div class="col-1" disabled="disabled"></div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Miscellaneous
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            For
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center" disabled="disabled"><b disabled="disabled">w%</b></div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Tally box
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-2" disabled="disabled">
+                                                        <b disabled="disabled">
+                                                            Total
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G1</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Unacceptable surface condition (diversion)
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            feature
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">5</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G1TallyBox" name="FormMAD.G1TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G1Total" name="FormMAD.G1Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G2</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Insufficient lane widths
+
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            feature
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">5</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G2TallyBox" name="FormMAD.G2TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G2Total" name="FormMAD.G2Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G3</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Significant delays observed
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            feature
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">5</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G3TallyBox" name="FormMAD.G3TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G3Total" name="FormMAD.G3Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G4</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Parking / stopping features not relocated
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            feature
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">5</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G4TallyBox" name="FormMAD.G4TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G4Total" name="FormMAD.G4Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G5</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Inadequate site access
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            access
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">10</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G5TallyBox" name="FormMAD.G5TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G5Total" name="FormMAD.G5Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G6</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Incorrect use of temporary road marking
+
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            feature
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">5</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G6TallyBox" name="FormMAD.G6TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G6Total" name="FormMAD.G6Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G7</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Approved TMP not sighted
+
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            TMP
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">15</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G7TallyBox" name="FormMAD.G7TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G7Total" name="FormMAD.G7Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>15){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G8</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Non compliant to approved TMP
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            TMP
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">10</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G8TallyBox" name="FormMAD.G8TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G8Total" name="FormMAD.G8Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-2">
+                                                    <div class="col-1" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">G9</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Devices not removed after completion of Work
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Overall
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center">
+                                                        <b class="pt-2 w-100 float-left">10</b>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G9TallyBox" name="FormMAD.G9TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G9Total" name="FormMAD.G9Total" onKeyPress="if (this.value.length == 2) return false;" onKeyUp="if(this.value>10){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-2">
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left"> G10</b>
+                                                    </div>
+                                                    <div class="col-5" disabled="disabled">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            <textarea class="form-control p-1" style="font-size: 13px;height: 33px;font-weight: bold;"> Others:(Others Plastic Barrier)</textarea>
+
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <b class="pt-2 w-100 float-left">
+                                                            Overall
+                                                        </b>
+                                                    </div>
+                                                    <div class="col-1 px-0 text-center"><b class="pt-2 w-100 float-left">5</b></div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G10TallyBox" name="FormMAD.G10TallyBox" onKeyPress="if (this.value.length == 4) return false;" class="form-control" />
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <input type="number" id="G10Total" name="FormMAD.G10Total" onKeyPress="if (this.value.length == 1) return false;" onKeyUp="if(this.value>5){this.value='';}else if(this.value<0){this.value='';}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-ten">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingelten">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage10" aria-expanded="false" aria-controls="collapseten">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Final Result
+
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage10" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingelten" data-parent="#custom-accordion-ten">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-2 form-group">
+                                                        <label>
+                                                            Total
+                                                        </label>
+                                                        @{
+                                                            if (Model != null)
+                                                            {
+                                                                if (Model.FormMAD != null)
+                                                                {
+                                                                    <input type="text" class="form-control" value=@Model.FormMAD.Total disabled>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="text" class="form-control" name="FormMAD.Total" value="" disabled />
+                                                                }
+                                                            }
+
+                                                        }
+                                                    </div>
+                                                    <div class="col-2 form-group">
+                                                        <b class="mt-4 w-100 float-left pt-2 text-center">
+                                                            @{
+                                                                var range = "";
+                                                                if (Model != null)
+                                                                {
+                                                                    if (Model.FormMAD != null)
+                                                                    {
+                                                                        if (Model.FormMAD.Total < 20)
+                                                                        {
+                                                                            <label>Satisfactory</label>
+                                                                        }
+                                                                        else if (Model.FormMAD.Total > 20 && Model.FormMAD.Total < 45)
+                                                                        {
+                                                                            <label>Needs Improvement</label>
+                                                                        }
+                                                                        else if (Model.FormMAD.Total > 45)
+                                                                        {
+                                                                            <label>Dangerous</label>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <label>
+                                                            Satisfactory: <20
+                                                        </label>
+
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <label>
+                                                            Needs Improvement: 20 to 45
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <label>
+                                                            Dangerous: >45
+                                                        </label>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-eleven">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingeleleven">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage11" aria-expanded="false" aria-controls="collapseeleven">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Findings
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage11" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingeleleven" data-parent="#custom-accordion-eleven">
+                                            <div class="card-body">
+
+                                                <textarea class="form-control p-1 w-100" style="font-size: 13px;height: 80px;font-weight: bold;" name="Findings"> </textarea>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion custom-accordion mb-3" id="custom-accordion-five">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingfive">
+                                            <h5 class="m-0">
+                                                <a class="custom-accordion-title py-1 collapsed" data-toggle="collapse" href="#AccordPage5" aria-expanded="false" aria-controls="collapsefive">
+                                                    <span class="float-left">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle after-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus-circle before-collapsed d-none"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                                    </span>
+                                                    <span class="float-left" style="padding: 4px 8px;">
+                                                        Corrective Actions to be Taken
+                                                    </span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="AccordPage5" class="collapse avowmodal-form formgrp-section" aria-labelledby="headingfive" data-parent="#custom-accordion-five">
+                                            <div class="card-body">
+                                                <textarea class="form-control p-1 w-100" style="font-size: 13px;height: 80px;font-weight: bold;" name="CorrectiveActions"> </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*sakthi*@
+                            <div id="divApprovedInfo" class="col-lg-12 px-lg-5">
+                                <div class="col-12">
+                                    <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                        <div class="col-lg-12 border-bottom py-2 my-2">
+                                            <span class="font-14 font-weight-bold">
+                                                Audited by
+
+                                            </span>
+                                        </div>
+                                        <div userIdGroup>
+                                            <div class="form-group col-lg-3">
+                                                @Html.Label("User ID", "User ID")
+                                                @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridAudit", "Select Users", new { @Id = "formMAuditBy", @class = "form-control", @useridChange = "", @disabled = "disabled" })
+                                            </div>
+                                            <div class="form-group col-lg-3">
+                                                @Html.Label("Name", "Name")
+                                                <input name="UsernameAudit" class="form-control ssvalidate {req,Audited By User Name}" type="text" value="" userName disabled />
+                                            </div>
+                                            <div class="form-group col-lg-2">
+                                                @Html.Label("Designation", "Designation")
+                                                <input name="DesignationAudit" class="form-control ssvalidate {req,Audited By User Designation}" type="text" value="" userDest disabled />
+                                            </div>
+                                            @*<div class="form-group col-lg-2">
+                                                    @Html.Label("Office", "Office")
+                                                    <input name="OfAudit" class="form-control ssvalidate {req,Audited By User Office}" type="text" value="" userOffice disabled />
+                                                </div>*@
+                                            <div class="form-group col-lg-3">
+                                                @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                                <input name="DateAudit" class="form-control ssvalidate {req,Audited by date}" type="date" value="" disabled="disabled" />
+                                            </div>
+                                            <div class="form-group col-lg-1 float-left">
+                                                <label>
+                                                    Sign
+                                                    @{
+                                                        var _insSign = false;
+                                                        if (Model != null)
+                                                        {
+                                                            _insSign = Model.SignAudit == null || Model.SignAudit == false ? false : true;
+                                                        }
+                                                    }
+                                                </label>
+                                                <div class="clear-b mt-2">
+                                                    <input class="{required, Requested By Signature}" checked="_insSign" id="AuditedSign" name="SignAudit" type="checkbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" userIdGroup>
+                                    <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                        <div class="col-lg-12 border-bottom py-2 my-2">
+                                            <span class="font-14 font-weight-bold">
+                                                Witnessed by (1)
+                                            </span>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("User ID", "User ID")
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridWit", "Select Users", new { @Id = "formMUseridWIT", @class = "form-control", @useridChange = "", @disabled = "disabled" })
+
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("Name", "Name")
+                                            <input name="UsernameWit" class="form-control ssvalidate {req,Witness By User Name}" type="text" value="" userName disabled />
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Designation", "Designation")
+                                            <input name="DesignationWit" class="form-control ssvalidate {req,Witness By User Designation}" type="text" value="" userDest disabled />
+                                        </div>
+                                        @*<div class="form-group col-lg-2">
+                                                @Html.Label("Office", "Office")
+                                                <input name="OfWit" class="form-control ssvalidate {req,Audited By User Office}" type="text" value="" userOffice disabled />
+                                            </div>*@
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                            <input name="DateWit" class="form-control ssvalidate {req,Witness by date}" type="date" value="" disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-1 float-left">
+                                            <label>
+                                                Sign
+                                                @{
+                                                    var _audSign = false;
+                                                    if (Model != null)
+                                                    {
+                                                        _audSign = Model.SignWit == null || Model.SignWit == false ? false : true;
+                                                    }
+                                                }
+                                            </label>
+                                            <div class="clear-b mt-2">
+                                                <input class="{required, Requested By Signature}" checked="_audSign" id="WitnessSign" name="SignWit" type="checkbox">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="txtPhotoValidate" value="" />
+                                    </div>
+                                </div>
+                                <div class="col-12" userIdGroup>
+                                    <div class="bg-white rounded landing-division w-100 float-left  my-2">
+                                        <div class="col-lg-12 border-bottom py-2 my-2">
+                                            <span class="font-14 font-weight-bold">
+                                                Witnessed by (2)
+                                            </span>
+                                        </div>
+
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("User ID", "User ID")
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UseridWitone", "Select Users", new { @Id = "formMUseridWITONE", @class = "form-control", @useridChange = "", @disabled = "disabled" })
+
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("Name", "Name")
+                                            <input name="UsernameWitone" class="form-control ssvalidate {req,Witness One By User Name}" type="text" value="" userName disabled />
+                                        </div>
+                                        <div class="form-group col-lg-2">
+                                            @Html.Label("Designation", "Designation")
+                                            <input name="DesignationWitone" class="form-control ssvalidate {req,Witness One By User Designation}" type="text" value="" userDest disabled />
+                                        </div>
+                                        @*<div class="form-group col-lg-2">
+                                                @Html.Label("Office", "Office")
+                                                <input name="OfWitone" class="form-control ssvalidate {req,Audited By User Office}" type="text" value="" userOffice disabled />
+                                            </div>*@
+                                        <div class="form-group col-lg-3">
+                                            @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
+                                            <input name="DateWitone" class="form-control ssvalidate {req,Witness One by date}" type="date" value="" disabled="disabled" />
+                                        </div>
+                                        <div class="form-group col-lg-1 float-left">
+                                            <label>
+                                                Sign
+                                                @{
+                                                    var _audSignOne = false;
+                                                    if (Model != null)
+                                                    {
+                                                        _audSign = Model.SignWitone == null || Model.SignWitone == false ? false : true;
+                                                    }
+                                                }
+                                            </label>
+                                            <div class="clear-b mt-2">
+                                                <input class="{required, Requested By Signature}" checked="_audSignOne" id="WitnessOneSign" name="SignWitone" type="checkbox">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @{
+                                if (Model != null)
+                                {
+                                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                                    {
+                                        Form = "FormM",
+                                        RefId = Model.PkRefNo,
+                                        Stage = Model.status
+                                    });
+
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-12 mb-2 float-right text-right custom-footer">
+                <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmM.Cancel()">Cancel</button>
+                @{
+                    var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.IsExecutive);
+                    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+
+                }
+
+
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="frmM.Save(false,0)" finddetailsdep>Save</button>
+                @if (isSubmit)
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="frmM.Save(true,0)" finddetailsdep>Submit</button>
+                }
+                @*}*@
+
+                @if (isVerify && (Model != null && (Model.status == RAMMS.Common.StatusList.FormR1R2Submitted || Model.status == RAMMS.Common.StatusList.FormR1R2Rejected)))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                }
+                else if (IsApproved && (Model != null && (Model.status == RAMMS.Common.StatusList.FormR1R2Verified || Model.status == RAMMS.Common.StatusList.FormR1R2Rejected)))
+                {
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="frmM.Save(false,1);process.ShowApprove('@groupname', 'Facilitated By');"> Approve </button>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery.extend(jQuery.expr[':'], {
+        equals: function (obj, index, meta, stack) {
+            if ($(obj).text() === meta[3]) {
+                return true;
+            }
+            return false;
+        }
+    });
+</script>

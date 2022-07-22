@@ -18,14 +18,19 @@ namespace RAMMS.Domain.Models
         public string FmhDivCode { get; set; }
         public string FmhRmuCode { get; set; }
         public string FmhRmuName { get; set; }
+        public string FmhSecCode { get; set; }
+        public string FmhSecName { get; set; }
         public string FmhRdCode { get; set; }
         public string FmhRdName { get; set; }
         public string FmhActCode { get; set; }
+        public string FmhActName { get; set; }
         public string FmhCrewSup { get; set; }
         public string FmhDesc { get; set; }
+        public int? FmhLocChKm { get; set; }
+        public int? FmhLocChM { get; set; }
         public DateTime? FmhAuditedDate { get; set; }
-        public DateTime? FmhAuditTimeFrm { get; set; }
-        public DateTime? FmhAuditTimeTo { get; set; }
+        public string FmhAuditTimeFrm { get; set; }
+        public string FmhAuditTimeTo { get; set; }
         public string FmhAuditedBy { get; set; }
         public string FmhAuditType { get; set; }
         public string FmhSrProvider { get; set; }
@@ -34,17 +39,23 @@ namespace RAMMS.Domain.Models
         public string FmhFindings { get; set; }
         public string FmhCorrectiveActions { get; set; }
         public bool? FmhSignAudit { get; set; }
-        public string FmhUseridAudit { get; set; }
+        public int? FmhUseridAudit { get; set; }
         public string FmhUsernameAudit { get; set; }
         public string FmhDesignationAudit { get; set; }
         public DateTime? FmhDateAudit { get; set; }
         public string FmhOfAudit { get; set; }
         public bool? FmhSignWit { get; set; }
-        public string FmhUseridWit { get; set; }
+        public int? FmhUseridWit { get; set; }
         public string FmhUsernameWit { get; set; }
         public string FmhDesignationWit { get; set; }
         public DateTime? FmhDateWit { get; set; }
         public string FmhOfWit { get; set; }
+        public bool? FmhSignWitone { get; set; }
+        public int? FmhUseridWitone { get; set; }
+        public string FmhUsernameWitone { get; set; }
+        public string FmhDesignationWitone { get; set; }
+        public DateTime? FmhDateWitone { get; set; }
+        public string FmhOfWitone { get; set; }
         public int? FmhModBy { get; set; }
         public DateTime? FmhModDt { get; set; }
         public int? FmhCrBy { get; set; }
