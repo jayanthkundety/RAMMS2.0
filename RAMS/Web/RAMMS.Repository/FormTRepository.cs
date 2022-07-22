@@ -212,9 +212,9 @@ namespace RAMMS.Repository
             List<RmFormTDailyInspection> result = new List<RmFormTDailyInspection>();
 
             var query = from x in _context.RmFormTDailyInspection
-                        let PC = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "PC").Select(pc => pc.FmtvCount).Sum()
-                        let HV = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "HV").Select(pc => pc.FmtvCount).Sum()
-                        let MC = _context.RmFormTVechicle.Where(pc => pc.FmtvPkRefNo == x.FmtdiPkRefNo && pc.FmtvVechicleType == "MC").Select(pc => pc.FmtvCount).Sum()
+                        let PC = (from p in _context.RmFormTVechicle where p.FmtvFmtdiPkRefNo == x.FmtdiPkRefNo && p.FmtvVechicleType == "PC" select p.FmtvCount ?? 0).DefaultIfEmpty().Sum()
+                        let HV = (from p in _context.RmFormTVechicle where p.FmtvFmtdiPkRefNo == x.FmtdiPkRefNo && p.FmtvVechicleType == "HV" select p.FmtvCount ?? 0).DefaultIfEmpty().Sum()
+                        let MC = (from p in _context.RmFormTVechicle where p.FmtvFmtdiPkRefNo == x.FmtdiPkRefNo && p.FmtvVechicleType == "MC" select p.FmtvCount ?? 0).DefaultIfEmpty().Sum()
                         where x.FmtdiFmtPkRefNo == filterOptions.Filters.FmtPkRefNo
                         orderby x.FmtdiPkRefNo descending
                         select new { x, PC, HV, MC };
@@ -277,66 +277,35 @@ namespace RAMMS.Repository
                 SNo = sl++
 
             }).ToList();
- 
+
         }
 
 
-        public List<RmAllassetInventory> GetAssetDetails(FormTResponseDTO FormT)
+
+        public RmFormTDailyInspection GetFormTDtlById(int id)
         {
+            RmFormTDailyInspection res = (from DI in _context.RmFormTDailyInspection where DI.FmtdiPkRefNo == id select DI).FirstOrDefault();
 
+            res.RmFormTVechicle = (from DI in _context.RmFormTVechicle where DI.FmtvFmtdiPkRefNo == id select DI).ToList();
 
-            return (from r in _context.RmAllassetInventory.Where(s => s.AiStrucCode == "Y" && s.AiRmuCode == FormT.RmuCode && s.AiRdCode == FormT.RdCode) select r).ToList();
-
-
+            return res;
         }
-
-        public int LoadR1Data(FormTResponseDTO FormT)
-        {
-            try
-            {
-
-                var res = (from r1 in _context.RmFormR1Hdr
-                           join a in _context.RmAllassetInventory on r1.Fr1hAidPkRefNo equals a.AiPkRefNo
-                           where r1.Fr1hAiRdCode == FormT.RdCode && r1.Fr1hActiveYn == true
-                           select new RmFormTDailyInspection
-                           {
-                               //Ff1dFmtPkRefNo = FormT.PkRefNo,
-                               //Ff1dAssetId = a.AiAssetId,
-                               FmtdiPkRefNo = r1.Fr1hPkRefNo,
-                               //Ff1dTier = Convert.ToInt32(a.AiTier),
-                               //Ff1dCode = a.AiStrucCode,
-                               //Ff1dHeight = Convert.ToDecimal(a.AiHeight),
-                               //Ff1dTopWidth = Convert.ToDecimal(a.AiWidth),
-                               //Ff1dOverallCondition = r1.Fr1hCondRating,
-                               //Ff1dLocCh = a.AiLocChKm,
-                               //Ff1dLocChDeci = a.AiLocChM == "" ? 0 : Convert.ToInt32(a.AiLocChM)
-
-                           }).ToList();
-
-                foreach (var item in res)
-                {
-                    _context.RmFormTDailyInspection.Add(item);
-                    _context.SaveChanges();
-                }
-
-                return 1;
-            }
-            catch (Exception)
-            {
-                return 500;
-
-            }
-        }
-
 
 
         public int? DeleteFormT(int id)
         {
             try
             {
-                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiPkRefNo == id select r).ToList();
+
+                IList<RmFormTDailyInspection> child = (from r in _context.RmFormTDailyInspection where r.FmtdiFmtPkRefNo == id select r).ToList();
                 foreach (var item in child)
                 {
+                    IList<RmFormTVechicle> vech = (from r in _context.RmFormTVechicle where r.FmtvFmtdiPkRefNo == item.FmtdiPkRefNo select r).ToList();
+                    foreach (var Vitem in vech)
+                    {
+                        _context.Remove(Vitem);
+                        _context.SaveChanges();
+                    }
                     _context.Remove(item);
                     _context.SaveChanges();
                 }
@@ -358,6 +327,12 @@ namespace RAMMS.Repository
 
         public int? DeleteFormTDtl(int Id)
         {
+            IList<RmFormTVechicle> vech = (from r in _context.RmFormTVechicle where r.FmtvFmtdiPkRefNo == Id select r).ToList();
+            foreach (var item in vech)
+            {
+                _context.Remove(item);
+                _context.SaveChanges();
+            }
             var res = (from r in _context.RmFormTDailyInspection where r.FmtdiPkRefNo == Id select r).SingleOrDefault();
             if (res != null)
             {
@@ -368,14 +343,19 @@ namespace RAMMS.Repository
             return 0;
         }
 
-        public int? SaveFormTDtl(RmFormTDailyInspection FormTDtl)
+        public int? SaveFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles)
         {
             try
             {
-
-
                 _context.Entry<RmFormTDailyInspection>(FormTDtl).State = FormTDtl.FmtdiPkRefNo == 0 ? EntityState.Added : EntityState.Modified;
                 _context.SaveChanges();
+
+                foreach (var item in Vechicles)
+                {
+                    item.FmtvFmtdiPkRefNo = FormTDtl.FmtdiPkRefNo;
+                    _context.RmFormTVechicle.Add(item);
+                    _context.SaveChanges();
+                }
 
                 return FormTDtl.FmtdiPkRefNo;
             }
@@ -386,13 +366,26 @@ namespace RAMMS.Repository
             }
         }
 
-        public int? UpdateFormTDtl(RmFormTDailyInspection FormTDtl)
+        public int? UpdateFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles)
         {
             try
             {
                 _context.Set<RmFormTDailyInspection>().Attach(FormTDtl);
                 _context.Entry<RmFormTDailyInspection>(FormTDtl).State = EntityState.Modified;
                 _context.SaveChanges();
+
+                IList<RmFormTVechicle> child = (from r in _context.RmFormTVechicle where r.FmtvFmtdiPkRefNo == FormTDtl.FmtdiPkRefNo select r).ToList();
+                foreach (var item in child)
+                {
+                    _context.Remove(item);
+                    _context.SaveChanges();
+                }
+                foreach (var item in Vechicles)
+                {
+                    item.FmtvPkRefNo = 0;
+                    _context.RmFormTVechicle.Add(item);
+                    _context.SaveChanges();
+                }
                 return 1;
             }
             catch (Exception ex)
@@ -402,43 +395,63 @@ namespace RAMMS.Repository
         }
 
 
-        //public async Task<FORMTRpt> GetReportData(int headerid)
-        //{
-        //    FORMTRpt result = (from s in _context.RmFormTHdr
-        //                        where s.FmtPkRefNo == headerid && s.Ff1hActiveYn == true
-        //                        select new FORMTRpt
-        //                        {
-        //                            CrewLeader = s.Ff1hCrewName,
-        //                            District = s.Ff1hDist,
-        //                            InspectedByDesignation = s.Ff1hInspectedDesg,
-        //                            InspectedByName = s.Ff1hInspectedName,
-        //                            InspectedDate = s.Ff1hInspectedDate,
-        //                            Division = s.Ff1hDivCode,
-        //                            RMU = (from r in _context.RmDdLookup where r.DdlType == "RMU" && r.DdlTypeCode == s.Ff1hRmuCode select r.DdlTypeDesc).FirstOrDefault(),
-        //                            RoadCode = s.Ff1hRdCode,
-        //                            RoadName = s.Ff1hRdName,
-        //                            RoadLength = s.Ff1hRoadLength
-        //                        }).FirstOrDefault();
+        public async Task<FORMTRpt> GetReportData(int headerid)
+        {
+            int ? pkrefno =  (from s in _context.RmFormTDailyInspection
+                                           where s.FmtdiPkRefNo == headerid
+                                           select s.FmtdiFmtPkRefNo).FirstOrDefault();
+
+            FORMTRpt result = (from s in _context.RmFormTHdr
+                               where s.FmtPkRefNo == pkrefno
+                               select new FORMTRpt
+                               {
+                                   InspectedDate = s.FmtInspectionDate,
+                                   RMU = (from r in _context.RmDdLookup where r.DdlType == "RMU" && r.DdlTypeCode == s.FmtRmuCode select r.DdlTypeDesc).FirstOrDefault(),
+                                   RoadCode = s.FmtRdCode,
+                                   RoadName = s.FmtRdName,
+                                   HdDate = s.FmtDateHdd,
+                                   HdName = s.FmtUsernameHdd,
+                                   HdDesg = s.FmtDesignationHdd,
+                                   RecDate = s.FmtDateRcd,
+                                   RecDesg = s.FmtDesignationRcd,
+                                   RecName = s.FmtUsernameRcd,
+                                   RefId = s.FmtPkRefId,
+                                   RefNo = s.FmtReferenceNo,
+                               }).FirstOrDefault();
 
 
-        //    result.Details = (from d in _context.RmFormTDailyInspection
-        //                      where d.Ff1dFmtPkRefNo == headerid
-        //                      orderby d.FmtdiPkRefNo descending
-        //                      select new FORMTRptDetail
-        //                      {
-        //                          Descriptions = d.Ff1dDescription,
-        //                          LocationChKm = d.Ff1dLocCh,
-        //                          LocationChM = d.Ff1dLocChDeci,
-        //                          Width = d.Ff1dTopWidth,
-        //                          BottomWidth = d.Ff1dBottomWidth,
-        //                          Height = d.Ff1dHeight,
-        //                          Condition = d.Ff1dOverallCondition,
-        //                          Tier = d.Ff1dTier,
-        //                          StructCode = d.Ff1dCode
-        //                      }).ToArray();
-        //    return result;
+            result.Details = (from d in _context.RmFormTDailyInspection
+                              where d.FmtdiPkRefNo == headerid
+                              select new FORMTRptDetail
+                              {
+                                  Day = d.FmtdiDay,
+                                  Description = d.FmtdiDescription,
+                                  DescriptionHV = d.FmtdiDescriptionHv,
+                                  DescriptionMC = d.FmtdiDescriptionMc,
+                                  DescriptionPC = d.FmtdiDescriptionPc,
+                                  DirectionFrom = d.FmtdiDirectionFrm,
+                                  DirectionTo = d.FmtdiDirectionTo,
+                                  FromTime = d.FmtdiAuditTimeFrm,
+                                  HourlycountPerDay = d.FmtdiHourlyCountPerDay,
+                                  TotalDay = d.FmtdiTotalDay,
+                                  ToTime = d.FmtdiAuditTimeTo
 
-        //}
+                              }).FirstOrDefault();
+
+
+            result.Details.Vechilce = (from v in _context.RmFormTVechicle
+                                       where v.FmtvFmtdiPkRefNo == headerid
+                                       select new FORMTRptVechicle
+                                       {
+                                           Axle = v.FmtvAxle,
+                                           Count = v.FmtvCount,
+                                           Loading = v.FmtvLoading,
+                                           Time = Convert.ToInt32(v.FmtvTime),
+                                           VechicleType = v.FmtvVechicleType
+                                       }).ToArray();
+            return result;
+
+        }
 
 
     }

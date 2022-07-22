@@ -20,17 +20,15 @@ namespace RAMMS.Repository.Interfaces
          Task<List<FormTHeaderRequestDTO>> GetFilteredRecordList(FilteredPagingDefinition<FormTSearchGridDTO> filterOptions);
         Task<List<FormTDtlGridDTO>> GetFormTDtlGridList(FilteredPagingDefinition<FormTDtlResponseDTO> filterOptions);
 
-        List<RmAllassetInventory> GetAssetDetails(FormTResponseDTO FormT);
+        RmFormTDailyInspection GetFormTDtlById(int id);
 
-      //  int LoadG1G2Data(FormTResponseDTO FormT);
 
-       
         int? DeleteFormT(int id);
         int? DeleteFormTDtl(int Id);
-        int? SaveFormTDtl(RmFormTDailyInspection FormTDtl);
-        int? UpdateFormTDtl(RmFormTDailyInspection FormTDtl);
+        int? SaveFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles);
+        int? UpdateFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles);
 
-        //Task<FORMTRpt> GetReportData(int headerid);
+        Task<FORMTRpt> GetReportData(int headerid);
 
     }
 }

@@ -4549,11 +4549,6 @@ namespace RAMMS.Domain.Models
                     .WithMany(p => p.RmFormCvInsDtl)
                     .HasForeignKey(d => d.FcvidIimPkRefNo)
                     .HasConstraintName("FK__RM_Form_C__FCVID__047AA831");
-
-                entity.HasOne(d => d.FcvidIimdPkRefNoNavigation)
-                    .WithMany(p => p.RmFormCvInsDtl)
-                    .HasForeignKey(d => d.FcvidIimdPkRefNo)
-                    .HasConstraintName("FK__RM_Form_C__FCVID__0662F0A3");
             });
 
             modelBuilder.Entity<RmFormCvInsHdr>(entity =>

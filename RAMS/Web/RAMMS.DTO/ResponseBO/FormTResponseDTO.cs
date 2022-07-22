@@ -29,14 +29,14 @@ namespace RAMMS.DTO.ResponseBO
         public int? HvTotal { get; set; }
         public int? McTotal { get; set; }
         public bool? SignRcd { get; set; }
-        public string UseridRcd { get; set; }
+        public int UseridRcd { get; set; }
         public string UsernameRcd { get; set; }
         public string DesignationRcd { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? DateRcd { get; set; }
         public bool? SignHdd { get; set; }
-        public string UseridHdd { get; set; }
+        public int UseridHdd { get; set; }
         public string UsernameHdd { get; set; }
         public string DesignationHdd { get; set; }
         [DataType(DataType.Date)]

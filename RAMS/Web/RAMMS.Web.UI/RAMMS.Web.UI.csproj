@@ -14,7 +14,6 @@
   <ItemGroup>
     <Compile Remove="AppRoot.cs" />
     <Compile Remove="Controllers\ADownloadController.cs" />
-    <Compile Remove="Controllers\FormTController.cs" />
     <Compile Remove="Models\Class.cs" />
     <Compile Remove="Models\FormV2UserDetailsModel.cs" />
   </ItemGroup>
@@ -26,6 +25,7 @@
     <Content Remove="Views\FormT\_DetailGridList.cshtml" />
     <Content Remove="Views\FormT\_HeaderListGrid.cshtml" />
     <Content Remove="Views\FormG1G2\_HeaderListGrid.cshtml" />
+    <Content Remove="Views\FormT\_VechicleDetails.cshtml" />
     <Content Remove="Views\InstructedWorks\_AddFormW2.cshtml" />
     <Content Remove="Views\InstructedWorks\_PhotoSectionPageW1.cshtml" />
     <Content Remove="wwwroot\js\jquery.mast.min.js" />
@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <None Include="Views\FormT\Index.cshtml" />
+    <None Include="Views\FormT\_VechicleDetails.cshtml" />
     <None Include="Views\FormT\_DetailGridList.cshtml" />
     <None Include="Views\FormT\_HeaderListGrid.cshtml" />
     <None Include="Views\FormF1\Index.cshtml" />

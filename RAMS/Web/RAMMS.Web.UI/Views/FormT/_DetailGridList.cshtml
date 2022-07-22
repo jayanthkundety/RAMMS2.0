@@ -7,7 +7,6 @@
                 <button type="button" id="btnDtlModal" class="btn btn-sm btn-themebtn" onclick="ClearFormTDtl()" data-toggle="modal" data-target="#myModal" title="Add New">
                     <span class="intbl-add-icon"></span>
                 </button>
-
             </div>
             <table id="FormTDtlGridView" class="table w-100 nowrap">
             </table>
@@ -23,7 +22,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <script src="~/js/CDTGrid.js"></script>
 <script>
-     
+
     var table = null;
     var isModifyPerm =@security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
     var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
@@ -32,47 +31,67 @@
     var table_columns = [];
     var actionCol = {
         data: null, name: "Action", title: "Action", autoWidth: false, width: 25, sortable: false, render: function (data,type, full) {
-            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formTDtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormTDtl(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormTDtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormTDtl(this,1);'><span class='view-icon'></span> View</button></div></div>";
-            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormTDtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormTDtl(this,1);'><span class='view-icon'></span> View</button> </div></div>";
+            var actionSection = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'  id='formTDtlEdit'" + isModifyPerm + " data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormTDtl(this,0);'><span class='edit-icon'></span> Edit</button><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormTDtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormTDtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button></div></div>";
+            var viewaction = "<div class='btn-group dropright' id='actiondropdown'> <button id='actionclick' type='button' class='btn btn-sm btn-themebtn dropdown-toggle' data-toggle='dropdown'> Click Me </button><div class='dropdown-menu'><button type='button' class='dropdown-item editdel-btns'" + isDeletePerm + " onclick='javascript:DeleteFormTDtl(" + data.pkRefNo + ");'><span class='del-icon'></span> Delete</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' data-toggle='modal'   data-target='#myModal' onclick='javascript:EditFormTDtl(this,1);'><span class='view-icon'></span> View</button><button type='button' class='dropdown-item editdel-btns' id='btnAssetView' onclick='javascript:PrintForm(" + data.pkRefNo + ");' href=''><span class='print-icon'></span> Print</button> </div></div>";
             if ($("#hdnView").val() == "1") {
                 return viewaction;
             }
-            if ($("#FormT_SubmitSts").val() == "True" && data.status != "Submitted") {
-                return actionSection;
-            }
-            else {
-                return viewaction
-            }
+
+                if ($("#FormT_SubmitSts").val() == "False" || ($("#FormT_SubmitSts").val() == "True" && data.status == "Submitted")) {
+                    return actionSection;
+                }
+                else {
+                    return viewaction
+                }
         }
     };
-    var assetIdCol = { data: "assetId", name: "assetId", title: "AssetId", autoWidth: true,  sortable: true };
-    var chCol = { data: "ch", name: "ch", title: "Starting CH", autoWidth: true, sortable: true };
-    var structureCodeCol = { data: "structureCode", name: "StructureCode", title: "Structure Code", autoWidth: true, sortable: true };
-    var tierCol = { data: "tier", name: "Tier", title: "Tier", autoWidth: true, sortable: true };
-    var lengthCol = { data: "length", name: "TotalLength", title: "Total Length", autoWidth: true, sortable: true };
-    var widthCol = { data: "width", name: "TopWidth", title: "Top Width", autoWidth: true, sortable: true };
-    var bottomWidthCol = { data: "bottomWidth", name: "BottomWidth", title: "BottomWidth", autoWidth: true, sortable: true };
-    var heightCol = { data: "height", name: "Height", title: "Height", autoWidth: true, sortable: true };
-    var overallConditionCol = { data: "overallCondition", name: "Overall Condition", title: "Overall Condition", autoWidth: true, sortable: true };
+
+    var dtCol = {
+        data: null, name: "date", title: "Date", autoWidth: true, sortable: true,
+        render: function (data) {
+            if (data.date) {
+                var d = new Date(data.date);
+                var day = d.getDate();
+                var month = d.getMonth() + 1;
+                var year = d.getFullYear();
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                var date = day + "/" + month + "/" + year;
+                return date;
+            }
+            else
+                return "";
+        }
+    };
+
+    var slnoCol = { data: "sNo", name: "assetId", title: "SNo", autoWidth: true,  sortable: true };
+    var FromTimeCol = { data: "fromTime", name: "FromTime", title: "From Time", autoWidth: true, sortable: true };
+    var ToTimeCol = { data: "toTime", name: "ToTime", title: "To Time", autoWidth: true, sortable: true };
     var descriptionCol = { data: "description", name: "description", title: "Description", autoWidth: true, sortable: true };
+    var PCCol = { data: "pc", name: "PC", title: "Passanger Car", autoWidth: true, sortable: true };
+    var hVCol = { data: "hv", name: "hV", title: "Total Heavy Vechicle", autoWidth: true, sortable: true };
+    var mCCol = { data: "mc", name: "MC", title: "Motor Cycle", autoWidth: true, sortable: true };
 
     table_columns.push(actionCol);
-    table_columns.push(assetIdCol);
-    table_columns.push(chCol);
-    table_columns.push(structureCodeCol);
-    table_columns.push(tierCol);
-    table_columns.push(lengthCol);
-    table_columns.push(widthCol);
-    table_columns.push(bottomWidthCol);
-    table_columns.push(heightCol);
-    table_columns.push(overallConditionCol);
+    table_columns.push(slnoCol);
+    table_columns.push(dtCol);
+    table_columns.push(FromTimeCol);
+    table_columns.push(ToTimeCol);
     table_columns.push(descriptionCol);
+    table_columns.push(PCCol);
+    table_columns.push(hVCol);
+    table_columns.push(mCCol);
+
 
 
     var filterData = new Object();
     function InitializeGrid() {
         var _currentGridSettings = new CustomGridSettings();
-        filterData.Ff1hPkRefNo = $("#FormT_PkRefNo").val();
+        filterData.FmtPkRefNo = $("#FormT_PkRefNo").val();
         $.extend($.fn.dataTable.defaults, _currentGridSettings);
 
         if (table != null) {
@@ -100,4 +119,8 @@
         InitializeGrid();
 
     });
+
+    function PrintForm(id) {
+        window.location.href = '/FormT/FormTDownload?id=' + id;
+    }
 </script>

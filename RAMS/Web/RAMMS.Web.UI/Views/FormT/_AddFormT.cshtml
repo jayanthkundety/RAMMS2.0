@@ -53,7 +53,9 @@
 
 }
 
-
+<link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
+<script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
+<script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
 <script type="text/javascript" src="~/js/FormT.js" asp-append-version="true"></script>
 
 @using (Html.BeginForm())
@@ -114,7 +116,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Date", "Date")
-                                        @Html.EditorFor(m => m.FormT.InspectionDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(m => m.FormT.InspectionDate, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
                                     </div>
 
 
@@ -130,7 +132,7 @@
                     <div class="w-100 position-relative in-tbl-btns">
                         <div id="DetailListGrid" class="w-100 dt-tbl-section">
                             @{
-                              //  Html.RenderPartial("_DetailGridList.cshtml");
+                                Html.RenderPartial("_DetailGridList.cshtml");
                             }
                         </div>
                     </div>
@@ -138,7 +140,7 @@
                     <div id="TUserDetail" class="col-lg-12 px-lg-5">
                         <div class="bg-white rounded landing-division w-100 float-left mb-3">
                             <div class="col-lg-12 py-2 px-4">
-                                <span class="font-14 font-weight-bold">Recorded by</span>
+                                <span class="font-14 font-weight-bold">Recorded by
                             </div>
                             <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                 <div class="form-group col-lg-2 float-left">
@@ -153,17 +155,17 @@
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Designation", "Designation")
-                                    @Html.TextBoxFor(model => model.FormT.DesignationRcd, new { @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.FormT.DesignationRcd, new { @readonly = true, @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
-                                    @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
-                                    @Html.EditorFor(m => m.FormT.DateRcd, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                    @Html.Label("Date(DD-MM-YYYY)", "Date(DD-MM-YYYY)")
+                                    @Html.EditorFor(m => m.FormT.DateRcd, new { type = "date", htmlAttributes = new { @readonly = true, @class = "form-control validate {required, Recorded By Date}" } })
                                 </div>
                             </div>
                         </div>
                         <div class="bg-white rounded landing-division w-100 float-left mb-0">
                             <div class="col-lg-12 py-2 px-4">
-                                <span class="font-14 font-weight-bold">Headed by</span>
+                                <span class="font-14 font-weight-bold">Headed by
                             </div>
                             <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                 <div class="form-group col-lg-2 float-left">
@@ -178,11 +180,11 @@
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Designation", "Designation")
-                                    @Html.TextBoxFor(model => model.FormT.DesignationHdd, new { @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.FormT.DesignationHdd, new { @readonly = true, @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
-                                    @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
-                                    @Html.EditorFor(m => m.FormT.DateHdd, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                    @Html.Label("Date(DD-MM-YYYY)", "Date(DD-MM-YYYY)")
+                                    @Html.EditorFor(m => m.FormT.DateHdd, new { type = "date", htmlAttributes = new { @readonly = true, @class = "form-control validate {required, Headed By Date}" } })
                                 </div>
                             </div>
                         </div>
@@ -210,7 +212,7 @@
                     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
                     @{
 
-                        if (isSubmit && (Model.FormT.Status == null || Model.FormT.Status == "" || Model.FormT.Status == "Initialize" || Model.FormT.Status == "Saved"))
+                        if (isSubmit && ( Model.FormT.Status == "Initialize" || Model.FormT.Status == "Saved"))
                         {
                             <button id="saveFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
                             <button id="SubmitFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
@@ -218,7 +220,7 @@
 
                         if (IsApproved && (Model.FormT.Status == RAMMS.Common.StatusList.Submitted || Model.FormT.Status == RAMMS.Common.StatusList.Rejected))
                         {
-                            <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                            <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Approved By');"> Approved / Verify </button>
                         }
 
                     }
@@ -227,7 +229,29 @@
 
 
 
- 
+
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+                    <div class="modal-content">
+                        <div class="modal-header text-right">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body modal-body mh-182" id="divVechicleDetails">
+                            @{
+                                Html.RenderPartial("_VechicleDetails.cshtml");
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-sm btn-themebtn" onclick="SaveFormTDtl()">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+       
 
         </div>
     </div>
@@ -254,11 +278,46 @@
 
 }
 
+<style>
+    .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4) {
+        width: auto !important;
+        min-width: auto !important;
+    }
+
+    .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(2), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(2), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(3), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(3), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(5), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(5) {
+        width: auto !important;
+        min-width: auto !important;
+    }
+
+    .tabledit-input {
+        width: 150px;
+        padding: 0;
+        height: 42px;
+        float: left;
+    }
+
+    .tabledit-edit-mode {
+        padding: 0px !important;
+    }
+</style>
+
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.tabledit.js"></script>
+
+<script>
+
+</script>
+
+
 <script>
 
     $(document).ready(function () {
         process.Init("FormT", "@Model.FormT.Status", @Model.FormT.PkRefNo);
 
+        $("#FormTDtl_AuditTimeFrm").timeEntry();
+        $("#FormTDtl_AuditTimeTo").timeEntry();
     });
     bindRoadCode();
 
@@ -277,7 +336,7 @@
     $('#ddlRoadCode').val("@Model.FormT.RdCode");
     $('#ddlRoadCode').trigger('chosen:updated');
     $('#ddlRoadCode').trigger("change");
- 
+
 
     $('#ddlRecordedby').val("@Model.FormT.UseridRcd");
     $('#ddlRecordedby').trigger('chosen:updated');
