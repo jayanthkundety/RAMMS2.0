@@ -10,6 +10,8 @@ namespace RAMMS.DTO.ResponseBO
     {
         public int PkRefNo { get; set; }
         public int FmtPkRefNo { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? InspectionDate { get; set; }
         public string AuditTimeFrm { get; set; }
         public string AuditTimeTo { get; set; }
@@ -17,7 +19,7 @@ namespace RAMMS.DTO.ResponseBO
         public string DirectionTo { get; set; }
         public int? Day { get; set; }
         public int? TotalDay { get; set; }
-        public int? HourlyCountPerDay { get; set; }
+        public decimal? HourlyCountPerDay { get; set; }
         public int? PcsSubTotal { get; set; }
         public int? HvSubTotal { get; set; }
         public int? McSubTotal { get; set; }

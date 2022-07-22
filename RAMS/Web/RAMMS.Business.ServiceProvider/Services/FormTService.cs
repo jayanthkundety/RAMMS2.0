@@ -79,7 +79,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-       
+
 
         public async Task<FormTResponseDTO> GetHeaderById(int id)
         {
@@ -175,8 +175,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 model.FmtdiPkRefNo = 0;
 
                 var veh = _mapper.Map<List<RmFormTVechicle>>(FormTDtl.Vechicles);
-               
-                return _repo.SaveFormTDtl(model,veh);
+
+                return _repo.SaveFormTDtl(model, veh);
             }
             catch (Exception ex)
             {
@@ -290,155 +290,287 @@ namespace RAMMS.Business.ServiceProvider.Services
         }
 
 
-        //public async Task<FORMTRpt> GetReportData(int headerid)
-        //{
-        //    return await _repo.GetReportData(headerid);
-        //}
+        public async Task<FORMTRpt> GetReportData(int headerid)
+        {
+            return await _repo.GetReportData(headerid);
+        }
 
-        //public async Task<byte[]> FormDownload(string formname, int id, string filepath)
-        //{
-        //    string Oldfilename = "";
-        //    string filename = "";
-        //    string cachefile = "";
-        //    if (!filepath.Contains(".xlsx"))
-        //    {
-        //        Oldfilename = filepath + formname + ".xlsx";
-        //        filename = formname + DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString();
-        //        cachefile = filepath + filename + ".xlsx";
-        //    }
-        //    else
-        //    {
-        //        Oldfilename = filepath;
-        //        filename = filepath.Replace(".xlsx", DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString() + ".xlsx");
-        //        cachefile = filename;
-        //    }
+        public async Task<byte[]> FormDownload(string formname, int id, string filepath)
+        {
+            string Oldfilename = "";
+            string filename = "";
+            string cachefile = "";
+            if (!filepath.Contains(".xlsx"))
+            {
+                Oldfilename = filepath + formname + ".xlsx";
+                filename = formname + DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString();
+                cachefile = filepath + filename + ".xlsx";
+            }
+            else
+            {
+                Oldfilename = filepath;
+                filename = filepath.Replace(".xlsx", DateTime.Now.ToString("yyyyMMddHHmmssfffffff").ToString() + ".xlsx");
+                cachefile = filename;
+            }
 
-        //    try
-        //    {
-        //        FORMTRpt rpt = await this.GetReportData(id);
-        //        System.IO.File.Copy(Oldfilename, cachefile, true);
-        //        using (var workbook = new XLWorkbook(cachefile))
-        //        {
-        //            int noofsheets = (rpt.Details.Count() / 24) + ((rpt.Details.Count() % 24) > 0 ? 1 : 1);
-        //            for (int sheet = 2; sheet <= noofsheets; sheet++)
-        //            {
-        //                using (var tempworkbook = new XLWorkbook(cachefile))
-        //                {
-        //                    string sheetname = "sheet" + Convert.ToString(sheet);
-        //                    IXLWorksheet copysheet = tempworkbook.Worksheet(1);
-        //                    copysheet.Worksheet.Name = sheetname;
-        //                    copysheet.Cell(5, 7).Value = rpt.Division;
-        //                    copysheet.Cell(5, 26).Value = rpt.District;
-        //                    copysheet.Cell(5, 47).Value = rpt.RMU;
-        //                    copysheet.Cell(6, 7).Value = rpt.RoadCode;
-        //                    copysheet.Cell(7, 7).Value = rpt.RoadName;
-        //                    copysheet.Cell(6, 26).Value = rpt.CrewLeader;
-        //                    copysheet.Cell(5, 72).Value = rpt.InspectedByName;
-        //                    copysheet.Cell(6, 72).Value = rpt.InspectedDate.HasValue ? rpt.InspectedDate.Value.ToString("dd-MM-yyyy") : "";
-        //                    copysheet.Cell(7, 74).Value = rpt.RoadLength;
-        //                    copysheet.Cell(2, 73).Value = sheet;
-        //                    copysheet.Cell(2, 80).Value = noofsheets;
-        //                    workbook.AddWorksheet(copysheet);
-        //                }
-        //            }
-        //            int index = 1;
-        //            int? condition1 = 0;
-        //            int? condition2 = 0;
-        //            int? condition3 = 0;
-        //            string conditiondata1 = "";
-        //            string conditiondata2 = "";
-        //            string conditiondata3 = "";
-        //            for (int sheet = 1; sheet <= noofsheets; sheet++)
-        //            {
+            try
+            {
+                FORMTRpt rpt = await this.GetReportData(id);
+                System.IO.File.Copy(Oldfilename, cachefile, true);
+                using (var workbook = new XLWorkbook(cachefile))
+                {
+                    int noofsheets = 1;
 
 
-        //                IXLWorksheet worksheet;
-        //                workbook.Worksheets.TryGetWorksheet($"sheet{sheet}", out worksheet);
-
-        //                if (worksheet != null)
-        //                {
-        //                    worksheet.Cell(5, 7).Value = (rpt.Division == "MIRI" ? "Miri" : rpt.Division);
-        //                    worksheet.Cell(5, 26).Value = (rpt.District == "MIRI" ? "Miri" : rpt.District);
-        //                    worksheet.Cell(5, 47).Value = (rpt.RMU == "MIRI" ? "Miri" : rpt.RMU);
-        //                    worksheet.Cell(6, 7).Value = rpt.RoadCode;
-        //                    worksheet.Cell(7, 7).Value = rpt.RoadName;
-        //                    worksheet.Cell(6, 26).Value = rpt.CrewLeader;
-        //                    worksheet.Cell(5, 72).Value = rpt.InspectedByName;
-        //                    worksheet.Cell(6, 72).Value = rpt.InspectedDate.HasValue ? rpt.InspectedDate.Value.ToString("dd-MM-yyyy") : "";
-        //                    worksheet.Cell(7, 74).Value = rpt.RoadLength;
-        //                    worksheet.Cell(2, 80).Value = noofsheets;
-        //                    //worksheet.Cell(9, 8).Value = condition1.ToString() == "0" ? "" : condition1.ToString();
-        //                    //worksheet.Cell(9, 24).Value = condition2.ToString() == "0" ? "" : condition1.ToString();
-        //                    //worksheet.Cell(9, 45).Value = condition3.ToString() == "0" ? "" : condition1.ToString();
-        //                    int i = 14;
-
-        //                    var data = rpt.Details.Skip((sheet - 1) * 24).Take(24);
-        //                    foreach (var r in data)
-        //                    {
+                    for (int sheet = 1; sheet <= noofsheets; sheet++)
+                    {
 
 
-        //                        if (r.Condition == 1)
-        //                        {
-        //                            condition1 += 1;
-        //                        }
-        //                        if (r.Condition == 2)
-        //                        {
-        //                            condition2 += 1;
+                        IXLWorksheet worksheet;
+                        workbook.Worksheets.TryGetWorksheet($"sheet{sheet}", out worksheet);
 
-        //                        }
-        //                        if (r.Condition == 3)
-        //                        {
-        //                            condition3 += 1;
-        //                        }
+                        if (worksheet != null)
+                        {
+                            worksheet.Cell(1, 13).Value = rpt.RefId;
+                            worksheet.Cell(3, 35).Value = rpt.InspectedDate.HasValue ? rpt.InspectedDate.Value.ToString("dd-MM-yyyy") : "";
+                            worksheet.Cell(4, 8).Value = rpt.RMU;
+                            worksheet.Cell(4, 19).Value = rpt.Details.Day;
+                            worksheet.Cell(4, 22).Value = rpt.Details.TotalDay;
+                            worksheet.Cell(4, 26).Value = rpt.Details.HourlycountPerDay;
+                            worksheet.Cell(4, 35).Value = rpt.RefNo;
+                            worksheet.Cell(5, 6).Value = rpt.RoadCode;
+                            worksheet.Cell(5, 17).Value = rpt.Details.DirectionFrom;
+                            worksheet.Cell(5, 29).Value = rpt.Details.DirectionTo;
+                            worksheet.Cell(6, 6).Value = rpt.RoadName;
 
-        //                        worksheet.Cell(i, 2).Value = index;
+                            worksheet.Cell(7, 4).Value = rpt.Details.FromTime;
 
-        //                        worksheet.Cell(i, 4).Value = $"{r.LocationChKm}+{r.LocationChM}";
-        //                        worksheet.Cell(i, 8).Value = r.StructCode;
-        //                        worksheet.Cell(i, 10).Value = r.Tier;
-        //                        worksheet.Cell(i, 17).Value = r.Length;
-        //                        worksheet.Cell(i, 24).Value = r.Width;
-        //                        worksheet.Cell(i, 31).Value = r.BottomWidth;
-        //                        worksheet.Cell(i, 38).Value = r.Height;
-        //                        worksheet.Cell(i, 45).Value = r.Condition;
-        //                        worksheet.Cell(i, 52).Value = r.Descriptions;
+                            int colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "PC").FirstOrDefault();
+                                worksheet.Cell(8, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+                            worksheet.Cell(8, 30).Value = rpt.Details.DescriptionPC;
 
-        //                        index++;
-        //                        i++;
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "2R" && x.Loading == "2RE").FirstOrDefault();
+                                worksheet.Cell(26, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
 
-        //                    }
-        //                    worksheet.Cell(39, 8).Value = condition1;
-        //                    worksheet.Cell(39, 24).Value = condition2;
-        //                    worksheet.Cell(39, 45).Value = condition3;
-        //                }
-        //            }
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "2R" && x.Loading == "2RN").FirstOrDefault();
+                                worksheet.Cell(27, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "2R" && x.Loading == "2RO").FirstOrDefault();
+                                worksheet.Cell(28, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "3R" && x.Loading == "3RE").FirstOrDefault();
+                                worksheet.Cell(29, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "3R" && x.Loading == "3RN").FirstOrDefault();
+                                worksheet.Cell(30, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "3R" && x.Loading == "3RO").FirstOrDefault();
+                                worksheet.Cell(31, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "3A" && x.Loading == "3AE").FirstOrDefault();
+                                worksheet.Cell(32, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "3A" && x.Loading == "3AN").FirstOrDefault();
+                                worksheet.Cell(33, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "3A" && x.Loading == "3AO").FirstOrDefault();
+                                worksheet.Cell(34, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "4A" && x.Loading == "4AE").FirstOrDefault();
+                                worksheet.Cell(35, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "4A" && x.Loading == "4AN").FirstOrDefault();
+                                worksheet.Cell(36, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "4A" && x.Loading == "4AO").FirstOrDefault();
+                                worksheet.Cell(37, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "5A" && x.Loading == "5AE").FirstOrDefault();
+                                worksheet.Cell(38, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "5A" && x.Loading == "5AN").FirstOrDefault();
+                                worksheet.Cell(39, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "5A" && x.Loading == "5AO").FirstOrDefault();
+                                worksheet.Cell(40, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "6A" && x.Loading == "6AE").FirstOrDefault();
+                                worksheet.Cell(41, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "6A" && x.Loading == "6AN").FirstOrDefault();
+                                worksheet.Cell(42, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "6A" && x.Loading == "6AO").FirstOrDefault();
+                                worksheet.Cell(43, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "7A" && x.Loading == "7AE").FirstOrDefault();
+                                worksheet.Cell(44, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "7A" && x.Loading == "7AN").FirstOrDefault();
+                                worksheet.Cell(45, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "HV" && x.Axle == "7A" && x.Loading == "7AO").FirstOrDefault();
+                                worksheet.Cell(46, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+                            worksheet.Cell(27, 30).Value = rpt.Details.DescriptionHV;
+
+                            colindex = 8;
+                            for (int i = 1; i <= 12; i++)
+                            {
+                                var obj = rpt.Details.Vechilce.Where(x => x.Time == (i * 5) && x.VechicleType == "MC").FirstOrDefault();
+                                worksheet.Cell(50, colindex).Value = obj == null ? "" : obj.Count.ToString();
+                                colindex = colindex + 2;
+                            }
+                            worksheet.Cell(51, 30).Value = rpt.Details.DescriptionMC;
+
+                            worksheet.Cell(63, 1).Value = rpt.Details.Description;
+
+                            worksheet.Cell(63, 33).Value = rpt.RecName;
+                            worksheet.Cell(64, 33).Value = rpt.RecDesg;
+                            worksheet.Cell(65, 33).Value = rpt.RecDate.HasValue ? rpt.RecDate.Value.ToString("dd-MM-yyyy") : "";
+
+                            worksheet.Cell(67, 33).Value = rpt.HdName;
+                            worksheet.Cell(68, 33).Value = rpt.HdDesg;
+                            worksheet.Cell(69, 33).Value = rpt.HdDate.HasValue ? rpt.HdDate.Value.ToString("dd-MM-yyyy") : "";
+ 
+                        }
+                    }
 
 
-        //            using (var stream = new MemoryStream())
-        //            {
-        //                workbook.SaveAs(stream);
-        //                var content = stream.ToArray();
-        //                System.IO.File.Delete(cachefile);
-        //                return content;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.IO.File.Copy(Oldfilename, cachefile, true);
-        //        using (var workbook = new XLWorkbook(cachefile))
-        //        {
-        //            using (var stream = new MemoryStream())
-        //            {
-        //                workbook.SaveAs(stream);
-        //                var content = stream.ToArray();
-        //                System.IO.File.Delete(cachefile);
-        //                return content;
-        //            }
-        //        }
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        System.IO.File.Delete(cachefile);
+                        return content;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.Copy(Oldfilename, cachefile, true);
+                using (var workbook = new XLWorkbook(cachefile))
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+                        System.IO.File.Delete(cachefile);
+                        return content;
+                    }
+                }
 
-        //    }
-        //}
+            }
+        }
 
     }
 }

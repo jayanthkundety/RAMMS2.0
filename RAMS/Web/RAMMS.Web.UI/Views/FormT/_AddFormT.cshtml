@@ -116,7 +116,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         @Html.Label("Date", "Date")
-                                        @Html.EditorFor(m => m.FormT.InspectionDate, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                        @Html.EditorFor(m => m.FormT.InspectionDate, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
                                     </div>
 
 
@@ -155,11 +155,11 @@
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Designation", "Designation")
-                                    @Html.TextBoxFor(model => model.FormT.DesignationRcd, new { @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.FormT.DesignationRcd, new { @readonly = true, @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
-                                    @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
-                                    @Html.EditorFor(m => m.FormT.DateRcd, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                    @Html.Label("Date(DD-MM-YYYY)", "Date(DD-MM-YYYY)")
+                                    @Html.EditorFor(m => m.FormT.DateRcd, new { type = "date", htmlAttributes = new { @readonly = true, @class = "form-control validate {required, Recorded By Date}" } })
                                 </div>
                             </div>
                         </div>
@@ -180,11 +180,11 @@
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
                                     @Html.Label("Designation", "Designation")
-                                    @Html.TextBoxFor(model => model.FormT.DesignationHdd, new { @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.FormT.DesignationHdd, new { @readonly = true, @class = "form-control" })
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
-                                    @Html.Label("Date of Inspection (DD-MM-YYYY)", "Date of Inspection (DD-MM-YYYY)")
-                                    @Html.EditorFor(m => m.FormT.DateHdd, new { type = "date", htmlAttributes = new { @class = "form-control" } })
+                                    @Html.Label("Date(DD-MM-YYYY)", "Date(DD-MM-YYYY)")
+                                    @Html.EditorFor(m => m.FormT.DateHdd, new { type = "date", htmlAttributes = new { @readonly = true, @class = "form-control validate {required, Headed By Date}" } })
                                 </div>
                             </div>
                         </div>
@@ -212,7 +212,7 @@
                     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
                     @{
 
-                        if (isSubmit && (Model.FormT.Status == null || Model.FormT.Status == "" || Model.FormT.Status == "Initialize" || Model.FormT.Status == "Saved"))
+                        if (isSubmit && ( Model.FormT.Status == "Initialize" || Model.FormT.Status == "Saved"))
                         {
                             <button id="saveFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
                             <button id="SubmitFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
@@ -220,7 +220,7 @@
 
                         if (IsApproved && (Model.FormT.Status == RAMMS.Common.StatusList.Submitted || Model.FormT.Status == RAMMS.Common.StatusList.Rejected))
                         {
-                            <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                            <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Approved By');"> Approved / Verify </button>
                         }
 
                     }
@@ -242,10 +242,8 @@
                             }
                         </div>
                         <div class="modal-footer">
-
-                            <button type="button" class="btn btn-sm btn-outline-theme">Close</button>
+                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-sm btn-themebtn" onclick="SaveFormTDtl()">Save</button>
-                            <button type="button" class="btn btn-sm btn-themebtn" onclick="SaveFormTDtl()">Submit</button>
                         </div>
                     </div>
 

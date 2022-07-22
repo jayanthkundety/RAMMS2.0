@@ -29,7 +29,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         int? SaveFormTDtl(FormTDtlResponseDTO FormTDtl);
         int? UpdateFormTDtl(FormTDtlResponseDTO FormTDtl);
         Task<int> DeActivateFormT(int formNo);
-        //Task<byte[]> FormDownload(string formname, int id, string filepath);
+        Task<byte[]> FormDownload(string formname, int id, string filepath);
 
     }
 }

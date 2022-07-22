@@ -115,6 +115,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 case "FormF1":
                     iResult = await SaveFormF1(process);
                     break;
+                case "FormT":
+                    iResult = await SaveFormT(process);
+                    break;
 
             }
             return iResult;
@@ -224,6 +227,9 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 case "FormF1":
                     logs = this.context.RmFormF1Hdr.Where(x => x.Ff1hPkRefNo == RefId).Select(x => x.Ff1hAuditLog).FirstOrDefault();
+                    break;
+                case "FormT":
+                    logs = this.context.RmFormTHdr.Where(x => x.FmtPkRefNo == RefId).Select(x => x.FmtAuditLog).FirstOrDefault();
                     break;
 
 
@@ -2238,7 +2244,56 @@ namespace RAMMS.Business.ServiceProvider.Services
             }
             return await context.SaveChangesAsync();
         }
+        private async Task<int> SaveFormT(DTO.RequestBO.ProcessDTO process)
+        {
+            var form = context.RmFormTHdr.Where(x => x.FmtPkRefNo == process.RefId).FirstOrDefault();
+            if (form != null)
+            {
+                string strTitle = "";
+                string strNotURL = "";
+                string strNotMsg = "";
+                string strNotGroupName = "";
+                string strNotUserID = "";
+                string strStatus = "";
+                string strNotStatus = "";
 
+                if (process.Stage == Common.StatusList.Submitted)
+                {
+                    //strNotGroupName = process.IsApprove ? GroupNames.OpeHeadMaintenance : GroupNames.Supervisor;
+                    form.FmtStatus = process.IsApprove ? Common.StatusList.Approved : Common.StatusList.Submitted;
+                    strTitle = "Headed By";
+                    strStatus = "Approved";
+                    strNotStatus = Common.StatusList.Saved;
+                    form.FmtUseridHdd = Convert.ToInt32(process.UserID);
+                    form.FmtUsernameHdd = process.UserName;
+                    form.FmtDesignationHdd = process.UserDesignation;
+                    form.FmtDateHdd = process.ApproveDate;
+                    form.FmtSignHdd = true;
+                }
+                else
+                {
+                    if (process.Stage == Common.StatusList.Submitted)
+                    {
+                        form.FmtSubmitSts = false;
+                    }
+                }
+                form.FmtAuditLog = Utility.ProcessLog(form.FmtAuditLog, strTitle, process.IsApprove ? strStatus : "Rejected", process.UserName, process.Remarks, process.ApproveDate, security.UserName);
+                strNotMsg = (process.IsApprove ? "" : "Rejected - ") + strTitle + ":" + process.UserName + " - Form f1 (" + form.FmtPkRefNo + ")";
+                strNotURL = "/MAM/EditFormf1?id=" + form.FmtPkRefNo.ToString() + "&View=0";
+                SaveNotification(new RmUserNotification()
+                {
+                    RmNotCrBy = security.UserName,
+                    RmNotGroup = strNotGroupName,
+                    RmNotMessage = strNotMsg,
+                    RmNotOn = DateTime.Now,
+                    RmNotUrl = strNotURL,
+                    RmNotUserId = strNotUserID,
+                    RmNotViewed = ""
+                }, false);
+            }
+            return await context.SaveChangesAsync();
+        }
 
+        
     }
 }

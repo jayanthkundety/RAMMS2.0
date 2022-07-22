@@ -19,7 +19,7 @@ namespace RAMMS.Domain.Models
         public string FmtdiDirectionTo { get; set; }
         public int? FmtdiDay { get; set; }
         public int? FmtdiTotalDay { get; set; }
-        public int? FmtdiHourlyCountPerDay { get; set; }
+        public decimal? FmtdiHourlyCountPerDay { get; set; }
         public int? FmtdiPcsSubTotal { get; set; }
         public int? FmtdiHvSubTotal { get; set; }
         public int? FmtdiMcSubTotal { get; set; }

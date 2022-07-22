@@ -130,13 +130,21 @@ namespace RAMMS.Web.UI.Controllers
             _model.FormTDtl = new FormTDtlResponseDTO();
             _model.FormT = _model.FormT ?? new FormTResponseDTO();
             _model.view = view;
+ 
 
-            //if ((_model.FormT.InspectedBy == null || _model.FormT.InspectedBy == 0) && _model.FormT.Status == RAMMS.Common.StatusList.Submitted)
-            //{
-            //    _model.FormT.InspectedBy = _security.UserID;
-            //    _model.FormT.InspectedDate = DateTime.Today;
-            //    _model.FormT.InspectedBySign = true;
-            //}
+            if (_model.FormT.UseridRcd == 0)
+            {
+                _model.FormT.UseridRcd = _security.UserID;
+                _model.FormT.DateRcd = DateTime.Today;
+                _model.FormT.SignRcd  = true;
+
+            }
+            if (_model.FormT.UseridHdd == 0 && _model.FormT.Status == RAMMS.Common.StatusList.Submitted)
+            {
+                _model.FormT.UseridHdd = _security.UserID;
+                _model.FormT.DateHdd = DateTime.Today;
+                _model.FormT.SignHdd = true;
+            }
 
             return PartialView("~/Views/FormT/_AddFormT.cshtml", _model);
         }
@@ -150,12 +158,8 @@ namespace RAMMS.Web.UI.Controllers
             if (frm.FormT.PkRefNo == 0)
             {
                 frm.FormT = await _formTService.SaveFormT(frm.FormT);
-                return Json(new
-                {
-                    FormExist = frm.FormT.FormExist
-                });
-
-                // return Json(new { FormExist = frm.FormT.FormExist, RefId = frm.FormT.PkRefId, PkRefNo = frm.FormT.PkRefNo, Status = frm.FormT.Status });
+                
+               return Json(new { FormExist = frm.FormT.FormExist, RefId = frm.FormT.PkRefId, PkRefNo = frm.FormT.PkRefNo, Status = frm.FormT.Status });
             }
             else
             {
@@ -214,12 +218,12 @@ namespace RAMMS.Web.UI.Controllers
         }
 
 
-        //public async Task<IActionResult> FormTDownload(int id, [FromServices] IWebHostEnvironment _environment)
-        //{
-        //    var content1 = await _formTService.FormDownload("FORMT", id, _environment.WebRootPath + "/Templates/FORMT.xlsx");
-        //    string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        //    return File(content1, contentType1, "FORMT" + ".xlsx");
-        //}
+        public async Task<IActionResult> FormTDownload(int id, [FromServices] IWebHostEnvironment _environment)
+        {
+            var content1 = await _formTService.FormDownload("FORMT", id, _environment.WebRootPath + "/Templates/FORMT.xlsx");
+            string contentType1 = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            return File(content1, contentType1, "FORMT" + ".xlsx");
+        }
 
     }
 }

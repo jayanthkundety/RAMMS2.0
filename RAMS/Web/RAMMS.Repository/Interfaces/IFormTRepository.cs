@@ -28,7 +28,7 @@ namespace RAMMS.Repository.Interfaces
         int? SaveFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles);
         int? UpdateFormTDtl(RmFormTDailyInspection FormTDtl, List<RmFormTVechicle> Vechicles);
 
-        //Task<FORMTRpt> GetReportData(int headerid);
+        Task<FORMTRpt> GetReportData(int headerid);
 
     }
 }

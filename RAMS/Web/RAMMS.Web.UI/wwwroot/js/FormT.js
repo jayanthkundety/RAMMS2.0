@@ -5,7 +5,11 @@ $(document).ready(function () {
 
     DisableHeader();
 
+
     if ($("#FormT_PkRefNo").val() == 0)
+        $("#btnDtlModal").hide();
+
+    if ($("#FormT_Status").val() == "Approved")
         $("#btnDtlModal").hide();
 
 
@@ -16,7 +20,7 @@ $(document).ready(function () {
     }
 
 
-    $('.editable').on('dblclick', function (e) {
+    $('.editable').on('click', function (e) {
         var $this = $(this);
         typein($this);
         e.preventDefault();
@@ -382,7 +386,7 @@ function Save(GroupName, SubmitType) {
         $("#ddlCrew").addClass("validate");
     }
 
-    if (ValidatePage('#headerDiv')) {
+    if (ValidatePage('#headerFindDiv')) {
 
         if ($("#FormT_Status").val() == "")
             $("#FormT_Status").val("Initialize");
@@ -402,11 +406,6 @@ function Save(GroupName, SubmitType) {
                 if (SubmitType == "") {
                     if (data.formExist) {
                         location.href = "/FormT/Add?Id=" + data.pkRefNo + "&view=0";
-                        return;
-                    }
-                    else if (data.pkRefNo == 0) {
-                        EnableDisableElements(false)
-                        app.ShowSuccessMessage('No matching records found in R1', false);
                         return;
                     }
                     else {
@@ -433,126 +432,159 @@ function Save(GroupName, SubmitType) {
 
 function SaveFormTDtl() {
 
-    if (ValidatePage('#myModal')) {
-        InitAjaxLoading();
-         
-        var FormTDtl = new Object();
-        FormTDtl.PkRefNo = $("#FormTDtl_PkRefNo").val()
-        FormTDtl.FmtPkRefNo = $("#FormT_PkRefNo").val()
-        FormTDtl.InspectionDate = $("#FormTDtl_InspectionDate").val()
-        FormTDtl.AuditTimeFrm = $("#FormTDtl_AuditTimeFrm").val();
-        FormTDtl.AuditTimeTo = $("#FormTDtl_AuditTimeTo").val();
-        FormTDtl.DirectionFrm = $("#FormTDtl_DirectionFrm").val();
-        FormTDtl.DirectionTo = $("#FormTDtl_DirectionTo").val();
-        FormTDtl.HourlyCountPerDay = $("#FormTDtl_HourlyCountPerDay").val();
-        FormTDtl.Day = $("#FormTDtl_Day").val();
-        FormTDtl.TotalDay = $("#FormTDtl_TotalDay").val();
-        FormTDtl.Description = $("#FormTDtl_Description").val();
-        FormTDtl.DescriptionPC = $("#FormTDtl_DescriptionPC").val();
-        FormTDtl.DescriptionHV = $("#FormTDtl_DescriptionHV").val();
-        FormTDtl.DescriptionMC = $("#FormTDtl_DescriptionMC").val();
+    var failed = false;
 
-        var Vechicles = []
+    if ($("#FormTDtl_TotalDay").val() != "" && $("#FormTDtl_Day").val() != "") {
 
-        $('.tblPC > tbody  > tr').each(function (index, tr) {
-            $(tr).find('td').each(function (index, td) {
-                if (index != 0) {
-                    if ($(td).html().trim() != "") {
-                        var Vechicle = new Object();
-                        Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
-                        Vechicle.VechicleType = "PC";
-                        Vechicle.Axle = "";
-                        Vechicle.Loading = "";
-                        Vechicle.Time = index * 5;
-                        Vechicle.Count = $(td).html().trim();
-                        Vechicles.push(Vechicle);
-                    }
-                }
-            });
-        });
+        if (parseInt($("#FormTDtl_TotalDay").val()) < 0) {
+            app.ShowErrorMessage("Total day should not be negative");
+            failed = true;
+        }
+        if ($("#FormTDtl_Day").val() < 0) {
+            app.ShowErrorMessage("Day should not be negative");
+            failed = true;
+        }
+        if ($("#FormTDtl_Day").val() > $("#FormTDtl_TotalDay").val()) {
+            app.ShowErrorMessage("Day should not be greater than total day");
+            failed = true;
+        }
 
-        var Axle;
-        var Load;
-        $('.tblHV > tbody  > tr').each(function (i, tr) {
-            $(tr).find('td').each(function (index, td) {
-                if (index == 0 && (i == 0 || (i % 3) == 0)) {
-                    return;
-                }
-                if (index == 1 && (i == 0 || (i % 3) == 0)) {
-                    Axle = $(td).html().trim();
-                    return;
-                }
-                if (index == 2 && (i == 0 || (i % 3) == 0)) {
-                    Load = $(td).html().trim();
-                    return;
-                }
-                if (index == 0) {
-                    Load = $(td).html().trim();
-                    return;
-                }
 
+    }
+
+    if (parseInt($("#FormTDtl_HourlyCountPerDay").val()) < 0) {
+        app.ShowErrorMessage("Hourly Count Per Day should not be negative");
+        failed = true;
+    }
+ 
+    if (parseInt($("#FormTDtl_HourlyCountPerDay").val()) > 9999) {
+        app.ShowErrorMessage("Hourly Count Per Day should be less than or equal to 4 digits");
+        failed = true;
+    }
+
+    if (failed)
+        return;
+
+    //  if (ValidatePage('#myModal')) {
+    InitAjaxLoading();
+
+    var FormTDtl = new Object();
+    FormTDtl.PkRefNo = $("#FormTDtl_PkRefNo").val()
+    FormTDtl.FmtPkRefNo = $("#FormT_PkRefNo").val()
+    FormTDtl.InspectionDate = $("#FormTDtl_InspectionDate").val()
+    FormTDtl.AuditTimeFrm = $("#FormTDtl_AuditTimeFrm").val();
+    FormTDtl.AuditTimeTo = $("#FormTDtl_AuditTimeTo").val();
+    FormTDtl.DirectionFrm = $("#FormTDtl_DirectionFrm").val();
+    FormTDtl.DirectionTo = $("#FormTDtl_DirectionTo").val();
+    FormTDtl.HourlyCountPerDay = $("#FormTDtl_HourlyCountPerDay").val();
+    FormTDtl.Day = $("#FormTDtl_Day").val();
+    FormTDtl.TotalDay = $("#FormTDtl_TotalDay").val();
+    FormTDtl.Description = $("#FormTDtl_Description").val();
+    FormTDtl.DescriptionPC = $("#FormTDtl_DescriptionPC").val();
+    FormTDtl.DescriptionHV = $("#FormTDtl_DescriptionHV").val();
+    FormTDtl.DescriptionMC = $("#FormTDtl_DescriptionMC").val();
+
+    var Vechicles = []
+
+    $('.tblPC > tbody  > tr').each(function (index, tr) {
+        $(tr).find('td').each(function (index, td) {
+            if (index != 0) {
                 if ($(td).html().trim() != "") {
-                    var Time;
-                    if (i == 0 || (i % 3) == 0) {
-                        Time = (index - 2) * 5;
-                    }
-                    else {
-                        Time = index * 5;
-                    }
                     var Vechicle = new Object();
                     Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
-                    Vechicle.VechicleType = "HV";
-                    Vechicle.Axle = Axle;
-                    Vechicle.Loading = Load;
-                    Vechicle.Time = Time;
+                    Vechicle.VechicleType = "PC";
+                    Vechicle.Axle = "";
+                    Vechicle.Loading = "";
+                    Vechicle.Time = index * 5;
                     Vechicle.Count = $(td).html().trim();
                     Vechicles.push(Vechicle);
                 }
-
-
-            });
+            }
         });
+    });
 
-        $('.tblMC > tbody  > tr').each(function (i, tr) {
-            $(tr).find('td').each(function (index, td) {
-                if (index != 0) {
-                    if ($(td).html().trim() != "") {
-                        var Vechicle = new Object();
-                        Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
-                        Vechicle.VechicleType = "MC";
-                        Vechicle.Axle = "";
-                        Vechicle.Loading = "";
-                        Vechicle.Time = index * 5;
-                        Vechicle.Count = $(td).html().trim();
-                        Vechicles.push(Vechicle);
-                    }
-                }
-            });
-        });
+    var Axle;
+    var Load;
+    $('.tblHV > tbody  > tr').each(function (i, tr) {
+        $(tr).find('td').each(function (index, td) {
+            if (index == 0 && (i == 0 || (i % 3) == 0)) {
+                return;
+            }
+            if (index == 1 && (i == 0 || (i % 3) == 0)) {
+                Axle = $(td).html().trim();
+                return;
+            }
+            if (index == 2 && (i == 0 || (i % 3) == 0)) {
+                Load = $(td).html().trim();
+                return;
+            }
+            if (index == 0) {
+                Load = $(td).html().trim();
+                return;
+            }
 
-        FormTDtl.Vechicles = Vechicles;
-
-        $.ajax({
-            url: '/FormT/SaveFormTDtl',
-            data: FormTDtl,
-            type: 'POST',
-            success: function (data) {
-                HideAjaxLoading();
-                if (data == -1) {
-                    app.ShowErrorMessage(data.errorMessage);
+            if ($(td).html().trim() != "") {
+                var Time;
+                if (i == 0 || (i % 3) == 0) {
+                    Time = (index - 2) * 5;
                 }
                 else {
-                    ClearFormTDtl()
+                    Time = index * 5;
+                }
+                var Vechicle = new Object();
+                Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
+                Vechicle.VechicleType = "HV";
+                Vechicle.Axle = Axle;
+                Vechicle.Loading = Load;
+                Vechicle.Time = Time;
+                Vechicle.Count = $(td).html().trim();
+                Vechicles.push(Vechicle);
+            }
 
-                    InitializeGrid();
-                    app.ShowSuccessMessage('Saved Successfully', false);
+
+        });
+    });
+
+    $('.tblMC > tbody  > tr').each(function (i, tr) {
+        $(tr).find('td').each(function (index, td) {
+            if (index != 0) {
+                if ($(td).html().trim() != "") {
+                    var Vechicle = new Object();
+                    Vechicle.FmtdiPkRefNo = $("#FormTDtl_PkRefNo").val();
+                    Vechicle.VechicleType = "MC";
+                    Vechicle.Axle = "";
+                    Vechicle.Loading = "";
+                    Vechicle.Time = index * 5;
+                    Vechicle.Count = $(td).html().trim();
+                    Vechicles.push(Vechicle);
                 }
             }
         });
+    });
 
-         
+    FormTDtl.Vechicles = Vechicles;
 
-    }
+    $.ajax({
+        url: '/FormT/SaveFormTDtl',
+        data: FormTDtl,
+        type: 'POST',
+        success: function (data) {
+            HideAjaxLoading();
+            if (data == -1) {
+                app.ShowErrorMessage(data.errorMessage);
+            }
+            else {
+                ClearFormTDtl()
+
+                InitializeGrid();
+                app.ShowSuccessMessage('Saved Successfully', false);
+            }
+        }
+    });
+
+
+
+    // }
 }
 
 function EditFormTDtl(obj, view) {
@@ -568,7 +600,7 @@ function EditFormTDtl(obj, view) {
 
         $('#divVechicleDetails').html(data).promise().done(function () {
 
-            $('.editable').on('dblclick', function (e) {
+            $('.editable').on('click', function (e) {
                 var $this = $(this);
                 typein($this);
                 e.preventDefault();
@@ -670,6 +702,9 @@ function GoBack() {
 
 function typein($this) {
 
+    if ($this[0].childElementCount > 0)
+        return;
+
     var width = ($($this).css('max-width').substr(0, 3)) - 10;
 
     if (isNaN(width)) {
@@ -683,13 +718,14 @@ function typein($this) {
         blur: function () {
 
             if (isNaN($($input).val())) {
-                alert("Please enter numeric values");
+                $($input).parent().html("");
+                app.ShowErrorMessage("Please enter numeric values");
             }
             else {
 
                 $($input).parent().html($($input).val());
             }
-
+            CalSubTotal();
         },
         keyup: function (e) {
             if (e.which === 13) {
@@ -701,6 +737,94 @@ function typein($this) {
     }).appendTo($this.empty()).focus();
 
     SetCaretAtEnd($input[0]);
+}
+
+
+function CalSubTotal() {
+    var t5 = 0, t10 = 0, t15 = 0, t20 = 0, t25 = 0, t30 = 0, t35 = 0, t40 = 0, t45 = 0, t50 = 0, t55 = 0, t60 = 0;
+    $('.tblHV > tbody  > tr').each(function (i, tr) {
+        $(tr).find('td').each(function (index, td) {
+            if (index == 0 && (i == 0 || (i % 3) == 0)) {
+                return;
+            }
+            if (index == 1 && (i == 0 || (i % 3) == 0)) {
+                Axle = $(td).html().trim();
+                return;
+            }
+            if (index == 2 && (i == 0 || (i % 3) == 0)) {
+                Load = $(td).html().trim();
+                return;
+            }
+            if (index == 0) {
+                Load = $(td).html().trim();
+                return;
+            }
+
+            if ($(td).html().trim() != "") {
+                var Time;
+                if (i == 0 || (i % 3) == 0) {
+                    Time = (index - 2) * 5;
+                }
+                else {
+                    Time = index * 5;
+                }
+
+                if (Time == 5) {
+                    t5 = t5 + parseInt($(td).html().trim());
+                }
+                else if (Time == 10) {
+                    t10 = t10 + parseInt($(td).html().trim());
+                }
+                else if (Time == 15) {
+                    t15 = t15 + parseInt($(td).html().trim());
+                }
+                else if (Time == 20) {
+                    t20 = t20 + parseInt($(td).html().trim());
+                }
+                else if (Time == 25) {
+                    t25 = t25 + parseInt($(td).html().trim());
+                }
+                else if (Time == 30) {
+                    t30 = t30 + parseInt($(td).html().trim());
+                }
+                else if (Time == 35) {
+                    t35 = t35 + parseInt($(td).html().trim());
+                }
+                else if (Time == 40) {
+                    t40 = t40 + parseInt($(td).html().trim());
+                }
+                else if (Time == 45) {
+                    t45 = t45 + parseInt($(td).html().trim());
+                }
+                else if (Time == 50) {
+                    t50 = t50 + parseInt($(td).html().trim());
+                }
+                else if (Time == 55) {
+                    t55 = t55 + parseInt($(td).html().trim());
+                }
+                else if (Time == 60) {
+                    t60 = t60 + parseInt($(td).html().trim());
+                }
+            }
+
+
+        });
+    });
+
+
+    $(".tblHV > tfoot  > tr > th:nth-child(4)").html(t5)
+    $(".tblHV > tfoot  > tr > th:nth-child(5)").html(t10)
+    $(".tblHV > tfoot  > tr > th:nth-child(6)").html(t15)
+    $(".tblHV > tfoot  > tr > th:nth-child(7)").html(t20)
+    $(".tblHV > tfoot  > tr > th:nth-child(8)").html(t25)
+    $(".tblHV > tfoot  > tr > th:nth-child(9)").html(t30)
+    $(".tblHV > tfoot  > tr > th:nth-child(10)").html(t35)
+    $(".tblHV > tfoot  > tr > th:nth-child(11)").html(t40)
+    $(".tblHV > tfoot  > tr > th:nth-child(12)").html(t45)
+    $(".tblHV > tfoot  > tr > th:nth-child(13)").html(t50)
+    $(".tblHV > tfoot  > tr > th:nth-child(14)").html(t55)
+    $(".tblHV > tfoot  > tr > th:nth-child(15)").html(t60)
+
 }
 
 function SetCaretAtEnd(elem) {

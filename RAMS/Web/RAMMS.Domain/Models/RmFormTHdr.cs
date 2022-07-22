@@ -29,12 +29,12 @@ namespace RAMMS.Domain.Models
         public int? FmtHvTotal { get; set; }
         public int? FmtMcTotal { get; set; }
         public bool? FmtSignRcd { get; set; }
-        public string FmtUseridRcd { get; set; }
+        public int? FmtUseridRcd { get; set; }
         public string FmtUsernameRcd { get; set; }
         public string FmtDesignationRcd { get; set; }
         public DateTime? FmtDateRcd { get; set; }
         public bool? FmtSignHdd { get; set; }
-        public string FmtUseridHdd { get; set; }
+        public int? FmtUseridHdd { get; set; }
         public string FmtUsernameHdd { get; set; }
         public string FmtDesignationHdd { get; set; }
         public DateTime? FmtDateHdd { get; set; }

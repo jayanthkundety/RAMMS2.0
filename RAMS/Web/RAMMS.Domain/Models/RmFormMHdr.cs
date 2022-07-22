@@ -18,14 +18,19 @@ namespace RAMMS.Domain.Models
         public string FmhDivCode { get; set; }
         public string FmhRmuCode { get; set; }
         public string FmhRmuName { get; set; }
+        public string FmhSecCode { get; set; }
+        public string FmhSecName { get; set; }
         public string FmhRdCode { get; set; }
         public string FmhRdName { get; set; }
         public string FmhActCode { get; set; }
+        public string FmhActName { get; set; }
         public string FmhCrewSup { get; set; }
         public string FmhDesc { get; set; }
+        public int? FmhLocChKm { get; set; }
+        public int? FmhLocChM { get; set; }
         public DateTime? FmhAuditedDate { get; set; }
-        public DateTime? FmhAuditTimeFrm { get; set; }
-        public DateTime? FmhAuditTimeTo { get; set; }
+        public string FmhAuditTimeFrm { get; set; }
+        public string FmhAuditTimeTo { get; set; }
         public string FmhAuditedBy { get; set; }
         public string FmhAuditType { get; set; }
         public string FmhSrProvider { get; set; }
