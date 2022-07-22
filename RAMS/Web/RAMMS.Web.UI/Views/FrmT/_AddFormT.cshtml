@@ -1,0 +1,348 @@
+﻿@using RAMMS.DTO.RequestBO;
+@using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.IUserService usr
+
+@inject RAMMS.Business.ServiceProvider.Interfaces.IDDLookUpService ddlService
+@model RAMMS.Web.UI.Models.FormTModel;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
+@{
+    //ViewBag.TabTitle = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
+    //ViewData["Title"] = "ASSET MAINTANENCE - Form N1 - Road Asset Management and Maintenance System";
+    Layout = "~/Views/Shared/_PortalLayout.cshtml";
+    IEnumerable<SelectListItem> division = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Division" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeDesc,
+           Value = s.DdlTypeValue
+       }).ToArray();
+
+
+    IEnumerable<SelectListItem> section = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "Section Code" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
+
+    IEnumerable<SelectListItem> roadcode = new[] {new SelectListItem
+       {
+           Text = "Select Road Code",
+           Value = ""
+       } };
+
+    IEnumerable<SelectListItem> rmu = (await ddlService
+       .GetLookups(new DDLookUpDTO { Type = "RMU" }))
+       .Select(s => new SelectListItem
+       {
+           Text = s.DdlTypeCode + "-" + s.DdlTypeDesc,
+           Value = s.DdlTypeCode
+       }).ToArray();
+
+    IEnumerable<SelectListItem>
+    user = (await usr.GetUserNameRespectToPosition(new UserRequestDTO
+    {
+        Position = "Supervisor"
+    })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
+
+    bool isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.isEnggAssistant || security.IsSupervisor);
+    bool IsApproved = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
+
+
+}
+
+<link href="~/js/jquery.timeentry/jquery.timeentry.css" rel="stylesheet">
+<script src="~/js/jquery.timeentry/jquery.plugin.js"></script>
+<script src="~/js/jquery.timeentry/jquery.timeentry.js"></script>
+<script type="text/javascript" src="~/js/FormT.js" asp-append-version="true"></script>
+
+@using (Html.BeginForm())
+{
+
+    <div class="row">
+        <div class="w-100 bg-body" id="">
+            <div id="headerDiv">
+                <div class="modal-body mh-120 pt-0 pb-0">
+                    <div class="d-flex justify-content-center pt-3 pb-3">
+                        <div id="" class="form-group mb-0">
+                            @Html.Label("Form T No.", "Form T No.", new { style = "float:left; padding: .5rem .5rem 0 !important;" })
+                            @Html.TextBoxFor(model => model.FormT.PkRefId, new { @readonly = "true", @class = "form-control", @style = "width:300px;" })
+                        </div>
+                    </div>
+                    <div class="clear-b"></div>
+                    <div class="bg-white rounded pt-3 pb-1 px-lg-3 px-md-2 landing-division w-100 mb-3">
+                        <div class="row">
+                            <div class="col-lg-10 p-0">
+                                <div id="headerFindDiv" class="w-100 form-group mb-0">
+                                    @*<div class="form-group col-md-3">
+                                        @Html.Label("Asset Group", "Asset Group")
+                                        <input class="form-control" value="Guardrail" disabled />
+                                        </div>*@
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Division", "Division")
+                                        @Html.DropDownListFor(m => m.FormT.DivCode, division, "Select Division", new { @Id = "ddlDivision", @class = "form-control" })
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("RMU", "RMU")
+
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormT.RmuCode, rmu, "Select RMU", new { @Id = "ddlRMU", @class = "form-control validate {required, RMU}" })
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Section Code", "Section Code")
+
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormT.SecCode, section, "Select Section Code", new { @Id = "ddlSection", @class = "form-control validate {required, Section Code}" })
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Section Name", "Section Name")
+                                        @Html.TextBoxFor(model => model.FormT.SecName, new { @readonly = true, @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Road Code", "Road Code")
+                                        @Html.DropDownListFor(Ahdr => Ahdr.FormT.RdCode, roadcode, "Select RoadCode", new { @Id = "ddlRoadCode", @class = "form-control validate {required, Road Code}" })
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Road Name", "Road Name")
+                                        @*<input id="txtRoadName" disabled="disabled" type="text" class="form-control" />*@
+                                        @Html.TextBoxFor(model => model.FormT.RdName, new { @readonly = true, @class = "form-control" })
+                                    </div>
+
+
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Reference No", "Reference No")
+                                        @Html.TextBoxFor(model => model.FormT.ReferenceNo, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        @Html.Label("Date", "Date")
+                                        @Html.EditorFor(m => m.FormT.InspectionDate, new { type = "date", htmlAttributes = new { @class = "form-control validate {required, Date}" } })
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
+                                <button id="btnFindDetails" type="button" onclick="Save('','')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-b"></div>
+                    <div class="w-100 position-relative in-tbl-btns">
+                        <div id="DetailListGrid" class="w-100 dt-tbl-section">
+                            @{
+                                Html.RenderPartial("_DetailGridList.cshtml");
+                            }
+                        </div>
+                    </div>
+
+                    <div id="TUserDetail" class="col-lg-12 px-lg-5">
+                        <div class="bg-white rounded landing-division w-100 float-left mb-3">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Recorded by
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("User ID", "User ID")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormT.UseridRcd, (IEnumerable<SelectListItem>)ViewData["Supervisor"], "User Id", new { @Id = "ddlRecordedby", @class = "form-control svalidate {required, Recorded by}" })
+
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    @*<input id="txtCrewLeaderName" type="text" value="@Model.FormT.CrewLeaderName" class="form-control svalidate {req,Crew leader Name}" disabled />*@
+                                    @Html.TextBoxFor(model => model.FormT.UsernameRcd, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    @Html.TextBoxFor(model => model.FormT.DesignationRcd, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date(DD-MM-YYYY)", "Date(DD-MM-YYYY)")
+                                    @Html.EditorFor(m => m.FormT.DateRcd, new { type = "date", htmlAttributes = new { @readonly = true, @class = "form-control validate {required, Recorded By Date}" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded landing-division w-100 float-left mb-0">
+                            <div class="col-lg-12 py-2 px-4">
+                                <span class="font-14 font-weight-bold">Headed by
+                            </div>
+                            <div class="border-top px-2 pt-3 pb-1 float-left w-100">
+                                <div class="form-group col-lg-2 float-left">
+                                    @Html.Label("User ID", "User ID")
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormT.UseridHdd, (IEnumerable<SelectListItem>)ViewData["User"], "User Id", new { @Id = "ddlHeadedby", @class = "form-control svalidate {required, Headed by}" })
+
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Name", "Name")
+                                    @*<input id="txtInspectedbyName" type="text" value="@Model.FormT.UserNameInspBy" class="form-control svalidate {req,Inspected by User Name}" disabled />*@
+                                    @Html.TextBoxFor(model => model.FormT.UsernameHdd, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Designation", "Designation")
+                                    @Html.TextBoxFor(model => model.FormT.DesignationHdd, new { @readonly = true, @class = "form-control" })
+                                </div>
+                                <div class="form-group col-lg-3 float-left">
+                                    @Html.Label("Date(DD-MM-YYYY)", "Date(DD-MM-YYYY)")
+                                    @Html.EditorFor(m => m.FormT.DateHdd, new { type = "date", htmlAttributes = new { @readonly = true, @class = "form-control validate {required, Headed By Date}" } })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        @{
+                            Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
+                            {
+                                Form = "FormT",
+                                RefId = Model.FormT.PkRefNo,
+                                Stage = Model.FormT.Status
+                            });
+                        }
+                    </div>
+
+
+
+
+                </div>
+                <div class="modal-footer float-left w-100">
+                    <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
+                    @{
+
+                        if (isSubmit && ( Model.FormT.Status == "Initialize" || Model.FormT.Status == "Saved"))
+                        {
+                            <button id="saveFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
+                            <button id="SubmitFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
+                        }
+
+                        if (IsApproved && (Model.FormT.Status == RAMMS.Common.StatusList.Submitted || Model.FormT.Status == RAMMS.Common.StatusList.Rejected))
+                        {
+                            <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Approved By');"> Approved / Verify </button>
+                        }
+
+                    }
+                </div>
+            </div>
+
+
+
+
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-dialog modal-dialog-centered modal-custom">
+                    <div class="modal-content">
+                        <div class="modal-header text-right">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body modal-body mh-182" id="divVechicleDetails">
+                            @{
+                                Html.RenderPartial("_VechicleDetails.cshtml");
+                            }
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-outline-theme" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-sm btn-themebtn" onclick="SaveFormTDtl()">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+       
+
+        </div>
+    </div>
+
+
+    @*Add T Details Modal*@
+
+    @Html.HiddenFor(m => m.FormT.PkRefNo)
+    @Html.HiddenFor(m => m.FormTDtl.PkRefNo)
+    @Html.HiddenFor(m => m.FormT.DivCode)
+    @Html.HiddenFor(m => m.FormT.RmuCode)
+    @Html.HiddenFor(m => m.FormT.RdCode)
+    @Html.HiddenFor(m => m.FormT.SecCode)
+    @Html.HiddenFor(m => m.FormT.UseridRcd)
+    @Html.HiddenFor(m => m.FormT.UseridHdd)
+    @Html.HiddenFor(m => m.FormT.Status)
+    @Html.HiddenFor(m => m.FormT.SubmitSts)
+
+
+    <input type="hidden" id="hdnSecCode" value="@Model.FormT.SecCode" />
+    <input type="hidden" id="hdnRdCode" value="@Model.FormT.RdCode" />
+    <input type="hidden" id="hdnView" value="@Model.view" />
+
+
+}
+
+<style>
+    .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4) {
+        width: auto !important;
+        min-width: auto !important;
+    }
+
+    .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(2), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(2), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(3), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(3), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(4), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(4), .custom-tbl div.dataTables_scrollHead table thead tr th:nth-child(5), .custom-tbl div.dataTables_scrollBody table tbody tr td:nth-child(5) {
+        width: auto !important;
+        min-width: auto !important;
+    }
+
+    .tabledit-input {
+        width: 150px;
+        padding: 0;
+        height: 42px;
+        float: left;
+    }
+
+    .tabledit-edit-mode {
+        padding: 0px !important;
+    }
+</style>
+
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css" />
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/jquery.tabledit.js"></script>
+
+<script>
+
+</script>
+
+
+<script>
+
+    $(document).ready(function () {
+        process.Init("FormT", "@Model.FormT.Status", @Model.FormT.PkRefNo);
+
+        $("#FormTDtl_AuditTimeFrm").timeEntry();
+        $("#FormTDtl_AuditTimeTo").timeEntry();
+    });
+    bindRoadCode();
+
+    $('#ddlDivision').val("@Model.FormT.DivCode");
+    $('#ddlDivision').trigger('chosen:updated');
+    $('#ddlDivision').trigger("change");
+
+    $('#ddlRMU').val("@Model.FormT.RmuCode");
+    $('#ddlRMU').trigger('chosen:updated');
+    $('#ddlRMU').trigger("change");
+
+    $('#ddlSection').val("@Model.FormT.SecCode");
+    $('#ddlSection').trigger('chosen:updated');
+    $('#ddlSection').trigger("change");
+
+    $('#ddlRoadCode').val("@Model.FormT.RdCode");
+    $('#ddlRoadCode').trigger('chosen:updated');
+    $('#ddlRoadCode').trigger("change");
+
+
+    $('#ddlRecordedby').val("@Model.FormT.UseridRcd");
+    $('#ddlRecordedby').trigger('chosen:updated');
+    $('#ddlRecordedby').trigger("change");
+
+    $('#ddlHeadedby').val("@Model.FormT.UseridHdd");
+    $('#ddlHeadedby').trigger('chosen:updated');
+    $('#ddlHeadedby').trigger("change");
+</script>

@@ -395,7 +395,7 @@ function Save(GroupName, SubmitType) {
 
         InitAjaxLoading();
         EnableDisableElements(false);
-        $.get('/FormsT/SaveFormT', $("form").serialize(), function (data) {
+        $.get('/FrmT/SaveFormT', $("form").serialize(), function (data) {
             EnableDisableElements(true)
             HideAjaxLoading();
             if (data == -1) {
@@ -405,7 +405,7 @@ function Save(GroupName, SubmitType) {
 
                 if (SubmitType == "") {
                     if (data.formExist) {
-                        location.href = "/FormsT/Add?Id=" + data.pkRefNo + "&view=0";
+                        location.href = "/FrmT/Add?Id=" + data.pkRefNo + "&view=0";
                         return;
                     }
                     else {
@@ -415,11 +415,11 @@ function Save(GroupName, SubmitType) {
                 }
                 else if (SubmitType == "Saved") {
                     app.ShowSuccessMessage('Saved Successfully', false);
-                    location.href = "/FormsT/Index";
+                    location.href = "/FrmT/Index";
                 }
                 else if (SubmitType == "Submitted") {
                     app.ShowSuccessMessage('Submitted Successfully', false);
-                    location.href = "/FormsT/Index";
+                    location.href = "/FrmT/Index";
                 }
                 else if (SubmitType == "Verified") {
                     process.ShowApprove(GroupName, SubmitType);
@@ -565,7 +565,7 @@ function SaveFormTDtl() {
     FormTDtl.Vechicles = Vechicles;
 
     $.ajax({
-        url: '/FormsT/SaveFormTDtl',
+        url: '/FrmT/SaveFormTDtl',
         data: FormTDtl,
         type: 'POST',
         success: function (data) {
@@ -590,7 +590,7 @@ function SaveFormTDtl() {
 function NewFormTDtl() {
      
 
-    $.get('/FormsT/GetFormTDtlById?id=' + 0, function (data) {
+    $.get('/FrmT/GetFormTDtlById?id=' + 0, function (data) {
 
         $('#divVechicleDetails').html(data).promise().done(function () {
 
@@ -629,7 +629,7 @@ function EditFormTDtl(obj, view) {
 
     $("#FormTDtl_PkRefNo").val(data.pkRefNo);
 
-    $.get('/FormsT/GetFormTDtlById?id=' + data.pkRefNo, function (data) {
+    $.get('/FrmT/GetFormTDtlById?id=' + data.pkRefNo, function (data) {
 
         $('#divVechicleDetails').html(data).promise().done(function () {
 
@@ -706,7 +706,7 @@ function EnableDisableElements(state) {
 function DeleteFormTDtl(id) {
 
     InitAjaxLoading();
-    $.post('/FormsT/DeleteFormTDtl?id=' + id, function (data) {
+    $.post('/FrmT/DeleteFormTDtl?id=' + id, function (data) {
         HideAjaxLoading();
         if (data == -1) {
             app.ShowErrorMessage(data.errorMessage);
