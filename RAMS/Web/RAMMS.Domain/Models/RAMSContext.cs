@@ -8284,7 +8284,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditActivities>(entity =>
             {
                 entity.HasKey(e => e.FmaaPkRefNo)
-                    .HasName("PK__RM_FormM__311EF8F0CC208A4A");
+                    .HasName("PK__RM_FormM__311EF8F0008E2C25");
 
                 entity.ToTable("RM_FormM_Audit_Activities");
 
@@ -8325,7 +8325,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMAuditDetails>(entity =>
             {
                 entity.HasKey(e => e.FmadPkRefNo)
-                    .HasName("PK__RM_FormM__11153A4CDA13091F");
+                    .HasName("PK__RM_FormM__11153A4CC6D9EA32");
 
                 entity.ToTable("RM_FormM_Audit_Details");
 
@@ -8563,7 +8563,7 @@ namespace RAMMS.Domain.Models
             modelBuilder.Entity<RmFormMHdr>(entity =>
             {
                 entity.HasKey(e => e.FmhPkRefNo)
-                    .HasName("PK__RM_FormM__D3A2F144C1B2D4DB");
+                    .HasName("PK__RM_FormM__D3A2F14474DEEF52");
 
                 entity.ToTable("RM_FormM_HDR");
 

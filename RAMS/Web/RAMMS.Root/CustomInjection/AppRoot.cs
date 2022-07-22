@@ -101,6 +101,7 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IFormR1R2Service, FormR1R2Service>();
             services.AddTransient<IFormF1Service, FormF1Service>();
             services.AddTransient<IFormTService, FormTService>();
+            services.AddTransient<IFormMService, FormMService>();
         }
 
         private static void InjectProviderDependicies(IServiceCollection services)
@@ -166,6 +167,7 @@ namespace RAMMS.Root.CustomInjection
             services.AddTransient<IFormR1Repository, FormR1R2Repository>();
             services.AddTransient<IFormF1Repository, FormF1Repository>();
             services.AddTransient<IFormTRepository, FormTRepository>();
+            services.AddTransient<IFormMRepository, FormMRepository>();
         }
 
         //public static void InjectAppDependencies(IServiceCollection services)
