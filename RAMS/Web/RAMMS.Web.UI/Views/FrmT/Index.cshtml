@@ -6,7 +6,7 @@
     ViewBag.TabTitle = "TRAFFIC VOLUME COUNT FORM (FORM T)";
     Layout = "~/Views/Shared/_PortalLayout.cshtml";
 
-  
+
 
     IEnumerable<SelectListItem> roadcode = (IEnumerable<SelectListItem>)ViewData["RD_Code"];
 
@@ -18,11 +18,11 @@
     Value = s.DdlTypeCode
 }).ToArray();
 
-    
+
 }
 <script type="text/javascript">
     function fnEditForm(pid, view) {
-        window.location = '@Url.Action("Add", "FormsT")' + "?id=" + pid + "&view=" + view;
+        window.location = '@Url.Action("Add", "FrmT")' + "?id=" + pid + "&view=" + view;
     }
 
 
@@ -350,7 +350,7 @@
             @*Form F2 Grid*@
             <div id="headerListGrid" class="w-100 dt-tbl-section">
                 @{
-                    Html.RenderPartial("_HeaderListGrid.cshtml");
+                    //Html.RenderPartial("_HeaderListGrid.cshtml");
                 }
             </div>
         </div>
