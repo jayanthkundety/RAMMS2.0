@@ -212,7 +212,7 @@
                     <button type="button" class="btn btn-sm btn-outline-theme" onclick="GoBack()">Cancel</button>
                     @{
 
-                        if (isSubmit && ( Model.FormT.Status == "Initialize" || Model.FormT.Status == "Saved"))
+                        if (isSubmit && (Model.FormT.Status == null || Model.FormT.Status == "" || Model.FormT.Status == "Initialize" || Model.FormT.Status == "Saved"))
                         {
                             <button id="saveFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Saved')">Save</button>
                             <button id="SubmitFormTBtn" type="button" class="btn btn-sm btn-themebtn" onclick="Save('','Submitted')">Submit</button>
@@ -316,8 +316,7 @@
     $(document).ready(function () {
         process.Init("FormT", "@Model.FormT.Status", @Model.FormT.PkRefNo);
 
-        $("#FormTDtl_AuditTimeFrm").timeEntry();
-        $("#FormTDtl_AuditTimeTo").timeEntry();
+       
     });
     bindRoadCode();
 

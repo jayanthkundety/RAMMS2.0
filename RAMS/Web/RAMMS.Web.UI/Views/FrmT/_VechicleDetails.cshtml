@@ -681,7 +681,7 @@
                                                                         <tr class="5AE">
                                                                             <td rowspan="3" style="background:#fff">
                                                                                 <img src="~/Images/5.PNG" />
-                                                                            </td> 
+                                                                            </td>
                                                                             <td rowspan="3">
                                                                                 5A
                                                                             </td>
@@ -1174,7 +1174,8 @@
 </div>
 
 <script>
-    
+    $("#FormTDtl_AuditTimeFrm").timeEntry();
+    $("#FormTDtl_AuditTimeTo").timeEntry();
     var veh = JSON.parse('@Json.Serialize(@Model.FormTDtl.Vechicles)');
 
     for (i = 0; i < veh.length; i++) {

@@ -6,8 +6,12 @@ $(document).ready(function () {
     DisableHeader();
 
 
-    if ($("#FormT_PkRefNo").val() == 0)
+    if ($("#FormT_PkRefNo").val() == 0) {
         $("#btnDtlModal").hide();
+        $("#saveFormTBtn").hide();
+        $("#SubmitFormTBtn").hide();
+        
+    }
 
     if ($("#FormT_Status").val() == "Approved")
         $("#btnDtlModal").hide();
@@ -672,6 +676,8 @@ function UpdateFormAfterSave(data) {
     $("#FormT_Status").val(data.status)
 
     $("#hdnPkRefNo").val(data.pkRefNo);
+
+    $("#btnDtlModal").show();
     $("#saveFormTBtn").show();
     $("#SubmitFormTBtn").show();
 
@@ -723,13 +729,13 @@ function GoBack() {
     if ($("#hdnView").val() == "0") {
         if (app.Confirm("Unsaved changes will be lost. Are you sure you want to cancel?", function (e) {
             if (e) {
-                location.href = "/FormT";
+                location.href = "/FrmT";
 
             }
         }));
     }
     else
-        location.href = "/FormT";
+        location.href = "/FrmT";
 }
 
 
