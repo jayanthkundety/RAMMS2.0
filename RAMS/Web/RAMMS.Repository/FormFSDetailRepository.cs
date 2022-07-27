@@ -99,7 +99,7 @@ namespace RAMMS.Repository
         }
 
 
-        public List<RmFormFsInsDtl> GetDetailsforInsert(int headerid,int userid,RmFormFsInsHdr hdr)
+        public List<RmFormFsInsDtl> GetDetailsforInsert(int headerid, int userid, RmFormFsInsHdr hdr)
         {
             List<RmDdLookup> list = this.GetAsset().Where(s => s.DdlTypeCode == "CW").ToList<RmDdLookup>();
             List<RmFormFsInsDtl> source = new List<RmFormFsInsDtl>();
@@ -183,7 +183,7 @@ namespace RAMMS.Repository
                 if (bridgeDetail != null)
                     source.Add(bridgeDetail);
             }
-            IQueryable<RmDdLookup> asset9 = this.GetAsset().Where (s => s.DdlTypeCode == "GR");
+            IQueryable<RmDdLookup> asset9 = this.GetAsset().Where(s => s.DdlTypeCode == "GR");
             foreach (RmDdLookup rmDdLookup in asset9)
             {
                 RmFormFsInsDtl guardialDetail = this.GetGuardialDetail(rmDdLookup.DdlTypeDesc, rmDdLookup.DdlTypeValue, userid, headerid, hdr);
@@ -952,27 +952,48 @@ namespace RAMMS.Repository
                          where o.Fr1hAiRdCode == hdr.FshRoadCode && o.Fr1hYearOfInsp == hdr.FshYearOfInsp
                          && o.Fr1hActiveYn == true && o.Fr1hAiStrucCode == StructureCode
                          select 1).Count();
+       
             var Length = (from o in _context.RmFormR1Hdr
                           join h in _context.RmAllassetInventory on o.Fr1hAidPkRefNo equals h.AiPkRefNo
                           where o.Fr1hAiRdCode == hdr.FshRoadCode && o.Fr1hYearOfInsp == hdr.FshYearOfInsp
                           && o.Fr1hActiveYn == true && o.Fr1hAiStrucCode == StructureCode
                           select h.AiLength)?.Sum();
-            var AvgWidth = 0;
-            double? condition1 = (from o in _context.RmFormR1Hdr
-                                  where o.Fr1hAiRdCode == hdr.FshRoadCode && o.Fr1hYearOfInsp == hdr.FshYearOfInsp
-                                  && o.Fr1hActiveYn == true && o.Fr1hAiStrucCode == StructureCode
-                                  select o.Fr1hCondRating)?.Sum();
 
-            double? condition2 = 0; /* (from o in _context.RmFormF2GrInsDtl
-                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
-                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
-                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
-                                  select o.FgridGrCondition2)?.Sum();*/
-            double? condition3 = 0; /* (from o in _context.RmFormF2GrInsDtl
-                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
-                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
-                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
-                                  select o.FgridGrCondition3)?.Sum();*/
+            //var assetid = (from o in _context.RmFormR1Hdr
+            //               where o.Fr1hAiRdCode == hdr.FshRoadCode && o.Fr1hYearOfInsp == hdr.FshYearOfInsp
+            //              && o.Fr1hActiveYn == true && o.Fr1hAiStrucCode == StructureCode
+            //               select o.Fr1hAssetId).FirstOrDefault();
+
+            var AvgWidth = (from o in _context.RmFormR1Hdr
+                            join h in _context.RmAllassetInventory on o.Fr1hAidPkRefNo equals h.AiPkRefNo
+                            where o.Fr1hAiRdCode == hdr.FshRoadCode && o.Fr1hYearOfInsp == hdr.FshYearOfInsp
+                            && o.Fr1hActiveYn == true && o.Fr1hAiStrucCode == StructureCode
+                            select h.AiWidth)?.Sum();
+
+            int? condition = (from o in _context.RmFormR1Hdr
+                              where o.Fr1hAiRdCode == hdr.FshRoadCode && o.Fr1hYearOfInsp == hdr.FshYearOfInsp
+                              && o.Fr1hActiveYn == true && o.Fr1hAiStrucCode == StructureCode
+                              select o.Fr1hCondRating).FirstOrDefault();
+
+            double? condition1 = null;
+            double? condition2 = null;
+            double? condition3 = null;
+
+            if (condition == 1)
+            {
+                condition1 = 1;
+            }
+            else if (condition == 2)
+            {
+                condition2 = 1;
+            }
+            else if (condition == 3)
+            {
+                condition3 = 1;
+            }
+
+
+
             if (count > 0)
             {
                 var detail = new RmFormFsInsDtl
@@ -1008,25 +1029,44 @@ namespace RAMMS.Repository
                          && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode
                          select 1).Count();
 
-            var Length = 0; // (from o in _context.RmFormG1Hdr
-            //              where o.Fg1hRdCode == hdr.FshRoadCode && o.Fg1hYearOfInsp == hdr.FshYearOfInsp
-            //              && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode 
-            //              select o.Fg1hLocChKm)?.Sum();
-            var AvgWidth = 0;
-            double? condition1 = (from o in _context.RmFormG1Hdr
-                                  where o.Fg1hRdCode == hdr.FshRoadCode && o.Fg1hYearOfInsp == hdr.FshYearOfInsp
-                                  && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode
-                                  select o.Fg1hCondRating)?.Sum();
-            double? condition2 = 0; /* (from o in _context.RmFormF2GrInsDtl
-                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
-                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
-                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
-                                  select o.FgridGrCondition2)?.Sum();*/
-            double? condition3 = 0; /* (from o in _context.RmFormF2GrInsDtl
-                                  join h in _context.RmFormF2GrInsHdr on o.FgridFgrihPkRefNo equals h.FgrihPkRefNo
-                                  where h.FgrihRoadCode == hdr.FshRoadCode && h.FgrihYearOfInsp == hdr.FshYearOfInsp
-                                  && o.FgridActiveYn == true && o.FgridGrCode == StructureCode && h.FgrihActiveYn == true
-                                  select o.FgridGrCondition3)?.Sum();*/
+            var Length = 1; // (from o in _context.RmFormG1Hdr
+                            //              where o.Fg1hRdCode == hdr.FshRoadCode && o.Fg1hYearOfInsp == hdr.FshYearOfInsp
+                            //              && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode 
+                            //              select o.Fg1hLocChKm)?.Sum();
+
+            var assetid = (from o in _context.RmFormG1Hdr
+                           where o.Fg1hRdCode == hdr.FshRoadCode && o.Fg1hYearOfInsp == hdr.FshYearOfInsp
+                           && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode
+                           select o.Fg1hAiPkRefNo).FirstOrDefault();
+
+
+
+            var AvgWidth = (from o in _context.RmAllassetInventory
+                            where o.AiPkRefNo == Convert.ToInt32(assetid) && o.AiActiveYn == true
+                            select new { Length = o.AiLength, width = o.AiWidth }).FirstOrDefault();
+
+            int? condition = (from o in _context.RmFormG1Hdr
+                              where o.Fg1hRdCode == hdr.FshRoadCode && o.Fg1hYearOfInsp == hdr.FshYearOfInsp
+                              && o.Fg1hActiveYn == true && o.Fg1hStrucCode == StructureCode
+                              select o.Fg1hCondRating)?.FirstOrDefault();
+            double? condition1 = null;
+            double? condition2 = null;
+            double? condition3 = null;
+
+            if (condition == 1)
+            {
+                condition1 = 1;
+            }
+            else if (condition == 2)
+            {
+                condition2 = 1;
+            }
+            else if (condition == 3)
+            {
+                condition3 = 1;
+            }
+
+
             if (count > 0)
             {
                 var detail = new RmFormFsInsDtl
@@ -1040,7 +1080,7 @@ namespace RAMMS.Repository
                     FsdGrpType = grptype,
                     FsdGrpCode = "sg",
                     FsdLength = Length,
-                    FsdWidth = AvgWidth,
+                    FsdWidth = AvgWidth.width,
                     FsdStrucCode = StructureCode,
                     FsdSubmitSts = false,
                     FsdUnit = "nr",

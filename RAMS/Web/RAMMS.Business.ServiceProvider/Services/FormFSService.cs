@@ -149,7 +149,7 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 if (IsAdd)
                 {
-                    _repoUnit.FormFSDetailRepository.BulkInsert(details, _security.UserID);
+                    _repoUnit.FormFSDetailRepository.BulkInsert(details, form.FshPkRefNo );
                 }
                 if (form != null && form.FshSubmitSts)
                 {
