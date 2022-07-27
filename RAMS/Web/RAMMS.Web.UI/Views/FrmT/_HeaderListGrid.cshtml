@@ -61,10 +61,11 @@
     };
    
     var rmuname = { data: "rmu", name: "rmuName", title: "RMU", autoWidth: true, sortable: true };
-    var roadname = { data: "roadName", name: "Roadname", title: "Road Name", autoWidth: true, sortable: true, visible: false };
-    var totalPC = { data: "totalPC", name: "TotalPC", title: "Total Passenger Car", autoWidth: true, sortable: true, visible: false };
-    var totalHV = { data: "totalHV", name: "TotalHV", title: "Total Heavy Vechicle", autoWidth: true, sortable: true, visible: false };
-    var totalMC = { data: "totalMC", name: "TotalMC", title: "Total MotorCycle", autoWidth: true, sortable: true, visible: false };
+    var roadCode = { data: "roadCode", name: "RoadCode", title: "Road Code", autoWidth: true, sortable: true };
+    var roadname = { data: "roadName", name: "Roadname", title: "Road Name", autoWidth: true, sortable: true };
+    var totalPC = { data: "totalPC", name: "TotalPC", title: "Total Passenger Car", autoWidth: true, sortable: true };
+    var totalHV = { data: "totalHV", name: "TotalHV", title: "Total Heavy Vechicle", autoWidth: true, sortable: true  };
+    var totalMC = { data: "totalMC", name: "TotalMC", title: "Total MotorCycle", autoWidth: true, sortable: true };
     var statuscol = { data: "status", name: "status", title: "Status", autoWidth: true, sortable: true };
     var recordedby = { data: "recordedby", name: "Recordedby", title: "Recorded By", autoWidth: true, sortable: true };
     var headedby = { data: "headedby", name: "Recordedby", title: "Headed By", autoWidth: true, sortable: true };
@@ -75,6 +76,7 @@
     table_columns.push(refNoCol);
     table_columns.push(dateofInspection);
     table_columns.push(rmuname);
+    table_columns.push(roadCode);
     table_columns.push(roadname);
     table_columns.push(totalPC);
     table_columns.push(totalHV);

@@ -28,8 +28,6 @@
 
 @if (Model != null)
 {
-    isSubmit = ((security.isOperRAMSExecutive || security.IsExecutive || security.IsSupervisor || security.isEnggAssistant) && Model.SubmitSts == false);
-
     <script type="text/javascript">
 
             frmM.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
@@ -1972,8 +1970,10 @@
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmM.Cancel()">Cancel</button>
                 @{
                     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
-                    bool isVerify = (security.isOperRAMSExecutive || security.IsHeadMaintenance || security.IsRegionManager || security.IsExecutive);
-                    bool IsApproved = (security.IsJKRSHQ || security.IsDivisonalEngg || security.IsJKRSSuperiorOfficer);
+
+                    isSubmit = (security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.isEnggAssistant || security.IsSupervisor || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+                    bool isVerify = (security.IsRegionManager || security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.IsExecutive || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+                    bool IsApproved = (security.IsRegionManager || security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.IsExecutive || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
 
                 }
 
@@ -1987,7 +1987,7 @@
 
                 @if (isVerify && (Model != null && (Model.status == RAMMS.Common.StatusList.FormR1R2Submitted || Model.status == RAMMS.Common.StatusList.FormR1R2Rejected)))
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="frmM.Save(false,1);process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
                 }
                 else if (IsApproved && (Model != null && (Model.status == RAMMS.Common.StatusList.FormR1R2Verified || Model.status == RAMMS.Common.StatusList.FormR1R2Rejected)))
                 {
