@@ -46,8 +46,8 @@
         Position = "Supervisor"
     })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
 
-    bool isSubmit = (security.isOperRAMSExecutive || security.IsExecutive || security.isEnggAssistant || security.IsSupervisor);
-    bool IsApproved = (security.isOperRAMSExecutive || security.IsExecutive || security.IsHeadMaintenance || security.IsRegionManager);
+    bool isSubmit = (security.IsHeadMaintenance || security.isOperRAMSExecutive || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.isEnggAssistant || security.IsSupervisor || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+    bool IsApproved = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.IsHeadMaintenance || security.IsRegionManager);
     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
 
@@ -124,7 +124,11 @@
                                 </div>
                             </div>
                             <div class="form-group col-lg-2 col-md-12 pt-xl-4 px-md-4 px-sm-4">
-                                <button id="btnFindDetails" type="button" onclick="Save('','')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                                @{ if (isSubmit)
+                                    {
+                                        <button id="btnFindDetails" type="button" onclick="Save('','')" class="btn btn-sm btn-themebtn col-md-12 col-xl-12 col-lg-2 mr-lg-1 float-right">Find Details</button>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
@@ -251,7 +255,7 @@
             </div>
 
 
-       
+
 
         </div>
     </div>
@@ -316,7 +320,7 @@
     $(document).ready(function () {
         process.Init("FormT", "@Model.FormT.Status", @Model.FormT.PkRefNo);
 
-       
+
     });
     bindRoadCode();
 
