@@ -183,6 +183,8 @@ namespace RAMMS.Web.UI.Controllers
         public async Task<JsonResult> Submit(DTO.ResponseBO.FormMDTO frmR1R2)
         {
             frmR1R2.SubmitSts = true;
+            frmR1R2.UseridAudit = _security.UserID;
+            frmR1R2.DateAudit = DateTime.Today;
             return await SaveAll(frmR1R2, true);
         }
         private async Task<JsonResult> SaveAll(DTO.ResponseBO.FormMDTO frmR1R2, bool updateSubmit)

@@ -1987,7 +1987,7 @@
 
                 @if (isVerify && (Model != null && (Model.status == RAMMS.Common.StatusList.FormR1R2Submitted || Model.status == RAMMS.Common.StatusList.FormR1R2Rejected)))
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
+                    <button type="button" class="btn btn-sm btn-themebtn enblmode" onclick="frmM.Save(false,1);process.ShowApprove('@groupname','Verified By');"> Approved / Verify </button>
                 }
                 else if (IsApproved && (Model != null && (Model.status == RAMMS.Common.StatusList.FormR1R2Verified || Model.status == RAMMS.Common.StatusList.FormR1R2Rejected)))
                 {

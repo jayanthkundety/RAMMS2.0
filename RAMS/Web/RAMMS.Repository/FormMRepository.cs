@@ -107,6 +107,7 @@ namespace RAMMS.Repository
                              AuditDate = hdr.FmhAuditedDate,
                              RMUCode = hdr.FmhRmuCode,
                              RMUDesc = hdr.FmhRmuName,
+                             SectionCode = hdr.FmhSecCode,
                              RoadCode = hdr.FmhRdCode,
                              RoadName = hdr.FmhRdName,
                              RoadId = rdcode.RdmRdCdSort,// asset.AiRdmPkRefNoNavigation.RdmRdCdSort,
@@ -135,6 +136,7 @@ namespace RAMMS.Repository
                                  || (x.RMUCode ?? "").Contains(strVal)
                                  || (x.RoadCode ?? "").Contains(strVal)
                                  || (x.RoadName ?? "").Contains(strVal)
+                                 || (x.SectionCode ?? "").Contains(strVal)
                                  || (x.ActivityCode ?? "").Contains(strVal)
                                  );
                             break;
