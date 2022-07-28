@@ -43,11 +43,11 @@
     IEnumerable<SelectListItem>
     user = (await usr.GetUserNameRespectToPosition(new UserRequestDTO
     {
-        Position = "Supervisor"
+       
     })).ToList().Select(s => new SelectListItem { Value = s.UserId.ToString(), Text = (s.UserId.ToString() + "-" + s.UserName) }).ToArray();
 
-    bool isSubmit = (security.IsHeadMaintenance || security.isOperRAMSExecutive || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.isEnggAssistant || security.IsSupervisor || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
-    bool IsApproved = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.IsHeadMaintenance || security.IsRegionManager);
+    bool isSubmit = (security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsExecutive || security.IsInstructedWorkEngg || security.isEnggAssistant || security.IsSupervisor || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+    bool IsApproved = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg || security.isOperRAMSExecutive || security.IsExecutive || security.IsInstructedWorkEngg || security.IsHeadMaintenance || security.IsRegionManager );
     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
 
@@ -149,7 +149,7 @@
                             <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                 <div class="form-group col-lg-2 float-left">
                                     @Html.Label("User ID", "User ID")
-                                    @Html.DropDownListFor(Ahdr => Ahdr.FormT.UseridRcd, (IEnumerable<SelectListItem>)ViewData["Supervisor"], "User Id", new { @Id = "ddlRecordedby", @class = "form-control svalidate {required, Recorded by}" })
+                                    @Html.DropDownListFor(Ahdr => Ahdr.FormT.UseridRcd, (IEnumerable<SelectListItem>)ViewData["User"], "User Id", new { @Id = "ddlRecordedby", @class = "form-control svalidate {required, Recorded by}" })
 
                                 </div>
                                 <div class="form-group col-lg-3 float-left">
