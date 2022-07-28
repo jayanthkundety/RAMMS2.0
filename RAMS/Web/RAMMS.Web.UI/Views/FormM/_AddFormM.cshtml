@@ -1971,7 +1971,7 @@
                 @{
                     var groupname = security.Group.IndexOf(",") >= 0 ? security.Group.Split(',')[0] : security.Group;
 
-                    isSubmit = (security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.isEnggAssistant || security.IsSupervisor || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
+                    isSubmit = (security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsExecutive || security.IsInstructedWorkEngg || security.isEnggAssistant || security.IsSupervisor || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
                     bool isVerify = (security.IsRegionManager || security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.IsExecutive || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
                     bool IsApproved = (security.IsRegionManager || security.IsHeadMaintenance || security.isOperRAMSExecutive || security.IsInstructedWorkEngg || security.IsExecutive || security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
 
@@ -1979,7 +1979,7 @@
 
 
                 <button type="button" class="btn btn-sm btn-themebtn" onclick="frmM.Save(false,0)" finddetailsdep>Save</button>
-                @if (isSubmit)
+                @if (isSubmit && (Model.status == null || Model.status == "" || Model.status == "Initialize" || Model.status == RAMMS.Common.StatusList.FormR1R2Saved))
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="frmM.Save(true,0)" finddetailsdep>Submit</button>
                 }
