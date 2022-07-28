@@ -532,12 +532,13 @@
                             {
                                     var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
                                     var hasRight = (security.IsSupervisor || security.IsExecutive || security.IsInstructedWorkEngg || security.IsRegionManager ||  security.isEnggAssistant);
+                                    var isSubmit = (security.IsHeadMaintenance || security.IsInstructedWorkEngg || security.IsRegionManager);
                                
                                 if (string.IsNullOrEmpty(Model.FormW1.Status) && hasRight)
                                 {
                                     <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                 }
-                                else if (Model.FormW1.Status == "Saved" && hasRight)
+                                else if (Model.FormW1.Status == "Saved" && isSubmit)
                                 {
                                     <button type="button" id="btnSave" class="btn btn-sm btn-themebtn" onclick="Save('','')">Save</button>
                                     <button type="button" id="btnSubmit" class="btn btn-sm btn-themebtn" onclick="Save('@RAMMS.Common.GroupNames.Supervisor','Submitted');">Submit</button>

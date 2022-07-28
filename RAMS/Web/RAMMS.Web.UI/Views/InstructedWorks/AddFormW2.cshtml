@@ -957,6 +957,7 @@
                     @{
                         var isJKRS = (security.IsJKRSHQ || security.IsJKRSSuperiorOfficer || security.IsDivisonalEngg);
                         var isModifyPerm = security.IsPCModify(ModuleNameList.Instructed_Works) ? "" : "hidden";
+                         var isSubmit = (security.IsHeadMaintenance || security.IsInstructedWorkEngg || security.IsRegionManager);
                     }
                     <button type="button" class="btn btn-sm btn-outline-theme" id="closeFormW2Btn" onclick="GoBack()">Close</button>
                     @if (isModifyPerm == "")
@@ -965,7 +966,7 @@
                         {
                             <button type="button" class="btn btn-sm btn-themebtn" id="saveFormW2Btn">Save</button>
                         }
-                        @if ((isJKRS) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
+                        @if ((isSubmit) && (Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Saved || Model.SaveFormW2Model.Status == RAMMS.Common.StatusList.FormW2Rejected))
                         {
                             <button type="button" class="btn btn-sm btn-themebtn" id="submitFormW2Btn">Submit</button>
                         }

@@ -57,7 +57,7 @@
 <script>
     var isModifyPerm =@security.IsPCModify(ModuleNameList.Instructed_Works).ToString().ToLowerInvariant()? "" : 'hidden';
     var isDeletePerm =@security.IsPCDelete(ModuleNameList.Instructed_Works).ToString().ToLowerInvariant()? "" : 'hidden';
-    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : 'hidden';
+    var isViewPerm = @security.IsPCView(ModuleNameList.Instructed_Works).ToString().ToLowerInvariant()? "" : 'hidden';
 
     var table_columns = [];
     var chkRefNoCol = {
