@@ -25,6 +25,7 @@ namespace RAMMS.Web.UI.Controllers
             this.modulegrouprights = modulegrouprights;
         }
 
+        [CAuthorize(ModuleName = ModuleNameList.User_Management)]
         public IActionResult Index()
         {
             return View();

@@ -21,7 +21,7 @@ namespace RAMMS.Business.ServiceProvider.Services
         private readonly IMapper _mapper;
         private readonly ISecurity _security;
         private readonly IProcessService processService;
-        public FormFSService(IRepositoryUnit repoUnit, IMapper mapper, 
+        public FormFSService(IRepositoryUnit repoUnit, IMapper mapper,
             ISecurity security,  IProcessService proService)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit)); 
@@ -52,7 +52,6 @@ namespace RAMMS.Business.ServiceProvider.Services
             try
             {
                 bool IsAdd = false;
-                List<RmFormFsInsDtl> details = null;
                 var form = _mapper.Map<Domain.Models.RmFormFsInsHdr>(model);
                 form.FshStatus = "Open";
                 var road = _repoUnit.RoadmasterRepository.FindAll(s => s.RdmRdCode == form.FshRoadCode).FirstOrDefault();
@@ -62,20 +61,24 @@ namespace RAMMS.Business.ServiceProvider.Services
                     form.FshRoadLength = road.RdmLengthPaved;
                 }
                 form.FshActiveYn = true;
+                List<Domain.Models.RmFormFsInsDtl> details = null;
                 if (form.FshPkRefNo != 0)
                 {
                     form.FshModBy = _security.UserID;
                     form.FshModDt = DateTime.Now;
-                    if (form.FshSubmitSts)
+                    if (form.FshSubmitSts == true)
                     {
-                        if (_repoUnit.FormFSDetailRepository.FindAll(s => s.FsdFshPkRefNo == form.FshPkRefNo && (s.FsdRemarks == ""  || s.FsdNeeded == "" ) && s.FsdActiveYn == true).Count() > 0)
+                        var count = _repoUnit.FormFSDetailRepository.FindAll(s => s.FsdFshPkRefNo == form.FshPkRefNo && (s.FsdRemarks == "" || s.FsdRemarks == null || s.FsdNeeded == "" || s.FsdNeeded == null) && s.FsdActiveYn == true).Count();
+                        if (count > 0)
+                        {
                             return -2;
+                        }
                     }
                     _repoUnit.FormFSHeaderRepository.Update(form);
                 }
                 else
                 {
-                    details = this._repoUnit.FormFSDetailRepository.GetDetailsforInsert(form.FshPkRefNo, this._security.UserID, form);
+                    details = _repoUnit.FormFSDetailRepository.GetDetailsforInsert(form.FshPkRefNo, _security.UserID, form);
                     if (details == null || details.Count == 0)
                         return -1;
                     form.FshCrBy = _security.UserID;
@@ -93,9 +96,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
                 if (form != null && form.FshSubmitSts)
                 {
-                    int result = this.processService.Save(new ProcessDTO()
+                    int iResult = processService.Save(new DTO.RequestBO.ProcessDTO()
                     {
-                        ApproveDate = new System.DateTime?(System.DateTime.Now),
+                        ApproveDate = DateTime.Now,
                         Form = "FormFS",
                         IsApprove = true,
                         RefId = form.FshPkRefNo,
@@ -134,7 +137,8 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
                 else
                 {
-                    details = this._repoUnit.FormFSDetailRepository.GetDetailsforInsert(form.FshPkRefNo, this._security.UserID, form);
+                    details = _repoUnit.FormFSDetailRepository.GetDetailsforInsert(form.FshPkRefNo, _security.UserID, form);
+
                     if (details == null || details.Count == 0)
                         return -1;
 
@@ -153,9 +157,9 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
                 if (form != null && form.FshSubmitSts)
                 {
-                    int result = this.processService.Save(new ProcessDTO()
+                    int iResult = processService.Save(new DTO.RequestBO.ProcessDTO()
                     {
-                        ApproveDate = new System.DateTime?(System.DateTime.Now),
+                        ApproveDate = DateTime.Now,
                         Form = "FormFS",
                         IsApprove = true,
                         RefId = form.FshPkRefNo,
@@ -531,10 +535,10 @@ namespace RAMMS.Business.ServiceProvider.Services
                         worksheet.Cell(i, 22).Value = rpt.RSCenter.Remarks;
                         i = 44;
                         worksheet.Cell(i, 11).Value = rpt.RSRight.AverageWidth;
-                        worksheet.Cell(i, 14).Value = rpt.RSRight.TotalLength;
-                        worksheet.Cell(i, 17).Value = rpt.RSRight.Condition1;
-                        worksheet.Cell(i, 18).Value = rpt.RSRight.Condition2;
-                        worksheet.Cell(i, 19).Value = rpt.RSRight.Condition3;
+                        worksheet.Cell(i, 14).Value = rpt.RSRight.TotalLength / 10;
+                        worksheet.Cell(i, 17).Value = rpt.RSRight.Condition1 / 10;
+                        worksheet.Cell(i, 18).Value = rpt.RSRight.Condition2 / 10;
+                        worksheet.Cell(i, 19).Value = rpt.RSRight.Condition3 / 10;
                         worksheet.Cell(i, 20).Value = rpt.RSRight.Needed;
                         worksheet.Cell(i, 22).Value = rpt.RSRight.Remarks;
                         i = 45;
