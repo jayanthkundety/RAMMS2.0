@@ -273,6 +273,7 @@ namespace RAMMS.Repository
                     // rmFormS2DaySchedules.Where(s => s.FsiidsFsiiqdClkPkRefNo == days.FsiidsFsiiqdClkPkRefNo && s.FsiidsFsiiqdPkRefNo == days.FsiidsFsiiqdPkRefNo  && s.FsiidsFsiidPkRefNo == detailId)
                     // .Select(s => @"""" + DateTime.Parse(s.FsiidsScheduledDt.ToString()).ToString("yyyy-MM-dd") + @"""").ToList();
 
+                    // S2 days schedule to get approve CR
                     q.daySchedules = (from day in _context.RmFormS2DaySchedule
                                       join c in _context.RmWeekLookup on day.FsiidsFsiiqdClkPkRefNo equals c.ClkPkRefNo
                                       where day.FsiidsFsiidPkRefNo == q.DetailId
@@ -282,7 +283,7 @@ namespace RAMMS.Repository
                                           dateTime = day.FsiidsScheduledDt,
                                           Day = ((int)Convert.ToDateTime(day.FsiidsScheduledDt).DayOfWeek)
                                       }).ToList();
-
+                    // END S2 days schedule
                 }
             }
             return rpt;

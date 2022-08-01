@@ -247,7 +247,7 @@ namespace RAMMS.Web.UI.Controllers
                 }
                 if (lstImages.Count > 0)
                 {
-                    await _C1C2Service.AddMultiImage(lstImages);
+                    await _C1C2Service.AddMultiImageTab(lstImages);
                 }
             }
             else

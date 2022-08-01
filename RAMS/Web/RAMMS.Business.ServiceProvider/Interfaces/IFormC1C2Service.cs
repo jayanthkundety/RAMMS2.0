@@ -19,6 +19,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<List<FormC1C2PhotoTypeDTO>> GetExitingPhotoType(int headerId);
         Task<RmFormCvInsImage> AddImage(FormC1C2ImageDTO imageDTO);
         Task<(IList<RmFormCvInsImage>, int)> AddMultiImage(IList<FormC1C2ImageDTO> imagesDTO);
+        Task<IList<RmFormCvInsImage>> AddMultiImageTab(IList<FormC1C2ImageDTO> imagesDTO);
         List<FormC1C2ImageDTO> ImageList(int headerId);
         Task<int> DeleteImage(int headerId, int imgId);
         Task<GridWrapper<object>> GetHeaderGrid(DataTableAjaxPostModel searchData);

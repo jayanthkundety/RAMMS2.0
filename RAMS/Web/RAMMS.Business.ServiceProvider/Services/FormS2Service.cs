@@ -546,6 +546,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                                     {
                                         int s = weekNo[r.week[week]];
 
+                                        /* commented S2 days schedule to get approve CR
                                         List<FORMS2DaySchedule> day = r.daySchedules.FindAll(x => x.weekno == r.week[week]);
 
                                         foreach (FORMS2DaySchedule daySchedule in day)
@@ -555,36 +556,37 @@ namespace RAMMS.Business.ServiceProvider.Services
                                             workSheet.Cell(i, t).Style.Fill.PatternColor = XLColor.Gray;
                                             workSheet.Cell(i, t).Style.Fill.SetBackgroundColor(XLColor.White);
                                         }
-
-                                        /* 
-                                         * workSheet.Cell(i, s).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                         workSheet.Cell(i, s).Style.Fill.PatternColor = XLColor.Gray;
-                                         workSheet.Cell(i, s).Style.Fill.SetBackgroundColor(XLColor.White);
-
-                                         workSheet.Cell(i, s + 1).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                         workSheet.Cell(i, s + 1).Style.Fill.PatternColor = XLColor.Gray;
-                                         workSheet.Cell(i, s + 1).Style.Fill.SetBackgroundColor(XLColor.White);
-
-                                         workSheet.Cell(i, s + 2).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                         workSheet.Cell(i, s + 2).Style.Fill.PatternColor = XLColor.Gray;
-                                         workSheet.Cell(i, s + 2).Style.Fill.SetBackgroundColor(XLColor.White);
-
-                                         workSheet.Cell(i, s + 3).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                         workSheet.Cell(i, s + 3).Style.Fill.PatternColor = XLColor.Gray;
-                                         workSheet.Cell(i, s + 3).Style.Fill.SetBackgroundColor(XLColor.White);
-
-                                         workSheet.Cell(i, s + 4).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                         workSheet.Cell(i, s + 4).Style.Fill.PatternColor = XLColor.Gray;
-                                         workSheet.Cell(i, s + 4).Style.Fill.SetBackgroundColor(XLColor.White);
-
-                                         workSheet.Cell(i, s + 5).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                         workSheet.Cell(i, s + 5).Style.Fill.PatternColor = XLColor.Gray;
-                                         workSheet.Cell(i, s + 5).Style.Fill.SetBackgroundColor(XLColor.White);
-
-                                         workSheet.Cell(i, s + 6).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
-                                         workSheet.Cell(i, s + 6).Style.Fill.PatternColor = XLColor.Gray;
-                                         workSheet.Cell(i, s + 6).Style.Fill.SetBackgroundColor(XLColor.White);
+                                         // end commented S2 days schedule to get approve CR
                                         */
+
+                                        workSheet.Cell(i, s).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                        workSheet.Cell(i, s).Style.Fill.PatternColor = XLColor.Gray;
+                                        workSheet.Cell(i, s).Style.Fill.SetBackgroundColor(XLColor.White);
+
+                                        workSheet.Cell(i, s + 1).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                        workSheet.Cell(i, s + 1).Style.Fill.PatternColor = XLColor.Gray;
+                                        workSheet.Cell(i, s + 1).Style.Fill.SetBackgroundColor(XLColor.White);
+
+                                        workSheet.Cell(i, s + 2).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                        workSheet.Cell(i, s + 2).Style.Fill.PatternColor = XLColor.Gray;
+                                        workSheet.Cell(i, s + 2).Style.Fill.SetBackgroundColor(XLColor.White);
+
+                                        workSheet.Cell(i, s + 3).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                        workSheet.Cell(i, s + 3).Style.Fill.PatternColor = XLColor.Gray;
+                                        workSheet.Cell(i, s + 3).Style.Fill.SetBackgroundColor(XLColor.White);
+
+                                        workSheet.Cell(i, s + 4).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                        workSheet.Cell(i, s + 4).Style.Fill.PatternColor = XLColor.Gray;
+                                        workSheet.Cell(i, s + 4).Style.Fill.SetBackgroundColor(XLColor.White);
+
+                                        workSheet.Cell(i, s + 5).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                        workSheet.Cell(i, s + 5).Style.Fill.PatternColor = XLColor.Gray;
+                                        workSheet.Cell(i, s + 5).Style.Fill.SetBackgroundColor(XLColor.White);
+
+                                        workSheet.Cell(i, s + 6).Style.Fill.PatternType = XLFillPatternValues.DarkTrellis;
+                                        workSheet.Cell(i, s + 6).Style.Fill.PatternColor = XLColor.Gray;
+                                        workSheet.Cell(i, s + 6).Style.Fill.SetBackgroundColor(XLColor.White);
+
 
                                     }
                                     workSheet.Cell(i, 112).Value = r.Target;
