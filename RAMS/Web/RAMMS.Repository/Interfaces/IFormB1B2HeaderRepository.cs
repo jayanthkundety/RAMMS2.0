@@ -19,5 +19,6 @@ namespace RAMMS.Repository.Interfaces
         List<FormB1B2Rpt> GetReportData(int id);
         Task<AssetDDLResponseDTO> GetAssetDDL(AssetDDLRequestDTO request);
         string GetMaterialType(string type, string value);
+        Task<IEnumerable<SelectListItem>> GetBridgeIdsB1B2();
     }
 }

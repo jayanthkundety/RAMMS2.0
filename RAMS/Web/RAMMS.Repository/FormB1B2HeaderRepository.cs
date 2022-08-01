@@ -45,6 +45,18 @@ namespace RAMMS.Repository
             return resultlst;
         }
 
+        public async Task<IEnumerable<SelectListItem>> GetBridgeIdsB1B2()
+        {
+            return await (from x in _context.RmFormB1b2BrInsHdr
+                          where x.FbrihActiveYn == true
+                          select new SelectListItem
+                          {
+                              Value = x.FbrihAiAssetId,
+                              Text = x.FbrihAiAssetId
+                          }).ToListAsync();
+
+        }
+
         public async Task<long> GetFilteredRecordCount(FilteredPagingDefinition<FormB1B2SearchGridDTO> filterOptions)
         {
             var query = (from s in _context.RmFormB1b2BrInsHdr
@@ -105,7 +117,8 @@ namespace RAMMS.Repository
                      s.d.AiDivCode.Contains(search.SmartSearch) ||
                      s.s.FbrihAiRdName.Contains(search.SmartSearch) ||
                      s.s.FbrihAiAssetId.Contains(search.SmartSearch) ||
-                     s.d.AiSecCode.Contains(search.SmartSearch) ||
+                     s.d.AiSecCode.Contains(search.SmartSearch)
+                     || (s.s.FbrihStatus ?? "").Contains(search.SmartSearch) ||
                      s.s.FbrihSerProviderUserName.Contains(search.SmartSearch) ||
                      s.s.FbrihUserNameAud.Contains(search.SmartSearch)
                      || (s.s.FbrihDtOfInsp.HasValue ? (s.s.FbrihDtOfInsp.Value.Year == dt.Year && s.s.FbrihDtOfInsp.Value.Month == dt.Month && s.s.FbrihDtOfInsp.Value.Day == dt.Day) : true)
@@ -121,7 +134,8 @@ namespace RAMMS.Repository
                  s.d.AiDivCode.Contains(search.SmartSearch) ||
                  s.s.FbrihAiRdName.Contains(search.SmartSearch) ||
                  s.s.FbrihAiAssetId.Contains(search.SmartSearch) ||
-                 s.d.AiSecCode.Contains(search.SmartSearch) ||
+                 s.d.AiSecCode.Contains(search.SmartSearch)
+                 || (s.s.FbrihStatus ?? "").Contains(search.SmartSearch) ||
                  s.s.FbrihSerProviderUserName.Contains(search.SmartSearch) ||
                  s.s.FbrihUserNameAud.Contains(search.SmartSearch)
                  || (s.s.FbrihSubmitSts ? "Submitted" : "Saved").Contains(search.SmartSearch));
@@ -193,6 +207,7 @@ namespace RAMMS.Repository
                      s.d.AiSecCode.Contains(search.SmartSearch) ||
                      s.s.FbrihSerProviderUserName.Contains(search.SmartSearch) ||
                      s.s.FbrihUserNameAud.Contains(search.SmartSearch)
+                     || (s.s.FbrihStatus ?? "").Contains(search.SmartSearch)
                      || (s.s.FbrihDtOfInsp.HasValue ? (s.s.FbrihDtOfInsp.Value.Year == dt.Year && s.s.FbrihDtOfInsp.Value.Month == dt.Month && s.s.FbrihDtOfInsp.Value.Day == dt.Day) : false)
                      || (s.s.FbrihSubmitSts ? "Submitted" : "Saved").Contains(search.SmartSearch));
                 }
@@ -207,8 +222,9 @@ namespace RAMMS.Repository
                  s.s.FbrihAiRdName.Contains(search.SmartSearch) ||
                  s.s.FbrihAiAssetId.Contains(search.SmartSearch) ||
                  s.d.AiSecCode.Contains(search.SmartSearch) ||
-                 s.s.FbrihSerProviderUserName.Contains(search.SmartSearch) ||
-                 s.s.FbrihUserNameAud.Contains(search.SmartSearch)
+                 s.s.FbrihSerProviderUserName.Contains(search.SmartSearch)
+                 || (s.s.FbrihStatus ?? "").Contains(search.SmartSearch)
+                 || s.s.FbrihUserNameAud.Contains(search.SmartSearch)
                  || (s.s.FbrihSubmitSts ? "Submitted" : "Saved").Contains(search.SmartSearch));
                 }
 
@@ -218,14 +234,16 @@ namespace RAMMS.Repository
             {
                 if (filterOptions.ColumnIndex == 0)
                     query = query.OrderByDescending(s => s.s.FbrihPkRefNo);
-                if (filterOptions.ColumnIndex == 2)
-                    query = query.OrderBy(s => s.s.FbrihCInspRefNo);
+                //if (filterOptions.ColumnIndex == 2)
+                //    query = query.OrderBy(s => s.s.FbrihCInspRefNo);
+                if (filterOptions.ColumnIndex == 2 || filterOptions.ColumnIndex == 5 || filterOptions.ColumnIndex == 11)
+                    query = query.OrderBy(s => s.d.AiRdmPkRefNoNavigation.RdmRdCdSort);
                 if (filterOptions.ColumnIndex == 3)
                     query = query.OrderBy(s => s.s.FbrihYearOfInsp);
                 if (filterOptions.ColumnIndex == 4)
                     query = query.OrderBy(s => s.s.FbrihDtOfInsp);
-                if (filterOptions.ColumnIndex == 5)
-                    query = query.OrderBy(s => s.s.FbrihAiAssetId);
+                //if (filterOptions.ColumnIndex == 5)
+                //    query = query.OrderBy(s => s.s.FbrihAiAssetId);
                 if (filterOptions.ColumnIndex == 6)
                     query = query.OrderBy(s => s.d.AiDivCode);
                 if (filterOptions.ColumnIndex == 7)
@@ -236,12 +254,12 @@ namespace RAMMS.Repository
                     query = query.OrderBy(s => s.d.AiSecCode);
                 if (filterOptions.ColumnIndex == 10)
                     query = query.OrderBy(s => s.d.AiSecName);
-                if (filterOptions.ColumnIndex == 11)
-                    query = query.OrderBy(s => s.s.FbrihAiRdCode);
+                //if (filterOptions.ColumnIndex == 11)
+                //    query = query.OrderBy(s => s.s.FbrihAiRdCode);
                 if (filterOptions.ColumnIndex == 12)
                     query = query.OrderBy(s => s.s.FbrihAiRdName);
                 if (filterOptions.ColumnIndex == 13)
-                    query = query.OrderBy(s => s.s.FbrihSubmitSts);
+                    query = query.OrderBy(s => s.s.FbrihStatus);
                 if (filterOptions.ColumnIndex == 14)
                     query = query.OrderBy(s => s.s.FbrihSerProviderUserName);
                 if (filterOptions.ColumnIndex == 15)
@@ -251,14 +269,16 @@ namespace RAMMS.Repository
             {
                 if (filterOptions.ColumnIndex == 0)
                     query = query.OrderByDescending(s => s.s.FbrihPkRefNo);
-                if (filterOptions.ColumnIndex == 2)
-                    query = query.OrderByDescending(s => s.s.FbrihCInspRefNo);
+                if (filterOptions.ColumnIndex == 2 || filterOptions.ColumnIndex == 5 || filterOptions.ColumnIndex == 11)
+                    query = query.OrderByDescending(s => s.d.AiRdmPkRefNoNavigation.RdmRdCdSort);
+                //if (filterOptions.ColumnIndex == 2)
+                //    query = query.OrderByDescending(s => s.s.FbrihCInspRefNo);
                 if (filterOptions.ColumnIndex == 3)
                     query = query.OrderByDescending(s => s.s.FbrihYearOfInsp);
                 if (filterOptions.ColumnIndex == 4)
                     query = query.OrderByDescending(s => s.s.FbrihDtOfInsp);
-                if (filterOptions.ColumnIndex == 5)
-                    query = query.OrderByDescending(s => s.s.FbrihAiAssetId);
+                //if (filterOptions.ColumnIndex == 5)
+                //    query = query.OrderByDescending(s => s.s.FbrihAiAssetId);
                 if (filterOptions.ColumnIndex == 6)
                     query = query.OrderByDescending(s => s.s.FbrihAiDivCode);
                 if (filterOptions.ColumnIndex == 7)
@@ -269,12 +289,12 @@ namespace RAMMS.Repository
                     query = query.OrderByDescending(s => s.d.AiSecCode);
                 if (filterOptions.ColumnIndex == 10)
                     query = query.OrderByDescending(s => s.d.AiSecName);
-                if (filterOptions.ColumnIndex == 11)
-                    query = query.OrderByDescending(s => s.s.FbrihAiRdCode);
+                //if (filterOptions.ColumnIndex == 11)
+                //    query = query.OrderByDescending(s => s.s.FbrihAiRdCode);
                 if (filterOptions.ColumnIndex == 12)
                     query = query.OrderByDescending(s => s.s.FbrihAiRdName);
                 if (filterOptions.ColumnIndex == 13)
-                    query = query.OrderByDescending(s => s.s.FbrihSubmitSts);
+                    query = query.OrderByDescending(s => s.s.FbrihStatus);
                 if (filterOptions.ColumnIndex == 14)
                     query = query.OrderByDescending(s => s.s.FbrihSerProviderUserName);
                 if (filterOptions.ColumnIndex == 15)
@@ -342,19 +362,27 @@ namespace RAMMS.Repository
                 ActiveYn = s.s.FbrihActiveYn.Value,
                 SectionCode = s.d.AiSecCode,
                 SectionName = s.d.AiSecName,
-                RmuCode = s.d.AiRmuCode
+                RmuCode = s.d.AiRmuCode,
+                Status = s.s.FbrihStatus
             }).ToList();
         }
 
         public string GetMaterialType(string type, string value)
         {
+            value = value ?? "";
             string data = "";
+            string[] arrType = new string[0];
+            if (value != null && value != "")
+            {
+                arrType = value.Split(',');
+            }
             var ddl = _context.RmDdLookup.Where(s => s.DdlActiveYn == true && s.DdlTypeCode == "BR" && (s.DdlType == type || s.DdlTypeDesc == type)).ToArray();
-            if (ddl != null && value != null)
+            if (ddl != null)
             {
                 foreach (var d in ddl)
                 {
-                    if (d.DdlTypeValue.Trim().ToLower() == value.Trim().ToLower())
+
+                    if (arrType.Any(a => a.Trim().ToLower() == d.DdlTypeValue.Trim().ToLower()))
                     {
                         data += $" ☑ {d.DdlTypeValue}";
                     }
@@ -377,26 +405,25 @@ namespace RAMMS.Repository
             Func<string, string, string> code = (type, a) =>
              {
                  string[] arrType = new string[0];
+                 string result = "";
                  if (a != null)
                  {
                      arrType = a.Split(',');
-                 }
-                 string result = "";
-                 foreach (var typ in arrType)
-                 {
-                     var ddl = _context.RmDdLookup.Where(s => s.DdlActiveYn == true && s.DdlTypeCode == "BR" && (s.DdlType == typ || s.DdlTypeDesc == typ)).FirstOrDefault();
-                     if (ddl != null)
+                     foreach (var typ in arrType)
                      {
-                         if (result != "")
+                         var ddl = _context.RmDdLookup.Where(s => s.DdlActiveYn == true && s.DdlTypeCode == "BR" && s.DdlType == type && s.DdlTypeDesc == typ).FirstOrDefault();
+                         if (ddl != null)
                          {
-                             result = result != null ? result + "," + ddl.DdlTypeValue : ddl.DdlTypeValue;
-                         }
-                         else
-                         {
-                             result = ddl.DdlTypeValue;
+                             if (result != "")
+                             {
+                                 result = result != null ? result + "," + ddl.DdlTypeValue : ddl.DdlTypeValue;
+                             }
+                             else
+                             {
+                                 result = ddl.DdlTypeValue;
+                             }
                          }
                      }
-
                  }
                  return result;
              };
@@ -481,13 +508,15 @@ namespace RAMMS.Repository
 
         public List<FormB1B2Rpt> GetReportData(int id)
         {
-            //var roadcode = (from h in _context.RmFormB1b2BrInsHdr
-            //                where h.FbrihPkRefNo == id
-            //                select new
-            //                {
-            //                    h.FbrihAiRdCode,
-            //                    h.FbrihDtOfInsp
-            //                }).FirstOrDefault();
+            var roadcode = (from h in _context.RmFormB1b2BrInsHdr
+                            where h.FbrihPkRefNo == id
+                            select new
+                            {
+                                h.FbrihAiRdCode,
+                                h.FbrihDtOfInsp,
+                                h.FbrihYearOfInsp,
+                                h.FbrihAiAssetId
+                            }).FirstOrDefault();
             var type = (from ty in _context.RmDdLookup
                         where ty.DdlType == "Photo Type" && ty.DdlTypeCode == "BR"
                         orderby ty.DdlTypeRemarks ascending
@@ -495,9 +524,10 @@ namespace RAMMS.Repository
 
             var detail = (from h in _context.RmFormB1b2BrInsHdr
                           join d in _context.RmFormB1b2BrInsDtl on h.FbrihPkRefNo equals d.FbridFbrihPkRefNo
-                          where
-                       h.FbrihPkRefNo == id
-                          orderby h.FbrihDtOfInsp descending
+                          where (h.FbrihAiAssetId == roadcode.FbrihAiAssetId && h.FbrihActiveYn == true && h.FbrihYearOfInsp <= roadcode.FbrihYearOfInsp
+                        && h.FbrihYearOfInsp.HasValue)
+                          orderby h.FbrihYearOfInsp ascending
+                          
                           select new FormB1B2Rpt
                           {
                               Year = h.FbrihYearOfInsp,
@@ -686,6 +716,17 @@ namespace RAMMS.Repository
                     }
                 }
             }
+            if (detail != null && detail.Count() > 10)
+            {
+                var recordstodel = detail.Count() - 10;
+                for (int i = recordstodel - 1; i < recordstodel; i--)
+                {
+                    detail.RemoveAt(i);
+
+                    if (i <= 0)
+                        break;
+                }
+            }
             return detail;
         }
 
@@ -695,11 +736,12 @@ namespace RAMMS.Repository
             if (string.IsNullOrWhiteSpace(request.RMU) && request.SectionCode == 0 && string.IsNullOrWhiteSpace(request.RdCode))
             {
                 var rmu = await (from x in _context.RmAllassetInventory
+                                 let rd = _context.RmRoadMaster.FirstOrDefault(r => r.RdmRdCode == x.AiRdCode)
                                  where x.AiAssetGrpCode == "BR" && x.AiActiveYn == true
                                  select new AssetDDLResponseDTO.DropDown
                                  {
-                                     Value = x.AiRmuCode,
-                                     Text = x.AiRmuName
+                                     Value = rd.RdmRmuCode,
+                                     Text = rd.RdmRmuName
                                  }).Distinct().OrderByDescending(x => x.Value).ToListAsync();
 
                 var section = await (from x in _context.RmAllassetInventory
@@ -752,12 +794,13 @@ namespace RAMMS.Repository
             else if (string.IsNullOrWhiteSpace(request.RMU) && request.SectionCode > 0 && !string.IsNullOrWhiteSpace(request.RdCode))
             {
                 var rmu = await (from x in _context.RmAllassetInventory
+                                 let rd = _context.RmRoadMaster.FirstOrDefault(r => r.RdmRdCode == x.AiRdCode)
                                  where x.AiAssetGrpCode == "BR" && x.AiActiveYn == true &&
                                  x.AiRdCode == request.RdCode && x.AiSecCode == request.SectionCode.ToString()
                                  select new AssetDDLResponseDTO.DropDown
                                  {
-                                     Value = x.AiRmuCode,
-                                     Text = x.AiRmuName
+                                     Value = rd.RdmRmuCode,
+                                     Text = rd.RdmRmuName
                                  }).Distinct().OrderByDescending(x => x.Value).ToListAsync();
                 result.RMU = rmu;
             }
@@ -804,11 +847,12 @@ namespace RAMMS.Repository
             else if (string.IsNullOrWhiteSpace(request.RMU) && request.SectionCode > 0 && string.IsNullOrWhiteSpace(request.RdCode))
             {
                 var rmu = await (from x in _context.RmAllassetInventory
+                                 let rd = _context.RmRoadMaster.FirstOrDefault(r => r.RdmRdCode == x.AiRdCode)
                                  where x.AiAssetGrpCode == "BR" && x.AiActiveYn == true && x.AiSecCode == request.SectionCode.ToString()
                                  select new AssetDDLResponseDTO.DropDown
                                  {
-                                     Value = x.AiRmuCode,
-                                     Text = x.AiRmuName
+                                     Value = rd.RdmRmuCode,
+                                     Text = rd.RdmRmuName
                                  }).Distinct().OrderByDescending(x => x.Value).ToListAsync();
 
                 var roadCode = await (from x in _context.RmAllassetInventory
@@ -839,11 +883,12 @@ namespace RAMMS.Repository
                                      }).Distinct().ToListAsync();
 
                 var rmu = await (from x in _context.RmAllassetInventory
+                                 let rd = _context.RmRoadMaster.FirstOrDefault(r => r.RdmRdCode == x.AiRdCode)
                                  where x.AiAssetGrpCode == "BR" && x.AiActiveYn == true && x.AiRdCode == request.RdCode
                                  select new AssetDDLResponseDTO.DropDown
                                  {
-                                     Value = x.AiRmuCode,
-                                     Text = x.AiRmuName
+                                     Value = rd.RdmRmuCode,
+                                     Text = rd.RdmRmuName
                                  }).Distinct().OrderByDescending(x => x.Value).ToListAsync();
                 result.Section = section;
                 result.RMU = rmu;

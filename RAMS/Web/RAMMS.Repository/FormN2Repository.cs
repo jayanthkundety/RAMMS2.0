@@ -98,7 +98,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 6)
                     query = query.OrderBy(s => s.FnthUsernameVer);
                 if (filterOptions.ColumnIndex == 7)
-                    query = query.OrderBy(s => s.FnihSubmitSts);
+                    query = query.OrderBy(s => s.FnthStatus);
             }
             else if (filterOptions.sortOrder == SortOrder.Descending)
             {
@@ -115,7 +115,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 6)
                     query = query.OrderByDescending(s => s.FnthUsernameVer);
                 if (filterOptions.ColumnIndex == 7)
-                    query = query.OrderByDescending(s => s.FnihSubmitSts);
+                    query = query.OrderByDescending(s => s.FnthStatus);
             }
 
             result = await query
@@ -238,6 +238,7 @@ namespace RAMMS.Repository
                                         || x.FnthFnihPkRefNoNavigation.FnihRoadName.Contains(filterOptions.Filters.SmartInputValue)
                                         || x.FnthRefId.Contains(filterOptions.Filters.SmartInputValue)
                                         || x.FnthNcrNo.Contains(filterOptions.Filters.SmartInputValue)
+                                        || (x.FnthStatus ?? "").Contains(filterOptions.Filters.SmartInputValue)
                                         || ((x.FnthFnihPkRefNoNavigation.FnihFrmCh.HasValue ? x.FnthFnihPkRefNoNavigation.FnihFrmCh.Value : 0).ToString() +
                                         "."
                                         + x.FnthFnihPkRefNoNavigation.FnihFrmChDeci)

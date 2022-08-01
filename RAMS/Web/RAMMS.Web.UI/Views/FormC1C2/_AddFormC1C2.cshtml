@@ -2,6 +2,7 @@
 
 @using RAMMS.Web.UI.Models;
 @using RAMMS.Business.ServiceProvider;
+@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 @{
     ViewData["Title"] = "Form C1/C2 - Road Asset Management and Maintenance System";
     ViewBag.TabTitle = "Form C1/C2 - Road Asset Management and Maintenance System";
@@ -9,7 +10,6 @@
     string strAssestID = string.Empty;
     string strYear = string.Empty;
     string strRefId = string.Empty;
-    bool IsSupervisor = false;
     if (Model != null)
     {
         strAssestID = Model.AiAssetId;
@@ -17,29 +17,29 @@
         strRefId = Model.CInspRefNo;
         ViewBag.IsEdit = ViewBag.IsEdit ? (Model.SubmitSts ? false : true) : false;
     }
+
+    bool IsSupervisor = security.IsSupervisor && (Model == null || (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormC1C2Init));
+    string strStatus = Model != null ? Model.Status : "";
+    int iPkRefNo = Model != null ? Model.PkRefNo : 0;
+
 }
-@inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
-@*section Scripts{*@
-<script type="text/javascript" src="~/assets/js/Views/FormC1C2.js" asp-append-version="true"></script>
-@if (Model != null)
-{
-    IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormC1C2Init);
-    <script type="text/javascript">
+@section Scripts{
+    <script type="text/javascript" src="~/assets/js/Views/FormC1C2.js" asp-append-version="true"></script>
+    @if (Model != null)
+    {
+        <script type="text/javascript">
             frmC1C2.HeaderData = @Html.Raw(RAMMS.Common.Utility.JSerialize(Model));
             frmC1C2.IsEdit = @(ViewBag.IsEdit ? "true" : "false");
-            $(document).ready(function () {
-             process.Init("FormC1C2", "@Model.Status", @Model.PkRefNo);
-        });
-    </script>
+        </script>
+    }
+   
 }
-
-//}
 @{
     Html.RenderPartial("_breadcrumb", new BreadCrumb()
-            {
-                Title = "Condition Inspection - Form C1/C2",
-                SimpleNavigation = "Home,Condition Inspection,Form C1/C2"
-            });
+    {
+        Title = "Condition Inspection - Form C1/C2",
+        SimpleNavigation = "Home,Condition Inspection,Form C1/C2"
+    });
 }
 <div class="row">
     <div class="w-100 bg-body" id="frmC1C2Data">
@@ -159,21 +159,21 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Division", "Division")
                                                                 @*<select name="" class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input type="text" name="AiDivCode" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("RMU", "RMU")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input type="text" name="AiRmuName" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Road Code", "Road Code")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input type="text" name="AiRdCode" class="form-control" disabled />
                                                             </div>
@@ -184,7 +184,7 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Structure Code", "Structure Code")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input type="text" name="AiStrucCode" class="form-control" disabled />
                                                             </div>
@@ -207,7 +207,7 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Culvert Material", "Culvert Material")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input name="AiMaterial" type="text" class="form-control" disabled />
                                                             </div>
@@ -226,7 +226,7 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Culvert Type", "Culvert Type")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input name="AiGrpType" type="text" class="form-control" disabled />
                                                             </div>
@@ -237,7 +237,7 @@
                                                             <div class="form-group col-lg-2">
                                                                 @Html.Label("Pre-Cast/In-Situ", "Pre-Cast/In-Situ")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input name="AiPrecastSitu" type="text" class="form-control" disabled />
                                                             </div>
@@ -272,14 +272,14 @@
                                                             <div class="form-group col-lg-4">
                                                                 @Html.Label("Inlet Structure", "Inlet Structure")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input name="AiIntelStruc" type="text" class="form-control" disabled />
                                                             </div>
                                                             <div class="form-group col-lg-4">
                                                                 @Html.Label("Outlet Structure", "Outlet Structure")
                                                                 @*<select class="form-control" disabled>
-                                                                    <option></option>
+                                                                        <option></option>
                                                                     </select>*@
                                                                 <input name="AiOutletStruc" type="text" class="form-control" disabled />
                                                             </div>
@@ -363,7 +363,7 @@
                                                                     <input id="dtInspection" name="DtOfInsp" class="form-control svalidate {req,Date of Inspection}" type="date" value="" />
                                                                 </div>
                                                             </div>
-                                                            <div class="w-100" id="divInspectionList"> 
+                                                            <div class="w-100" id="divInspectionList">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -520,6 +520,7 @@
                                                                     </div>
                                                                     <div id="ImageView" class="collapse avowmodal-form" aria-labelledby="headingEight" data-parent="#ImageList">
                                                                         <div class="card-body" id="ImageViewBody">
+
                                                                         </div>
                                                                     </div>
                                                                     <div style="display:none;" id="ImageViewBodyTemplate">
@@ -529,6 +530,7 @@
                                                                         </div>
                                                                         <div class="item">
                                                                             <div data-fancybox="gallery" style="text-align:center" gallery>
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -705,7 +707,7 @@
                                     <div class="border-top px-2 pt-3 pb-1 float-left w-100" userIdGroup>
                                         <div class="form-group col-lg-2 float-left">
                                             @Html.Label("User ID", "User ID")
-                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "SerProviderUserId", "Select Users", new { @Id = "formC1C2InspectedBy", @class = "form-control svalidate {req,Inspected By User Id}", @useridChange = "" })
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "SerProviderUserId", "Select Users", new { @Id = "formC1C2InspectedBy", @class = "form-control svalidate {req,Inspected By User Id}", @useridChange = "", @disabled = IsSupervisor ? "false" : "disabled" })
                                         </div>
                                         <div class="form-group col-lg-3 float-left">
                                             @Html.Label("Name", "Name")
@@ -717,7 +719,7 @@
                                         </div>
                                         <div class="form-group col-lg-2 float-left">
                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                            <input name="SerProviderInsDt" class="form-control svalidate {req,Inspected by date}" type="date" value="" />
+                                            <input name="SerProviderInsDt" class="form-control svalidate {req,Inspected by date}" type="date" value="" @(IsSupervisor ? "" : "disabled='disabled'") />
                                         </div>
                                         <div class="form-group col-lg-2 float-left">
                                             @Html.Label("Signature", "Signature")
@@ -729,10 +731,10 @@
                                             @Html.Label("Overall Condition Rating", "Overall Condition Rating")
                                             <select name="CulvertConditionRat" class="form-control validate {req,Overall Condition Rating}">
                                                 <option value="">Select</option>
-                                                @for (int i = 1; i <= 3; i++)
-                                                {
-                                                    <option value="@i.ToString()">@i.ToString()</option>
-                                                }
+                                                <option value="-1">NA</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-lg-6 float-left">
@@ -752,19 +754,19 @@
                                     <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                         <div class="form-group col-lg-2 float-left">
                                             @Html.Label("User ID", "User ID")
-                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UserIdAud", "Select Users", new { @Id = "formC1C2AuditedBy", @class = "form-control {req,Audited By User Id}", @useridChange = "" })
+                                            @Html.DropDownList((IEnumerable<CSelectListItem>)ViewData["User"], "UserIdAud", "Select Users", new { @Id = "formC1C2AuditedBy", @class = "form-control {visreq,Audited By User Id}", @useridChange = "", @disabled = "disabled" })
                                         </div>
                                         <div class="form-group col-lg-3 float-left">
                                             @Html.Label("Name", "Name")
-                                            <input name="UserNameAud" class="form-control {req,Audited By User Name}" type="text" value="" userName disabled />
+                                            <input name="UserNameAud" class="form-control {visreq,Audited By User Name}" type="text" value="" userName disabled />
                                         </div>
                                         <div class="form-group col-lg-3 float-left">
                                             @Html.Label("Designation", "Designation")
-                                            <input name="UserDesignationAud" class="form-control {req,Audited By User Designation}" type="text" value="" userDest disabled />
+                                            <input name="UserDesignationAud" class="form-control {visreq,Audited By User Designation}" type="text" value="" userDest disabled />
                                         </div>
                                         <div class="form-group col-lg-2 float-left">
                                             @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
-                                            <input name="DtAud" class="form-control {req,Audited by date}" type="date" value="" />
+                                            <input name="DtAud" class="form-control {req,Audited by date}" type="date" value="" disabled="disabled" />
                                         </div>
                                         <div class="form-group col-lg-2 float-left">
                                             @Html.Label("Signature", "Signature")
@@ -777,34 +779,22 @@
                                     </div>
                                 </div>
                             </div>
-
-                            @{
-                                if (Model != null)
-                                {
-                                    Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                {
-                    Form = "FormC1C2",
-                    RefId = Model.PkRefNo,
-                    Stage = Model.Status
-                });
-                                }
-                            }
+                            @if (Model != null && Model.PkRefNo > 0) { await Html.RenderPartialAsync("_ProcessHistory", new RAMMS.DTO.RequestBO.ProcessDTO() { Form = "FormC1C2", RefId = Model.PkRefNo, Stage = Model.Status }); }
                         </div>
                     </div>
                 </div>
             </div>
 
-
-            <div class="modal-footer float-left w-100">
+            <div class="col-md-12 float-right text-right custom-footer">
                 <button type="button" class="btn btn-sm btn-outline-theme" onclick="frmC1C2.Cancel()">Cancel</button>
-                @*@if (Model != null && !Model.SubmitSts)
-                    {*@
-                <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(false)" finddetailsdep>Save</button>
-                @if (IsSupervisor)
+                @if (ViewBag.IsEdit)
                 {
-                    <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(true)" finddetailsdep>Submit</button>
+                    <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(false)" finddetailsdep>Save</button>
+                    @if (IsSupervisor)
+                    {
+                        <button type="button" class="btn btn-sm btn-themebtn" onclick="frmC1C2.Save(true)" finddetailsdep>Submit</button>
+                    }
                 }
-                @*}*@
                 @if (security.IsExecutive && Model != null && Model.Status == RAMMS.Common.StatusList.FormC1C2Inspected)
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperationsExecutive', 'Approved / Rejected By');">Approve / Reject</button>
@@ -821,120 +811,113 @@
                 {
                     <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Audited / Reject</button>
                 }
-
             </div>
-            @*<div class="col-md-12 float-right text-right custom-footer">
-
-                @if (ViewBag.IsEdit)
-                {
-
-
-                }
-                </div>*@
         </form>
     </div>
 </div>
+ <script type="text/javascript">
+        $(document).ready(function () {
+            process.Init("FormC1C2", "@strStatus", @iPkRefNo);
+        });
+        frmC1C2.Dis_Severity = @Html.Raw(RAMMS.Common.Utility.JSerialize(ViewBag.Dis_Severity));
+        frmC1C2.Pattern = "@RAMMS.Common.RefNumber.FormRefNumber.GetRawRefNumber(RAMMS.Common.RefNumber.FormType.FormC1C2)";
+        var filesToUpload = [];
+        $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
+            var fileIdCounter = 0;
 
-<script type="text/javascript">
-    frmC1C2.Dis_Severity = @Html.Raw(RAMMS.Common.Utility.JSerialize(ViewBag.Dis_Severity));
-    frmC1C2.Pattern = "@RAMMS.Common.RefNumber.FormRefNumber.GetRawRefNumber(RAMMS.Common.RefNumber.FormType.FormC1C2)";
-    var filesToUpload = [];
-    $.fn.fileUploader = function (filesToUpload, sectionIdentifier) {
-        var fileIdCounter = 0;
+            this.closest(".files").change(function (evt) {
+                var output = [];
+                for (var i = 0; i < evt.target.files.length; i++) {
+                    fileIdCounter++;
+                    var file = evt.target.files[i];
+                    var fileId = sectionIdentifier + fileIdCounter;
+                    var fileType = $("#photoType").val();
 
-        this.closest(".files").change(function (evt) {
-            var output = [];
-            for (var i = 0; i < evt.target.files.length; i++) {
-                fileIdCounter++;
-                var file = evt.target.files[i];
-                var fileId = sectionIdentifier + fileIdCounter;
-                var fileType = $("#photoType").val();
+                    //PDF--application / pdf
+                    //docx--application / vnd.openxmlformats - officedocument.wordprocessingml.document
+                    //doc--application / msword
+                    //xlsx--application / vnd.openxmlformats - officedocument.spreadsheetml.sheet
+                    //csv--text / csv
+                    //xls--application / vnd.ms - excel
+                    //PNG--image / png
+                    //JPG--image / jpeg
+                    //JPEG--image / jpeg
+                    var ext = file.name.split('.').pop().toLowerCase();
 
-                //PDF--application / pdf
-                //docx--application / vnd.openxmlformats - officedocument.wordprocessingml.document
-                //doc--application / msword
-                //xlsx--application / vnd.openxmlformats - officedocument.spreadsheetml.sheet
-                //csv--text / csv
-                //xls--application / vnd.ms - excel
-                //PNG--image / png
-                //JPG--image / jpeg
-                //JPEG--image / jpeg
-                var ext = file.name.split('.').pop().toLowerCase();
+                    if (fileType != 'Others') {
+                        if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
+                    app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                    evt.target.value = null;
+                    return
+                        }
+                if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
+                    app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
+                    evt.target.value = null;
+                    return
+                        }
+            }
+                    else {
 
-                if (fileType != 'Others') {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
-                        app.ShowErrorMessage("Invalid extension! On this Photograph Type, You can only upload jpg/jpeg/png files.");
+                //if (file.type != "image/png" && file.type != "image/jpeg" && file.type != "application/vnd.ms-excel" && file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.type != "application/msword" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.type != "application/pdf") {
+                if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf', 'jfif']) == -1) {
+                    app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
+                    evt.target.value = null;
+                    return
+                        }
+                if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
+                    if (file.size > 26214400) {// should not be exceed 25 mb for documents
+                        app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 25 MB");
                         evt.target.value = null;
                         return
-                    }
+                            }
+                }
+                        else {
+
                     if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
                         app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
                         evt.target.value = null;
                         return
-                    }
+                            }
+                }
+            }
+
+            filesToUpload.push({
+            id: fileId,
+                        file: file,
+                        fileType: fileType
+                    });
+            if (fileType != 'Others') {
+                if (file.type == "image/png" || file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/jfif") {
+                    var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                    output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
                 }
                 else {
-
-                    //if (file.type != "image/png" && file.type != "image/jpeg" && file.type != "application/vnd.ms-excel" && file.type != "text/csv" && file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.type != "application/msword" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && file.type != "application/pdf") {
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'csv', 'docx', 'doc', 'xlsx', 'xls', 'pdf', 'jfif']) == -1) {
-                        app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
-                        evt.target.value = null;
-                        return
-                    }
-                    if ($.inArray(ext, ['png', 'jpeg', 'jpg', 'jfif']) == -1) {
-                        if (file.size > 26214400) {// should not be exceed 25 mb for documents
-                            app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 25 MB");
-                            evt.target.value = null;
-                            return
-                        }
-                    }
-                    else {
-
-                        if (file.size > 11000000) {// 5242880) {// should not be exceed 5 mb for images
-                            app.ShowErrorMessage("The file(" + file.name + ") does not match the upload conditions, The maximum file size for uploads should not exceed 11 MB");
-                            evt.target.value = null;
-                            return
-                        }
-                    }
+                    var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                    output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
                 }
+            }
+            else {
 
-                filesToUpload.push({
-                    id: fileId,
-                    file: file,
-                    fileType: fileType
-                });
-                if (fileType != 'Others') {
-                    if (file.type == "image/png" || file.type == "image/jpeg" || file.type == "image/jpg" || file.type == "image/jfif") {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
-                    }
-                    else {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
-                    }
+                if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg" || file.type != "image/jfif") {
+                    var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                    output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
                 }
                 else {
-
-                    if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg" || file.type != "image/jfif") {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'><i class='fas fa-file'></i> ", file.name, " ", removeLink, "</li> ");
-                    }
-                    else {
-                        var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
-                        output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
-                    }
+                    var removeLink = "<a  class=\"removeFile\" href=\"#\" data-fileid=\"" + fileId + "\"><i style='color:red' class='far fa-times-circle'></i></a>";
+                    output.push("<li style='list-style:none;display:inline'>", "<img src=" + URL.createObjectURL(evt.target.files[i]) + " height=100px width=100px style='margin:5px'>", removeLink, "</li> ");
                 }
-            };
+            }
+        };
 
-            $(this).children(".fileList")
-                .append(output.join(""));
+                $(this).children(".fileList")
+                    .append(output.join(""));
 
-            //reset the input to null - nice little chrome bug!
-            //evt.target.value = null;
-            document.getElementById("AssetUploadBtn").disabled = false;
+        //reset the input to null - nice little chrome bug!
+        //evt.target.value = null;
+        document.getElementById("AssetUploadBtn").disabled = false;
         });
 
-        $(this).on("click", ".removeFile", function (e) {
+            $(this).on("click", ".removeFile", function (e) {
             e.preventDefault();
             var fileId = $(this).parent().children("a").data("fileid");
 
@@ -945,7 +928,7 @@
                     filesToUpload.splice(i, 1);
             }
 
-            $(this).parent().remove();
+                $(this).parent().remove();
             if (filesToUpload.length == 0) {
                 document.getElementById("AssetUploadBtn").disabled = true;
 
@@ -953,40 +936,40 @@
             else {
                 document.getElementById("files").disabled = false;
                 document.getElementById("AssetUploadBtn").disabled = false;
-                $("#files1").removeClass("disabled");
+                    $("#files1").removeClass("disabled");
             }
         });
 
-        this.clear = function () {
+            this.clear = function () {
             for (var i = 0; i < filesToUpload.length; ++i) {
                 if (filesToUpload[i].id.indexOf(sectionIdentifier) >= 0)
                     filesToUpload.splice(i, 1);
             }
 
-            $(this).children(".fileList").empty();
+                $(this).children(".fileList").empty();
         }
 
-        return this;
-    };
-    (function () {
+            return this;
+        };
+        (function () {
 
-        var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
+            var files1Uploader = $("#files1").fileUploader(filesToUpload, "files1");
 
-        $("#imageClear").click(function (e) {
+            $("#imageClear").click(function (e) {
             filesToUpload.length = 0;
-            $("#photolist li").remove();
-            $("#myModal2").modal('hide');
-            $("#photoType").val("").trigger("chosen:updated");
+                $("#photolist li").remove();
+                $("#myModal2").modal('hide');
+                $("#photoType").val("").trigger("chosen:updated");
         });
 
-        $("#btnclose").click(function (e) {
+            $("#btnclose").click(function (e) {
             filesToUpload.length = 0;
-            $("#photolist li").remove();
-            $("#myModal2").modal('hide');
-            $("#photoType").val("").trigger("chosen:updated");
+                $("#photolist li").remove();
+                $("#myModal2").modal('hide');
+                $("#photoType").val("").trigger("chosen:updated");
         });
 
-        $("#AssetUploadBtn").click(function (e) {
+            $("#AssetUploadBtn").click(function (e) {
             var type = $("#photoType").val();
             //if (type != "Others") {
             //    var ext = $('#files').val().split('.').pop().toLowerCase();
@@ -1009,42 +992,42 @@
                 formData.append("phototype", filesToUpload[i].fileType);
             }
             InitAjaxLoading();
-            $.ajax(
-                {
-                    url: "/FormC1C2/ImageUploaded",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: "POST",
-                    dataType: 'JSON',
-                    success: function (data) {
+                $.ajax(
+                    {
+            url: "/FormC1C2/ImageUploaded",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        dataType: 'JSON',
+                        success: function (data) {
 
-                        if (data == -1) {
-                            ShowErrorMessage("You cannot upload more than 2 files for individual type");
-                        }
-                        frmC1C2.RefreshImageList();
-                        HideAjaxLoading();
-                        CloseUploadModal();
-                        filesToUpload.length = 0;
-                    },
-                    error: function (data) {
-                        HideAjaxLoading();
-                        app.ShowErrorMessage("Upload Failed. Kindly retry later.")
-
+                    if (data == -1) {
+                        ShowErrorMessage("You cannot upload more than 2 files for individual type");
                     }
-                }
-            );
+                    frmC1C2.RefreshImageList();
+                    HideAjaxLoading();
+                    CloseUploadModal();
+                    filesToUpload.length = 0;
+                },
+                        error: function (data) {
+                    HideAjaxLoading();
+                    app.ShowErrorMessage("Upload Failed. Kindly retry later.")
+
+                        }
+            }
+                );
 
         });
-    })()
-    function CloseUploadModal() {
+        })()
+        function CloseUploadModal() {
         filesToUpload.length = 0;
-        $("#Filelist").empty();
-        $("#photolist").empty();
-        $("#myModal2").modal('hide');
-        $("#photoType").val("").trigger("change").trigger("chosen:updated");
+            $("#Filelist").empty();
+            $("#photolist").empty();
+            $("#myModal2").modal('hide');
+            $("#photoType").val("").trigger("change").trigger("chosen:updated");
     }
-</script>
+    </script>
 <style>
     div.item {
         vertical-align: top;

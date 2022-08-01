@@ -26,6 +26,7 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Task<FormB1B2HeaderRequestDTO> GetBrideDetailById(long id);
         Task<(bool IsExist, int PkRefNo)> AlreadyExists(int assetid, int year);
         Task<int> SaveImageDtl(List<FormB1B2ImgRequestDTO> imagelist);
+        Task<int> SaveImageDtlTab(List<FormB1B2ImgRequestDTO> imagelist);
         Task<List<FormB1B2ImgRequestDTO>> GetAllImageByAssetPK(int assetPK);
         Task<int> DectivateAssetImage(int assetimgId);
         Task<int> ImageLastInsertedSRNO(int hederid, string type);
@@ -33,5 +34,6 @@ namespace RAMMS.Business.ServiceProvider.Interfaces
         Byte[] FormDownload(string formname, int id, string basepath, string filepath);
         Task<AssetDDLResponseDTO> GetAssetDDL(AssetDDLRequestDTO request);
         Task<int> UpdateB1B2(FormB1B2HeaderRequestDTO formB1B2); //Tab
+        Task<IEnumerable<SelectListItem>> GetBridgeIdsB1B2();
     }
 }

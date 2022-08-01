@@ -33,22 +33,12 @@
     int view = Model.IsView ? 1 : 0;
     int[] rating = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     IEnumerable<SelectListItem> ratings = rating.Select(s => new SelectListItem { Value = s.ToString(), Text = s.ToString() }).AsEnumerable();
+    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormB1B2Init);
     // Model.CInspRefNo = string.IsNullOrEmpty(Model.CInspRefNo) ? Model.PkRefNo > 0 && Model.DtOfInsp.HasValue ? $"CI/{Model.AiPkRefNo}/{Model.DtOfInsp.Value.ToString("yyyyMMdd")}/{Model.RecordNo}" : "" : Model.CInspRefNo;
 }
 <input type="hidden" id="hdnPkRefNo" value="@Model.PkRefNo" />
 <input type="hidden" id="hdnDPkRefNo" value="@Model.Detail.PkRefNo" />
 <input type="hidden" id="hdnIsView" value="@view" />
-
-<script type="text/javascript">
-        $(document).ready(function () {
-             process.Init("FormB1B2", "@Model.Status", @Model.PkRefNo);
-        });
-</script>
-
-@{
-    bool IsSupervisor = security.IsSupervisor && (string.IsNullOrEmpty(Model.Status) || Model.Status == RAMMS.Common.StatusList.FormB1B2Init);
-}
-
 <div class="row">
     <div class="w-100 bg-body" id="FormB1B2AddDiv">
         <div id="">
@@ -363,7 +353,7 @@
                                                                         }
                                                                         <div class="col-lg-3 form-group" @isVisiblePiersPrimCompOthers PiersPrimCompOthers>
                                                                             @Html.Label("Others", "Others", new { @class = " float-left" })
-                                                                            <input id="txtPiersPrimCompOthers" type="text" class="form-control submit view save @validatePiers {required, Piers, Connectiong of primary components - Distress Others}" value="@Model.Detail.PiersPrimCompDistressOthers" DistressOthers />
+                                                                            <input id="txtPiersPrimCompOthers" type="text" class="form-control submit view save @validatePiers {required, Piers, Connection Of Primary Components - Distress Others}" value="@Model.Detail.PiersPrimCompDistressOthers" DistressOthers />
                                                                         </div>
                                                                         <div class="col-lg-3 form-group">
                                                                             @Html.Label("Severity", "Severity", new { @class = "float-left" })
@@ -393,7 +383,7 @@
                                                                         }
                                                                         <div class="col-lg-3 form-group" @isVisibleBearingStDiaphgOthers BearingStDisOthers>
                                                                             @Html.Label("Others", "Others", new { @class = " float-left" })
-                                                                            <input id="txtBearingStDiaphgOthers" type="text" class="form-control submit view save @validateBearings {required, Bearing, Bearing Seats, Bearing Diaphgrams - Distress Others}" value="@Model.Detail.BearingStDiaphgDistressOthers" DistressOthers />
+                                                                            <input id="txtBearingStDiaphgOthers" type="text" class="form-control submit view save @validateBearings {required, Bearing, Bearing Seats, Bearing Diaphragm - Distress Others}" value="@Model.Detail.BearingStDiaphgDistressOthers" DistressOthers />
                                                                         </div>
                                                                         <div class="col-lg-3 form-group">
                                                                             @Html.Label("Severity", "Severity", new { @class = "float-left" })
@@ -603,7 +593,7 @@
                                                                             @Html.Label("Distress", "Distress", new { @class = "float-left" })
 
                                                                             <input type="hidden" id="hdnSidewalksAppSlabDistress" value="@Model.Detail.SidewalksAppSlabDistress" />
-                                                                            @Html.DropDownListFor(Ahdr => Ahdr.Detail.SidewalksAppSlabDistress, distress, "", new { @Id = "ddlSidewalksAppSlabDistress", @class = "form-control view submit validate {required, Approaches, Approch Slab - Distress}", @multiple = "multiple", @onchange = "DistressChange(this,'SidewalksOthers')" })
+                                                                            @Html.DropDownListFor(Ahdr => Ahdr.Detail.SidewalksAppSlabDistress, distress, "", new { @Id = "ddlSidewalksAppSlabDistress", @class = "form-control view submit validate {required, Approaches, Approaches Slab - Distress}", @multiple = "multiple", @onchange = "DistressChange(this,'SidewalksOthers')" })
                                                                         </div>
                                                                         @{
                                                                             var isVisibleSidewalksOthers = Model.Detail.SidewalksAppSlabDistress == "B22" ? "" : "hidden";
@@ -611,11 +601,11 @@
                                                                         }
                                                                         <div class="col-lg-3 form-group" @isVisibleSidewalksOthers SidewalksOthers>
                                                                             @Html.Label("Others", "Others", new { @class = " float-left" })
-                                                                            <input id="txtSidewalksOthers" type="text" class="form-control submit view save @validateSidewalk {required, Approaches, Approch Slab - Distress Others}" value="@Model.Detail.SidewalksAppSlabDistressOthers" DistressOthers />
+                                                                            <input id="txtSidewalksOthers" type="text" class="form-control submit view save @validateSidewalk {required, Approaches, Approaches Slab - Distress Others}" value="@Model.Detail.SidewalksAppSlabDistressOthers" DistressOthers />
                                                                         </div>
                                                                         <div class="col-lg-3 form-group">
                                                                             @Html.Label("Severity", "Severity", new { @class = "float-left" })
-                                                                            @Html.DropDownListFor(Ahdr => Ahdr.Detail.SidewalksAppSlabSeverity, severity, "Select Severity", new { @Id = "ddlSidewalksAppSlabSeverity", @class = "form-control view submit validate {required, Approaches, Approch Slab - Severity}" })
+                                                                            @Html.DropDownListFor(Ahdr => Ahdr.Detail.SidewalksAppSlabSeverity, severity, "Select Severity", new { @Id = "ddlSidewalksAppSlabSeverity", @class = "form-control view submit validate {required, Approaches, Approaches Slab - Severity}" })
 
                                                                         </div>
                                                                     </div>
@@ -855,6 +845,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div id="" class="col-lg-12 px-lg-5">
                             <div class="bg-white rounded landing-division w-100 float-left mb-3">
                                 <div class="col-lg-12 py-2 px-4">
@@ -863,23 +855,23 @@
                                 <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                     <div class="form-group col-lg-2 float-left">
                                         @Html.Label("User ID", "User ID")
-                                        @Html.DropDownListFor(Ahdr => Ahdr.SerProviderUserId, user, "User Id", new { @Id = "ddlInspectedby", @class = "form-control view save submit validate {required, Inspected by User Id}" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.SerProviderUserId, user, "User Id", CHTMLControls.GetHtmlAttribute("ddlInspectedby", "form-control view save submit validate {visreq, Inspected by User Id}", IsSupervisor))
 
                                     </div>
                                     <div class="form-group col-lg-3 float-left">
                                         @Html.Label("Name", "Name")
-                                        <input id="txtServiceProvidername" class="form-control save submit validate {required, Inspected by User Name}" type="text" value="@Model.SerProviderUserName" />
+                                        <input id="txtServiceProvidername" class="form-control save submit validate {visreq, Inspected by User Name}" type="text" value="@Model.SerProviderUserName" disabled />
                                     </div>
                                     <div class="form-group col-lg-3 float-left">
                                         @Html.Label("Designation", "Designation")
-                                        <input id="txtServiceProviderDesignation" class="form-control save submit validate {required, Inspected by User Designation}" type="text" value="@Model.SerProviderUserDesignation" />
+                                        <input id="txtServiceProviderDesignation" class="form-control save submit validate {visreq, Inspected by User Designation}" type="text" value="@Model.SerProviderUserDesignation" disabled />
                                     </div>
                                     <div class="form-group col-lg-2 float-left">
                                         @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
                                         @{
                                             string InspectedbyDt = Model.SerProviderInsDt.HasValue ? Model.SerProviderInsDt.Value.ToString("yyyy-MM-dd") : "";
                                         }
-                                        <input id="txtServiceProviderDate" class="form-control view svalidate {required, Inspected Date}" type="date" value="@InspectedbyDt" />
+                                        <input id="txtServiceProviderDate" class="form-control view svalidate {required, Inspected Date}" type="date" value="@InspectedbyDt" @(IsSupervisor ? "" : "disabled='disabled'") />
                                     </div>
                                     <div class="form-group col-lg-2 float-left">
                                         @Html.Label("Signature", "Signature")
@@ -890,7 +882,8 @@
                                     <div class="form-group col-lg-4 float-left">
                                         @Html.Label("Bridge Condition Rating", "Bridge Condition Rating")
                                         @Html.DropDownListFor(model => model.BridgeConditionRat, new List<SelectListItem>
-                                           { new SelectListItem{Text="1", Value="1"},
+                                           { new SelectListItem{Text="NA", Value="-1"},
+                                       new SelectListItem{Text="1", Value="1"},
                                              new SelectListItem{Text="2", Value="2"},new SelectListItem{Text="3", Value="3"}}, "Select Condition Rating", new { @Id = "ddlBrideConditionRating", @class = "form-control view save submit validate {required, Bridge Condition Rating}" })
                                     </div>
                                     <div class="form-group col-lg-6 float-left">
@@ -907,23 +900,23 @@
                                 <div class="border-top px-2 pt-3 pb-1 float-left w-100">
                                     <div class="form-group col-lg-2 float-left">
                                         @Html.Label("User ID", "User ID")
-                                        @Html.DropDownListFor(Ahdr => Ahdr.UserIdAud, user, "User Id", new { @Id = "ddlAuditedby", @class = "form-control view validate {required, Audited by User Id}" })
+                                        @Html.DropDownListFor(Ahdr => Ahdr.UserIdAud, user, "User Id", new { @Id = "ddlAuditedby", @class = "form-control view validate {visreq, Audited by User Id}" })
 
                                     </div>
                                     <div class="form-group col-lg-3 float-left">
                                         @Html.Label("Name", "Name")
-                                        <input id="txtAuditedbyName" class="form-control" type="text" value="@Model.UserNameAud" />
+                                        <input id="txtAuditedbyName" class="form-control" type="text" value="@Model.UserNameAud" disabled="disabled" />
                                     </div>
                                     <div class="form-group col-lg-3 float-left">
                                         @Html.Label("Designation", "Designation")
-                                        <input id="txtAuditedbyDesignation" class="form-control" type="text" value="@Model.UserDesignationAud" />
+                                        <input id="txtAuditedbyDesignation" class="form-control" type="text" value="@Model.UserDesignationAud" disabled="disabled" />
                                     </div>
                                     <div class="form-group col-lg-2 float-left">
                                         @Html.Label("Date (DD-MM-YYYY)", "Date (DD-MM-YYYY)")
                                         @{
                                             string AuthDt = Model.DtAud.HasValue ? Model.DtAud.Value.ToString("yyyy-MM-dd") : "";
                                         }
-                                        <input id="txtAuditedByDate" class="form-control view svalidate {required, Audited by Date}" type="date" value="@AuthDt" />
+                                        <input id="txtAuditedByDate" class="form-control view svalidate {visreq, Audited by Date}" type="date" value="@AuthDt"/>
                                     </div>
                                     <div class="form-group col-lg-2 float-left">
                                         @Html.Label("Signature", "Signature")
@@ -933,28 +926,19 @@
                                     </div>
                                 </div>
                             </div>
-                            @{
-                                Html.RenderPartial("~/Views/Shared/_ProcessHistory.cshtml", new RAMMS.DTO.RequestBO.ProcessDTO
-                                {
-                                    Form = "FormB1B2",
-                                    RefId = Model.PkRefNo,
-                                    Stage = Model.Status
-                                });
-                            }
+                            @if (Model!= null && Model.PkRefNo > 0) { await Html.RenderPartialAsync("_ProcessHistory", new RAMMS.DTO.RequestBO.ProcessDTO() { Form = "FormB1B2", RefId = Model.PkRefNo, Stage = Model.Status }); }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal-footer float-left w-100">
+
+        <div class="col-md-12 float-right text-right custom-footer">
             <button id="btnHCancel" type="button" class="btn btn-sm btn-outline-theme">Cancel</button>
-            @if (!Model.SubmitSts)
+            <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn" B1B2SaveSubmitdep>Save</button>
+            @if (IsSupervisor)
             {
-                <button id="btnHSave" type="button" class="btn btn-sm btn-themebtn" B1B2SaveSubmitdep>Save</button>
-                @if (IsSupervisor)
-                {
-                    <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn" B1B2SaveSubmitdep>Submit</button>
-                }
+                <button id="btnHSubmit" type="button" class="btn btn-sm btn-themebtn" B1B2SaveSubmitdep>Submit</button>
             }
             @if (security.IsExecutive && Model.Status == RAMMS.Common.StatusList.FormB1B2Inspected)
             {
@@ -962,23 +946,22 @@
             }
             else if (security.IsHeadMaintenance && Model.Status == RAMMS.Common.StatusList.FormB1B2ExecutiveApproved)
             {
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OpeHeadMaintenance', 'Approved / Rejected By');">Approve / Reject</button>
             }
             else if (security.IsRegionManager && Model.Status == RAMMS.Common.StatusList.FormB1B2HeadMaintenanceApproved)
             {
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.OperRegionManager', 'Approved / Rejected By');">Approve / Reject</button>
             }
             else if (security.IsJKRSSuperiorOfficer && Model.Status == RAMMS.Common.StatusList.FormB1B2RegionManagerApproved)
             {
-        <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Audited / Reject</button>
+                <button type="button" class="btn btn-sm btn-themebtn" onclick="process.ShowApprove('@RAMMS.Common.GroupNames.JKRSSuperiorOfficerSO', 'Audited / Rejected By');">Approve / Audited / Reject</button>
             }
-
         </div>
-        @*<div class="col-md-12 float-right text-right custom-footer">
-                    
-                   
-                   
-            </div>*@
     </div>
 </div>
 <script type="text/javascript" src="~/js/MAMFormB1B2.js" asp-append-version="true"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+            process.Init("FormB1B2", "@Model.Status", @Model.PkRefNo);
+        });
+</script>

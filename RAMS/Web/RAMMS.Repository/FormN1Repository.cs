@@ -84,7 +84,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 8)
                     query = query.OrderBy(s => s.FnihUsernameVer);
                 if (filterOptions.ColumnIndex == 9)
-                    query = query.OrderBy(s => s.FnihSubmitSts);
+                    query = query.OrderBy(s => s.FnihStatus);
             }
             else if (filterOptions.sortOrder == SortOrder.Descending)
             {
@@ -105,7 +105,7 @@ namespace RAMMS.Repository
                 if (filterOptions.ColumnIndex == 8)
                     query = query.OrderByDescending(s => s.FnihUsernameVer);
                 if (filterOptions.ColumnIndex == 9)
-                    query = query.OrderByDescending(s => s.FnihSubmitSts);
+                    query = query.OrderByDescending(s => s.FnihStatus);
             }
 
             result = await query

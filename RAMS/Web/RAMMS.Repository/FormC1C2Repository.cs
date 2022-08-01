@@ -32,7 +32,6 @@ namespace RAMMS.Repository
 
             return await _context.RmFormCvInsHdr.Include(x => x.RmFormCvInsDtl).ThenInclude(x => x.FcvidIimPkRefNoNavigation).Where(x => x.FcvihPkRefNo == headerId && x.FcvihActiveYn == true).FirstOrDefaultAsync();
         }
-
         public async Task<RmFormCvInsHdr> Save(RmFormCvInsHdr frmC1C2, bool updateSubmit)
         {
             //bool isAdd = false;
@@ -177,6 +176,7 @@ namespace RAMMS.Repository
                                  || (x.AssetType ?? "").Contains(strVal)
                                  || (x.InspectedBy ?? "").Contains(strVal)
                                  || (x.AuditedBy ?? "").Contains(strVal)
+                                 || (x.ProcessStatus ?? "").Contains(strVal)
                                  || (x.Year.HasValue ? x.Year.Value.ToString() : "").Contains(strVal)
                                  || (!x.CDia.HasValue ? "" : x.CDia.Value.ToString()).Contains(strVal)
                                  || (!x.CULWidth.HasValue ? "" : x.CULWidth.Value.ToString()).Contains(strVal)
@@ -292,10 +292,12 @@ namespace RAMMS.Repository
                         select ty).ToList();
             var roadcode = (from o in _context.RmFormCvInsHdr
                             where o.FcvihPkRefNo == headerid
-                            select new { o.FcvihAiRdCode, o.FcvihDtOfInsp }).FirstOrDefault();
+                            select new { o.FcvihAiRdCode, o.FcvihYearOfInsp, o.FcvihAiAssetId }).FirstOrDefault();
 
             List<FormC1C2Rpt> detail = (from o in _context.RmFormCvInsHdr
-                                        where (o.FcvihAiRdCode == roadcode.FcvihAiRdCode && o.FcvihDtOfInsp.HasValue && o.FcvihDtOfInsp < roadcode.FcvihDtOfInsp) || o.FcvihPkRefNo == headerid
+                                        where o.FcvihAiAssetId == roadcode.FcvihAiAssetId && o.FcvihYearOfInsp <= roadcode.FcvihYearOfInsp &&
+                                        o.FcvihActiveYn == true
+                                        orderby o.FcvihYearOfInsp ascending
                                         select new FormC1C2Rpt
                                         {
                                             RefernceNo = o.FcvihCInspRefNo,
@@ -380,8 +382,8 @@ namespace RAMMS.Repository
                 rpt.Barrel_3_Severity = distressSeverity("4C", rpt.PkRefNo).severity;
                 rpt.Barrel_4_Distress = distressSeverity("4D", rpt.PkRefNo).distress;
                 rpt.Barrel_4_Severity = distressSeverity("4D", rpt.PkRefNo).severity;
-                rpt.CulvertApproachDistress = distressSeverity("5A", rpt.PkRefNo).Item1;
-                rpt.CulvertApproachSeverity = distressSeverity("5A", rpt.PkRefNo).Item2;
+                rpt.CulvertApproachDistress = distressSeverity("5A", rpt.PkRefNo).distress;
+                rpt.CulvertApproachSeverity = distressSeverity("5A", rpt.PkRefNo).severity;
                 rpt.BarrelList = (from d in _context.RmFormCvInsDtl
                                   where d.FcvidFcvihPkRefNo == rpt.PkRefNo
                                   && d.FcvidInspCodeDesc.Contains("Barrel") && d.FcvidActiveYn == true
@@ -398,18 +400,36 @@ namespace RAMMS.Repository
                                       Severity = d.FcvidSeverity
                                   }).ToList();
 
+                int i = 1;
 
+            }
+
+            if (detail != null && detail.Count() > 10)
+            {
+                var recordstodel = detail.Count() - 10;
+                for (int i = recordstodel - 1; i < recordstodel; i--)
+                {
+                    detail.RemoveAt(i);
+
+                    if (i <= 0)
+                        break;
+                }
+            }
+
+            if (detail != null && detail.Count() > 0)
+            {
+                var rpt = detail.FirstOrDefault();
                 var p = (from o in _context.RmFormCvInsImage
-                         where o.FcviFcvihPkRefNo == rpt.PkRefNo && o.FcviActiveYn == true
+                         where o.FcviFcvihPkRefNo == headerid && o.FcviActiveYn == true
                          && str.Contains(o.FcviImageTypeCode)
                          select new Pictures
                          {
                              ImageUrl = o.FcviImageUserFilePath,
-                             FileName = o.FcviImageFilenameUpload,
-                             Type = o.FcviImageTypeCode
+                             Type = o.FcviImageTypeCode,
+                             FileName = o.FcviImageFilenameUpload
                          }).ToList();
                 rpt.Pictures = new List<Pictures>();
-                int i = 1;
+                
                 foreach (var t in type)
                 {
                     var picktures = p.Where(s => s.Type == t.DdlTypeDesc).ToList();
@@ -436,7 +456,10 @@ namespace RAMMS.Repository
                         rpt.Pictures.AddRange(picktures);
                     }
                 }
+
+                detail.FirstOrDefault().Pictures = rpt.Pictures;
             }
+            
             return detail;
         }
 

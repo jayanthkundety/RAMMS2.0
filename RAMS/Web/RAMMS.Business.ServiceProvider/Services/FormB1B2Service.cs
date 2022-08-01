@@ -22,18 +22,16 @@ namespace RAMMS.Business.ServiceProvider.Services
     public class FormB1B2Service : IFormB1B2Service
     {
         private readonly IRepositoryUnit _repoUnit;
-        private readonly IMapper _mapper; 
+        private readonly IMapper _mapper;
         private readonly ISecurity _security;
         private readonly IProcessService processService;
-
         public FormB1B2Service(IRepositoryUnit repoUnit,
             IMapper mapper, ISecurity security, IProcessService proService)
         {
             _repoUnit = repoUnit ?? throw new ArgumentNullException(nameof(repoUnit));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); 
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _security = security ?? throw new ArgumentNullException(nameof(security));
-            this._security = security ?? throw new ArgumentNullException(nameof(security));
-            this.processService = proService;
+            processService = proService;
         }
         public long LastHeaderInsertedNo()
         {
@@ -61,7 +59,7 @@ namespace RAMMS.Business.ServiceProvider.Services
             {
                 bool isAdd = false;
                 var form = _mapper.Map<Domain.Models.RmFormB1b2BrInsHdr>(model);
-                form.FbrihStatus = "Open";
+                form.FbrihStatus = StatusList.FormB1B2Init;
                 form.FbrihActiveYn = true;
                 if (form.FbrihPkRefNo != 0)
                 {
@@ -84,11 +82,12 @@ namespace RAMMS.Business.ServiceProvider.Services
                     _repoUnit.FormB1B2HeaderRepository.Create(form);
                 }
                 await _repoUnit.CommitAsync();
+
                 if (form != null && form.FbrihSubmitSts)
                 {
-                    int result = this.processService.Save(new ProcessDTO()
+                    int iResult = processService.Save(new DTO.RequestBO.ProcessDTO()
                     {
-                        ApproveDate = new System.DateTime?(System.DateTime.Now),
+                        ApproveDate = DateTime.Now,
                         Form = "FormB1B2",
                         IsApprove = true,
                         RefId = form.FbrihPkRefNo,
@@ -98,21 +97,26 @@ namespace RAMMS.Business.ServiceProvider.Services
                 }
                 if (form.FbrihPkRefNo > 0)
                 {
-                    RmFormB1b2BrInsDtl entity = this._mapper.Map<RmFormB1b2BrInsDtl>(model.Detail);
-                    entity.FbridActiveYn = new bool?(true);
-                    entity.FbridFbrihPkRefNo = new int?(form.FbrihPkRefNo);
-                    if (entity.FbridPkRefNo == 0)
-                        _repoUnit.FormB1B2DetailRepository.Create(entity);
+                    var detail = _mapper.Map<Domain.Models.RmFormB1b2BrInsDtl>(model.Detail);
+                    detail.FbridActiveYn = true;
+                    detail.FbridFbrihPkRefNo = form.FbrihPkRefNo;
+                    if (detail.FbridPkRefNo == 0)
+                    {
+                        _repoUnit.FormB1B2DetailRepository.Create(detail);
+                    }
                     else
-                        _repoUnit.FormB1B2DetailRepository.Update(entity);
+                    {
+                        _repoUnit.FormB1B2DetailRepository.Update(detail);
+                    }
                 }
                 if (isAdd)
                 {
-                    IDictionary<string, string> values = new Dictionary<string, string>();
-                    values.Add("AssetID", model.DisplayAssetId);
-                    values.Add("Year", form.FbrihYearOfInsp.ToString());
-                    values.Add("????", Utility.ToString((object)form.FbrihPkRefNo));
-                    form.FbrihCInspRefNo = FormRefNumber.GetRefNumber(FormType.FormB1B2, values);
+                    IDictionary<string, string> lstData = new Dictionary<string, string>();
+                    lstData.Add("AssetID", model.DisplayAssetId);
+                    lstData.Add("Year", form.FbrihYearOfInsp.ToString());
+                    //lstData.Add("RatingRecord", form.FbrihRecordNo.ToString());
+                    lstData.Add(FormRefNumber.NewRunningNumber, Utility.ToString(form.FbrihPkRefNo));
+                    form.FbrihCInspRefNo = FormRefNumber.GetRefNumber(FormType.FormB1B2, lstData);
                 }
                 await _repoUnit.CommitAsync();
                 return form.FbrihPkRefNo;
@@ -212,6 +216,11 @@ namespace RAMMS.Business.ServiceProvider.Services
             return _repoUnit.FormB1B2HeaderRepository.GetBridgeIds(request);
         }
 
+        public async Task<IEnumerable<SelectListItem>> GetBridgeIdsB1B2()
+        {
+            return await _repoUnit.FormB1B2HeaderRepository.GetBridgeIdsB1B2();
+        }
+
         public async Task<FormB1B2HeaderRequestDTO> GetBrideDetailById(long id)
         {
             return await _repoUnit.FormB1B2HeaderRepository.GetBrideDetailById(id);
@@ -240,8 +249,8 @@ namespace RAMMS.Business.ServiceProvider.Services
 
                 foreach (var list in imagelist)
                 {
-                    var lst = _repoUnit.FormB1B2ImgRepository.FindAll(s => s.FbriImageTypeCode == list.ImageTypeCode && s.FbriFbrihPkRefNo == list.FbrihPkRefNo).ToList();
-                    if (lst != null && lst.Count > 2)
+                    var lst = _repoUnit.FormB1B2ImgRepository.FindAll(s => s.FbriImageTypeCode == list.ImageTypeCode && s.FbriFbrihPkRefNo == list.FbrihPkRefNo && s.FbriActiveYn == true).ToList();
+                    if (lst != null && lst.Count >= 2)
                     {
                         return -1;
                     }
@@ -259,6 +268,25 @@ namespace RAMMS.Business.ServiceProvider.Services
                 await _repoUnit.RollbackAsync();
                 throw ex;
             }
+
+            return rowsAffected;
+        }
+
+        public async Task<int> SaveImageDtlTab(List<FormB1B2ImgRequestDTO> imagelist)
+        {
+            int rowsAffected;
+
+                var imagelistdtl = new List<RmFormB1b2BrInsImage>();
+
+                foreach (var list in imagelist)
+                {
+                   imagelistdtl.Add(_mapper.Map<RmFormB1b2BrInsImage>(list));
+                }
+
+
+                _repoUnit.FormB1B2ImgRepository.Create(imagelistdtl);
+
+                rowsAffected = await _repoUnit.CommitAsync();
 
             return rowsAffected;
         }
@@ -326,11 +354,14 @@ namespace RAMMS.Business.ServiceProvider.Services
                     int sheetNo = 3;
                     bool IsFirst = true;
                     int index = 0;
+                    int ratingrecordnumber = 0;
                     foreach (var rpt in _rpt)
                     {
+                        index = 0;
                         Pictures[] pictures;
                         pictures = rpt.Pictures.Skip(index * 6).Take(6).ToArray();
                         index++;
+                        ratingrecordnumber++;
                         int noofsheets = (rpt.Pictures.Count() / 6) + ((rpt.Pictures.Count() % 6) > 0 ? 1 : 1);
 
                         using (var book = new XLWorkbook(cachefile))
@@ -342,7 +373,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                             image.Cell(7, 6).Value = rpt.RoadName;
                             image.Cell(4, 17).Value = rpt.ReferenceNo;
                             image.Cell(5, 17).Value = rpt.RiverName;
-                            image.Cell(6, 17).Value = index;
+                            image.Cell(6, 17).Value = ratingrecordnumber;
 
                             for (int i = 0; i < pictures.Count(); i++)
                             {
@@ -427,7 +458,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                                 copysheet.Cell(7, 6).Value = rpt.RoadName;
                                 copysheet.Cell(4, 17).Value = rpt.ReferenceNo;
                                 copysheet.Cell(5, 17).Value = rpt.RiverName;
-                                copysheet.Cell(6, 17).Value = index;
+                                copysheet.Cell(6, 17).Value = ratingrecordnumber;
                                 pictures = rpt.Pictures.Skip((tobeskipped - 1) * 6).Take(6).ToArray();
                                 for (int i = 0; i < pictures.Count(); i++)
                                 {

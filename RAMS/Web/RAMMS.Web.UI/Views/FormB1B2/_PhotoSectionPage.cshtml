@@ -294,10 +294,6 @@
         if ($("#hdnPkRefNo").val() == 0) {
             $("#AssetImageUploadBtn").hide();
         }
-        //var val = document.getElementById("hdnPkRefNo").value;
-        //if (val == "" || val == 0 || val == undefined) {
-        //    $("#AssetImageUploadBtn").css("display", "none");
-        //}
         document.getElementById("files").disabled = true;
         $("#files1").addClass("disabled");
         document.getElementById("AssetUploadBtn").disabled = true;
@@ -317,64 +313,9 @@
             $("#page1A").click();
             app.ShowErrorMessage("Required fields are incomplete in Page1");
         }
-        //$("#myModal2").modal('show');
-        @*var dt = $("#formADt").val();
-        var fromCh = $("#formAFromCh").val();
-        var fromChDeci = $("#formAFromChDeci").val();
-        var toCh = $("#formAToCh").val();
-        var ToChDeci = $("#formAToChDeci").val();
-        var siteRef = $("#formASiteRefmultiSelect").val();
-        var defCode = $("#formADefCode").val();
-        if (dt != null && dt != "" && fromCh != null && fromCh != "" && fromChDeci != "" && toCh != "" && ToChDeci != "" && siteRef != "" && defCode != "") {
-            $("#myModal2").modal('show');
-        }
-        else {
-            app.ShowErrorMessage("Required fields are incomplete in Page1")
-        }*@
 
     }
 
-    //function uploadFiles(inputId) {
-    //    if ($("#asset_PK").val() != "") {
-    //        saveImageUpload(inputId);
-    //    }
-    //    else {
-    //        saveAssets(true);
-
-    //    }
-    //}
-    //var formData = new FormData();
-    //function saveImageUpload(inputId) {
-    //    var input = document.getElementById(inputId);
-    //    var files = input.files;
-    //    formData.append("AssetId", document.getElementById("AssetId").value);
-    //    formData.append("PhotoType", document.getElementById("photoType").value)
-    //    InitAjaxLoading();
-    //    $.ajax(
-    //        {
-    //            url: "/assets/ImageUploaded",
-    //            data: formData,
-    //            processData: false,
-    //            contentType: false,
-    //            type: "POST",
-    //            dataType: 'JSON',
-    //            success: function (data) {
-    //                HideAjaxLoading();
-    //                input.value = "";
-    //                $('#myModal2').modal('hide');
-    //                GetImageList();
-
-    //            },
-    //            error: function (data) {
-    //                HideAjaxLoading();
-    //                console.log("Error");
-    //                alert(data);
-
-    //            }
-    //        }
-    //    );
-
-    //}
     function CloseUploadModal() {
         var output = document.getElementById('Filelist');
         $(output).empty();
@@ -410,7 +351,7 @@
                         app.ShowErrorMessage("Invalid extension! On this Type, You can only upload pdf/excel/doc/csv/jpg/jpeg/png files.");
                         evt.target.value = null;
                         //document.getElementById("AssetUploadBtn").disabled = false;
-                            return
+                        return
                     }
                     if ($.inArray(ext, ['png', 'jpeg', 'jpg']) == -1) {
                         if (file.size > 26214400) {// should not be exceed 25 mb for documents
@@ -430,22 +371,14 @@
                         }
                     }
                 }
+                var count = 0;
+                count = filesToUpload.filter(x => x.fileType == fileType);
+                if (count.length > 1) {
+                    app.ShowErrorMessage("You cannot upload more than 2 images for individual type");
+                    return;
+                }
                 const fsize = fi[i].size;
                 const filemb = Math.round((fsize / 1024));
-
-                //if (file.type != "image/png" && file.type != "image/jpg" && file.type != "image/jpeg") {
-                //    if (filemb > 25600) {
-                //        app.ShowErrorMessage("You cannot upload the file more than 5MB");
-                //        return;
-                //    }
-                //}
-                //else {
-                //    if (filemb >= 5120) {
-                //        app.ShowErrorMessage("Image should not be greater than 5MB");
-                //        return;
-                //    }
-                //}
-
                 filesToUpload.push({
                     id: fileId,
                     file: file,
@@ -476,9 +409,6 @@
 
             $(this).children(".fileList")
                 .append(output.join(""));
-
-            //reset the input to null - nice little chrome bug!
-            ////evt.target.value = null;
             document.getElementById("AssetUploadBtn").disabled = false;
         });
 
@@ -534,7 +464,7 @@
             $("#photolist li").remove();
             $("#myModal2").modal('hide');
             $("#photoType").val("").trigger("chosen:updated");
-             document.getElementById("files").disabled = true;
+            document.getElementById("files").disabled = true;
             $("#files1").addClass("disabled");
             document.getElementById("AssetUploadBtn").disabled = true;
         }

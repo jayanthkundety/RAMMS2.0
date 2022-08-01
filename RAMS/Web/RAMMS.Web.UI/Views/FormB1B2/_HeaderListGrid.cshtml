@@ -14,9 +14,9 @@
 @inject RAMMS.Business.ServiceProvider.Interfaces.ISecurity security;
 <script src="~/js/CDTGrid.js"></script>
 <script>
-    var isModifyPerm = @security.IsPCModify(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
-    var isDeletePerm =@security.IsPCDelete(ModuleNameList.NOD).ToString().ToLowerInvariant()? "" : "hidden";
-    var isViewPerm = @security.IsPCView(ModuleNameList.NOD).ToString().ToLowerInvariant() ? "" : 'hidden';
+    var isModifyPerm = @security.IsPCModify(ModuleNameList.Condition_Inspection).ToString().ToLowerInvariant()? "" : "hidden";
+    var isDeletePerm =@security.IsPCDelete(ModuleNameList.Condition_Inspection).ToString().ToLowerInvariant()? "" : "hidden";
+    var isViewPerm = @security.IsPCView(ModuleNameList.Condition_Inspection).ToString().ToLowerInvariant() ? "" : 'hidden';
     var table_columns = [];
     var actionCol = {
         data: null, name: "Action", title: "Action", class: "headcol", autoWidth: true, sortable: false, render: function (data) {
@@ -75,7 +75,7 @@
             return data.aiLocChKm + "+" + aiLocChM;
         }
     };
-    var submitSts = {
+    /*var submitSts = {
         data: null, name: "submitSts", title: "Status", autoWidth: true, sortable: true, render: function (data) {
             if (data.submitSts) {
                 return "Submitted";
@@ -84,7 +84,8 @@
                 return "Saved";
             }
         }
-    };
+    };*/
+    var submitSts = { data: "status", name: "Status", title: "Status", autoWidth: true, sortable: true };
     var inspectedby = { data: "serProviderUserName", name: "SerProviderUserName", title: "Inspected By", autoWidth: true, sortable: true };
     var userNameAud = { data: "userNameAud", name: "UserNameAud", title: "Audited By", autoWidth: true, sortable: true };
 

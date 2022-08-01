@@ -375,7 +375,7 @@ namespace RAMMS.Web.UI.Controllers
                         _rmAssetImageDtl.CrBy = security.UserID;
                         _rmAssetImageDtl.ModBy = security.UserID;
                         uploadedFiles.Add(_rmAssetImageDtl);
-                        rowsAffected = await formB1B2Service.SaveImageDtl(uploadedFiles);
+                        rowsAffected = await formB1B2Service.SaveImageDtlTab(uploadedFiles);
                     }
                 }
                 else
