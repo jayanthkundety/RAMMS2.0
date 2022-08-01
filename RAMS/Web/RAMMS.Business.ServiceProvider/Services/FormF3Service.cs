@@ -133,7 +133,7 @@ namespace RAMMS.Business.ServiceProvider.Services
                 domainModelFormF3.Ff3hPkRefNo = 0;
 
 
-                var obj = _repoUnit.FormF3Repository.FindAsync(x => x.Ff3hRmuCode == domainModelFormF3.Ff3hRmuCode && x.Ff3hSecCode == domainModelFormF3.Ff3hSecCode && x.Ff3hRdCode == domainModelFormF3.Ff3hRdCode && x.Ff3hCrewSup == domainModelFormF3.Ff3hCrewSup && x.Ff3hInspectedYear == domainModelFormF3.Ff3hInspectedYear && x.Ff3hActiveYn == true).Result;
+                var obj = _repoUnit.FormF3Repository.FindAsync(x => x.Ff3hRmuCode == domainModelFormF3.Ff3hRmuCode && x.Ff3hSecCode == domainModelFormF3.Ff3hSecCode && x.Ff3hRdCode == domainModelFormF3.Ff3hRdCode && x.Ff3hCrewSup == domainModelFormF3.Ff3hCrewSup && x.Ff3hInspectedYear == domainModelFormF3.Ff3hInspectedYear && x.Ff3hSource == domainModelFormF3.Ff3hSource && x.Ff3hActiveYn == true).Result;
                 if (obj != null)
                 {
                     var res = _mapper.Map<FormF3ResponseDTO>(obj);

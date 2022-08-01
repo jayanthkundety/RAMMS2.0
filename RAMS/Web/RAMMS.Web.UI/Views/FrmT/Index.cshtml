@@ -65,11 +65,12 @@
         });
 
         $("#ddlRMU").on("change", function () {
-
+             
             var req = {};
             var _rmu = $("#ddlRMU");
             var _sec = $("#ddlSection");
             var _road = $("#ddlRoadCode");
+            $("#txtRmuName").val($("#ddlRMU").find("option:selected").text().split("-")[1]);
            // req.RMU = $("#ddlRMU").find("option:selected").text();
             req.RMU = $("#ddlRMU").find("option:selected").val();
             //if (rmu.toUpperCase() == "MIRI") {
@@ -299,6 +300,10 @@
                                         <option value="@div.Value">@div.Text</option>
                                     }
                                 </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.Label("RMU Name", "RMU Name")
+                                <input id="txtRmuName" disabled="disabled" type="text" class="form-control" />
                             </div>
                             <div class="form-group col-md-3">
                                 @Html.Label("Road Code", "Road Code")
